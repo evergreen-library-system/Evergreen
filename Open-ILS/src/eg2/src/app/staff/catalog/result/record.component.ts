@@ -1,6 +1,6 @@
 import {Component, OnInit, OnDestroy, Input, ViewChild} from '@angular/core';
-import {Subject, BehaviorSubject, Subscription, lastValueFrom, EMPTY, Observable} from 'rxjs';
-import {catchError, takeUntil} from 'rxjs/operators';
+import {Subject, BehaviorSubject, Subscription, lastValueFrom, EMPTY, Observable,
+    catchError, takeUntil} from 'rxjs';
 import {Router} from '@angular/router';
 import {OrgService} from '@eg/core/org.service';
 import {IdlObject} from '@eg/core/idl.service';

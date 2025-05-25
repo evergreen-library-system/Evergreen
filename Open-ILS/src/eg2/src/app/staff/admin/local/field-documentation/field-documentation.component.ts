@@ -152,15 +152,15 @@ export class FieldDocumentationComponent implements OnInit {
         this.editDialog.recordId = field.id();
         this.setFieldOptions(field);
         return new Promise((resolve, reject) => {
-            this.editDialog.open({size: 'lg'}).subscribe(result => {
+            this.editDialog.open({size: 'lg'}).subscribe({ next: result => {
                 this.updateSuccessString.current()
                     .then(str => this.toast.success(str));
                 this.setGrid();
                 resolve(result);
-            }, (error: unknown) => {
+            }, error: (error: unknown) => {
                 this.updateFailedString.current()
                     .then(str => this.toast.danger(str));
-            });
+            } });
         });
     }
 
@@ -182,18 +182,16 @@ export class FieldDocumentationComponent implements OnInit {
         this.editDialog.record = this.idl.create('fdoc');
         this.setFieldOptions(this.editDialog.record);
         this.editDialog.open({size: 'lg'}).subscribe(
-            ok => {
+            { next: ok => {
                 this.createSuccessString.current()
                     .then(str => this.toast.success(str));
                 this.setGrid();
-            },
-            // eslint-disable-next-line rxjs/no-implicit-any-catch
-            (rejection: any) => {
+            }, error: (rejection: any) => {
                 if (!rejection.dismissed) {
                     this.createFailedString.current()
                         .then(str => this.toast.danger(str));
                 }
-            }
+            } }
         );
     }
 }

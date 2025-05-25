@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Observable, Subject} from 'rxjs';
-import {map, defaultIfEmpty} from 'rxjs/operators';
+import {Observable, Subject, map, defaultIfEmpty} from 'rxjs';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {PermService} from '@eg/core/perm.service';
@@ -166,12 +165,11 @@ export class ProviderRecordService {
     fetch(id: number): Promise<void> {
         return new Promise((resolve, reject) => {
             this.getProviderRecord(id).subscribe(
-                result => {
+                { next: result => {
                     resolve();
-                },
-                (error: unknown) => {
+                }, error: (error: unknown) => {
                     reject();
-                },
+                } },
             );
         });
     }

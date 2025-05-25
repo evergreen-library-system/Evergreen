@@ -176,20 +176,18 @@ export class AcqProviderSummaryPaneComponent implements OnInit, AfterViewInit {
             if (!confirmed) { return; }
 
             this.pcrud.remove(this.provider)
-                // eslint-disable-next-line rxjs/no-nested-subscribe
+                // eslint-disable-next-line rxjs-x/no-nested-subscribe
                 .subscribe(
-                    ok2 => {
+                    { next: ok2 => {
                         this.deleteSuccessString.current()
                             .then(str => this.toast.success(str));
                         this.router.navigate(['/staff', 'acq', 'provider']);
-                    },
-                    (err: unknown) => {
+                    }, error: (err: unknown) => {
                         this.errorString.current()
                             .then(str => this.toast.danger(str));
-                    },
-                    ()  => {
+                    }, complete: ()  => {
                         console.debug('deleteProvider, what is this?');
-                    }
+                    } }
                 );
         });
 

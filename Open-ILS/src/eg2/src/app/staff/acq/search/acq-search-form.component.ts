@@ -336,7 +336,7 @@ export class AcqSearchFormComponent implements OnInit, OnChanges {
     }
 
     setOrgUnitSearchValue(org: IdlObject, term: AcqSearchTerm) {
-        // eslint-disable-next-line eqeqeq
+         
         if (org == null) {
             term.value1 = '';
         } else {

@@ -1,16 +1,10 @@
-import {Component, Input, OnInit, AfterViewInit, ViewChild} from '@angular/core';
-import {Router, ActivatedRoute, ParamMap} from '@angular/router';
-import {from, empty, range} from 'rxjs';
-import {concatMap, tap, takeLast} from 'rxjs/operators';
-import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
+import {Component, Input, OnInit, AfterViewInit} from '@angular/core';
+import {Router} from '@angular/router';
 import {IdlObject} from '@eg/core/idl.service';
 import {EventService} from '@eg/core/event.service';
-import {OrgService} from '@eg/core/org.service';
 import {NetService} from '@eg/core/net.service';
-import {PcrudService, PcrudContext} from '@eg/core/pcrud.service';
 import {AuthService} from '@eg/core/auth.service';
 import {PatronService} from '@eg/staff/share/patron/patron.service';
-import {PatronContextService} from './patron.service';
 
 @Component({
     templateUrl: 'test-password.component.html',

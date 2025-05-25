@@ -1,5 +1,5 @@
 import {Component, OnInit, Input, ViewChild} from '@angular/core';
-import {finalize} from 'rxjs/operators';
+import {finalize} from 'rxjs';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
 import {PcrudService} from '@eg/core/pcrud.service';
@@ -86,7 +86,7 @@ export class ShelvingLocationGroupsComponent implements OnInit {
         this.editDialog.record = this.defaultNewRecord;
         this.editDialog.recordId = null;
         this.editDialog.open({size: 'lg'}).subscribe(
-            newLocationGroup => {
+            { next: newLocationGroup => {
                 this.processLocationGroup(newLocationGroup);
                 this.locationGroups.push(newLocationGroup);
                 // select it by default if it's the only location group
@@ -96,9 +96,9 @@ export class ShelvingLocationGroupsComponent implements OnInit {
                     this.sortLocationGroups();
                 }
                 console.debug('Record editor performed action');
-            }, (err: unknown) => {
+            }, error: (err: unknown) => {
                 console.debug(err);
-            }
+            } }
         );
     };
 
@@ -112,28 +112,25 @@ export class ShelvingLocationGroupsComponent implements OnInit {
         this.editDialog.mode = 'update';
         this.editDialog.recordId = group.id();
         this.editDialog.open({size: 'lg'}).subscribe(
-            id => {
+            { next: id => {
                 console.debug('Record editor performed action');
                 this.loadLocationGroups();
-            },
-            (err: unknown) => {
+            }, error: (err: unknown) => {
                 console.debug(err);
-            },
-            () => console.debug('Dialog closed')
+            }, complete: () => console.debug('Dialog closed') }
         );
     };
 
     deleteLocationGroup = (locationGroupToDelete) => {
         const idToDelete = locationGroupToDelete.id();
         this.pcrud.remove(locationGroupToDelete).subscribe(
-            ok => {
+            { next: ok => {
                 this.locationGroups.forEach((locationGroup, index) => {
                     if (locationGroup.id() === idToDelete) {
                         this.locationGroups.splice(index, 1);
                     }
                 });
-            },
-            (err: unknown) => console.debug(err)
+            }, error: (err: unknown) => console.debug(err) }
         );
     };
 
@@ -150,18 +147,18 @@ export class ShelvingLocationGroupsComponent implements OnInit {
             flesh_fields: {acplg: ['opac_visible', 'pos', 'name']},
             order_by: {acplg: 'owner'}
         }).pipe(finalize(() => this._loadingLocationGroups = false))
-            .subscribe(data => {
+            .subscribe({ next: data => {
                 this.processLocationGroup(data);
                 this.locationGroups.push(data);
-            }, (error: unknown) => {
+            }, error: (error: unknown) => {
                 console.debug(error);
-            }, () => {
+            }, complete: () => {
                 this.sortLocationGroups();
                 if (this.locationGroups.length) {
                     this.markAsSelected(this.locationGroups[0]);
                 }
                 this.loadGroupEntries();
-            });
+            } });
     };
 
     changeSelectedLocationGroup = (group) => {
@@ -185,18 +182,18 @@ export class ShelvingLocationGroupsComponent implements OnInit {
             flesh_fields: {acplgm: ['location']},
             order_by: {acplgm: ['location']}
         }).pipe(finalize(() => this._loadingGroupEntries = false))
-            .subscribe(data => {
+            .subscribe({ next: data => {
                 data.name = data.location().name();
                 data.shortname = this.org.get(data.location().owning_lib()).shortname();
                 // remove all non-alphanumeric chars to make label a valid id
                 data.label = (data.shortname + data.name).replace(/\W/g, '');
                 data.checked = false;
                 this.groupEntries.push(data);
-            }, (error: unknown) => {
+            }, error: (error: unknown) => {
                 console.debug(error);
-            }, () => {
+            }, complete: () => {
                 this.loadShelvingLocations();
-            });
+            } });
     };
 
     loadShelvingLocations = () => {
@@ -214,7 +211,7 @@ export class ShelvingLocationGroupsComponent implements OnInit {
         this.shelvingLocations = [];
         this.pcrud.search('acpl', {owning_lib : orgList, deleted: 'f'})
             .pipe(finalize(() => this._loadingShelvingLocations = false))
-            .subscribe(data => {
+            .subscribe({ next: data => {
                 data.name = data.name();
                 data.shortname = this.org.get(data.owning_lib()).shortname();
                 // remove all non-alphanumeric chars to make label a valid id
@@ -226,9 +223,9 @@ export class ShelvingLocationGroupsComponent implements OnInit {
                     data.hidden = true;
                 }
                 if (!data.hidden) {this.shelvingLocations.push(data);}
-            }, (error: unknown) => {
+            }, error: (error: unknown) => {
                 console.debug(error);
-            }, () => {
+            }, complete: () => {
                 this.shelvingLocations.sort(function(a, b) {
                     return a.name < b.name ? -1 : 1;
                 });
@@ -241,7 +238,7 @@ export class ShelvingLocationGroupsComponent implements OnInit {
                     Array.prototype.push.apply(sortedShelvingLocations, currentLocationArray);
                 });
                 this.shelvingLocations = sortedShelvingLocations;
-            });
+            } });
     };
 
     addEntryCount() {
@@ -263,7 +260,7 @@ export class ShelvingLocationGroupsComponent implements OnInit {
             newGroupEntry.location(entry);
             newGroupEntry.lgroup(this.selectedLocationGroup.id());
             this.pcrud.create(newGroupEntry).subscribe(
-                newEntry => {
+                { next: newEntry => {
                     // hide item so it won't show on on list of shelving locations
                     entry.hidden = true;
                     entry.checked = false;
@@ -274,11 +271,10 @@ export class ShelvingLocationGroupsComponent implements OnInit {
                     this.groupEntries.push(newEntry);
                     this.addedGroupEntriesSuccess.current().then(msg =>
                         this.toast.success(msg));
-                },
-                (err: unknown) => {
+                }, error: (err: unknown) => {
                     console.debug(err);
                     this.addedGroupEntriesFailure.current().then(msg => this.toast.warning(msg));
-                }
+                } }
             );
         });
     };
@@ -298,7 +294,7 @@ export class ShelvingLocationGroupsComponent implements OnInit {
     removeEntries = () => {
         const checkedEntries = this.entriesToRemove();
         this.pcrud.remove(checkedEntries).subscribe(
-            idRemoved => {
+            { next: idRemoved => {
                 idRemoved = parseInt(idRemoved, 10);
                 let deletedName;
                 let deletedShortName;
@@ -319,11 +315,11 @@ export class ShelvingLocationGroupsComponent implements OnInit {
                 });
                 this.removedGroupEntriesSuccess.current().then(msg =>
                     this.toast.success(msg));
-            }, (error: unknown) => {
+            }, error: (error: unknown) => {
                 console.debug(error);
                 this.removedGroupEntriesFailure.current().then(msg =>
                     this.toast.warning(msg));
-            }
+            } }
         );
     };
 
@@ -413,14 +409,12 @@ export class ShelvingLocationGroupsComponent implements OnInit {
     saveNewPositions (locationGroupsToUpdate) {
         let errorHappened = false;
         this.pcrud.update(locationGroupsToUpdate).subscribe(
-            ok => {
+            { next: ok => {
                 console.debug('Record editor performed action');
-            },
-            (err: unknown) => {
+            }, error: (err: unknown) => {
                 console.debug(err);
                 errorHappened = true;
-            },
-            () => {
+            }, complete: () => {
                 this.sortLocationGroups();
                 if (errorHappened) {
                     this.changeOrderFailure.current().then(msg => {
@@ -433,7 +427,7 @@ export class ShelvingLocationGroupsComponent implements OnInit {
                         console.debug(msg);
                     });
                 }
-            }
+            } }
         );
     }
 }

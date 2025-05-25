@@ -93,20 +93,18 @@ export class OrgUnitTypeComponent implements OnInit {
         this.editDialog.setRecord(this.selected.callerData.aout);
 
         this.editDialog.open().subscribe(
-            success => {
+            { next: success => {
                 this.postUpdate(this.editString);
                 this.loadAoutTree(); // since the tree is never going to
                 // be large, just reload the whole
                 // thing
-            },
-            // eslint-disable-next-line rxjs/no-implicit-any-catch
-            (rejected: any) => {
+            }, error: (rejected: any) => {
                 if (rejected && rejected.dismissed) {
                     return;
                 }
                 this.errorString.current()
                     .then(str => this.toast.danger(str));
-            }
+            } }
         );
     }
 
@@ -115,14 +113,12 @@ export class OrgUnitTypeComponent implements OnInit {
             if (!confirmed) { return; }
 
             this.pcrud.remove(this.selected.callerData.aout)
-                // eslint-disable-next-line rxjs/no-nested-subscribe
+                // eslint-disable-next-line rxjs-x/no-nested-subscribe
                 .subscribe(
-                    ok2 => {},
-                    (err: unknown) => {
+                    { next: ok2 => {}, error: (err: unknown) => {
                         this.errorString.current()
                             .then(str => this.toast.danger(str));
-                    },
-                    ()  => {
+                    }, complete: ()  => {
                     // Avoid updating until we know the entire
                     // pcrud action/transaction completed.
                         this.loadAoutTree(); // since the tree is never going to
@@ -130,7 +126,7 @@ export class OrgUnitTypeComponent implements OnInit {
                         // thing
                         this.selected = null;
                         this.postUpdate(this.editString);
-                    }
+                    } }
                 );
         });
     }
@@ -147,7 +143,7 @@ export class OrgUnitTypeComponent implements OnInit {
         this.editDialog.mode = 'create';
 
         this.editDialog.open().subscribe(
-            result => { // aout object
+            { next: result => { // aout object
 
                 // Add our new node to the tree
                 const newNode = new TreeNode({
@@ -159,16 +155,13 @@ export class OrgUnitTypeComponent implements OnInit {
                 // be large, just reload the whole
                 // thing
                 this.postUpdate(this.createString);
-            },
-
-            // eslint-disable-next-line rxjs/no-implicit-any-catch
-            (rejected: any) => {
+            }, error: (rejected: any) => {
                 if (rejected && rejected.dismissed) {
                     return;
                 }
                 this.errorString.current()
                     .then(str => this.toast.danger(str));
-            }
+            } }
         );
     }
 }

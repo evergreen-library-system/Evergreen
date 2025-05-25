@@ -1,8 +1,7 @@
 /* eslint-disable no-self-assign, no-magic-numbers */
 import {Component, Input, OnInit, OnDestroy, ViewChild} from '@angular/core';
 import {Router} from '@angular/router';
-import {Subscription} from 'rxjs';
-import {tap} from 'rxjs/operators';
+import {Subscription, tap} from 'rxjs';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
@@ -197,7 +196,7 @@ export class PoSummaryComponent implements OnInit, OnDestroy {
             this.net.request('open-ils.acq',
                 'open-ils.acq.purchase_order.cancel',
                 this.auth.token(), this.poId, reason
-            // eslint-disable-next-line rxjs/no-nested-subscribe
+            // eslint-disable-next-line rxjs-x/no-nested-subscribe
             ).subscribe(resp => {
                 this.progressDialog.close();
 
@@ -387,7 +386,7 @@ export class PoSummaryComponent implements OnInit, OnDestroy {
             this.net.request('open-ils.acq',
                 'open-ils.acq.purchase_order.blanket.finalize',
                 this.auth.token(), this.poId
-            // eslint-disable-next-line rxjs/no-nested-subscribe
+            // eslint-disable-next-line rxjs-x/no-nested-subscribe
             ).subscribe(resp => {
                 if (Number(resp) === 1) {
                     location.href = location.href;

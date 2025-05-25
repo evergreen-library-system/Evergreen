@@ -1,11 +1,6 @@
-import {Component, OnInit, Input, Output, ViewChild, EventEmitter} from '@angular/core';
-import {Observable, Observer, of} from 'rxjs';
-import {tap} from 'rxjs/operators';
-import {IdlObject, IdlService} from '@eg/core/idl.service';
-import {NetService} from '@eg/core/net.service';
+import {Component, Input} from '@angular/core';
+import {IdlService} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
-import {OrgService} from '@eg/core/org.service';
-import {AuthService} from '@eg/core/auth.service';
 import {NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 

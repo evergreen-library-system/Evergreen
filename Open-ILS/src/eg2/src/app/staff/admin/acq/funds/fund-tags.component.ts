@@ -8,8 +8,7 @@ import {OrgService} from '@eg/core/org.service';
 import {StringComponent} from '@eg/share/string/string.component';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {ComboboxComponent, ComboboxEntry} from '@eg/share/combobox/combobox.component';
-import {Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
+import {Observable, map} from 'rxjs';
 
 @Component({
     selector: 'eg-fund-tags',
@@ -73,11 +72,9 @@ export class FundTagsComponent implements OnInit {
                 acqft:  ['owner']
             }
         }).subscribe(
-            res => this.tagMaps.push(res),
-            (err: unknown) => {},
-            () => this.tagMaps.sort((a, b) => {
+            { next: res => this.tagMaps.push(res), error: (err: unknown) => {}, complete: () => this.tagMaps.sort((a, b) => {
                 return a.tag().name() < b.tag().name() ? -1 : 1;
-            })
+            }) }
         );
     }
 
@@ -93,32 +90,28 @@ export class FundTagsComponent implements OnInit {
         ftm.tag(this.newTag.id);
         ftm.fund(this.fundId);
         this.pcrud.create(ftm).subscribe(
-            ok => {
+            { next: ok => {
                 this.addSuccessString.current()
                     .then(str => this.toast.success(str));
-            },
-            (err: unknown) => {
+            }, error: (err: unknown) => {
                 this.addErrorString.current()
                     .then(str => this.toast.danger(str));
-            },
-            () => {
+            }, complete: () => {
                 this.newTag = null;
                 this.tagSelector.selectedId = null;
                 this._loadTagMaps();
-            }
+            } }
         );
     }
     removeTagMap(ftm: IdlObject) {
         this.pcrud.remove(ftm).subscribe(
-            ok => {
+            { next: ok => {
                 this.removeSuccessString.current()
                     .then(str => this.toast.success(str));
-            },
-            (err: unknown) => {
+            }, error: (err: unknown) => {
                 this.removeErrorString.current()
                     .then(str => this.toast.danger(str));
-            },
-            () => this._loadTagMaps()
+            }, complete: () => this._loadTagMaps() }
         );
     }
 }

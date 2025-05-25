@@ -173,7 +173,7 @@ export class OrgAddressComponent {
             + addr.city() + ', ' + addr.state() + ' ' + addr.post_code()
             + ' ' + addr.country()
         ).subscribe(
-            (res) => {
+            { next: (res) => {
                 console.log('geo', res);
                 if (typeof res.ilsevent === 'undefined') {
                     addr.latitude( res.latitude );
@@ -181,10 +181,9 @@ export class OrgAddressComponent {
                 } else {
                     this.toast.danger(res.desc);
                 }
-            },
-            (err: unknown) => {
+            }, error: (err: unknown) => {
                 console.error('geo', err);
-            }
+            } }
         );
     }
 }

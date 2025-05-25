@@ -1,7 +1,6 @@
 import {Component, OnInit, Input, Output, EventEmitter, ViewChild} from '@angular/core';
 import {Location} from '@angular/common';
-import {Observable, Observer, of, from} from 'rxjs';
-import {concatMap} from 'rxjs/operators';
+import {Observable, Observer, of, from, concatMap} from 'rxjs';
 import {IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {OrgService} from '@eg/core/org.service';
@@ -501,7 +500,7 @@ export class HoldsGridComponent implements OnInit {
             'open-ils.circ.hold.wide_hash.stream',
             this.auth.token(), filters, orderBy, limit, offset, options
         ).subscribe(
-            holdData => {
+            { next: holdData => {
 
                 if (first) { // First response is the hold count.
                     this.holdsCount = Number(holdData);
@@ -514,15 +513,13 @@ export class HoldsGridComponent implements OnInit {
 
                     observer.next(holdData);
                 }
-            },
-            (err: unknown) => {
+            }, error: (err: unknown) => {
                 this.progressDialog.close();
                 observer.error(err);
-            },
-            ()  => {
+            }, complete: ()  => {
                 this.progressDialog.close();
                 observer.complete();
-            }
+            } }
         );
 
         return observable;
@@ -674,11 +671,10 @@ export class HoldsGridComponent implements OnInit {
 
             this.markDamagedDialog.copyId = ids.pop();
             return this.markDamagedDialog.open({size: 'lg'}).subscribe(
-                ok => {
+                { next: ok => {
                     if (ok) { rowsModified = true; }
                     return markNext(ids);
-                },
-                (dismiss: unknown) => markNext(ids)
+                }, error: (dismiss: unknown) => markNext(ids) }
             );
         };
 
@@ -760,18 +756,16 @@ export class HoldsGridComponent implements OnInit {
                     'open-ils.circ.hold.uncancel',
                     this.auth.token(), holdId
                 );
-            // eslint-disable-next-line rxjs/no-nested-subscribe
+            // eslint-disable-next-line rxjs-x/no-nested-subscribe
             })).subscribe(
-                resp => {
+                { next: resp => {
                     if (Number(resp) !== 1) {
                         console.error('Failed uncanceling hold', resp);
                     }
-                },
-                null,
-                () => {
+                }, complete: () => {
                     this.progressDialog.close();
                     this.holdsGrid.reload();
-                }
+                } }
             );
         });
     }

@@ -1,6 +1,5 @@
 import {Component, Input, ViewChild} from '@angular/core';
-import {Observable, throwError, from} from 'rxjs';
-import {switchMap} from 'rxjs/operators';
+import {Observable, throwError, from, switchMap} from 'rxjs';
 import {NetService} from '@eg/core/net.service';
 import {IdlObject} from '@eg/core/idl.service';
 import {EventService} from '@eg/core/event.service';
@@ -133,7 +132,7 @@ export class MarkDamagedDialogComponent
             'open-ils.circ', 'open-ils.circ.mark_item_damaged',
             this.auth.token(), this.copyId, args
         ).subscribe(
-            result => {
+            { next: result => {
                 console.debug('Mark damaged returned', result);
 
                 if (Number(result) === 1) {
@@ -149,11 +148,10 @@ export class MarkDamagedDialogComponent
                     this.chargeResponse = evt.payload;
                     this.newCharge = this.chargeResponse.charge;
                 }
-            },
-            (err: unknown) => {
+            }, error: (err: unknown) => {
                 this.errorMsg.current().then(m => this.toast.danger(m));
                 console.error(err);
-            }
+            } }
         );
     }
 }

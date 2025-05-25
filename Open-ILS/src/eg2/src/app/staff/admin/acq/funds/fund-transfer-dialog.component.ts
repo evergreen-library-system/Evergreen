@@ -10,8 +10,7 @@ import {StringComponent} from '@eg/share/string/string.component';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {PermService} from '@eg/core/perm.service';
 import {ComboboxComponent, ComboboxEntry} from '@eg/share/combobox/combobox.component';
-import {Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
+import {Observable, map} from 'rxjs';
 
 @Component({
     selector: 'eg-fund-transfer-dialog',
@@ -93,16 +92,15 @@ export class FundTransferDialogComponent
             null,
             this.note
         ).subscribe(
-            res => {
+            { next: res => {
                 this.successString.current()
                     .then(str => this.toast.success(str));
                 this.close(true);
-            },
-            (res: unknown) => {
+            }, error: (res: unknown) => {
                 this.updateFailedString.current()
                     .then(str => this.toast.danger(str));
                 this.close(false);
-            }
+            } }
         );
     }
 

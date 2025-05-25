@@ -1,7 +1,6 @@
 import { PermService } from '@eg/core/perm.service';
 import {Component, Input, ViewChild, OnInit} from '@angular/core';
-import { Observable, merge, of, EMPTY, throwError, from } from 'rxjs';
-import { switchMap, concatMap } from 'rxjs/operators';
+import { Observable, merge, of, EMPTY, from, switchMap, concatMap } from 'rxjs';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {AuthService} from '@eg/core/auth.service';
 import {NetService} from '@eg/core/net.service';
@@ -138,10 +137,10 @@ export class CourseAssociateMaterialComponent extends DialogComponent implements
         this.editDialog.recordId = courseMaterial.id();
         return new Promise((resolve, reject) => {
             this.editDialog.open({size: 'lg'}).subscribe(
-                result => {
+                { next: result => {
                     this.materialEditSuccessString.current()
                         .then(str => this.toast.success(str));
-                    // eslint-disable-next-line rxjs/no-nested-subscribe
+                    // eslint-disable-next-line rxjs-x/no-nested-subscribe
                     this.pcrud.retrieve('acmcm', result).subscribe(material => {
                         if (material.course() !== this.courseId) {
                             this.materialsGrid.reload();
@@ -150,12 +149,11 @@ export class CourseAssociateMaterialComponent extends DialogComponent implements
                         }
                     });
                     resolve(result);
-                },
-                (error: unknown) => {
+                }, error: (error: unknown) => {
                     this.materialEditFailedString.current()
                         .then(str => this.toast.danger(str));
                     reject(error);
-                }
+                } }
             );
         });
     }
@@ -209,13 +207,12 @@ export class CourseAssociateMaterialComponent extends DialogComponent implements
     deleteSelectedMaterials(items) {
         const deleteRequest$ = this.course.detachMaterials(items);
         merge(...deleteRequest$).subscribe(
-            val => {
+            { next: val => {
                 this.materialDeleteSuccessString.current().then(str => this.toast.success(str));
-            },
-            (err: unknown) => {
+            }, error: (err: unknown) => {
                 this.materialDeleteFailedString.current()
                     .then(str => this.toast.danger(str));
-            }
+            } }
         ).add(() => {
             this.materialsGrid.reload();
         });

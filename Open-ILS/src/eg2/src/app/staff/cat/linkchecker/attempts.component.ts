@@ -1,7 +1,6 @@
 import {ActivatedRoute} from '@angular/router';
 import {Component, OnInit, ViewChild} from '@angular/core';
-import { of } from 'rxjs';
-import { switchMap, tap, finalize, catchError } from 'rxjs/operators';
+import { of, switchMap, tap, finalize, catchError } from 'rxjs';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {GridDataSource} from '@eg/share/grid/grid';
 import {GridFlatDataService} from '@eg/share/grid/grid-flat-data.service';

@@ -535,7 +535,7 @@ export class ImportComponent implements OnInit, AfterViewInit, OnDestroy {
                 }
             },
 
-            // eslint-disable-next-line rxjs/no-implicit-any-catch
+             
             (err: HttpErrorResponse) => {
                 console.error(err);
                 this.toast.danger(err.error);
@@ -570,7 +570,7 @@ export class ImportComponent implements OnInit, AfterViewInit, OnDestroy {
 
                     // Spooling is in progress, track the results.
                     this.vandelay.pollSessionTracker(tracker.id())
-                        // eslint-disable-next-line rxjs/no-nested-subscribe
+                         
                         .subscribe(
                             trkr => {
                                 this.enqueueProgress.update({
@@ -627,7 +627,7 @@ export class ImportComponent implements OnInit, AfterViewInit, OnDestroy {
 
                         // Spooling is in progress, track the results.
                         this.vandelay.pollSessionTracker(tracker.id())
-                            // eslint-disable-next-line rxjs/no-nested-subscribe
+                             
                             .subscribe(
                                 trkr => {
                                     this.importProgress.update({

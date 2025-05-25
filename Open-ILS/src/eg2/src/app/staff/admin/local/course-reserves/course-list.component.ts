@@ -140,18 +140,16 @@ export class CourseListComponent implements OnInit, AfterViewInit {
         this.editDialog.recordId = null;
         this.editDialog.record = course_module_course;
         this.editDialog.open({size: this.dialog_size}).subscribe(
-            ok => {
+            { next: ok => {
                 this.createString.current()
                     .then(str => this.toast.success(str));
                 this.grid.reload();
-            },
-            // eslint-disable-next-line rxjs/no-implicit-any-catch
-            (rejection: any) => {
+            }, error: (rejection: any) => {
                 if (!rejection.dismissed) {
                     this.createErrString.current()
                         .then(str => this.toast.danger(str));
                 }
-            }
+            } }
         );
     }
 
@@ -174,16 +172,16 @@ export class CourseListComponent implements OnInit, AfterViewInit {
                 courseToArchive.is_archived(true);
             });
             this.pcrud.update(course).subscribe(
-                val => {
+                { next: val => {
                     console.debug('archived: ' + val);
                     this.archiveSuccessString.current()
                         .then(str => this.toast.success(str));
-                }, (err: unknown) => {
+                }, error: (err: unknown) => {
                     this.archiveFailedString.current()
                         .then(str => this.toast.danger(str));
-                }, () => {
+                }, complete: () => {
                     this.grid.reload();
-                }
+                } }
             );
         });
     }
@@ -202,19 +200,19 @@ export class CourseListComponent implements OnInit, AfterViewInit {
             courseToUnarchive.is_archived(false);
         });
         this.pcrud.update(course).subscribe(
-            val => {
+            { next: val => {
                 course.forEach(courseEntry => {
                     this.courseSvc.removeNonPublicUsers(courseEntry.id());
                 });
                 console.debug('archived: ' + val);
                 this.unarchiveSuccessString.current()
                     .then(str => this.toast.success(str));
-            }, (err: unknown) => {
+            }, error: (err: unknown) => {
                 this.unarchiveFailedString.current()
                     .then(str => this.toast.danger(str));
-            }, () => {
+            }, complete: () => {
                 this.grid.reload();
-            }
+            } }
         );
     }
 
@@ -244,16 +242,14 @@ export class CourseListComponent implements OnInit, AfterViewInit {
                 object.isdeleted(true);
             });
             this.pcrud.autoApply(idlObject).subscribe(
-                val => {
+                { next: val => {
                     console.debug('deleted: ' + val);
                     this.deleteSuccessString.current()
                         .then(str => this.toast.success(str));
-                },
-                (err: unknown) => {
+                }, error: (err: unknown) => {
                     this.deleteFailedString.current()
                         .then(str => this.toast.danger(str));
-                },
-                () => this.grid.reload()
+                }, complete: () => this.grid.reload() }
             );
         });
     }

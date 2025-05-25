@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
-import {Observable, of} from 'rxjs';
-import {mergeMap, switchMap, tap} from 'rxjs/operators';
+import {Observable, of, mergeMap, switchMap, tap} from 'rxjs';
 import {IdlObject} from '@eg/core/idl.service';
 import {AuthService} from '@eg/core/auth.service';
 import {PrintService} from '@eg/share/print/print.service';

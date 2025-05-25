@@ -1,3 +1,4 @@
+// eslint-disable @angular-eslint/no-output-on-prefix
 import {Component, EventEmitter, Input, Output, ViewChild, OnInit, Optional, Self} from '@angular/core';
 import {FormatService} from '@eg/core/format.service';
 import {AbstractControl, ControlValueAccessor, FormControl, FormGroup, NgControl} from '@angular/forms';
@@ -22,6 +23,7 @@ export class DateTimeSelectComponent implements OnInit, ControlValueAccessor {
     @Input() noFuture = false;
     @Input() minDate: any;
     @Input() maxDate: any;
+    // eslint-disable-next-line @angular-eslint/no-output-on-prefix
     @Output() onChangeAsIso: EventEmitter<string>;
 
     dateTimeForm: FormGroup;

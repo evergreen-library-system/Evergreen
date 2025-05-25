@@ -62,7 +62,7 @@ export class ExportComponent implements AfterViewInit, OnInit {
         if (this.exportingBasket) {
             return; // no source to focus
         }
-        //this.renderer.selectRootElement('#csv-input').focus();
+        // this.renderer.selectRootElement('#csv-input').focus();
     }
 
     fileSelected($event) {
@@ -128,7 +128,7 @@ export class ExportComponent implements AfterViewInit, OnInit {
             formData, {reportProgress: true, responseType: 'text'});
 
         this.http.request(req).subscribe(
-            evt => {
+            { next: evt => {
                 console.debug(evt);
                 if (evt.type === HttpEventType.DownloadProgress) {
                     // File size not reported by server in advance.
@@ -141,14 +141,11 @@ export class ExportComponent implements AfterViewInit, OnInit {
 
                     this.isExporting = false;
                 }
-            },
-
-            // eslint-disable-next-line rxjs/no-implicit-any-catch
-            (err: HttpErrorResponse) => {
+            }, error: (err: HttpErrorResponse) => {
                 console.error(err);
                 this.toast.danger(err.error);
                 this.isExporting = false;
-            }
+            } }
         );
     }
 }

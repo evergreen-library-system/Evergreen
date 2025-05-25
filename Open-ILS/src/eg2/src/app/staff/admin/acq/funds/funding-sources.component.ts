@@ -15,8 +15,7 @@ import {PermService} from '@eg/core/perm.service';
 import {AuthService} from '@eg/core/auth.service';
 import {BroadcastService} from '@eg/share/util/broadcast.service';
 import {NetService} from '@eg/core/net.service';
-import {mergeMap} from 'rxjs/operators';
-import {Observable, forkJoin, of} from 'rxjs';
+import {mergeMap, Observable, forkJoin, of} from 'rxjs';
 import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 import {FundingSourceTransactionsDialogComponent} from './funding-source-transactions-dialog.component';
@@ -131,9 +130,9 @@ export class FundingSourcesComponent extends AdminPageComponent implements OnIni
     ngAfterViewInit() {
         if (this.startId) {
             this.pcrud.retrieve('acqfs', this.startId).subscribe(
-                acqfs => this.openTransactionsDialog([acqfs], 'allocations'),
-                (err: unknown) => {},
-                () => this.startId = null
+                { next: acqfs => this.openTransactionsDialog([acqfs], 'allocations'),
+                    error: (err: unknown) => {},
+                    complete: () => this.startId = null }
             );
         }
     }
@@ -157,17 +156,15 @@ export class FundingSourcesComponent extends AdminPageComponent implements OnIni
                 this.pcrud.search('acqfa',      { funding_source: id }, { limit: 1 }, { atomic: true }),
                 this.pcrud.search('acqfscred',  { funding_source: id }, { limit: 1 }, { atomic: true }),
             ]).subscribe(
-                results => {
+                { next: results => {
                     results.forEach((res) => {
                         if (res.length > 0) {
                             can = false;
                         }
                     });
-                },
-                (err: unknown) => {},
-                () => {
+                }, error: (err: unknown) => {}, complete: () => {
                     if (can) {
-                        // eslint-disable-next-line rxjs/no-nested-subscribe
+                        // eslint-disable-next-line rxjs-x/no-nested-subscribe
                         this.confirmDel.open().subscribe(confirmed => {
                             if (!confirmed) { return; }
                             super.deleteSelected([ rows[0] ]);
@@ -175,7 +172,7 @@ export class FundingSourcesComponent extends AdminPageComponent implements OnIni
                     } else {
                         this.alertDialog.open();
                     }
-                }
+                } }
             );
         }
     }
@@ -185,9 +182,7 @@ export class FundingSourcesComponent extends AdminPageComponent implements OnIni
         this.fundingSourceTransactionsDialog.fundingSourceId = rows[0].id();
         this.fundingSourceTransactionsDialog.activeTab = tab;
         this.fundingSourceTransactionsDialog.open({size: 'xl'}).subscribe(
-            res => {},
-            (err: unknown) => {},
-            () => this.grid.reload()
+            { next: res => {}, error: (err: unknown) => {}, complete: () => this.grid.reload() }
         );
     }
 
@@ -201,15 +196,14 @@ export class FundingSourcesComponent extends AdminPageComponent implements OnIni
         this.applyCreditDialog.hiddenFieldsList = ['id', 'funding_source'];
         this.applyCreditDialog.fieldOrder = 'amount,note,effective_date,deadline_date';
         this.applyCreditDialog.open().subscribe(
-            result => {
+            { next: result => {
                 this.successString.current()
                     .then(str => this.toast.success(str));
                 this.grid.reload();
-            },
-            (error: unknown) => {
+            }, error: (error: unknown) => {
                 this.updateFailedString.current()
                     .then(str => this.toast.danger(str));
-            }
+            } }
         );
     }
 
@@ -225,15 +219,14 @@ export class FundingSourcesComponent extends AdminPageComponent implements OnIni
         this.allocateToFundDialog.hiddenFieldsList = ['id', 'funding_source', 'allocator', 'create_time'];
         this.allocateToFundDialog.fieldOrder = 'fund,amount,note';
         this.allocateToFundDialog.open().subscribe(
-            result => {
+            { next: result => {
                 this.successString.current()
                     .then(str => this.toast.success(str));
                 this.grid.reload();
-            },
-            (error: unknown) => {
+            }, error: (error: unknown) => {
                 this.updateFailedString.current()
                     .then(str => this.toast.danger(str));
-            }
+            } }
         );
     }
 }

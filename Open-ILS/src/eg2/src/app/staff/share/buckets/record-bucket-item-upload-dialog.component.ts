@@ -1,7 +1,6 @@
 /* eslint-disable max-len */
 import {Component, Input, OnInit, OnDestroy, ViewChild} from '@angular/core';
-import {Subscription, firstValueFrom} from 'rxjs';
-import {tap} from 'rxjs/operators';
+import {firstValueFrom} from 'rxjs';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {AuthService} from '@eg/core/auth.service';

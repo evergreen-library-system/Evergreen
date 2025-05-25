@@ -1,11 +1,10 @@
 /* eslint-disable no-magic-numbers */
 
-import {timer as observableTimer, Observable} from 'rxjs';
+import {timer as observableTimer, Observable, map, take} from 'rxjs';
 import {Component, OnInit, ViewChild, Input, TemplateRef} from '@angular/core';
 import {ProgressDialogComponent} from '@eg/share/dialog/progress.component';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {StringService} from '@eg/share/string/string.service';
-import {map, take} from 'rxjs/operators';
 import {GridDataSource, GridColumn, GridRowFlairEntry, GridCellTextGenerator} from '@eg/share/grid/grid';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
@@ -363,9 +362,10 @@ export class SandboxComponent implements OnInit {
 
     openEditor() {
         this.fmRecordEditor.open({size: 'lg'}).subscribe(
-            pcrudResult => console.debug('Record editor performed action'),
-            (err: unknown) => console.error(err),
-            () => console.debug('Dialog closed')
+            {
+                next: pcrudResult => console.debug('Record editor performed action'),
+                error: (err: unknown) => console.error(err),
+                complete: () => console.debug('Dialog closed') }
         );
     }
 
@@ -431,9 +431,11 @@ export class SandboxComponent implements OnInit {
             map(x => x * 10),
             take(11)
         ).subscribe(
-            val => this.progressDialog.update({value: val, max: 100}),
-            (err: unknown) => {},
-            ()  => this.progressDialog.close()
+            {
+                next: val => this.progressDialog.update({value: val, max: 100}),
+                error: (err: unknown) => {},
+                complete: ()  => this.progressDialog.close()
+            }
         );
     }
 
@@ -463,17 +465,16 @@ export class SandboxComponent implements OnInit {
         this.editDialog.recordId = idlThing['id']();
         return new Promise((resolve, reject) => {
             this.editDialog.open({size: 'lg'}).subscribe(
-                ok => {
+                { next: ok => {
                     this.successString.current()
                         .then(str => this.toast.success(str));
                     this.acpGrid.reloadWithoutPagerReset();
                     resolve(ok);
-                },
-                (rejection: unknown) => {
+                }, error: (rejection: unknown) => {
                     this.updateFailedString.current()
                         .then(str => this.toast.danger(str));
                     reject(rejection);
-                }
+                } }
             );
         });
     }

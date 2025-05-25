@@ -1,29 +1,22 @@
-import {Component, Input, OnInit, AfterViewInit, ViewChild} from '@angular/core';
-import {Router, ActivatedRoute, ParamMap} from '@angular/router';
-import {from, empty, range} from 'rxjs';
-import {concatMap, tap, takeLast} from 'rxjs/operators';
-import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
+import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import {Router, ActivatedRoute} from '@angular/router';
 import {IdlObject} from '@eg/core/idl.service';
 import {EventService} from '@eg/core/event.service';
 import {OrgService} from '@eg/core/org.service';
 import {NetService} from '@eg/core/net.service';
-import {PcrudService, PcrudContext} from '@eg/core/pcrud.service';
+import {PcrudService} from '@eg/core/pcrud.service';
 import {AuthService} from '@eg/core/auth.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
 import {PatronService} from '@eg/staff/share/patron/patron.service';
-import {PatronContextService, BillGridEntry} from './patron.service';
-import {GridDataSource, GridColumn, GridCellTextGenerator} from '@eg/share/grid/grid';
+import {PatronContextService} from './patron.service';
+import {GridDataSource, GridCellTextGenerator} from '@eg/share/grid/grid';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {Pager} from '@eg/share/util/pager';
-import {CircService, CircDisplayInfo} from '@eg/staff/share/circ/circ.service';
+import {CircService} from '@eg/staff/share/circ/circ.service';
 import {PrintService} from '@eg/share/print/print.service';
 import {PromptDialogComponent} from '@eg/share/dialog/prompt.component';
-import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
-import {CreditCardDialogComponent
-} from '@eg/staff/share/billing/credit-card-dialog.component';
-import {BillingService, CreditCardPaymentParams} from '@eg/staff/share/billing/billing.service';
-import {AddBillingDialogComponent} from '@eg/staff/share/billing/billing-dialog.component';
+import {BillingService} from '@eg/staff/share/billing/billing.service';
 import {AudioService} from '@eg/share/util/audio.service';
 import {ToastService} from '@eg/share/toast/toast.service';
 

@@ -1,7 +1,6 @@
-/* eslint-disable @typescript-eslint/no-throw-literal */
+
 import {Injectable} from '@angular/core';
-import {EMPTY, throwError} from 'rxjs';
-import {map} from 'rxjs/operators';
+import {EMPTY, throwError, map} from 'rxjs';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
 import {GridDataSource} from '@eg/share/grid/grid';

@@ -1,7 +1,6 @@
 /** TODO PORT ME TO <eg-combobox> */
 import {Component, OnInit, Input, Output, ViewChild, EventEmitter, ElementRef, AfterViewInit} from '@angular/core';
-import {Observable, Subject} from 'rxjs';
-import {map, mapTo, debounceTime, distinctUntilChanged, merge, filter} from 'rxjs/operators';
+import {Observable, Subject, map, mapTo, debounceTime, distinctUntilChanged, mergeWith as merge, filter} from 'rxjs';
 import {AuthService} from '@eg/core/auth.service';
 import {StoreService} from '@eg/core/store.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
@@ -176,6 +175,7 @@ export class OrgSelectComponent implements OnInit, AfterViewInit {
 
     // Emitted when the org unit value is changed via the selector.
     // Does not fire on initialOrg
+    // eslint-disable-next-line @angular-eslint/no-output-on-prefix
     @Output() onChange = new EventEmitter<IdlObject>();
 
     // Emitted once when the component is done fetching settings

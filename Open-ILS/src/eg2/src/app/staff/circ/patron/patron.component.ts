@@ -1,9 +1,8 @@
 import {Component, ViewChild, OnInit, HostListener} from '@angular/core';
 import {Router, ActivatedRoute, ParamMap, RoutesRecognized} from '@angular/router';
 import {Location} from '@angular/common';
-import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
-import {Observable, throwError, empty} from 'rxjs';
-import {filter, pairwise, concatMap, tap} from 'rxjs/operators';
+import {NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
+import {filter, pairwise} from 'rxjs';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';
@@ -11,9 +10,8 @@ import {EventService} from '@eg/core/event.service';
 import {StoreService} from '@eg/core/store.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
 import {PatronService} from '@eg/staff/share/patron/patron.service';
-import {PatronContextService, BillGridEntry} from './patron.service';
-import {PatronSearch, PatronSearchComponent
-} from '@eg/staff/share/patron/search.component';
+import {PatronContextService} from './patron.service';
+import {PatronSearch} from '@eg/staff/share/patron/search.component';
 import {EditToolbarComponent} from './edit-toolbar.component';
 import {EditComponent} from './edit.component';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';

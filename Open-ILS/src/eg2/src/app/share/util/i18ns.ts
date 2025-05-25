@@ -1,7 +1,6 @@
 /* i18n string utility code */
 
-import { Observable, of } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
+import { Observable, of, map, catchError } from 'rxjs';
 import {IdlObject} from '@eg/core/idl.service';
 
 // retrieves a config.i18n_string entry via pcrud

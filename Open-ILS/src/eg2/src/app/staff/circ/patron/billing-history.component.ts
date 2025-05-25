@@ -1,30 +1,23 @@
-import {Component, Input, OnInit, AfterViewInit, ViewChild} from '@angular/core';
+import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
-import {from, empty, range} from 'rxjs';
-import {concatMap, tap, takeLast} from 'rxjs/operators';
-import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
-import {IdlObject, IdlService} from '@eg/core/idl.service';
+import {from, concatMap, tap} from 'rxjs';
+import {NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
+import {IdlService} from '@eg/core/idl.service';
 import {EventService} from '@eg/core/event.service';
 import {OrgService} from '@eg/core/org.service';
 import {NetService} from '@eg/core/net.service';
-import {PcrudService, PcrudContext} from '@eg/core/pcrud.service';
+import {PcrudService} from '@eg/core/pcrud.service';
 import {AuthService} from '@eg/core/auth.service';
-import {ServerStoreService} from '@eg/core/server-store.service';
 import {PatronService} from '@eg/staff/share/patron/patron.service';
 import {PatronContextService} from './patron.service';
-import {GridDataSource, GridColumn, GridCellTextGenerator} from '@eg/share/grid/grid';
+import {GridDataSource, GridCellTextGenerator} from '@eg/share/grid/grid';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {GridFlatDataService} from '@eg/share/grid/grid-flat-data.service';
 import {Pager} from '@eg/share/util/pager';
-import {CircService, CircDisplayInfo} from '@eg/staff/share/circ/circ.service';
+import {CircService} from '@eg/staff/share/circ/circ.service';
 import {PrintService} from '@eg/share/print/print.service';
-import {PromptDialogComponent} from '@eg/share/dialog/prompt.component';
-import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
-import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 import {BillingService} from '@eg/staff/share/billing/billing.service';
 import {AddBillingDialogComponent} from '@eg/staff/share/billing/billing-dialog.component';
-import {AudioService} from '@eg/share/util/audio.service';
-import {ToastService} from '@eg/share/toast/toast.service';
 import {DateUtil} from '@eg/share/util/date';
 
 @Component({
@@ -167,11 +160,11 @@ export class BillingHistoryComponent implements OnInit {
                     changesApplied = true;
                 }
             }))
-            .subscribe(null, null, () => {
+            .subscribe({ complete: () => {
                 if (changesApplied) {
                     this.xactsGrid.reload();
                 }
-            });
+            } });
     }
 
     printBills(rows: any) {

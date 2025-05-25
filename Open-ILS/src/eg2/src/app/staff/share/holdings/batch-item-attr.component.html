@@ -27,7 +27,7 @@
 </ng-template>
 
 <!-- hush, eslint, we have focusable click handlers on the <button> -->
-<!-- eslint-disable @angular-eslint/template/click-events-have-key-events, @angular-eslint/template/accessibility-interactive-supports-focus -->
+<!-- eslint-disable @angular-eslint/template/click-events-have-key-events, @angular-eslint/template/interactive-supports-focus -->
 <div class="card" [ngClass]="{
     'has-changes': !!hasChanged,
     'required': !!(valueRequired && !templateOnlyMode),

@@ -61,7 +61,7 @@ export class SearchFilterGroupEntriesComponent implements OnInit {
     createQuery = () => {
         this.queryDialog.mode = 'create';
         this.queryDialog.open({size: 'lg'}).subscribe(
-            result => {
+            { next: result => {
                 if (result.notFilledOut) {
                     this.queryRequiredString.current()
                         .then(str => this.toast.danger(str));
@@ -70,11 +70,10 @@ export class SearchFilterGroupEntriesComponent implements OnInit {
                         .then(str => this.toast.success(str));
                     this.grid.reload();
                 }
-            },
-            (error: unknown) => {
+            }, error: (error: unknown) => {
                 this.createErrString.current()
                     .then(str => this.toast.danger(str));
-            }
+            } }
         );
     };
 
@@ -87,7 +86,7 @@ export class SearchFilterGroupEntriesComponent implements OnInit {
         this.queryDialog.newQueryPosition = firstRecord.pos();
         this.queryDialog.recordId = firstRecord.id();
         this.queryDialog.open({size: 'lg'}).subscribe(
-            result => {
+            { next: result => {
                 if (result.notFilledOut) {
                     this.queryRequiredString.current()
                         .then(str => this.toast.danger(str));
@@ -96,27 +95,24 @@ export class SearchFilterGroupEntriesComponent implements OnInit {
                         .then(str => this.toast.success(str));
                     this.grid.reload();
                 }
-            },
-            (error: unknown) => {
+            }, error: (error: unknown) => {
                 this.updateFailedString.current()
                     .then(str => this.toast.danger(str));
-            }
+            } }
         );
     };
 
     deleteSelected = (idlThings: IdlObject[]) => {
         idlThings.forEach(idlThing => idlThing.isdeleted(true));
         this.pcrud.autoApply(idlThings).subscribe(
-            val => {
+            { next: val => {
                 console.debug('deleted: ' + val);
                 this.deleteSuccessString.current()
                     .then(str => this.toast.success(str));
-            },
-            (err: unknown) => {
+            }, error: (err: unknown) => {
                 this.deleteFailedString.current()
                     .then(str => this.toast.danger(str));
-            },
-            ()  => this.grid.reload()
+            }, complete: ()  => this.grid.reload() }
         );
     };
 }

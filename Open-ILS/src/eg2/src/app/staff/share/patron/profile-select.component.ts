@@ -1,8 +1,6 @@
 import {Component, Input, Output, OnInit,
     EventEmitter, ViewChild, forwardRef} from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
-import {Observable, of} from 'rxjs';
-import {map} from 'rxjs/operators';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
 import {AuthService} from '@eg/core/auth.service';

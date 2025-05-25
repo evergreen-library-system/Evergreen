@@ -1,7 +1,6 @@
 /* eslint-disable no-case-declarations, no-magic-numbers */
 import {Injectable} from '@angular/core';
-import {Observable, empty, from} from 'rxjs';
-import {concatMap} from 'rxjs/operators';
+import {Observable, empty, from, concatMap} from 'rxjs';
 import {IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {OrgService} from '@eg/core/org.service';

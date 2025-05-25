@@ -14,8 +14,7 @@ import {PermService} from '@eg/core/perm.service';
 import {AuthService} from '@eg/core/auth.service';
 import {BroadcastService} from '@eg/share/util/broadcast.service';
 import {NetService} from '@eg/core/net.service';
-import {Observable, of} from 'rxjs';
-import {mergeMap} from 'rxjs/operators';
+import {Observable, of, mergeMap} from 'rxjs';
 import {StringComponent} from '@eg/share/string/string.component';
 import {EdiAttrSetProvidersDialogComponent} from './edi-attr-set-providers-dialog.component';
 import {EdiAttrSetEditDialogComponent} from './edi-attr-set-edit-dialog.component';
@@ -144,17 +143,16 @@ export class EdiAttrSetsComponent extends AdminPageComponent implements OnInit {
     showEditAttrSetDialog(successString: StringComponent, failString: StringComponent): Promise<any> {
         return new Promise((resolve, reject) => {
             this.ediAttrSetEditDialog.open({size: 'lg', scrollable: true}).subscribe(
-                result => {
+                { next: result => {
                     this.successString.current()
                         .then(str => this.toast.success(str));
                     this.grid.reload();
                     resolve(result);
-                },
-                (error: unknown) => {
+                }, error: (error: unknown) => {
                     this.updateFailedString.current()
                         .then(str => this.toast.danger(str));
                     reject(error);
-                }
+                } }
             );
         });
     }

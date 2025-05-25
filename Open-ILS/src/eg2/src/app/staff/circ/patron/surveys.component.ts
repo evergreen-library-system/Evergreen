@@ -1,16 +1,12 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
-import {Router, ActivatedRoute, ParamMap} from '@angular/router';
-import {from, empty, range} from 'rxjs';
-import {concatMap, tap, takeLast} from 'rxjs/operators';
-import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
+import {Component, Input, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
 import {IdlObject} from '@eg/core/idl.service';
 import {EventService} from '@eg/core/event.service';
 import {OrgService} from '@eg/core/org.service';
 import {NetService} from '@eg/core/net.service';
-import {PcrudService, PcrudContext} from '@eg/core/pcrud.service';
+import {PcrudService} from '@eg/core/pcrud.service';
 import {AuthService} from '@eg/core/auth.service';
 import {PatronService} from '@eg/staff/share/patron/patron.service';
-import {PatronContextService} from './patron.service';
 
 @Component({
     templateUrl: 'surveys.component.html',
@@ -43,7 +39,7 @@ export class PatronSurveyResponsesComponent implements OnInit {
             flesh: 1,
             flesh_fields: {asvr: ['survey', 'question', 'answer']}
         }).subscribe(
-            response => {
+            { next: response => {
 
                 const sid = response.survey().id();
                 const qid = response.question().id();
@@ -61,9 +57,7 @@ export class PatronSurveyResponsesComponent implements OnInit {
                     collection[sid][qid].effective_date()) {
                     collection[sid][qid] = response;
                 }
-            },
-            (err: unknown) => console.error(err),
-            () => {
+            }, error: (err: unknown) => console.error(err), complete: () => {
 
                 Object.keys(collection).forEach(sid => {
                     const oneSurvey: any = {responses: []};
@@ -73,7 +67,7 @@ export class PatronSurveyResponsesComponent implements OnInit {
                     });
                     this.surveys.push(oneSurvey);
                 });
-            }
+            } }
         );
     }
 }

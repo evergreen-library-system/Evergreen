@@ -144,7 +144,7 @@ const routes: Routes = [{
         fieldOptions: {owner: {persistKey: 'admin.stat_cat.owner' } },
         contextOrgSelectorPersistKey: 'admin.item_stat_cat.main_org_selector',
         recordLabel: $localize `Statistical Category Editor - Item`,
-        // eslint-disable-next-line max-len
+         
         deleteConfirmation: $localize `Are you sure you wish to delete the selected statistical categories?  This will also remove the affected stat cats from any item records using them.`,
         fieldOrder: 'name,owner,required,opac_visible,checkout_archive,sip_field,sip_format'}]
 }, {
@@ -175,7 +175,7 @@ const routes: Routes = [{
         fieldOptions: {owner: {persistKey: 'admin.stat_cat.owner' } },
         contextOrgSelectorPersistKey: 'admin.patron_stat_cat.main_org_selector',
         recordLabel: $localize `Statistical Category Editor - Patron`,
-        // eslint-disable-next-line max-len
+         
         deleteConfirmation: $localize `Are you sure you wish to delete the selected statistical categories?  This will also remove the affected stat cats from any patron records using them.`,
         fieldOrder: 'name,owner,required,opac_visible,usr_summary,allow_freetext,checkout_archive,sip_field,sip_format'}]
 }, {

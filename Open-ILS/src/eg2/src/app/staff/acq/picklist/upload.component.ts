@@ -579,7 +579,7 @@ export class UploadComponent implements AfterViewInit, OnDestroy {
                 }
             },
 
-            // eslint-disable-next-line rxjs/no-implicit-any-catch
+             
             (err: HttpErrorResponse) => {
                 console.error(err);
                 this.toast.danger(err.error);

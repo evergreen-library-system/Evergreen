@@ -1,6 +1,6 @@
 import {Component, OnInit, OnDestroy, QueryList, ViewChild, ViewChildren} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {Location, ViewportScroller} from '@angular/common';
+import {Router} from '@angular/router';
+import {ViewportScroller} from '@angular/common';
 import {Subscription} from 'rxjs';
 import {OrgService} from '@eg/core/org.service';
 import {AuthService} from '@eg/core/auth.service';
@@ -72,12 +72,10 @@ export class StaffNavComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.mfaAllowed = this.auth.mfaAllowed();
         this.locale.supportedLocales().subscribe(
-            l => this.locales.push(l),
-            (err: unknown) => {},
-            () => {
+            { next: l => this.locales.push(l), error: (err: unknown) => {}, complete: () => {
                 this.currentLocale = this.locales.filter(
                     l => l.code() === this.locale.currentLocaleCode())[0];
-            }
+            } }
         );
 
         // NOTE: this can eventually go away.
@@ -100,6 +98,7 @@ export class StaffNavComponent implements OnInit, OnDestroy {
 
             this.org.settings('ui.staff.disable_links_newtabs')
                 .then(settings => {
+                    // eslint-disable-next-line no-constant-binary-expression
                     this.disable_links_newtabs = Boolean(settings['ui.staff.disable_links_newtabs']) ?? false;
                     this.setNewTabsPref(this.disable_links_newtabs);
                 });

@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Observable, of} from 'rxjs';
-import {switchMap} from 'rxjs/operators';
+import {Observable, of, switchMap} from 'rxjs';
 import {NgbTimeStruct} from '@ng-bootstrap/ng-bootstrap';
 import {AuthService} from '@eg/core/auth.service';
 import {IdlObject} from '@eg/core/idl.service';

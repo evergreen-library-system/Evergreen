@@ -1,4 +1,4 @@
-/* eslint-disable eqeqeq */
+/* eslint-disable eqeqeq, @angular-eslint/no-output-on-prefix */
 import {Component, OnInit, Input, Output, EventEmitter, forwardRef} from '@angular/core';
 import {NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';

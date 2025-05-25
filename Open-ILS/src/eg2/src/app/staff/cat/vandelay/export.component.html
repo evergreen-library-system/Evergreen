@@ -1,3 +1,4 @@
+<!-- eslint-disable @angular-eslint/template/button-has-type -->
 <h2 i18n>Export Records</h2>
 
 <div class="common-form striped-even form-validated">
@@ -25,7 +26,7 @@
                     <div class="col-lg-6">
                       <input id='csv-input' type="number" class="form-control" 
                         [(ngModel)]="fieldNumber"
-                        i18n-placeholder placeholder="Starts at 0..." autofocus />
+                        i18n-placeholder placeholder="Starts at 0..." />
                     </div>
                   </div>
                   <div class="row">
@@ -50,7 +51,7 @@
                     </div>
                     <div class="col-lg-6">
                       <input id='record-id-input' type="number" 
-                        class="form-control" [(ngModel)]="recordId" autofocus/>
+                        class="form-control" [(ngModel)]="recordId"/>
                     </div>
                   </div>
                 </div>
@@ -66,7 +67,7 @@
                     </div>
                     <div class="col-lg-6">
                       <input id='bucket-id-input' type="number" 
-                        class="form-control" [(ngModel)]="bucketId" autofocus/>
+                        class="form-control" [(ngModel)]="bucketId"/>
                     </div>
                   </div>
                 </div>

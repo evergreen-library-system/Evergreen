@@ -1,14 +1,11 @@
 import {Component, Input, OnInit, ViewChild} from '@angular/core';
-import {Observable, EMPTY, from} from 'rxjs';
-import {map, tap, switchMap} from 'rxjs/operators';
-import {IdlObject} from '@eg/core/idl.service';
+import {Observable, EMPTY, from, switchMap} from 'rxjs';
 import {Pager} from '@eg/share/util/pager';
 import {NetService} from '@eg/core/net.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {OrgService} from '@eg/core/org.service';
 import {GridComponent} from '@eg/share/grid/grid.component';
-import {GridContext, GridDataSource, GridCellTextGenerator} from '@eg/share/grid/grid';
-import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
+import {GridDataSource, GridCellTextGenerator} from '@eg/share/grid/grid';
 
 
 /* Grid of bib records and associated actions. */

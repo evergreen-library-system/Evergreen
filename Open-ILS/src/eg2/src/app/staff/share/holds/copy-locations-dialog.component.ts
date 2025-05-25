@@ -7,8 +7,8 @@ import {ComboboxComponent, ComboboxEntry} from '@eg/share/combobox/combobox.comp
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {StringComponent} from '@eg/share/string/string.component';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {BehaviorSubject, Observable, Subject, of} from 'rxjs';
-import {catchError, exhaustMap, finalize, map, switchMap, tap, toArray} from 'rxjs/operators';
+import {BehaviorSubject, Observable, Subject, of, catchError, exhaustMap,
+    finalize, map, switchMap, tap, toArray} from 'rxjs';
 /**
  * Holds pull list shelving locations filter dialog:
  * select shelving locations or shelving location groups,

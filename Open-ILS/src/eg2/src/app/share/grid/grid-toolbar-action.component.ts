@@ -1,4 +1,4 @@
-import {Component, Input, Output, OnInit, Host, TemplateRef, EventEmitter} from '@angular/core';
+import {Component, Input, Output, OnInit, Host, EventEmitter} from '@angular/core';
 import {GridToolbarAction} from './grid';
 import {GridComponent} from './grid.component';
 
@@ -15,6 +15,7 @@ export class GridToolbarActionComponent implements OnInit {
     @Input() label: string;
 
     // Register to click events
+    // eslint-disable-next-line @angular-eslint/no-output-on-prefix
     @Output() onClick: EventEmitter<any []>;
 
     // When present, actions will be grouped by the provided label.

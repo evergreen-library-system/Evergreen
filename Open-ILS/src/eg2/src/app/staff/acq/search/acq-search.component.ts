@@ -1,8 +1,7 @@
 import {Component, OnInit, ViewChild, ViewChildren, QueryList, OnDestroy} from '@angular/core';
 import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
-import {Router, ActivatedRoute, ParamMap, RouterEvent, NavigationEnd} from '@angular/router';
-import {filter, takeUntil} from 'rxjs/operators';
-import {Subject} from 'rxjs';
+import {Router, ActivatedRoute, ParamMap, NavigationEnd} from '@angular/router';
+import {filter, takeUntil, Subject} from 'rxjs';
 import {AcqSearchTerm} from './acq-search.service';
 import {LineitemResultsComponent} from './lineitem-results.component';
 import {PurchaseOrderResultsComponent} from './purchase-order-results.component';

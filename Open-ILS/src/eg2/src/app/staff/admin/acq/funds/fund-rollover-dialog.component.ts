@@ -1,20 +1,15 @@
-import {Component, Input, ViewChild, TemplateRef, OnInit} from '@angular/core';
+import {Component, Input, ViewChild, OnInit} from '@angular/core';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
-import {NgForm} from '@angular/forms';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {EventService} from '@eg/core/event.service';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';
-import {GridDataSource} from '@eg/share/grid/grid';
-import {Pager} from '@eg/share/util/pager';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {StringComponent} from '@eg/share/string/string.component';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {PermService} from '@eg/core/perm.service';
 import {OrgService} from '@eg/core/org.service';
-import {Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
 import {ProgressInlineComponent} from '@eg/share/dialog/progress-inline.component';
 import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 
@@ -126,14 +121,12 @@ export class FundRolloverDialogComponent
             this.includeDescendants,
             { encumb_only : this.limitToEncumbrances }
         ).subscribe(
-            r => {
+            { next: r => {
                 rolloverResponses.push(r.fund);
                 this.count++;
                 this.amount_rolled += Number(r.rollover_amount);
                 this.encumb_rolled += Number(r.encumb_amount);
-            },
-            (err: unknown) => {},
-            () => {
+            }, error: (err: unknown) => {}, complete: () => {
                 this.isProcessing = false;
                 this.showResults = true;
                 if (!this.dryRun) {
@@ -142,7 +135,7 @@ export class FundRolloverDialogComponent
                 }
                 // note that we're intentionally not closing the dialog
                 // so that user can view the results
-            }
+            } }
         );
     }
 

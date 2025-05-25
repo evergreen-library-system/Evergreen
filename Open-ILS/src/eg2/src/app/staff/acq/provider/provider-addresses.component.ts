@@ -1,7 +1,6 @@
-/* eslint-disable @typescript-eslint/no-throw-literal */
+
 import {Component, OnInit, AfterViewInit, OnDestroy, Input, ViewChild} from '@angular/core';
-import {EMPTY, throwError, from, Subscription} from 'rxjs';
-import {map} from 'rxjs/operators';
+import {EMPTY, throwError, from, Subscription, map} from 'rxjs';
 import {Router, ActivatedRoute} from '@angular/router';
 import {Pager} from '@eg/share/util/pager';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
@@ -66,20 +65,18 @@ export class ProviderAddressesComponent implements OnInit, AfterViewInit, OnDest
         this.deleteSelected = (idlThings: IdlObject[]) => {
             idlThings.forEach(idlThing => idlThing.isdeleted(true));
             this.providerRecord.batchUpdate(idlThings).subscribe(
-                val => {
+                { next: val => {
                     console.debug('deleted: ' + val);
                     this.deleteSuccessString.current()
                         .then(str => this.toast.success(str));
-                },
-                (err: unknown) => {
+                }, error: (err: unknown) => {
                     this.deleteFailedString.current()
                         .then(str => this.toast.danger(str));
-                },
-                ()  => {
+                }, complete: ()  => {
                     this.providerRecord.refreshCurrent().then(
                         () => this.providerAddressesGrid.reload()
                     );
-                }
+                } }
             );
         };
         this.providerAddressesGrid.onRowActivate.subscribe(
@@ -181,19 +178,18 @@ export class ProviderAddressesComponent implements OnInit, AfterViewInit, OnDest
         this.editDialog.recordId = providerAddress['id']();
         return new Promise((resolve, reject) => {
             this.editDialog.open({size: this.dialogSize}).subscribe(
-                result => {
+                { next: result => {
                     this.successString.current()
                         .then(str => this.toast.success(str));
                     this.providerRecord.refreshCurrent().then(
                         () => this.providerAddressesGrid.reload()
                     );
                     resolve(result);
-                },
-                (error: unknown) => {
+                }, error: (error: unknown) => {
                     this.updateFailedString.current()
                         .then(str => this.toast.danger(str));
                     reject(error);
-                }
+                } }
             );
         });
     }
@@ -218,20 +214,18 @@ export class ProviderAddressesComponent implements OnInit, AfterViewInit, OnDest
         this.editDialog.record = address;
         this.editDialog.recordId = null;
         this.editDialog.open({size: this.dialogSize}).subscribe(
-            ok => {
+            { next: ok => {
                 this.createString.current()
                     .then(str => this.toast.success(str));
                 this.providerRecord.refreshCurrent().then(
                     () => this.providerAddressesGrid.reload()
                 );
-            },
-            // eslint-disable-next-line rxjs/no-implicit-any-catch
-            (rejection: any) => {
+            }, error: (rejection: any) => {
                 if (!rejection.dismissed) {
                     this.createErrString.current()
                         .then(str => this.toast.danger(str));
                 }
-            }
+            } }
         );
     }
 }

@@ -2,8 +2,7 @@ import {Component, HostListener, OnDestroy, OnInit} from '@angular/core';
 import {IdlObject} from '@eg/core/idl.service';
 import {StaffCatalogService} from './catalog.service';
 import {BasketService} from '@eg/share/catalog/basket.service';
-import {Subject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
+import {Subject, takeUntil} from 'rxjs';
 
 @Component({
     templateUrl: 'catalog.component.html'

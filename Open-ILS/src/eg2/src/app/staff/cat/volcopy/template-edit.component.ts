@@ -1,18 +1,12 @@
 /* eslint-disable max-len, no-prototype-builtins */
-import {Component, Input, OnInit, OnDestroy, ViewChild} from '@angular/core';
+import {Component, OnInit, OnDestroy, ViewChild} from '@angular/core';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
-import {BehaviorSubject, Subject, Observable, of, from} from 'rxjs';
-import {filter,take,tap,map,takeUntil} from 'rxjs/operators';
-import {IdlObject, IdlService} from '@eg/core/idl.service';
+import {BehaviorSubject, Subject, filter, take, takeUntil} from 'rxjs';
+import {IdlService} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
 import {AuthService} from '@eg/core/auth.service';
-import {GridComponent} from '@eg/share/grid/grid.component';
-import {GridDataSource, GridCellTextGenerator} from '@eg/share/grid/grid';
-import {GridFlatDataService} from '@eg/share/grid/grid-flat-data.service';
-import {Pager} from '@eg/share/util/pager';
 import {VolCopyContext} from './volcopy';
 import {VolCopyService} from './volcopy.service';
-import {VolCopyComponent} from './volcopy.component';
 import {CopyAttrsComponent} from './copy-attrs.component';
 
 @Component({

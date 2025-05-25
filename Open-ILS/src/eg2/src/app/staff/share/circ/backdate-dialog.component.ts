@@ -1,7 +1,5 @@
-import {Component, OnInit, Output, Input, ViewChild, EventEmitter} from '@angular/core';
-import {Observable, empty, of, from, throwError} from 'rxjs';
-import {concatMap, mergeMap, map} from 'rxjs/operators';
-import {NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
+import {Component, OnInit} from '@angular/core';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
@@ -37,9 +35,7 @@ export class BackdateDialogComponent extends DialogComponent implements OnInit {
             'open-ils.circ.post_checkin_backdate.batch',
             this.auth.token(), this.circIds, this.backdate
         ).subscribe(
-            res => this.updateCount++,
-            (err: unknown) => console.error(err),
-            ()  => this.close(this.backdate)
+            { next: res => this.updateCount++, error: (err: unknown) => console.error(err), complete: ()  => this.close(this.backdate) }
         );
     }
 }

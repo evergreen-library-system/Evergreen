@@ -110,15 +110,15 @@ export class SurveyComponent implements OnInit {
                 'open-ils.circ',
                 'open-ils.circ.survey.delete.cascade.override',
                 this.auth.token(), idToDelete
-            ).subscribe(res => {
+            ).subscribe({ next: res => {
                 this.deleteSuccessString.current()
                     .then(str => this.toast.success(str));
                 this.grid.reload();
                 return res;
-            }, (err: unknown) => {
+            }, error: (err: unknown) => {
                 this.deleteFailedString.current()
                     .then(str => this.toast.success(str));
-            });
+            } });
         }
     };
 
@@ -130,18 +130,16 @@ export class SurveyComponent implements OnInit {
         this.editDialog.mode = 'create';
         this.editDialog.datetimeFields = 'start_date,end_date';
         this.editDialog.open({size: this.dialogSize}).subscribe(
-            ok => {
+            { next: ok => {
                 this.createString.current()
                     .then(str => this.toast.success(str));
                 this.grid.reload();
-            },
-            // eslint-disable-next-line rxjs/no-implicit-any-catch
-            (rejection: any) => {
+            }, error: (rejection: any) => {
                 if (!rejection.dismissed) {
                     this.createErrString.current()
                         .then(str => this.toast.danger(str));
                 }
-            }
+            } }
         );
     };
 }

@@ -93,7 +93,7 @@ export class EdiAttrSetEditDialogComponent
         } else {
             this.attrSet.ischanged(true);
         }
-        this.pcrud.autoApply([this.attrSet]).subscribe(res => {
+        this.pcrud.autoApply([this.attrSet]).subscribe({ next: res => {
             const setId = this.mode === 'update' ? res : res.id();
             const updates: IdlObject[] = [];
             if (this.mode === 'create' || this.mode === 'clone') {
@@ -127,13 +127,11 @@ export class EdiAttrSetEditDialogComponent
                     }
                 });
             }
-            // eslint-disable-next-line rxjs/no-nested-subscribe
+            // eslint-disable-next-line rxjs-x/no-nested-subscribe
             this.pcrud.autoApply(updates).subscribe(
-                ret => this.close(true),
-                (err: unknown) => this.close(err),
-                () => this.close(true)
+                { next: ret => this.close(true), error: (err: unknown) => this.close(err), complete: () => this.close(true) }
             );
-        }, (err: unknown) => this.close(false));
+        }, error: (err: unknown) => this.close(false) });
     }
 
 }

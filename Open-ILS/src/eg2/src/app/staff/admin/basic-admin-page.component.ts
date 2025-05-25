@@ -1,8 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, ParamMap} from '@angular/router';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
-import {Observable} from 'rxjs';
-import {tap, switchMap} from 'rxjs/operators';
+import {Observable, tap, switchMap} from 'rxjs';
 
 /**
  * Generic IDL class editor page.

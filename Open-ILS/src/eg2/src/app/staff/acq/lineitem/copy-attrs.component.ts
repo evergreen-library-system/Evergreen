@@ -1,5 +1,5 @@
 import {Component, OnInit, AfterViewInit, ViewChild, Input, Output, EventEmitter} from '@angular/core';
-import {tap} from 'rxjs/operators';
+import {tap} from 'rxjs';
 import {Pager} from '@eg/share/util/pager';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';

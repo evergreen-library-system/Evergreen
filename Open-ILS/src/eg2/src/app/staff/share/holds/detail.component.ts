@@ -1,5 +1,5 @@
 import {Component, OnInit, Input, Output, ViewChild, EventEmitter} from '@angular/core';
-import {tap} from 'rxjs/operators';
+import {tap} from 'rxjs';
 import {IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {PcrudService} from '@eg/core/pcrud.service';
@@ -46,6 +46,7 @@ export class HoldDetailComponent implements OnInit {
     @Input() showRecordSummary = false;
 
     initDone: boolean;
+    // eslint-disable-next-line @angular-eslint/no-output-on-prefix
     @Output() onShowList: EventEmitter<any>;
 
     @ViewChild('noteDialog') noteDialog: HoldNoteDialogComponent;

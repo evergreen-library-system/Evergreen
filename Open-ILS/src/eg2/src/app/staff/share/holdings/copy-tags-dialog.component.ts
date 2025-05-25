@@ -1,7 +1,6 @@
-/* eslint-disable max-len */
-import { Component, Input, ViewChild } from '@angular/core';
-import { lastValueFrom, Observable, EMPTY } from 'rxjs';
-import { map, defaultIfEmpty, tap } from 'rxjs/operators';
+
+import { Component } from '@angular/core';
+import { lastValueFrom, Observable, EMPTY, map, defaultIfEmpty, tap } from 'rxjs';
 import { IdlService, IdlObject } from '@eg/core/idl.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastService } from '@eg/share/toast/toast.service';

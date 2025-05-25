@@ -1,6 +1,6 @@
-/* eslint-disable no-shadow */
+
 import {Component, OnInit, Input, EventEmitter} from '@angular/core';
-import {tap} from 'rxjs/operators';
+import {tap} from 'rxjs';
 import {OrgService} from '@eg/core/org.service';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';

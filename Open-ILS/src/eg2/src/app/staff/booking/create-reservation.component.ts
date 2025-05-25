@@ -1,8 +1,8 @@
 import { Component, OnInit, AfterViewInit, QueryList, ViewChildren, ViewChild, OnDestroy } from '@angular/core';
 import {FormGroup, FormControl, ValidationErrors, ValidatorFn, FormArray} from '@angular/forms';
 import {Router, ActivatedRoute} from '@angular/router';
-import {iif, Observable, of, throwError, timer, Subscription} from 'rxjs';
-import {catchError, debounceTime, takeLast, mapTo, single, switchMap, tap} from 'rxjs/operators';
+import {iif, Observable, of, throwError, timer, Subscription, catchError, debounceTime,
+    takeLast, mapTo, single, switchMap, tap} from 'rxjs';
 import {NgbCalendar, NgbNav} from '@ng-bootstrap/ng-bootstrap';
 import {AuthService} from '@eg/core/auth.service';
 import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
@@ -225,9 +225,11 @@ export class CreateReservationComponent implements OnInit, AfterViewInit, OnDest
 
         this.criteria.get('idealDate').valueChanges
             .pipe(switchMap((date) => this.scheduleService.hoursOfOperation(date)))
-            .subscribe((hours) => this.criteria.patchValue(hours, {emitEvent: false}),
-                () => {},
-                () => this.fetchData());
+            .subscribe({
+                next: (hours) => this.criteria.patchValue(hours, {emitEvent: false}),
+                error: () => {},
+                complete: () => this.fetchData()
+            });
 
         this.changeGranularity = ($event) => {
             this.granularity = $event.id;
@@ -301,15 +303,15 @@ export class CreateReservationComponent implements OnInit, AfterViewInit, OnDest
                     range, this.granularity);
                 return this.scheduleService.fetchReservations(range, this.resources.map(r => r.id()));
             })
-        ).subscribe((reservation) => {
+        ).subscribe({ next: (reservation) => {
             this.scheduleSource.data = this.scheduleService.addReservationToSchedule(
                 reservation,
                 this.scheduleSource.data,
                 this.granularity,
                 this.format.wsOrgTimezone
             );
-        }, (err: unknown) => {
-        }, () => {
+        }, error: (err: unknown) => {
+        }, complete: () => {
             this.cellTextGenerator = {
                 'Time': row => {
                     return this.multiday ? row['time'].format('LT') :
@@ -322,7 +324,7 @@ export class CreateReservationComponent implements OnInit, AfterViewInit, OnDest
                         row.patrons[resource.barcode()].map(reservation => reservation['patronLabel']).join(', ') : '';
                 };
             });
-        });
+        } });
     };
     // TODO: make this into cross-field validation, and don't fetch data if true
     /* eslint-disable eqeqeq */

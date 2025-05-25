@@ -2,8 +2,7 @@
  * Set and get server-stored settings.
  */
 import {Injectable,OnDestroy} from '@angular/core';
-import {Subject} from 'rxjs';
-import {tap, takeUntil} from 'rxjs/operators';
+import {Subject, tap, takeUntil} from 'rxjs';
 import {AuthService} from './auth.service';
 import {NetService} from './net.service';
 import {DbStoreService} from './db-store.service';

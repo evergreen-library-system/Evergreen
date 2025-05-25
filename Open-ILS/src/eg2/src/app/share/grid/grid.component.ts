@@ -1,6 +1,5 @@
 import {Component, Input, Output, OnInit, AfterViewInit, EventEmitter,
-    OnDestroy, ChangeDetectorRef, ViewChild, ViewEncapsulation,
-    TemplateRef} from '@angular/core';
+    OnDestroy, ChangeDetectorRef, ViewChild, ViewEncapsulation} from '@angular/core';
 import {IdlService} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
@@ -151,7 +150,9 @@ export class GridComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // These events are emitted from our grid-body component.
     // They are defined here for ease of access to the caller.
+    // eslint-disable-next-line @angular-eslint/no-output-on-prefix
     @Output() onRowActivate: EventEmitter<any>;
+    // eslint-disable-next-line @angular-eslint/no-output-on-prefix
     @Output() onRowClick: EventEmitter<any>;
 
     // Emits an array of grid row indexes on any row selection change.
@@ -252,7 +253,7 @@ export class GridComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        // eslint-disable-next-line rxjs/no-subject-unsubscribe
+        // eslint-disable-next-line rxjs-x/no-subject-unsubscribe
         this.context.rowSelector.selectionChange.unsubscribe();
         this.context.destroy();
     }

@@ -1,7 +1,6 @@
 /* eslint-disable no-unused-expressions */
 import {Component, AfterViewInit, ViewChild} from '@angular/core';
-import {Observable} from 'rxjs';
-import {map, filter} from 'rxjs/operators';
+import {Observable, map, filter} from 'rxjs';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {Pager} from '@eg/share/util/pager';
 import {IdlObject} from '@eg/core/idl.service';

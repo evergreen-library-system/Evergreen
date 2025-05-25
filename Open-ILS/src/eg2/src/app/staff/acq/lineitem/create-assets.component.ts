@@ -75,7 +75,7 @@ export class CreateAssetsComponent implements OnInit {
             this.targetPo,
             assetArgs
         ).subscribe(
-            resp => {
+            { next: resp => {
                 const evt = this.evt.parse(resp);
                 if (evt) {
                     this.creationErrors.push(evt);
@@ -87,9 +87,7 @@ export class CreateAssetsComponent implements OnInit {
                     this.creationStatus['debitsProcessed'] = resp.debits_accrued;
                     this.creationStatus['copiesProcessed'] = resp.copies;
                 }
-            },
-            (err: unknown) => {},
-            () => {
+            }, error: (err: unknown) => {}, complete: () => {
                 if (!this.creationErrors.length) {
                     this.creatingAssets = false;
                     if (this.activatePo) {
@@ -99,7 +97,7 @@ export class CreateAssetsComponent implements OnInit {
                         );
                     }
                 }
-            }
+            } }
         );
     };
 }

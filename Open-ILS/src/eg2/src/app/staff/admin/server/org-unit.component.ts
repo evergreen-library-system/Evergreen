@@ -221,16 +221,14 @@ export class OrgUnitComponent implements OnInit {
         const org = this.currentOrg();
         const hours = org.hours_of_operation();
         this.pcrud.autoApply(hours).subscribe(
-            result => {
+            { next: result => {
                 console.debug('Hours saved ', result);
                 this.editString.current()
                     .then(msg => this.toast.success(msg));
-            },
-            (error: unknown) => {
+            }, error: (error: unknown) => {
                 this.errorString.current()
                     .then(msg => this.toast.danger(msg));
-            },
-            () => this.loadAouTree(this.selected.id)
+            }, complete: () => this.loadAouTree(this.selected.id) }
         );
     }
 
@@ -265,14 +263,12 @@ export class OrgUnitComponent implements OnInit {
 
             const org = this.selected.callerData.orgUnit;
 
-            // eslint-disable-next-line rxjs/no-nested-subscribe
+            // eslint-disable-next-line rxjs-x/no-nested-subscribe
             this.pcrud.remove(org).subscribe(
-                ok2 => {},
-                (err: unknown) => {
+                { next: ok2 => {}, error: (err: unknown) => {
                     this.errorString.current()
                         .then(str => this.toast.danger(str));
-                },
-                ()  => {
+                }, complete: ()  => {
                     // Avoid updating until we know the entire
                     // pcrud action/transaction completed.
                     // After removal, select the parent org if available
@@ -281,7 +277,7 @@ export class OrgUnitComponent implements OnInit {
                         org.parent_ou() : this.org.root().id();
                     this.loadAouTree(orgId).then(_ =>
                         this.postUpdate(this.editString));
-                }
+                } }
             );
         });
     }

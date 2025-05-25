@@ -127,17 +127,15 @@ export class CurrenciesComponent extends AdminPageComponent implements OnInit {
                 this.pcrud.search('acqfdeb', { origin_currency_type: code }, { limit: 1 }, { atomic: true }),
                 this.pcrud.search('acqfs',   { currency_type: code }, { limit: 1 }, { atomic: true }),
             ]).subscribe(
-                results => {
+                { next: results => {
                     results.forEach((res) => {
                         if (res.length > 0) {
                             can = false;
                         }
                     });
-                },
-                (err: unknown) => {},
-                () => {
+                }, error: (err: unknown) => {}, complete: () => {
                     if (can) {
-                        // eslint-disable-next-line rxjs/no-nested-subscribe
+                        // eslint-disable-next-line rxjs-x/no-nested-subscribe
                         this.confirmDel.open().subscribe(confirmed => {
                             if (!confirmed) { return; }
                             super.doDelete([ rows[0] ]);
@@ -145,7 +143,7 @@ export class CurrenciesComponent extends AdminPageComponent implements OnInit {
                     } else {
                         this.alertDialog.open();
                     }
-                }
+                } }
             );
         }
     }

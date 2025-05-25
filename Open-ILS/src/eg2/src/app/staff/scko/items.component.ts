@@ -1,13 +1,11 @@
-import {Component, OnInit, ViewEncapsulation} from '@angular/core';
-import {Router, ActivatedRoute, NavigationEnd} from '@angular/router';
-import {of, from} from 'rxjs';
-import {switchMap, tap} from 'rxjs/operators';
+import {Component, OnInit} from '@angular/core';
+import {Router, ActivatedRoute} from '@angular/router';
+import {of, from, switchMap, tap} from 'rxjs';
 import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {NetService} from '@eg/core/net.service';
 import {IdlObject} from '@eg/core/idl.service';
 import {SckoService, ActionContext} from './scko.service';
-import {ServerStoreService} from '@eg/core/server-store.service';
 import {PrintService} from '@eg/share/print/print.service';
 
 @Component({

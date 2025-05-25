@@ -139,16 +139,14 @@ export class ConjoinedItemsDialogComponent
         });
 
         return this.pcrud.autoApply(maps).subscribe(
-            ok => this.numSucceeded++,
-            (err: unknown) => {
+            { next: ok => this.numSucceeded++, error: (err: unknown) => {
                 this.numFailed++;
                 console.error(err);
                 this.errorMsg.current().then(msg => this.toast.warning(msg));
-            },
-            () => {
+            }, complete: () => {
                 this.successMsg.current().then(msg => this.toast.success(msg));
                 this.close(this.numSucceeded > 0);
-            }
+            } }
         );
     }
 }

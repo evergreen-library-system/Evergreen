@@ -1,7 +1,6 @@
 import {Component, Input, OnInit, AfterViewInit, ViewChild} from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
-import {from, empty, range} from 'rxjs';
-import {concatMap, tap} from 'rxjs/operators';
+import {from, empty, range, concatMap, tap} from 'rxjs';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {EventService} from '@eg/core/event.service';
 import {OrgService} from '@eg/core/org.service';
@@ -545,11 +544,11 @@ export class BillsComponent implements OnInit, AfterViewInit {
                     xactsChanged.push(data.xactId);
                 }
             }))
-            .subscribe(null, null, () => {
+            .subscribe({ complete: () => {
                 if (xactsChanged.length > 0) {
                     this.billGrid.reload();
                 }
-            });
+            } });
     }
 
     voidBillings(rows: any[]) {
@@ -614,7 +613,7 @@ export class BillsComponent implements OnInit, AfterViewInit {
                 'open-ils.circ',
                 'open-ils.circ.money.billable_xact.adjust_to_zero',
                 this.auth.token(), xactIds
-            // eslint-disable-next-line rxjs/no-nested-subscribe
+            // eslint-disable-next-line rxjs-x/no-nested-subscribe
             ).subscribe(resp => {
                 if (!this.reportError(resp)) {
                     this.context.refreshPatron()

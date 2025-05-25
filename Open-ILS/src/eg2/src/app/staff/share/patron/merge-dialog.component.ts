@@ -1,11 +1,8 @@
-import {Component, OnInit, Input, Output, ViewChild} from '@angular/core';
-import {from} from 'rxjs';
-import {switchMap, concatMap} from 'rxjs/operators';
-import {IdlService, IdlObject} from '@eg/core/idl.service';
+import {Component, OnInit, Input} from '@angular/core';
 import {AuthService} from '@eg/core/auth.service';
 import {NetService} from '@eg/core/net.service';
 import {EventService} from '@eg/core/event.service';
-import {NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {PatronService, PatronSummary} from './patron.service';
 

@@ -14,10 +14,8 @@ import {Pager} from '@eg/share/util/pager';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {StringComponent} from '@eg/share/string/string.component';
 import {ToastService} from '@eg/share/toast/toast.service';
-import {FundTagsComponent} from './fund-tags.component';
 import {FundTransferDialogComponent} from './fund-transfer-dialog.component';
-import {map, mergeMap} from 'rxjs/operators';
-import {Observable, forkJoin, of} from 'rxjs';
+import {mergeMap, Observable, of} from 'rxjs';
 
 @Component({
     selector: 'eg-fund-details-dialog',
@@ -236,15 +234,14 @@ export class FundDetailsDialogComponent
         this.editDialog.recordId = this.fundId;
         this.editDialog.mode = 'update';
         this.editDialog.open({size: 'lg'}).subscribe(
-            result => {
+            { next: result => {
                 this.successString.current()
                     .then(str => this.toast.success(str));
                 this._initRecord();
-            },
-            (error: unknown) => {
+            }, error: (error: unknown) => {
                 this.updateFailedString.current()
                     .then(str => this.toast.danger(str));
-            }
+            } }
         );
     }
 
@@ -258,15 +255,14 @@ export class FundDetailsDialogComponent
         this.allocateToFundDialog.hiddenFieldsList = ['id', 'fund', 'allocator', 'create_time'];
         this.allocateToFundDialog.fieldOrder = 'funding_source,amount,note';
         this.allocateToFundDialog.open().subscribe(
-            result => {
+            { next: result => {
                 this.successString.current()
                     .then(str => this.toast.success(str));
                 this._initRecord();
-            },
-            (error: unknown) => {
+            }, error: (error: unknown) => {
                 this.updateFailedString.current()
                     .then(str => this.toast.danger(str));
-            }
+            } }
         );
     }
 

@@ -1,8 +1,7 @@
 import {DOCUMENT, ViewportScroller} from '@angular/common';
-import {Component, OnInit, ViewChild, HostListener,  inject, NgZone, ElementRef} from '@angular/core';
+import {Component, OnInit, ViewChild, HostListener,  inject} from '@angular/core';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
-import {BehaviorSubject, from, Observable, of} from 'rxjs';
-import {catchError, finalize, switchMap, tap, map} from 'rxjs/operators';
+import {BehaviorSubject, from, Observable, of, finalize, switchMap, tap, map} from 'rxjs';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {EventService} from '@eg/core/event.service';
 import {OrgService} from '@eg/core/org.service';

@@ -107,18 +107,16 @@ export class TermListComponent implements OnInit, AfterViewInit {
         this.editDialog.recordId = null;
         this.editDialog.record = course_module_term;
         this.editDialog.open({size: this.dialog_size}).subscribe(
-            ok => {
+            { next: ok => {
                 this.createString.current()
                     .then(str => this.toast.success(str));
                 this.grid.reload();
-            },
-            // eslint-disable-next-line rxjs/no-implicit-any-catch
-            (rejection: any) => {
+            }, error: (rejection: any) => {
                 if (!rejection.dismissed) {
                     this.createErrString.current()
                         .then(str => this.toast.danger(str));
                 }
-            }
+            } }
         );
     }
 
@@ -129,18 +127,16 @@ export class TermListComponent implements OnInit, AfterViewInit {
         fields.forEach(field => {
             this.editDialog.record = field;
             this.editDialog.open({size: this.dialog_size}).subscribe(
-                ok => {
+                { next: ok => {
                     this.createString.current()
                         .then(str => this.toast.success(str));
                     this.grid.reload();
-                },
-                // eslint-disable-next-line rxjs/no-implicit-any-catch
-                (rejection: any) => {
+                }, error: (rejection: any) => {
                     if (!rejection.dismissed) {
                         this.createErrString.current()
                             .then(str => this.toast.danger(str));
                     }
-                }
+                } }
             );
         });
     }
@@ -149,13 +145,13 @@ export class TermListComponent implements OnInit, AfterViewInit {
         console.log(this.deleteLinkedTermWarningString);
         fields.forEach(field => {
             let termHasLinkedCourses = false;
-            this.courseSvc.getTermMaps(field.id()).subscribe(map => {
+            this.courseSvc.getTermMaps(field.id()).subscribe({ next: map => {
                 if (map) {
                     termHasLinkedCourses = true;
                 }
-            }, (err: unknown) => {
+            }, error: (err: unknown) => {
                 console.error(err);
-            }, () => {
+            }, complete: () => {
                 if (termHasLinkedCourses) {
                     this.termToDelete = field.name();
                     this.deleteLinkedTermWarning.open().toPromise().then(yes => {
@@ -165,7 +161,7 @@ export class TermListComponent implements OnInit, AfterViewInit {
                 } else {
                     this.doDelete(field);
                 }
-            });
+            } });
         });
 
     }
@@ -173,16 +169,14 @@ export class TermListComponent implements OnInit, AfterViewInit {
     doDelete(idlThing: IdlObject) {
         idlThing.isdeleted(true);
         this.pcrud.autoApply(idlThing).subscribe(
-            val => {
+            { next: val => {
                 console.debug('deleted: ' + val);
                 this.deleteSuccessString.current()
                     .then(str => this.toast.success(str));
-            },
-            (err: unknown) => {
+            }, error: (err: unknown) => {
                 this.deleteFailedString.current()
                     .then(str => this.toast.danger(str));
-            },
-            ()  => this.grid.reload()
+            }, complete: ()  => this.grid.reload() }
         );
     }
 }

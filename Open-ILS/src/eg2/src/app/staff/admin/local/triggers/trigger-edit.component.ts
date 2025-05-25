@@ -146,21 +146,19 @@ export class EditEventDefinitionComponent implements OnInit {
         idlThings.forEach(idlThing => idlThing.isdeleted(true));
         let _deleted = 0;
         this.pcrud.autoApply(idlThings).subscribe(
-            val => {
+            { next: val => {
                 console.debug('deleted: ' + val);
                 this.deleteSuccessString.current()
                     .then(str => this.toast.success(str));
                 _deleted++;
-            },
-            (err: unknown) => {
+            }, error: (err: unknown) => {
                 this.deleteFailedString.current()
                     .then(str => this.toast.danger(str));
-            },
-            () => {
+            }, complete: () => {
                 if (_deleted > 0) {
                     currentGrid.reload();
                 }
-            }
+            } }
         );
     };
 
@@ -214,7 +212,7 @@ export class EditEventDefinitionComponent implements OnInit {
         this.net.request(
             'open-ils.circ', 'open-ils.circ.trigger_event_by_def_and_barcode.fire',
             this.auth.token(), this.evtDefId, barcode
-        ).subscribe(res => {
+        ).subscribe({ next: res => {
             this.testDone = true;
             if (res.ilsevent) {
                 this.eventDuringTestString.current({ ilsevent: res.ilsevent, textcode : res.textcode})
@@ -223,12 +221,12 @@ export class EditEventDefinitionComponent implements OnInit {
             } else {
                 this.testResult = res.template_output().data();
             }
-        // eslint-disable-next-line rxjs/no-implicit-any-catch
-        }, (err: any) => {
+
+        }, error: (err: any) => {
             this.testDone = true;
             this.errorDuringTestString.current().then(str => this.testErr1 = str);
             this.testErr2 = err;
-        });
+        } });
     };
 
     clearTestResults = () => {

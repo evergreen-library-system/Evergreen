@@ -2,8 +2,7 @@ import { Directive, forwardRef, Injectable } from '@angular/core';
 import { NG_ASYNC_VALIDATORS, AsyncValidator, FormControl } from '@angular/forms';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
-import {EmptyError, Observable, SequenceError, of} from 'rxjs';
-import {single, switchMap, catchError} from 'rxjs/operators';
+import {EmptyError, Observable, SequenceError, of, single, switchMap, catchError} from 'rxjs';
 
 @Injectable({providedIn: 'root'})
 export class PatronBarcodeValidator implements AsyncValidator {

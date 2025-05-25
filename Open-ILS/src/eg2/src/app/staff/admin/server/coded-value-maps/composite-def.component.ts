@@ -1,4 +1,4 @@
-/* eslint-disable rxjs/no-async-subscribe */
+
 import {Component, ViewChild, OnInit} from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 import {Tree, TreeNode} from '@eg/share/tree/tree';
@@ -156,15 +156,13 @@ export class CompositeDefComponent implements OnInit {
             }
             if (this.fetchAttrs.length > 0) {
                 this.pcrud.search('ccvm', {'-or' : this.fetchAttrs}).subscribe(
-                    data => {
+                    { next: data => {
                         this.codedValueMaps[data.id()] = data;
-                    },
-                    (err: unknown) => {
+                    }, error: (err: unknown) => {
                         console.debug(err);
-                    },
-                    () => {
+                    }, complete: () => {
                         this.createNodeLabels();
-                    }
+                    } }
                 );
             }
         }
@@ -379,22 +377,20 @@ export class CompositeDefComponent implements OnInit {
         recordToSave.definition(jsonStr);
         if (this.noSavedTreeData) {
             this.pcrud.create(recordToSave).subscribe(
-                ok => {
+                { next: ok => {
                     this.saveSuccess.current().then(str => this.toast.success(str));
                     this.noSavedTreeData = false;
-                },
-                (err: unknown) => {
+                }, error: (err: unknown) => {
                     this.saveFail.current().then(str => this.toast.danger(str));
-                }
+                } }
             );
         } else {
             this.pcrud.update(recordToSave).subscribe(
-                async (ok) => {
+                { next: async (ok) => {
                     this.saveSuccess.current().then(str => this.toast.success(str));
-                },
-                async (err: unknown) => {
+                }, error: async (err: unknown) => {
                     this.saveFail.current().then(str => this.toast.danger(str));
-                }
+                } }
             );
         }
     };

@@ -1,7 +1,6 @@
-import {Component, OnInit, ViewEncapsulation} from '@angular/core';
-import {Router, ActivatedRoute, NavigationEnd} from '@angular/router';
-import {empty} from 'rxjs';
-import {switchMap, tap} from 'rxjs/operators';
+import {Component, OnInit} from '@angular/core';
+import {Router, ActivatedRoute} from '@angular/router';
+import {empty, switchMap, tap} from 'rxjs';
 import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {NetService} from '@eg/core/net.service';

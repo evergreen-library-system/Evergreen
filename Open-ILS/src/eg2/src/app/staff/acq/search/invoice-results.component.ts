@@ -1,8 +1,5 @@
 import {Component, OnInit, Input, ViewChild} from '@angular/core';
-import {Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
-import {Router, ActivatedRoute, ParamMap} from '@angular/router';
-import {Pager} from '@eg/share/util/pager';
+import {Router, ActivatedRoute} from '@angular/router';
 import {IdlObject} from '@eg/core/idl.service';
 import {EventService} from '@eg/core/event.service';
 import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
@@ -73,22 +70,20 @@ export class InvoiceResultsComponent implements OnInit {
             'open-ils.acq.invoice.print.html',
             this.auth.token(), rows.map( invoice => invoice.id() )
         ).subscribe(
-            (res) => {
+            { next: (res) => {
                 if (this.evt.parse(res)) {
                     console.error(res);
                     this.printfail.open();
                 } else {
                     html +=  res.template_output().data();
                 }
-            },
-            (err: unknown) => {
+            }, error: (err: unknown) => {
                 console.error(err);
                 this.printfail.open();
-            },
-            () => this.printer.print({
+            }, complete: () => this.printer.print({
                 text: html,
                 printContext: 'default'
-            })
+            }) }
         );
     }
 

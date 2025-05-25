@@ -84,12 +84,12 @@ export class CourseAssociateUsersComponent extends DialogComponent implements On
                 'open-ils.actor',
                 'open-ils.actor.user.retrieve_id_by_barcode_or_username',
                 this.auth.token(), barcode.trim()
-            ).subscribe(patron => {
+            ).subscribe({ next: patron => {
                 this.course.associateUsers(patron, args)
                     .then(() => this.usersGrid.reload());
-            }, (err: unknown) => {
+            }, error: (err: unknown) => {
                 this.userAddFailedString.current().then(str => this.toast.danger(str));
-            }
+            } }
             );
         }
     }
@@ -121,17 +121,16 @@ export class CourseAssociateUsersComponent extends DialogComponent implements On
         this.editDialog.recordId = user.id();
         return new Promise((resolve, reject) => {
             this.editDialog.open({size: 'lg'}).subscribe(
-                result => {
+                { next: result => {
                     this.userEditSuccessString.current()
                         .then(str => this.toast.success(str));
                     this.usersGrid.reload();
                     resolve(result);
-                },
-                (error: unknown) => {
+                }, error: (error: unknown) => {
                     this.userEditFailedString.current()
                         .then(str => this.toast.danger(str));
                     reject(error);
-                }
+                } }
             );
         });
     }
@@ -140,17 +139,16 @@ export class CourseAssociateUsersComponent extends DialogComponent implements On
         const acmcu_ids = users.map(u => u.id());
         this.pcrud.search('acmcu', {course: this.courseId, id: acmcu_ids}).subscribe(user => {
             user.isdeleted(true);
-            // eslint-disable-next-line rxjs/no-nested-subscribe
+            // eslint-disable-next-line rxjs-x/no-nested-subscribe
             this.pcrud.autoApply(user).subscribe(
-                val => {
+                { next: val => {
                     console.debug('deleted: ' + val);
                     this.userDeleteSuccessString.current().then(str => this.toast.success(str));
                     this.usersGrid.reload();
-                },
-                (err: unknown) => {
+                }, error: (err: unknown) => {
                     this.userDeleteFailedString.current()
                         .then(str => this.toast.danger(str));
-                }
+                } }
             );
         }).add(() => this.usersGrid.reload());
     }

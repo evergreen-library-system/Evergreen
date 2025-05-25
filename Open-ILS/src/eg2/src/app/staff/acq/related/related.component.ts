@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
-import {tap} from 'rxjs/operators';
+import {tap} from 'rxjs';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {EventService} from '@eg/core/event.service';
 import {NetService} from '@eg/core/net.service';

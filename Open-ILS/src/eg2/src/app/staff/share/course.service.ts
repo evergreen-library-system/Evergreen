@@ -1,6 +1,5 @@
-/* eslint-disable rxjs/no-nested-subscribe */
-import { Observable, merge, throwError } from 'rxjs';
-import { tap, switchMap } from 'rxjs/operators';
+/* eslint-disable rxjs-x/no-nested-subscribe */
+import { Observable, merge, throwError, tap, switchMap } from 'rxjs';
 import {Injectable} from '@angular/core';
 import {AuthService} from '@eg/core/auth.service';
 import {EventService} from '@eg/core/event.service';
@@ -70,20 +69,20 @@ export class CourseService {
         return new Promise((resolve, reject) => {
 
             return this.pcrud.search('acmcm', {item: copy_id})
-                .subscribe(materials => {
+                .subscribe({ next: materials => {
                     if (materials) {
                         id_list.push(materials.course());
                     }
-                }, (err: unknown) => {
+                }, error: (err: unknown) => {
                     console.debug(err);
                     reject(err);
-                }, () => {
+                }, complete: () => {
                     if (id_list.length) {
                         return this.getCourses(id_list).then(courses => {
                             resolve(courses);
                         });
                     }
-                });
+                } });
         });
     }
 
@@ -172,21 +171,21 @@ export class CourseService {
                 course_library_hash[course.id()] = course.owning_lib();
             });
 
-            this.pcrud.search('acmcm', {course: course_ids}).subscribe(material => {
+            this.pcrud.search('acmcm', {course: course_ids}).subscribe({ next: material => {
                 deleteRequest$.push(this.net.request(
                     'open-ils.courses', 'open-ils.courses.detach_material',
                     this.auth.token(), material.id()));
-            }, (err: unknown) => {
+            }, error: (err: unknown) => {
                 reject(err);
-            }, () => {
-                merge(...deleteRequest$).subscribe(val => {
+            }, complete: () => {
+                merge(...deleteRequest$).subscribe({ next: val => {
                     console.log(val);
-                }, (err: unknown) => {
+                }, error: (err: unknown) => {
                     reject(err);
-                }, () => {
+                }, complete: () => {
                     resolve(courses);
-                });
-            });
+                } });
+            } });
         });
     }
 
@@ -209,20 +208,20 @@ export class CourseService {
                 user_ids.push(course.id());
                 course_library_hash[course.id()] = course.owning_lib();
             });
-            this.pcrud.search('acmcu', {user: user_ids}).subscribe(u => {
+            this.pcrud.search('acmcu', {user: user_ids}).subscribe({ next: u => {
                 u.course(user_ids);
-                this.pcrud.autoApply(user).subscribe(res => {
+                this.pcrud.autoApply(user).subscribe({ next: res => {
                     console.debug(res);
-                }, (err: unknown) => {
+                }, error: (err: unknown) => {
                     reject(err);
-                }, () => {
+                }, complete: () => {
                     resolve(user);
-                });
-            }, (err: unknown) => {
+                } });
+            }, error: (err: unknown) => {
                 reject(err);
-            }, () => {
+            }, complete: () => {
                 resolve(user_ids);
-            });
+            } });
         });
     }
 
@@ -230,27 +229,27 @@ export class CourseService {
         return new Promise((resolve, reject) => {
             const acmcu_ids = [];
 
-            this.getUsers([courseID]).subscribe(nonPublicUser => {
+            this.getUsers([courseID]).subscribe({ next: nonPublicUser => {
                 if(nonPublicUser && nonPublicUser.usr_role().is_public() !== 't') {acmcu_ids.push(nonPublicUser.id());}
-            }, (err: unknown) => {
+            }, error: (err: unknown) => {
                 reject(err);
-            }, () => {
+            }, complete: () => {
                 resolve(acmcu_ids);
                 if (acmcu_ids.length) {
                     this.pcrud.search('acmcu', {course: courseID, id: acmcu_ids}).subscribe(userToDelete => {
                         userToDelete.isdeleted(true);
-                        this.pcrud.autoApply(userToDelete).subscribe(val => {
+                        this.pcrud.autoApply(userToDelete).subscribe({ next: val => {
                             console.debug('deleted: ' + val);
-                        }, (err: unknown) => {
+                        }, error: (err: unknown) => {
                             console.log('Error: ' + err);
                             reject(err);
-                        }, () => {
+                        }, complete: () => {
                             console.log('Resolving');
                             resolve(userToDelete);
-                        });
+                        } });
                     });
                 }
-            });
+            } });
         });
     }
 

@@ -100,7 +100,7 @@ export class LineitemBatchCopiesComponent implements OnInit {
             this.net.request('open-ils.acq',
                 'open-ils.acq.lineitem_detail.cancel',
                 this.auth.token(), copy.id(), reason
-            // eslint-disable-next-line rxjs/no-nested-subscribe
+            // eslint-disable-next-line rxjs-x/no-nested-subscribe
             ).subscribe(ok => this.handleActionResponse(ok));
         });
     }

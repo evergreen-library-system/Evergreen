@@ -1,6 +1,4 @@
-import {Component, OnInit, Input, ViewChild} from '@angular/core';
-import {Observable, empty} from 'rxjs';
-import {switchMap, tap} from 'rxjs/operators';
+import {Component, OnInit, Input} from '@angular/core';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {EventService} from '@eg/core/event.service';
@@ -9,8 +7,7 @@ import {PcrudService} from '@eg/core/pcrud.service';
 import {AuthService} from '@eg/core/auth.service';
 import {OrgService} from '@eg/core/org.service';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
-import {NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
-import {StringComponent} from '@eg/share/string/string.component';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 /* Add/Remove Secondary Groups */
 

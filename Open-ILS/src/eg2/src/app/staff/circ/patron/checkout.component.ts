@@ -1,7 +1,6 @@
 import {Component, OnInit, AfterViewInit, ViewChild} from '@angular/core';
 import {Router} from '@angular/router';
-import {Subscription, Observable, empty, of, from} from 'rxjs';
-import {switchMap} from 'rxjs/operators';
+import {Subscription, Observable, empty, of, from, switchMap} from 'rxjs';
 import {IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
 import {PcrudService} from '@eg/core/pcrud.service';

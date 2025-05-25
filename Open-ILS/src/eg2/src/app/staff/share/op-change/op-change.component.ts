@@ -112,11 +112,11 @@ export class OpChangeComponent
         // Relay responses received for our escalated request to
         // the caller via the original request observer.
         this.net.requestCompiled(req)
-            .subscribe(
-                res => sourceReq.observer.next(res),
-                (err: unknown) => sourceReq.observer.error(err),
-                ()  => sourceReq.observer.complete()
-            ).add(() => this.auth.undoOpChange());
+            .subscribe({
+                next: res => sourceReq.observer.next(res),
+                error: (err: unknown) => sourceReq.observer.error(err),
+                complete: ()  => sourceReq.observer.complete()
+            }).add(() => this.auth.undoOpChange());
     }
 }
 

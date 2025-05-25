@@ -1,6 +1,5 @@
 import {Component, Input, ViewChild, Renderer2} from '@angular/core';
-import {Observable} from 'rxjs';
-import {switchMap, map, tap} from 'rxjs/operators';
+import {Observable, switchMap, map, tap} from 'rxjs';
 import {AuthService} from '@eg/core/auth.service';
 import {IdlObject} from '@eg/core/idl.service';
 import {EventService} from '@eg/core/event.service';
@@ -98,7 +97,7 @@ export class ReplaceBarcodeDialogComponent
                     'open-ils.cat.update_copy_barcode',
                     this.auth.token(), this.copy.id(), this.newBarcode
                 ).subscribe(
-                    (res) => {
+                    { next: (res) => {
                         if (this.evt.parse(res)) {
                             console.error('parsed error response', res);
                         } else {
@@ -107,16 +106,14 @@ export class ReplaceBarcodeDialogComponent
                             this.successMsg.current().then(m => this.toast.success(m));
                             this.getNextCopy().toPromise();
                         }
-                    },
-                    (err: unknown) => {
+                    }, error: (err: unknown) => {
                         console.error('error', err);
                         this.numFailed++;
                         console.error('Replace barcode failed: ', err);
                         this.errorMsg.current().then(m => this.toast.warning(m));
-                    },
-                    () => {
+                    }, complete: () => {
                         console.log('finis');
-                    }
+                    } }
                 );
             });
     }

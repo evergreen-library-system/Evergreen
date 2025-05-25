@@ -1,7 +1,6 @@
 import {Directive, forwardRef, Injectable} from '@angular/core';
 import {NG_ASYNC_VALIDATORS, AsyncValidator, FormControl} from '@angular/forms';
-import {of} from 'rxjs';
-import {switchMap, catchError} from 'rxjs/operators';
+import {of, switchMap, catchError} from 'rxjs';
 import {PcrudService} from '@eg/core/pcrud.service';
 
 @Injectable({providedIn: 'root'})

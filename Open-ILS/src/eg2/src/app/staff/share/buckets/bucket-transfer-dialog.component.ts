@@ -1,15 +1,9 @@
 import {Component, Input, Output, OnInit, OnDestroy, ViewChild, EventEmitter} from '@angular/core';
-import {FormGroup, FormControl, Validators} from '@angular/forms';
-// import {Router} from '@angular/router';
-import {Subscription, Observable, of} from 'rxjs';
-import {switchMap, single, startWith, tap} from 'rxjs/operators';
+import {Subscription, Observable, of, tap} from 'rxjs';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {AuthService} from '@eg/core/auth.service';
-// import {FormatService} from '@eg/core/format.service';
-import {IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {EventService} from '@eg/core/event.service';
-// import {OrgService} from '@eg/core/org.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {PatronBarcodeValidator} from '@eg/share/validators/patron_barcode_validator.directive';

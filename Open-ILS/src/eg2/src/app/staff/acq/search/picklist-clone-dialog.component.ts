@@ -50,7 +50,7 @@ export class PicklistCloneDialogComponent
           this.grid.context.getSelectedRows()[0].id(),
           this.selectionListName
       ).subscribe(
-          (res) => {
+          { next: (res) => {
               if (this.evt.parse(res)) {
                   console.error(res);
                   this.fail.open();
@@ -58,13 +58,11 @@ export class PicklistCloneDialogComponent
               } else {
                   console.debug(res);
               }
-          },
-          (err: unknown) => {
+          }, error: (err: unknown) => {
               console.error(err);
               this.fail.open();
               this.close(false);
-          },
-          () => this.close(true)
+          }, complete: () => this.close(true) }
       );
   }
 }

@@ -1,6 +1,5 @@
 import {Component, OnInit, Input, ViewChild} from '@angular/core';
-import {Observable, empty} from 'rxjs';
-import {switchMap, tap} from 'rxjs/operators';
+import {Observable, switchMap, tap} from 'rxjs';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {EventService} from '@eg/core/event.service';

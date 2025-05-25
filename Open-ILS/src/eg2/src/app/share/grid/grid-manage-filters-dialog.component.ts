@@ -7,8 +7,7 @@ import {NgForm} from '@angular/forms';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
-import {Subject, Subscription} from 'rxjs';
-import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
+import {Subject, Subscription, debounceTime, distinctUntilChanged} from 'rxjs';
 
 @Component({
     selector: 'eg-grid-manage-filters-dialog',

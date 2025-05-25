@@ -1,9 +1,8 @@
 /* eslint-disable no-case-declarations, no-magic-numbers, no-shadow */
-/* eslint-disable max-len, no-prototype-builtins */
+/* eslint-disable max-len */
 import {Component, Input, OnInit, OnDestroy, AfterViewInit, ViewChild,
     EventEmitter, Output, QueryList, ViewChildren} from '@angular/core';
-import {firstValueFrom,BehaviorSubject,Subject,Subscription,Observable} from 'rxjs';
-import {take,takeUntil,filter} from 'rxjs/operators';
+import {firstValueFrom,BehaviorSubject,Subject,Observable,take,takeUntil,filter} from 'rxjs';
 import {SafeUrl} from '@angular/platform-browser';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';

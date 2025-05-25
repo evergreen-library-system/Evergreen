@@ -25,19 +25,17 @@ export class GridPrintComponent {
         const textItems = {columns: columns, rows: []};
 
         this.gridContext.getAllRowsAsText().subscribe(
-            row => {
+            { next: row => {
                 this.progressDialog.increment();
                 textItems.rows.push(row);
-            },
-            (err: unknown) => this.progressDialog.close(),
-            ()  => {
+            }, error: (err: unknown) => this.progressDialog.close(), complete: ()  => {
                 this.progressDialog.close();
                 this.printer.print({
                     template: this.printTemplate,
                     contextData: textItems,
                     printContext: 'default'
                 });
-            }
+            } }
         );
     }
 

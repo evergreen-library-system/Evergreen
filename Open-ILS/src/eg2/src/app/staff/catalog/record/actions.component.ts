@@ -118,15 +118,14 @@ export class RecordActionsComponent implements OnInit {
     clearAddedContentCache() {
         const url = AC_CLEAR_CACHE_PATH + this.recId;
         this.http.get(url, {responseType: 'text'}).subscribe(
-            data => {
+            { next: data => {
                 console.debug(data);
                 this.strings.interpolate('catalog.record.toast.clearAddedContentCache')
                     .then(txt => this.toast.success(txt));
-            },
-            (err: unknown) => {
+            }, error: (err: unknown) => {
                 this.strings.interpolate('catalog.record.toast.clearAddedContentCacheFailed')
                     .then(txt => this.toast.danger(txt));
-            }
+            } }
         );
     }
 }

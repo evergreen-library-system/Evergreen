@@ -1,6 +1,5 @@
 import {Component, OnInit, Input, ViewChild} from '@angular/core';
-import {Observable, of} from 'rxjs';
-import {map} from 'rxjs/operators';
+import {Observable, of, map} from 'rxjs';
 import {NetService} from '@eg/core/net.service';
 import {StaffCatalogService} from '../catalog.service';
 import {Pager} from '@eg/share/util/pager';

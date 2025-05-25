@@ -48,7 +48,7 @@ export class MakeBookableDialogComponent
     }
 
     ngOnInit() {
-        // eslint-disable-next-line rxjs/no-async-subscribe
+        // eslint-disable-next-line rxjs-x/no-async-subscribe
         this.onOpenSub = this.onOpen$.subscribe(async () => {
             this.numSucceeded = 0;
             this.numFailed = 0;

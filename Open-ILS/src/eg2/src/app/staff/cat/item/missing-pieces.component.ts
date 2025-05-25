@@ -1,5 +1,5 @@
 import {Component, AfterViewInit, ViewChild} from '@angular/core';
-import {ActivatedRoute, ParamMap} from '@angular/router';
+import {ActivatedRoute} from '@angular/router';
 import {IdlObject} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {AuthService} from '@eg/core/auth.service';
@@ -154,11 +154,13 @@ export class MarkItemMissingPiecesComponent implements AfterViewInit {
 
             if (payload.circ) {
                 this.noteDialog.patronId = payload.circ.usr();
-                // eslint-disable-next-line rxjs/no-nested-subscribe
+                // eslint-disable-next-line rxjs-x/no-nested-subscribe
                 this.noteDialog.open().subscribe(
-                    penId => console.debug('Applied note ', penId),
-                    (err: unknown) => {},
-                    () => this.selectInput()
+                    {
+                        next: penId => console.debug('Applied note ', penId),
+                        error: (err: unknown) => {},
+                        complete: () => this.selectInput()
+                    }
                 );
             } else {
                 this.selectInput();

@@ -1,7 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
-import {map, concatMap} from 'rxjs/operators';
-import {from} from 'rxjs';
+import {map, concatMap, from} from 'rxjs';
 import {AuthService} from '@eg/core/auth.service';
 import {IdlService} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
@@ -92,17 +91,15 @@ export class SRReportsComponent implements OnInit {
                                     result: res,
                                     rt_id: rt_id
                                 })))
-                            // eslint-disable-next-line rxjs/no-nested-subscribe
+                            // eslint-disable-next-line rxjs-x/no-nested-subscribe
                             )).subscribe(
-                                (res) => {
+                                { next: (res) => {
                                     if (Number(res.result) === 2) {
                                         successes++;
                                     } else {
                                         failures++;
                                     }
-                                },
-                                (err: unknown) => {},
-                                () => {
+                                }, error: (err: unknown) => {}, complete: () => {
                                     if (successes === rows.length) {
                                         this.deleteSuccessString.current({ct: successes}).then(str2 => { this.toast.success(str2); });
                                     } else if (failures && !successes) {
@@ -112,7 +109,7 @@ export class SRReportsComponent implements OnInit {
                                             .then(str2 => { this.toast.warning(str2); });
                                     }
                                     this.reportsGrid.reload();
-                                }
+                                } }
                             );
                         }
                     });

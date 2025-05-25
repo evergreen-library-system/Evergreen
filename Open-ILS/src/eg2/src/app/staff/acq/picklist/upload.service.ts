@@ -1,8 +1,6 @@
 import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
-import {tap, map} from 'rxjs/operators';
+import {tap} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
-import {saveAs} from 'file-saver';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
 import {NetService} from '@eg/core/net.service';
@@ -10,7 +8,6 @@ import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {PermService} from '@eg/core/perm.service';
 import {EventService} from '@eg/core/event.service';
-import {ProgressDialogComponent} from '@eg/share/dialog/progress.component';
 import {VandelayImportSelection} from '@eg/staff/cat/vandelay/vandelay.service';
 
 

@@ -94,7 +94,7 @@ export class NotesComponent implements OnInit {
                 this.editDialog.mode = 'update';
                 this.editDialog.recordId = note.id();
                 this.editDialog.open()
-                    // eslint-disable-next-line rxjs/no-nested-subscribe
+                    // eslint-disable-next-line rxjs-x/no-nested-subscribe
                     .subscribe(ok => this.notesGrid.reload());
             }
         );
@@ -112,9 +112,7 @@ export class NotesComponent implements OnInit {
         this.deleteSelected = (notes: IdlObject[]) => {
             notes.forEach(note => note.isdeleted(true));
             this.pcrud.autoApply(notes).subscribe(
-                val => {},
-                (err: unknown) => {},
-                ()  => this.notesGrid.reload()
+                { next: val => {}, error: (err: unknown) => {}, complete: ()  => this.notesGrid.reload() }
             );
         };
 

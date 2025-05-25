@@ -14,10 +14,9 @@ import {PermService} from '@eg/core/perm.service';
 import {AuthService} from '@eg/core/auth.service';
 import {BroadcastService} from '@eg/share/util/broadcast.service';
 import {NetService} from '@eg/core/net.service';
-import {mergeMap} from 'rxjs/operators';
 import {StringComponent} from '@eg/share/string/string.component';
 import {DistributionFormulaEditDialogComponent} from './distribution-formula-edit-dialog.component';
-import {Observable, forkJoin, of} from 'rxjs';
+import {Observable, forkJoin, of, mergeMap} from 'rxjs';
 import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 
@@ -128,17 +127,15 @@ export class DistributionFormulasComponent extends AdminPageComponent implements
     showEditDistributionFormulaDialog(successString: StringComponent, failString: StringComponent): Promise<any> {
         return new Promise((resolve, reject) => {
             this.distributionFormulaEditDialog.open({size: 'xl', scrollable: true}).subscribe(
-                result => {
+                { next: result => {
                     this.successString.current()
                         .then(str => this.toast.success(str));
                     resolve(result);
-                },
-                (error: unknown) => {
+                }, error: (error: unknown) => {
                     this.updateFailedString.current()
                         .then(str => this.toast.danger(str));
                     reject(error);
-                },
-                () => this.grid.reload()
+                }, complete: () => this.grid.reload() }
             );
         });
     }
@@ -169,17 +166,15 @@ export class DistributionFormulasComponent extends AdminPageComponent implements
             forkJoin([
                 this.pcrud.search('acqdfa',  { formula: id }, { limit: 1 }, { atomic: true }),
             ]).subscribe(
-                results => {
+                { next: results => {
                     results.forEach((res) => {
                         if (res.length > 0) {
                             can = false;
                         }
                     });
-                },
-                (err: unknown) => {},
-                () => {
+                }, error: (err: unknown) => {}, complete: () => {
                     if (can) {
-                        // eslint-disable-next-line rxjs/no-nested-subscribe
+                        // eslint-disable-next-line rxjs-x/no-nested-subscribe
                         this.confirmDel.open().subscribe(confirmed => {
                             if (!confirmed) { return; }
                             super.doDelete([ rows[0] ]);
@@ -187,7 +182,7 @@ export class DistributionFormulasComponent extends AdminPageComponent implements
                     } else {
                         this.alertDialog.open();
                     }
-                }
+                } }
             );
         }
     }

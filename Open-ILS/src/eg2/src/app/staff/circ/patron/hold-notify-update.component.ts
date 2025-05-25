@@ -1,7 +1,6 @@
-import {Component, OnInit, Input, ViewChild} from '@angular/core';
-import {Observable, from, empty} from 'rxjs';
-import {filter, concatMap, switchMap, tap} from 'rxjs/operators';
-import {IdlObject, IdlService} from '@eg/core/idl.service';
+import {Component, OnInit} from '@angular/core';
+import {from, filter, concatMap} from 'rxjs';
+import {IdlService} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {EventService} from '@eg/core/event.service';
 import {ToastService} from '@eg/share/toast/toast.service';
@@ -9,8 +8,7 @@ import {PcrudService} from '@eg/core/pcrud.service';
 import {AuthService} from '@eg/core/auth.service';
 import {OrgService} from '@eg/core/org.service';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
-import {NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
-import {StringComponent} from '@eg/share/string/string.component';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 
 /* Apply notification changes to affected holds */
@@ -92,12 +90,10 @@ export class HoldNotifyUpdateDialogComponent
 
             }))
             .subscribe(
-                resp => console.log('GOT', resp),
-                (err: unknown) => console.error(err),
-                () => {
+                { next: resp => console.log('GOT', resp), error: (err: unknown) => console.error(err), complete: () => {
                     this.loading = false;
                     this.close();
-                }
+                } }
             );
     }
 }

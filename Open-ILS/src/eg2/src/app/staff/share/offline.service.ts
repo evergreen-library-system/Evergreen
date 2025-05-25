@@ -1,5 +1,4 @@
-import {from} from 'rxjs';
-import {concatMap} from 'rxjs/operators';
+import {from, concatMap} from 'rxjs';
 import {Injectable} from '@angular/core';
 import {AuthService} from '@eg/core/auth.service';
 import {EventService} from '@eg/core/event.service';

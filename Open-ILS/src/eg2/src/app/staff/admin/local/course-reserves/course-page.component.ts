@@ -56,31 +56,31 @@ export class CoursePageComponent implements OnInit {
     archiveCourse() {
         this.course.disassociateMaterials([this.currentCourse]).then(res => {
             this.currentCourse.is_archived('t');
-            this.pcrud.update(this.currentCourse).subscribe(val => {
+            this.pcrud.update(this.currentCourse).subscribe({ next: val => {
                 this.courseIsArchived = 't';
                 console.debug('archived: ' + val);
                 this.archiveSuccessString.current()
                     .then(str => this.toast.success(str));
-            }, (err: unknown) => {
+            }, error: (err: unknown) => {
                 this.archiveFailedString.current()
                     .then(str => this.toast.danger(str));
-            });
+            } });
         });
     }
 
     unarchiveCourse() {
         this.course.disassociateMaterials([this.currentCourse]).then(res => {
             this.currentCourse.is_archived('f');
-            this.pcrud.update(this.currentCourse).subscribe(val => {
+            this.pcrud.update(this.currentCourse).subscribe({ next: val => {
                 this.courseIsArchived = 'f';
                 console.debug('archived: ' + val);
                 this.course.removeNonPublicUsers(this.currentCourse.id());
                 this.unarchiveSuccessString.current()
                     .then(str => this.toast.success(str));
-            }, (err: unknown) => {
+            }, error: (err: unknown) => {
                 this.unarchiveFailedString.current()
                     .then(str => this.toast.danger(str));
-            });
+            } });
         });
     }
 

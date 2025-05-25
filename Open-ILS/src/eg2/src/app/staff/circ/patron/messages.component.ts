@@ -1,6 +1,6 @@
-import {Component, ViewChild, OnInit, OnDestroy, Input, AfterViewInit} from '@angular/core';
-import {forkJoin, Subscription, empty, EMPTY, from, lastValueFrom} from 'rxjs';
-import {defaultIfEmpty, catchError, concatMap, switchMap, tap} from 'rxjs/operators';
+import {Component, ViewChild, OnInit, OnDestroy, Input} from '@angular/core';
+import {Subscription, EMPTY, from, lastValueFrom,
+    defaultIfEmpty, catchError, concatMap, switchMap, tap} from 'rxjs';
 import {IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {OrgService} from '@eg/core/org.service';
@@ -9,14 +9,14 @@ import {AuthService} from '@eg/core/auth.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
 import {PatronService} from '@eg/staff/share/patron/patron.service';
 import {PatronContextService} from './patron.service';
-import {GridDataSource, GridColumn, GridCellTextGenerator} from '@eg/share/grid/grid';
+import {GridDataSource} from '@eg/share/grid/grid';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {Pager} from '@eg/share/util/pager';
 import {DateUtil} from '@eg/share/util/date';
 import {PatronNoteDialogComponent
 } from '@eg/staff/share/patron/note-dialog.component';
 
-// eslint-disable-next-line no-shadow
+
 enum NoteAction {
     Archive,
     Unarchive,

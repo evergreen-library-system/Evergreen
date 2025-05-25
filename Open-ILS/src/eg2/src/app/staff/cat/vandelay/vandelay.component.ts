@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Router, ActivatedRoute, NavigationEnd} from '@angular/router';
-import {take} from 'rxjs/operators';
+import {take} from 'rxjs';
 import {VandelayService} from './vandelay.service';
 import {OrgService}  from '@eg/core/org.service';
 
@@ -24,7 +24,7 @@ export class VandelayComponent implements OnInit {
         this.router.events.subscribe(routeEvent => {
             if (routeEvent instanceof NavigationEnd) {
                 this.route.firstChild.url.pipe(take(1))
-                    // eslint-disable-next-line rxjs/no-nested-subscribe
+                    // eslint-disable-next-line rxjs-x/no-nested-subscribe
                     .subscribe(segments => this.tab = segments[0].path);
             }
         });

@@ -1,14 +1,11 @@
-import {Component, OnInit, AfterViewInit, Input, Output, EventEmitter, ViewChild, ElementRef} from '@angular/core';
-import {Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
-import {Router, ActivatedRoute, ParamMap} from '@angular/router';
-import {Pager} from '@eg/share/util/pager';
+import {Component, OnInit, AfterViewInit, Output, EventEmitter, ViewChild, ElementRef} from '@angular/core';
+import {Router, ActivatedRoute} from '@angular/router';
 import {IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {GridDataSource, GridCellTextGenerator} from '@eg/share/grid/grid';
-import {AcqProviderSearchService, AcqProviderSearchTerm, AcqProviderSearch} from './acq-provider-search.service';
+import {AcqProviderSearchService, AcqProviderSearch} from './acq-provider-search.service';
 import {AcqProviderSearchFormComponent} from './acq-provider-search-form.component';
 
 @Component({

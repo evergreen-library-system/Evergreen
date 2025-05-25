@@ -1,8 +1,7 @@
 import {Component, OnInit, Input, ViewChild, ViewEncapsulation
 } from '@angular/core';
 import {Router} from '@angular/router';
-import {Observable, Observer, of, EMPTY} from 'rxjs';
-import {map, tap, concatMap} from 'rxjs/operators';
+import {Observable, Observer, of, EMPTY, map, tap, concatMap} from 'rxjs';
 import {Pager} from '@eg/share/util/pager';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {StaffCatalogService} from '../catalog.service';
@@ -587,18 +586,16 @@ export class HoldingsMaintenanceComponent implements OnInit {
                     );
                 })
             ).subscribe(
-                callNum => {
+                { next: callNum => {
                     this.appendCallNum(callNum);
                     volsFetched.push(callNum.id());
-                },
-                (err: unknown) => {},
-                ()  => {
+                }, error: (err: unknown) => {}, complete: ()  => {
                     this.refreshHoldings = false;
                     this.pruneVols(volsFetched);
                     this.fetchCircs().then(
                         ok => this.flattenHoldingsTree(observer)
                     );
-                }
+                } }
             );
         });
     }
@@ -785,11 +782,10 @@ export class HoldingsMaintenanceComponent implements OnInit {
 
             this.markDamagedDialog.copyId = ids.pop();
             return this.markDamagedDialog.open({size: 'lg'}).subscribe(
-                ok => {
+                { next: ok => {
                     if (ok) { rowsModified = true; }
                     return markNext(ids);
-                },
-                (dismiss: unknown) => markNext(ids)
+                }, error: (dismiss: unknown) => markNext(ids) }
             );
         };
 
@@ -806,13 +802,12 @@ export class HoldingsMaintenanceComponent implements OnInit {
         if (copyIds.length > 0) {
             this.markMissingDialog.copyIds = copyIds;
             this.markMissingDialog.open({}).subscribe(
-                rowsModified => {
+                { next: rowsModified => {
                     if (rowsModified) {
                         this.refreshHoldings = true;
                         this.holdingsGrid.reload();
                     }
-                },
-                (dismissed: unknown) => {} // avoid console errors
+                }, error: (dismissed: unknown) => {} } // avoid console errors
             );
         }
     }

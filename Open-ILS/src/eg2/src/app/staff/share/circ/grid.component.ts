@@ -1,6 +1,5 @@
 import {Component, OnInit, Output, Input, ViewChild, EventEmitter} from '@angular/core';
-import {Observable, empty, from} from 'rxjs';
-import {map, concat, ignoreElements, tap, concatMap} from 'rxjs/operators';
+import {Observable, empty, from, map, concatWith as concat, ignoreElements, tap, concatMap} from 'rxjs';
 import {IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
 import {NetService} from '@eg/core/net.service';
@@ -10,7 +9,7 @@ import {CheckoutParams, CheckinParams, CheckinResult,
     CircDisplayInfo, CircService} from './circ.service';
 import {ProgressDialogComponent} from '@eg/share/dialog/progress.component';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
-import {GridDataSource, GridColumn, GridCellTextGenerator,
+import {GridDataSource, GridCellTextGenerator,
     GridRowFlairEntry} from '@eg/share/grid/grid';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {Pager} from '@eg/share/util/pager';
@@ -321,20 +320,18 @@ export class CircGridComponent implements OnInit {
                     'open-ils.circ.circulation.due_date.update',
                     this.auth.token(), id, isoDate
                 );
-            // eslint-disable-next-line rxjs/no-nested-subscribe
+            // eslint-disable-next-line rxjs-x/no-nested-subscribe
             })).subscribe(
-                circ => {
+                { next: circ => {
                     const row = rows.filter(r => r.circ.id() === circ.id())[0];
                     row.circ.due_date(circ.due_date());
                     row.dueDate = circ.due_date();
                     delete row.overdue; // it will recalculate
                     dialog.increment();
-                },
-                (err: unknown)  => console.log(err),
-                ()   => {
+                }, error: (err: unknown)  => console.log(err), complete: ()   => {
                     dialog.close();
                     this.emitReloadRequest();
-                }
+                } }
             );
         });
     }
@@ -405,18 +402,16 @@ export class CircGridComponent implements OnInit {
 
         return this.circ.renewBatch(this.getCopyIds(rows))
             .subscribe(
-                result => {
+                { next: result => {
                     dialog.increment();
                     // Value can be null when dialogs are canceled
                     if (result) { refreshNeeded = true; }
-                },
-                (err: unknown) => this.reportError(err),
-                () => {
+                }, error: (err: unknown) => this.reportError(err), complete: () => {
                     dialog.close();
                     if (refreshNeeded) {
                         this.emitReloadRequest();
                     }
-                }
+                } }
             );
     }
 
@@ -431,19 +426,17 @@ export class CircGridComponent implements OnInit {
             const params: CheckoutParams = {due_date: isoDate};
 
             let refreshNeeded = false;
-            // eslint-disable-next-line rxjs/no-nested-subscribe
+            // eslint-disable-next-line rxjs-x/no-nested-subscribe
             this.circ.renewBatch(ids).subscribe(
-                resp => {
+                { next: resp => {
                     if (resp.success) { refreshNeeded = true; }
                     dialog.increment();
-                },
-                (err: unknown) => this.reportError(err),
-                () => {
+                }, error: (err: unknown) => this.reportError(err), complete: () => {
                     dialog.close();
                     if (refreshNeeded) {
                         this.emitReloadRequest();
                     }
-                }
+                } }
             );
         });
     }
@@ -458,15 +451,13 @@ export class CircGridComponent implements OnInit {
         let changesApplied = false;
         return this.circ.checkinBatch(this.getCopyIds(rows), params)
             .pipe(tap(
-                result => {
+                { next: result => {
                     if (result) { changesApplied = true; }
                     dialog.increment();
-                },
-                (err: unknown) => this.reportError(err),
-                () => {
+                }, error: (err: unknown) => this.reportError(err), complete: () => {
                     dialog.close();
                     if (changesApplied && !noReload) { this.emitReloadRequest(); }
-                }
+                } }
             ));
     }
 
@@ -481,12 +472,10 @@ export class CircGridComponent implements OnInit {
                 this.auth.token(), {barcode: barcode}
             );
         })).subscribe(
-            result => dialog.increment(),
-            (err: unknown) => this.reportError(err),
-            () => {
+            { next: result => dialog.increment(), error: (err: unknown) => this.reportError(err), complete: () => {
                 dialog.close();
                 this.emitReloadRequest();
-            }
+            } }
         );
     }
 
@@ -518,14 +507,12 @@ export class CircGridComponent implements OnInit {
 
             this.circ.checkinBatch(
                 this.getCopyIds(rows), {claims_never_checked_out: true}
-            // eslint-disable-next-line rxjs/no-nested-subscribe
+            // eslint-disable-next-line rxjs-x/no-nested-subscribe
             ).subscribe(
-                result => dialog.increment(),
-                (err: unknown) => this.reportError(err),
-                () => {
+                { next: result => dialog.increment(), error: (err: unknown) => this.reportError(err), complete: () => {
                     dialog.close();
                     this.emitReloadRequest();
-                }
+                } }
             );
         });
     }
@@ -540,15 +527,13 @@ export class CircGridComponent implements OnInit {
                 return this.addBillingDialog.open();
             }))
             .subscribe(
-                changes => {
+                { next: changes => {
                     if (changes) { changesApplied = true; }
-                },
-                (err: unknown) => this.reportError(err),
-                ()  => {
+                }, error: (err: unknown) => this.reportError(err), complete: ()  => {
                     if (changesApplied) {
                         this.emitReloadRequest();
                     }
-                }
+                } }
             );
     }
 

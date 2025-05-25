@@ -79,21 +79,17 @@ export class ConjoinedComponent implements OnInit {
             const maps = [];
             this.pcrud.search('bpbcm',
                 {target_copy: this.idsToUnlink, peer_record: this.recordId})
-                // eslint-disable-next-line rxjs/no-nested-subscribe
+                // eslint-disable-next-line rxjs-x/no-nested-subscribe
                 .subscribe(
-                    map => maps.push(map),
-                    (err: unknown) => {},
-                    () => {
-                        // eslint-disable-next-line rxjs/no-nested-subscribe
+                    { next: map => maps.push(map), error: (err: unknown) => {}, complete: () => {
+                        // eslint-disable-next-line rxjs-x/no-nested-subscribe
                         this.pcrud.remove(maps).subscribe(
-                            ok => console.debug('deleted map ', ok),
-                            (err: unknown) => console.error(err),
-                            ()  => {
+                            { next: ok => console.debug('deleted map ', ok), error: (err: unknown) => console.error(err), complete: ()  => {
                                 this.idsToUnlink = [];
                                 this.grid.reload();
-                            }
+                            } }
                         );
-                    }
+                    } }
                 );
         });
     }

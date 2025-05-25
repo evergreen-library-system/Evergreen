@@ -1,7 +1,7 @@
 import {Component, OnInit, Renderer2} from '@angular/core';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {HttpClient} from '@angular/common/http';
-import {tap} from 'rxjs/operators';
+import {tap} from 'rxjs';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';

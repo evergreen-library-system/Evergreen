@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewChild, Input, Renderer2,
     Output, EventEmitter, ViewChildren, QueryList, PipeTransform, Pipe} from '@angular/core';
-import {tap} from 'rxjs/operators';
+import {tap} from 'rxjs';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
 import {AuthService} from '@eg/core/auth.service';
@@ -461,11 +461,9 @@ export class VolEditComponent implements OnInit {
                 barcode: barcode,
                 id: {'!=': copy.id()}
             }).subscribe(
-                resp => {
+                { next: resp => {
                     if (resp) { copy._dupe_barcode = true; }
-                },
-                (err: unknown) => {},
-                () => this.emitSaveChange()
+                }, error: (err: unknown) => {}, complete: () => this.emitSaveChange() }
             );
         }
     }

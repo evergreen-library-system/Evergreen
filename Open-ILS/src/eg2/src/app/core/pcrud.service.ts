@@ -1,7 +1,6 @@
 /* eslint-disable no-shadow, no-var */
 import {Injectable} from '@angular/core';
 import {Observable, Observer} from 'rxjs';
-import {map, reduce} from 'rxjs/operators';
 import {IdlService, IdlObject} from './idl.service';
 import {NetService, NetRequest} from './net.service';
 import {AuthService} from './auth.service';
@@ -233,9 +232,7 @@ export class PcrudContext {
                 .then(() => {
 
                     mainFunc().subscribe(
-                        res => observer.next(res),
-                        (err: unknown) => observer.error(err),
-                        ()  => {
+                        { next: res => observer.next(res), error: (err: unknown) => observer.error(err), complete: ()  => {
                             this.xactClose().toPromise().then(
                                 ok => {
                                 // 5. disconnect
@@ -246,7 +243,7 @@ export class PcrudContext {
                                 // xact close error
                                 err => observer.error(err)
                             );
-                        }
+                        } }
                     );
                 });
         });
@@ -309,11 +306,11 @@ export class PcrudContext {
         this.sendRequest(
             `open-ils.pcrud.${action}.${fmObj.classname}`,
             [this.token(), fmObj]
-        ).subscribe(
-            res => this.cudObserver.next(res),
-            (err: unknown) => this.cudObserver.error(err),
-            ()  => this.nextCudRequest()
-        );
+        ).subscribe({
+            next: res => this.cudObserver.next(res),
+            error: (err: unknown) => this.cudObserver.error(err),
+            complete: ()  => this.nextCudRequest()
+        });
     }
 }
 
@@ -391,8 +388,8 @@ export class PcrudService {
                     console.debug('authoriative check function returned a value of ', enabled);
                     return enabled;
                 },
-                // eslint-disable-next-line rxjs/no-implicit-any-catch
-                error: err => {
+
+                error: (err: unknown) => {
                     PcrudService.useAuthoritative = true;
                     this.store.setLoginSessionItem(key, true);
                     console.debug('authoriative check function failed somehow, assuming TRUE');

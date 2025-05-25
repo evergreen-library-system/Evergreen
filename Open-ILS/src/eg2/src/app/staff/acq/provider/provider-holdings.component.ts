@@ -69,20 +69,18 @@ export class ProviderHoldingsComponent implements OnInit, AfterViewInit, OnDestr
         this.deleteSelected = (idlThings: IdlObject[]) => {
             idlThings.forEach(idlThing => idlThing.isdeleted(true));
             this.providerRecord.batchUpdate(idlThings).subscribe(
-                val => {
+                { next: val => {
                     console.debug('deleted: ' + val);
                     this.deleteSuccessString.current()
                         .then(str => this.toast.success(str));
-                },
-                (err: unknown) => {
+                }, error: (err: unknown) => {
                     this.deleteFailedString.current()
                         .then(str => this.toast.danger(str));
-                },
-                ()  => {
+                }, complete: ()  => {
                     this.providerRecord.refreshCurrent().then(
                         () => this.providerHoldingsGrid.reload()
                     );
-                }
+                } }
             );
         };
         this.providerHoldingsGrid.onRowActivate.subscribe(
@@ -112,19 +110,17 @@ export class ProviderHoldingsComponent implements OnInit, AfterViewInit, OnDestr
         this.provider.holding_tag(this.provider._holding_tag);
         this.provider.ischanged(true);
         this.providerRecord.batchUpdate([this.provider]).subscribe(
-            val => {
+            { next: val => {
                 this.successTagString.current()
                     .then(str => this.toast.success(str));
-            },
-            (err: unknown) => {
+            }, error: (err: unknown) => {
                 this.updateFailedTagString.current()
                     .then(str => this.toast.danger(str));
-            },
-            ()  => {
+            }, complete: ()  => {
                 this.providerRecord.refreshCurrent().then(
                     () => { this.provider = this.providerRecord.current(); }
                 );
-            }
+            } }
         );
     }
 
@@ -164,19 +160,18 @@ export class ProviderHoldingsComponent implements OnInit, AfterViewInit, OnDestr
         this.editDialog.recordId = providerHolding['id']();
         return new Promise((resolve, reject) => {
             this.editDialog.open({size: this.dialogSize}).subscribe(
-                result => {
+                { next: result => {
                     this.successString.current()
                         .then(str => this.toast.success(str));
                     this.providerRecord.refreshCurrent().then(
                         () => this.providerHoldingsGrid.reload()
                     );
                     resolve(result);
-                },
-                (error: unknown) => {
+                }, error: (error: unknown) => {
                     this.updateFailedString.current()
                         .then(str => this.toast.danger(str));
                     reject(error);
-                }
+                } }
             );
         });
     }
@@ -200,20 +195,18 @@ export class ProviderHoldingsComponent implements OnInit, AfterViewInit, OnDestr
         this.editDialog.record = holdings;
         this.editDialog.recordId = null;
         this.editDialog.open({size: this.dialogSize}).subscribe(
-            ok => {
+            { next: ok => {
                 this.createString.current()
                     .then(str => this.toast.success(str));
                 this.providerRecord.refreshCurrent().then(
                     () => this.providerHoldingsGrid.reload()
                 );
-            },
-            // eslint-disable-next-line rxjs/no-implicit-any-catch
-            (rejection: any) => {
+            }, error: (rejection: any) => {
                 if (!rejection.dismissed) {
                     this.createErrString.current()
                         .then(str => this.toast.danger(str));
                 }
-            }
+            } }
         );
     }
 

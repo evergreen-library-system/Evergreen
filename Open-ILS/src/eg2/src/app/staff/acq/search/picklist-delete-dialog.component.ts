@@ -49,7 +49,7 @@ export class PicklistDeleteDialogComponent
           observables.push( that.deleteList(r) );
       });
       forkJoin(observables).subscribe(
-          (res) => {
+          { next: (res) => {
               if (this.evt.parse(res)) {
                   console.error(res);
                   this.fail.open();
@@ -57,13 +57,11 @@ export class PicklistDeleteDialogComponent
               } else {
                   console.debug(res);
               }
-          },
-          (err: unknown) => {
+          }, error: (err: unknown) => {
               console.error(err);
               this.fail.open();
               this.close(false);
-          },
-          () => this.close(true)
+          }, complete: () => this.close(true) }
       );
   }
 }

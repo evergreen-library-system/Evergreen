@@ -217,7 +217,7 @@ export class LineitemListComponent implements OnInit, OnDestroy, OnChanges {
         });
 
         this.store.getItem('acq.lineitem.page_size'+this.persistKeySuffix).then(count => {
-            // eslint-disable-next-line no-magic-numbers
+             
             this.pager.setLimit(count || 20);
             this.store.getItem('acq.lineitem.sort_order'+this.persistKeySuffix).then(sortOrder => {
                 if (sortOrder && (sortOrder in SORT_ORDER_MAP)) {
@@ -503,7 +503,7 @@ export class LineitemListComponent implements OnInit, OnDestroy, OnChanges {
             if (_doingClientSort) {
                 const sortOrder = this.sortOrder;
                 const liService = this.liService;
-                // eslint-disable-next-line no-inner-declarations
+                 
                 function _compareLIs(a, b) {
                     const direction = sortOrder.match(/_asc$/) ? 'asc' : 'desc';
                     const field = sortOrder.replace(/_asc|_desc$/, '');

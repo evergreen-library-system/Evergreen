@@ -84,16 +84,14 @@ export class StandingPenaltyComponent implements OnInit {
         this.deleteSelected = (idlThings: IdlObject[]) => {
             idlThings.forEach(idlThing => idlThing.isdeleted(true));
             this.pcrud.autoApply(idlThings).subscribe(
-                val => {
+                { next: val => {
                     console.debug('deleted: ' + val);
                     this.deleteSuccessString.current()
                         .then(str => this.toast.success(str));
-                },
-                (err: unknown) => {
+                }, error: (err: unknown) => {
                     this.deleteFailedString.current()
                         .then(str => this.toast.danger(str));
-                },
-                ()  => this.grid.reload()
+                }, complete: ()  => this.grid.reload() }
             );
         };
 
@@ -122,17 +120,16 @@ export class StandingPenaltyComponent implements OnInit {
         this.editDialog.recordId = standingPenalty['id']();
         return new Promise((resolve, reject) => {
             this.editDialog.open({size: this.dialogSize}).subscribe(
-                result => {
+                { next: result => {
                     this.successString.current()
                         .then(str => this.toast.success(str));
                     this.grid.reload();
                     resolve(result);
-                },
-                (error: unknown) => {
+                }, error: (error: unknown) => {
                     this.updateFailedString.current()
                         .then(str => this.toast.danger(str));
                     reject(error);
-                }
+                } }
             );
         });
     }
@@ -156,18 +153,16 @@ export class StandingPenaltyComponent implements OnInit {
         this.editDialog.recordId = null;
         this.editDialog.record = null;
         this.editDialog.open({size: this.dialogSize}).subscribe(
-            ok => {
+            { next: ok => {
                 this.createString.current()
                     .then(str => this.toast.success(str));
                 this.grid.reload();
-            },
-            // eslint-disable-next-line rxjs/no-implicit-any-catch
-            (rejection: any) => {
+            }, error: (rejection: any) => {
                 if (!rejection.dismissed) {
                     this.createErrString.current()
                         .then(str => this.toast.danger(str));
                 }
-            }
+            } }
         );
     }
 

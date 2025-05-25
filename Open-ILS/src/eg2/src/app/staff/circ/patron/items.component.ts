@@ -1,6 +1,6 @@
 /* eslint-disable no-bitwise, no-magic-numbers */
 import {Component, OnInit, Input, ViewChild} from '@angular/core';
-import {tap} from 'rxjs/operators';
+import {tap} from 'rxjs';
 import {NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import {OrgService} from '@eg/core/org.service';
 import {NetService} from '@eg/core/net.service';

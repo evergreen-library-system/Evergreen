@@ -1,8 +1,7 @@
 import {Component, OnInit, AfterViewInit, ViewChild, ChangeDetectorRef, OnDestroy} from '@angular/core';
-import {filter, takeUntil} from 'rxjs/operators';
-import {Subject, Observable, of} from 'rxjs';
+import {filter, takeUntil, Subject, Observable, of} from 'rxjs';
 import {NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
-import {Router, ActivatedRoute, RouterEvent, NavigationEnd} from '@angular/router';
+import {Router, ActivatedRoute, NavigationEnd} from '@angular/router';
 import {IdlService} from '@eg/core/idl.service';
 import {AcqProviderSummaryPaneComponent} from './summary-pane.component';
 import {ProviderDetailsComponent} from './provider-details.component';
@@ -178,18 +177,16 @@ export class AcqProviderComponent implements OnInit, AfterViewInit, OnDestroy {
         this.createDialog.record = provider;
         this.createDialog.recordId = null;
         this.createDialog.open({size: 'lg'}).subscribe(
-            ok => {
+            { next: ok => {
                 this.createString.current()
                     .then(str => this.toast.success(str));
                 this.onDesireSummarize(ok.id());
-            },
-            // eslint-disable-next-line rxjs/no-implicit-any-catch
-            (rejection: any) => {
+            }, error: (rejection: any) => {
                 if (!rejection.dismissed) {
                     this.createErrString.current()
                         .then(str => this.toast.danger(str));
                 }
-            }
+            } }
         );
     }
 

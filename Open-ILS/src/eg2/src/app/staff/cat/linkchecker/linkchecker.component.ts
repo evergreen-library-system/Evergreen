@@ -204,7 +204,7 @@ export class LinkCheckerComponent implements OnInit {
                         'open-ils.url_verify.session.delete',
                         that.auth.token(),
                         id,
-                    // eslint-disable-next-line rxjs/no-nested-subscribe
+                    // eslint-disable-next-line rxjs-x/no-nested-subscribe
                     ).subscribe({
                         next: (res) => {
                             console.log('session.delete res', res);

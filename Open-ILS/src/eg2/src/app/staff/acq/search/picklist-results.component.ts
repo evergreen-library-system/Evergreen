@@ -1,8 +1,5 @@
 import {Component, OnInit, Input, ViewChild} from '@angular/core';
-import {Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
-import {Router, ActivatedRoute, ParamMap} from '@angular/router';
-import {Pager} from '@eg/share/util/pager';
+import {Router, ActivatedRoute} from '@angular/router';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {StringComponent} from '@eg/share/string/string.component';
 import {IdlObject} from '@eg/core/idl.service';

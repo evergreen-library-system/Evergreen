@@ -1,6 +1,5 @@
 import {Component, OnInit, Input, ViewChild, Renderer2} from '@angular/core';
-import {throwError} from 'rxjs';
-import {switchMap} from 'rxjs/operators';
+import {throwError, switchMap} from 'rxjs';
 import {NetService} from '@eg/core/net.service';
 import {IdlService} from '@eg/core/idl.service';
 import {EventService} from '@eg/core/event.service';
@@ -73,7 +72,7 @@ export class BucketDialogComponent extends DialogComponent implements OnInit {
                     'open-ils.actor.container.retrieve_by_class.authoritative',
                     this.auth.token(), this.auth.user().id(),
                     this.bucketClass, this.bucketType
-                // eslint-disable-next-line rxjs/no-nested-subscribe
+                // eslint-disable-next-line rxjs-x/no-nested-subscribe
                 ).subscribe(buckets => this.buckets = buckets);
             } else {
                 this.activeTabId = 2; // New Bucket tab

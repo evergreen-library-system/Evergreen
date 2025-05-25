@@ -1,8 +1,7 @@
-/* eslint-disable no-case-declarations, no-cond-assign, no-magic-numbers, no-self-assign, no-shadow */
+/* eslint-disable no-case-declarations, no-cond-assign, no-magic-numbers, no-self-assign */
 import {Component, OnInit, Input, ViewChild} from '@angular/core';
 import {Router} from '@angular/router';
-import {empty, from} from 'rxjs';
-import {concatMap, tap} from 'rxjs/operators';
+import {empty, from, concatMap, tap} from 'rxjs';
 import {OrgService} from '@eg/core/org.service';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';

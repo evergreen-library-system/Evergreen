@@ -1,6 +1,6 @@
 import {Component, OnInit, AfterViewInit, Input, Output, EventEmitter} from '@angular/core';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
-import {tap} from 'rxjs/operators';
+import {tap} from 'rxjs';
 import {Pager} from '@eg/share/util/pager';
 import {IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';

@@ -1,6 +1,5 @@
 import {Component, OnInit, AfterViewInit, OnDestroy, Input, Output, ViewChild, EventEmitter, ChangeDetectorRef} from '@angular/core';
-import {EMPTY, throwError, from, Subscription} from 'rxjs';
-import {map} from 'rxjs/operators';
+import {EMPTY, throwError, from, Subscription, map} from 'rxjs';
 import {Router, ActivatedRoute} from '@angular/router';
 import {Pager} from '@eg/share/util/pager';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
@@ -87,21 +86,19 @@ export class ProviderContactsComponent implements OnInit, AfterViewInit, OnDestr
         this.deleteSelected = (idlThings: IdlObject[]) => {
             idlThings.forEach(idlThing => idlThing.isdeleted(true));
             this.providerRecord.batchUpdate(idlThings).subscribe(
-                val => {
+                { next: val => {
                     console.debug('deleted: ' + val);
                     this.deleteSuccessString.current()
                         .then(str => this.toast.success(str));
                     this.desireSummarize.emit(this.provider.id());
-                },
-                (err: unknown) => {
+                }, error: (err: unknown) => {
                     this.deleteFailedString.current()
                         .then(str => this.toast.danger(str));
-                },
-                ()  => {
+                }, complete: ()  => {
                     this.providerRecord.refreshCurrent().then(
                         () => this.providerContactsGrid.reload()
                     );
-                }
+                } }
             );
         };
         this.providerContactsGrid.onRowActivate.subscribe(
@@ -179,7 +176,7 @@ export class ProviderContactsComponent implements OnInit, AfterViewInit, OnDestr
                 ).pipe(
                     map(res => {
                         if (this.evt.parse(res)) {
-                            // eslint-disable-next-line @typescript-eslint/no-throw-literal
+
                             throw throwError(res);
                         } else {
                             return res;
@@ -214,7 +211,7 @@ export class ProviderContactsComponent implements OnInit, AfterViewInit, OnDestr
         this.editDialog.recordId = providerContact['id']();
         return new Promise((resolve, reject) => {
             this.editDialog.open({size: this.dialogSize}).subscribe(
-                result => {
+                { next: result => {
                     this.successString.current()
                         .then(str => this.toast.success(str));
                     this.providerRecord.refreshCurrent().then(
@@ -222,12 +219,11 @@ export class ProviderContactsComponent implements OnInit, AfterViewInit, OnDestr
                     );
                     this.desireSummarize.emit(this.provider.id());
                     resolve(result);
-                },
-                (error: unknown) => {
+                }, error: (error: unknown) => {
                     this.updateFailedString.current()
                         .then(str => this.toast.danger(str));
                     reject(error);
-                }
+                } }
             );
         });
     }
@@ -251,21 +247,19 @@ export class ProviderContactsComponent implements OnInit, AfterViewInit, OnDestr
         this.editDialog.record = contact;
         this.editDialog.recordId = null;
         this.editDialog.open({size: this.dialogSize}).subscribe(
-            ok => {
+            { next: ok => {
                 this.createString.current()
                     .then(str => this.toast.success(str));
                 this.providerRecord.refreshCurrent().then(
                     () => this.providerContactsGrid.reload()
                 );
                 this.desireSummarize.emit(this.provider.id());
-            },
-            // eslint-disable-next-line rxjs/no-implicit-any-catch
-            (rejection: any) => {
+            }, error: (rejection: any) => {
                 if (!rejection.dismissed) {
                     this.createErrString.current()
                         .then(str => this.toast.danger(str));
                 }
-            }
+            } }
         );
     }
 
@@ -276,24 +270,22 @@ export class ProviderContactsComponent implements OnInit, AfterViewInit, OnDestr
             this.providerRecord.refreshCurrent().then(() => {
                 this.provider.primary_contact(providerContacts[0].id());
                 this.provider.ischanged(true);
-                // eslint-disable-next-line rxjs/no-nested-subscribe
+                // eslint-disable-next-line rxjs-x/no-nested-subscribe
                 this.providerRecord.batchUpdate(this.provider).subscribe(
-                    val => {
+                    { next: val => {
                         this.setAsPrimarySuccessString.current()
                             .then(str => this.toast.success(str));
-                    },
-                    (err: unknown) => {
+                    }, error: (err: unknown) => {
                         this.setAsPrimaryFailedString.current()
                             .then(str => this.toast.danger(str));
-                    },
-                    () => {
+                    }, complete: () => {
                         this.providerRecord.refreshCurrent().then(
                             () => {
                                 this.providerContactsGrid.reload();
                                 this.desireSummarize.emit(this.provider.id());
                             }
                         );
-                    }
+                    } }
                 );
             });
         });
@@ -306,24 +298,22 @@ export class ProviderContactsComponent implements OnInit, AfterViewInit, OnDestr
             this.providerRecord.refreshCurrent().then(() => {
                 this.provider.primary_contact(null);
                 this.provider.ischanged(true);
-                // eslint-disable-next-line rxjs/no-nested-subscribe
+                // eslint-disable-next-line rxjs-x/no-nested-subscribe
                 this.providerRecord.batchUpdate(this.provider).subscribe(
-                    val => {
+                    { next: val => {
                         this.unsetAsPrimarySuccessString.current()
                             .then(str => this.toast.success(str));
-                    },
-                    (err: unknown) => {
+                    }, error: (err: unknown) => {
                         this.unsetAsPrimaryFailedString.current()
                             .then(str => this.toast.danger(str));
-                    },
-                    () => {
+                    }, complete: () => {
                         this.providerRecord.refreshCurrent().then(
                             () => {
                                 this.providerContactsGrid.reload();
                                 this.desireSummarize.emit(this.provider.id());
                             }
                         );
-                    }
+                    } }
                 );
             });
         });

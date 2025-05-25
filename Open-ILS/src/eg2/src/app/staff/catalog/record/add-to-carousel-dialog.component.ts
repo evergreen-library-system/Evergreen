@@ -1,6 +1,6 @@
 import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {FormControl} from '@angular/forms';
-import {takeLast} from 'rxjs/operators';
+import {takeLast} from 'rxjs';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {AuthService} from '@eg/core/auth.service';
 import {NetService} from '@eg/core/net.service';
@@ -49,7 +49,7 @@ export class AddToCarouselDialogComponent extends DialogComponent implements OnI
                 'open-ils.actor',
                 'open-ils.actor.carousel.retrieve_manual_by_staff',
                 this.auth.token()
-            // eslint-disable-next-line rxjs/no-nested-subscribe
+            // eslint-disable-next-line rxjs-x/no-nested-subscribe
             ).subscribe(carousels => this.carousels = carousels);
         });
 

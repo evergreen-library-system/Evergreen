@@ -4,7 +4,7 @@
  */
 import {Injectable} from '@angular/core';
 import {IdlObject} from '@eg/core/idl.service';
-import {tap} from 'rxjs/operators';
+import {tap} from 'rxjs';
 import {NetService} from '@eg/core/net.service';
 import {AnonCacheService} from '@eg/share/util/anon-cache.service';
 import {PcrudService} from '@eg/core/pcrud.service';

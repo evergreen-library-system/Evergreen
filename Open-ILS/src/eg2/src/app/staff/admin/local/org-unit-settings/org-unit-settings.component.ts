@@ -104,9 +104,7 @@ export class OrgUnitSettingsComponent implements OnInit {
                 'coust': ['grp', 'view_perm']
             }},
             { authoritative: true }).subscribe(
-                settingTypes => this.allocateSettingTypes(settingTypes),
-                (err: unknown) => {},
-                ()  => {
+                { next: settingTypes => this.allocateSettingTypes(settingTypes), error: (err: unknown) => {}, complete: ()  => {
                     this.refreshSettings = false;
                     this.mergeSettingValues().then(
                         ok => {
@@ -115,7 +113,7 @@ export class OrgUnitSettingsComponent implements OnInit {
                             this.midFetch = false;
                         }
                     );
-                }
+                } }
             );
         });
     }
@@ -129,7 +127,7 @@ export class OrgUnitSettingsComponent implements OnInit {
                 'open-ils.actor.ou_setting.ancestor_default.batch',
                 this.contextOrg.id(), settingNames, this.auth.token()
             ).subscribe(
-                blob => {
+                { next: blob => {
                     const settingVals = Object.keys(blob).map(key => {
                         return {'name': key, 'setting': blob[key]};
                     });
@@ -156,8 +154,7 @@ export class OrgUnitSettingsComponent implements OnInit {
                         }
                     });
                     resolve(this.settingTypeArr);
-                },
-                (err: unknown) => reject(err)
+                }, error: (err: unknown) => reject(err) }
             );
         });
     }
@@ -179,7 +176,7 @@ export class OrgUnitSettingsComponent implements OnInit {
                 'open-ils.actor',
                 'open-ils.actor.org_unit.settings.history.retrieve',
                 this.auth.token(), name, this.contextOrg.id()
-            ).subscribe(res => {
+            ).subscribe({ next: res => {
                 this.currentHistory = [];
                 if (!Array.isArray(res)) {
                     res = [res];
@@ -209,7 +206,7 @@ export class OrgUnitSettingsComponent implements OnInit {
                 });
 
                 resolve(this.currentHistory);
-            }, (err: unknown) => {reject(err); });
+            }, error: (err: unknown) => {reject(err); } });
         });
     }
 

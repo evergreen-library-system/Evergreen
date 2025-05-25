@@ -55,7 +55,7 @@
         from being read after the cell contents -->
     <!-- Silencing ESLint because this (click) action has a keyboard-
          compatible equivalent elsewhere -->
-    <!-- eslint-disable @angular-eslint/template/click-events-have-key-events, @angular-eslint/template/accessibility-interactive-supports-focus -->
+     
     <td role="gridcell" *ngFor="let col of context.columnSet.displayColumns()"
       class="eg-grid-cell eg-grid-body-cell"
       [ngClass]="context.setClassNames(row, col)"
@@ -70,7 +70,7 @@
           <eg-grid-body-cell [context]="context" [row]="row" [column]="col">
           </eg-grid-body-cell>
         </div>
-    <!-- eslint-enable @angular-eslint/template/click-events-have-key-events, @angular-eslint/template/accessibility-interactive-supports-focus -->
+     
       </td>
 
       <!-- This is set to visually-hidden so its presence in a <tr> doesn't disrupt table columns -->

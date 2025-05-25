@@ -97,7 +97,7 @@ export class PartsComponent implements OnInit {
                 this.editDialog.mode = 'update';
                 this.editDialog.record = part;
                 this.editDialog.open()
-                    // eslint-disable-next-line rxjs/no-nested-subscribe
+                    // eslint-disable-next-line rxjs-x/no-nested-subscribe
                     .subscribe(ok => this.partsGrid.reload());
             }
         );

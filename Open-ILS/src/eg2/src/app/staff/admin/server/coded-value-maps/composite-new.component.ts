@@ -62,15 +62,14 @@ export class CompositeNewPointComponent implements OnInit {
         this.attrValDefs = [];
         this.pcrud.search('ccvm', {'ctype': evt.id},
             {flesh: 1, flesh_fields: {ccvm: ['composite_def', 'ctype']} }).subscribe(
-            data => {
+            { next: data => {
                 this.attrValDefs.push(data);
                 this.attrVals.push({id: data.code(), label: data.value()});
-            },
-            (err: unknown) => {
+            }, error: (err: unknown) => {
                 console.debug(err);
                 this.attrVals = [];
                 this.attrValDefs = [];
-            }
+            } }
         );
     }
 

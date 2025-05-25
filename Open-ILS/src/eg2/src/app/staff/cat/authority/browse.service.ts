@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Observable, EMPTY} from 'rxjs';
-import {map, switchMap} from 'rxjs/operators';
+import {Observable, EMPTY, map, switchMap} from 'rxjs';
 import {NetService} from '@eg/core/net.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {OrgService} from '@eg/core/org.service';

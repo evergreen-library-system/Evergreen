@@ -1,7 +1,6 @@
 /* eslint-disable max-len */
 import { Component, Input, ViewChild, TemplateRef, Optional, Inject, InjectionToken } from '@angular/core';
-import { lastValueFrom, Observable, throwError, from } from 'rxjs';
-import { tap, defaultIfEmpty, switchMap } from 'rxjs/operators';
+import { lastValueFrom, Observable, throwError, from, tap, defaultIfEmpty, switchMap } from 'rxjs';
 import { IdlService, IdlObject } from '@eg/core/idl.service';
 import { ToastService } from '@eg/share/toast/toast.service';
 import { AuthService } from '@eg/core/auth.service';

@@ -1,8 +1,7 @@
 import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {Location} from '@angular/common';
 import {Router} from '@angular/router';
-import {from} from 'rxjs';
-import {concatMap} from 'rxjs/operators';
+import {from, concatMap} from 'rxjs';
 import {IdlObject} from '@eg/core/idl.service';
 import {EventService} from '@eg/core/event.service';
 import {OrgService} from '@eg/core/org.service';
@@ -124,11 +123,13 @@ export class PatronGroupComponent implements OnInit {
                             'open-ils.actor.patron.update',
                             this.auth.token(), user
                         );
-                    // eslint-disable-next-line rxjs/no-nested-subscribe
+                    // eslint-disable-next-line rxjs-x/no-nested-subscribe
                     })).subscribe(
-                        resp2 => { if (this.evt.parse(resp2)) { allOk = false; } },
-                        (err: unknown) => console.error(err),
-                        () => { if (allOk) { this.refresh(); } }
+                        {
+                            next: resp2 => { if (this.evt.parse(resp2)) { allOk = false; } },
+                            error: (err: unknown) => console.error(err),
+                            complete: () => { if (allOk) { this.refresh(); } }
+                        }
                     );
                 });
         });
@@ -150,7 +151,7 @@ export class PatronGroupComponent implements OnInit {
                 this.auth.token(), id, true
             );
         }))
-            .subscribe(null, null, () => this.refresh());
+            .subscribe({ complete: () => this.refresh() });
     }
 
     onRowActivate(row: IdlObject) {

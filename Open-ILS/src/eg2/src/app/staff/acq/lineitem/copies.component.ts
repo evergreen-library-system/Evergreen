@@ -1,9 +1,7 @@
 import {Component, OnInit, AfterViewInit, Input, Output, EventEmitter,
     ViewChild} from '@angular/core';
-import {Router, ActivatedRoute, ParamMap} from '@angular/router';
-import {Observable, of} from 'rxjs';
-import {tap, map} from 'rxjs/operators';
-import {Pager} from '@eg/share/util/pager';
+import {ActivatedRoute, ParamMap} from '@angular/router';
+import {Observable, of, tap, map} from 'rxjs';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
 import {NetService} from '@eg/core/net.service';
@@ -282,16 +280,14 @@ export class LineitemCopiesComponent implements OnInit, AfterViewInit {
         this.progressValue = 0;
 
         this.liService.updateLiDetails(this.lineitem).subscribe(
-            struct => {
+            { next: struct => {
                 this.progressMax = struct.total;
                 this.progressValue++;
-            },
-            (err: unknown) => {},
-            () => this.load({toCache: true}).then(_ => {
+            }, error: (err: unknown) => {}, complete: () => this.load({toCache: true}).then(_ => {
                 this.liService.activateStateChange.emit(this.lineitem.id());
                 this.saving = false;
                 this.dirty = false;
-            })
+            }) }
         );
     }
 

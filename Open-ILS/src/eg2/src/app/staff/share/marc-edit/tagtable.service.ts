@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {map, tap, distinct} from 'rxjs/operators';
+import {map, tap, distinct} from 'rxjs';
 import {StoreService} from '@eg/core/store.service';
 import {IdlObject} from '@eg/core/idl.service';
 import {AuthService} from '@eg/core/auth.service';

@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
-import {tap} from 'rxjs/operators';
+import {Observable, tap} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {saveAs} from 'file-saver';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
@@ -280,15 +279,14 @@ export class VandelayService {
         saveName += '.mrc';
 
         this.http.get(url, {responseType: 'text'}).subscribe(
-            data => {
+            { next: data => {
                 saveAs(
                     new Blob([data], {type: 'application/octet-stream'}),
                     saveName
                 );
-            },
-            (err: unknown)  => {
+            }, error: (err: unknown)  => {
                 console.error(err);
-            }
+            } }
         );
     }
 

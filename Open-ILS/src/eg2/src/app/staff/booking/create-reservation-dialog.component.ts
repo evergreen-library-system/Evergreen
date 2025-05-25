@@ -1,8 +1,7 @@
 import {Component, Input, Output, OnInit, ViewChild, EventEmitter} from '@angular/core';
 import {FormGroup, FormControl, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
-import {Observable, of} from 'rxjs';
-import {switchMap, single, startWith, tap} from 'rxjs/operators';
+import {Observable, of, switchMap, single, startWith, tap} from 'rxjs';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {AuthService} from '@eg/core/auth.service';
 import {FormatService} from '@eg/core/format.service';

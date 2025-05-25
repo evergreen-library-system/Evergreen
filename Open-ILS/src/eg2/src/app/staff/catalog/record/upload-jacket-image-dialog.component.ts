@@ -91,7 +91,7 @@ export class UploadJacketImageDialogComponent extends DialogComponent implements
             });
 
             upload$.subscribe(
-                x => {
+                { next: x => {
                     console.debug('Jacket upload: ' , x);
                     if (x instanceof HttpResponse) {
                         console.debug('yay', x.body);
@@ -112,14 +112,12 @@ export class UploadJacketImageDialogComponent extends DialogComponent implements
                             default: this.errorGeneric = true; break;
                         }
                     }
-                },
-                (err: unknown) => {
+                }, error: (err: unknown) => {
                     this.uploading = false;
                     this.errorUploading = true;
                     this.errorGeneric = true;
                     console.error('jacket upload error: ' , err);
-                },
-                () => this.refreshPage()
+                }, complete: () => this.refreshPage() }
             );
         }
     }

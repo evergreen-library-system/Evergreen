@@ -1,4 +1,4 @@
-/* eslint-disable no-shadow */
+
 import {OrgService} from '@eg/core/org.service';
 import {IdlObject} from '@eg/core/idl.service';
 import {Pager} from '@eg/share/util/pager';
@@ -427,6 +427,7 @@ export class CatalogSearchContext {
      */
     reset(): void {
         this.pager.offset = 0;
+        // eslint-disable-next-line no-constant-binary-expression -- I think this is a bug, and the two sides of || should be reversed?
         this.sort = '' || this.defaultSort;
         this.showBasket = false;
         this.result = new CatalogSearchResults();

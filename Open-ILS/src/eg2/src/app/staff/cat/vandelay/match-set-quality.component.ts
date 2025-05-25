@@ -67,9 +67,11 @@ export class MatchSetQualityComponent {
 
         this.deleteSelected = (rows: any[]) => {
             this.pcrud.remove(rows).subscribe(
-                ok  => console.log('deleted ', ok),
-                (err: unknown) => console.error(err),
-                ()  => this.grid.reload()
+                {
+                    next: ok  => console.log('deleted ', ok),
+                    error: (err: unknown) => console.error(err),
+                    complete: ()  => this.grid.reload()
+                }
             );
         };
     }
@@ -90,12 +92,10 @@ export class MatchSetQualityComponent {
         }
 
         this.pcrud.create(quality).subscribe(
-            ok  => console.debug('created ', ok),
-            (err: unknown) => console.error(err),
-            ()  => {
+            { next: ok  => console.debug('created ', ok), error: (err: unknown) => console.error(err), complete: ()  => {
                 this.newPointType = null;
                 this.grid.reload();
-            }
+            } }
         );
     }
 }

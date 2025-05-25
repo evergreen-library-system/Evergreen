@@ -35,7 +35,7 @@ interface AuthLoginArgs {
     workstation?: string;
 }
 
-// eslint-disable-next-line no-shadow
+
 export enum AuthWsState {
     PENDING,
     NOT_USED,
@@ -352,8 +352,7 @@ export class AuthService {
             // NetService intercepts NO_SESSION events.
             // If the promise resolves, the session is valid.
             ).subscribe(
-                user => this.sessionPoll(),
-                (err: unknown)  => console.warn('auth poll error: ' + err)
+                { next: user => this.sessionPoll(), error: (err: unknown)  => console.warn('auth poll error: ' + err) }
             );
 
         }, pollTime);

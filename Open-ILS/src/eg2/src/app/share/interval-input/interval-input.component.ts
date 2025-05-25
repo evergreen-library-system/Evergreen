@@ -2,11 +2,8 @@
  * <eg-interval-input [(ngModel)]="interval">
  * </eg-interval-input>
  */
-import {Component, OnInit, Input, Output, ViewChild,
-    TemplateRef, EventEmitter, ElementRef, forwardRef} from '@angular/core';
+import {Component, OnInit, Input, Output, EventEmitter, forwardRef} from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
-import {Observable, of, Subject} from 'rxjs';
-import {map, tap, reduce, mergeMap, mapTo, debounceTime, distinctUntilChanged, merge, filter} from 'rxjs/operators';
 
 @Component({
     selector: 'eg-interval-input',
@@ -22,6 +19,7 @@ export class IntervalInputComponent implements ControlValueAccessor, OnInit {
     @Input() domId: string = 'eg-intv-' + Number(Math.random() * 1000);
     @Input() initialValue: string;
     @Input() disabled = false;
+    // eslint-disable-next-line @angular-eslint/no-output-on-prefix
     @Output() onChange = new EventEmitter<string>();
 
     period: string;

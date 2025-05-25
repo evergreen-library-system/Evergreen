@@ -24,6 +24,7 @@ export class GridToolbarButtonComponent implements OnInit {
     @Input() adjacentSubsequentTemplateRef: TemplateRef<any>;
 
     // Register to click events
+    // eslint-disable-next-line @angular-eslint/no-output-on-prefix
     @Output() onClick: EventEmitter<any>;
 
     // DEPRECATED: Pass a reference to a function that is called on click.

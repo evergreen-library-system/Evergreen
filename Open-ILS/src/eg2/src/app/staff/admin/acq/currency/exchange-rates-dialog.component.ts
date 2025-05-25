@@ -67,25 +67,25 @@ export class ExchangeRatesDialogComponent
         this.pcrud.search('acqexr', { from_currency: this.currencyCode }, {
             flesh: 1,
             flesh_fields: {'acqexr': ['to_currency']},
-        }, {}).subscribe(
-            exr => this.existingRatios[exr.to_currency().code()] = exr,
-            (err: unknown) => {},
-            () => this.pcrud.search('acqexr', { to_currency: this.currencyCode }, {
+        }, {}).subscribe({
+            next: exr => this.existingRatios[exr.to_currency().code()] = exr,
+            error: (err: unknown) => {},
+            complete: () => this.pcrud.search('acqexr', { to_currency: this.currencyCode }, {
                 flesh: 1,
                 flesh_fields: {'acqexr': ['from_currency']},
-            // eslint-disable-next-line rxjs/no-nested-subscribe
-            }, {}).subscribe(
-                exr => this.existingInverseRatios[exr.from_currency().code()] = exr,
-                (err: unknown) => {},
-                () =>  this.pcrud.search('acqct', { code: { '!=': this.currencyCode } },
+                // eslint-disable-next-line rxjs-x/no-nested-subscribe
+            }, {}).subscribe({
+                next: exr => this.existingInverseRatios[exr.from_currency().code()] = exr,
+                error: (err: unknown) => {},
+                complete: () =>  this.pcrud.search('acqct', { code: { '!=': this.currencyCode } },
                     { order_by: 'code ASC' }, { atomic: true })
-                    // eslint-disable-next-line rxjs/no-nested-subscribe
-                    .subscribe(
-                        currs => this.otherCurrencies = currs,
-                        (err: unknown) => {},
-                        () => { this._mergeCurrenciesAndRates(); this.doneLoading = true; }
-                    )
-            )
+                // eslint-disable-next-line rxjs-x/no-nested-subscribe
+                    .subscribe({
+                        next: currs => this.otherCurrencies = currs,
+                        error: (err: unknown) => {},
+                        complete: () => { this._mergeCurrenciesAndRates(); this.doneLoading = true; } }
+                    ) }
+            ) }
         );
     }
 

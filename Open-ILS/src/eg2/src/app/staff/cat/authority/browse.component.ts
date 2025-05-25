@@ -1,13 +1,11 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {Observable, EMPTY} from 'rxjs';
-import {map, switchMap} from 'rxjs/operators';
-import {IdlObject} from '@eg/core/idl.service';
 import {Pager} from '@eg/share/util/pager';
 import {NetService} from '@eg/core/net.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {OrgService} from '@eg/core/org.service';
 import {GridComponent} from '@eg/share/grid/grid.component';
-import {GridContext, GridDataSource, GridCellTextGenerator,
+import {GridDataSource, GridCellTextGenerator,
     GridRowFlairEntry} from '@eg/share/grid/grid';
 import {ComboboxEntry, ComboboxComponent} from '@eg/share/combobox/combobox.component';
 import {BrowseService} from './browse.service';

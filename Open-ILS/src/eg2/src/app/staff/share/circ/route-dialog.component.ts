@@ -1,6 +1,5 @@
 import {Component} from '@angular/core';
-import {of, from, Observable} from 'rxjs';
-import {concatMap} from 'rxjs/operators';
+import {of, from, Observable, concatMap} from 'rxjs';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {OrgService} from '@eg/core/org.service';
 import {CircService, CheckinResult} from './circ.service';

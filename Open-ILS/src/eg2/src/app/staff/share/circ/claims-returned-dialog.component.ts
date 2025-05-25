@@ -1,7 +1,6 @@
-import {Component, OnInit, Output, Input, ViewChild, EventEmitter} from '@angular/core';
-import {Observable, empty, of, from, throwError} from 'rxjs';
-import {concatMap, mergeMap, map} from 'rxjs/operators';
-import {NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
+import {Component, OnInit} from '@angular/core';
+import {of, from, throwError, concatMap, mergeMap} from 'rxjs';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
@@ -65,9 +64,10 @@ export class ClaimsReturnedDialogComponent
             }));
         }))
             .subscribe(
-                null,
-                (err: unknown) => console.log('Claims returned stopped with', err),
-                () => this.close(Object.keys(this.completed).length)
+                {
+                    error: (err: unknown) => console.log('Claims returned stopped with', err),
+                    complete: () => this.close(Object.keys(this.completed).length)
+                }
             );
     }
 

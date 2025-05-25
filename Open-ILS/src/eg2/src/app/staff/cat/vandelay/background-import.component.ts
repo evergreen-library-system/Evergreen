@@ -1,15 +1,13 @@
 import {Component, ViewChild} from '@angular/core';
-import {Observable, of} from 'rxjs';
-import {map} from 'rxjs/operators';
+import {map} from 'rxjs';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {Pager} from '@eg/share/util/pager';
-import {IdlObject} from '@eg/core/idl.service';
 import {EventService} from '@eg/core/event.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
 import {GridComponent} from '@eg/share/grid/grid.component';
-import {GridDataSource, GridColumn, GridCellTextGenerator} from '@eg/share/grid/grid';
+import {GridDataSource, GridCellTextGenerator} from '@eg/share/grid/grid';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 import {ProgressDialogComponent} from '@eg/share/dialog/progress.component';
 

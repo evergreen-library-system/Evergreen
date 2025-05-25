@@ -1,12 +1,12 @@
 /* eslint-disable no-shadow, @typescript-eslint/member-ordering */
 import {Component, Input, OnDestroy, OnInit, Renderer2} from '@angular/core';
-import {Observable, Subject, of, OperatorFunction} from 'rxjs';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {NgbModal, NgbTypeaheadSelectItemEvent} from '@ng-bootstrap/ng-bootstrap';
 import {FormArray, FormBuilder} from '@angular/forms';
-import {catchError, debounceTime, distinctUntilChanged, exhaustMap, map, takeUntil, tap, toArray} from 'rxjs/operators';
+import {catchError, debounceTime, distinctUntilChanged, exhaustMap, map, takeUntil, tap, toArray,
+    Observable, Subject, of, OperatorFunction} from 'rxjs';
 
 interface PermEntry { id: number; label: string; }
 

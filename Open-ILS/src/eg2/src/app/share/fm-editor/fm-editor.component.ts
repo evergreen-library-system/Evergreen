@@ -290,7 +290,7 @@ export class FmRecordEditorComponent
         this.recordLabel = this.recordLabel || this.idlDef.label;
 
         // Add some randomness to the generated DOM IDs to ensure against clobbering
-        // eslint-disable-next-line no-magic-numbers
+         
         this.idPrefix = 'fm-editor-' + Math.floor(Math.random() * 100000);
 
         if (this.isDialog()) {

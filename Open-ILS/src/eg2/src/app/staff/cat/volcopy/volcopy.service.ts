@@ -1,7 +1,6 @@
 /* eslint-disable max-len, no-prototype-builtins */
 import {Injectable, EventEmitter, OnDestroy} from '@angular/core';
-import {Subject} from 'rxjs';
-import {tap, takeUntil} from 'rxjs/operators';
+import {Subject, tap, takeUntil} from 'rxjs';
 import {SafeUrl} from '@angular/platform-browser';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
@@ -509,7 +508,7 @@ export class VolCopyService implements OnDestroy {
         this.pcrud.search('bmp',
             {record: recordIds, deleted: 'f'})
             .subscribe(
-                part => {
+                { next: part => {
                     const updatedBibParts =  {...this.bibParts};
                     if (!updatedBibParts[part.record()]) {
                         updatedBibParts[part.record()] = [];
@@ -518,9 +517,7 @@ export class VolCopyService implements OnDestroy {
                         updatedBibParts[part.record()].push(part);
                     }
                     this.bibParts = updatedBibParts;
-                },
-                (err: unknown) => {},
-                () => {
+                }, error: (err: unknown) => {}, complete: () => {
                     const finalBibParts = {...this.bibParts};
                     recordIds.forEach(bibId => {
                         if (finalBibParts[bibId]) {
@@ -530,7 +527,7 @@ export class VolCopyService implements OnDestroy {
                         }
                     });
                     this.bibParts = finalBibParts;
-                }
+                } }
             );
     }
 

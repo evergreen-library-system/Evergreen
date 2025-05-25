@@ -1,8 +1,7 @@
 import {Component, Input, Output, OnInit, AfterViewInit,
     EventEmitter, ViewChild} from '@angular/core';
 import {ActivatedRoute, ParamMap} from '@angular/router';
-import {Observable, of, from} from 'rxjs';
-import {map, concatMap} from 'rxjs/operators';
+import {Observable, of, from, map, concatMap} from 'rxjs';
 import {IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';

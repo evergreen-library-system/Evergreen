@@ -85,7 +85,7 @@ export class AdminStaffPortalPageComponent extends AdminPageComponent implements
             EMPTY;
         const newObs = this.pcrud.search('cusppe', { owner: src }, {}, {});
         merge(delObs, newObs).subscribe(
-            entry => {
+            { next: entry => {
                 if (entry.owner() === tgt) {
                     entry.isdeleted(true);
                 } else {
@@ -94,22 +94,19 @@ export class AdminStaffPortalPageComponent extends AdminPageComponent implements
                     entry.isnew(true);
                 }
                 updates.push(entry);
-            },
-            (err: unknown) => {},
+            }, error: (err: unknown) => {} },
         ).add(() => {
             this.pcrud.autoApply(updates).subscribe(
-                val => {},
-                (err: unknown) => {
+                { next: val => {}, error: (err: unknown) => {
                     this.cloneFailedString.current()
                         .then(str => this.toast.danger(str));
-                },
-                () => {
+                }, complete: () => {
                     this.cloneSuccessString.current()
                         .then(str => this.toast.success(str));
                     this.searchOrgs = {primaryOrgId: tgt}; // change the org filter to the
                     // the one we just cloned into
                     this.grid.reload();
-                }
+                } }
             );
         });
     }

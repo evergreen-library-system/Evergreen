@@ -1,9 +1,8 @@
 import {Component, OnInit, ViewChild, OnDestroy} from '@angular/core';
 import {FormGroup, FormControl} from '@angular/forms';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
-import {Subscription, of} from 'rxjs';
-import {debounceTime, single, tap, switchMap} from 'rxjs/operators';
-import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
+import {Subscription, of, debounceTime, single, tap, switchMap} from 'rxjs';
+import {NgbNav} from '@ng-bootstrap/ng-bootstrap';
 import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {ReservationsGridComponent} from './reservations-grid.component';
@@ -134,21 +133,20 @@ export class ManageReservationsComponent implements OnInit, OnDestroy {
                         flesh: 1,
                         flesh_fields: {'au': ['card']}
                     }).pipe(tap(
-                        (resp) => {
+                        { next: (resp) => {
                             this.filters.patchValue({patronBarcode: resp.card().barcode()});
-                        },
-                        (err: unknown) => { console.debug(err); }
+                        }, error: (err: unknown) => { console.debug(err); } }
                     ));
                 } else if (this.resourceBarcode.value) {
                     this.startingTab = 'resource';
                     return this.pcrud.search('brsrc',
                         {'barcode' : this.resourceBarcode.value}, {'limit': 1}).pipe(
-                        tap((res) => {
+                        tap({ next: (res) => {
                             this.resourceId = res.id();
-                        }, (err: unknown) => {
+                        }, error: (err: unknown) => {
                             this.resourceId = -1;
                             this.toast.danger('No resource found with this barcode');
-                        }));
+                        } }));
                 } else if (this.resourceType.value) {
                     this.startingTab = 'type';
                     return of(null);

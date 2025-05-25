@@ -1,4 +1,4 @@
-/* eslint-disable */
+
 import {NgModule} from '@angular/core';
 import {TreeModule} from '@eg/share/tree/tree.module';
 import {CircMatrixMatchpointRoutingModule} from './routing.module';

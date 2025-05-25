@@ -1,7 +1,6 @@
 import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
-import {zip, of, firstValueFrom, lastValueFrom, EMPTY} from 'rxjs';
-import {take, tap, map, switchMap, catchError} from 'rxjs/operators';
+import {firstValueFrom, lastValueFrom, EMPTY, take, map, switchMap, catchError} from 'rxjs';
 import {AuthService} from '@eg/core/auth.service';
 import {StoreService} from '@eg/core/store.service';
 import {IdlObject,IdlService} from '@eg/core/idl.service';

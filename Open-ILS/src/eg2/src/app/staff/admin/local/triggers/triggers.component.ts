@@ -218,16 +218,15 @@ export class TriggersComponent implements OnInit {
         const currentGrid = this.lookUpIdl(idl).currentGrid;
         idlThings.forEach(idlThing => idlThing.isdeleted(true));
         this.pcrud.autoApply(idlThings).subscribe(
-            val => {
+            { next: val => {
                 console.debug('deleted: ' + val);
                 this.deleteSuccessString.current()
                     .then(str => this.toast.success(str));
                 currentGrid.reload();
-            },
-            (err: unknown) => {
+            }, error: (err: unknown) => {
                 this.deleteFailedString.current()
                     .then(str => this.toast.danger(str));
-            }
+            } }
         );
     };
 
@@ -258,7 +257,7 @@ export class TriggersComponent implements OnInit {
         this.eventDialog.recordId = null;
         this.eventDialog.record = eventDef;
         this.eventDialog.open({size: 'lg'}).subscribe(
-            response => {
+            { next: response => {
                 this.cloneSuccessString.current()
                     .then(str => this.toast.success(str));
                 this.eventsGrid.reload();
@@ -266,14 +265,12 @@ export class TriggersComponent implements OnInit {
                 if (env_list.length) {
                     this.cloneEnvs(response.id(), env_list);
                 }
-            },
-            // eslint-disable-next-line rxjs/no-implicit-any-catch
-            (rejection: any) => {
+            }, error: (rejection: any) => {
                 if (!rejection.dismissed) {
                     this.cloneFailedString.current()
                         .then(str => this.toast.danger(str));
                 }
-            }
+            } }
         );
     }
 

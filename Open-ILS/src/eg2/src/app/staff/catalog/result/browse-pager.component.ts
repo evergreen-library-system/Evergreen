@@ -1,11 +1,8 @@
-import {Component, OnInit, OnDestroy, Input} from '@angular/core';
-import {Observable, Subscription} from 'rxjs';
-import {tap, map, switchMap, distinctUntilChanged} from 'rxjs/operators';
+import {Component, OnInit} from '@angular/core';
+import {tap} from 'rxjs';
 import {CatalogService} from '@eg/share/catalog/catalog.service';
-import {CatalogSearchContext, CatalogSearchState} from '@eg/share/catalog/search-context';
+import {CatalogSearchContext} from '@eg/share/catalog/search-context';
 import {StaffCatalogService} from '../catalog.service';
-import {IdlObject} from '@eg/core/idl.service';
-import {BasketService} from '@eg/share/catalog/basket.service';
 
 interface BrowsePage {
     leftPivot: number;

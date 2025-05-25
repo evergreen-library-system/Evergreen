@@ -1,6 +1,4 @@
-import {Component, OnInit, Input, ViewChild} from '@angular/core';
-import {Observable} from 'rxjs';
-import {switchMap} from 'rxjs/operators';
+import {Component, OnInit, Input} from '@angular/core';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {EventService} from '@eg/core/event.service';
@@ -10,10 +8,8 @@ import {AuthService} from '@eg/core/auth.service';
 import {OrgService} from '@eg/core/org.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
-import {NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
-import {StringComponent} from '@eg/share/string/string.component';
-import {ComboboxEntry, ComboboxComponent} from '@eg/share/combobox/combobox.component';
-import {BillingService, CreditCardPaymentParams} from './billing.service';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {CreditCardPaymentParams} from './billing.service';
 
 /* Dialog for collecting credit card payment information */
 

@@ -80,22 +80,20 @@ export class ProviderEdiAccountsComponent implements OnInit, AfterViewInit, OnDe
         this.deleteSelected = (idlThings: IdlObject[]) => {
             idlThings.forEach(idlThing => idlThing.isdeleted(true));
             this.providerRecord.batchUpdate(idlThings).subscribe(
-                val => {
+                { next: val => {
                     console.debug('deleted: ' + val);
                     this.deleteSuccessString.current()
                         .then(str => this.toast.success(str));
-                },
-                (err: unknown) => {
+                }, error: (err: unknown) => {
                     this.deleteFailedString.current()
                         .then(str => this.toast.danger(str));
-                },
-                ()  => {
+                }, complete: ()  => {
                     this.providerRecord.refreshCurrent().then(
                         () => {
                             this.providerEdiAccountsGrid.reload();
                         }
                     );
-                }
+                } }
             );
         };
         this.providerEdiAccountsGrid.onRowActivate.subscribe(
@@ -185,19 +183,18 @@ export class ProviderEdiAccountsComponent implements OnInit, AfterViewInit, OnDe
         this.editDialog.recordId = providerEdiAccount['id']();
         return new Promise((resolve, reject) => {
             this.editDialog.open({size: this.dialogSize}).subscribe(
-                result => {
+                { next: result => {
                     this.successString.current()
                         .then(str => this.toast.success(str));
                     this.providerRecord.refreshCurrent().then(
                         () => this.providerEdiAccountsGrid.reload()
                     );
                     resolve(result);
-                },
-                (error: unknown) => {
+                }, error: (error: unknown) => {
                     this.updateFailedString.current()
                         .then(str => this.toast.danger(str));
                     reject(error);
-                }
+                } }
             );
         });
     }
@@ -221,24 +218,22 @@ export class ProviderEdiAccountsComponent implements OnInit, AfterViewInit, OnDe
             this.providerRecord.refreshCurrent().then(() => {
                 this.provider.edi_default(providerEdiAccountFields[0].id());
                 this.provider.ischanged(true);
-                // eslint-disable-next-line rxjs/no-nested-subscribe
+                // eslint-disable-next-line rxjs-x/no-nested-subscribe
                 this.providerRecord.batchUpdate(this.provider).subscribe(
-                    val => {
+                    { next: val => {
                         this.setAsDefaultSuccessString.current()
                             .then(str => this.toast.success(str));
-                    },
-                    (err: unknown) => {
+                    }, error: (err: unknown) => {
                         this.setAsDefaultFailedString.current()
                             .then(str => this.toast.danger(str));
-                    },
-                    () => {
+                    }, complete: () => {
                         this.providerRecord.refreshCurrent().then(
                             () => {
                                 this.providerEdiAccountsGrid.reload();
                                 this.desireSummarize.emit(this.provider.id());
                             }
                         );
-                    }
+                    } }
                 );
             });
         });
@@ -261,20 +256,18 @@ export class ProviderEdiAccountsComponent implements OnInit, AfterViewInit, OnDe
         this.editDialog.record = edi_account;
         this.editDialog.recordId = null;
         this.editDialog.open({size: this.dialogSize}).subscribe(
-            ok => {
+            { next: ok => {
                 this.createString.current()
                     .then(str => this.toast.success(str));
                 this.providerRecord.refreshCurrent().then(
                     () => this.providerEdiAccountsGrid.reload()
                 );
-            },
-            // eslint-disable-next-line rxjs/no-implicit-any-catch
-            (rejection: any) => {
+            }, error: (rejection: any) => {
                 if (!rejection.dismissed) {
                     this.createErrString.current()
                         .then(str => this.toast.danger(str));
                 }
-            }
+            } }
         );
     }
 

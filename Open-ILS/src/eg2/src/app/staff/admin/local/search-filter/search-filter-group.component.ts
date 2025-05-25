@@ -68,18 +68,16 @@ export class SearchFilterGroupComponent extends AdminPageComponent implements On
         this.editDialog.record = null;
         this.editDialog.hiddenFieldsList = ['id', 'create_date'];
         this.editDialog.open({size: 'lg'}).subscribe(
-            ok => {
+            { next: ok => {
                 this.createString.current()
                     .then(str => this.toast.success(str));
                 this.grid.reload();
-            },
-            // eslint-disable-next-line rxjs/no-implicit-any-catch
-            (rejection: any) => {
+            }, error: (rejection: any) => {
                 if (!rejection.dismissed) {
                     this.createErrString.current()
                         .then(str => this.toast.danger(str));
                 }
-            }
+            } }
         );
     };
 

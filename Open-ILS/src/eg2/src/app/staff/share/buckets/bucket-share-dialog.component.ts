@@ -1,7 +1,6 @@
 /* eslint-disable no-empty */
 import {Component, Input, OnInit, OnDestroy, ViewChild} from '@angular/core';
-import {Subscription, Observable, of, from, firstValueFrom} from 'rxjs';
-import {tap} from 'rxjs/operators';
+import {Subscription, Observable, of, from, firstValueFrom, tap} from 'rxjs';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {Tree, TreeNode} from '@eg/share/tree/tree';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';

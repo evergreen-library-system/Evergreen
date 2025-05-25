@@ -748,7 +748,7 @@ implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
 
     filter = (text$: Observable<string>): Observable<ComboboxEntry[]> => {
         return text$.pipe(
-            // eslint-disable-next-line no-magic-numbers
+             
             debounceTime(200),
             distinctUntilChanged(),
 

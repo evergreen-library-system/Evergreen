@@ -1,7 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {Observable, of, from} from 'rxjs';
-import {switchMap, mergeMap} from 'rxjs/operators';
+import {Observable, of, from, switchMap, mergeMap} from 'rxjs';
 import {AuthService} from '@eg/core/auth.service';
 import {GridDataSource} from '@eg/share/grid/grid';
 import {IdlObject} from '@eg/core/idl.service';

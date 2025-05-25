@@ -1,6 +1,5 @@
-import {Component, OnInit, OnDestroy, ViewChild, Input, HostListener} from '@angular/core';
-import {Observable, Subscription} from 'rxjs';
-import {tap, map, switchMap, distinctUntilChanged} from 'rxjs/operators';
+import {Component, OnInit, OnDestroy, HostListener} from '@angular/core';
+import {Subscription} from 'rxjs';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {CatalogService} from '@eg/share/catalog/catalog.service';
 import {BibRecordService} from '@eg/share/catalog/bib-record.service';

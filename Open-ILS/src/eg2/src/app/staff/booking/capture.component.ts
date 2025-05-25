@@ -1,7 +1,6 @@
 import {Component, OnInit, OnDestroy, ViewChild} from '@angular/core';
 import {FormGroup, FormControl} from '@angular/forms';
-import {of, Subscription} from 'rxjs';
-import {debounceTime, switchMap} from 'rxjs/operators';
+import {of, Subscription, debounceTime, switchMap} from 'rxjs';
 import {AuthService} from '@eg/core/auth.service';
 import {NetService} from '@eg/core/net.service';
 import {StringComponent} from '@eg/share/string/string.component';

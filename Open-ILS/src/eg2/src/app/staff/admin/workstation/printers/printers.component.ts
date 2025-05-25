@@ -1,18 +1,15 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
-import {from} from 'rxjs';
-import {concatMap} from 'rxjs/operators';
+import {from, concatMap} from 'rxjs';
 import {ServerStoreService} from '@eg/core/server-store.service';
-import {IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {PermService} from '@eg/core/perm.service';
 import {AuthService} from '@eg/core/auth.service';
 import {OrgService} from '@eg/core/org.service';
 import {EventService} from '@eg/core/event.service';
-import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 import {HatchService, PrintContext, PrintConfig, PRINT_CONTEXTS} from '@eg/core/hatch.service';
 import {PrintService, PrintRequest} from '@eg/share/print/print.service';
-import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
+import {NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import {StringComponent} from '@eg/share/string/string.component';
 
 @Component({

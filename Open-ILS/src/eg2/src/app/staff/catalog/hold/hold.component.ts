@@ -268,15 +268,13 @@ export class HoldComponent implements OnInit, OnDestroy {
         return new Promise(resolve => {
             this.holds.getHoldTargetMeta(this.holdType, this.holdTargets, this.auth.user().ws_ou())
                 .subscribe(
-                    meta => {
+                    { next: meta => {
                         this.holdContexts.filter(ctx => ctx.holdTarget === meta.target)
                             .forEach(ctx => {
                                 ctx.holdMeta = meta;
                                 this.mrFiltersToSelectors(ctx);
                             });
-                    },
-                    (err: unknown) => {},
-                    () => resolve(null)
+                    }, error: (err: unknown) => {}, complete: () => resolve(null) }
                 );
         });
     }

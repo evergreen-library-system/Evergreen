@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {Observable} from 'rxjs';
-import {tap, concatMap} from 'rxjs/operators';
+import {Observable, tap, concatMap} from 'rxjs';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';

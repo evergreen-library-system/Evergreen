@@ -16,6 +16,7 @@ export class GridToolbarCheckboxComponent implements OnInit {
     // This does NOT fire the onChange handler.
     @Input() initialValue: boolean;
 
+    // eslint-disable-next-line @angular-eslint/no-output-on-prefix
     @Output() onChange: EventEmitter<boolean>;
 
     private cb: GridToolbarCheckbox;

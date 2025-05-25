@@ -1,9 +1,7 @@
 /**
  * <eg-text-multi-select (onChange)="handler($event)"></eg-multi-select> // $event is an array
  */
-import {Component, OnInit, Input, Output, ViewChild, EventEmitter, ViewChildren, QueryList, ElementRef} from '@angular/core';
-import {map} from 'rxjs/operators';
-import {Observable, of, Subject} from 'rxjs';
+import {Component, OnInit, Input, Output, EventEmitter, ViewChildren, QueryList, ElementRef} from '@angular/core';
 
 @Component({
     selector: 'eg-text-multi-select',
@@ -24,6 +22,7 @@ export class TextMultiSelectComponent implements OnInit {
     @Input() domId: string = 'TMSC-' + Number(Math.random() * 10000);
     @Input() disabled = false;
 
+    // eslint-disable-next-line @angular-eslint/no-output-on-prefix
     @Output() onChange: EventEmitter<string[]>;
 
     @ViewChildren('newEntryInput') NewEntry: QueryList<ElementRef>;

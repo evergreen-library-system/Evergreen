@@ -1,20 +1,15 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
-import {of, Observable} from 'rxjs';
-import {tap, take, map} from 'rxjs/operators';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
 import {OrgService} from '@eg/core/org.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
-import {ComboboxEntry, ComboboxComponent} from '@eg/share/combobox/combobox.component';
-import {ProgressDialogComponent} from '@eg/share/dialog/progress.component';
-import {EventService, EgEvent} from '@eg/core/event.service';
-import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
+import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
+import {EventService} from '@eg/core/event.service';
 import {PoService} from './po.service';
 import {LineitemService} from '../lineitem/lineitem.service';
-import {CancelDialogComponent} from '../lineitem/cancel-dialog.component';
 
 const VALID_PRE_PO_LI_STATES = [
     'new',
@@ -73,15 +68,13 @@ export class PoCreateComponent implements OnInit {
         if (this.origLiCount > 0) {
             const fleshed_lis: IdlObject[] = [];
             this.liService.getFleshedLineitems(this.lineitems, { fromCache: false }).subscribe(
-                liStruct => {
+                { next: liStruct => {
                     fleshed_lis.push(liStruct.lineitem);
-                },
-                (err: unknown) => { },
-                () => {
+                }, error: (err: unknown) => { }, complete: () => {
                     this.lineitems = fleshed_lis.filter(li => VALID_PRE_PO_LI_STATES.includes(li.state()))
                         .map(li => li.id());
                     this.initDone = true;
-                }
+                } }
             );
         } else {
             this.initDone = true;

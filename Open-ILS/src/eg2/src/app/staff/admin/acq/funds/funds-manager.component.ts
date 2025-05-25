@@ -134,9 +134,7 @@ export class FundsManagerComponent extends AdminPageComponent implements OnInit,
     ngAfterViewInit() {
         if (this.startId) {
             this.pcrud.retrieve('acqf', this.startId).subscribe(
-                acqf => this.openFundDetailsDialog([acqf]),
-                (err: unknown) => {},
-                () => this.startId = null
+                { next: acqf => this.openFundDetailsDialog([acqf]), error: (err: unknown) => {}, complete: () => this.startId = null }
             );
         }
     }
@@ -157,9 +155,7 @@ export class FundsManagerComponent extends AdminPageComponent implements OnInit,
         if (rows.length > 0) {
             this.fundDetailsDialog.fundId = rows[0].id();
             this.fundDetailsDialog.open({size: 'xl'}).subscribe(
-                result => this.grid.reload(),
-                (error: unknown) => this.grid.reload(),
-                () => this.grid.reload()
+                { next: result => this.grid.reload(), error: (error: unknown) => this.grid.reload(), complete: () => this.grid.reload() }
             );
         }
     }
@@ -171,9 +167,7 @@ export class FundsManagerComponent extends AdminPageComponent implements OnInit,
     doRollover() {
         this.fundRolloverDialog.contextOrgId = this.searchOrgs.primaryOrgId;
         this.fundRolloverDialog.open({size: 'lg'}).subscribe(
-            ok => {},
-            (err: unknown) => {},
-            () => this.grid.reload()
+            { next: ok => {}, error: (err: unknown) => {}, complete: () => this.grid.reload() }
         );
     }
 }

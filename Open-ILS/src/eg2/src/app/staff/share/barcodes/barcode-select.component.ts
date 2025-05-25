@@ -1,13 +1,10 @@
-import {Component, Input, Output, ViewChild} from '@angular/core';
-import {Observable} from 'rxjs';
-import {map, mergeMap} from 'rxjs/operators';
-import {IdlObject} from '@eg/core/idl.service';
+import {Component} from '@angular/core';
 import {NetService} from '@eg/core/net.service';
 import {OrgService} from '@eg/core/org.service';
 import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';
-import {EventService, EgEvent} from '@eg/core/event.service';
-import {NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
+import {EventService} from '@eg/core/event.service';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 
 /* Support barcode completion for barcoded asset/actor data.

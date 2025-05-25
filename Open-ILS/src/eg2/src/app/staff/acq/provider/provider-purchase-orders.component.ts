@@ -1,8 +1,6 @@
 import {Component, OnInit, AfterViewInit, OnDestroy, Input, ViewChild} from '@angular/core';
-import {Observable, Subscription} from 'rxjs';
-import {map} from 'rxjs/operators';
-import {Router, ActivatedRoute, ParamMap} from '@angular/router';
-import {Pager} from '@eg/share/util/pager';
+import {Subscription} from 'rxjs';
+import {Router, ActivatedRoute} from '@angular/router';
 import {IdlObject} from '@eg/core/idl.service';
 import {EventService} from '@eg/core/event.service';
 import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
@@ -11,9 +9,9 @@ import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {GridDataSource, GridCellTextGenerator} from '@eg/share/grid/grid';
-import {AcqSearchService, AcqSearchTerm, AcqSearch} from '../search/acq-search.service';
+import {AcqSearchService, AcqSearchTerm} from '../search/acq-search.service';
 import {AttrDefsService} from '../search/attr-defs.service';
-import {ProviderRecord, ProviderRecordService} from './provider-record.service';
+import {ProviderRecordService} from './provider-record.service';
 
 @Component({
     selector: 'eg-provider-purchase-orders',

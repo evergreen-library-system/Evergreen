@@ -1,8 +1,7 @@
 import {ChangeDetectorRef, Component, Input, OnInit, OnDestroy, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {FormsModule} from '@angular/forms';
-import {toArray, from, Observable, of, Subject, Subscription, lastValueFrom, firstValueFrom, defaultIfEmpty, EMPTY} from 'rxjs';
-import {map, mergeMap, switchMap, takeUntil, tap, take, catchError, finalize} from 'rxjs/operators';
+import {from, Observable, Subject, lastValueFrom, firstValueFrom, defaultIfEmpty, EMPTY,
+    map, switchMap, takeUntil, take, catchError} from 'rxjs';
 import {AuthService} from '@eg/core/auth.service';
 import {IdlObject,IdlService} from '@eg/core/idl.service';
 import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
@@ -747,7 +746,7 @@ export class RecordBucketComponent implements OnInit, OnDestroy {
         this.editDialog.mode = 'update';
         this.editDialog.recordId = bucket.id;
         this.editDialog.open()
-            // eslint-disable-next-line rxjs/no-nested-subscribe
+
             .subscribe(ok => this.grid.reload());
     };
 

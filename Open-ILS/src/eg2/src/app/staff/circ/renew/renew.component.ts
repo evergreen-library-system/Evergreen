@@ -2,8 +2,7 @@
 import {Component, ViewChild, OnInit, AfterViewInit} from '@angular/core';
 import {Location} from '@angular/common';
 import {Router, ActivatedRoute} from '@angular/router';
-import {empty, from} from 'rxjs';
-import {concatMap} from 'rxjs/operators';
+import {empty, from, concatMap} from 'rxjs';
 import {IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {OrgService} from '@eg/core/org.service';

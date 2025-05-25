@@ -2,11 +2,9 @@
  * Common code for mananging holds
  */
 import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
-import {map, mergeMap} from 'rxjs/operators';
+import {Observable, map, mergeMap} from 'rxjs';
 import {IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
-import {PcrudService} from '@eg/core/pcrud.service';
 import {EventService, EgEvent} from '@eg/core/event.service';
 import {AuthService} from '@eg/core/auth.service';
 import {BibRecordService,

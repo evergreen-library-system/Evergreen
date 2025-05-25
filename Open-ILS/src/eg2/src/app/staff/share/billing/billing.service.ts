@@ -1,14 +1,10 @@
 import {Injectable} from '@angular/core';
-import {Observable, empty, from} from 'rxjs';
-import {map, concatMap, mergeMap} from 'rxjs/operators';
 import {IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {OrgService} from '@eg/core/org.service';
 import {PcrudService} from '@eg/core/pcrud.service';
-import {EventService, EgEvent} from '@eg/core/event.service';
+import {EventService} from '@eg/core/event.service';
 import {AuthService} from '@eg/core/auth.service';
-import {BibRecordService, BibRecordSummary} from '@eg/share/catalog/bib-record.service';
-import {AudioService} from '@eg/share/util/audio.service';
 
 export interface CreditCardPaymentParams {
     where_process?: 0 | 1;

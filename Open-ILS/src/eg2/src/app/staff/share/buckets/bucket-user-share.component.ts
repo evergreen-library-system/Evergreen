@@ -1,4 +1,4 @@
-/* eslint-disable no-empty */
+
 import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {GridContext, GridDataSource, GridCellTextGenerator} from '@eg/share/grid/grid';
 import {GridComponent} from '@eg/share/grid/grid.component';

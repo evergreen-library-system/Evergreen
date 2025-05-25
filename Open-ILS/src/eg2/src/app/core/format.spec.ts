@@ -29,7 +29,7 @@ describe('FormatService', () => {
     let dbStoreService: DbStoreService;
     let localeService: LocaleService;
     let hatchService: HatchService;
-    // eslint-disable-next-line prefer-const
+
     let location: SpyLocation;
     let service: FormatService;
 

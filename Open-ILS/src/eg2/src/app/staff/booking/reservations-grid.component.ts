@@ -1,7 +1,6 @@
 import {Component, EventEmitter, Input, Output, OnChanges, OnInit, ViewChild} from '@angular/core';
 import {Router} from '@angular/router';
-import {Observable, from, of} from 'rxjs';
-import {tap, switchMap, mergeMap} from 'rxjs/operators';
+import {Observable, from, of, tap, switchMap, mergeMap} from 'rxjs';
 import {AuthService} from '@eg/core/auth.service';
 import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
 import {FormatService} from '@eg/core/format.service';
@@ -314,12 +313,11 @@ export class ReservationsGridComponent implements OnChanges, OnInit {
         this.editDialog.timezone = idlThing['timezone'];
         return new Promise((resolve, reject) => {
             this.editDialog.open({size: 'lg'}).subscribe(
-                ok => {
+                { next: ok => {
                     this.toast.success('Reservation successfully updated'); // TODO: needs i18n, pluralization
                     this.grid.reload();
                     resolve(ok);
-                },
-                (rejection: unknown) => {}
+                }, error: (rejection: unknown) => {} }
             );
         });
     }

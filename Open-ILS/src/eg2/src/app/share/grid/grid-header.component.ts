@@ -3,8 +3,7 @@ import {Component, Input, OnInit, AfterViewInit, QueryList, ViewChildren, inject
 import {DOCUMENT} from '@angular/common';
 import {GridContext, GridColumn} from './grid';
 import {GridFilterControlComponent} from './grid-filter-control.component';
-import {takeUntil, switchMap, map, tap} from 'rxjs/operators';
-import {Subject, fromEvent} from 'rxjs';
+import {takeUntil, switchMap, map, tap, Subject, fromEvent} from 'rxjs';
 
 @Component({
     selector: 'thead.eg-grid-header',

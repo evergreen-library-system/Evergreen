@@ -54,9 +54,7 @@ export class MatchSetListComponent implements AfterViewInit {
         this.deleteSelected = (matchSets: IdlObject[]) => {
             matchSets.forEach(matchSet => matchSet.isdeleted(true));
             this.pcrud.autoApply(matchSets).subscribe(
-                val => console.debug('deleted: ' + val),
-                (err: unknown) => {},
-                ()  => this.grid.reload()
+                { next: val => console.debug('deleted: ' + val), error: (err: unknown) => {}, complete: ()  => this.grid.reload() }
             );
         };
     }
@@ -67,7 +65,7 @@ export class MatchSetListComponent implements AfterViewInit {
                 this.editDialog.mode = 'update';
                 this.editDialog.recordId = matchSet.id();
                 this.editDialog.open({size: 'lg'})
-                    // eslint-disable-next-line rxjs/no-nested-subscribe
+                    // eslint-disable-next-line rxjs-x/no-nested-subscribe
                     .subscribe(() => this.grid.reload());
             }
         );

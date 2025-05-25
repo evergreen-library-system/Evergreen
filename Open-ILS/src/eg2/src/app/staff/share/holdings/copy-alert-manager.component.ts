@@ -1,18 +1,14 @@
-import {Component, OnInit, Input, ViewChild} from '@angular/core';
-import {Observable, throwError, from} from 'rxjs';
-import {concatMap} from 'rxjs/operators';
+import {Component, ViewChild} from '@angular/core';
+import {Observable, from, concatMap} from 'rxjs';
 import {NetService} from '@eg/core/net.service';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
-import {EventService} from '@eg/core/event.service';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {OrgService} from '@eg/core/org.service';
-import {StringComponent} from '@eg/share/string/string.component';
 import {StringService} from '@eg/share/string/string.service';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
-import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {HoldingsService} from './holdings.service';
 import {CopyAlertsDialogComponent} from '@eg/staff/share/holdings/copy-alerts-dialog.component';
 

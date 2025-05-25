@@ -51,7 +51,7 @@ export class PicklistCreateDialogComponent
           'open-ils.acq.picklist.create',
           this.auth.token(), picklist
       ).subscribe(
-          (res) => {
+          { next: (res) => {
               if (this.evt.parse(res)) {
                   console.error(res);
                   if (res.textcode === 'DATABASE_UPDATE_FAILED') {
@@ -65,13 +65,11 @@ export class PicklistCreateDialogComponent
               } else {
                   console.debug(res);
               }
-          },
-          (err: unknown) => {
+          }, error: (err: unknown) => {
               console.error(err);
               this.fail.open();
               this.close(false);
-          },
-          () => this.close(true)
+          }, complete: () => this.close(true) }
       );
   }
 }

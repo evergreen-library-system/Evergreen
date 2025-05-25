@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
-import {map} from 'rxjs/operators';
+import {map} from 'rxjs';
 import {NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import {Pager} from '@eg/share/util/pager';
 import {NetService} from '@eg/core/net.service';
@@ -43,7 +43,7 @@ export class ManageAuthorityComponent implements OnInit {
                 this.net.request(
                     'open-ils.search',
                     'open-ils.search.authority.main_entry', this.authId
-                // eslint-disable-next-line rxjs/no-nested-subscribe
+                // eslint-disable-next-line rxjs-x/no-nested-subscribe
                 ).subscribe(meta => this.authMeta = meta);
             }
         });

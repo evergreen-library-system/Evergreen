@@ -63,20 +63,18 @@ export class ProviderAttributesComponent implements OnInit, AfterViewInit, OnDes
         this.deleteSelected = (idlThings: IdlObject[]) => {
             idlThings.forEach(idlThing => idlThing.isdeleted(true));
             this.providerRecord.batchUpdate(idlThings).subscribe(
-                val => {
+                { next: val => {
                     console.debug('deleted: ' + val);
                     this.deleteSuccessString.current()
                         .then(str => this.toast.success(str));
-                },
-                (err: unknown) => {
+                }, error: (err: unknown) => {
                     this.deleteFailedString.current()
                         .then(str => this.toast.danger(str));
-                },
-                ()  => {
+                }, complete: ()  => {
                     this.providerRecord.refreshCurrent().then(
                         () => this.providerAttributesGrid.reload()
                     );
-                }
+                } }
             );
         };
         this.providerAttributesGrid.onRowActivate.subscribe(
@@ -134,19 +132,18 @@ export class ProviderAttributesComponent implements OnInit, AfterViewInit, OnDes
         this.editDialog.recordId = providerAttribute['id']();
         return new Promise((resolve, reject) => {
             this.editDialog.open({size: this.dialogSize}).subscribe(
-                result => {
+                { next: result => {
                     this.successString.current()
                         .then(str => this.toast.success(str));
                     this.providerRecord.refreshCurrent().then(
                         () => this.providerAttributesGrid.reload()
                     );
                     resolve(result);
-                },
-                (error: unknown) => {
+                }, error: (error: unknown) => {
                     this.updateFailedString.current()
                         .then(str => this.toast.danger(str));
                     reject(error);
-                }
+                } }
             );
         });
     }
@@ -170,20 +167,18 @@ export class ProviderAttributesComponent implements OnInit, AfterViewInit, OnDes
         this.editDialog.record = attributes;
         this.editDialog.recordId = null;
         this.editDialog.open({size: this.dialogSize}).subscribe(
-            ok => {
+            { next: ok => {
                 this.createString.current()
                     .then(str => this.toast.success(str));
                 this.providerRecord.refreshCurrent().then(
                     () => this.providerAttributesGrid.reload()
                 );
-            },
-            // eslint-disable-next-line rxjs/no-implicit-any-catch
-            (rejection: any) => {
+            }, error: (rejection: any) => {
                 if (!rejection.dismissed) {
                     this.createErrString.current()
                         .then(str => this.toast.danger(str));
                 }
-            }
+            } }
         );
     }
 }

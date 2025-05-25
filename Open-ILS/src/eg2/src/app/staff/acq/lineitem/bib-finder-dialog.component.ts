@@ -86,18 +86,16 @@ export class BibFinderDialogComponent extends DialogComponent {
                 return;
             }
             const bibSummaries: {[id: number]: BibRecordSummary} = {};
-            // eslint-disable-next-line rxjs/no-nested-subscribe
+            // eslint-disable-next-line rxjs-x/no-nested-subscribe
             this.bib.getBibSummaries(ids).subscribe(
-                summary => bibSummaries[summary.id] = summary,
-                (err: unknown) => {},
-                () => {
+                { next: summary => bibSummaries[summary.id] = summary, error: (err: unknown) => {}, complete: () => {
                     this.doingSearch = false;
                     ids.forEach(id => {
                         if (bibSummaries[id]) {
                             this.results.push(bibSummaries[id]);
                         }
                     });
-                }
+                } }
             );
         });
     }

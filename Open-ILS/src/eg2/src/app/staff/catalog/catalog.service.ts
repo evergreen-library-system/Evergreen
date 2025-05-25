@@ -8,8 +8,7 @@ import {BibRecordSummary} from '@eg/share/catalog/bib-record.service';
 import {PatronService} from '@eg/staff/share/patron/patron.service';
 import {StoreService} from '@eg/core/store.service';
 import {BroadcastService} from '@eg/share/util/broadcast.service';
-import {Observable} from 'rxjs';
-import {tap} from 'rxjs/operators';
+import {Observable, tap} from 'rxjs';
 
 const HOLD_FOR_PATRON_KEY = 'eg.circ.patron_hold_target';
 

@@ -62,6 +62,7 @@ export class OrgFamilySelectComponent implements ControlValueAccessor, OnInit {
 
     @Input() persistKey: string;
 
+    // eslint-disable-next-line @angular-eslint/no-output-on-prefix
     @Output() onChange = new EventEmitter<any>();
 
     @ViewChildren(OrgSelectComponent)  orgSelects: QueryList<OrgSelectComponent>;

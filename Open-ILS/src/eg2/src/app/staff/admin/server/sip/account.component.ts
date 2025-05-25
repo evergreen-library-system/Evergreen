@@ -1,20 +1,17 @@
-import {Component, Input, ViewChild, OnInit} from '@angular/core';
+import {Component, ViewChild, OnInit} from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
-import {Observable, of} from 'rxjs';
-import {map, tap, switchMap, catchError} from 'rxjs/operators';
+import {Observable, of, map, tap} from 'rxjs';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
-import {OrgService} from '@eg/core/org.service';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
 import {EventService} from '@eg/core/event.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {ToastService} from '@eg/share/toast/toast.service';
-import {StringComponent} from '@eg/share/string/string.component';
 import {StringService} from '@eg/share/string/string.service';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {PromptDialogComponent} from '@eg/share/dialog/prompt.component';
 import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
-import {ComboboxEntry, ComboboxComponent} from '@eg/share/combobox/combobox.component';
+import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {GridDataSource} from '@eg/share/grid/grid';
 import {Pager} from '@eg/share/util/pager';
@@ -280,8 +277,7 @@ export class SipAccountComponent implements OnInit {
         this.settingDialog.record = this.idl.clone(row);
         this.settingDialog.open()
             .subscribe(
-                ok => this.refreshAccount(),
-                (err: unknown) => console.error(err)
+                { next: ok => this.refreshAccount(), error: (err: unknown) => console.error(err) }
             );
     }
 

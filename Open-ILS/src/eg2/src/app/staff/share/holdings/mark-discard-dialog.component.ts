@@ -1,6 +1,5 @@
 import {Component, Input, ViewChild} from '@angular/core';
-import {from, Observable} from 'rxjs';
-import {tap, concatMap} from 'rxjs/operators';
+import {from, Observable, tap, concatMap} from 'rxjs';
 import {NetService} from '@eg/core/net.service';
 import {EventService} from '@eg/core/event.service';
 import {ToastService} from '@eg/share/toast/toast.service';

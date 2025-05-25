@@ -1,5 +1,5 @@
 import {Injectable, EventEmitter, TemplateRef} from '@angular/core';
-import {tap} from 'rxjs/operators';
+import {tap} from 'rxjs';
 
 /* Relay requests to/from the context menu directive and its
  * template container component */

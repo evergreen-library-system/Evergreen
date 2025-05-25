@@ -61,7 +61,7 @@ export class LinkCheckerUrlsComponent implements OnInit {
             if (params.sessions) {
                 this.sessions = JSON.parse( params.sessions );
                 this.grid.reload();
-                // eslint-disable-next-line rxjs/no-nested-subscribe
+                // eslint-disable-next-line rxjs-x/no-nested-subscribe
                 this.pcrud.search(this.sessionIdlClass, { id: this.sessions }).subscribe((n) => {
                     this.session_names.push(n.name());
                     this.cdr.detectChanges();

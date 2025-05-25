@@ -121,7 +121,7 @@ export class DistributionFormulaEditDialogComponent
         } else {
             this.formula.ischanged(true);
         }
-        this.pcrud.autoApply([this.formula]).subscribe(res => {
+        this.pcrud.autoApply([this.formula]).subscribe({ next: res => {
             const dfId = this.mode === 'update' ? res : res.id();
             const updates: IdlObject[] = [];
             if (this.mode === 'create' || this.mode === 'clone') {
@@ -193,13 +193,11 @@ export class DistributionFormulaEditDialogComponent
                     updates.unshift(entry); // deletions have to be processed first
                 }
             });
-            // eslint-disable-next-line rxjs/no-nested-subscribe
+            // eslint-disable-next-line rxjs-x/no-nested-subscribe
             this.pcrud.autoApply(updates).subscribe(
-                ret => {},
-                (err: unknown) => this.close(err),
-                () => this.close(true)
+                { next: ret => {}, error: (err: unknown) => this.close(err), complete: () => this.close(true) }
             );
-        }, (err: unknown) => this.close(false));
+        }, error: (err: unknown) => this.close(false) });
     }
 
 }

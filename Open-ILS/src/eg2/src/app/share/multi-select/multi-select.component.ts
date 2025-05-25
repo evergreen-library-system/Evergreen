@@ -2,15 +2,13 @@
  * <eg-multi-select idlClass="acpl" linkedLibraryLabel="owning_lib" idlKey="id">
  * </eg-multi-select>
  */
-import { Component, OnInit, Input, Output, ViewChild, EventEmitter, ElementRef } from '@angular/core';
-import { map } from 'rxjs/operators';
-import { Observable, of, Subject } from 'rxjs';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { map } from 'rxjs';
 import { StoreService } from '@eg/core/store.service';
 import { PcrudService } from '@eg/core/pcrud.service';
 import { IdlService } from '@eg/core/idl.service';
 import { OrgService } from '@eg/core/org.service';
-import { ComboboxComponent, ComboboxEntry } from '@eg/share/combobox/combobox.component';
-import { ItemLocationSelectComponent } from '@eg/share/item-location-select/item-location-select.component';
+import { ComboboxEntry } from '@eg/share/combobox/combobox.component';
 
 @Component({
     selector: 'eg-multi-select',
@@ -35,6 +33,7 @@ export class MultiSelectComponent implements OnInit {
     @Input() domId: string = 'MSC-' + Number(Math.random() * 10000);
     @Input() disabled = false;
 
+    // eslint-disable-next-line @angular-eslint/no-output-on-prefix
     @Output() onChange: EventEmitter<string>;
 
     acplContextOrgId: number;

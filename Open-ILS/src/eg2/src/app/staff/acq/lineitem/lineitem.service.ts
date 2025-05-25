@@ -1,6 +1,5 @@
 import {Injectable, EventEmitter} from '@angular/core';
-import {Observable, from, concat, empty, firstValueFrom} from 'rxjs';
-import {switchMap, map, tap, merge} from 'rxjs/operators';
+import {Observable, from, concat, empty, firstValueFrom, switchMap, map, tap, mergeWith as merge} from 'rxjs';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
@@ -486,10 +485,10 @@ export class LineitemService {
     doExportSingleAttributeList(ids: number[], attr: string) {
         if (!attr) { return; }
         const values: string[] = [];
-        this.getFleshedLineitems(ids, { fromCache: true }).subscribe(
-            li => values.push(this.getFirstAttributeValue(li.lineitem, attr, 'lineitem_marc_attr_definition')),
-            (err: unknown) => {},
-            () => {
+        this.getFleshedLineitems(ids, { fromCache: true }).subscribe({
+            next: li => values.push(this.getFirstAttributeValue(li.lineitem, attr, 'lineitem_marc_attr_definition')),
+            error: (err: unknown) => {},
+            complete: () => {
                 const filtered = values.filter(x => x !== '');
                 saveAs(
                     new Blob(
@@ -498,7 +497,7 @@ export class LineitemService {
                     ),
                     'export_attr_list.txt'
                 );
-            }
+            } }
         );
     }
 

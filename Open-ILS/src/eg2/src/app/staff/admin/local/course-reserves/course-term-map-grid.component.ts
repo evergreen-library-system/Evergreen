@@ -1,6 +1,5 @@
 import {Component, Input, OnInit, ViewChild} from '@angular/core';
-import {Observable} from 'rxjs';
-import {map, switchMap} from 'rxjs/operators';
+import {Observable, map, switchMap} from 'rxjs';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {Pager} from '@eg/share/util/pager';
 import {GridDataSource} from '@eg/share/grid/grid';
@@ -89,9 +88,7 @@ export class CourseTermMapGridComponent implements OnInit {
         this.deleteSelected = (termMaps: IdlObject[]) => {
             termMaps.forEach(termMap => termMap.isdeleted(true));
             this.pcrud.autoApply(termMaps).subscribe(
-                val => console.debug('deleted: ' + val),
-                (err: unknown) => {},
-                ()  => this.grid.reload()
+                { next: val => console.debug('deleted: ' + val), error: (err: unknown) => {}, complete: ()  => this.grid.reload() }
             );
         };
     }

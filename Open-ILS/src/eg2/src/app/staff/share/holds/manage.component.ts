@@ -23,6 +23,7 @@ export class HoldManageComponent implements OnInit {
     activeFields: {[key: string]: boolean};
 
     // Emits true if changes were applied to the hold.
+    // eslint-disable-next-line @angular-eslint/no-output-on-prefix
     @Output() onComplete: EventEmitter<boolean>;
 
     constructor(
@@ -101,15 +102,13 @@ export class HoldManageComponent implements OnInit {
             const holds: IdlObject[] = [];
             this.pcrud.search('ahr', {id: this.holdIds})
                 .subscribe(
-                    hold => {
+                    { next: hold => {
                     // Copy form fields to each hold to update.
                         fields.forEach(field => hold[field](this.hold[field]()));
                         holds.push(hold);
-                    },
-                    (err: unknown) => {},
-                    ()  => {
+                    }, error: (err: unknown) => {}, complete: ()  => {
                         this.saveBatch(holds);
-                    }
+                    } }
                 );
         } else {
             this.saveBatch([this.hold]);
@@ -120,23 +119,21 @@ export class HoldManageComponent implements OnInit {
         let successCount = 0;
         this.holds.updateHolds(holds)
             .subscribe(
-                res  => {
+                { next: res  => {
                     if (Number(res) > 0) {
                         successCount++;
                         console.debug('hold update succeeded with ', res);
                     } else {
                     // TODO: toast?
                     }
-                },
-                (err: unknown) => console.error('hold update failed with ', err),
-                ()  => {
+                }, error: (err: unknown) => console.error('hold update failed with ', err), complete: ()  => {
                     if (successCount === holds.length) {
                         this.onComplete.emit(true);
                     } else {
                     // TODO: toast?
                         console.error('Some holds failed to update');
                     }
-                }
+                } }
             );
     }
 

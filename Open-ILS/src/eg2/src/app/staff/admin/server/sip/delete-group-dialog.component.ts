@@ -1,21 +1,10 @@
-import {Component, Input, ViewChild, OnInit} from '@angular/core';
-import {Observable, of} from 'rxjs';
-import {map, tap, switchMap, catchError} from 'rxjs/operators';
-import {IdlService, IdlObject} from '@eg/core/idl.service';
-import {OrgService} from '@eg/core/org.service';
+import {Component, Input, OnInit} from '@angular/core';
+import {IdlObject} from '@eg/core/idl.service';
 import {AuthService} from '@eg/core/auth.service';
-import {PcrudService} from '@eg/core/pcrud.service';
 import {NetService} from '@eg/core/net.service';
-import {ToastService} from '@eg/share/toast/toast.service';
-import {StringComponent} from '@eg/share/string/string.component';
-import {StringService} from '@eg/share/string/string.service';
-import {NgbModal, NgbModalRef, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
-import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
-import {ComboboxEntry, ComboboxComponent} from '@eg/share/combobox/combobox.component';
-import {GridComponent} from '@eg/share/grid/grid.component';
-import {GridDataSource} from '@eg/share/grid/grid';
-import {Pager} from '@eg/share/util/pager';
+import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 
 @Component({
     templateUrl: './delete-group-dialog.component.html',

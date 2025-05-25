@@ -1,8 +1,7 @@
 import {Component, OnInit, AfterViewInit, Input, Output, ViewChild,
     EventEmitter, forwardRef} from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
-import {Observable, from, of} from 'rxjs';
-import {map, switchMap} from 'rxjs/operators';
+import {Observable, from, of, map, switchMap} from 'rxjs';
 import {IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
 import {AuthService} from '@eg/core/auth.service';
@@ -233,12 +232,10 @@ implements OnInit, AfterViewInit, ControlValueAccessor {
 
             this.pcrud.search('acpl', search, {order_by: {acpl: 'name'}}
             ).subscribe(
-                loc => {
+                { next: loc => {
                     this.loc.locationCache[loc.id()] = loc;
                     observer.next({id: loc.id(), label: loc.name(), userdata: loc});
-                },
-                (err: unknown) => {},
-                () => observer.complete()
+                }, error: (err: unknown) => {}, complete: () => observer.complete() }
             );
         });
     }

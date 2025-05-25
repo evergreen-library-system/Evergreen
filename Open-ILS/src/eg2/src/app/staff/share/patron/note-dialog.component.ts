@@ -1,9 +1,7 @@
 import {Component, OnInit, OnDestroy, Input, ViewChild} from '@angular/core';
-import {Observable, of, from, Subscription} from 'rxjs';
-import {tap, catchError, switchMap} from 'rxjs/operators';
+import {Observable, of, from, Subscription, tap, catchError, switchMap} from 'rxjs';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
-import {DepthSelectComponent} from '@eg/share/depth-select/depth-select.component';
 import {PermService} from '@eg/core/perm.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
 import {AuthService} from '@eg/core/auth.service';

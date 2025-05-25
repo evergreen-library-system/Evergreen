@@ -1,8 +1,7 @@
 /* eslint-disable max-len */
 import {Component, Input, OnInit, OnDestroy, ViewChild, ElementRef} from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
-import {Subject,Observable,of,from} from 'rxjs';
-import {takeUntil,tap,map} from 'rxjs/operators';
+import {Subject,Observable,from,takeUntil} from 'rxjs';
 import {SafeUrl} from '@angular/platform-browser';
 import {IdlService} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';

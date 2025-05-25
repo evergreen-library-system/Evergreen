@@ -236,45 +236,42 @@ export class CircLimitSetEditComponent  implements OnInit {
                         item.check_only(item.checked);
                     }
                     this.pcrud.create(item).subscribe(
-                        ok => {
+                        { next: ok => {
                             const id = ok.id();
                             item.id(id);
                             item.new = false;
                             if (array === this.limitGroups) {
                                 item.checkedOriginalValue = item.checked;
                             }
-                        },
-                        (err: unknown) => {
+                        }, error: (err: unknown) => {
                             errorOccurred = true;
                             this.savingEntryError.current().then(msg =>
                                 this.toast.warning(msg));
-                        }
+                        } }
                     );
                 // only delete this from db if we haven't deleted it before
                 } else if ((item.deleted) && (!item.deletedSuccess)) {
                     this.pcrud.remove(item).subscribe(
-                        ok => {
+                        { next: ok => {
                             item.deletedSuccess = true;
-                        },
-                        (err: unknown) => {
+                        }, error: (err: unknown) => {
                             errorOccurred = true;
                             this.deletingEntryError.current().then(msg =>
                                 this.toast.warning(msg));
-                        }
+                        } }
                     );
                 // check limit group items to see if the checkbox changed since last write
                 } else if ((array === this.limitGroups) && (!item.deleted) &&
                     (!item.new) && (item.checked !== item.checkedOriginalValue)) {
                     item.check_only(item.checked);
                     this.pcrud.update(item).subscribe(
-                        ok => {
+                        { next: ok => {
                             item.checkedOriginalValue = item.checked;
-                        },
-                        (err: unknown) => {
+                        }, error: (err: unknown) => {
                             errorOccurred = true;
                             this.updatingEntryError.current().then(msg =>
                                 this.toast.warning(msg));
-                        }
+                        } }
                     );
                 }
             });

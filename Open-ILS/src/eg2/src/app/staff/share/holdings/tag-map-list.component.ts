@@ -55,7 +55,7 @@ export class TagMapListComponent implements OnInit {
             this.trickery(this);
         }
 
-        // eslint-disable-next-line rxjs/no-async-subscribe
+        // eslint-disable-next-line rxjs-x/no-async-subscribe
         this.broadcaster.listen('eg.acpt_updated').subscribe(async (data) => {
             // console.debug('TagMapListComponent listener received',data);
             if (typeof data.result === 'string' || typeof data.result === 'number') {

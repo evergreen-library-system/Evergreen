@@ -10,8 +10,7 @@ import {NetService} from '@eg/core/net.service';
 import {NgForm} from '@angular/forms';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {ProgressDialogComponent} from '@eg/share/dialog/progress.component';
-import {Subject, Subscription, Observable} from 'rxjs';
-import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
+import {Subject, Subscription, Observable, debounceTime, distinctUntilChanged} from 'rxjs';
 
 @Component({
     selector: 'eg-new-session-dialog',
@@ -75,7 +74,7 @@ export class NewSessionDialogComponent extends DialogComponent implements OnInit
                     this.sessionName = 'Copy of ' + this.sessionToClone.name;
                     this.sessionOwningLibrary = this.sessionToClone.owning_lib;
                     this.sessionSearch = this.sessionToClone.search;
-                    // eslint-disable-next-line rxjs/no-nested-subscribe
+                    // eslint-disable-next-line rxjs-x/no-nested-subscribe
                     this.pcrud.search('uvus', {'session':this.sessionToClone.session_id},{},{'atomic':true}).subscribe(
                         (list) => {
                             console.log('list',list);
@@ -125,7 +124,7 @@ export class NewSessionDialogComponent extends DialogComponent implements OnInit
                         this.pcrud.search('uvs',{
                             owning_lib: this.sessionOwningLibrary,
                             name: this.sessionName},{})
-                            // eslint-disable-next-line rxjs/no-nested-subscribe
+                            // eslint-disable-next-line rxjs-x/no-nested-subscribe
                             .subscribe( () => { this.nameCollision = true; })
                     );
                 })
@@ -231,7 +230,7 @@ export class NewSessionDialogComponent extends DialogComponent implements OnInit
                     // ///////////////////////////////////////////////////
                     this.resetProgressMeter($localize`Creating URL selectors...`);
                     this.subscriptions.push(
-                        // eslint-disable-next-line rxjs/no-nested-subscribe
+                        // eslint-disable-next-line rxjs-x/no-nested-subscribe
                         this.createUrlSelectors().subscribe({
                             next: (res2) => {
                                 if (this.evt.parse(res2)) {
@@ -258,7 +257,7 @@ export class NewSessionDialogComponent extends DialogComponent implements OnInit
                                     'open-ils.url_verify.session.search_and_extract',
                                     this.auth.token(),
                                     this.sessionId
-                                // eslint-disable-next-line rxjs/no-nested-subscribe
+                                // eslint-disable-next-line rxjs-x/no-nested-subscribe
                                 ).subscribe({
                                     next: (res3) => {
                                         console.log('res3',res3);
@@ -293,7 +292,7 @@ export class NewSessionDialogComponent extends DialogComponent implements OnInit
                                                 'open-ils.url_verify.session.verify',
                                                 this.auth.token(),
                                                 this.sessionId
-                                            // eslint-disable-next-line rxjs/no-nested-subscribe
+                                            // eslint-disable-next-line rxjs-x/no-nested-subscribe
                                             ).subscribe({
                                                 next: (res4) => {
                                                     console.log('res4',res4);

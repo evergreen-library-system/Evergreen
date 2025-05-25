@@ -1,4 +1,4 @@
-import {Component, Input, ViewChild, OnInit} from '@angular/core';
+import {Component, ViewChild, OnInit} from '@angular/core';
 import {Location} from '@angular/common';
 import {FormatService} from '@eg/core/format.service';
 import {AdminPageComponent} from '@eg/staff/share/admin-page/admin-page.component';
@@ -140,17 +140,17 @@ export class AdminCarouselComponent extends AdminPageComponent implements OnInit
                             ccou.org_unit(rec.owner());
                             ccou.seq(0);
                             rec.bucket(newBucket);
-                            this.pcrud.create(ccou).subscribe(
-                                ok => {
-                                    // eslint-disable-next-line rxjs/no-nested-subscribe
+                            this.pcrud.create(ccou).subscribe({
+                                next: ok => {
+                                    // eslint-disable-next-line rxjs-x/no-nested-subscribe
                                     this.pcrud.update(rec).subscribe(
-                                        ok2 => console.debug('updated'),
-                                        (err: unknown) => console.error(err),
-                                        () => { this.grid.reload(); }
+                                        { next: ok2 => console.debug('updated'),
+                                            error: (err: unknown) => console.error(err),
+                                            complete: () => { this.grid.reload(); } }
                                     );
                                 },
-                                (err: unknown) => console.error(err),
-                                () => { this.grid.reload(); }
+                                error: (err: unknown) => console.error(err),
+                                complete: () => { this.grid.reload(); } }
                             );
                         }
                     );

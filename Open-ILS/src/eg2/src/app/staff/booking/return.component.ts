@@ -2,8 +2,7 @@ import {Component, OnInit, OnDestroy, QueryList, ViewChildren, ViewChild} from '
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {FormGroup, FormControl, Validators} from '@angular/forms';
 import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
-import {Observable, from, of, Subscription} from 'rxjs';
-import { single, switchMap, tap, debounceTime } from 'rxjs/operators';
+import {Observable, from, of, Subscription, single, switchMap, tap, debounceTime } from 'rxjs';
 import {PatronService} from '@eg/staff/share/patron/patron.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {IdlObject} from '@eg/core/idl.service';
@@ -121,11 +120,11 @@ export class ReturnComponent implements OnInit, OnDestroy {
                 flesh: 1,
                 flesh_fields: {'au': ['card']}
             }).pipe(tap(
-                (resp) => {
+                { next: (resp) => {
                     this.tabs.select('patron_tab');
                     this.findPatron.patchValue({patronBarcode: resp.card().barcode()});
                     this.refreshGrids();
-                }, (err: unknown) => { console.debug(err); }
+                }, error: (err: unknown) => { console.debug(err); } }
             ));
         } else {
             return from(this.store.getItem('eg.booking.return.tab'))

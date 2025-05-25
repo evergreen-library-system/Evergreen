@@ -45,7 +45,7 @@ export class PicklistMergeDialogComponent
           this.auth.token(), this.leadList,
           this.selectedLists.map( list => list.id() ).filter(function(p) { return Number(p) !== Number(that.leadList); })
       ).subscribe(
-          (res) => {
+          { next: (res) => {
               if (this.evt.parse(res)) {
                   console.error(res);
                   this.fail.open();
@@ -53,13 +53,11 @@ export class PicklistMergeDialogComponent
               } else {
                   console.debug(res);
               }
-          },
-          (err: unknown) => {
+          }, error: (err: unknown) => {
               console.error(err);
               this.fail.open();
               this.close(false);
-          },
-          () => this.close(true)
+          }, complete: () => this.close(true) }
       );
   }
 

@@ -116,9 +116,7 @@ export class QueuedRecordMatchesComponent {
 
                 const bibSummaries: {[id: number]: BibRecordSummary} = {};
                 this.bib.getBibSummaries(recIds).subscribe(
-                    summary => bibSummaries[summary.id] = summary,
-                    (err: unknown) => {},
-                    ()  => {
+                    { next: summary => bibSummaries[summary.id] = summary, error: (err: unknown) => {}, complete: ()  => {
                         matches.forEach(match => {
                             const row = {
                                 id: match.id(),
@@ -133,7 +131,7 @@ export class QueuedRecordMatchesComponent {
                         });
 
                         observer.complete();
-                    }
+                    } }
                 );
             });
         });

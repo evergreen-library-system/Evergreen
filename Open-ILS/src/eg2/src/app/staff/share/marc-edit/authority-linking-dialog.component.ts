@@ -199,7 +199,7 @@ export class AuthorityLinkingDialogComponent
             if (editFirst) {
                 this.marcEditDialog.recordXml = record;
                 this.marcEditDialog.open({size: 'xl'})
-                    // eslint-disable-next-line rxjs/no-nested-subscribe
+                    // eslint-disable-next-line rxjs-x/no-nested-subscribe
                     .subscribe(saveEvent => {
                         if (saveEvent && saveEvent.recordId) {
                             this.setSubfieldZero(saveEvent.recordId);

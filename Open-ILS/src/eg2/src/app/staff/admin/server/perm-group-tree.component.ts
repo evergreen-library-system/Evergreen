@@ -1,6 +1,5 @@
 import {Component, ViewChild, OnInit} from '@angular/core';
-import {map} from 'rxjs/operators';
-import {of, firstValueFrom} from 'rxjs';
+import {map, of, firstValueFrom} from 'rxjs';
 import {Tree, TreeNode} from '@eg/share/tree/tree';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
@@ -365,13 +364,12 @@ export class PermGroupTreeComponent implements OnInit {
         this.editDialog.setRecord(this.selected.callerData);
 
         this.editDialog.open({size: 'lg'}).subscribe(
-            success => {
+            { next: success => {
                 this.successString.current().then(str => this.toast.success(str));
-            },
-            (failed: unknown) => {
+            }, error: (failed: unknown) => {
                 this.errorString.current()
                     .then(str => this.toast.danger(str));
-            }
+            } }
         );
     }
 
@@ -381,20 +379,18 @@ export class PermGroupTreeComponent implements OnInit {
                 if (!confirmed) { return; }
 
                 this.pcrud.remove(this.selected.callerData)
-                    // eslint-disable-next-line rxjs/no-nested-subscribe
+                    // eslint-disable-next-line rxjs-x/no-nested-subscribe
                     .subscribe(
-                        ok2 => {},
-                        (err: unknown) => {
+                        { next: ok2 => {}, error: (err: unknown) => {
                             this.errorString.current()
                                 .then(str => this.toast.danger(str));
-                        },
-                        ()  => {
+                        }, complete: ()  => {
                         // Avoid updating until we know the entire
                         // pcrud action/transaction completed.
                             this.tree.removeNode(this.selected);
                             this.selected = null;
                             this.successString.current().then(str => this.toast.success(str));
-                        }
+                        } }
                     );
             }
         );
@@ -411,7 +407,7 @@ export class PermGroupTreeComponent implements OnInit {
         this.editDialog.mode = 'create';
 
         this.editDialog.open({size: 'lg'}).subscribe(
-            result => { // pgt object
+            { next: result => { // pgt object
 
                 // Add our new node to the tree
                 const newNode = new TreeNode({
@@ -421,11 +417,10 @@ export class PermGroupTreeComponent implements OnInit {
                 });
                 parentTreeNode.children.push(newNode);
                 this.createString.current().then(str => this.toast.success(str));
-            },
-            (failed: unknown) => {
+            }, error: (failed: unknown) => {
                 this.errorString.current()
                     .then(str => this.toast.danger(str));
-            }
+            } }
         );
     }
 
@@ -450,15 +445,13 @@ export class PermGroupTreeComponent implements OnInit {
         });
 
         this.pcrud.autoApply(maps).subscribe(
-            one => console.debug('Modified one mapping: ', one),
-            (err: unknown) => {
+            { next: one => console.debug('Modified one mapping: ', one), error: (err: unknown) => {
                 console.error(err);
                 this.errorMapString.current().then(msg => this.toast.danger(msg));
-            },
-            ()  => {
+            }, complete: ()  => {
                 this.successMapString.current().then(msg => this.toast.success(msg));
                 this.loadPermMaps();
-            }
+            } }
         );
     }
 

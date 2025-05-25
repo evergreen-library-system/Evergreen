@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {Router, ActivatedRoute, NavigationEnd} from '@angular/router';
-import {tap} from 'rxjs/operators';
+import {tap} from 'rxjs';
 import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {NetService} from '@eg/core/net.service';

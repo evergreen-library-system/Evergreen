@@ -125,15 +125,14 @@ export class FundingSourceTransactionsDialogComponent
         this.applyCreditDialog.hiddenFieldsList = ['id', 'funding_source'];
         this.applyCreditDialog.fieldOrder = 'amount,note,effective_date,deadline_date';
         this.applyCreditDialog.open().subscribe(
-            result => {
+            { next: result => {
                 this.successString.current()
                     .then(str => this.toast.success(str));
                 grid.reload();
-            },
-            (error: unknown) => {
+            }, error: (error: unknown) => {
                 this.updateFailedString.current()
                     .then(str => this.toast.danger(str));
-            }
+            } }
         );
     }
 
@@ -147,15 +146,14 @@ export class FundingSourceTransactionsDialogComponent
         this.allocateToFundDialog.hiddenFieldsList = ['id', 'funding_source', 'allocator', 'create_time'];
         this.allocateToFundDialog.fieldOrder = 'fund,amount,note';
         this.allocateToFundDialog.open().subscribe(
-            result => {
+            { next: result => {
                 this.successString.current()
                     .then(str => this.toast.success(str));
                 grid.reload();
-            },
-            (error: unknown) => {
+            }, error: (error: unknown) => {
                 this.updateFailedString.current()
                     .then(str => this.toast.danger(str));
-            }
+            } }
         );
     }
 

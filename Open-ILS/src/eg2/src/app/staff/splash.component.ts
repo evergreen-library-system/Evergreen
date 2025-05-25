@@ -31,7 +31,7 @@ export class StaffSplashComponent implements OnInit {
         const tmpPortalEntries: any[][] = [];
         const wsAncestors = this.org.ancestors(this.auth.user().ws_ou(), true);
         this.pcrud.search('cusppe', {owner: wsAncestors}).subscribe(
-            item => {
+            { next: item => {
                 const page_col = item.page_col();
                 if (tmpPortalEntries[page_col] === undefined) {
                     tmpPortalEntries[page_col] = [];
@@ -43,9 +43,7 @@ export class StaffSplashComponent implements OnInit {
                 // by owner later because (page_col, col_pos) is not
                 // guaranteed to be unique
                 tmpPortalEntries[page_col][item.col_pos()].push(item);
-            },
-            (err: unknown) => {},
-            () => {
+            }, error: (err: unknown) => {}, complete: () => {
                 // find the first set of entries belonging to the
                 // workstation OU or one of its ancestors
                 let filteredPortalEntries: any[][] = [];
@@ -90,7 +88,7 @@ export class StaffSplashComponent implements OnInit {
                         this.portalHeaders[i] = undefined;
                     }
                 });
-            }
+            } }
         );
 
         if (this.router.url === '/staff/no_permission') {

@@ -1,9 +1,7 @@
-import {Component, EventEmitter, Input, Output, OnChanges, OnInit, ViewChild} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, ViewChild} from '@angular/core';
 import {Router} from '@angular/router';
-import {Observable, from, of} from 'rxjs';
-import {map, tap, switchMap, mergeMap} from 'rxjs/operators';
+import {Observable} from 'rxjs';
 import {AuthService} from '@eg/core/auth.service';
-import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
 import {FormatService} from '@eg/core/format.service';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {GridDataSource} from '@eg/share/grid/grid';
@@ -14,7 +12,7 @@ import {Pager} from '@eg/share/util/pager';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {NetService} from '@eg/core/net.service';
 import {OrgService} from '@eg/core/org.service';
-import {BibRecordService, BibRecordSummary} from '@eg/share/catalog/bib-record.service';
+import {BibRecordService} from '@eg/share/catalog/bib-record.service';
 
 // A filterable grid of A/T events for circ or ahr hook core types
 
@@ -103,20 +101,18 @@ export class ItemEventGridComponent implements OnChanges, OnInit {
                 'open-ils.actor.user.event.' + action + '.batch',
                 this.auth.token(), rows.map( event => event.id() )
             ).subscribe(
-                (res) => {
+                { next: (res) => {
                     if (this.evt.parse(res)) {
                         console.error('parsed error response', res);
                     } else {
                         console.log('success', res);
                     }
-                },
-                (err: unknown) => {
+                }, error: (err: unknown) => {
                     console.error('error', err);
-                },
-                () => {
+                }, complete: () => {
                     console.log('finis');
                     this.grid.reload();
-                }
+                } }
             );
         };
 

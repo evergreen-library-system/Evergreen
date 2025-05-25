@@ -31,6 +31,7 @@ export class SerialsReceiveComponent implements OnInit {
     @Input() sitems: IdlObject[];
     @Input() bibRecordId: number;
 
+    // eslint-disable-next-line @angular-eslint/no-output-native
     @Output() cancel = new EventEmitter<void>();
 
     barcodeModeOn = true;

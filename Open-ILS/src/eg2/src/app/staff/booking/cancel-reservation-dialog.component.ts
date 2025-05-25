@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Output, ViewChild} from '@angular/core';
-import {switchMap} from 'rxjs/operators';
+import {switchMap} from 'rxjs';
 import {AuthService} from '@eg/core/auth.service';
 import {NetService} from '@eg/core/net.service';
 import {ToastService} from '@eg/share/toast/toast.service';

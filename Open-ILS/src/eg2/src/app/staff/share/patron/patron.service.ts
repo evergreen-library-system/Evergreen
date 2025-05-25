@@ -1,13 +1,11 @@
 import {Injectable} from '@angular/core';
-import {tap} from 'rxjs/operators';
+import {tap, Observable} from 'rxjs';
 import {IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {OrgService} from '@eg/core/org.service';
 import {EventService} from '@eg/core/event.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {AuthService} from '@eg/core/auth.service';
-import {Observable} from 'rxjs';
-import {BarcodeSelectComponent} from '@eg/staff/share/barcodes/barcode-select.component';
 import {ServerStoreService} from '@eg/core/server-store.service';
 
 export class PatronStats {

@@ -1,17 +1,11 @@
 import {Component, ViewChild, Input, OnInit, AfterViewInit} from '@angular/core';
-import {Router, ActivatedRoute, ParamMap} from '@angular/router';
-import {Observable} from 'rxjs';
-import {concatMap, tap, finalize} from 'rxjs/operators';
-import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
+import {Observable, concatMap, tap, finalize} from 'rxjs';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
 import {OrgService} from '@eg/core/org.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {PermService} from '@eg/core/perm.service';
-import {ServerStoreService} from '@eg/core/server-store.service';
-import {PatronService} from '@eg/staff/share/patron/patron.service';
-import {PatronContextService} from './patron.service';
 import {ProgressInlineComponent} from '@eg/share/dialog/progress-inline.component';
 
 @Component({

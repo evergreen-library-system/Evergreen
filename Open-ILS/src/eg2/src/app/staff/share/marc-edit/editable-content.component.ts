@@ -1,14 +1,13 @@
-import {ElementRef, TemplateRef, Component, Input, Output, OnInit, OnDestroy,
-    ViewChild, EventEmitter, AfterViewInit, ViewEncapsulation} from '@angular/core';
-import {Subscription, from, Observable, Subject, merge, OperatorFunction} from 'rxjs';
-import {filter, debounceTime, distinctUntilChanged, map} from 'rxjs/operators';
+import {TemplateRef, Component, Input, OnInit, OnDestroy,
+    ViewChild, AfterViewInit, ViewEncapsulation} from '@angular/core';
+import {Subscription, from, Observable, filter} from 'rxjs';
 import {MarcRecord, MarcField, MarcSubfield} from './marcrecord';
 import {MarcEditContext, FieldFocusRequest, MARC_EDITABLE_FIELD_TYPE,
     TextUndoRedoAction} from './editor-context';
 import {StringComponent} from '@eg/share/string/string.component';
 import {TagTable} from './tagtable.service';
 import {ComboboxComponent, ComboboxEntry} from '@eg/share/combobox/combobox.component';
-import {NgbTypeahead, NgbTypeaheadModule} from '@ng-bootstrap/ng-bootstrap';
+import {NgbTypeahead} from '@ng-bootstrap/ng-bootstrap';
 
 /**
  * MARC Editable Content Component
