@@ -1,9 +1,8 @@
 /* eslint-disable no-case-declarations, no-magic-numbers */
-import {Injectable, Pipe, PipeTransform} from '@angular/core';
+import {inject, Injectable, InjectionToken, Pipe, PipeTransform} from '@angular/core';
 import {DatePipe, DecimalPipe, getLocaleDateFormat, getLocaleTimeFormat, getLocaleDateTimeFormat, FormatWidth} from '@angular/common';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
-import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {LocaleService} from '@eg/core/locale.service';
 import * as moment from 'moment-timezone';
@@ -13,6 +12,7 @@ import {DateUtil} from '@eg/share/util/date';
  * Format IDL vield values for display.
  */
 
+export const WS_ORG_TIMEZONE = new InjectionToken<string>('timezone from OpenSRF', {factory: () => OpenSRF.tz });
 declare var OpenSRF; // eslint-disable-line no-var
 
 export interface FormatParams {
@@ -31,7 +31,7 @@ export class FormatService {
 
     dateFormat = 'shortDate';
     dateTimeFormat = 'short';
-    wsOrgTimezone: string = OpenSRF.tz;
+    wsOrgTimezone: string = inject(WS_ORG_TIMEZONE);
     tzCache: {[orgId: number]: string} = {};
 
     constructor(
@@ -39,7 +39,6 @@ export class FormatService {
         private decimalPipe: DecimalPipe,
         private idl: IdlService,
         private org: OrgService,
-        private auth: AuthService,
         private locale: LocaleService
     ) {
 

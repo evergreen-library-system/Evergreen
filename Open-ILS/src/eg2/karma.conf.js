@@ -47,7 +47,6 @@ module.exports = function (config) {
     files: [
       '/openils/lib/javascript/md5.js',
       '/openils/lib/javascript/JSON_v1.js',
-      '/openils/lib/javascript/opensrf.js',
       '/openils/lib/javascript/opensrf_ws.js',
       // mock data for testing only
       'src/test_data/IDL2js.js',
