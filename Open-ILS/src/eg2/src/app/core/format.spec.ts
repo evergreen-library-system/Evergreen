@@ -8,12 +8,13 @@ import {PcrudService} from './pcrud.service';
 import {StoreService} from './store.service';
 import {OrgService} from './org.service';
 import {LocaleService} from './locale.service';
-import {FormatService} from './format.service';
+import {FormatService, WS_ORG_TIMEZONE} from './format.service';
 import {HatchService} from './hatch.service';
 import {SpyLocation} from '@angular/common/testing';
 import localeArJO from '@angular/common/locales/ar-JO';
 import localeCs from '@angular/common/locales/cs';
 import localeFrCA from '@angular/common/locales/fr-CA';
+import { TestBed } from '@angular/core/testing';
 
 describe('FormatService', () => {
 
@@ -46,14 +47,17 @@ describe('FormatService', () => {
         dbStoreService = new DbStoreService();
         orgService = new OrgService(dbStoreService, netService, authService, pcrudService);
         localeService = new LocaleService(location, null, pcrudService);
-        service = new FormatService(
-            datePipe,
-            decimalPipe,
-            idlService,
-            orgService,
-            authService,
-            localeService
-        );
+        TestBed.configureTestingModule({
+            providers: [
+                {provide: DatePipe, useValue: datePipe},
+                {provide: DecimalPipe, useValue: decimalPipe},
+                {provide: IdlService, useValue: idlService},
+                {provide: OrgService, useValue: orgService},
+                {provide: LocaleService, useValue: localeService},
+                {provide: WS_ORG_TIMEZONE, useValue: 'America/Chicago'},
+            ]
+        });
+        service = TestBed.inject(FormatService);
     });
 
     const initTestData = () => {
@@ -75,7 +79,7 @@ describe('FormatService', () => {
     it('should format a date', () => {
         initTestData();
         const str = service.transform({
-            value: new Date(2018, 6, 5),
+            value: Date.parse('2018-07-05T12:30:01.000-05:00'),
             datatype: 'timestamp',
         });
         expect(str).toBe('7/5/18');
@@ -84,7 +88,7 @@ describe('FormatService', () => {
     it('should format a date plus time', () => {
         initTestData();
         const str = service.transform({
-            value: new Date(2018, 6, 5, 12, 30, 1),
+            value: Date.parse('2018-07-05T12:30:01.000-05:00'),
             datatype: 'timestamp',
             datePlusTime: true
         });
