@@ -34,7 +34,6 @@ export class StaffNavComponent implements OnInit, OnDestroy {
     mfaAllowed: boolean;
     showAngularCirc = false;
     maxRecentPatrons = 1;
-    disable_links_newtabs = false;
 
     // Menu toggle
     isMenuCollapsed = true;
@@ -97,12 +96,6 @@ export class StaffNavComponent implements OnInit, OnDestroy {
             this.org.settings('ui.staff.max_recent_patrons')
                 .then(settings => this.maxRecentPatrons =
                 settings['ui.staff.max_recent_patrons'] ?? 1);
-
-            this.org.settings('ui.staff.disable_links_newtabs')
-                .then(settings => {
-                    this.disable_links_newtabs = Boolean(settings['ui.staff.disable_links_newtabs']) ?? false;
-                    this.setNewTabsPref(this.disable_links_newtabs);
-                });
 
             const darkModePreference = window.matchMedia('(prefers-color-scheme: dark)');
             darkModePreference.addEventListener('change', () => {
@@ -193,17 +186,6 @@ export class StaffNavComponent implements OnInit, OnDestroy {
             this.store.removeLocalItem('eg.ui.general.colormode');
         }
         this.setColorMode();
-    }
-
-    setNewTabsPref(disable_links_newtabs: boolean) {
-        // classname used in app.component.ts to dynamically remove target attributes
-        const staffContainer = document.getElementById('staff-content-container');
-        if (disable_links_newtabs) {
-            staffContainer.classList.add('user-pref-no-new-tabs');
-        }
-        else {
-            staffContainer.classList.remove('user-pref-no-new-tabs');
-        }
     }
 
     setLocale(locale: any) {

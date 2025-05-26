@@ -28,6 +28,7 @@ import {FileExportService} from '@eg/share/util/file-export.service';
 import {OfflineService} from '@eg/staff/share/offline.service';
 import {ItemLocationSelectModule} from '@eg/share/item-location-select/item-location-select.module';
 import { ScriptService } from '@eg/share/util/script.service';
+import {LinkTargetDirective} from '@eg/share/link-target/link-target.directive';
 
 /**
  * Imports the EG common modules and adds modules common to all staff UI's.
@@ -51,6 +52,7 @@ import { ScriptService } from '@eg/share/util/script.service';
         DatesInOrderValidatorDirective,
         PatronBarcodeValidatorDirective,
         AddedContentComponent,
+        LinkTargetDirective
     ],
     imports: [
         EgCommonModule,
@@ -80,6 +82,7 @@ import { ScriptService } from '@eg/share/util/script.service';
         DatesInOrderValidatorDirective,
         PatronBarcodeValidatorDirective,
         AddedContentComponent,
+        LinkTargetDirective
     ]
 })
 
