@@ -67,5 +67,10 @@
     <!-- content printed via the browser is inserted here for 
          DOM-ification prior to delivery to the printer -->
     <div id="print-div" eg-print-container></div>
+
+    <!-- global notice of opening in new tab for links' aria-describedby -->
+    <div id="link-opens-newtab" style="display: none;">
+      [% l('Opens in new tab') %]
+    </div>
   </body>
 </html>
