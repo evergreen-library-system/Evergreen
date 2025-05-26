@@ -1683,4 +1683,88 @@ https://stackoverflow.com/questions/24764802/angular-js-automatically-focus-inpu
     }
 
     return service;
-}]);
+}])
+
+/**
+ * eglinkTargetService: manage ui.staff.disable_links_newtabs
+ */
+.factory('egLinkTargetService', ['egCore', function(egCore) {
+    const newTabsDisabledKey = 'ui.staff.disable_links_newtabs';
+
+    let initSettingLoaded = false;
+    let firstSharedResponse = null;
+
+    function getSetting() {
+        return egCore.hatch.getItem(newTabsDisabledKey);
+    }
+
+    function disableNewTabs() {
+        egCore.hatch.setItem('ui.staff.disable_links_newtabs', true);
+    }
+
+    function enableNewTabs() {
+        egCore.hatch.removeItem('ui.staff.disable_links_newtabs');
+    }
+
+    function newTabsDisabled() {
+        // share first Promise to avoid multiple server requests
+        if (!initSettingLoaded) {
+            if (!firstSharedResponse) {
+                firstSharedResponse = getSetting().finally(() => {
+                    initSettingLoaded = true;
+                });
+            }
+            return firstSharedResponse;
+        }
+
+        // subsequent promises are from cache
+        return getSetting();
+    }
+
+    return { disableNewTabs, enableNewTabs, newTabsDisabled };
+}])
+
+/**
+ * <a target="_blank">...</a>
+ *
+ * - removes target attribute from links that open in a new tab
+ *   if the setting ui.staff.disable_links_newtabs is true
+ *
+ * - adds aria-describedby="link-opens-newtab" to links that
+ *   open in a new tab
+ */
+.directive('target', ['egLinkTargetService',
+    function(egLinkTargetService) {
+        const NEW_TAB_DESCRIBER = 'link-opens-newtab';
+        const SAME_TAB_TARGETS  = new Set([null, '', '_self', '_parent', '_top']);
+
+        function addNewTabDescriber(elem) {
+            const describedby = elem.attr('aria-describedby');
+            if (!describedby) {
+                elem.attr('aria-describedby', NEW_TAB_DESCRIBER);
+                return;
+            }
+
+            const describedbyIds = new Set(describedby.split(/\s+/));
+            describedbyIds.add(NEW_TAB_DESCRIBER);
+            elem.attr('aria-describedby', Array.from(describedbyIds).join(' '));
+        }
+
+        return {
+            restrict: 'A',
+            link: function(_, elem, attrs) {
+                if (elem.prop('tagName') !== 'A') { return; }
+                if (SAME_TAB_TARGETS.has(attrs.target)) { return; }
+
+                egLinkTargetService.newTabsDisabled()
+                    .then(disabled => {
+                        if (disabled) {
+                            elem.attr('target', null);
+                        } else {
+                            addNewTabDescriber(elem);
+                        }
+                    });
+            }
+        };
+    }
+]);

@@ -169,8 +169,8 @@ function($q , $timeout , $location , egCore , egConfirmDialog) {
 
 
 .controller('SplashCtrl',
-       ['$scope','$window','$location','egCore','egConfirmDialog',
-function($scope , $window , $location , egCore , egConfirmDialog) {
+       ['$scope','$window','$location','egCore','egConfirmDialog', 'egLinkTargetService',
+function($scope , $window , $location , egCore , egConfirmDialog, egLinkTargetService) {
 
     egCore.hatch.getItem('eg.audio.disable').then(function(val) {
         $scope.disable_sound = val;
@@ -184,7 +184,7 @@ function($scope , $window , $location , egCore , egConfirmDialog) {
         $scope.grid_density = val;
     });
 
-    egCore.hatch.getItem('ui.staff.disable_links_newtabs').then(function(val) {
+    egLinkTargetService.newTabsDisabled().then(function(val) {
         $scope.disable_links_newtabs = val;
     });
 
@@ -215,9 +215,9 @@ function($scope , $window , $location , egCore , egConfirmDialog) {
 
     $scope.apply_disable_links_newtabs = function() {
         if ($scope.disable_links_newtabs) {
-            egCore.hatch.setItem('ui.staff.disable_links_newtabs', true);
+            egLinkTargetService.disableNewTabs();
         } else {
-            egCore.hatch.removeItem('ui.staff.disable_links_newtabs');
+            egLinkTargetService.enableNewTabs();
         }
     }
 
