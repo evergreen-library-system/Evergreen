@@ -227,8 +227,8 @@ function($scope,  $q,  $routeParams,  egCore,  egUser,  patronSvc,
                 hold : egCore.idl.toHash(item.hold),
                 copy : egCore.idl.toHash(item.copy),
                 volume : egCore.idl.toHash(item.volume),
-                title : item.mvr.title(),
-                author : item.mvr.author()
+                title : item.hold.title,
+                author : item.hold.author
             });
         });
 
