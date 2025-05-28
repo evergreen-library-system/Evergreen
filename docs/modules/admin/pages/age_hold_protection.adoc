@@ -16,6 +16,7 @@ In addition to time period, you can set the proximity  value to define which org
 * "1" allows holds where pickup library = owning library, parent, and child organizational units
 * "2" allows holds where pickup library = owning library, parent, child, and/or sibling organizational units
 
+[WARNING]
 Age protection only applies to individual item records. You cannot configure age protection rules in hold policies.
 
 == Active date display in OPAC ==
