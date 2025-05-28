@@ -1,0 +1,15 @@
+== Permissions for Hard Due Dates ==
+
+Hard due date and hard due date values now have their own permission sets. You
+will need to add these new permissions to any of your users/permission groups
+for continuity of user permission on the Hard Due date interface.
+
+The new permissions are:
+
+* CREATE_HARD_DUE_DATE
+* UPDATE_HARD_DUE_DATE
+* DELETE_HARD_DUE_DATE
+* CREATE_HARD_DUE_DATE_VALUE
+* UPDATE_HARD_DUE_DATE_VALUE
+* DELETE_HARD_DUE_DATE_VALUE
+

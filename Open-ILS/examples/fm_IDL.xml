@@ -4018,10 +4018,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
-				<create permission="CREATE_HARD_DUE_DATE CREATE_CIRC_DURATION" context_field="owner"/>
+				<create permission="CREATE_HARD_DUE_DATE" context_field="owner"/>
 				<retrieve/>
-				<update permission="UPDATE_HARD_DUE_DATE UPDATE_CIRC_DURATION" context_field="owner"/>
-				<delete permission="DELETE_HARD_DUE_DATE DELETE_CIRC_DURATION" context_field="owner"/>
+				<update permission="UPDATE_HARD_DUE_DATE" context_field="owner"/>
+				<delete permission="DELETE_HARD_DUE_DATE" context_field="owner"/>
 			</actions>
 		</permacrud>
 	</class>
@@ -4038,14 +4038,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
-				<create permission="CREATE_HARD_DUE_DATE_VALUE CREATE_CIRC_DURATION">
+				<create permission="CREATE_HARD_DUE_DATE_VALUE">
 					<context link="hard_due_date" field="owner"/>
 				</create>
 				<retrieve/>
-				<update permission="UPDATE_HARD_DUE_DATE_VALUE UPDATE_CIRC_DURATION">
+				<update permission="UPDATE_HARD_DUE_DATE_VALUE">
 					<context link="hard_due_date" field="owner"/>
 				</update>
-				<delete permission="DELETE_HARD_DUE_DATE_VALUE DELETE_CIRC_DURATION">
+				<delete permission="DELETE_HARD_DUE_DATE_VALUE">
 					<context link="hard_due_date" field="owner"/>
 				</delete>
 			</actions>
