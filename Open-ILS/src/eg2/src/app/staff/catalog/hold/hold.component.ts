@@ -490,7 +490,11 @@ export class HoldComponent implements OnInit {
             const name = setting.name();
             let value = setting.value();
 
-            if (value === '' || value === null || value === '""') { return; }
+            // Exclude hold notification from empty quote check because
+            // a user may wish to have no hold notification options which
+            // is stored as '""'
+            if (value === '' || value === null || 
+                (value === '""' && name != 'opac.hold_notify' )) { return; }
 
             // When fleshing 'settings' on the actor.usr object,
             // we're grabbing the raw JSON values.
