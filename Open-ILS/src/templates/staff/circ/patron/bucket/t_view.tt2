@@ -39,6 +39,10 @@ progress {
   <eg-grid-menu-item label="[% l('Batch modify statistical categories') %]"
     handler="modifyStatcats" standalone="true"></eg-grid-menu-item>
 
+
+  <eg-grid-menu-item label="[% l('Batch create notes') %]"
+    handler="createNote" standalone="true"></eg-grid-menu-item>
+
   <eg-grid-action label="[% l('Individually Edit Selected Users') %]" 
     handler="spawnUserEdit"></eg-grid-action>
   <eg-grid-action label="[% l('Remove Selected Users from Bucket') %]" 

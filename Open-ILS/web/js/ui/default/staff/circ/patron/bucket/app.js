@@ -302,9 +302,9 @@ function($scope,  $routeParams,  bucketSvc , egGridDataProvider,   egCore , ngTo
 
 .controller('ViewCtrl',
        ['$scope','$q','$routeParams','$timeout','$window','$uibModal','bucketSvc','egCore','egUser',
-        'egConfirmDialog','egPerm','ngToast','$filter',
+        'egConfirmDialog','egPerm','ngToast','$filter', 'egCirc',
 function($scope,  $q , $routeParams , $timeout , $window , $uibModal , bucketSvc , egCore , egUser ,
-         egConfirmDialog , egPerm , ngToast , $filter) {
+         egConfirmDialog , egPerm , ngToast , $filter, egCirc) {
 
     $scope.setTab('view');
     $scope.bucketId = $routeParams.id;
@@ -402,6 +402,9 @@ function($scope,  $q , $routeParams , $timeout , $window , $uibModal , bucketSvc
         });
     }
 
+    $scope.createNote = function() {
+        egCirc.batch_create_note($scope.bucketId);
+    }
 
     function drawBucket() {
         return bucketSvc.fetchBucket($scope.bucketId).then(

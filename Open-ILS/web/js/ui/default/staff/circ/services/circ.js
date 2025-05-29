@@ -2213,13 +2213,7 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
         };
     }
 
-    service.create_note = function(user_id) {
-        return $uibModal.open({
-            templateUrl: './circ/share/t_new_message_dialog',
-            backdrop: 'static',
-            controller: 
-                   ['$scope','$uibModalInstance','allPenalties','goodOrgs',
-            function($scope , $uibModalInstance , allPenalties , goodOrgs) {
+    function init_note($scope , $uibModalInstance , allPenalties , goodOrgs) {
                 $scope.focusNote = true;
                 $scope.penalties = allPenalties.filter(
                     function(p) { return p.id() > 100 || p.id() == 20 || p.id() == 21 || p.id() == 25; });
@@ -2263,7 +2257,14 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
                         });
                     }
                 });
-            }],
+    }
+
+    service.create_note = function(user_id) {
+        return $uibModal.open({
+            templateUrl: './circ/share/t_new_message_dialog',
+            backdrop: 'static',
+            controller:
+                   ['$scope','$uibModalInstance','allPenalties','goodOrgs',init_note],
             resolve : {
                 allPenalties : service.get_all_penalty_types,
                 goodOrgs : egCore.perm.hasPermAt('UPDATE_USER', true)
@@ -2291,6 +2292,42 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
                     'open-ils.actor',
                     'open-ils.actor.user.note.apply',
                     egCore.auth.token(), pen, msg
+                );
+            }
+        );
+    }
+
+    service.batch_create_note = function(container_id) {
+        return $uibModal.open({
+            templateUrl: './circ/share/t_new_message_dialog',
+            backdrop: 'static',
+            controller:
+                   ['$scope','$uibModalInstance','allPenalties','goodOrgs',init_note],
+            resolve : {
+                allPenalties : service.get_all_penalty_types,
+                goodOrgs : egCore.perm.hasPermAt('UPDATE_USER', true)
+            }
+        }).result.then(
+            function(args) {
+                var pen = new egCore.idl.ausp();
+                var msg = new egCore.idl.aum();
+                msg.pub(args.pub);
+                msg.title(args.title);
+                msg.message(args.note ? args.note : '');
+                pen.org_unit(args.org.id());
+                if (args.initials) msg.message((args.note ? args.note : '') + ' [' + args.initials + ']');
+                if (args.custom_penalty) {
+                    pen.standing_penalty(args.custom_penalty);
+                } else {
+                    pen.standing_penalty(args.penalty);
+                }
+                pen.staff(egCore.auth.user().id());
+                pen.set_date('now');
+
+                return egCore.net.request(
+                    'open-ils.actor',
+                    'open-ils.actor.container.user.batch_create_message',
+                    egCore.auth.token(), container_id, pen, msg
                 );
             }
         );

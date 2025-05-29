@@ -1644,6 +1644,127 @@ __PACKAGE__->register_method(
     }
 );
 
+sub batch_create_message {
+    my $self = shift;
+    my $client = shift;
+    my $ses = shift;
+    my $c_id = shift;
+    my $pen = shift;
+    my $msg = shift;
+
+    my $class = 'user';
+    my $max = 0;
+    my $count = 0;
+    my $stage = 0;
+
+    my $e = new_editor(xact=>1, authtoken=>$ses);
+    return $e->die_event unless $e->checkauth;
+    $client->respond({ ord => $stage++, stage => 'CONTAINER_BATCH_UPDATE_PERM_CHECK' });
+    return $e->die_event unless $e->allowed('CONTAINER_BATCH_UPDATE');
+
+    my $meth = 'retrieve_' . $ctypes{$class};
+    my $bkt = $e->$meth($c_id) or return $e->die_event;
+
+    unless($bkt->owner eq $e->requestor->id) {
+        $client->respond({ ord => $stage++, stage => 'CONTAINER_PERM_CHECK' });
+        my $owner = $e->retrieve_actor_user($bkt->owner)
+            or return $e->die_event;
+        return $e->die_event unless (
+            $e->allowed('VIEW_CONTAINER', $bkt->owning_lib) || $e->allowed('VIEW_CONTAINER', $owner->home_ou)
+        );
+    }
+
+    $meth = 'search_' . $ctypes{$class} . '_item';
+    my $contents = $e->$meth({bucket => $c_id});
+
+    if ($self->{perms}) {
+        $max = scalar(@$contents);
+        $client->respond({ ord => $stage, max => $max, count => 0, stage => 'ITEM_PERM_CHECK' });
+        for my $item (@$contents) {
+            $count++;
+            $meth = 'retrieve_' . $itypes{$class};
+            my $field = 'target_'.$ttypes{$class};
+            my $obj = $e->$meth($item->$field);
+
+            for my $perm_field (keys %{$self->{perms}}) {
+                my $perm_def = $self->{perms}->{$perm_field};
+                my ($pwhat,$pwhere) = ([split ' ', $perm_def], $perm_field);
+                for my $p (@$pwhat) {
+                    $e->allowed($p, $obj->$pwhere) or return $e->die_event;
+                }
+            }
+            $client->respond({ ord => $stage, max => $max, count => $count, stage => 'ITEM_PERM_CHECK' });
+        }
+        $stage++;
+    }
+
+    my @users = map { $_->target_user } @$contents;
+
+    $max = scalar(@users);
+    $count = 0;
+    $client->respond({ ord => $stage, max => $max, count => $count, stage => 'NOTE_ADD' });
+
+    my $chunk = int($max / 10) || 1;
+    for my $item (@$contents) {
+        my $aum = Fieldmapper::actor::usr_message->new;
+
+        # copy the message created in
+        # the interface for the current user.
+        $aum->create_date('now');
+        $aum->sending_lib($e->requestor->ws_ou);
+        $aum->title($msg->title);
+        $aum->usr($item->target_user);
+        $aum->message($msg->message);
+        $aum->pub($msg->pub);
+        $aum->isnew(1);
+
+        $e->create_actor_usr_message($aum) or return $e->die_event;
+
+        # create the penalty associated
+        # with the new message.
+        #(Silent notes have silent penalties)
+        my $ausp = Fieldmapper::actor::user_standing_penalty->new;
+
+        $ausp->org_unit($pen->org_unit);
+        $ausp->standing_penalty($pen->standing_penalty);
+        $ausp->usr_message($aum->id);
+        $ausp->staff($pen->staff);
+        $ausp->set_date($pen->set_date);
+        $ausp->usr($item->target_user);
+
+        $e->create_actor_user_standing_penalty($ausp) or return $e->die_event;
+
+        $count++;
+        $client->respond({ ord => $stage, max => $max, count => $count, stage => 'MESSAGE_CREATE' })
+            unless ($count % $chunk);
+    }
+
+    $e->commit;
+
+    return { stage => 'COMPLETE' };
+}
+
+__PACKAGE__->register_method(
+    method  => "batch_create_message",
+    api_name    => "open-ils.actor.container.user.batch_create_message",
+    ctype       => 'user',
+    perms       => {
+            home_ou     => 'UPDATE_USER', # field -> perm means "test this perm with field as context OU", both old and new
+    },
+    signature => {
+        desc => 'Creates a message for each user in a bucket',
+        params => [{
+            desc => 'Session key', type => 'string',
+            desc => 'User container id',
+            desc => 'Usr standing penalty item. This will be duplicated for each user in the bucket.',
+            desc => 'Usr message item. This will be duplicated for each user in the bucket.',
+        }],
+        return => {
+            desc => 'Object with the structure { stage => "stage string", max => max_for_stage, count => count_in_stage }',
+            type => 'hash'
+        }
+    }
+);
 
 sub apply_rollback {
     my $self = shift;

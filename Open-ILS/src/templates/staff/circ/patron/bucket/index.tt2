@@ -10,6 +10,7 @@
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/services/ui.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/services/file.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/services/user-bucket.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/circ/services/circ.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/circ/patron/bucket/app.js"></script>
 
 <script>
@@ -23,6 +24,7 @@ angular.module('egCoreMod').run(['egStrings', function(s) {
   s.FIELDSET_GROUP_CREATE = "[% l('Fieldset group creation') %]";
   s.FIELDSET_CREATE = "[% l('Fieldset creation') %]";
   s.FIELDSET_EDITS_CREATE = "[% l('Fieldset change creation') %]";
+  s.MESSAGE_CREATE = "[% l('Note creation') %]";
   s.CONSTRUCT_QUERY = "[% l('Query construction') %]";
   s.APPLY_EDITS = "[% l('Applying edits') %]";
   s.COMPLETE = "[% l('Complete') %]";

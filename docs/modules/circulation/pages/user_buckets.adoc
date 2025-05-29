@@ -84,3 +84,9 @@ the processing stage and percent of completion.
 As a batch process, rather than a direct edit, this mechanism explicitly skips
 processing of Action/Trigger event definitions for user update.
 
+
+== Adding User Messages ==
+
+All users in the bucket can have messages created for them in bulk. This uses the same
+interface as on the patron pages. Notes, alerts and blocks can all be created with
+varying penalty types and depths.
