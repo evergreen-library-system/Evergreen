@@ -44,7 +44,7 @@
             <img id='search-submit-spinner-1' src='/opac/images/progressbar_green.gif[% ctx.cache_key %]'
                 class='hidden' alt="[% l('Search in progress icon') %]"/>
 <a href="[% mkurl(ctx.opac_root _ '/advanced', {$loc_name => loc_value}, 1) %]"
-            class="btn btn-deny float-end"><i class="fas fa-ban"></i> [% l('Clear Form') %]</a>
+            class="btn btn-deny float-end"><i class="fas fa-circle-xmark"></i> [% l('Clear Form') %]</a>
 	</div>
     </div>
     <div class="addtl-search-filters">
@@ -189,6 +189,6 @@
         </span>
 
         <a href="[% mkurl(ctx.opac_root _ '/advanced', {$loc_name => loc_value}, 1) %]"
-            class="btn btn-deny float-end"><i class="fas fa-ban"></i> [% l('Clear Form') %]</a>
+            class="btn btn-deny float-end"><i class="fas fa-circle-xmark"></i> [% l('Clear Form') %]</a>
     </div>
 </form>

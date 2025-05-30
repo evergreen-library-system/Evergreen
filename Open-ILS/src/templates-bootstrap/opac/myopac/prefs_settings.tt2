@@ -16,7 +16,7 @@
                         <br/>
                         [% l('Are you sure you wish to continue?') %]
                         <br>
-                        <a href="[% mkurl() %]" class="btn btn-deny"><i class="fas fa-ban"></i> [% l('Cancel') %]</a>
+                        <a href="[% mkurl() %]" class="btn btn-deny"><i class="fas fa-circle-xmark"></i> [% l('Cancel') %]</a>
                         <input type='hidden' name='history_delete_confirmed' value='1'/>
                         <button type="submit" class="btn btn-confirm"><i class="fas fa-check"></i> [% l('Confirm') %]</button>
                     </p>

@@ -58,7 +58,7 @@
             </div>
             [% END %]
             <button type="submit" class="btn btn-confirm"><i class="fas fa-plus-square" aria-hidden="true"></i> [% l('Save New List') %]</button>
-            <button type="reset" class="btn btn-deny" ><i class="fas fa-ban" aria-hidden="true"></i> [% l('Cancel') %]</button>
+            <button type="reset" class="btn btn-deny" ><i class="fas fa-circle-xmark" aria-hidden="true"></i> [% l('Cancel') %]</button>
         </form>
     </div>
 
