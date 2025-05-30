@@ -134,13 +134,10 @@ label.btn-outline-success:active {
     border-radius: .25em;
 }
 
-.scko-button:hover,
-.scko-button:focus,
-.scko-button:active,
-.btn-check-label:hover,
-.btn-check-label:focus,
-.btn-check-label:active {
-    color: #F8E473;
+.btn.scko-button {
+    --bs-btn-active-color: #F8E473;
+    --bs-btn-hover-color: #F8E473;
+    --primary-hover: #F8E473;
 }
 
 label.btn-check-label.active:before {
