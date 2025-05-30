@@ -3,7 +3,7 @@
 
 # We need to ignore some filters in our count
 
-fignore = ['lasso','location_groups','site','core_limit','limit','badge_orgs','badges','estimation_strategy','depth'];
+fignore = ['lasso','location_groups','site','core_limit','limit','badge_orgs','badges','estimation_strategy','depth','sort','skip_check','check_limit'];
 fcount = 0;
 FOR f IN ctx.query_struct.filters;
     IF fignore.grep('^' _ f.name _ '$').size;
@@ -165,23 +165,23 @@ END;
         </form>
     [% END %]
     [% IF fcount > 0 %]
-      <div class="refine_search result_block_visible">
-        <span id="filter_hits">[ <a href="#" onclick="getAdvLimits();return false;">[% l('[quant,_1,filter,filters] applied', fcount) %]</a> ]</span>
-      </div>
-    [% END %]
-    [% IF ctx.query_struct.filters.size > 0 %]
-        [% stuff = INCLUDE 'opac/parts/result/adv_filter.tt2' %]
-        [% IF stuff %]
-        <h3 class="sr-only">[% l('Search Results filters') %]</h3>
-        <div class="d-flex justify-content-center">
-        <div id="adv_filter_results_block" class="adv_filter_results_hide">
-        <div class="adv_filter_results_block_label">[% l('Filtered by:') %]</div>
+      <div class="refine_search">
+        [% IF fcount == 1 %]
+            <h2 class="h3">[% l('[_1] filter applied', fcount) %]</h2>
             <div class="d-inline-flex p-2">
-            [% stuff %]
+                [% INCLUDE 'opac/parts/result/adv_filter.tt2' %]
             </div>
-        </div>
-        </div>
+        [% ELSE %]
+            <details id="filter_hits">
+                <summary><h3>[% l('[_1] filters applied', fcount) %]</h3></summary>
+                <div class="adv_filter_results_block_label">[% l('Filtered by:') %]</div>
+                    <div class="adv_filters_applied">
+                    [% INCLUDE 'opac/parts/result/adv_filter.tt2' %]
+                    </div>
+                </div>
+            </details>
         [% END %]
+      </div>
     [% END %]
     [% IF ctx.search_summary.suggestions.one_class_multi_term %]
     <div class="result_block_visible refine_search" id="did_you_mean">
@@ -193,22 +193,6 @@ END;
         [% END %]</ul>
     </div>
     [% END %]
-
-    <script>
-    function getAdvLimits() {
-        var AdvLimitsClass = document.getElementById('adv_filter_results_block').classList;
-        if (AdvLimitsClass.contains("adv_filter_results_hide")) {
-           AdvLimitsClass.remove("adv_filter_results_hide");
-        } else {
-           AdvLimitsClass.add("adv_filter_results_hide");
-        }
-        if (AdvLimitsClass.contains("adv_filter_results_show")) {
-           AdvLimitsClass.remove("adv_filter_results_show");
-        } else {
-           AdvLimitsClass.add("adv_filter_results_show");
-        }
-     }
-     </script>
     <!-- Canonicalized query:
 
     [% ctx.canonicalized_query | html %]
