@@ -96,7 +96,7 @@ function build_stripe_form() {
   </div>
   <div id="payment_actions">
     <button type="submit" id="payment_submit" class="btn btn-confirm"><i class="fas fa-arrow-circle-right"></i> [% l('Submit Payment') %]</button>
-    <a href="[% mkurl(ctx.opac_root _ '/myopac/main', {}, 1) %]" class="btn btn-deny"><i class="fas fa-ban"></i> [% l('Cancel') %]</a>
+    <a href="[% mkurl(ctx.opac_root _ '/myopac/main', {}, 1) %]" class="btn btn-deny"><i class="fas fa-circle-xmark"></i> [% l('Cancel') %]</a>
   </div>
 
   [% INCLUDE "opac/parts/myopac/main_refund_policy.tt2" %]

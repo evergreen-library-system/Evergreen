@@ -8,7 +8,7 @@
         [% END; END %]
 
         <button type="submit" class="btn btn-confirm"><i class="fas fa-check"></i> [% l('Confirm') %]</button>
-        <a href="[% mkurl(ctx.opac_root _ '/myopac/main#selected_fines', {}, 1) %]" class="btn btn-deny"><i class="fas fa-ban"></i> [% l('Cancel') %]</a>
+        <a href="[% mkurl(ctx.opac_root _ '/myopac/main#selected_fines', {}, 1) %]" class="btn btn-deny"><i class="fas fa-circle-xmark"></i> [% l('Cancel') %]</a>
     <p class="my-2"><big>[% l("Are you sure you are ready to charge ") %]
          <strong> [% l("[_1] ", money(ctx.fines.balance_owed))%]</strong>
         [% l("to your credit card?") %]</big></p>
