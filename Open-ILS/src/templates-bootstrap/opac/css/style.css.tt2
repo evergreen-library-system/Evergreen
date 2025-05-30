@@ -603,7 +603,7 @@ a {
 }
 
 #search-wrapper h1,
-#search-wrapper h2 {
+#search-wrapper h2:not(h2.h3) {
     text-align: center;
 }
 
@@ -978,6 +978,10 @@ for now until a better color is picked - if needed.
     
     padding: 0;
     margin-top: 0;
+}
+
+.adv_filters_applied {
+    display: inline-flex;
 }
 
 .checkbox_col {
