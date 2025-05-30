@@ -123,7 +123,7 @@
                            <strong>[% money(ctx.fines.balance_owed) %]</strong><br />
 
                          <button type="submit" id="payment_submit" class="btn btn-confirm"><i class="fas fa-arrow-circle-right"></i> [% l('Next') %]</button>
-                         <a href="[% mkurl(ctx.opac_root _ '/myopac/main', {}, 1) %]" class="btn btn-deny"><i class="fas fa-ban"></i> [% l('Cancel') %]</a>
+                         <a href="[% mkurl(ctx.opac_root _ '/myopac/main', {}, 1) %]" class="btn btn-deny"><i class="fas fa-circle-xmark"></i> [% l('Cancel') %]</a>
                          <br/>
                          </div>
                    </td>

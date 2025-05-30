@@ -390,7 +390,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <div class="py-3">
         <button id="place_hold_submit" type="submit" name="submit"  class="btn btn-confirm" ><i class="fas fa-check"></i> [% l('Submit') %]</button>
         [% END # some_holds_allowed %]
-        <button type="reset" name="cancel" onclick="window.location='[% redirect | html %]'" id="holds_cancel" class="btn btn-deny"><i class="fas fa-ban" aria-hidden="true"></i> [% l('Cancel') %]</button>
+        <button type="reset" name="cancel" onclick="window.location='[% redirect | html %]'" id="holds_cancel" class="btn btn-deny"><i class="fas fa-circle-xmark" aria-hidden="true"></i> [% l('Cancel') %]</button>
         </div>
     </form>
 </div>

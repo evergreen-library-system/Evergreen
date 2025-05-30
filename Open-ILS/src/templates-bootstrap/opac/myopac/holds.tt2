@@ -25,7 +25,7 @@
                     <div>
             <button name="action" class="btn btn-action my-2" id="suspend" value="suspend" type="submit"><i class="fas fa-hand-paper" aria-hidden="true"></i> [% l("Suspend") %]</button>
             <button name="action" class="btn btn-opac my-2" id="activate" value="activate" type="submit"><i class="fas fa-play" aria-hidden="true"></i> [% l("Activate") %] </button>
-            <button name="action" class="btn btn-danger my-2" id="cancel" value="cancel" type="submit" onclick="return confirm('[% l("Are you sure you wish to cancel the selected hold(s)?") %]');"><i class="fas fa-ban" aria-hidden="true"></i> [% l("Cancel") %]</button>
+            <button name="action" class="btn btn-danger my-2" id="cancel" value="cancel" type="submit" onclick="return confirm('[% l("Are you sure you wish to cancel the selected hold(s)?") %]');"><i class="fas fa-circle-xmark" aria-hidden="true"></i> [% l("Cancel") %]</button>
                  <p class="my-2">
                     [% IF CGI.param("available") -%]
                     <a href="[% mkurl('holds', {}, ['limit','offset','available']) %]">[% l('Show all holds') %]</a> |

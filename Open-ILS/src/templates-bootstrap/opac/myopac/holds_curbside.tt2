@@ -145,7 +145,7 @@
                        <i class="fas fa-bell" aria-hidden="true"></i> [% l('Alert staff of your arrival') %]
                     </button><br/>
                     <button type="submit" name="cs_action" value="cancel" class="btn btn-sm btn-danger" style="margin: .25em;">
-                       <i class="fas fa-ban" aria-hidden="true"></i> [% l('Cancel') %]
+                       <i class="fas fa-circle-xmark" aria-hidden="true"></i> [% l('Cancel') %]
                     </button>
                 [% ELSIF appointment.arrival %]
                     [% l('Staff have been notified of your arrival.') %]<br/>
@@ -155,7 +155,7 @@
                     </button><br/>
                     -->
                     <button type="submit" name="cs_action" value="cancel" class="btn btn-sm btn-danger" style="margin: .25em;">
-                       <i class="fas fa-ban" aria-hidden="true"></i> [% l('Cancel') %]
+                       <i class="fas fa-circle-xmark" aria-hidden="true"></i> [% l('Cancel') %]
                     </button>
                 [% ELSIF appointment.slot %]
                     <button type="submit" name="cs_action" value="arrive" class="btn btn-sm btn-action" style="margin: .25em;" [% IF disable_arrival_button %]disabled="disabled"[% END %]>
@@ -165,7 +165,7 @@
                        <i class="fas fa-edit" aria-hidden="true"></i> [% l('Update') %]
                     </button><br/>
                     <button type="submit" name="cs_action" value="cancel" class="btn btn-sm btn-danger" style="margin: .25em;">
-                       <i class="fas fa-ban" aria-hidden="true"></i> [% l('Cancel') %]
+                       <i class="fas fa-circle-xmark" aria-hidden="true"></i> [% l('Cancel') %]
                     </button>
                 [% ELSIF cs_date %]
                     <button type="submit" name="cs_action" value="save" class="btn btn-sm btn-action" style="margin: .25em;">
