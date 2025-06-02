@@ -158,8 +158,6 @@ const routes: Routes = [{
         orgFieldsDefaultingToContextOrg: 'owner',
         fieldOptions: {owner: {persistKey: 'admin.stat_cat.owner' } },
         contextOrgSelectorPersistKey: 'admin.item_stat_cat.main_org_selector',
-        disableEdit: true,
-        disableDelete: true,
         recordLabel: $localize `Statistical Category Entry - Item`,
         hideClearFilters: true,
         fieldOrder: 'stat_cat,value,owner'}]
@@ -189,8 +187,6 @@ const routes: Routes = [{
         orgFieldsDefaultingToContextOrg: 'owner',
         fieldOptions: {owner: {persistKey: 'admin.stat_cat.owner' } },
         contextOrgSelectorPersistKey: 'admin.patron_stat_cat.main_org_selector',
-        disableEdit: true,
-        disableDelete: true,
         recordLabel: $localize `Statistical Category Entry - Patron`,
         hideClearFilters: true,
         fieldOrder: 'stat_cat,value,owner'}]

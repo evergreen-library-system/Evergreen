@@ -1,0 +1,86 @@
+BEGIN;
+
+SELECT plan(10);
+
+--Make sure our triggers exist
+SELECT has_trigger('actor', 'stat_cat_entry', 'actor_stat_cat_entry_update_trigger', 'Has stat_cat_entry update trigger');
+SELECT has_trigger('actor', 'stat_cat_entry', 'actor_stat_cat_entry_delete_trigger', 'Has stat_cat_entry delete trigger');
+
+-- Create a test patron
+INSERT INTO actor.usr (usrname, first_given_name, family_name, profile, passwd, ident_type, home_ou)
+VALUES ('douglasdouglas', 'douglas', 'douglasson', 42, 'hunter2', 1, 4);
+-- Did the test patron create?
+SELECT isnt_empty( 
+    'SELECT profile FROM actor.usr WHERE usrname = ''douglasdouglas'' ' ,
+    'Can create a patron'
+);
+
+SELECT id INTO TEMP TABLE tu
+FROM actor.usr
+WHERE usrname = 'douglasdouglas';
+
+-- Create a test stat cat
+INSERT INTO actor.stat_cat (owner, name)
+VALUES ('4', 'pgTap stat_cat');
+-- Did the stat cat create?
+SELECT isnt_empty(
+    'SELECT * FROM actor.stat_cat WHERE name = ''pgTap stat_cat''',
+    'Can create a patron stat cat'
+);
+
+-- Remember the id of the stat cat we just made for later
+SELECT sc.id AS stat_cat_id INTO TEMP TABLE sc
+FROM actor.stat_cat sc WHERE name = 'pgTap stat_cat';
+
+-- Create some test stat_cat_entries
+INSERT INTO actor.stat_cat_entry (stat_cat, owner, value)
+SELECT tv.stat_cat_id, v.owner, v.value
+FROM sc tv, 
+(VALUES
+    (1, 'Beef'),
+    (1, 'Borf'),
+    (1, 'Boeuf')
+) AS v (owner, value);
+-- Did the stat_cat_entries create?
+SELECT results_eq (
+    'SELECT value FROM actor.stat_cat_entry WHERE owner = 1 ORDER BY value ASC',
+    ARRAY['Beef', 'Boeuf', 'Borf'], 
+    'Can add 3 stat_cat_entries'
+);
+
+--Make sure adding a duplicate entry fails
+SELECT throws_ok(
+    'INSERT INTO actor.stat_cat_entry (stat_cat, owner, value)
+    SELECT tv.stat_cat_id, 1, ''Beef''
+    FROM sc tv',
+    23505,
+    'duplicate key value violates unique constraint "sce_once_per_owner"',
+    'Can''t add duplicate stat cat entry'
+);
+
+--Give our new patron the one of the stat_cat_entry
+INSERT INTO actor.stat_cat_entry_usr_map (stat_cat, target_usr, stat_cat_entry)
+SELECT sc.stat_cat_id, tu.id, 'Beef'
+FROM sc, tu;
+--Make sure we added the stat_cat_entry
+PREPARE find_douglas_stat_cat_entry (text) AS (
+    SELECT stat_cat_entry
+    FROM actor.stat_cat_entry_usr_map
+    WHERE stat_cat_entry = $1
+);
+SELECT isnt_empty('find_douglas_stat_cat_entry(''Beef'')', 'Can add the stat_cat_entry to our patron') FROM tu LIMIT 1;
+
+-- Make sure douglasdouglas updates when we change the stat_cat_entry
+UPDATE actor.stat_cat_entry
+SET value = 'Bouf'
+WHERE value = 'Beef';
+SELECT is_empty('find_douglas_stat_cat_entry(''Beef'')', 'stat_cat_entry_usr_map is no longer old value on update');
+SELECT isnt_empty('find_douglas_stat_cat_entry(''Bouf'')', 'stat_cat_entry_usr_map is now new value on update');
+
+--Make sure douglasdouglas has nothing when we remove the stat_cat_entry
+DELETE FROM actor.stat_cat_entry
+WHERE value = 'Bouf';
+SELECT is_empty('find_douglas_stat_cat_entry(''Bouf'')', 'stat_cat_entry_usr_map is gone on delete');
+
+SELECT * FROM finish();
+ROLLBACK;
