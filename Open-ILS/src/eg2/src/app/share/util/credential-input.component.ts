@@ -29,7 +29,7 @@ export class CredentialInputComponent implements ControlValueAccessor {
       } else {
           this.ariaDescription = $localize`Your password is not visible.`;
       }
-      this.passwordInput.nativeElement.focus();
+      setTimeout(() => this.passwordInput.nativeElement.focus());
   }
   writeValue(value: any): void {
       this.passwordInput.nativeElement.value = value;
