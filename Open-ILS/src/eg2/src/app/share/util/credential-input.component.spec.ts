@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 
 import { CredentialInputComponent } from './credential-input.component';
 
@@ -41,13 +41,14 @@ describe('CredentialInputComponent', () => {
         expect(fixture.nativeElement.querySelector('button').getAttribute('aria-label')).toEqual('Hide Password');
         expect(fixture.nativeElement.querySelector('span').innerText).toEqual('visibility');
     });
-    it('toggling the visibility sets focus back to the input', () => {
+    it('toggling the visibility sets focus back to the input', fakeAsync(() => {
         fixture.nativeElement.querySelector('button').click();
         fixture.detectChanges();
         const input = fixture.nativeElement.querySelector('input');
-        const focusElement = fixture.nativeElement.querySelector(':focus');
-        expect(focusElement).toBe(input);
-    });
+        tick(1);
+        const focusElement = document.activeElement;
+        expect(focusElement).toEqual(input);
+    }));
     it('can toggle the visibility off again', () => {
         fixture.nativeElement.querySelector('button').click();
         fixture.nativeElement.querySelector('button').click();
