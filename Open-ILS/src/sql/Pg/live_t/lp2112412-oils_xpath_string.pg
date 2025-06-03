@@ -1,0 +1,29 @@
+BEGIN;
+
+SELECT plan(4);
+
+SELECT is(
+    (select oils_xpath_string('//*[@tag="245"]','<df ind2="4" tag="245"><sf code="a">some title data</sf><sf code="0">(abc)12345</sf></df>',' -> ')),
+    'some title data -> (abc)12345',
+    $$Works before and after LP#2112412 fix, because it DOES add //text() to expressions that return XML nodes without a function involved at the end (ie, doesn't end in a right-paren)$$
+);
+
+SELECT is(
+    (select oils_xpath_string('//*[@tag="245"]/*/@code','<df ind2="4" tag="245"><sf code="a">some title data</sf><sf code="0">(abc)12345</sf></df>')),
+    'a0',
+    $$Works before and after LP#2112412 fix, because it doesn't add //text() to attribute-returning expressions, which always return text$$
+);
+
+SELECT is(
+    (select oils_xpath_string('//*[@tag="245"]/*[1]/text()','<df ind2="4" tag="245"><sf code="a">some title data</sf><sf code="0">(abc)12345</sf></df>')),
+    'some title data',
+    $$Works before and after LP#2112412 fix, because it doesn't add //text() to expressions that end in the text() function, user did it for us already$$
+);
+
+SELECT is(
+    (select oils_xpath_string('substring-after(//*[@tag="245"]/*[@code="0"],")")','<df ind2="4" tag="245"><sf code="a">some title data</sf><sf code="0">(abc)12345</sf></df>')),
+    '12345',
+    $$Blows up before LP#2112412 fix, works after; we shouldn't add //text() to an expression which is wrapped in an XPath function, say, substring-after()$$
+);
+
+ROLLBACK;
