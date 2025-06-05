@@ -766,6 +766,10 @@ RewriteRule ^/openurl$ ${openurl:%1} [NE,PT]
     #AuthType shibboleth
     #Require shibboleth
 
+    # Uncomment this to force user agents to prove they're actually browser-like
+    # and block simple bots
+    #PerlSetVar OILSWebRequireNotBotCookie "true"
+
     PerlSetVar OILSWebContextLoader "OpenILS::WWW::EGCatLoader"
     # Expire the HTML quickly since we're loading dynamic data for each page
     ExpiresActive On

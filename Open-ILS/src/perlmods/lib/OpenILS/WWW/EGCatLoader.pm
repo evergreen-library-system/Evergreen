@@ -32,7 +32,9 @@ use OpenILS::WWW::EGCatLoader::Register;
 use OpenILS::WWW::EGCatLoader::OpenAthens;
 
 my $U = 'OpenILS::Application::AppUtils';
+my @front_door = qw/home browse advanced course_search carousel nb_bounce/;
 
+use constant COOKIE_NOTBOT => 'eg_nb';
 use constant COOKIE_SES => 'ses';
 use constant COOKIE_LOGGEDIN => 'eg_loggedin';
 use constant COOKIE_SHIB_LOGGEDOUT => 'eg_shib_logged_out';
@@ -116,6 +118,13 @@ sub timelog {
     ];
 }
 
+sub redirect_to_notbot {
+    my $self = shift;
+    my $url = uri_escape_utf8($self->apache->unparsed_uri);
+    my $redirect_url = $self->ctx->{opac_root} . "/nb_bounce?redirect_to=$url";
+    return $self->generic_redirect($redirect_url);
+}
+
 # -----------------------------------------------------------------------------
 # Perform initial setup, load common data, then load page data
 # -----------------------------------------------------------------------------
@@ -129,6 +138,7 @@ sub load {
     return $stat unless $stat == Apache2::Const::OK;
 
     my $path = $self->apache->path_info;
+    return $self->load_simple("nb_bounce") if $path =~ m|opac/nb_bounce|; # immediately no.
 
     if ($path =~ m|opac/?$|) {
         # nowhere specified, just go home
@@ -330,6 +340,62 @@ sub load_simple {
     return Apache2::Const::OK;
 }
 
+sub add_notbot_cookie_header {
+    my $self = shift;
+
+    my $notbot_id = shift || $U->create_uuid_string;
+    my $notbot_data = {
+        we => 'exist'
+        # ... get ip, user agent, etc ...
+    };
+
+    my $cache = OpenSRF::Utils::Cache->new('global');
+    $cache->put_cache('EGWebNotBotKey.'.$notbot_id, $notbot_data, 3600);
+
+    $self->apache->headers_out->add(
+        "Set-Cookie" => $self->cgi->cookie(
+            -name => COOKIE_NOTBOT,
+            -path => $self->ctx->{base_path},
+            -secure => 0,
+            -value => $notbot_id,
+            -expires => '+1h'
+        )
+    );
+
+    return 1;
+}
+
+sub confirm_notbot_cookie {
+    my $self = shift;
+    my $ctx = $self->ctx;
+
+    # not enabled? just proceed
+    return 1 unless $ctx->{require_notbot_cookie};
+
+    my $path = $self->apache->path_info;
+
+    # path is a front door? deliver or refresh a cookie
+    return $self->add_notbot_cookie_header($ctx->{notbot_cookie})
+        if (grep { $path =~ m|opac/$_| } @front_door);
+
+    # user is logged in? deliver or refresh a cookie
+    return $self->add_notbot_cookie_header($ctx->{notbot_cookie})
+        if ($self->editor->requestor);
+
+    my $cache = OpenSRF::Utils::Cache->new('global');
+    if ($ctx->{notbot_cookie}) {
+        my $notbot_data = $cache->get_cache('EGWebNotBotKey.'.$ctx->{notbot_cookie});
+        # We could do stuff with the notbot data now...
+
+        # still good, refresh it for another hour
+        return $self->add_notbot_cookie_header($ctx->{notbot_cookie})
+            if $notbot_data;
+    }
+
+    # oop, no good. bounce through bot blocker
+    return 0;
+}
+
 # -----------------------------------------------------------------------------
 # Tests to see if the user is authenticated and sets some common context values
 # -----------------------------------------------------------------------------
@@ -358,6 +424,8 @@ sub load_common {
 
     $ctx->{original_tz} = $ENV{TZ};
     $ENV{TZ} = $ctx->{client_tz};
+
+    return $self->redirect_to_notbot unless $self->confirm_notbot_cookie;
 
     my $xul_wrapper = 
         ($self->apache->headers_in->get('OILS-Wrapper') || '') =~ /true/;
