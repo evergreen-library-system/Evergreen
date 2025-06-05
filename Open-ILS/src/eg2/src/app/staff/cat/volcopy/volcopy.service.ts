@@ -1,6 +1,6 @@
 /* eslint-disable max-len, no-prototype-builtins */
 import {Injectable, EventEmitter, OnDestroy} from '@angular/core';
-import {Subject, tap, takeUntil} from 'rxjs';
+import {Subject, tap, takeUntil, toArray, lastValueFrom, Observable, Subscription} from 'rxjs';
 import {SafeUrl} from '@angular/platform-browser';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
@@ -14,7 +14,6 @@ import {FileExportService} from '@eg/share/util/file-export.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
 import {StoreService} from '@eg/core/store.service';
 import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
-import { Observable, Subscription, lastValueFrom } from 'rxjs';
 
 /* Managing volcopy data */
 
@@ -531,7 +530,7 @@ export class VolCopyService implements OnDestroy {
                     });
                     this.bibParts = finalBibParts;
                 }
-            }))
+            }), toArray())
         );
     }
 

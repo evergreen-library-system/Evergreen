@@ -77,6 +77,9 @@ export class VolCopyComponent implements OnInit {
     changesPendingForStatusBar = false;
     routingAllowed = false;
 
+    // For every org we are editing copies for, whether they require parts to be on copies if the record has parts
+    orgRequiresParts : {[key: number]: boolean} = {};
+
     not_allowed_vols = [];
 
     @ViewChild('pendingChangesDialog', {static: false})
@@ -290,6 +293,18 @@ export class VolCopyComponent implements OnInit {
                 this.context.volNodes().map(n => n.target)))
             .then(_ => this.context.sortHoldings())
             .then(_ => this.context.setRecordId())
+            .then(_ => this.volcopy.fetchBibParts(this.context.getRecordIds()))
+            .then(_ => {
+                // Check for each org if a part is required
+                const orgSettingFetches = [];
+                for (const orgId of this.context.getOwningLibIds()) {
+                    orgSettingFetches.push(this.org.settings('circ.holds.ui_require_monographic_part_when_present', orgId)
+                        .then(settings => {
+                            this.orgRequiresParts[orgId] = Boolean(settings['circ.holds.ui_require_monographic_part_when_present']);
+                        }));
+                }
+                return Promise.all(orgSettingFetches);
+            })
             .then(_ => {
             // unified display has no 'attrs' tab
                 if (this.volcopy.defaults.values.unified_display
@@ -685,7 +700,7 @@ export class VolCopyComponent implements OnInit {
                 // return this.saveApi(volumes, true, close);
                 this.loading = false;
                 alert(evt);
-                return Promise.reject();
+                return Promise.reject(evt);
             }
 
             this.broadcastChanges(volumes);
@@ -730,6 +745,7 @@ export class VolCopyComponent implements OnInit {
         if (!this.volsCanSave) { return true; }
         if (!this.attrsCanSave) { return true; }
         if (this.barcodeNeeded()) { return true; }
+        if (this.partNeeded()) { return true; }
 
         // This can happen regardless of whether we are modifying
         // volumes vs. copies.
@@ -787,6 +803,28 @@ export class VolCopyComponent implements OnInit {
         });
         const result = hasCopyLevelChanges && barcodeCount === 0;
         return result;
+    }
+
+    recordHasParts(bibId: number): boolean {
+        return this.volcopy.bibParts[bibId] &&
+            this.volcopy.bibParts[bibId].length > 0;
+    }
+
+    partNeeded() : boolean {
+        for (const copy of this.context.copyList()) {
+            // Does the org setting require a part?
+            const copyNode = this.context.findOrCreateCopyNode(copy);
+            const org = copyNode.parentNode.target.owning_lib();
+            const record = copyNode.parentNode.target.record();
+
+            const settingEnabled = this.orgRequiresParts[org];
+            const recordHasParts = this.recordHasParts(record);
+            const copyHasParts = Boolean(copy.parts()?.length);
+            if (settingEnabled && recordHasParts && !copyHasParts){
+                return true;
+            }
+        }
+        return false;
     }
 
     @HostListener('window:beforeunload', ['$event'])
