@@ -60,8 +60,8 @@ export class VolEditComponent implements OnInit {
     // Set default for Call Number Label requirement
     requireCNL = true;
 
-    // For every org we are editing copies for, whether they require parts to be on copies if the record has parts
-    requirePartsOrgMap : {[key: number]: boolean} = {};
+    // For every copy in the context, whether or not the copy will need a part
+    @Input() itemRequirePartsMap : {[key: number]: boolean} = {};
 
     // When adding multiple vols via add-many popover.
     addVolCount: number = null;
@@ -98,14 +98,6 @@ export class VolEditComponent implements OnInit {
 
         this.volcopy.genBarcodesRequested.subscribe(() => this.generateBarcodes());
 
-        // Check for each org if a part is required
-        for (const orgId of this.context.getOwningLibIds()) {
-            this.org.settings('circ.holds.ui_require_monographic_part_when_present', orgId)
-                .then(settings => {
-                    this.requirePartsOrgMap[orgId] = Boolean(settings['circ.holds.ui_require_monographic_part_when_present']);
-                });
-        }
-
         // Check to see if call number label is required
         this.org.settings('cat.require_call_number_labels')
             .then(settings => {
@@ -129,22 +121,6 @@ export class VolEditComponent implements OnInit {
             }
         }
         return '';
-    }
-
-    recordHasParts(bibId: number): boolean {
-        return this.volcopy.bibParts[bibId] &&
-            this.volcopy.bibParts[bibId].length > 0;
-    }
-
-    copyRequiresParts(node: HoldingsTreeNode) : boolean {
-        if (['org', 'vol'].includes(node.nodeType)){
-            throw new TypeError('Invalid HoldingsTreeNode type!');
-        }
-
-        const org = node.parentNode.target.owning_lib();
-        const record = node.parentNode.target.record();
-
-        return this.recordHasParts(record) && this.requirePartsOrgMap[org];
     }
 
     // Column width (flex:x) for column by column number.
@@ -318,7 +294,6 @@ export class VolEditComponent implements OnInit {
             copy.ischanged(true);
         }
 
-        this.emitSaveChange();
     }
 
     batchVolApply() {
@@ -632,8 +607,7 @@ export class VolEditComponent implements OnInit {
 
         const badCopies = copies.filter(copy => {
             if (copy._dupe_barcode ||
-                (!copy.isnew() && !copy.barcode()) ||
-                (this.copyRequiresParts(this.context.findOrCreateCopyNode(copy)) && (!copy.parts() || copy.parts().length === 0))
+                (!copy.isnew() && !copy.barcode())
             ) {
                 return true;
             } else {

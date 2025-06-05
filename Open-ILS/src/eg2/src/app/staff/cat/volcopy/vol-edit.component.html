@@ -470,7 +470,7 @@
               [moreClasses]="'vol-edit-validity-combobox'"
               [smallFormControl]="true"
               [allowFreeText]="true"
-              [required]="copyRequiresParts(copyNode)"
+              [required]="itemRequirePartsMap[copyNode.target.id()]"
               (onChange)="copyPartChanged(copyNode, $event)">
               <eg-combobox-entry 
                 *ngFor="let part of volcopy.bibParts[volNode.target.record()]"

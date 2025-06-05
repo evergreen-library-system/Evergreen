@@ -80,6 +80,10 @@ export class VolCopyComponent implements OnInit {
     // For every org we are editing copies for, whether they require parts to be on copies if the record has parts
     orgRequiresParts : {[key: number]: boolean} = {};
 
+    // For every copy in the context, whether or not the copy needs to require a part
+    itemRequirePartsMap : {[key: number]: boolean} = {};
+    missingPartsCount: number = 0;
+    
     not_allowed_vols = [];
 
     @ViewChild('pendingChangesDialog', {static: false})
@@ -805,26 +809,52 @@ export class VolCopyComponent implements OnInit {
         return result;
     }
 
-    recordHasParts(bibId: number): boolean {
-        return this.volcopy.bibParts[bibId] &&
-            this.volcopy.bibParts[bibId].length > 0;
+
+    copyRequiresPart(copy : IdlObject) : boolean {
+        // Does the org setting require a part?
+        const copyNode = this.context.findOrCreateCopyNode(copy);
+        const org = copyNode.parentNode.target.owning_lib();
+        const record = copyNode.parentNode.target.record();
+
+        const settingEnabled = this.orgRequiresParts[org];
+        const recordHasParts = this.volcopy.bibParts[record] && this.volcopy.bibParts[record].length > 0;
+
+        const copyStatusHoldable = this.volcopy.copyStatuses[copyNode.target.status()].holdable() == "t"
+        const copyHoldableFlag = copyNode.target.holdable() == "t";
+        const copyShelvingLocationHoldable = copyNode.target.location().holdable() == "t";
+        const copyIsHoldable = copyStatusHoldable && copyHoldableFlag && copyShelvingLocationHoldable;
+
+        const copyRequiresPart = settingEnabled && recordHasParts && copyIsHoldable;
+
+        // Only update when changing in case that matters for performance. (binding propagation)
+        if (this.itemRequirePartsMap[copy.id()] != copyRequiresPart) {
+            this.itemRequirePartsMap[copy.id()] = copyRequiresPart;
+        }
+        
+        return copyRequiresPart;
+        
     }
 
     partNeeded() : boolean {
+        let needPart = false;
+        let missingCount = 0;
         for (const copy of this.context.copyList()) {
-            // Does the org setting require a part?
-            const copyNode = this.context.findOrCreateCopyNode(copy);
-            const org = copyNode.parentNode.target.owning_lib();
-            const record = copyNode.parentNode.target.record();
+            let copyRequiresPart = this.copyRequiresPart(copy);
 
-            const settingEnabled = this.orgRequiresParts[org];
-            const recordHasParts = this.recordHasParts(record);
             const copyHasParts = Boolean(copy.parts()?.length);
-            if (settingEnabled && recordHasParts && !copyHasParts){
-                return true;
+            const copyMissingPart = copyRequiresPart && !copyHasParts;
+            // Visit every copy instead of immediately returning true to update the validity of every copy, not just the first that fails
+            if (copyMissingPart) {
+                needPart = true;
+                missingCount++;
             }
+
         }
-        return false;
+        // Silly conditional assignment to not overwhelm Angular change detection
+        if (missingCount != this.missingPartsCount) {
+            this.missingPartsCount = missingCount;
+        }
+        return needPart;
     }
 
     @HostListener('window:beforeunload', ['$event'])
