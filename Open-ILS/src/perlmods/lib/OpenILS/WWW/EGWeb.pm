@@ -15,6 +15,7 @@ use List::MoreUtils qw/uniq/;
 use constant OILS_HTTP_COOKIE_SKIN => 'eg_skin';
 use constant OILS_HTTP_COOKIE_THEME => 'eg_theme';
 use constant OILS_HTTP_COOKIE_LOCALE => 'eg_locale';
+use constant OILS_HTTP_COOKIE_NOTBOT => 'eg_nb';
 
 # cache string bundles
 my %registered_locales;
@@ -242,11 +243,13 @@ sub load_context {
     $ctx->{base_path} = $r->dir_config('OILSWebBasePath');
     $ctx->{web_dir} = $r->dir_config('OILSWebWebDir');
     $ctx->{debug_template} = ($r->dir_config('OILSWebDebugTemplate') =~ /true/io) ? 1 : 0;
+    $ctx->{require_notbot_cookie} = ($r->dir_config('OILSWebRequireNotBotCookie') =~ /true/io) ? 1 : 0;
     $ctx->{hostname} = $r->hostname;
     $ctx->{media_prefix} = $r->dir_config('OILSWebMediaPrefix') || $ctx->{hostname};
     $ctx->{base_url} = $cgi->url(-base => 1);
     $ctx->{skin} = $cgi->cookie(OILS_HTTP_COOKIE_SKIN) || 'default';
     $ctx->{theme} = $cgi->cookie(OILS_HTTP_COOKIE_THEME) || 'default';
+    $ctx->{notbot_cookie} = $cgi->cookie(OILS_HTTP_COOKIE_NOTBOT);
     $ctx->{proto} = $cgi->https ? 'https' : 'http';
     $ctx->{ext_proto} = $ctx->{proto};
     my $default_locale = $r->dir_config('OILSWebDefaultLocale') || 'en_us';
