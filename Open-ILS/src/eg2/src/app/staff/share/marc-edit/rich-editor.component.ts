@@ -221,10 +221,11 @@ export class MarcRichEditorComponent implements OnInit {
                 if (el.nodeName && (el.nodeName.toLowerCase() === 'input' || el.nodeName.toLowerCase() === 'textarea')) {
                     return;
                 }
-                // otherwise, move focus from the group to its first input (the subfield code)
+                // otherwise, move focus from the group to the subfield code if it's empty, or the value if not
                 evt.preventDefault();
                 evt.stopPropagation();
-                this.context.focusSubfield(field, subfield[2], false);
+                const target = subfield[0] == ' ' ? 'sfc' : 'sfv';
+                this.context.focusSubfield(field, subfield[2], target);
                 break;
 
             // all remaining shortcuts duplicated from editable-content.component.ts

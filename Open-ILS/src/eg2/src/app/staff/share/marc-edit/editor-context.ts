@@ -249,7 +249,7 @@ export class MarcEditContext {
                 if (action.subfield) {
                     const prevPos = action.subfield[2] - 1;
                     action.field.deleteExactSubfields(action.subfield);
-                    this.focusSubfield(action.field, prevPos, true);
+                    this.focusSubfield(action.field, prevPos, 'group');
 
                 } else {
                     this.record.deleteFields(action.field);
@@ -265,7 +265,7 @@ export class MarcEditContext {
                 if (action.subfield) {
 
                     this.insertSubfield(action.field, action.subfield, true);
-                    this.focusSubfield(action.field, action.subfield[2]);
+                    this.focusSubfield(action.field, action.subfield[2], 'sfv');
 
                 } else {
 
@@ -429,7 +429,7 @@ export class MarcEditContext {
         field.subfields.splice(position, 0, subfield);
 
         if (!skipTracking) {
-            this.focusSubfield(field, position);
+            this.focusSubfield(field, position, 'sfc');
             this.trackStructuralUndo(field, true, subfield);
         }
     }
@@ -440,15 +440,12 @@ export class MarcEditContext {
     }
 
     // Focus the requested subfield by its position.
-    focusSubfield(field: MarcField, position: number, group?: boolean) {
+    focusSubfield(field: MarcField, position: number, target?: MARC_EDITABLE_FIELD_TYPE | "group" | "move") {
         // console.debug("focusSubfield()", field, position, group);
         const focus: FieldFocusRequest = {fieldId: field.fieldId, target: 'sfv'};
 
-        if (group) {
-            focus.target = 'group';
-        } else if (position < 0) {
-            // Focus the code instead of the value
-            focus.target = 'sfc';
+        if (target) {
+            focus.target = target;
         }
 
         focus.sfOffset = position;
@@ -463,7 +460,7 @@ export class MarcEditContext {
 
         field.deleteExactSubfields(subfield);
 
-        this.focusSubfield(field, sfpos, true);
+        this.focusSubfield(field, sfpos, 'group');
     }
 
     focusTag(field: MarcField) {
