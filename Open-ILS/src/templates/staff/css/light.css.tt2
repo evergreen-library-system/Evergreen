@@ -94,8 +94,8 @@
   --btn-gray-color: var(--bs-body-color);
   --btn-gray-border: var(--bs-gray-400);
 
-  --modal-header-color: white;
-  --modal-header-bg: var(--bs-cyan-800);
+  --modal-header-color: var(--bs-body-color);
+  --modal-header-bg: var(--bs-body-bg);
   --modal-body-bg: var(--bs-body-bg);
   --popover-menu-hover: var(--bs-gray-100);
   --popover-header-bg: var(--bs-gray-100);
