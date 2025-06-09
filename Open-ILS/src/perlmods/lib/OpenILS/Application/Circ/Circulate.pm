@@ -161,7 +161,7 @@ __PACKAGE__->register_method(
 sub run_method {
     my( $self, $conn, $auth, $args ) = @_;
     translate_legacy_args($args);
-    $args->{override_args} = { all => 1, events => [] } unless defined $args->{override_args};
+    $args->{override_args} = { all => 1 } unless defined $args->{override_args};
     $args->{new_copy_alerts} ||= $self->api_level > 1 ? 1 : 0;
     my $api = $self->api_name;
 
@@ -248,11 +248,6 @@ sub run_method {
 
     } elsif( $api =~ /checkout.full/ ) {
         $circulator->skip_permit_key(1);
-        if ( $circulator->request_precat && $circulator->editor->allowed('CREATE_PRECAT') ) {
-            $circulator->override(1);
-            $circulator->override_args->{all} = 0; # precat checkout should only override COPY_NOT_AVAILABLE, and whatever else the client requested
-            push @{$circulator->override_args->{events}}, 'COPY_NOT_AVAILABLE';
-        }
         $circulator->do_permit();
         $circulator->is_checkout(1);
         unless( $circulator->bail_out ) {
@@ -1248,6 +1243,11 @@ sub run_patron_permit_scripts {
         if ($self->is_noncat) {
             # no_item result is OK during noncat checkout
             @trimmed_results = grep { ($_->{fail_part} || '') ne 'no_item' } @$results;
+
+        } elsif ($self->is_precat && $self->request_precat) {
+            # consecutive precat checkouts on the same barcode may
+            # result in an asset.copy.status failure - ignore it
+            @trimmed_results = grep { ($_->{fail_part} || '') ne 'asset.copy.status' } @$results;
 
         } else {
 
