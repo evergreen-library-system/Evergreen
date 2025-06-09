@@ -16,7 +16,7 @@
 
 <ng-template #next_statusTemplate let-field="field" let-record="record" let-statuses="statuses">
   <input *ngIf="record.event() !== 'CHECKIN'" class="form-control" id="{{field.idlClass}}-{{field.name}}"
-      [value]="record[field.name]()" readonly />
+      [value]="record[field.name]()" placeholder="available only for Checkin events" i18n-placeholder readonly />
   <fieldset *ngIf="record.event() === 'CHECKIN'" [attr.aria-label]="field.label" 
       id="next_status-{{record.id()}}" class="scrollable-menu border rounded my-1 p-2 d-sm-flex flex-column flex-wrap">
     <div class="form-check" *ngFor="let status of statuses">
