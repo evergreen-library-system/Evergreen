@@ -1511,7 +1511,8 @@ export class GridContext {
         */
 
         /* Name-based formats */
-        if (col.name.endsWith('count') || col.name.endsWith('Count')) {classes.push('numeric');}
+        /* XXX: The second test is against a translated string. */
+        if (col.name?.endsWith('count') || col.name?.endsWith('Count')) {classes.push('numeric');}
 
         switch (col.name) {
             case 'callnumber':
