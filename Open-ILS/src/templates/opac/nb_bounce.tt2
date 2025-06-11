@@ -1,8 +1,12 @@
 [%- USE CGI = CGI_utf8 -%]
 <html>
-  <head></head>
-  <body>
+  <head>
     <script>window.location.href='[%- CGI.param('redirect_to') -%]';</script>
-    <noscript>Sorry, Javascript is required on this site.</noscript>
+  </head>
+  <body>
+    <p>Your browser should redirect you to your destination automatically; if
+      not, please <a href="[% CGI.param('redirect_to') | html %]">click here to
+      continue</a>
+    </p>
   </body>
 <html>
