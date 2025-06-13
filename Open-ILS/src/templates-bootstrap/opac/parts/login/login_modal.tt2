@@ -68,7 +68,7 @@
         <div class="mr-auto form-check">
           <input type='hidden' name='redirect_to' value='[% redirect | html %]'/>
           <input type="checkbox" name="persist" id="persist" class="form-check-input"/>
-          <label for="persist" class="form-check-label"> [% l('Stay logged in?') %]</label>
+          <label for="persist" class="form-check-label"> [% l('Remember language setting ([_1])', ctx.locale) %]</label>
         </div>
         <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-times" aria-hidden="true"></i> [% l('Close') %]</button>
         <button type="submit" class="btn btn-confirm"><i class="fas fa-sign-in-alt" aria-hidden="true"></i> [% l('Log in') %]</button>
