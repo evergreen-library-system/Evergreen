@@ -4375,6 +4375,13 @@ padding: 15px;
     font-size: [% css_fonts.size_small %];
 }
 
+#login_form .form-text {
+    color: [% css_colors.accent_dark %];
+    font-style: italic;
+    font-size: [% css_fonts.size_smaller %];
+    margin-block: 0 0.75rem;
+}
+
 .form-grid {
     align-items: baseline;
     display: grid;
