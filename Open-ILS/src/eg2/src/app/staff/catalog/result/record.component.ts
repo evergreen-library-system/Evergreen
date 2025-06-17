@@ -10,7 +10,7 @@ import {CatalogSearchContext} from '@eg/share/catalog/search-context';
 import {CatalogUrlService} from '@eg/share/catalog/catalog-url.service';
 import {StaffCatalogService} from '../catalog.service';
 import {BasketService} from '@eg/share/catalog/basket.service';
-import {BucketService} from '@eg/staff/share/buckets/bucket.service';
+import { RecordBucketService } from '@eg/staff/cat/buckets/record/record-bucket.service';
 import {CourseService} from '@eg/staff/share/course.service';
 import {AuthService} from '@eg/core/auth.service';
 import {ToastService} from '@eg/share/toast/toast.service';
@@ -57,7 +57,7 @@ export class ResultRecordComponent implements OnInit, OnDestroy {
         private staffCat: StaffCatalogService,
         private basket: BasketService,
         private course: CourseService,
-        private bucketService: BucketService,
+        private bucketService: RecordBucketService,
         private auth: AuthService,
         private toast: ToastService,
     ) {}

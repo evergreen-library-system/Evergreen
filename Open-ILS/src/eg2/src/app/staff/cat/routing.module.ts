@@ -29,15 +29,15 @@ const routes: Routes = [
     },{
         path: 'bucket/record',
         loadChildren: () =>
-            import('../share/buckets/record-bucket.module').then(m => m.RecordBucketModule)
+            import('./buckets/record/record-bucket.module').then(m => m.RecordBucketModule)
     },{ path: 'bucket/record/:id',
         loadChildren: () =>
-            import('../share/buckets/record-bucket.module').then(m => m.RecordBucketModule)
+            import('./buckets/record/record-bucket.module').then(m => m.RecordBucketModule)
 
     // Instead of fighting with AdminPageComponent
     }, { path: 'container/biblio_record_entry_bucket_item',
         loadChildren: () =>
-            import('../share/buckets/record-bucket.module').then(m => m.RecordBucketModule)
+            import('./buckets/record/record-bucket.module').then(m => m.RecordBucketModule)
 
     // For the convenience of people who manually tweak URLs s/eg/eg2/
     }, { path: 'bucket/record/view', redirectTo: 'bucket/record', pathMatch: 'full'

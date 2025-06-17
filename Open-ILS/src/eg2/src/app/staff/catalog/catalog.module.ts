@@ -39,6 +39,7 @@ import {BarcodesModule} from '@eg/staff/share/barcodes/barcodes.module';
 import {WorkLogModule} from '@eg/staff/share/worklog/worklog.module';
 import {VolCopyModule} from '@eg/staff/cat/volcopy/volcopy.module';
 import { SortOrderSelectComponent } from './sort-order-select/sort-order-select.component';
+import { RecordBucketService } from '../cat/buckets/record/record-bucket.service';
 
 @NgModule({
     declarations: [
@@ -85,7 +86,8 @@ import { SortOrderSelectComponent } from './sort-order-select/sort-order-select.
         VolCopyModule
     ],
     providers: [
-        StaffCatalogService
+        StaffCatalogService,
+        RecordBucketService
     ]
 })
 

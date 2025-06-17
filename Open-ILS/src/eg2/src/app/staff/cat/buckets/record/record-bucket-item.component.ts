@@ -1,6 +1,7 @@
 import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {firstValueFrom, lastValueFrom, EMPTY, take, map, switchMap, catchError} from 'rxjs';
+import {$localize} from '@angular/localize/init';
 import {AuthService} from '@eg/core/auth.service';
 import {StoreService} from '@eg/core/store.service';
 import {IdlObject,IdlService} from '@eg/core/idl.service';
@@ -15,8 +16,8 @@ import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
 import {PromptDialogComponent} from '@eg/share/dialog/prompt.component';
 import {BucketDialogComponent} from '@eg/staff/share/buckets/bucket-dialog.component';
-import {RecordBucketExportDialogComponent} from '@eg/staff/share/buckets/record-bucket-export-dialog.component';
-import {RecordBucketItemUploadDialogComponent} from '@eg/staff/share/buckets/record-bucket-item-upload-dialog.component';
+import {RecordBucketExportDialogComponent} from '@eg/staff/cat/buckets/record/record-bucket-export-dialog.component';
+import {RecordBucketItemUploadDialogComponent} from '@eg/staff/cat/buckets/record/record-bucket-item-upload-dialog.component';
 import {HoldTransferViaBibsDialogComponent} from '@eg/staff/share/holds/transfer-via-bibs-dialog.component';
 import {BroadcastService} from '@eg/share/util/broadcast.service';
 
