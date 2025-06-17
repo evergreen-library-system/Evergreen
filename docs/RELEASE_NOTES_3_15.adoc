@@ -3,6 +3,44 @@
 :numbered:
 :toclevels: 3
 
+== Evergreen 3.15.2 ==
+
+=== Circulation ===
+
+* Fix multiple issues with checking out pre-cat items (https://bugs.launchpad.net/bugs/2112185[Bug 2112185]) and (https://bugs.launchpad.net/evergreen/+bug/2113754[Bug 2113754])
+* Fixes broken print button below the patron holds grid. (https://bugs.launchpad.net/evergreen/+bug/2110746[Bug 2110746])
+* Fix typo in experimental circulation interface. (https://bugs.launchpad.net/evergreen/+bug/2088295[Bug 2088295])
+
+=== Documentation ===
+
+* Permission list documentation more in line with current permissions in Evergreen's database. (https://bugs.launchpad.net/evergreen/+bug/2111611[Bug 2111611])
+
+
+=== Public catalog ===
+
+* Fixes a typo in the Bootstrap OPAC credit card payment confirmation screen. (https://bugs.launchpad.net/evergreen/+bug/2090940[Bug 2090940])
+
+
+=== Miscellaneous ===
+
+* Make oils_xpath_string more flexible WRT XPath functions. (https://bugs.launchpad.net/evergreen/+bug/2112412[Bug 2112412])
+* Fixes 'Save Grid Settings' on MARC Coded Value Maps grid. (https://bugs.launchpad.net/evergreen/+bug/1927510[Bug 1927510])
+
+=== Contributors ===
+
+* Carol Witt
+* Dan Briem
+* Gina Monti
+* Jane Sandberg
+* Jason Stephenson
+* Mike Rylander
+* Ruth Frasur Davis
+* Shula Link
+* Stephanie Leary
+* Terran McCanna
+* blake
+* spmorrison
+
 == Evergreen 3.15.1 ==
 
 This release contains bug fixes and documentation fixes improving on Evergreen 3.15.0.
