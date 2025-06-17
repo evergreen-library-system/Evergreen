@@ -14,7 +14,8 @@ import {RecordBucketItemUploadDialogComponent} from '@eg/staff/cat/buckets/recor
 import {RecordBucketItemComponent} from '@eg/staff/cat/buckets/record/record-bucket-item.component';
 import {RecordBucketRoutingModule} from './record-bucket-routing.module';
 import {HoldsModule} from '@eg/staff/share/holds/holds.module';
-import { RecordBucketService } from '@eg/staff/cat/buckets/record/record-bucket.service';
+import {RecordBucketService} from '@eg/staff/cat/buckets/record/record-bucket.service';
+import {RecordBucketStateService} from '@eg/staff/cat/buckets/record/record-bucket-state.service';
 
 @NgModule({
     declarations: [
@@ -47,7 +48,8 @@ import { RecordBucketService } from '@eg/staff/cat/buckets/record/record-bucket.
         RecordBucketItemComponent
     ],
     providers: [
-        RecordBucketService
+        RecordBucketService,
+        RecordBucketStateService
     ]
 })
 

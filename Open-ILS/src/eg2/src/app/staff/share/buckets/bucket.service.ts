@@ -261,4 +261,9 @@ export class BucketService {
             return [];
         }
     }
+
+    getRecentBucketIds(bucketClass: BucketClass): number[] {
+        const storageKey = this.bucketConfig.getStorageKey(bucketClass);
+        return this.store.getLocalItem(`${storageKey}_log`) || [];
+    }
 }
