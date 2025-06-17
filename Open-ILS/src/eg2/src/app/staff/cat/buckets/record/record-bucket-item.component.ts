@@ -1,7 +1,6 @@
 import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {firstValueFrom, lastValueFrom, EMPTY, take, map, switchMap, catchError} from 'rxjs';
-import {$localize} from '@angular/localize/init';
 import {AuthService} from '@eg/core/auth.service';
 import {StoreService} from '@eg/core/store.service';
 import {IdlObject,IdlService} from '@eg/core/idl.service';
