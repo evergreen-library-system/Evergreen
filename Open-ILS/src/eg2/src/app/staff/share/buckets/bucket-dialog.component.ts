@@ -11,9 +11,7 @@ import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {StringComponent} from '@eg/share/string/string.component';
 import {BucketService} from '@eg/staff/share/buckets/bucket.service';
-
-const BUCKET_CLASSES = ['biblio', 'user', 'callnumber', 'copy'] as const;
-type BucketClass = typeof BUCKET_CLASSES[number];
+import {BucketClass} from '@eg/staff/share/buckets/bucket-config.service';
 
 /**
  * Dialog for adding bib records to new and existing record buckets.

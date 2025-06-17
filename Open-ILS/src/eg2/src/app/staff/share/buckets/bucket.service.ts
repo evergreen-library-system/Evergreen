@@ -8,45 +8,12 @@ import { AuthService } from '@eg/core/auth.service';
 import { StoreService } from '@eg/core/store.service';
 import { PcrudService } from '@eg/core/pcrud.service';
 import { IdlService, IdlObject } from '@eg/core/idl.service';
-
-const BUCKET_CLASSES = ['biblio', 'user', 'callnumber', 'copy'] as const;
-type BucketClass = typeof BUCKET_CLASSES[number];
+import { BucketConfigService, BucketClass } from '@eg/staff/share/buckets/bucket-config.service';
 
 @Injectable()
 export class BucketService {
     private maxRecentBuckets = 10;
     private favoriteBucketFlags: {[bucketClass: string]: {[bucketId: number]: IdlObject}} = {};
-
-    private bucketFmClassMap = {
-        biblio: 'cbreb', user: 'cub', callnumber: 'ccnb', copy: 'ccb'
-    };
-    private bucketItemFmClassMap = {
-        biblio: 'cbrebi', user: 'cubi', callnumber: 'ccnbi', copy: 'ccbi'
-    };
-    private targetFieldMap = {
-        biblio: 'target_biblio_record_entry',
-        user: 'target_user',
-        callnumber: 'target_call_number',
-        copy: 'target_copy'
-    };
-    private bucketItemTargetFmClassMap = {
-        biblio: 'bre',
-        user: 'au',
-        callnumber: 'acn',
-        copy: 'acp'
-    };
-    private storageKeyMap = {
-        biblio: 'eg.record_bucket',
-        user: 'eg.user_bucket',
-        callnumber: 'eg.callnumber_bucket',
-        copy: 'eg.copy_bucket'
-    };
-    private bucketFlagFmClassMap = {
-        biblio: 'cbrebuf',
-        user: 'cubuf',
-        callnumber: 'ccnbuf',
-        copy: 'ccbuf'
-    };
 
     private bucketRefreshRequested = new Subject<void>();
     bucketRefreshRequested$ = this.bucketRefreshRequested.asObservable();
@@ -58,6 +25,7 @@ export class BucketService {
         private evt: EventService,
         private pcrud: PcrudService,
         private idl: IdlService,
+        private bucketConfig: BucketConfigService,
     ) { }
 
     async retrieveBucketItems(bucketId: number, bucketClass: BucketClass, limit = 100): Promise<any[]> {
@@ -72,8 +40,12 @@ export class BucketService {
         ));
     }
 
+    getBucketRefreshRequested(): Observable<void> {
+        return this.bucketRefreshRequested$;
+    }
+
     async logBucket(bucketClass: BucketClass, bucketId: number): Promise<void> {
-        const storageKey = this.storageKeyMap[bucketClass];
+        const storageKey = this.bucketConfig.getStorageKey(bucketClass);
         const bucketLog: number[] = this.store.getLocalItem(`${storageKey}_log`) || [];
         if (bucketLog.includes(bucketId)) { return; } // Already logged
         bucketLog.unshift(bucketId);
@@ -85,8 +57,8 @@ export class BucketService {
 
     async addItemsToBucket(bucketId: number, itemTargetIds: number[], bucketClass: BucketClass): Promise<any> {
         await this.logBucket(bucketClass, bucketId);
-        const itemFmClass = this.bucketItemFmClassMap[bucketClass];
-        const targetField = this.targetFieldMap[bucketClass];
+        const itemFmClass = this.bucketConfig.getBucketItemFmClass(bucketClass);
+        const targetField = this.bucketConfig.getTargetField(bucketClass);
         const items = [];
 
         itemTargetIds.forEach(itemId => {
@@ -108,8 +80,8 @@ export class BucketService {
     }
 
     async removeItemsFromBucket(bucketId: number, itemTargetIds: number[], bucketClass: BucketClass): Promise<any> {
-        const itemFmClass = this.bucketItemFmClassMap[bucketClass];
-        const targetField = this.targetFieldMap[bucketClass];
+        const itemFmClass = this.bucketConfig.getBucketItemFmClass(bucketClass);
+        const targetField = this.bucketConfig.getTargetField(bucketClass);
 
         const requestObs = this.net.request(
             'open-ils.actor',
@@ -124,11 +96,12 @@ export class BucketService {
     }
 
     private async loadRBuckets(bucketClass: BucketClass, bucketIds: number[]): Promise<IdlObject[]> {
+        const bucketFmClass = this.bucketConfig.getBucketFmClass(bucketClass);
         return lastValueFrom(
             this.pcrud.search(
-                this.bucketFmClassMap[bucketClass],
+                bucketFmClass,
                 { id: bucketIds },
-                { flesh: 1, flesh_fields: { [this.bucketFmClassMap[bucketClass]]: ['owner', 'owning_lib'] } },
+                { flesh: 1, flesh_fields: { [bucketFmClass]: ['owner', 'owning_lib'] } },
                 { atomic: true }
             )
         );
@@ -139,7 +112,8 @@ export class BucketService {
         if (validBucketIds.length === 0) {
             return of({});
         }
-        const apiMethod = this.targetFieldMap[bucketClass].replace(/^target_/, '');
+        const targetField = this.bucketConfig.getTargetField(bucketClass);
+        const apiMethod = targetField.replace(/^target_/, '');
         return this.net.request(
             'open-ils.actor',
             `open-ils.actor.container.${apiMethod}.count_stats.authoritative`,
@@ -195,7 +169,7 @@ export class BucketService {
 
     async addBucketToFavorites(bucketId: number, bucketClass: BucketClass): Promise<void> {
         const userId = this.auth.user().id();
-        const bucketFlagFmClass = this.bucketFlagFmClassMap[bucketClass];
+        const bucketFlagFmClass = this.bucketConfig.getBucketFlagFmClass(bucketClass);
         const bucketFlag = this.idl.create(bucketFlagFmClass);
         bucketFlag.isnew(true);
         bucketFlag.bucket(bucketId);
@@ -232,9 +206,10 @@ export class BucketService {
     }
 
     async loadFavoriteBucketFlags(userId: number, bucketClass: BucketClass): Promise<any[]> {
+        const bucketFlagFmClass = this.bucketConfig.getBucketFlagFmClass(bucketClass);
         const flags = await lastValueFrom(
             this.pcrud.search(
-                this.bucketFlagFmClassMap[bucketClass],
+                bucketFlagFmClass,
                 { flag: 'favorite', usr: userId },
                 {},
                 { idlist: false, atomic: true }
@@ -268,8 +243,8 @@ export class BucketService {
             return [];
         }
 
-        const itemFmClass = this.bucketItemFmClassMap[bucketClass];
-        const targetField = this.targetFieldMap[bucketClass];
+        const itemFmClass = this.bucketConfig.getBucketItemFmClass(bucketClass);
+        const targetField = this.bucketConfig.getTargetField(bucketClass);
 
         const query = {
             [targetField]: itemId,
@@ -286,5 +261,4 @@ export class BucketService {
             return [];
         }
     }
-
 }

@@ -58,7 +58,7 @@ export class ResultFacetsComponent implements OnInit {
     ngOnInit() {
         console.debug('ResultFacetsComponent, this', this);
         this.searchContext = this.staffCat.searchContext;
-        this.bucketService.bibBucketsRefreshRequested$.subscribe(() => {
+        this.bucketService.getBucketRefreshRequested().subscribe(() => {
             console.debug('refresh request sub triggered');
             this.loadBuckets();
         });

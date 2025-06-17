@@ -3,13 +3,12 @@ import {Subject, Observable} from 'rxjs';
 // import {ServerStoreService} from '@eg/core/server-store.service';
 import {StoreService} from '@eg/core/store.service';
 import { BucketService } from '@eg/staff/share/buckets/bucket.service';
+import { BucketClass } from '@eg/staff/share/buckets/bucket-config.service';
 
 @Injectable()
 export class RecordBucketService {
     maxRecentRecordBuckets = 10;
-
-    private bibBucketsRefreshRequested = new Subject<void>();
-    bibBucketsRefreshRequested$ = this.bibBucketsRefreshRequested.asObservable();
+    bucketClass: BucketClass = 'biblio';
 
     constructor(
         private store: StoreService,
@@ -17,13 +16,19 @@ export class RecordBucketService {
     ) {}
 
     requestBibBucketsRefresh() {
-        this.bibBucketsRefreshRequested.next();
+        this.bucketService.requestBucketRefresh();
+    }
+
+    getBucketRefreshRequested(): Observable<void> {
+        return this.bucketService.getBucketRefreshRequested();
     }
 
     async retrieveRecordBucketItems(bucketId: number, limit = 100): Promise<any[]> {
         // Use the bucket service to retrieve items
-        const items = await this.bucketService.retrieveBucketItems(bucketId, 'biblio', limit);
-        
+        const items = await this.bucketService.retrieveBucketItems(bucketId, this.bucketClass, limit);
+        if (!items || items.length === 0) {
+            return [];
+        }
         // Map the items returned by the bucket service to the expected format
         return items.map(item => {
             const targetBre = item.target_biblio_record_entry || {};
@@ -44,7 +49,7 @@ export class RecordBucketService {
         return this.bucketService.addItemsToBucket(
             bucketId,
             bibIds,
-            'biblio'
+            this.bucketClass
         );
     }
 
@@ -52,27 +57,27 @@ export class RecordBucketService {
         return this.bucketService.removeItemsFromBucket(
             bucketId,
             bibIds,
-            'biblio'
+            this.bucketClass
         );
     }
 
     async retrieveRecordBuckets(bucketIds: number[]): Promise<any[]> {
         return this.bucketService.retrieveBuckets(
-            'biblio',
+            this.bucketClass,
             bucketIds
         );
     }
 
     getRecordBucketCountStats(bucketIds: number[]): Observable<any> {
         return this.bucketService.getBucketCountStats(
-            'biblio',
+            this.bucketClass,
             bucketIds
         );
     }
 
     async logRecordBucket(bucketId: number) {
         console.debug('Logging Record Bucket: ', bucketId);
-        await this.bucketService.logBucket('biblio', bucketId);
+        await this.bucketService.logBucket(this.bucketClass, bucketId);
     }
 
     recentRecordBucketIds(): number[] {
@@ -80,29 +85,29 @@ export class RecordBucketService {
     }
 
     async loadFavoriteRecordBucketFlags(userId: number) {
-        await this.bucketService.loadFavoriteBucketFlags(userId, 'biblio');
+        await this.bucketService.loadFavoriteBucketFlags(userId, this.bucketClass);
     }
 
     isFavoriteRecordBucket(bucketId: number): boolean {
-        return !!this.bucketService.getFavoriteBucketIds('biblio').find(id => id === bucketId);
+        return !!this.bucketService.getFavoriteBucketIds(this.bucketClass).find(id => id === bucketId);
     }
 
     async addFavoriteRecordBucketFlag(bucketId: number, userId: number): Promise<void> {
-        this.bucketService.addBucketToFavorites(bucketId, 'biblio');
+        this.bucketService.addBucketToFavorites(bucketId, this.bucketClass);
     }
 
     async removeFavoriteRecordBucketFlag(bucketId: number): Promise<void> {
-        this.bucketService.removeBucketFromFavorites(bucketId, 'biblio');
+        this.bucketService.removeBucketFromFavorites(bucketId, this.bucketClass);
     }
 
     getFavoriteRecordBucketIds(): number[] {
-        return this.bucketService.getFavoriteBucketIds('biblio');
+        return this.bucketService.getFavoriteBucketIds(this.bucketClass);
     }
 
     async checkForBibInRecordBuckets(bibId: number, bucketIds?: number[]): Promise<number[]> {
         return this.bucketService.checkForItemInBuckets(
             bibId,
-            'biblio'
+            this.bucketClass
         );
     }
 }
