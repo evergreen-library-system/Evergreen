@@ -62,10 +62,14 @@
                 <button type="button" class="btn btn-link"
                   [ngClass]="{'active': isCurrentView(view)}"
                   (click)="switchTo(view)"
-                  [disabled]="views[view]['count'] <= 0"
+                  [disabled]="views[view]['count'] <= 0 && views[view]['count'] !== null"
                   [attr.aria-current]="isCurrentView(view) ? 'page' : null">
                   {{views[view].label}}
-                  ({{views[view]['count'] === -1 ? (countInProgress ? '...' : 0) : views[view]['count']}})
+                  <ng-container [ngSwitch]="views[view]['count']">
+                    <span *ngSwitchCase="-1">({{ countInProgress ? '...' : '0' }})</span>
+                    <span *ngSwitchCase="null">({{ countInProgress ? '...' : '--' }})</span>
+                    <span *ngSwitchDefault>({{views[view]['count']}})</span>
+                  </ng-container>
                 </button>
               </li>
             </ng-container>

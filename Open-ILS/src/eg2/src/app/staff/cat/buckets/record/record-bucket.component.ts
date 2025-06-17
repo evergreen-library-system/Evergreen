@@ -40,6 +40,8 @@ export class RecordBucketComponent implements OnInit, OnDestroy {
 
     private initInProgress = true;
     private destroy$ = new Subject<void>();
+    private countUpdateTimer: any;
+    private lastViewSwitch: number = 0;
 
     @ViewChild('grid', { static: true }) private grid: GridComponent;
     cellTextGenerator: GridCellTextGenerator;
@@ -114,7 +116,9 @@ export class RecordBucketComponent implements OnInit, OnDestroy {
         
         await this.bucketService.loadFavoriteRecordBucketFlags(this.auth.user().id());
         this.initInProgress = false;
-        this.updateCounts();
+        
+        // Start count update in background without blocking UI
+        this.updateCountsAsync();
     }
 
     get views() {
@@ -194,12 +198,40 @@ export class RecordBucketComponent implements OnInit, OnDestroy {
         this.cdr.detectChanges();
     }
 
+    // New method for non-blocking count updates
+    private updateCountsAsync() {
+        // Clear any existing timer
+        if (this.countUpdateTimer) {
+            clearTimeout(this.countUpdateTimer);
+        }
+        
+        // Update counts asynchronously without blocking the UI
+        this.countUpdateTimer = setTimeout(async () => {
+            try {
+                await this.updateCounts();
+            } catch (error) {
+                console.error('Error updating counts asynchronously:', error);
+            }
+        }, 100); // Small delay to allow UI to render first
+    }
+
     switchTo(source: string) {
         console.debug('switchTo', source);
+        
+        // Track view switches to avoid excessive count updates
+        this.lastViewSwitch = Date.now();
+        
         this.stateService.navigateTo(source, this.route);
         if (!this.initInProgress) {
             this.grid.reload();
-            this.updateCounts();
+            
+            // Only update counts if it's been a while since the last switch
+            // This prevents flickering during rapid view changes
+            setTimeout(() => {
+                if (Date.now() - this.lastViewSwitch >= 300) { // 300ms debounce
+                    this.updateCountsAsync();
+                }
+            }, 350);
         }
     }
 
@@ -564,10 +596,13 @@ export class RecordBucketComponent implements OnInit, OnDestroy {
             }
         }
 
+        // Clear cache and update counts for specific views
+        this.stateService.clearCountCache();
         setTimeout(() => {
             this.grid.reload();
-            this.updateCounts();
-        }, 1000);
+            // Only update favorites count specifically to avoid flickering
+            this.stateService.updateCountsForViews(['favorites']);
+        }, 100);
     };
 
     unFavoriteBucket = async (rows: any[]) => {
@@ -593,13 +628,19 @@ export class RecordBucketComponent implements OnInit, OnDestroy {
             }
         }
 
+        // Clear cache and update counts for specific views
+        this.stateService.clearCountCache();
         setTimeout(() => {
             this.grid.reload();
-            this.updateCounts();
-        }, 1000);
+            // Only update favorites count specifically to avoid flickering
+            this.stateService.updateCountsForViews(['favorites']);
+        }, 100);
     };
 
     ngOnDestroy() {
+        if (this.countUpdateTimer) {
+            clearTimeout(this.countUpdateTimer);
+        }
         this.destroy$.next();
         this.destroy$.complete();
     }

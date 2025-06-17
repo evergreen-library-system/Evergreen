@@ -23,10 +23,11 @@ export class RecordBucketStateService extends BucketStateService {
   ) {
     super(router, auth, idl, pcrud, net, bucketService, bucketConfig);
     
-    // Initialize the state service for the 'biblio' bucket class
+    // Initialize the state service for the 'biblio' bucket class with caching
     this.initialize('biblio', {
       defaultView: 'user',
-      baseRoute: ''
+      baseRoute: '',
+      cacheTimeout: 5 * 60 * 1000 // 5 minutes cache timeout
     });
   }
 }

@@ -31,6 +31,8 @@ export interface BucketStateConfig {
   baseRoute?: string;
   // Initial view to display when loading
   defaultView?: string;
+  // Cache timeout in milliseconds (default: 5 minutes)
+  cacheTimeout?: number;
 }
 
 @Injectable()
@@ -42,6 +44,9 @@ export class BucketStateService {
   private _favoriteIds: number[] = [];
   private _bucketClass: BucketClass;
   private _config: BucketStateConfig;
+  private _countCache: {[key: string]: {count: number, timestamp: number}} = {};
+  private _lastCountUpdate: number = 0;
+  private _countUpdateDebounceTime = 500; // ms
 
   constructor(
     private router: Router,
@@ -61,6 +66,7 @@ export class BucketStateService {
     this._config = {
       defaultView: 'user',
       baseRoute: '',
+      cacheTimeout: 5 * 60 * 1000, // 5 minutes default
       ...config
     };
     this.currentView = this._config.defaultView;
@@ -112,6 +118,35 @@ export class BucketStateService {
     }
   }
 
+  private isCacheValid(key: string): boolean {
+    const cached = this._countCache[key];
+    if (!cached) return false;
+    
+    const now = Date.now();
+    return (now - cached.timestamp) < this._config.cacheTimeout;
+  }
+
+  private getCachedCount(key: string): number | null {
+    if (this.isCacheValid(key)) {
+      return this._countCache[key].count;
+    }
+    return null;
+  }
+
+  private setCachedCount(key: string, count: number): void {
+    this._countCache[key] = {
+      count: count,
+      timestamp: Date.now()
+    };
+  }
+
+  // Check if we should skip count updates (too frequent)
+  private shouldSkipCountUpdate(): boolean {
+    const now = Date.now();
+    const timeSinceLastUpdate = now - this._lastCountUpdate;
+    return timeSinceLastUpdate < this._countUpdateDebounceTime;
+  }
+
   initViews() {
     const bucketFmClass = this.bucketConfig.getBucketFmClass(this._bucketClass);
 
@@ -120,8 +155,18 @@ export class BucketStateService {
       all: {
         label: $localize`Visible to me`,
         sort_key: 10,
-        count: -1,
+        count: null, // Start with null instead of -1
         bucketIdQuery: async (pager, sort, justCount) => {
+          const cacheKey = `${this._bucketClass}_all`;
+          
+          if (justCount) {
+            const cachedCount = this.getCachedCount(cacheKey);
+            if (cachedCount !== null) {
+              this._views['all']['count'] = cachedCount;
+              return { bucketIds: [], count: cachedCount };
+            }
+          }
+
           const translatedSort = this.pcrud.translateFlatSortComplex(bucketFmClass, sort);
           let result: BucketQueryResult;
           const response = await lastValueFrom(
@@ -136,8 +181,10 @@ export class BucketStateService {
             )
           );
           if (justCount) {
-            result = { bucketIds: [], count: response as number };
-            this._views['all']['count'] = result['count'];
+            const count = response as number;
+            this.setCachedCount(cacheKey, count);
+            result = { bucketIds: [], count: count };
+            this._views['all']['count'] = count;
           } else {
             const ids = response as number[];
             result = { bucketIds: ids, count: ids.length };
@@ -148,8 +195,18 @@ export class BucketStateService {
       user: {
         label: $localize`My buckets`,
         sort_key: 1,
-        count: -1,
+        count: null, // Start with null instead of -1
         bucketIdQuery: async (pager, sort, justCount) => {
+          const cacheKey = `${this._bucketClass}_user_${this.auth.user().id()}`;
+          
+          if (justCount) {
+            const cachedCount = this.getCachedCount(cacheKey);
+            if (cachedCount !== null) {
+              this._views['user']['count'] = cachedCount;
+              return { bucketIds: [], count: cachedCount };
+            }
+          }
+
           const translatedSort = this.pcrud.translateFlatSortComplex(bucketFmClass, sort);
           let result: BucketQueryResult;
           const response = await lastValueFrom(
@@ -164,8 +221,10 @@ export class BucketStateService {
             )
           );
           if (justCount) {
-            result = { bucketIds: [], count: response as number };
-            this._views['user']['count'] = result['count'];
+            const count = response as number;
+            this.setCachedCount(cacheKey, count);
+            result = { bucketIds: [], count: count };
+            this._views['user']['count'] = count;
           } else {
             const ids = response as number[];
             result = { bucketIds: ids, count: ids.length };
@@ -176,7 +235,7 @@ export class BucketStateService {
       favorites: {
         label: $localize`Favorites`,
         sort_key: 2,
-        count: -1,
+        count: null, // Start with null instead of -1
         bucketIdQuery: async (pager, sort, justCount) => {
           const translatedSort = this.pcrud.translateFlatSortComplex(bucketFmClass, sort);
           this._favoriteIds = this.bucketService.getFavoriteBucketIds(this._bucketClass);
@@ -210,7 +269,7 @@ export class BucketStateService {
       recent: {
         label: $localize`Recent`,
         sort_key: 3,
-        count: -1,
+        count: null, // Start with null instead of -1
         bucketIdQuery: async (pager, sort, justCount) => {
           const translatedSort = this.pcrud.translateFlatSortComplex(bucketFmClass, sort);
           const storageKey = this.bucketConfig.getStorageKey(this._bucketClass);
@@ -245,8 +304,18 @@ export class BucketStateService {
       shared_with_others: {
         label: $localize`Shared with others`,
         sort_key: 4,
-        count: -1,
+        count: null, // Start with null instead of -1
         bucketIdQuery: async (pager, sort, justCount) => {
+          const cacheKey = `${this._bucketClass}_shared_with_others_${this.auth.user().id()}`;
+          
+          if (justCount) {
+            const cachedCount = this.getCachedCount(cacheKey);
+            if (cachedCount !== null) {
+              this._views['shared_with_others']['count'] = cachedCount;
+              return { bucketIds: [], count: cachedCount };
+            }
+          }
+
           const translatedSort = this.pcrud.translateFlatSortComplex(bucketFmClass, sort);
           let result: BucketQueryResult;
           let method: string;
@@ -267,8 +336,10 @@ export class BucketStateService {
           );
           
           if (justCount) {
-            result = { bucketIds: [], count: response as number };
-            this._views['shared_with_others']['count'] = result['count'];
+            const count = response as number;
+            this.setCachedCount(cacheKey, count);
+            result = { bucketIds: [], count: count };
+            this._views['shared_with_others']['count'] = count;
           } else {
             const ids = response as number[];
             result = { bucketIds: ids, count: ids.length };
@@ -279,8 +350,18 @@ export class BucketStateService {
       shared_with_user: {
         label: $localize`Shared with me`,
         sort_key: 5,
-        count: -1,
+        count: null, // Start with null instead of -1
         bucketIdQuery: async (pager, sort, justCount) => {
+          const cacheKey = `${this._bucketClass}_shared_with_user_${this.auth.user().id()}`;
+          
+          if (justCount) {
+            const cachedCount = this.getCachedCount(cacheKey);
+            if (cachedCount !== null) {
+              this._views['shared_with_user']['count'] = cachedCount;
+              return { bucketIds: [], count: cachedCount };
+            }
+          }
+
           const translatedSort = this.pcrud.translateFlatSortComplex(bucketFmClass, sort);
           let result: BucketQueryResult;
           let method: string;
@@ -299,8 +380,10 @@ export class BucketStateService {
           );
           
           if (justCount) {
-            result = { bucketIds: [], count: response as number };
-            this._views['shared_with_user']['count'] = result['count'];
+            const count = response as number;
+            this.setCachedCount(cacheKey, count);
+            result = { bucketIds: [], count: count };
+            this._views['shared_with_user']['count'] = count;
           } else {
             const ids = response as number[];
             result = { bucketIds: ids, count: ids.length };
@@ -342,16 +425,73 @@ export class BucketStateService {
 
   async updateCounts() {
     if (this._countInProgress) { return; }
+    
+    // Skip if we've updated too recently
+    if (this.shouldSkipCountUpdate()) {
+      console.debug('Skipping count update - too recent');
+      return;
+    }
+    
     this._countInProgress = true;
+    this._lastCountUpdate = Date.now();
 
     const viewKeys = this.getViewKeys();
 
     try {
-      viewKeys.forEach(v => { this._views[v].count = -1; });
-      // Wait for all bucketIdQuery operations for counting to complete
-      await Promise.all(viewKeys.map(v => this._views[v].bucketIdQuery(null, [], true)));
+      // Don't reset counts to -1, preserve existing values during updates
+      // Only set to loading state if we don't have a cached value
+      viewKeys.forEach(v => { 
+        if (this._views[v].count === null || this._views[v].count === undefined) {
+          this._views[v].count = -1; // Loading state only for uninitialized counts
+        }
+      });
+      
+      // Use Promise.allSettled for concurrent execution
+      // This allows counts to load independently without blocking each other
+      const countPromises = viewKeys.map(async (viewKey) => {
+        try {
+          await this._views[viewKey].bucketIdQuery(null, [], true);
+          return { viewKey, success: true };
+        } catch (error) {
+          console.error(`Error updating count for view ${viewKey}:`, error);
+          // Only set to 0 if we don't have a cached value
+          if (this._views[viewKey].count === -1 || this._views[viewKey].count === null) {
+            this._views[viewKey].count = 0;
+          }
+          return { viewKey, success: false, error };
+        }
+      });
+
+      await Promise.allSettled(countPromises);
     } catch (error) {
       console.error('Error updating counts:', error);
+    }
+    
+    this._countInProgress = false;
+  }
+
+  // Enhanced method to update counts only for specific views
+  async updateCountsForViews(viewKeys: string[]) {
+    if (this._countInProgress) { return; }
+    
+    this._countInProgress = true;
+
+    try {
+      const countPromises = viewKeys.map(async (viewKey) => {
+        if (!this._views[viewKey]) return { viewKey, success: false, error: 'View not found' };
+        
+        try {
+          await this._views[viewKey].bucketIdQuery(null, [], true);
+          return { viewKey, success: true };
+        } catch (error) {
+          console.error(`Error updating count for view ${viewKey}:`, error);
+          return { viewKey, success: false, error };
+        }
+      });
+
+      await Promise.allSettled(countPromises);
+    } catch (error) {
+      console.error('Error updating specific view counts:', error);
     }
     
     this._countInProgress = false;
@@ -417,5 +557,18 @@ export class BucketStateService {
     }
     
     return query;
+  }
+
+  // Clear cache when certain actions occur
+  clearCountCache(): void {
+    this._countCache = {};
+    // Reset timestamp to allow immediate updates
+    this._lastCountUpdate = 0;
+  }
+
+  // Force immediate count update (bypasses debouncing)
+  async forceUpdateCounts() {
+    this._lastCountUpdate = 0;
+    await this.updateCounts();
   }
 }
