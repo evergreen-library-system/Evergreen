@@ -11,7 +11,7 @@ import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {StringComponent} from '@eg/share/string/string.component';
 import {BucketService} from '@eg/staff/share/buckets/bucket.service';
-import {BucketClass} from '@eg/staff/share/buckets/bucket-config.service';
+import {BucketClass, BucketConfigService} from '@eg/staff/share/buckets/bucket-config.service';
 
 /**
  * Dialog for adding bib records to new and existing record buckets.
@@ -42,8 +42,8 @@ export class BucketDialogComponent extends DialogComponent implements OnInit {
     // If set, itemIds will be derived from the records in a bib queue
     @Input() fromBibQueue: number;
 
-    // bucket item classes are these plus a following 'i'.
-    bucketFmClass: 'ccb' | 'ccnb' | 'cbreb' | 'cub';
+    // bucket item classes from configuration
+    bucketFmClass: string;
     targetField: string;
 
     @ViewChild('confirmAddToShared') confirmAddToShared: ConfirmDialogComponent;
@@ -57,7 +57,8 @@ export class BucketDialogComponent extends DialogComponent implements OnInit {
         private net: NetService,
         private bucketService: BucketService,
         private evt: EventService,
-        private auth: AuthService) {
+        private auth: AuthService,
+        private bucketConfig: BucketConfigService) {
         super(modal); // required for subclassing
         this.buckets = [];
         this.itemIds = [];
@@ -92,25 +93,12 @@ export class BucketDialogComponent extends DialogComponent implements OnInit {
             this.bucketClass = 'biblio';
         }
 
-        switch (this.bucketClass) {
-            case 'biblio':
-                if (this.fromBibQueue) {
-                    this.bucketType = 'vandelay_queue';
-                }
-                this.bucketFmClass = 'cbreb';
-                this.targetField = 'target_biblio_record_entry';
-                break;
-            case 'copy':
-                this.bucketFmClass = 'ccb';
-                this.targetField = 'target_copy';
-                break;
-            case 'callnumber':
-                this.bucketFmClass = 'ccnb';
-                this.targetField = 'target_call_number';
-                break;
-            case 'user':
-                this.bucketFmClass = 'cub';
-                this.targetField = 'target_user';
+        // Use bucket config service to get the configuration values
+        this.bucketFmClass = this.bucketConfig.getBucketFmClass(this.bucketClass);
+        this.targetField = this.bucketConfig.getTargetField(this.bucketClass);
+
+        if (this.bucketClass === 'biblio' && this.fromBibQueue) {
+            this.bucketType = 'vandelay_queue';
         }
 
         if (!this.bucketType) {
@@ -201,7 +189,7 @@ export class BucketDialogComponent extends DialogComponent implements OnInit {
         this.bucketService.logBucket(this.bucketClass, bucketId);
         const items = [];
         this.itemIds.forEach(itemId => {
-            const item = this.idl.create(this.bucketFmClass + 'i');
+            const item = this.idl.create(this.bucketConfig.getBucketItemFmClass(this.bucketClass));
             item.bucket(bucketId);
             item[this.targetField](itemId);
             items.push(item);
@@ -243,7 +231,5 @@ export class BucketDialogComponent extends DialogComponent implements OnInit {
         });
     }
 }
-
-
 
 
