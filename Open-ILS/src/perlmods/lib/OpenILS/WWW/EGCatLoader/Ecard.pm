@@ -25,10 +25,16 @@ my @api_fields_renew = (
     {name => 'vendor_password', required => 1},
     {name => 'email', class => 'au'},
     {name => 'day_phone', class => 'au', required => 1},
+    {name => 'evening_phone', class => 'au'},
+    {name => 'other_phone', class => 'au'},
     {name => 'home_ou', class => 'au'},
     {name => 'pref_first_given_name', class => 'au'},
     {name => 'pref_second_given_name', class => 'au'},
     {name => 'pref_family_name', class => 'au'},
+    {name => 'pref_prefix', class => 'au'},
+    {name => 'pref_suffix', class => 'au'},
+    {name => 'passwd', class => 'au'},
+    {name => 'locale', class => 'au'},
     {name => 'physical_id', class => 'aua'},
     {name => 'physical_street1', class => 'aua'},
     {name => 'physical_street1_name'},
@@ -463,6 +469,8 @@ sub load_ecard_submit {
         return $self->compile_response unless $self->update_user;
         $logger->debug( "ECARD: update_addresses" );
         return $self->compile_response unless $self->update_addresses;
+        $logger->debug( "ECARD: check_username_for_renewal" );
+        return $self->compile_response unless $self->check_username_for_renewal;
         $logger->debug( "ECARD: add_survey_responses" );
         return $self->compile_response unless $self->add_survey_responses;
         $logger->debug( "ECARD: add_stat_cats" );
@@ -748,7 +756,12 @@ sub update_user {
         }
 
         $val = undef if $field eq 'day_phone' && $val eq '--';
+        $val = undef if $field eq 'evening_phone' && $val eq '--';
+        $val = undef if $field eq 'other_phone' && $val eq '--';
         $val = $au->home_ou if $field eq 'home_ou' && $val eq '';
+
+        # avoid emptying the password
+        next if $field eq 'passwd' && !$val;
 
         $au->$field($val);
     }
@@ -1197,6 +1210,28 @@ sub check_username {
 
     my $usrname = $self->cgi->param('usrname');
     return 1 if !$usrname;
+
+    my $search = $e->search_actor_user({usrname => $usrname});
+
+    return 1 if @$search == 0;
+
+    $logger->info("ECARD found colliding usrname with user $search->[0]");
+
+    $ctx->{response}->{status} = 'USERNAME_TAKEN';
+    return undef;
+}
+
+sub check_username_for_renewal {
+    my $self = shift;
+    my $ctx  = $self->ctx;
+    my $user = $ctx->{user};
+    my $addr = $user->addresses->[0];
+    my $e = new_editor();
+
+    my $usrname = $self->cgi->param('usrname');
+    return 1 if !$usrname;
+
+    return 1 if $usrname eq $user->usrname();
 
     my $search = $e->search_actor_user({usrname => $usrname});
 

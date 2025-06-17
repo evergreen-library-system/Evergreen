@@ -2122,6 +2122,10 @@ sub user_opac_renewal {
 
     $user_id ||= $e->requestor->id;
 
+    if ($e->requestor->id ne $user_id) {
+        return $e->die_event unless $e->allowed('VIEW_USER');
+    }
+
     my $user = $e->retrieve_actor_user([ $user_id, {
         flesh => 1,
         flesh_fields => {
@@ -2138,7 +2142,21 @@ sub user_opac_renewal {
             pref_second_given_name => $user->pref_second_given_name,
             pref_family_name  => $user->pref_family_name,
             day_phone         => $user->day_phone,
+            evening_phone     => $user->evening_phone,
+            other_phone       => $user->other_phone,
+            profile           => $user->profile,
+            locale            => $user->locale,
+            create_date       => $user->create_date,
+            expire_date       => $user->expire_date,
+            guardian          => $user->guardian,
+            guardian_email    => $user->guardian_email,
             email             => $user->email,
+            prefix            => $user->prefix,
+            suffix            => $user->suffix,
+            pref_prefix       => $user->pref_prefix,
+            pref_suffix       => $user->pref_suffix,
+            usrname           => $user->usrname,
+            dob               => $user->dob,
             home_ou           => $user->home_ou,
             barcode           => $user->card->barcode,
             physical_street1  => $user->billing_address->street1,
