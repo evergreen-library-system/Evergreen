@@ -274,8 +274,12 @@ export class OrgSelectComponent implements OnInit, AfterViewInit {
 
     ngAfterViewInit(): void {
         document.querySelectorAll('ngb-typeahead-window button[disabled]').forEach(b => b.setAttribute('tabindex', '-1'));
-        this.controller = this.instance['_nativeElement'] as HTMLInputElement;
-        this.controller.addEventListener('keydown', this.onKeydown.bind(this));
+        
+        // Add null check to prevent errors when instance is undefined
+        if (this.instance) {
+            this.controller = this.instance['_nativeElement'] as HTMLInputElement;
+            this.controller.addEventListener('keydown', this.onKeydown.bind(this));
+        }
     }
 
     getDisplayLabel(org: IdlObject): string {
