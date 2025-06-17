@@ -86,10 +86,10 @@ msgstr ""
 msgid "%1 "
 msgstr ""
 
-#. (title, hold.hold.part.label)
 #. (copy.label, copy_org.name)
 #. (title, part.label)
 #. (lang.label, lang.source_bibs.size)
+#. (title, hold.hold.part.label)
 #: ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds.tt2:171 ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds/edit.tt2:27 ../../Open-ILS/src/templates-bootstrap/opac/myopac/lists.tt2:359 ../../Open-ILS/src/templates-bootstrap/opac/parts/anon_list.tt2:83 ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold_result.tt2:56 ../../Open-ILS/src/templates-bootstrap/opac/parts/record/summary.tt2:316
 msgid "%1 (%2)"
 msgstr ""
@@ -120,9 +120,9 @@ msgstr ""
 msgid "%1 mi"
 msgstr ""
 
-#. (ou_avail, ou_count, ou_name)
-#. (attrs.plib_copy_counts.$depth.available, attrs.plib_copy_counts.$depth.count, ou_name)
 #. (attrs.copy_counts.$depth.available, attrs.copy_counts.$depth.count, ou_name)
+#. (attrs.plib_copy_counts.$depth.available, attrs.plib_copy_counts.$depth.count, ou_name)
+#. (ou_avail, ou_count, ou_name)
 #: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/copy_counts.tt2:30 ../../Open-ILS/src/templates-bootstrap/opac/parts/record/copy_counts.tt2:49 ../../Open-ILS/src/templates-bootstrap/opac/parts/result/copy_counts.tt2:21 ../../Open-ILS/src/templates-bootstrap/opac/parts/result/copy_counts.tt2:41
 msgid "%1 of %quant(%2,copy,copies) available at %3."
 msgstr ""
@@ -812,7 +812,7 @@ msgid "Back To Search"
 msgstr ""
 
 #: ../../Open-ILS/src/templates-bootstrap/opac/myopac/main_pay.tt2:63
-msgid "Back to My Acccount"
+msgid "Back to My Account"
 msgstr ""
 
 #: ../../Open-ILS/src/templates-bootstrap/opac/myopac/receipt_email.tt2:19 ../../Open-ILS/src/templates-bootstrap/opac/myopac/receipt_print.tt2:24
@@ -4635,8 +4635,8 @@ msgstr ""
 msgid "See all of my lists"
 msgstr ""
 
-#. (row_title)
 #. (attrs.title)
+#. (row_title)
 #: ../../Open-ILS/src/templates-bootstrap/opac/myopac/circ_history.tt2:152 ../../Open-ILS/src/templates-bootstrap/opac/myopac/circs.tt2:144 ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds.tt2:167 ../../Open-ILS/src/templates-bootstrap/opac/myopac/lists.tt2:335 ../../Open-ILS/src/templates-bootstrap/opac/parts/anon_list.tt2:70
 msgid "Select %1"
 msgstr ""

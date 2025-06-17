@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2025-03-25 10:35:24-0400\n"
+"POT-Creation-Date: 2025-06-17 16:56:14-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20681,77 +20681,82 @@ msgstr ""
 msgid "Grid Config: catalog.record.parts"
 msgstr ""
 
+# id::cwst.label__eg.grid.admin.config.coded_value_map
+#: 950.data.seed-values.sql:25032
+msgid "Grid Config: eg.grid.admin.config.coded_value_map"
+msgstr ""
+
 # id::coust.label__ui.staff.grid.density
-#: 950.data.seed-values.sql:25035
+#: 950.data.seed-values.sql:25044
 msgid "Grid UI density"
 msgstr ""
 
 # id::coust.description__ui.staff.grid.density
-#: 950.data.seed-values.sql:25038
+#: 950.data.seed-values.sql:25047
 msgid ""
 "Whitespace around table cells in staff UI data grids. Default is "
 "\"standard\"."
 msgstr ""
 
 # id::coust.label__opac.alert_banner_show
-#: 950.data.seed-values.sql:25049
+#: 950.data.seed-values.sql:25058
 msgid "OPAC Alert Banner: Display"
 msgstr ""
 
 # id::coust.description__opac.alert_message_show
-#: 950.data.seed-values.sql:25052
+#: 950.data.seed-values.sql:25061
 msgid "Show an alert banner in the OPAC. Default is false."
 msgstr ""
 
 # id::coust.label__opac.alert_banner_type
-#: 950.data.seed-values.sql:25059
+#: 950.data.seed-values.sql:25068
 msgid "OPAC Alert Banner: Type"
 msgstr ""
 
 # id::coust.description__opac.alert_message_type
-#: 950.data.seed-values.sql:25062
+#: 950.data.seed-values.sql:25071
 msgid ""
 "Determine the display of the banner. Options are: success, info, warning, "
 "danger."
 msgstr ""
 
 # id::coust.label__opac.alert_banner_text
-#: 950.data.seed-values.sql:25069
+#: 950.data.seed-values.sql:25078
 msgid "OPAC Alert Banner: Text"
 msgstr ""
 
 # id::coust.description__opac.alert_message_text
-#: 950.data.seed-values.sql:25072
+#: 950.data.seed-values.sql:25081
 msgid "Text that will display in the alert banner."
 msgstr ""
 
 # id::coust.label__opac.google_analytics_enable
-#: 950.data.seed-values.sql:25083
+#: 950.data.seed-values.sql:25092
 msgid "Google Analytics: Enable"
 msgstr ""
 
 # id::coust.description__opac.alert_message_show
-#: 950.data.seed-values.sql:25086
+#: 950.data.seed-values.sql:25095
 msgid "Enable Google Analytics in the OPAC. Default is false."
 msgstr ""
 
 # id::coust.label__opac.google_analytics_code
-#: 950.data.seed-values.sql:25093
+#: 950.data.seed-values.sql:25102
 msgid "Google Analytics: Code"
 msgstr ""
 
 # id::coust.description__opac.google_analytics_code
-#: 950.data.seed-values.sql:25096
+#: 950.data.seed-values.sql:25105
 msgid "Account code provided by Google. (Example: G-GVGQ11X12)"
 msgstr ""
 
 # id::coust.label__ui.staff.disable_links_newtabs
-#: 950.data.seed-values.sql:25107
+#: 950.data.seed-values.sql:25116
 msgid "Staff Client: no new tabs"
 msgstr ""
 
 # id::coust.description__ui.staff.disable_links_newtabs
-#: 950.data.seed-values.sql:25110
+#: 950.data.seed-values.sql:25119
 msgid ""
 "Prevents links in the staff interface from opening in new tabs or windows."
 msgstr ""
