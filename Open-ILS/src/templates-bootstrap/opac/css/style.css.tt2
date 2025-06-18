@@ -388,7 +388,7 @@ Novelist Styling
 
 .adv_search_grid {
     align-items: center;
-    display: grid;
+    /* display: grid; */
     gap: 0.1rem 0.75rem;
     /* Columns: legend (hidden), boolean operator, query type, match, term, row remover button */
     grid-template-columns: max-content max-content max-content minmax(auto, 20rem) max-content;
