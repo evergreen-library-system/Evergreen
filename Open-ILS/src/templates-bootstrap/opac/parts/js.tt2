@@ -179,6 +179,7 @@ var aou_hash = {
 <script src="[% ctx.media_prefix %]/opac/deps/node_modules/popper.js/dist/umd/popper.min.js[% ctx.cache_key %]"></script>
 <script src="[% ctx.media_prefix %]/opac/deps/node_modules/bootstrap/dist/js/bootstrap.min.js[% ctx.cache_key %]"></script>
 <script src="[% ctx.media_prefix %]/opac/deps/node_modules/@duetds/date-picker/dist/duet/duet.js[% ctx.cache_key %]"></script>
+<script src="[% ctx.media_prefix %]/opac/deps/node_modules/dialog-polyfill/dist/dialog-polyfill.js[% ctx.cache_key %]"></script>
 
 <script>
     // Datepicker format conversion

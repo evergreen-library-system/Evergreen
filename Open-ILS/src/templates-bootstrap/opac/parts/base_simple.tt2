@@ -11,6 +11,7 @@
         <link rel="stylesheet" href="[% ctx.media_prefix %]/opac/deps/node_modules/bootstrap/dist/css/bootstrap.min.css[% ctx.cache_key %]">
         <link rel="stylesheet"  href="[% ctx.media_prefix %]/opac/deps/node_modules/@fortawesome/fontawesome-free/css/all.css[% ctx.cache_key %]" />
         <link rel="stylesheet"  href="[% ctx.media_prefix %]/opac/deps/node_modules/bootstrap-datepicker/dist/css/bootstrap-datepicker.css[% ctx.cache_key %]" />
+        <link rel="stylesheet" href="[% ctx.media_prefix %]/opac/deps/node_modules/dialog-polyfill/dist/dialog-polyfill.css[% ctx.cache_key %]" />
         <link rel="stylesheet"  href="[% ctx.media_prefix %]/css/skin/default/opac/semiauto.css[% ctx.cache_key %]" />
         <link rel="stylesheet" href="[% ctx.opac_root %]/css/style.css[% ctx.cache_key %]&amp;dir=[%
           IF ctx.get_i18n_l(ctx.eg_locale).rtl == 't' %]rtl[%

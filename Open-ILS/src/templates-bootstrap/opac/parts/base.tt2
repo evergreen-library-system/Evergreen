@@ -13,6 +13,7 @@
         <link rel="stylesheet" href="[% ctx.media_prefix %]/js/ui/default/common/build/js/glide/css/glide.core.min.css[% ctx.cache_key %]">
         <link rel="stylesheet" href="[% ctx.media_prefix %]/js/ui/default/common/build/js/glide/css/glide.theme.min.css[% ctx.cache_key %]">
         <link rel="stylesheet" href="[% ctx.media_prefix %]/opac/deps/node_modules/@duetds/date-picker/dist/duet/themes/default.css[% ctx.cache_key %]" />
+        <link rel="stylesheet" href="[% ctx.media_prefix %]/opac/deps/node_modules/dialog-polyfill/dist/dialog-polyfill.css[% ctx.cache_key %]" />
 
 
         <link rel="stylesheet"  href="[% ctx.media_prefix %]/css/skin/default/opac/semiauto.css[% ctx.cache_key %]" />
