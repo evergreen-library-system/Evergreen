@@ -87,7 +87,7 @@ function($scope , $q , $window , $location , $timeout , egCore , egNet , egGridD
     }
 
     $scope.add_records_to_bucket = function() {
-        itemSvc.add_records_to_bucket([$scope.args.recordId], 'biblio');
+        itemSvc.add_copies_to_bucket([$scope.args.recordId], 'biblio');
     }
 
     $scope.show_in_catalog = function() {
