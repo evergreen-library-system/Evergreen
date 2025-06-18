@@ -34,6 +34,7 @@ use OpenILS::WWW::EGCatLoader::Ecard;
 
 my $U = 'OpenILS::Application::AppUtils';
 my @front_door = qw/home browse advanced course_search carousel nb_bounce/;
+my @side_door = qw/ecard/;
 
 use constant COOKIE_STAFF_TOKEN => 'eg.auth.token';
 use constant COOKIE_STAFF_TIMEOUT => 'eg.auth.time';
@@ -390,6 +391,9 @@ sub confirm_notbot_cookie {
     return 1 unless $ctx->{require_notbot_cookie};
 
     my $path = $self->apache->path_info;
+
+    # path is a side door? don't need a cookie
+    return 1 if (grep { $path =~ m|opac/$_| } @side_door);
 
     # path is a front door? deliver or refresh a cookie
     return $self->add_notbot_cookie_header($ctx->{notbot_cookie})
