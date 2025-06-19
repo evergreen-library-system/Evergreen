@@ -1,0 +1,33 @@
+BEGIN;
+
+SELECT plan(1);
+
+-- The function under test previously had an infinite loop, which makes for a very
+-- boring test-running experience.  For this db session only, set a time limit of
+-- 5 seconds.
+SET statement_timeout = 5000;
+
+-- Create a queue
+INSERT INTO vandelay.bib_queue (id, owner, name) VALUES (5555, 7, 'lp1848375 test bucket');
+
+-- Enqueue a bib record and an item that matches a record in the collection
+INSERT INTO vandelay.queued_bib_record(id, marc, queue) VALUES (7777, '<record><datafield tag="901" ind1=" " ind2=" "><subfield code="c">243</subfield></datafield></record>', 5555);
+INSERT INTO vandelay.import_item (record, definition, owning_lib) VALUES (
+    7777,
+    1, -- Evergreen holdings format
+    9 -- Bookmobile 1, which already has some copies of bib record 243
+);
+
+PREPARE auto_overlay_with_items AS SELECT vandelay.auto_overlay_org_unit_copies(
+    7777,
+    2, -- full overlay
+    0 -- quality ratio
+);
+
+SELECT performs_ok(
+    'auto_overlay_with_items',
+    1000,
+    'overlaying a record with items takes less than a second'
+);
+
+ROLLBACK;
