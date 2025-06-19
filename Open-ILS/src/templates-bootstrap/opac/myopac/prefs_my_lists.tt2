@@ -28,9 +28,9 @@
                                         selected='selected'[% END %]>[% val | html %]</option>
                             [% END %]
                         </select>
-                      <a href="#" title="[% l("Change the number of lists shown in 'My Lists'.") %]" data-toggletip>
+                      <a href="#" aria-label="[% l('Help with lists per page') %]" title="[% l("Change the number of lists shown in 'My Lists'.") %]" data-toggletip>
                         <i class="fas fa-question-circle"></i>
-                    </a>
+                      </a>
                 </div>
                 [%- setting = 'opac.list_items_per_page' -%]
                 
@@ -46,9 +46,9 @@
                                         selected='selected'[% END %]>[% val | html %]</option>
                             [% END %]
                         </select>
-                       <a href="#" title="[% l("Change the number of items shown while viewing a 'My List'.") %]" data-toggletip>
+                       <a href="#" aria-label="[% l('Help with list items per page') %]" title="[% l("Change the number of items shown while viewing a 'My List'.") %]" data-toggletip>
                         <i class="fas fa-question-circle"></i>
-                    </a>
+                       </a>
                 </div>
         <button type="submit" class="btn btn-confirm"><i class="fas fa-save"></i> [% l('Save') %]</button>
         </div>

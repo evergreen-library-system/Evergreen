@@ -50,10 +50,13 @@ h6, .h6 {
     font-weight: 600;
     line-height: 135%;
 }
-a:not(.btn) {
+/* Links need underlines (WCAG 1.4.1), but let's use a weak selector */
+a:where(:not(.btn)) {
     text-decoration: revert;
 }
-
+a[data-toggletip] {
+    text-decoration: none !important;
+}
 /* Bootstrap 5 shims */
 .hstack,
 .form-inline .form-group.hstack {
@@ -66,12 +69,16 @@ a:not(.btn) {
     flex-direction: column;
 }
 
-.g-1 {
+.g-1, .gap-1 {
     gap: 0.25rem;
 }
 
-.g-2 {
+.g-2, .gap-2 {
     gap: 0.5rem;
+}
+
+.g-3, .gap-3 {
+    gap: 0.75rem;
 }
 
 .text-start {

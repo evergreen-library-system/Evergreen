@@ -34,7 +34,7 @@
                     <strong>[% l("Show all holds") %]</strong> |
                     <a href="[% mkurl('holds',{available => 1},['limit','offset']) %]">[% l("Show only available holds") %]</a>
                     [% END -%]
-                     <a href="#" title="This option will show all items available for pickup." data-toggletip>
+                     <a href="#" aria-label="[% l('Help with available holds') %]" title="[% l('This option will show all items available for pickup.') %]" data-toggletip>
                         <i class="fas fa-question-circle" aria-hidden="true"></i>
                     </a>
                </p>

@@ -44,7 +44,7 @@
                     <option value="0">[% l('No') %]
                     <option value="1">[% l('Yes') %]
                 </select>
-                <a href="#" title="[% l('Allows the list to be shared through a link or RSS.') %]" data-toggletip>
+                <a href="#" aria-label="[% l('Help with sharing') %]" title="[% l('Allows the list to be shared through a link or RSS.') %]" data-toggletip>
                 <i class="fas fa-question-circle" aria-hidden="true"></i>
                 </a>
             </div>

@@ -134,7 +134,7 @@
                             [% CGI.param('depth') == ctx.depth_sel_depth ? ' checked="checked"' : '' %] />
                             [% ctx.depth_sel_checkbox_label | html %]
                         </label>
-                        <a href="#" title="[% ctx.depth_sel_tooltip | html %]" data-toggletip>
+                        <a href="#" aria-label="[% l('Help with library search expansion') %]" title="[% ctx.depth_sel_tooltip | html %]" data-toggletip>
                             <i class="fas fa-question-circle" aria-hidden="true"></i>
                         </a>
                     </div>
