@@ -72,7 +72,7 @@
                     <th>[% l('Date') %]</th>
                     <th>[% l('Time') %]</th>
                     <th>[% l('Arrival Notes') %]
-                        <a href="#" data-toggletip title="Vehicle Description, etc.">
+                        <a href="#" data-toggletip aria-label="[% l('Help with arrival notes') %]" title="[% l('Vehicle Description, etc.') %]">
                             <i class="fas fa-question-circle" aria-hidden="true"></i>
                         </a>
                     </th>

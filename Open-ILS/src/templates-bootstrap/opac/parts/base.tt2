@@ -78,11 +78,7 @@
         [% END;%]
 
         [% INCLUDE 'opac/parts/js.tt2' %]
-        <script>
-    $(document).ready(function(){
-    $('.tooltip').tooltip();
-    });
-</script>
+
         [%- IF ENV.OILS_CHILIFRESH_ACCOUNT %]
             [%- INCLUDE 'opac/parts/chilifresh.tt2' %]
         [%- END %]
