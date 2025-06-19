@@ -1,6 +1,6 @@
 BEGIN;
 
--- SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1473', :eg_version);
 
 -- Basically the same thing as using cascade update, but the stat_cat_entry isn't a foreign key as it can be freetext
 CREATE OR REPLACE FUNCTION actor.stat_cat_entry_usr_map_cascade_update() RETURNS TRIGGER AS $$
