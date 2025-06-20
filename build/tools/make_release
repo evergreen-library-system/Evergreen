@@ -22,11 +22,7 @@ PG_USER=NONE # -U
 PG_PASS=NONE # -P
 PG_PORT=NONE # -O
 
-# path to OpenSRF libraries
-[ "$(which osrf_config)" ] && OSRF_JS_PATH="$(osrf_config --libdir)/javascript";
-
-
-while getopts ":hv:f:F:nptbrij:CH:D:U:P:O:" opt; do
+while getopts ":hv:f:F:nptbriCH:D:U:P:O:" opt; do
     case $opt in
         v)
             VERSION=$OPTARG
@@ -54,10 +50,6 @@ while getopts ":hv:f:F:nptbrij:CH:D:U:P:O:" opt; do
         ;;
         b)
             BUILD_ONLY=YES
-        ;;
-
-        j)
-            OSRF_JS_PATH="$OPTARG"
         ;;
         C)
             SKIP_BUILD_BROWSER_CLIENT=YES
@@ -93,7 +85,6 @@ while getopts ":hv:f:F:nptbrij:CH:D:U:P:O:" opt; do
             echo "   -b turns on build only mode."
             echo "   -r prompt to preview upgrade SQL in editor before committing."
             echo "   -i skip i18n; primarily useful for (quickly) testing this script."
-            echo "   -j opensrf javascript library path.  If osrf_config is found, the value derived from osrf_config --libdir."
             echo "   -C Skip building the browser client. Useful only if all you want to do is generate the DB update script."
             echo "   -H Postgres [H]ostname (optional)"
             echo "   -D Postgres [D]atabase name (optional)"
@@ -121,11 +112,6 @@ while getopts ":hv:f:F:nptbrij:CH:D:U:P:O:" opt; do
         ;;
     esac
 done
-
-if [ -z "$OSRF_JS_PATH" ]; then
-    echo "Unable to find OpenSRF JavaScript library path.  Specify with -j";
-    exit 1;
-fi;
 
 if [ "$TAG_ONLY" == "YES" ]; then
     PREV_BRANCH="TAG"
