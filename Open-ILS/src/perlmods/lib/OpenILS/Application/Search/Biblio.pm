@@ -1286,6 +1286,15 @@ sub staff_location_groups_with_lassos {
 }
 
 __PACKAGE__->register_method(
+    method    => 'staff_location_groups_with_orgs',
+    api_name  => 'open-ils.search.staff.location_groups_with_orgs',
+);
+sub staff_location_groups_with_orgs {
+    my $flag = new_editor()->retrieve_config_global_flag('staff.search.shelving_location_groups_with_orgs');
+    return $flag ? $flag->enabled eq 't' : 0;
+}
+
+__PACKAGE__->register_method(
     method    => 'staged_search',
     api_name  => 'open-ils.search.biblio.multiclass.staged',
     signature => {

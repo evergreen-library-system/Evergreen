@@ -1,5 +1,4 @@
 import { AuthService } from '@eg/core/auth.service';
-import { GlobalFlagService } from '@eg/core/global-flag.service';
 import { IdlObject, IdlService } from '@eg/core/idl.service';
 import { NetService } from '@eg/core/net.service';
 import { PcrudService } from '@eg/core/pcrud.service';

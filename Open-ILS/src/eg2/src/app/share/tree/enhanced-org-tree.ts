@@ -1,10 +1,10 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { IdlObject } from '@eg/core/idl.service';
 import { OrgService } from '@eg/core/org.service';
 import { Tree, TreeNode } from './tree';
 import { PcrudService } from '@eg/core/pcrud.service';
 import { firstValueFrom, lastValueFrom, toArray } from 'rxjs';
-import { GlobalFlagService } from '@eg/core/global-flag.service';
+import { CatalogOrgSelectService } from '@eg/staff/catalog/catalog-org-select/catalog-org-select.service';
 
 const SHELVING_LOCATION_GROUPS_INCLUDED_BY_DEFAULT = true;
 
@@ -15,19 +15,18 @@ const SHELVING_LOCATION_GROUPS_INCLUDED_BY_DEFAULT = true;
     providedIn: 'root'
 })
 export class EnhancedOrgTree {
-    constructor(private org: OrgService, private pcrud: PcrudService, private globalFlag: GlobalFlagService) {
+    constructor(private org: OrgService, private pcrud: PcrudService) {
         this.org.absorbTree();
     }
+
+    orgSelectService = inject(CatalogOrgSelectService);
 
     orgTreeObject = new Tree();
     locationGroups: IdlObject[];
     shouldAddLocationGroups = SHELVING_LOCATION_GROUPS_INCLUDED_BY_DEFAULT;
 
     async toTreeObject(labelGenerator?: (nodeToLabel: IdlObject) => string): Promise<Tree> {
-        this.shouldAddLocationGroups = await firstValueFrom(
-            this.globalFlag.enabled('staff.search.shelving_location_groups_with_orgs',
-                SHELVING_LOCATION_GROUPS_INCLUDED_BY_DEFAULT)
-        );
+        this.shouldAddLocationGroups = await firstValueFrom(this.orgSelectService.shouldIncludeLocationGroups());
 
         // If we have already created a tree object, no need to recreate it
         if (this.orgTreeObject.nodeList(false, true).length === 0) {

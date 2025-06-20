@@ -4,8 +4,9 @@ import { OrgService } from '@eg/core/org.service';
 import { IdlObject } from '@eg/core/idl.service';
 import { Tree, TreeNode } from './tree';
 import { PcrudService } from '@eg/core/pcrud.service';
-import { GlobalFlagService } from '@eg/core/global-flag.service';
 import { MockGenerators } from 'test_data/mock_generators';
+import { CatalogOrgSelectService } from '@eg/staff/catalog/catalog-org-select/catalog-org-select.service';
+import { of } from 'rxjs';
 
 const consortium = jasmine.createSpyObj<IdlObject>(
     ['children', 'id', 'parent_ou', 'shortname', 'staff_catalog_visible'],
@@ -69,10 +70,8 @@ const mockPcrudService = MockGenerators.pcrudService({
     search: [adultGroup, teenGroup, childrensGroup]
 });
 
-const mockGlobalFlagService = MockGenerators.globalFlagService([{
-    enabled: true,
-    name: 'staff.search.shelving_location_groups_with_orgs'
-}]);
+const mockCatalogOrgSelectService = jasmine.createSpyObj<CatalogOrgSelectService>(['shouldIncludeLocationGroups']);
+mockCatalogOrgSelectService.shouldIncludeLocationGroups.and.returnValue(of(true));
 
 describe('EnhancedOrgTree', () => {
     let service: EnhancedOrgTree;
@@ -82,7 +81,7 @@ describe('EnhancedOrgTree', () => {
             providers: [
                 {provide: OrgService, useValue: mockOrgService},
                 {provide: PcrudService, useValue: mockPcrudService},
-                {provide: GlobalFlagService, useValue: mockGlobalFlagService}
+                {provide: CatalogOrgSelectService, useValue: mockCatalogOrgSelectService}
             ]
         });
         service = TestBed.inject(EnhancedOrgTree);
