@@ -102,7 +102,7 @@
       <p *ngIf="changesPendingForStatusBar" class="col-12 alert alert-warning text-center" i18n>Changes Pending</p>
       <p *ngIf="barcodeNeeded()" class="col-12 alert alert-warning text-center" i18n>At least one barcoded item needed for current changes.</p>
       <p *ngIf="partNeeded()" class="col-12 alert alert-warning text-center">
-        <ng-container *ngIf="missingPartsCount == 1" i18n>1 item requires a part.</ng-container>
+        <ng-container *ngIf="missingPartsCount === 1" i18n>1 item requires a part.</ng-container>
         <ng-container *ngIf="missingPartsCount > 1" i18n>{{missingPartsCount}} items require a part.</ng-container>
       </p>
     </div>                                                       

@@ -82,8 +82,8 @@ export class VolCopyComponent implements OnInit {
 
     // For every copy in the context, whether or not the copy needs to require a part
     itemRequirePartsMap : {[key: number]: boolean} = {};
-    missingPartsCount: number = 0;
-    
+    missingPartsCount = 0;
+
     not_allowed_vols = [];
 
     @ViewChild('pendingChangesDialog', {static: false})
@@ -819,27 +819,27 @@ export class VolCopyComponent implements OnInit {
         const settingEnabled = this.orgRequiresParts[org];
         const recordHasParts = this.volcopy.bibParts[record] && this.volcopy.bibParts[record].length > 0;
 
-        const copyStatusHoldable = this.volcopy.copyStatuses[copyNode.target.status()].holdable() == "t"
-        const copyHoldableFlag = copyNode.target.holdable() == "t";
-        const copyShelvingLocationHoldable = copyNode.target.location().holdable() == "t";
+        const copyStatusHoldable = this.volcopy.copyStatuses[copyNode.target.status()].holdable() === 't';
+        const copyHoldableFlag = copyNode.target.holdable() === 't';
+        const copyShelvingLocationHoldable = copyNode.target.location().holdable() === 't';
         const copyIsHoldable = copyStatusHoldable && copyHoldableFlag && copyShelvingLocationHoldable;
 
         const copyRequiresPart = settingEnabled && recordHasParts && copyIsHoldable;
 
         // Only update when changing in case that matters for performance. (binding propagation)
-        if (this.itemRequirePartsMap[copy.id()] != copyRequiresPart) {
+        if (this.itemRequirePartsMap[copy.id()] !== copyRequiresPart) {
             this.itemRequirePartsMap[copy.id()] = copyRequiresPart;
         }
-        
+
         return copyRequiresPart;
-        
+
     }
 
     partNeeded() : boolean {
         let needPart = false;
         let missingCount = 0;
         for (const copy of this.context.copyList()) {
-            let copyRequiresPart = this.copyRequiresPart(copy);
+            const copyRequiresPart = this.copyRequiresPart(copy);
 
             const copyHasParts = Boolean(copy.parts()?.length);
             const copyMissingPart = copyRequiresPart && !copyHasParts;
@@ -851,7 +851,7 @@ export class VolCopyComponent implements OnInit {
 
         }
         // Silly conditional assignment to not overwhelm Angular change detection
-        if (missingCount != this.missingPartsCount) {
+        if (missingCount !== this.missingPartsCount) {
             this.missingPartsCount = missingCount;
         }
         return needPart;
