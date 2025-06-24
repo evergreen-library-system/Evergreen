@@ -44,14 +44,19 @@
     <label class="form-label" for="report-description" i18n>Report Description</label>
   </div>
   <div class="col-lg-3">
-    <input [disabled]="isView" id="report-description" class="form-control" [(ngModel)]="description" (ngModelChange)="dirty()" />
+    <textarea id="report-description" class="form-control"
+      [(ngModel)]="description" (ngModelChange)="dirty()"
+      [disabled]="isView">
+    </textarea>
   </div>
 
   <div class="col-sm-2">
     <label class="form-label" for="template-description" i18n>Template Description</label>
   </div>
   <div class="col-lg-3">
-    <input *ngIf="templ" disabled id="template-description" class="form-control" [ngModel]="templ.description"/>
+    <textarea *ngIf="templ" id="template-description" class="form-control"
+      [ngModel]="templ.description" disabled>
+    </textarea>
   </div>
 </div>
 
