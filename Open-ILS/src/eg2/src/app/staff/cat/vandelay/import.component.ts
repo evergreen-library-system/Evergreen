@@ -323,7 +323,8 @@ export class ImportComponent implements OnInit, AfterViewInit, OnDestroy {
                 break;
 
             case 'matchSets':
-                list = this.vandelay.matchSets[rtype];
+                const matchSetType = rtype === 'bib-acq' ? 'bib' : rtype;
+                list = this.vandelay.matchSets[matchSetType];
                 break;
 
             case 'importItemDefs':
