@@ -32,13 +32,10 @@ install_libdbi:
 		--with-pgsql-libdir=$$(pg_config --libdir) && make all install  
 
 # NOTE: Use the NodeJS Binary
-# ALSO NOTE: the version of angular/cli should be kept in sync with
-#            what's specified in Open-ILS/src/eg2/package.json
 install_nodejs_from_source:
 	wget -N $(NODEJS_BINARY)
 	tar -C /usr/local --strip-components 1 -xJf $(NODEJS_TARBIN)
 	npm update
-	npm install -g @angular/cli@^15.0
 
 clean:
 	make -C $(LIBDBI) clean

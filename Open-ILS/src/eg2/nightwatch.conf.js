@@ -88,7 +88,7 @@ module.exports = {
     },
     // To test with chrome:
     // $ npm install --save-dev chromedriver
-    // $ ng e2e --env chrome
+    // $ npx ng e2e --env chrome
     chrome: {
       desiredCapabilities : {
         browserName : 'chrome',
@@ -103,7 +103,7 @@ module.exports = {
         ]
       }
     },
-    // $ ng e2e --env chrome-headless
+    // $ npx ng e2e --env chrome-headless
     'chrome-headless': {
       desiredCapabilities : {
         browserName : 'chrome',

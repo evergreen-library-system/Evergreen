@@ -1,0 +1,9 @@
+== Angular CLI No Longer Installed Globally ==
+
+The Evergreen installation process no longer installs
+the Angular CLI globally.  All angular commands are
+still available with the `npx` prefix.  For example,
+`ng build` is now `npx ng build`.
+
+Anybody who relies on the Angular CLI being installed
+globally can install it with `npm i -g @angular/cli@^18.0`

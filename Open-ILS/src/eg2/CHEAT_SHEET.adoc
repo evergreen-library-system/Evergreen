@@ -6,14 +6,14 @@
 ---------------------------------------------------------------------
 npm update
 npm install
-ng lint                              # check code formatting
+npx ng lint                          # check code formatting
 npm run test                         # unit tests
 npm run test -- --code-coverage      # unit tests, but show me what
                                      # code is under test and what is
                                      # not in the coverage directory.
 
 # run end-to-end tests using Firefox
-ng e2e                               # end-to-end tests, be sure to set
+npx ng e2e                           # end-to-end tests, be sure to set
                                      # MOZ_HEADLESS=1 if you aren't
                                      # running x11
 
@@ -22,12 +22,12 @@ npm install --save-dev chromedriver  # install ChromeDrive; you may
                                      # need to tack on "@VERSION"
                                      # to match the version of Chromium
                                      # available to you
-ng e2e --env chrome                  # ... if you have X11
-ng e2e --env chrome-headless         # ... if you don't have X11
+npx ng e2e --env chrome              # ... if you have X11
+npx ng e2e --env chrome-headless     # ... if you don't have X11
 
 
-ng build --watch                     # compile dev mode
-ng build --configuration=production  # compile production mode
+npx ng build --watch                 # compile dev mode
+npx ng build --configuration=production  # compile production mode
 ---------------------------------------------------------------------
 
 == OPTIONAL: Adding a Locale 
@@ -87,4 +87,4 @@ to run the tests in parallel and save some time.
 * If you get the error "Profile not found" while running Firefox
 installed from a snap package, you may be experiencing this known
 issue with geckodriver: https://github.com/mozilla/geckodriver/releases/tag/v0.31.0 --
-`mkdir $HOME/tmp; TMPDIR=$HOME/tmp ng e2e` should work.
+`mkdir $HOME/tmp; TMPDIR=$HOME/tmp npx ng e2e` should work.

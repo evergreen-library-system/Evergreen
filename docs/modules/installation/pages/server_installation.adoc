@@ -179,7 +179,7 @@ npm ci   # fetch JS dependencies
 +
 [source,sh]
 ------------------------------------------------------------------------------
-ng build --configuration=production
+npx ng build --configuration=production
 ------------------------------------------------------------------------------
 +
 This can be a memory-intensive build.  If the process does not finish, and you
@@ -190,7 +190,7 @@ memory, you can limit max-old-space-size to 3GB with:
 +
 [source,sh]
 ------------------------------------------------------------------------------
-NODE_OPTIONS=--max-old-space-size=3072 ng build --configuration=production
+NODE_OPTIONS=--max-old-space-size=3072 npx ng build --configuration=production
 ------------------------------------------------------------------------------
 +
 4. OPTIONAL: Test eg2 web client code if the <osname>-developer packages and
@@ -201,7 +201,7 @@ NODE_OPTIONS=--max-old-space-size=3072 ng build --configuration=production
 [source,sh]
 ------------------------------------------------------------------------------
 CHROME_BIN=/path/to/chrome npm run test
-MOZ_HEADLESS=1 ng e2e
+MOZ_HEADLESS=1 npx ng e2e
 ------------------------------------------------------------------------------
 
 [[install_opac_deps]]
