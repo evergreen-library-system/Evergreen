@@ -21192,6 +21192,13 @@ VALUES (
         'Grid Config: admin.local.config.non_cataloged_type',
         'cwst', 'label'
     )
+), (
+    'eg.grid.admin.local.config.standing_penalty', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.local.config.standing_penalty',
+        'Grid Config: admin.local.config.standing_penalty',
+        'cwst', 'label'
+    )
 );
 
 INSERT INTO config.print_template 
