@@ -3,9 +3,11 @@
         <div class="facet_sidebar_hidden" id="facet_sidebar">
           <h3 class="sr-only">[% l('Search Results filters') %]</h3>
         </div>
+        [% IF ctx.saved_searches.size %]
         <div class="zero_search_hits_saved">
             [% INCLUDE "opac/parts/staff_saved_searches.tt2" %]
         </div>
+        [% END %]
         <div class="zero_search_hits_main">
             <p>[% qhtml = CGI.param('query') | html;
                   IF ctx.bookbag;

@@ -1,13 +1,6 @@
 [%  PROCESS "opac/parts/misc_util.tt2";
 
     USE ResolverResolver;
-
-    ctx.result_start = 1 + ctx.page_size * page;
-    ctx.result_stop = ctx.page_size * (page + 1);
-    IF ctx.result_stop > ctx.hit_count; ctx.result_stop = ctx.hit_count; END;
-
-    result_count = ctx.result_start;
-
 %]
 
 [% IF ctx.bookbag %]
@@ -18,14 +11,6 @@
     </div>
 </div>
 [% END %]
-
-<div class="row">
-    <div class="col-12">
-    [% PROCESS "opac/parts/result/paginate.tt2" header=1 %]
-    [% ctx.results_count_header = PROCESS results_count_header;
-        ctx.results_count_header %]
-    </div>
-</div>
 <div class="row flex-row-reverse">
     
     <div id="result_table_div" class="col-12 col-lg-9 col-xl-10">
@@ -57,9 +42,14 @@
                 </div>
 
                 <div class="action_buttons col-auto d-flex justify-content-end align-items-start">
-                    <button type="button" class="btn btn-outline-danger w-100 text-start" id="clear_basket">
-                        <i class="fas fa-minus-circle" aria-hidden="true"></i>
-                        [% l('Clear basket') %]
+                    <button type="button" class="btn btn-outline-danger w-100 text-start hidden" id="clear_basket">
+                        <span role="text">
+                            <i class="fas fa-minus-circle" aria-hidden="true"></i>
+                            <span class="clear_basket">[% l('Clear basket') %]</span>
+                            <span class="result_count hidden">
+                                [%- l('([_1])', ctx.mylist.size); -%]
+                            </span>
+                        </span>
                     </button>
                 </div>
                 
@@ -104,21 +94,22 @@
                     <div class="results_row row">
 
                     <!--Count&Checkboxes-->
-                        <div class="result-select-and-cover col-auto justify-content-between">
-                            <div class="row">
+                        <div class="result-select-and-cover col-auto col-lg-2 justify-content-between">
+                            <div class="row flex-nowrap" id="row-[% rec.bre_id %]">
                                 [% IF !ctx.is_meta; %]
                                 <div class="results_row_count col-auto form-check">
                                     <input type="checkbox" id="select-[% rec.bre_id %]"
                                         [% IF is_selected %] checked="checked" [% END %]
-                                        [% html_text_attr('aria-label', l('Add [_1] to basket', attrs.hl.title || attrs.title)) %]
+                                        [% html_text_attr('aria-label', l('Add to basket')) %]
+                                        [% html_text_attr('aria-describedby', 'record_' _ rec.bre_id) %]
                                         class="form-check-input result_record_selector" value="[% rec.bre_id %]" />
                                     <label for="select-[% rec.bre_id %]" class="form-check-label m-0">[% result_count; result_count = result_count + 1 %]</label>
                                     
                                 </div>
                                 [% END %]
                                 <!--Cover Image-->
-                                <div class='col_cover col-auto' id="result[% rec.bre_id %]">
-                                    <a href="[% mkurl(record_url_path, add_parms, del_parms); %]" tabindex="-1" aria-hidden="true" class="cover-image cover-shadow">
+                                <div class='col_cover' id="result[% rec.bre_id %]">
+                                    <a href="[% mkurl(record_url_path, add_parms, del_parms); %]" tabindex="-1" aria-hidden="true" class="cover-image">
                                     <img alt="" id='item_jacket[% rec.bre_id %]' class='img-fluid'
                                     src='[% ctx.media_prefix %]/opac/extras/ac/jacket/large/r/[% rec.bre_id | uri %]' /></a><br />
                                 </div>
@@ -127,11 +118,11 @@
                         <!--Info-->
                         <div class='result_table_title_cell col flex-grow-1 align-items-start justify-content-between'>
                             <div class="row justify-content-between">
-                                <div class="result_data col-sm-auto col-lg-6 col-xl-8 col-md-8 flex-grow-1">
+                                <div class="result_data col-sm-auto col-md-8 col-xl-8 flex-grow-1">
                                     [% IF rec.mmr_id %]
-                                    <abbr class="unapi-id" title='tag:[% ctx.hostname %],[% date.format(date.now, '%Y') %]:metabib-metarecord/[% rec.mmr_id %]'></abbr>
+                                    <abbr class="unapi-id" aria-hidden="true" title='tag:[% ctx.hostname %],[% date.format(date.now, '%Y') %]:metabib-metarecord/[% rec.mmr_id %]'></abbr>
                                     [% ELSE %]
-                                    <abbr class="unapi-id" title='tag:[% ctx.hostname %],[% date.format(date.now, '%Y') %]:biblio-record_entry/[% rec.bre_id %]'></abbr>
+                                    <abbr class="unapi-id" aria-hidden="true" title='tag:[% ctx.hostname %],[% date.format(date.now, '%Y') %]:biblio-record_entry/[% rec.bre_id %]'></abbr>
                                     [% END %]
                                     <h4 class="d-inline record_title">
                                         <a class='search_link' id='record_[% rec.id %]'
@@ -374,7 +365,7 @@
                                     [%- END %]
                                 </div>
 
-                                <div class="action_buttons col-sm-auto col-md-4 col-lg-auto d-flex justify-content-end align-items-start">                            
+                                <div class="action_buttons col-sm-auto col-md-4 col-lg-4 col-xl-3 d-flex justify-content-end align-items-start">                            
                                 <div class="result_table_utils btn-group-vertical" >
                                 [%- search_ou = ctx.search_ou;
                                     num_holdable_copies = attrs.marc_xml.findnodes('//*[local-name()="holdings" and @has_holdable="true"]').size || 0;
@@ -395,10 +386,17 @@
                                 <!--Place Hold Button -->
                                 
                                 <a href="[% mkurl(ctx.opac_root _ '/place_hold', add_parms, del_parms) %]"
-                                    [% html_text_attr('aria-label', l('Place Hold on [_1]', attrs.title)) %]
+                                    [%- html_text_attr('aria-describedby', 'record_' _ rec.id); -%]
                                     class="btn btn-action text-start" rel="nofollow" vocab="">
-                                    <i class="fas fa-check" aria-hidden="true"></i>
-                                    <span class="result_place_hold">[% l('Place Hold') %]</span>
+                                    <span role="text">
+                                        <i class="fas fa-check" aria-hidden="true"></i>
+                                        <span class="result_place_hold">
+                                            [% l('Place Hold') %]
+                                        </span>
+                                        <span class="result_count hidden">
+                                            [%- l('([_1])', ctx.mylist.size); -%]
+                                        </span>
+                                    </span>
                                 </a>
                                 
                                 [%- END -%]
@@ -409,15 +407,31 @@
                                     <a id="[%- rec.id -%]_ebook_checkout" href="[% mkurl(ctx.opac_root _ '/myopac/ebook_checkout',
                                         {title => args.ebook.ebook_id, vendor => args.ebook.vendor, action => 'checkout'},
                                         ['query','tag','subfield','term','_special','sort','page']) %]"
-                                        [% html_text_attr('aria-label', l('Check Out [_1]', attrs.title)) %]
-                                            class="btn btn-action hidden text-start" rel="nofollow" vocab=""><i class="fas fa-atlas" aria-hidden="true"></i> <span class="result_place_hold">[% l('Check Out E-Item') %]</span></a>
+                                            [%- html_text_attr('aria-describedby', 'record_' _ rec.id); -%]
+                                            class="btn btn-action hidden text-start" rel="nofollow" vocab="">
+                                            <span role="text">
+                                                <i class="fas fa-atlas" aria-hidden="true"></i> 
+                                                <span class="result_place_hold">[% l('Check Out E-Item') %]</span>
+                                                <span class="result_count hidden">
+                                                    [%- l('([_1])', ctx.mylist.size); -%]
+                                                </span>
+                                            </span>
+                                    </a>
                                 
                                 
                                     <a id="[%- rec.id -%]_ebook_place_hold" href="[% mkurl(ctx.opac_root _ '/myopac/ebook_place_hold',
                                         {title => args.ebook.ebook_id, vendor => args.ebook.vendor, action => 'place_hold'},
                                         ['query','tag','subfield','term','_special','sort','page']) %]"
-                                        [% html_text_attr('aria-label', l('Place Hold on [_1]', attrs.title)) %]
-                                            class="btn btn-action hidden text-start" rel="nofollow" vocab=""><i class="fas fa-book-reader" aria-hidden="true"></i> <span class="result_place_hold">[% l('Place Hold on E-Item') %]</span></a>
+                                            [%- html_text_attr('aria-describedby', 'record_' _ rec.id); -%]
+                                            class="btn btn-action hidden text-start" rel="nofollow" vocab="">
+                                            <span role="text">
+                                                <i class="fas fa-book-reader" aria-hidden="true"></i> 
+                                                <span class="result_place_hold">[% l('Place Hold on E-Item') %]</span>
+                                                <span class="result_count hidden">
+                                                    [%- l('([_1])', ctx.mylist.size); -%]
+                                                </span>
+                                            </span>
+                                    </a>
                                 
                                 [%- END -%]
     
@@ -434,18 +448,25 @@
                                         <a href="[% addhref %]" id="mylist_add_[% rec.id %]"
                                             data-recid="[% rec.id %]" data-action="add"
                                             class="mylist_action mylist_action_add text-start btn btn-action [% IF ctx.mylist.grep('^' _ rec.id _ '$').size %]hidden[% END %]"
-                                            [% SET esc_title = attrs.title | html -%]
-                                            aria-label="[% l('Add [_1] to basket', esc_title) %]" rel="nofollow" vocab="">
-                                            <i class="fas fa-shopping-basket" aria-hidden="true"></i>
-                                            [% l("Add to basket") %]
+                                            [%- html_text_attr('aria-describedby', 'record_' _ rec.id); -%] rel="nofollow" vocab="">
+                                            <span role="text">
+                                                <i class="fas fa-shopping-basket" aria-hidden="true"></i>
+                                                <span class="result_add_basket">[% l("Add to basket") %]</span>
+                                                <span class="result_count hidden">
+                                                    [%- l('([_1])', ctx.mylist.size); -%]
+                                                </span>
+                                            </span>
+                                            
                                         </a>
     
                                         <a href="[% delhref %]" id="mylist_delete_[% rec.id %]"
                                             data-recid="[% rec.id %]" data-action="delete"
                                             class="mylist_action mylist_action_remove text-start btn btn-action [% IF !ctx.mylist.grep('^' _ rec.id _ '$').size %]hidden[% END %]"
-                                            aria-label="[% l('Remove [_1] from basket', esc_title) %]" rel="nofollow" vocab="">
-                                            <i class="fas fa-minus-circle" aria-hidden="true"></i>
-                                            [% l("Remove from basket") %]
+                                            [%- html_text_attr('aria-describedby', 'record_' _ rec.id); -%] rel="nofollow" vocab="">
+                                            <span role="text">
+                                                <i class="fas fa-minus-circle" aria-hidden="true"></i>
+                                                <span class="result_add_basket">[% l("Remove from basket") %]</span>
+                                            </span>
                                         </a>
                                         
                                         [%  IF ctx.user;
@@ -460,7 +481,8 @@
                                 [% ident = attrs.isbn_clean || attrs.upc %]
                                     
                                         <a target='_blank'
-                                            [% html_text_attr('aria-label', l('Reviews and More for [_1]', attrs.title)) %]
+                                            class="mylist_action mylist_action_remove text-start btn btn-action mylist_action_content_cafe"
+                                            [%- html_text_attr('aria-describedby', 'record_' _ rec.id); -%]
                                             href="[% ctx.ext_proto %]://contentcafe2.btol.com/ContentCafeClient/ContentCafe.aspx?UserID=[%-
                                                 ENV.OILS_CONTENT_CAFE_USER %]&amp;Password=[%-
                                                 ENV.OILS_CONTENT_CAFE_PASS %]&amp;ItemKey=[% ident | uri %]&amp;Options=Y" rel="nofollow" vocab="">
@@ -480,7 +502,7 @@
 
     </div> <!-- #result_table_div -->
 
-    <div id="result_facet_sidebar" class="col-lg-3 col-xl-2">
+    <aside id="result_facet_sidebar" class="col-lg-3 col-xl-2">
         <div class="facet_sidebar_hidden" id="facet_sidebar">
             [%- IF ctx.is_staff %]
             <h3 class="sr-only">[% l('Saved Searches') %]</h3>
@@ -488,7 +510,7 @@
             [%-  END %]
         </div>
         [% INCLUDE 'opac/parts/result/facets.tt2' %]
-    </div> <!-- #result_facet_sidebar -->
+    </aside> <!-- #result_facet_sidebar -->
 </div>
 
 <div class="row">

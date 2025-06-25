@@ -50,8 +50,9 @@ h6, .h6 {
     font-weight: 600;
     line-height: 135%;
 }
+
 /* Links need underlines (WCAG 1.4.1), but let's use a weak selector */
-a:where(:not(.btn)) {
+a:where(:not(.btn, .dropdown-toggle, .dropdown-item, .nav-link, .close)) {
     text-decoration: revert;
 }
 a[data-toggletip] {
@@ -87,6 +88,12 @@ a[data-toggletip] {
 
 .text-end {
     text-align: end !important;
+}
+
+.text-reset {
+    color: inherit;
+    font-size: [% css_fonts.size_base %];
+    font-weight: normal;
 }
 
 .navbar-dark .navbar-toggler {
@@ -329,19 +336,81 @@ Novelist Styling
 }
 
 .my_nav .btn-group-vertical,
+.my_nav .list-group,
 .result_table_utils.btn-group-vertical {
     border: 1px solid [% css_colors.action_button_border %];
     border-radius: 0.25rem;
+    list-style: none;
+    padding: 0;
+    width: 100%;
 }
 
 /* round corners in button groups correctly when the last child is .hidden */
-.btn-group-vertical > :nth-last-child(-n + 1 of .btn:not(.hidden)) {
+.btn-group-vertical:not(:has(li.mylist_action)) > :nth-last-child(-n + 1 of .btn:not(.hidden)),
+.btn-group-vertical > li.mylist_action:last-child .btn.btn-action {
     border-bottom-left-radius: 0.25rem;
     border-bottom-right-radius: 0.25rem;
 }
 .btn-group:not(.btn-group-vertical) > :nth-last-child(-n + 1 of .btn:not(.hidden)) {
     border-top-right-radius: 0.25rem;
     border-bottom-right-radius: 0.25rem;
+}
+
+.item-actions-nav .list-group {
+
+}
+
+.my_nav .list-group .list-group-flush {
+    border: 0;
+}
+
+.item-actions-nav .list-group-item,
+.my_nav .list-group-item {
+    border: 1px solid [% css_colors.action_button_border_hover %];
+    padding: 0;
+}
+
+.my_nav .list-group-flush > .list-group-item {
+    border-width: 1px 0 0;
+    padding-inline-start: 1.25rem;
+}
+
+.item-actions-nav .list-group-item .list-group-item-action,
+.my_nav .list-group-item .list-group-item-action {
+    align-items: baseline;
+    background-color: unset;
+    border: 0;
+    color: [% css_colors.action_button_text %];
+    display: flex;
+    gap: 0.5rem;
+    justify-content: space-between;
+    padding: .75rem 1rem;
+    text-align: start;
+    text-decoration: none;
+}
+
+.my_nav .list-group-item .list-group-item .list-group-item-action {
+    justify-content: start;
+}
+
+.my_nav .list-group-item .list-group-item-action span {
+    align-items: baseline;
+    display: flex;
+    justify-content: start;
+}
+.my_nav .list-group-item .list-group-item-action span .fas {
+    margin: 0 4px 0 0;
+}
+
+/* extra space for accordion chevrons */
+.my_nav .list-group-item .list-group-item-action[aria-controls] {
+    padding-inline-end: 0.75rem;
+    padding-inline-start: 1rem;
+}
+
+.item-actions-nav .list-group-item + .list-group-item:not(.list-group-flush .list-group-item), 
+.my_nav .list-group-item:not(.list-group-flush .list-group-item) + .list-group-item {
+    border-block-start: 0;
 }
 
 .dash-link{
@@ -1108,9 +1177,6 @@ h2#rdetail_title {
 
 .cover-image img {
     display: inline-block;
-}
-
-.cover-shadow {
     box-shadow: [% css_colors.cover_shadow %];
 }
 
@@ -1450,6 +1516,8 @@ span.copy_tag_type_label {
 
 .almost-content-wrapper {
     background-color: [% css_colors.background %];
+    margin-block: 1rem;
+    margin-inline: 1rem;
 }
 
 #cartDropdown .dropdown-menu {
@@ -1654,17 +1722,6 @@ collapse correctly when the window width decreases */
     margin:0;
 }
 
-
-.results_header_nav1 {
-    text-align: center;
-}
-
-.results_header_nav1 .h1 {
-    font-size: [% css_fonts.size_bigger %];
-    font-weight:bold;
-    color:[% css_colors.primary_fade %];
-}
-
 .table_no_border_space {
   border-spacing: 0px;
 }
@@ -1753,20 +1810,27 @@ tr.result_table_row > td.result_table_pic_header {
     text-decoration: none;
 }
 #basket_actions {
-  margin: .5rem;
-  padding-inline: 1rem 1.5rem;
+    margin: .5rem;
+    padding-inline: 1rem 1.5rem;
 }
 #basket_actions select {
     border-color: [% css_colors.basket_actions_select_border %];
 }
 
+.results_header_wrap {
+    text-align: center;
+}
+
+.results_header h2 {
+    font-size: [% css_fonts.size_bigger %];
+    font-weight: bold;
+    color:[% css_colors.primary_fade %];
+}
+
 .result_number {
-    [% IF rtl == 't' -%]
-    padding-right: 1em;
-    [% ELSE -%]
-    padding-left: 1em;
-    [% END -%]
-    white-space: nowrap;
+    margin-block: 0 0.5rem;
+    margin-inline: 0;
+    padding-block: 0.5rem;
 }
 
 .result_count_pages {
@@ -1805,25 +1869,19 @@ div.result_table_utils_cont {
     padding-bottom:5px;
 }
 
+#zero_search_hits {
+    display: flex;
+    flex-wrap: wrap;
+    margin-inline: 1rem;
+}
+
 .zero_search_hits_main {
-    [% IF rtl == 't' -%]
-    float: right;
-    [% ELSE -%]
-    float:left;
-    [% END -%]
-    width:300px;
-    margin-top: 2ex;
+    flex: 1 1 auto;
+    padding-inline: 15px;
 }
 .zero_search_hits_saved {
-    [% IF rtl == 't' -%]
-    float: right;
-    margin-left: 2em;
-    [% ELSE -%]
-    float:left;
-    margin-right: 2em;
-    [% END -%]
-    width:200px;
-    margin-top: 2ex;
+    margin-inline: 2rem;
+    max-width:200px;
 }
 
 #zero_search_hits p {
@@ -1841,15 +1899,11 @@ div.result_table_utils_cont {
 }
 
 #lowhits_help {
-    [% IF rtl == 't' -%]
-    float: left;
-    [% ELSE -%]
-    float: right;
-    [% END-%]
-    width: 353px;
+    align-self: flex-end;
+    max-width: 353px;
     background-color: [% css_colors.accent_light %];
-    padding: 10px;
-    margin-top: 7px;
+    padding-block: 10px;
+    padding-inline: 15px;
 }
 
 table caption.visually-hidden {
@@ -3350,6 +3404,8 @@ a.preflib_change {
 
 .result_footer_nav1 {
     clear: both;
+    border-block-start: 1px solid [% css_colors.border_record_selector_block %];
+    padding-block-start: 1rem; 
 }
 
 .small_view_only, #filter_hits, #refine_hits, #return_to_hits {

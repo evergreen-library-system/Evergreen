@@ -19,11 +19,10 @@
     PROCESS "opac/parts/misc_util.tt2";
     PROCESS get_library;
 -%]
-<main id="main">
+
     <form action="[% ctx.opac_root %]/results" method="get">
     [% INCLUDE "opac/parts/searchbar.tt2" took_care_of_form=1 %]
-    <div class="almost-content-wrapper border-bottom">
-
+    <div class="almost-content-wrapper">
         [%# hide the header bar when displaying metarecord constituents
           instead of skipping it altogether to allow the search form
           variables to propagate %]
@@ -156,10 +155,27 @@
 
             </div>
             </div>
-            </div>
         </div>
     </form>
-    <div class="container-fluid">
+    <main id="main">
+        <div id="results_header_inner" class="container-fluid">
+                [%    
+                # RESULTS PAGE TITLE
+                ctx.result_start = 1 + ctx.page_size * page;
+                ctx.result_stop = ctx.page_size * (page + 1);
+                IF ctx.result_stop > ctx.hit_count; ctx.result_stop = ctx.hit_count; END;
+
+                result_count = ctx.result_start;
+
+                %]
+                <div class="row">
+                    <div class="col col-12">
+                    [% PROCESS "opac/parts/result/paginate.tt2" header=1 %]
+                    [% ctx.results_count_header = PROCESS results_count_header;
+                        ctx.results_count_header %]
+                    </div>
+                </div>
+            </div>
         <div id="results-page" class="container-fluid">
                 [%- IF (ctx.depth_sel_checkbox OR ctx.depth_sel_button) AND CGI.param('depth') == ctx.depth_sel_depth AND ctx.depth_sel_resultshint %]
                 <div id="results-page-depth-hint">[% ctx.depth_sel_resultshint | html %]</div>
@@ -168,7 +184,5 @@
                     (ctx.records.size ? "table.tt2" : "lowhits.tt2");
                 INCLUDE $path %]
         </div>
-        
-    </div>
-</main>
+    </main>
 [%- END %]

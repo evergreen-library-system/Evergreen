@@ -177,7 +177,7 @@ END; # FOREACH bib
 
        [% IF copy_info.tags; %]
             [% FOREACH tag IN copy_info.tags; %]
-                    <div>
+                    <div class="copy_tags">
                     <span class="copy_tag_type_label">[% tag.tag_type.label _ ": " | html %]</span>
                         <span class="copy_tag_value">
                         [% IF tag.url %]

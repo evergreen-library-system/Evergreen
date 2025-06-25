@@ -5,6 +5,7 @@
     var mylist_action_links = document.getElementsByClassName("mylist_action");
     var record_basket_count_el = document.getElementById('record_basket_count');
     var selected_records_count_el = document.getElementById('selected_records_count');
+    var selected_records_actions_count_els = document.querySelectorAll('span.result_count');
     var select_all_records_el = document.getElementById('select_all_records');
     var clear_basket_el = document.getElementById('clear_basket');
     var select_action_el = document.getElementById('select_basket_action');
@@ -92,6 +93,15 @@
             if (record_basket_count_el) {
                 record_basket_count_el.innerHTML = mylist.length;
             }
+            Array.from(selected_records_actions_count_els).forEach((el) => {
+                if (mylist.length > 0) {
+                    el.classList.remove('hidden');
+                }
+                else {
+                    el.classList.add('hidden');
+                }
+                el.innerHTML = '(' + mylist.length + ')';
+            });
             checkMaxCartSize();
         }
     }
@@ -129,23 +139,37 @@
             var t;
             if (t = document.getElementById('mylist_add_' + rec)) {
                 t.classList.add('hidden');
+                t.parentElement.classList.add('hidden');
                 document.getElementById('mylist_delete_' + rec).focus();
             }
             if (t = document.getElementById('mylist_delete_' + rec)) {
                 t.classList.remove('hidden');
+                t.parentElement.classList.remove('hidden');
                 document.getElementById('mylist_add_' + rec).focus();
             }
         } else if (op == 'delete' || op == 'unchecked') {
-            if (t = document.getElementById('mylist_add_' + rec)) t.classList.remove('hidden');
-            if (t = document.getElementById('mylist_delete_' + rec)) t.classList.add('hidden');
+            if (t = document.getElementById('mylist_add_' + rec)) {
+                t.classList.remove('hidden');
+                t.parentElement.classList.remove('hidden');
+            }
+            if (t = document.getElementById('mylist_delete_' + rec)) {
+                t.classList.add('hidden');
+                t.parentElement.classList.add('hidden');
+            }
         }
 
         /* Only relevant on the record detail page where the View Basket button exists and
             should only be visible if it has contents */
         if (mylist.length > 0) {
-            document.getElementById('mybasket')?.classList?.remove('hidden');
+            if (t = document.getElementById('mybasket')) {
+                t.classList.remove('hidden');
+                t.parentElement.classList.remove('hidden');
+            }
         } else {
-            document.getElementById('mybasket')?.classList?.add('hidden');
+            if (t = document.getElementById('mybasket')) {
+                t.classList.add('hidden');
+                t.parentElement.classList.add('hidden');
+            }
         }
     }
 
@@ -174,10 +198,14 @@
                 if (mylist.length >= max_cart_size) {
                     // hide the add link
                     el.classList.add('hidden');
+                    el.parentElement.classList.add('hidden');
                 } else {
                     // show the add link unless the record is
                     // already in the cart
-                    if (!mylist.includes(parseInt(el.dataset.recid))) el.classList.remove('hidden');
+                    if (!mylist.includes(parseInt(el.dataset.recid))) {
+                        el.classList.remove('hidden');
+                        el.parentElement.classList.remove('hidden');
+                    }
                 }
             }
         });
@@ -205,12 +233,16 @@
             toggleRowHighlighting(el);
         }, false);
         el.classList.remove("hidden");
+        el.parentElement.classList.remove('hidden');
         if (!el.checked) all_checked = false;
     });
     if (select_all_records_el && rec_selectors.length) {
         select_all_records_el.checked = all_checked;
     }
-    if (rec_selector_block) rec_selector_block.classList.remove("hidden");
+    if (rec_selector_block) {
+        rec_selector_block.classList.remove("hidden");
+        rec_selector_block.parentElement.classList.remove("hidden");
+    }
 
     function deselectSelectedOnPage() {
         var to_del = [];
@@ -285,8 +317,10 @@
             if ('dataset' in el) {
                 recid = el.dataset.recid;
                 action = el.dataset.action;
-                mungeList(action, recid, true);
-                evt.preventDefault();
+                if (action && recid) {
+                    mungeList(action, recid, true);
+                    evt.preventDefault();
+                }
             }
         });
     });

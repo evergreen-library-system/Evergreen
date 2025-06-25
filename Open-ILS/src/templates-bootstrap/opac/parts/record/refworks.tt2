@@ -15,6 +15,6 @@
         '/opac/extras/supercat/marctxt/record/' _
         ctx.bre_id;
 %]
-<div class="rdetail_aux_utils rdetail_refworks">
-    <a href="[% rw_uri %]" rel="nofollow" vocab=""><img src="/images/starz.png[% ctx.cache_key %]" alt="" />[% l('Export to RefWorks') %]</a>
-</div>
+<li class="list-group-item rdetail_aux_utils rdetail_refworks">
+    <a class="list-group-item-action" href="[% rw_uri %]" rel="nofollow" vocab=""><img src="/images/starz.png[% ctx.cache_key %]" alt="" />[% l('Export to RefWorks') %]</a>
+</li>

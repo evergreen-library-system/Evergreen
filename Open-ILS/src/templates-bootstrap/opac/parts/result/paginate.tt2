@@ -1,7 +1,8 @@
 [% BLOCK results_count_header %]
-<div class="results_header_nav1 py-4">
-    [%- INCLUDE "opac/parts/pref_lib_display.tt2" %]
+<div class="results_header_nav1">
 
+[%- INCLUDE "opac/parts/pref_lib_display.tt2" %]
+<div class="results_header_wrap">
     [% IF header == 1; %]
     <h2 class="result_number">
     [% ELSE; %]
@@ -74,6 +75,7 @@
             [%- END; -%]
         </ul>
     </nav>
+</div>
 </div>
 [% END %]
 

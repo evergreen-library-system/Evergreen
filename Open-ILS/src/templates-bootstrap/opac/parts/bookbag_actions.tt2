@@ -36,15 +36,20 @@
         record => ctx.bre_id, anchor => rec_anchor
     }, stop_parms));
 %]
-
- <button type="button" id="btnGroupDrop1" class="btn btn-action text-left" data-toggle="dropdown"
-    aria-haspopup="true" aria-expanded="false" aria-describedby="[% rec_anchor %]">
-        <i class="fas fa-list" aria-hidden="true"></i>
-          [% l("Add to my list") %]
-        </button>
+<li class="mylist_action w-100">
+    <button type="button" id="btnGroupDrop1" class="list-group-item-action btn btn-action mylist_action text-start" data-toggle="dropdown"
+        aria-haspopup="true" aria-expanded="false" aria-describedby="[% rec_anchor %]">
+        <span role="text">
+            <i class="fas fa-list" aria-hidden="true"></i>
+            <span>[% l("Add to my list") %]</span>
+            <span class="result_count hidden">
+                [%- l('([_1])', ctx.mylist.size); -%]
+            </span>
+        </span>
+    </button>
     <!--Removal-->
-    <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-    <a class="dropdown-item" href="[% href %]">[% l('Temporary List') %]</a>
+<ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+    <li class="dropdown-item"><a href="[% href %]">[% l('Temporary List') %]</a></li>
 
     [% IF default_list;
        label = (ctx.default_bookbag) ? ctx.default_bookbag : l('Default List');
@@ -54,7 +59,7 @@
             record => ctx.bre_id, anchor => rec_anchor
         }, stop_parms));
     %]
-    <a href="[% href %]" class="dropdown-item">[% label %]</a>
+    <li class="dropdown-item"><a href="[% href %]">[% label %]</a></li>
     [% END %]
     [% IF ctx.bookbags.size;
        i = 0;
@@ -66,22 +71,25 @@
            i = i + 1;
            IF i == ctx.bookbags.size;
     %]
-    <div class="dropdown-divider"></div>
+    <li class="dropdown-divider"></li>
         [%- END -%]
-    <a class="dropdown-item" href="[% href %]">[% bag.name %]</a>
+    <li class="dropdown-item"><a href="[% href %]" data-recid="[% ctx.bre_id %]" data-action="add">[% bag.name %]</a></li>
     [%
        END;
        END
     %]
-        <a class="dropdown-item" href="[% opac_wrap(mkurl(ctx.opac_root _ '/myopac/lists', {
+    <li class="dropdown-item"><a href="[% opac_wrap(mkurl(ctx.opac_root _ '/myopac/lists', {
             limit => ctx.bookbag_count, add_rec => ctx.bre_id,
             anchor => rec_anchor })) %]"
            title="[% l('See all of my lists') %]">
         [% l('See All') %]
         </a>
-    <a class="dropdown-item" href="[% opac_wrap(mkurl(ctx.opac_root _ '/myopac/lists', {
+    </li>
+    <li class="dropdown-item"><a href="[% opac_wrap(mkurl(ctx.opac_root _ '/myopac/lists', {
         move_cart_by_default => 1, add_rec => ctx.bre_id, anchor => rec_anchor
-    }, stop_parms)) %]">
-    [% l('Add [_1] to new list', esc_title) %]
-    </a>
-</div>
+        }, stop_parms)) %]" data-recid="[% ctx.bre_id %]" data-action="add">
+        [% l('Add [_1] to new list', esc_title) %]
+        </a>
+    </li>
+</ul>
+</li>
