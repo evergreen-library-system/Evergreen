@@ -1,10 +1,10 @@
 
-  <div id="basket_actions">
+  <nav id="basket_actions" aria-label="[% l('Basket') %]">
   <div id="select_basket_action" class="dropdown">
       <button type="button" class="btn p-1" id="cartDropdown" data-toggle="dropdown"
-        aria-label="[% l('View basket'); %]" aria-describedby="record_basket_count">
+        aria-label="[% l('View basket'); %]" aria-labelledby="cartDropdown record_basket_count" aria-expanded="false">
         <img id="cart_icon_image" src="[% ctx.media_prefix %]/images/cart-sm.png[% ctx.cache_key %]" alt="">
-        <div id="record_basket_count_floater" role="status" aria-labelledby="cartDropdown">
+        <div id="record_basket_count_floater">
             <span id="record_basket_count">[% ctx.mylist.size %]</span>
         </div>
       </button>
@@ -22,4 +22,4 @@
         <a class="dropdown-item" role="menuitem"  href="[% mkurl(ctx.opac_root _ '/mylist/clear', {}) %]"><i class="fas fa-trash" aria-hidden="true"></i> [% l('Clear Basket') %]</a>
       </div>
     </div>
-  </div>
+  </nav>
