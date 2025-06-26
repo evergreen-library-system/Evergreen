@@ -135,8 +135,7 @@
                                     [% END %]
                                     <h4 class="d-inline record_title">
                                         <a class='search_link' id='record_[% rec.id %]'
-                                        href="[% mkurl(record_url_path, add_parms, del_parms); %]"
-                                        [% html_text_attr('title', l('Display record details for "[_1]"', attrs.title)) %]>
+                                        href="[% mkurl(record_url_path, add_parms, del_parms); %]">
                                         [% IF attrs.hl.title; attrs.hl.title; ELSE; attrs.title | html; END %]
                                         </a>
                                     </h4>
@@ -175,8 +174,7 @@
 
                                     <div>
                                     [% IF attrs.author; %]
-                                        <a  title="[% l("Perform an Author Search") %]"
-                                            class="record_author"
+                                        <a class="record_author"
                                             href="[%-
                                             authorquery = attrs.author | replace('[#"^$\+\-,\.:;&|\[\]()]', ' ');
                                             mkurl(ctx.opac_root _ '/results', {qtype => 'author', query => authorquery}, general_search_parms.merge(expert_search_parms, browse_search_parms, facet_search_parms))
