@@ -5,7 +5,7 @@ ctx.metalinks.push('
 <meta property="og:image" content="' _ ctx.media_prefix _ '/opac/extras/ac/jacket/large/r/' _ ctx.bre_id _ '" />');
 %]
 <!-- ****************** rdetail_summary.xml ***************************** -->
-<abbr class="unapi-id" title='tag:[% ctx.hostname %],[% date.format(date.now, ' %Y') %]:biblio-record_entry/[%
+<abbr class="unapi-id" aria-hidden="true" title='tag:[% ctx.hostname %],[% date.format(date.now, ' %Y') %]:biblio-record_entry/[%
     ctx.bre_id %]'></abbr>
 
 <hr />
