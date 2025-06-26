@@ -1723,7 +1723,8 @@ tr.result_table_row > td.result_table_pic_header {
     text-decoration: none;
 }
 #basket_actions {
-    margin: .5rem;
+  margin: .5rem;
+  padding-inline: 1rem 1.5rem;
 }
 #basket_actions select {
     border-color: [% css_colors.basket_actions_select_border %];

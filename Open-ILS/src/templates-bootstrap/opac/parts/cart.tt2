@@ -1,4 +1,4 @@
-<div id="record_basket">
+<nav id="record_basket" aria-label="[% l('Basket') %]">
   <div id="basket_actions">
     <select id="select_basket_action" aria-label="[% l('Select basket action') %]">
       <option value="">[% l('-- Basket Actions --') %]</option>
@@ -39,4 +39,4 @@
         </div>
     </a>
   </div>
-</div>
+</nav>
