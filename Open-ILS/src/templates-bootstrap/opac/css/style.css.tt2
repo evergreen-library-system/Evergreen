@@ -2393,18 +2393,54 @@ div#facet_sidebar {
     padding-top:4px;
 }
 
-.facet_template {
-    display: flex;
-    justify-content: space-between;
-    gap: 2px 1rem;
+.card.facet-card,
+.card.facet-card .card-body {
+    padding: 0;
+}
+
+.card.facet-card .card-header,
+.card.facet-card .card-header a {
+    background-color: [% css_colors.facets_back %];
+    color: [% css_colors.facets_text %];
 }
 
 .facet_template.list-group-item {
-    padding: 0.5rem;
+    padding: 0;
 }
 
 .facet_template.list-group-item:last-of-type {
     border-bottom: 0;
+}
+
+.facet_template a {
+    display: block;
+    padding: 0.75rem 1rem;
+    text-decoration: none;
+}
+
+.facet_template a:hover, 
+.facet_template.facet_template_selected.list-group-item.active {
+    background-color: [% css_colors.facets_back_hover %];
+    border-color: [% css_colors.page_link_border %];
+}
+
+.facet_template .facet {
+    align-items: baseline;
+    display: flex;
+    justify-content: space-between;
+    gap: 2px 0.75rem;
+}
+
+/* "close" symbol to remove active facets */
+.facet_template.active .facet::before {
+    content: "\f00d";
+    font-family: "Font Awesome 6 Free";
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.facet_template .facet .facet_link {
+    text-decoration: underline;
 }
 
 .facet_template .count {
@@ -2418,14 +2454,15 @@ div#facet_sidebar {
 }
 
 .facet_show_more a {
-    padding: 0.5rem;
+    display: block;
+    padding: 0.75rem 1rem;
 }
 
 .page-item.active .page-link {
     background-color: [% css_colors.page_link_bg %];
     border-color: [% css_colors.page_link_border %];
 }
-.page-link
+.page-link:is(:active, :hover, :focus, :focus-visible)
 {
     color: [% css_colors.page_link_color %];
 }
