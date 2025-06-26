@@ -2557,6 +2557,7 @@ div#facet_sidebar {
 }
 #account-update-email-error { font-size: [% css_fonts.size_biggest %]; padding: 10px; border:1px solid [% css_colors.border_standard %];}
 a.dash-link:hover { text-decoration: underline !important; }
+#new_list { margin-top: 1.5rem; }
 #list_create_table td { vertical-align: middle; padding: 0 8px; }
 #list_create_table {
     background-color: [% css_colors.accent_light %];
@@ -4367,6 +4368,20 @@ padding: 15px;
 
 #course_material_table td, #course_material_table th {
     padding: 4px;
+}
+
+.input-group-text {
+    border-color: [% css_colors.border_standard %];
+}
+
+.input-group .input-group-text:is(:is(.form-control, .form-select) + .input-group-text) {
+  border-radius: 0 0.25rem 0.25rem 0;
+  border-inline-start: 0;
+}
+
+.input-group .input-group-text:is(.input-group-text + :is(.form-control, .form-select)) {
+  border-radius: 0.25rem 0 0 0.25rem;
+  border-inline-end: 0;
 }
 
 .form-control {
