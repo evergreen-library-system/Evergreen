@@ -529,6 +529,20 @@ a#cn_target_link:hover {
 .dropdown-item.active, .dropdown-item:active{
     color : [% css_colors.dropdown_item_active %] !important;
 }
+
+#browse-results {
+    margin-block-start: 1.5rem;
+}
+
+/* Hide previous / next page buttons above browse result list */
+#browse-results .browse-pager {
+    display: none;
+}
+
+#browse-results .browse-result-list {
+    padding-inline: 0;
+}
+
 .browse-result-list{
     list-style:none;
 }
@@ -629,8 +643,8 @@ a {
     margin:0;
 }
 
-.search-check {
-    text-align: center;
+.search-options {
+    align-items: flex-start;
 }
 
 .searchbar {
