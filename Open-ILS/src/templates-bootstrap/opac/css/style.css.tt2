@@ -648,6 +648,26 @@ input.form-check-input {
     border-color: [% css_colors.border_standard %];
 }
 
+/* Override Bootstrap 4's absolute positioning layout */
+.form-check {
+    align-items: baseline;
+    display: flex;
+    flex-wrap: wrap;
+    padding-left: 0;
+    position: static;
+}
+
+.form-check .form-check-input {
+    position: static;
+    margin-left: unset;
+}
+
+.form-check .form-check-label {
+    flex-grow: 1;
+    margin-bottom: 0;
+    padding-inline-start: 0.25rem;
+}
+
 img {
     border: none;
 }
