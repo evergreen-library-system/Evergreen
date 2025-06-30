@@ -6,6 +6,7 @@
     PROCESS "opac/parts/org_selector.tt2";
     WRAPPER "opac/parts/base.tt2";
     INCLUDE "opac/parts/topnav.tt2";
+    INCLUDE "opac/parts/searchbar.tt2"
 
     ctx.page_title = l("Browse the Catalog");
 
