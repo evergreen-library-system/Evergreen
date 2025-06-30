@@ -2,12 +2,9 @@
 <div class="row">
 <div class="col">
     <nav class="nav secondary-nav" aria-label="Search and Browse">
-        [% IF ctx.page != 'home'; %]
-        <a href="[% mkurl(ctx.opac_root _ '/home') %]" class="nav-link search_catalog_lbl">[%l('Basic Search')%]</a>
-        [% ELSE %]
-        <a href="[% mkurl(ctx.opac_root _ '/home') %]" class="nav-link active search_catalog_lbl" aria-current="page">[%l('Basic Search')%]</a>
-        [% END %]
-
+        <!-- aria-expanded should be true under the same conditions that #search-wrapper-collapse's class is 'show' in searchbar.tt2 -->
+        <a href="#search-wrapper-collapse" role="button" data-toggle="collapse" aria-expanded="[% IF ctx.page == 'home' || ctx.page == 'rresult' %]true[% ELSE %]false[% END %]" aria-controls="search-wrapper-collapse" class="nav-link search_catalog_lbl">[%l('Basic Search')%]</a>
+        
         [% IF ctx.page != 'browse'; %]
         <a href="[% mkurl(ctx.opac_root _ '/browse', {}, expert_search_parms.merge(general_search_parms, facet_search_parms, ['fi:has_browse_entry'])) %]" class="nav-link browse_the_catalog_lbl">[% l('Browse the Catalog') %]</a>
         [% ELSE %]
