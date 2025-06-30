@@ -3555,18 +3555,8 @@ a.preflib_change {
     min-width: 8rem;
 }
 
-#browse-controls button {
-    margin-left: 0.5rem;
-}
-
-#browse-controls .row .col {
-    display: flex;
-    flex-wrap: nowrap;
-    gap: 0.5rem;
-}
-
-#browse-controls .row .col label {
-    white-space: nowrap;
+#browse-for-courses-form {
+    align-items: end;
 }
 
 .browse-pager-spinner {
