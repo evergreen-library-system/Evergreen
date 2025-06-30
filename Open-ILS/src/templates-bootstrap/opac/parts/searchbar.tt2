@@ -1,4 +1,5 @@
-<div role="search" aria-label="Catalog">
+<!-- conditions for 'show' class should be the same as the Basic Search link's aria-expanded attribute is true in topnav_subnav.tt2 -->
+<div role="search" aria-label="Catalog" id="search-wrapper-collapse" data-page="[% ctx.page %]" class="collapse [% IF ctx.page == 'home' || ctx.page == 'rresult' %] show [% END %]">
 [% PROCESS "opac/parts/org_selector.tt2";
 
 # We need to ignore some filters in our count

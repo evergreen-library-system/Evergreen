@@ -45,15 +45,9 @@
 %]
 <main id="main">
     [% INCLUDE "opac/parts/topnav.tt2" %]
-    <div>
-        [% INCLUDE "opac/parts/searchbar.tt2" %]
-    </div>
-    <hr />
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-3">
-                <div class="my_nav">
-                <div class="btn-group-vertical">
+    
+    [% INCLUDE "opac/parts/searchbar.tt2" %]
+
 
                 [%- FOREACH page IN myopac_pages;
                     IF page.url == myopac_page || page.url == parent;
