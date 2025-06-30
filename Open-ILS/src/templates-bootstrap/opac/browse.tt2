@@ -29,17 +29,20 @@
         END;
     END;
 %]
-<main id="main">
-    <div id="content-wrapper" class="my-5">
-        <div class="container mx-auto w-75">
-            <div id="browse-the-catalog">
-                <div id="browse-controls" class='row' role="search" aria-label="[% l('Catalog Browse Controls') %]">
-                    <form method="get" onsubmit="$('browse-submit-spinner').className = ''; return true" class="mx-auto">
+
+    <div id="content-wrapper">
+        <div class="container">
+            <div id="browse-the-catalog" class="row">
+            <div class="col-12">
+                <h2>[% l('Browse the Catalog') %]</h2>
+            </div>
+                <div id="browse-controls" class='col-12' role="search" aria-label="[% l('Catalog Browse Controls') %]">
+                    <form method="get" onsubmit="$('browse-submit-spinner').className = ''; return true" class="">
                         <input type="hidden" name="blimit"
                             value="[% blimit | html %]" />
 
                         [% control_qtype = PROCESS "opac/parts/qtype_selector.tt2"
-                            id="browse-search-class" browse_only=1 plural=1 %]
+                            id="browse-search-class" browse_only=1 plural=1 ariaLabel=1 %]
 
                         [% control_bterm = BLOCK %]<input type="text" name="bterm" id="browse-term"
                             aria-label="[% l('Browse term') %]"
@@ -48,30 +51,34 @@
                             show_loc_groups=1
                             arialabel=l('Select holding library') %]
                         
-                    <div class="form-inline row row-cols-auto align-items-end">
-                        <div class="col">
+                    <div class="row align-items-end">
+                        <div class="col-md-3">
                             <label class="form-label" for="browse-term">[% l('Browse for') %]</label>
                             [% control_qtype %]
                         </div> 
-                        <div class="col">
+                        <div class="col-md-3">
                             <label class="form-label" for="browse-search-class">[% l('starting with') %]</label>
                             [% control_bterm %]
                         </div> 
-                        <div class="col">
+                        <div class="col-md-3">
                             <label class="form-label" for="browse-context">[% l('in') %]</label>
                             [% control_locg %]
                         </div>   
-                        <button id='search-submit-go' type="submit" class="btn btn-confirm mx-2"><i class="fas fa-book-reader" aria-hidden="true"></i> [% l('Browse') %]</button>
-                    </div>
-                    <img id="browse-submit-spinner"
+                        <div class="col-md-3">
+                            <button id='search-submit-go' type="submit" class="btn btn-confirm"><i class="fas fa-book-reader" aria-hidden="true"></i> [% l('Browse') %]</button>
+                            <img id="browse-submit-spinner"
                         src="[% ctx.media_prefix %]/opac/images/progressbar_green.gif[% ctx.cache_key %]"
                         class="hidden" style="width: 16px; height: 16px;"
                         alt="[% l('Search in progress icon') %]" />
+                        </div>
+                        
+                    </div>
                     
+                    [% INCLUDE "opac/parts/browse_case_hints.tt2" %]
                     </form>
                 </div>
-            [% INCLUDE "opac/parts/browse_case_hints.tt2" %]
-            <div class="row my-5 border-top border-bottom">
+            
+            <div class="col-12 border-top border-bottom">
                 [% BLOCK browse_pager %]
                 <div class="browse-pager col-12">
                 <div class="mx-auto">
@@ -101,9 +108,9 @@
                 </div>
                 [% END %]
 
-                [% PROCESS browse_pager id=0 %]
-
-                <div id="browse-results" class="col-12">
+        <div id="browse-results">
+            [% PROCESS browse_pager id=0 %]
+            <main id="main">
                 [% IF ctx.browse_error %]
                     <p class="browse-error" role="status">
                         [% l("An error occurred browsing records. " _
@@ -230,7 +237,8 @@
                     [% END %]
                     </ol>
                 [% END %]
-                </div>
+            </main>
+        </div>
 
                 [% PROCESS browse_pager id=1 %]
             </div>
@@ -251,5 +259,4 @@
         [% END;
     END;    # end of BLOCK authority_notes %]
     </div>
-</main>
 [% END %]
