@@ -311,12 +311,16 @@ document.addEventListener("DOMContentLoaded", () => {
             <span class="font-weight-bold">[% l('Notify when hold is ready for pickup?') %]</span>
             <p>
              <div class="form-check m-2">
-                <input class="form-check-input hold-alert-method" type="checkbox" value="t" id="email_notify" name="email_notify" [% IF !ctx.user.email %]disabled="true"[% ELSIF ctx.default_email_notify %]checked="checked"[% END %]>
+                <input class="form-check-input hold-alert-method" type="checkbox" value="t" id="email_notify" name="email_notify" aria-describedby="email_address no-email-warning" [% IF !ctx.user.email %]disabled="true"[% ELSIF ctx.default_email_notify %]checked="checked"[% END %]>
                 <label class="form-check-label" for="email_notify">
-                   [% l('Yes, by Email') %]
-
-                     [% IF !ctx.user.email and !ctx.is_staff; l('<br>No configured Email address. See "My Account" for setting your Email address.'); ELSE; %] : <span id="email_address"><b name="email_address">[% ctx.user.email %]</b></span>[% END %]
-                </label>
+                [% IF !ctx.user.email; %]
+                    <span class="alert alert-warning" id="no-email-warning">
+                        [% l('No configured email address.'); %]
+                    <a class="alert-link" href="[% mkurl('myopac/update_email') %]">[% l('Add an email address') %]</a>
+                    </span>
+                [% ELSE; %]
+                    <output id="email_address"><b name="email_address">[% ctx.user.email %]</b></output>
+                [% END %]
             </div>
             
                 [%- IF allow_phone_notifications == 'true' %]
