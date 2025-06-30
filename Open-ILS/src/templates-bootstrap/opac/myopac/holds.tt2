@@ -174,7 +174,7 @@
                             END; %]
 
                             <a href="[% mkurl(ctx.opac_root _ '/record/' _
-                                hold.hold.bre_id, {}, 1) %]"><span[%- deemphasize_class -%]>
+                                hold.hold.bre_id, {}, 1) %]" id="hold-record-[% row_rec_id %]"><span[%- deemphasize_class -%]>
                                 [%- title.substr(0,hold.ATTRS.nonfiling_characters) | html %]</span>
                                 [%- title.substr(hold.ATTRS.nonfiling_characters)   | html %]</a>
                     </td>
@@ -231,11 +231,39 @@
                     [%- END; END; %]
                     </td>
                     <td role="cell" mobile-title="" class="fullRow">
-                        <a class="btn btn-confirm btn-sm" href="[% mkurl(ctx.opac_root _ '/myopac/holds/edit', {hid => ahr.id}) %]"
-                            [% html_text_attr('title', l('Edit hold for item [_1]', attrs.title)) %]>
+                        <a class="btn btn-confirm btn-sm nowrap m-1" href="[% mkurl(ctx.opac_root _ '/myopac/holds/edit', {hid => ahr.id}) %]"
+                            aria-describedby="hold-record-[% row_rec_id %]"
+                            [% html_text_attr('title', l('Edit hold for item [_1]', row_title)) %]>
                             <i class="fas fa-edit" aria-hidden="true"></i>
                             [% l('Edit') %]
                         </a>
+                        [% # Don't show the suspend button if it is suspended or fulfilled %]
+                        [% IF hold.hold.status != '7' && hold.hold.status != '9' %]
+                        <a class="btn btn-action btn-sm nowrap m-1" href="[% mkurl('', {action => 'suspend', 'hold_id' => ahr.id }) %]"
+                            aria-describedby="hold-record-[% row_rec_id %]"
+                            [% html_text_attr('title', l('Suspend hold for item [_1]', row_title)) %]>
+                            <i class="fas fa-hand-paper" aria-hidden="true"></i>
+                            [% l('Suspend') %]
+                        </a>
+                        [% END %]
+                        [% # Show the activate button ONLY if it is suspended %]
+                        [% IF hold.hold.status == '7' %]
+                        <a class="btn btn-opac btn-sm nowrap m-1" href="[% mkurl('', {action => 'activate', 'hold_id' => ahr.id }) %]"
+                            aria-describedby="hold-record-[% row_rec_id %]"
+                            [% html_text_attr('title', l('Activate hold for item [_1]', row_title)) %]>
+                            <i class="fas fa-play" aria-hidden="true"></i>
+                            [% l('Activate') %]
+                        </a>
+                        [% END %]
+                        [% # Don't show the cancel button if it is canceled %]
+                        [% IF hold.hold.status != '6' %]
+                        <a class="btn btn-danger btn-sm nowrap m-1" href="[% mkurl('', {action => 'cancel', 'hold_id' => ahr.id }) %]"
+                            aria-describedby="hold-record-[% row_rec_id %]"
+                            [% html_text_attr('title', l('Cancel hold for item [_1]', row_title)) %]>
+                            <i class="fas fa-circle-xmark" aria-hidden="true"></i>
+                            [% l('Cancel') %]
+                        </a>
+                        [% END %]
                     </td>
                 </tr>
                 [% END %]
