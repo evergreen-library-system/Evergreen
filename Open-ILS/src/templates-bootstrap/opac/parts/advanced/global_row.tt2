@@ -29,7 +29,7 @@
 
     <div class="col-bool-operator">
     <!-- bool selector.  hide for first row.  safe to ignore first bool value in form submission -->
-        <select aria-label="[% l('Boolean search operator') %]"
+        <select aria-label="[% l('Boolean search operator for row [_1]', loop.index + 1) %]"
             name='bool' class='form-control bool-operator'>
             <option value='and' [% b == 'and' ? 'selected="selected"' : '' %]>[% l('And') %]</option>
             <option value='or' [% b == 'or' ? 'selected="selected"' : '' %]>[% l('Or') %]</option>
@@ -38,7 +38,7 @@
     <div class="col-query-type">
         <!-- keyword, subject, etc. selector -->
             [% INCLUDE "opac/parts/qtype_selector.tt2"
-                query_type=qtype %]
+                query_type=qtype ariaLabel=1 %]
     </div>
     <div class="col-match">
         <select class='form-control w-100' aria-label="[% l('Search phrase match strictness') %]"
