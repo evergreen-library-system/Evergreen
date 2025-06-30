@@ -78,18 +78,21 @@
                             <duet-date-picker identifier="datepicker" name="thaw_date" value="[% thaw_date | html %]"></duet-date-picker>
                             
                         <div class="form-check mt-3">
-                            <input class="form-check-input" type="checkbox" name="email_notify" id="email_notify"
+                            <input class="form-check-input" type="checkbox" name="email_notify" id="email_notify" aria-describedby="no-email-warning"
                                 [% IF ahr.email_notify == 't' %] checked [% END %] />
                             <label class="form-check-label" for="email_notify">[% l('Email notification') %]</label>:  
-                            [% IF !ctx.user.email; 
-                                l('<br>No configured Email address. See "My Account" for setting your Email address.'); 
-                            ELSE; ctx.user.email; 
+                            [% IF !ctx.user.email; %]
+                                 <span class="alert alert-warning" id="no-email-warning">
+                                    [% l('No configured email address.'); %]
+                                    <a class="alert-link" href="[% mkurl('myopac/update_email') %]">[% l('Add an email address') %]</a>
+                                 </span>
+                            [% ELSE; ctx.user.email; 
                             END %]
                         </div>
 
                         <div class="form-group">
                             <label for="phone_notify">[% l('Phone notification - Enter phone number') %]</label>
-                            <input type="text" class="form-control" name="phone_notify" id="phone_notify"
+                            <input type="tel" class="form-control w-auto" name="phone_notify" id="phone_notify"
                                 value="[% ahr.phone_notify | html %]" />
                         </div>
 
