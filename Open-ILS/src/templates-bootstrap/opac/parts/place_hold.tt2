@@ -96,6 +96,10 @@ function createDefaultOption()
     org_selector.add(null_option, 0);
 }
 
+function togglePhoneInput() {
+    document.getElementById('notify-phone-number').classList.toggle('d-none');
+}
+
 //Check if org valid once when the page loads and then every time you change it could be valid again, so check again
 document.addEventListener("DOMContentLoaded", () => {
     let org_selector = document.getElementById('pickup_lib');
@@ -118,8 +122,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     checkValidPickupLib(); 
     document.getElementById('pickup_lib').addEventListener("change", checkValidPickupLib);
-
-    });
+    if (!document.getElementById('phone_notify_checkbox').checked) {
+        document.getElementById('notify-phone-number').classList.add('d-none');
+    }
+    document.getElementById('phone_notify_checkbox').addEventListener("change", togglePhoneInput);
+});
 
 
 </script>
@@ -222,7 +229,7 @@ document.addEventListener("DOMContentLoaded", () => {
               </select>
             [% END %]
             <br/>
-            <label>
+            <label for="override_blocks_subscription">
               <input id="override_blocks_subscription" name="override" type="checkbox" checked="checked"/>
               [% l("Override all hold-blocking conditions possible?") %]
             </label>
@@ -307,12 +314,12 @@ document.addEventListener("DOMContentLoaded", () => {
             -->
             
         </p>
-
-            <span class="font-weight-bold">[% l('Notify when hold is ready for pickup?') %]</span>
-            <p>
+        <fieldset>
+            <legend class="text-reset">[% l('Notify when hold is ready for pickup?') %]</legend>
              <div class="form-check m-2">
                 <input class="form-check-input hold-alert-method" type="checkbox" value="t" id="email_notify" name="email_notify" aria-describedby="email_address no-email-warning" [% IF !ctx.user.email %]disabled="true"[% ELSIF ctx.default_email_notify %]checked="checked"[% END %]>
                 <label class="form-check-label" for="email_notify">
+                   [% l('Notify by email:') %]</label>
                 [% IF !ctx.user.email; %]
                     <span class="alert alert-warning" id="no-email-warning">
                         [% l('No configured email address.'); %]
@@ -324,29 +331,34 @@ document.addEventListener("DOMContentLoaded", () => {
             </div>
             
                 [%- IF allow_phone_notifications == 'true' %]
-                <div class="form-check m-2">
-                    <input class="form-check-input hold-alert-method" type="checkbox" id="phone_notify_checkbox" name="phone_notify_checkbox" [% IF ctx.default_phone_notify %]checked="checked"[% END %]>
-                    <label class="form-check-label" for="phone_notify_checkbox">
-                    [% l('Yes, by Phone') %]
-                    </label>
-                </div>
+                <div id="notify-by-phone-toggle">
+                    <div class="form-check m-2">
+                        <input class="form-check-input hold-alert-method" type="checkbox" id="phone_notify_checkbox" name="phone_notify_checkbox" [% IF ctx.default_phone_notify %] checked [% END %] aria-controls="notify-phone-number">
+                        <label class="form-check-label" for="phone_notify_checkbox">
+                        [% l('Notify by phone') %]
+                        </label>
+                    </div>
 
-                <p>
-                    <label>[% l('Phone Number:') %]<input type="text" class="form-control" name="phone_notify" [% setting = 'opac.default_phone';
-                    IF ctx.user_setting_map.$setting; %] value='[% ctx.user_setting_map.$setting | html %]'
-                    [%- ELSIF ctx.user.day_phone; %] value='[% ctx.user.day_phone | html %]' [% END %]/></label>
-                </p>
+                    <p id="notify-phone-number">
+                        <label class="form-label" for="phone_notify">[% l('Phone Number:') %]</label>
+                        <input type="tel" class="form-control w-auto" name="phone_notify" id="phone_notify" [% setting = 'opac.default_phone';
+                        IF ctx.user_setting_map.$setting; %] value='[% ctx.user_setting_map.$setting | html %]'
+                        [%- ELSIF ctx.user.day_phone; %] value='[% ctx.user.day_phone | html %]' [% END %]/>
+                        
+                    </p>
+                </div>
                 [%- END -%]
                 [% IF ctx.get_org_setting(ctx.search_ou, 'sms.enable') == 1 %]
                 <input class="hold-alert-method" type="checkbox" id="sms_notify_checkbox" name="sms_notify_checkbox"
                     [% IF ctx.default_sms_notify %]checked="checked"[% END %]/>
-                    <label for="sms_notify_checkbox">[% l('Yes, by Text Messaging') %]</label><br/>
+                    <label for="sms_notify_checkbox">[% l('Notify by text message') %]</label><br/>
                 <p>
                     [% INCLUDE "opac/parts/sms_carrier_selector.tt2" %]<br/>
                     [% INCLUDE "opac/parts/sms_number_textbox.tt2" %]<br/>
                 </p>
                 [% END %]
             </p>
+        </fieldset>
             <div>
 
              [% IF ctx.hold_data.size > 0; %]
