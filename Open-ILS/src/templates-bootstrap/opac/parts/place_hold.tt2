@@ -50,27 +50,37 @@ function maybeToggleNumCopies(obj) {
 //Doublecheck whether their default pickup library is valid. Should only be invalid if pulled from disabled home library when the page loads, but adding more checks just in case
 function checkValidPickupLib()
 {
-    let org_selector = document.getElementById('pickup_lib');
+    const org_selector = document.getElementById('pickup_lib');
+    const org_select_warning = document.getElementById("pickup-lib-unavailable-warning");
+    const org_select_warning_msg = document.getElementById("pickup-lib-unavailable-warning-text");
+    const org_select_submit = document.getElementById("place_hold_submit");
     if (org_selector != null && org_selector[org_selector.selectedIndex].disabled == true) {
 
         //Are they at the default message or the warning?
         if (org_selector[org_selector.selectedIndex].value == -1){
-            document.getElementById("place_hold_submit").disabled = true;
-            org_selector.style.backgroundColor= "#FFF1A5";
+            org_select_submit.disabled = true;
             org_selector.invalid = true;
+            org_selector.classList.remove('is-valid');
+            org_selector.classList.add('is-invalid');
+            org_select_warning_msg.classList.add('d-block');
+            org_select_warning.hidden = false;
         }
         else{
-            org_selector.style.backgroundColor= "#FFF1A5";
             org_selector.invalid = true;
-            document.getElementById("pickup-lib-unavailable-warning").hidden = false;
-            document.getElementById("place_hold_submit").disabled = true;
+            org_selector.classList.remove('is-valid');
+            org_selector.classList.add('is-invalid');
+            org_select_warning_msg.classList.add('d-none');
+            org_select_warning.hidden = false;
+            org_select_submit.disabled = true;
         }
     }
     else {
         org_selector.invalid = false;
-        org_selector.style.backgroundColor = "#fff";
-        document.getElementById("pickup-lib-unavailable-warning").hidden = true;
-        document.getElementById("place_hold_submit").disabled = false;
+        org_selector.classList.remove('is-invalid');
+        org_selector.classList.add('is-valid');
+        org_select_warning_msg.classList.add('d-none');
+        org_select_warning.hidden = true;
+        org_select_submit.disabled = false;
     }
 }
 
@@ -83,7 +93,6 @@ function createDefaultOption()
     null_option.innerText = "[% l('Choose a pickup location') %]";
     null_option.disabled = true;
     null_option.value = -1;
-    null_option.style.backgroundColor = "#fff";
     org_selector.add(null_option, 0);
 }
 
@@ -96,7 +105,6 @@ document.addEventListener("DOMContentLoaded", () => {
     //We also need the list of all orgs in the list
     let lib_ids = Array(options.length).fill(0);
     for (let i = 0; i < options.length; i++){
-        options[i].style.backgroundColor= "#fff";
         lib_ids[i] = options[i].value;
     }
 
@@ -136,7 +144,7 @@ document.addEventListener("DOMContentLoaded", () => {
             END %]
 
        [% IF loop.first %]
-    <form method="post" name="PlaceHold" onsubmit="return validateHoldForm()" >
+    <form method="post" name="PlaceHold" onsubmit="return validateHoldForm()" class="needs-validation">
         <input type="hidden" name="hold_type" value="[% CGI.param('hold_type') | html %]" />
         [%
             redirect = CGI.param('hold_source_page') || CGI.param('redirect_to') || CGI.referer;
@@ -285,12 +293,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
         <p class="w-50">
             [%- org_select_id = 'pickup_lib'; -%]
-            <label for="[% org_select_id %]" class="font-weight-bold">[%l('Pickup location:') %]</label>
+            <label for="[% org_select_id %]" class="form-label">[%l('Pickup location:') %]</label>
             [% PROCESS "opac/parts/org_selector.tt2";
                 INCLUDE build_org_selector name='pickup_lib'
                     value=ctx.default_pickup_lib id=org_select_id
-                    can_have_vols_only=1 hold_pickup_lib=1 %]
-            <label id="pickup-lib-unavailable-warning" for="[% org_select_id %]" class= "font-weight-bold" style= "color: #D0343A" aria-live="polite" hidden>[% l('* Pickup location unavailable. Please choose a different pickup location.') %]</label>
+                    can_have_vols_only=1 hold_pickup_lib=1 ariaDescribedby='pickup-lib-unavailable-warning' %]
+            <span id="pickup-lib-unavailable-warning" class="invalid-feedback" role="status" hidden>
+                <span id="pickup-lib-unavailable-warning-text" class="d-none">
+                    [% l('* Pickup location unavailable. Please choose a different pickup location.') %]
+                </span>
+            </span>
             <!-- <label id="choose-pickup-lib-warning" for ="[% org_select_id %]" class="font-weight-light" aria-live="polite" hidden>[% l('* Please choose a pickup location') %]</label>             
             -->
             
@@ -352,7 +364,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-                <a class="btn btn-sm btn-action m-2" id="actDateToggle" href="#toggled-block-suspend" onclick="return toggleActivationDate();"><i class="fas fa-calendar" aria-hidden="true"></i> [% l('Set activation date') %]</a>
+                <a class="btn btn-sm btn-action my-2" id="actDateToggle" href="#toggled-block-suspend" onclick="return toggleActivationDate();"><i class="fas fa-calendar" aria-hidden="true"></i> [% l('Set activation date') %]</a>
             </div>
             <blockquote id="toggled-block-suspend">
             <label for="thaw_date">[% l('Activate on') %]
