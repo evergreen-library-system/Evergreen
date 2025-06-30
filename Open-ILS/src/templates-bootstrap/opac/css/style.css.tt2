@@ -2035,6 +2035,11 @@ table caption.visually-hidden {
     border-bottom:3px solid [% css_colors.background %];
 }
 
+/* Indent notify phone number input and suspend date toggle to align with checkboxes */
+#notify-phone-number, #actDateToggle {
+    margin-inline-start: 1.75rem;
+}
+
 .header_middle {
     [% IF rtl == 't' -%]
     padding: 0px 0px 0px 7px;
