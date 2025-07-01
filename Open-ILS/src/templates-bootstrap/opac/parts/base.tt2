@@ -63,7 +63,7 @@
         [% PROCESS 'opac/parts/stripe.tt2' %]
 <script src="[% ctx.media_prefix %]/opac/deps/node_modules/jquery/dist/jquery.min.js[% ctx.cache_key %]"></script>
     </head>
-    <body class="tundra d-flex flex-column min-vh-100 [% IF we_want_to_turn_on_facet_styling.defined %] styled_facets [% END %]">
+    <body class="tundra d-flex flex-column min-vh-100 page-[%- ctx.page; IF ctx.page == 'myopac'; '-' _ myopac_page; END; -%] [% IF we_want_to_turn_on_facet_styling.defined %] styled_facets [% END %]">
         [%#Each content page needs (at minimum) an <h2> describing the content%]
         <a class="skip-link" href="#main">[% l('Skip to main content') %]</a>
        <div class="mb-3">

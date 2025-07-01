@@ -59,7 +59,7 @@
 		</script>
 
     </head>
-    <body[% IF want_dojo; ' class="tundra d-flex flex-column min-vh-100"'; ELSE; ' class="tundra d-flex flex-column min-vh-100"';  END %]>
+    <body[% IF want_dojo; ' class="tundra d-flex flex-column min-vh-100"'; ELSE; ' class="tundra d-flex flex-column min-vh-100"';  END %] page-[%- ctx.page; IF ctx.page == 'myopac'; '-' _ myopac_page; END; -%]>
         [%#Each content page needs (at minimum) an <h2> describing the content%]
         <a class="skip-link" href="#main">[% l('Skip to main content') %]</a>
        <div class="mb-3">
