@@ -1,5 +1,6 @@
+<ng-container *ngIf="fieldMeta">
 
-<div class="ff-field row" *ngIf="fieldMeta">
+<div class="ff-field row" *ngIf="!isMultiValue()">
   <label for="{{domId}}" class="col-sm-4 col-form-label form-label fw-bold" title="{{fieldMeta.description}}" i18n-title>
     {{fieldLabel}}
   </label>
@@ -9,3 +10,19 @@
     </eg-marc-editable-content>
   </div>
 </div>
+
+<fieldset class="ff-field row" *ngIf="isMultiValue()">
+  <legend class="col-sm-4 col-form-label form-label fw-bold" title="{{fieldMeta.description}}" i18n-title>
+    {{fieldLabel}}
+  </legend>
+  <div class="ff-value col-sm-8 d-flex">
+    <ng-container *ngFor="let char of separateCharacters(); let i = index;">
+      <eg-marc-editable-content domId="{{domId}}-{{i}}" [context]="context"
+        [fixedFieldCode]="fieldCode + (i + 1)" ariaLabel="{{fieldLabel}} position {{i + 1}}" i18n-ariaLabel
+        fieldType="ffld" moreClasses="form-control-sm type-ffld-char">
+      </eg-marc-editable-content>
+    </ng-container>
+  </div>
+</fieldset>
+
+</ng-container>

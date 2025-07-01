@@ -417,12 +417,24 @@ var MARC21 = {
             var _l = this.leader;
             var _8 = this.field('008').data;
             var _6 = this.field('006').data;
+            /*
+            console.debug('008', MARC21.Record._ff_pos[field]._8);
+            console.debug('006', MARC21.Record._ff_pos[field]._6);
+            console.debug('001', MARC21.Record._ff_pos[field]._1);
+            /***/
         
             var rtype = this.recordType();
 
-            if (_8) return !!MARC21.Record._ff_pos[field]._8[rtype].multivalue;
-            if (_6) return !!MARC21.Record._ff_pos[field]._6[rtype].multivalue;
-            if (_l) return !!MARC21.Record._ff_pos[field]._l[rtype].multivalue;
+            if (_8 && MARC21.Record._ff_pos[field]._8 && MARC21.Record._ff_pos[field]._8[rtype])
+                return !!MARC21.Record._ff_pos[field]._8[rtype].multivalue || false;
+            
+            if (_6 && MARC21.Record._ff_pos[field]._6 && MARC21.Record._ff_pos[field]._6[rtype])
+                return !!MARC21.Record._ff_pos[field]._6[rtype].multivalue || false;
+
+            if (_l && MARC21.Record._ff_pos[field]._1 && MARC21.Record._ff_pos[field]._1[rtype])
+                return !!MARC21.Record._ff_pos[field]._l[rtype].multivalue || false;
+
+            return false;
         }
 
         this.extractFixedField = function (field, dflt) {
