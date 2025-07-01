@@ -204,9 +204,9 @@ implements OnInit, AfterViewInit, OnDestroy {
 
             case 'ffld': {
                 this.applyFFOptions();
-                // these fixed fields can include multiple values (which doesn't work well with combobox) or free text
+                // these fixed fields contain free text
                 // TODO: remove check for AUT when authorities fixed field data is populated
-                const complexFields = ['AccM','Cont','Date1','Date2','Ills','LTxt','Relf','SpFm','Time'];
+                const complexFields = ['Date1','Date2','Time'];
                 if (complexFields.includes(this.fixedFieldCode) || this.record.recordType() === 'AUT' ) {
                     this.suggest = false;
                 }
@@ -411,6 +411,8 @@ implements OnInit, AfterViewInit, OnDestroy {
             case 'ind1': this.field.ind1 = value; break;
             case 'ind2': this.field.ind2 = value; break;
             case 'ffld':
+                // TODO: concatenate multi-character fields
+
                 // Track locally and propagate to the record.
                 this.ffValue = value;
                 this.record.setFixedField(this.fixedFieldCode, value);
