@@ -25,6 +25,12 @@ input.form-control.type-ffld {
   width: 100%;
 }
 
+#eg-marc-rich-editor input.form-control.type-ffld-char {
+  display: inline-block;
+  text-align: center;
+  width: clamp(1ch, 1.25rem, 1.5rem);
+}
+
 input.form-control.type-tag {
   display: block; /* Firefox is dumb */
   font-weight: bold;

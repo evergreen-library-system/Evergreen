@@ -35,7 +35,7 @@ Track their labels here.
   <eg-combobox #MARCCombo *ngIf="suggest"
     trigger="click"
     [domId]="domId"
-    [moreClasses]="'fw-bold form-control-sm type-'+fieldType"
+    [moreClasses]="moreClasses + ' fw-bold form-control-sm type-'+fieldType"
     tabindex="{{tabindex}}"
     [ariaLabel]="ariaLabel"
     [maxLength]="maxLength"
