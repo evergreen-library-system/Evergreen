@@ -73,10 +73,10 @@ export class MatchSetListComponent implements AfterViewInit {
         );
         this.editDialog.fieldOptions =
             {mtype:{customValues:[
-            {id:'biblio', label:$localize`Bibliographic Records`},
-            {id:'serial', label:$localize`Serial Records`},
-            {id:'authority', label:$localize`Authority Records`}
-        ]}};
+                {id:'biblio', label:$localize`Bibliographic Records`},
+                {id:'serial', label:$localize`Serial Records`},
+                {id:'authority', label:$localize`Authority Records`}
+            ]}};
     }
 
     orgOnChange(org: IdlObject) {
