@@ -584,7 +584,9 @@ sub load_staff_sso_logout {
         # If using SSO, and actively logging out of EG /or/ staff.login.shib_sso.logout is true then
         # log out of the SP (and, depending on Shib config, maybe the IdP or globally).
         if ($sso_logout or $active_logout) {
-            $redirect_to = '/Shibboleth.sso/Logout?return=' . uri_escape_utf8($redirect_to);
+            my $shib_app_path = $ctx->{get_org_setting}->($sso_org, 'staff.login.shib_sso.shib_path') || '/Shibboleth.sso';
+            $redirect_to = $shib_app_path . '/Logout?return=' . uri_escape_utf8($redirect_to);
+            undef $shib_app_path;
             if ($sso_entity_id) {
                 $redirect_to .= '&entityID=' . $sso_entity_id;
             }
@@ -742,8 +744,11 @@ sub load_staff_sso_login {
             }
 
         } else { # We need to ask Shib to give us a session
+            my $shib_app_path = $ctx->{get_org_setting}->($sso_org, 'staff.login.shib_sso.shib_path') || '/Shibboleth.sso';
 
-            $url = '/Shibboleth.sso/Login?target=' . uri_escape_utf8($here.'?ws='.$ws_name.'&redirect_to='.uri_escape_utf8($redirect_to));
+            $url = $shib_app_path . '/Login?target=' . uri_escape_utf8($here.'?ws='.$ws_name.'&redirect_to='.uri_escape_utf8($redirect_to));
+
+            undef $shib_app_path;
 
             my $sso_entity_id = $ctx->{get_org_setting}->($sso_org, 'staff.login.shib_sso.entityId');
             if ($sso_entity_id) {

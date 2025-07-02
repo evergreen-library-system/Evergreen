@@ -38,6 +38,11 @@ VALUES
  oils_i18n_gettext('staff.login.shib_sso.shib_matchpoint', 'Shibboleth Staff SSO matchpoint', 'coust', 'label'),
  oils_i18n_gettext('staff.login.shib_sso.shib_matchpoint',
   'Shibboleth-side field to match a patron against for Shibboleth SSO. Default is uid; use eppn for Active Directory', 'coust', 'description'),
+ 'string', 627),
+ ('staff.login.shib_sso.shib_path',
+ 'sec',
+ oils_i18n_gettext('staff.login.shib_sso.shib_path', 'Specific Shibboleth Application path. Default /Shibboleth.sso', 'coust', 'label'),
+ oils_i18n_gettext('staff.login.shib_sso.shib_path', 'Specific Shibboleth Application path. Default /Shibboleth.sso', 'coust', 'description'),
  'string', 627)
 ;
 
