@@ -19,14 +19,15 @@ limiting the set of desired records for a given metarecord.
     END;
 %]
 <hr>
-<h4>[% l('Select your desired format(s).') %]</h4>
+<h4>[% l('Select your desired formats and languages') %]</h4>
 <div class="row">
   <div class="col-6">
     <div class="metarecord_filter_header">
 
     </div>
+    <label class="form-label" for="metarecord_formats_[% target_id %]">[% l('Formats') %]</label>
     <select multiple='multiple' class="form-control"
-      name="metarecord_formats_[% target_id %]">
+      name="metarecord_formats_[% target_id %]" id="metarecord_formats_[% target_id %]">
       [% FOR ccvm IN
           hold_data.metarecord_filters.formats.sort('search_label');
           NEXT IF ccvm.opac_visible == 'f' %]
@@ -43,9 +44,9 @@ limiting the set of desired records for a given metarecord.
         my_lang = ctx.get_i18n_l(ctx.eg_locale).marc_code;
   %]
   <div class="col-6">
-
+  <label class="form-label" for="metarecord_langs_[% target_id %]">[% l('Languages') %]</label>
     <select multiple='multiple' class="form-control"
-      name="metarecord_langs_[% target_id %]">
+      name="metarecord_langs_[% target_id %]" id="metarecord_langs_[% target_id %]">
       [% FOR lang_ccvm IN hold_data.metarecord_filters.langs.sort('value');
             NEXT IF lang_ccvm.opac_visible == 'f';
             selected = 0;
