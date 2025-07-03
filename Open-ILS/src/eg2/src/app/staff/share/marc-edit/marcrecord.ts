@@ -98,6 +98,10 @@ export class MarcRecord {
         return this.record.extractFixedField(fieldCode);
     }
 
+    isFixedFieldMultivalue(fieldCode: string): boolean {
+        return this.record.isFixedFieldMultivalue(fieldCode);
+    }
+
     setFixedField(fieldCode: string, fieldValue: string): string {
         const response = this.record.setFixedField(fieldCode, fieldValue);
         this.fixedFieldChange.emit(fieldCode);

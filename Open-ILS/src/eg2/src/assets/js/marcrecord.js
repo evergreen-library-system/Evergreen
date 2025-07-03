@@ -411,6 +411,20 @@ var MARC21 = {
             return 'BKS'; // default
         }
         
+        this.isFixedFieldMultivalue = function (field) {
+            if (!MARC21.Record._ff_pos[field]) return false;
+        
+            var _l = this.leader;
+            var _8 = this.field('008').data;
+            var _6 = this.field('006').data;
+        
+            var rtype = this.recordType();
+
+            if (_8) return !!MARC21.Record._ff_pos[field]._8[rtype].multivalue;
+            if (_6) return !!MARC21.Record._ff_pos[field]._6[rtype].multivalue;
+            if (_l) return !!MARC21.Record._ff_pos[field]._l[rtype].multivalue;
+        }
+
         this.extractFixedField = function (field, dflt) {
         if (!MARC21.Record._ff_pos[field]) return null;
         
@@ -757,12 +771,73 @@ MARC21.Record._ff_lengths = {
 MARC21.Record._ff_pos = {
     AccM : {
         _8 : {
-            SCO : {start: 24, len : 6, def : ' ' },
-            REC : {start: 24, len : 6, def : ' ' }
+            SCO : {start: 24, len : 6, def : ' ', multivalue : true },
+            REC : {start: 24, len : 6, def : ' ', multivalue : true  }
         },
         _6 : {
-            SCO : {start: 7, len : 6, def : ' ' },
-            REC : {start: 7, len : 6, def : ' ' }
+            SCO : {start: 7, len : 6, def : ' ', multivalue : true  },
+            REC : {start: 7, len : 6, def : ' ', multivalue : true  }
+        }
+    },
+    // break out all six AccM characters individually:
+    AccM1 : {
+        _8 : {
+            SCO : {start: 24, len : 1, def : ' ' },
+            REC : {start: 24, len : 1, def : ' ' }
+        },
+        _6 : {
+            SCO : {start: 7, len : 1, def : ' ' },
+            REC : {start: 7, len : 1, def : ' ' }
+        }
+    },
+    AccM2 : {
+        _8 : {
+            SCO : {start: 25, len : 1, def : ' ' },
+            REC : {start: 25, len : 1, def : ' ' }
+        },
+        _6 : {
+            SCO : {start: 8, len : 1, def : ' ' },
+            REC : {start: 8, len : 1, def : ' ' }
+        }
+    },
+    AccM3 : {
+        _8 : {
+            SCO : {start: 26, len : 1, def : ' ' },
+            REC : {start: 26, len : 1, def : ' ' }
+        },
+        _6 : {
+            SCO : {start: 9, len : 1, def : ' ' },
+            REC : {start: 9, len : 1, def : ' ' }
+        }
+    },
+    AccM4 : {
+        _8 : {
+            SCO : {start: 27, len : 1, def : ' ' },
+            REC : {start: 27, len : 1, def : ' ' }
+        },
+        _6 : {
+            SCO : {start: 10, len : 1, def : ' ' },
+            REC : {start: 10, len : 1, def : ' ' }
+        }
+    },
+    AccM5 : {
+        _8 : {
+            SCO : {start: 28, len : 1, def : ' ' },
+            REC : {start: 28, len : 1, def : ' ' }
+        },
+        _6 : {
+            SCO : {start: 11, len : 1, def : ' ' },
+            REC : {start: 11, len : 1, def : ' ' }
+        }
+    },
+    AccM6 : {
+        _8 : {
+            SCO : {start: 29, len : 1, def : ' ' },
+            REC : {start: 29, len : 1, def : ' ' }
+        },
+        _6 : {
+            SCO : {start: 12, len : 1, def : ' ' },
+            REC : {start: 12, len : 1, def : ' ' }
         }
     },
     Alph : {
@@ -833,12 +908,53 @@ MARC21.Record._ff_pos = {
     },
     Cont : {
         _8 : {
-            BKS : {start : 24, len : 4, def : ' ' },
-            SER : {start : 25, len : 3, def : ' ' }
+            BKS : {start : 24, len : 4, def : ' ', multivalue : true },
+            SER : {start : 25, len : 3, def : ' ', multivalue : true }
         },
         _6 : {
-            BKS : {start : 7, len : 4, def : ' ' },
-            SER : {start : 8, len : 3, def : ' ' }
+            BKS : {start : 7, len : 4, def : ' ', multivalue : true },
+            SER : {start : 8, len : 3, def : ' ', multivalue : true }
+        }
+    },
+    // break out all four Cont characters individually:
+    Cont1 : {
+        _8 : {
+            BKS : {start : 24, len : 1, def : ' ' },
+            SER : {start : 25, len : 1, def : ' ' }
+        },
+        _6 : {
+            BKS : {start : 7, len : 1, def : ' ' },
+            SER : {start : 8, len : 1, def : ' ' }
+        }
+    },
+    Cont2 : {
+        _8 : {
+            BKS : {start : 25, len : 1, def : ' ' },
+            SER : {start : 26, len : 1, def : ' ' }
+        },
+        _6 : {
+            BKS : {start : 8, len : 1, def : ' ' },
+            SER : {start : 9, len : 1, def : ' ' }
+        }
+    },
+    Cont3 : {
+        _8 : {
+            BKS : {start : 26, len : 1, def : ' ' },
+            SER : {start : 27, len : 1, def : ' ' }
+        },
+        _6 : {
+            BKS : {start : 9, len : 1, def : ' ' },
+            SER : {start : 10, len : 1, def : ' ' }
+        }
+    },
+    Cont4 : {
+        _8 : {
+            BKS : {start : 27, len : 1, def : ' ' },
+            SER : {start : 28, len : 1, def : ' ' }
+        },
+        _6 : {
+            BKS : {start : 10, len : 1, def : ' ' },
+            SER : {start : 11, len : 1, def : ' ' }
         }
     },
     CrTp : {
@@ -1017,10 +1133,43 @@ MARC21.Record._ff_pos = {
     },
     Ills : {
         _8 : {
-            BKS : {start : 18, len : 4, def : ' ' }
+            BKS : {start : 18, len : 4, def : ' ', multivalue : true }
         },
         _6 : {
-            BKS : {start : 1, len : 4, def : ' ' }
+            BKS : {start : 1, len : 4, def : ' ', multivalue : true }
+        }
+    },
+    // break out all four Ills characters individually:
+    Ills1 : {
+        _8 : {
+            BKS : {start : 18, len : 1, def : ' ' }
+        },
+        _6 : {
+            BKS : {start : 1, len : 1, def : ' ' }
+        }
+    },
+    Ills2 : {
+        _8 : {
+            BKS : {start : 19, len : 1, def : ' ' }
+        },
+        _6 : {
+            BKS : {start : 2, len : 1, def : ' ' }
+        }
+    },
+    Ills3 : {
+        _8 : {
+            BKS : {start : 20, len : 1, def : ' ' }
+        },
+        _6 : {
+            BKS : {start : 3, len : 1, def : ' ' }
+        }
+    },
+    Ills4 : {
+        _8 : {
+            BKS : {start : 21, len : 1, def : ' ' }
+        },
+        _6 : {
+            BKS : {start : 4, len : 1, def : ' ' }
         }
     },
     Indx : {
@@ -1060,12 +1209,33 @@ MARC21.Record._ff_pos = {
     },
     LTxt : {
         _8 : {
-            SCO : {start : 30, len : 2, def : 'n'},
-            REC : {start : 30, len : 2, def : ' '}
+            SCO : {start : 30, len : 2, def : 'n', multivalue : true },
+            REC : {start : 30, len : 2, def : ' ', multivalue : true }
         },
         _6 : {
-            SCO : {start : 13, len : 2, def : 'n'},
-            REC : {start : 13, len : 2, def : ' '}
+            SCO : {start : 13, len : 2, def : 'n', multivalue : true },
+            REC : {start : 13, len : 2, def : ' ', multivalue : true }
+        },
+    },
+    // break out the two LTxt characters individually:
+    LTxt1 : {
+        _8 : {
+            SCO : {start : 30, len : 1, def : 'n'},
+            REC : {start : 30, len : 1, def : ' '}
+        },
+        _6 : {
+            SCO : {start : 13, len : 1, def : 'n'},
+            REC : {start : 13, len : 1, def : ' '}
+        },
+    },
+    LTxt2 : {
+        _8 : {
+            SCO : {start : 31, len : 1, def : 'n'},
+            REC : {start : 31, len : 1, def : ' '}
+        },
+        _6 : {
+            SCO : {start : 14, len : 1, def : 'n'},
+            REC : {start : 14, len : 1, def : ' '}
         },
     },
     MRec : {
@@ -1130,10 +1300,43 @@ MARC21.Record._ff_pos = {
     },
     Relf : {
         _8 : {
-            MAP : {start: 18, len : 4, def : ' '}
+            MAP : {start: 18, len : 4, def : ' ', multivalue : true }
         },
         _6 : {
-            MAP : {start: 1, len : 4, def : ' '}
+            MAP : {start: 1, len : 4, def : ' ', multivalue : true }
+        }
+    },
+    // break out all four Relf characters individually:
+    Relf1 : {
+        _8 : {
+            MAP : {start: 18, len : 1, def : ' ' }
+        },
+        _6 : {
+            MAP : {start: 1, len : 1, def : ' ' }
+        }
+    },
+    Relf2 : {
+        _8 : {
+            MAP : {start: 19, len : 1, def : ' ' }
+        },
+        _6 : {
+            MAP : {start: 2, len : 1, def : ' ' }
+        }
+    },
+    Relf3 : {
+        _8 : {
+            MAP : {start: 20, len : 1, def : ' ' }
+        },
+        _6 : {
+            MAP : {start: 3, len : 1, def : ' ' }
+        }
+    },
+    Relf4 : {
+        _8 : {
+            MAP : {start: 21, len : 1, def : ' ' }
+        },
+        _6 : {
+            MAP : {start: 4, len : 1, def : ' ' }
         }
     },
     'S/L' : {
@@ -1146,10 +1349,27 @@ MARC21.Record._ff_pos = {
     },
     SpFM : {
         _8 : {
-            MAP : {start: 33, len : 2, def : ' ' }
+            MAP : {start: 33, len : 2, def : ' ', multivalue : true }
         },
         _6 : {
-            MAP : {start: 16, len : 2, def : ' '}
+            MAP : {start: 16, len : 2, def : ' ', multivalue : true }
+        }
+    },
+    // break out the two SpFM characters individually:
+    SpFM1 : {
+        _8 : {
+            MAP : {start: 33, len : 1, def : ' ' }
+        },
+        _6 : {
+            MAP : {start: 16, len : 1, def : ' ' }
+        }
+    },
+    SpFM2 : {
+        _8 : {
+            MAP : {start: 34, len : 1, def : ' ' }
+        },
+        _6 : {
+            MAP : {start: 17, len : 1, def : ' ' }
         }
     },
     Srce : {
