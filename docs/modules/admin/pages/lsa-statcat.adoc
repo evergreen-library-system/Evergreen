@@ -3,7 +3,7 @@
 
 The Statistical Categories Editors are split into two interfaces, one for items and one for patrons, and are where you configure your statistical categories (stat cats). Stat cats are a way to save and report on additional information that doesn't fit elsewhere in Evergreen's default records.
 
-An organizational unit (consortium, library system branch library, sub library, etc.) may create their own categories and entries, or supplement categories defined by a higher-level org unit with their own entries.
+An organizational unit (consortium, library system branch library, sub library, etc.) may create their own categories and entries, or supplement categories defined by a higher-level organizational unit with their own entries.
 
 == Item Statistical Categories ==
 
