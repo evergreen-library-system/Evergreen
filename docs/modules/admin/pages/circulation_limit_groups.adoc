@@ -14,15 +14,15 @@ To limit checkouts by shelving location:
 . Click *Administration -> Local Administration ->  Circulation Limit Sets*.
 . Click *New Circulation Limit Set* to create a new circulation limit set.
 . Enter a brief *Description* of the circulation limit set.
-. Check the box adjacent to *Global Flag* if you want all of the org units in
+. Check the box adjacent to *Global Flag* if you want all of the organizational units in
 your consortium to be restricted by this limit set when it is applied to a
 circulation policy.  Otherwise, Evergreen will only apply the limit to the direct
 ancestors and descendants of the owning library.
 . *ID* will autopopulate after saving.
 . Enter the number of *Items Out* that a user can take from this shelving location.
-. Enter the *Min Depth*, or the minimum depth in the org tree that Evergreen
+. Enter the *Min Depth*, or the minimum depth in the organizational unit tree that Evergreen
 will consider as valid circulation libraries for counting items out.  The min
-depth is based on org unit type depths.  For example, if you want the items in
+depth is based on organizational unit type depths.  For example, if you want the items in
 all of the circulating libraries in your consortium to be eligible for
 restriction by this limit set when it is applied to a circulation policy, then
 enter a zero (0) in this field.  
