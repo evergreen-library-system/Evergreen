@@ -13,7 +13,7 @@ It is possible to run reports on surveys, which allows you to obtain statistical
 
 . Go to *Administration* -> *Local Administration* -> *Surveys*.
 +
-image::surveys/survey configuration_3.14[Survey configuration page]
+image::surveys/survey configuration_3.14.png[Survey configuration page]
 +
 . Click *New Survey*.
 +
