@@ -500,7 +500,7 @@ sub update_fleshed_copies {
         # Have to watch out for multiple items creating the same new part or the whole update will fail
         # This volume isn't necessarily the only volume with the same new part in this batch, so we have to check against the actual database.
         # Grab all the parts on the same record and then check the potentially new part against them all.
-        if (scalar @$parts) {
+        if (defined $parts && scalar @$parts) {
             my $preexisting_parts = $editor->search_biblio_monograph_part({
                 record => $vol->record,
                 label => (map { $_->label } @$parts),
