@@ -22,7 +22,7 @@ To add a shelving location
 image::shelving_location/shelving_location_new.png[New shelving location]
 +
 . Select your parameters for  your shelving locations.
-.. Choose the owning Org Unit of the shelving location. 
+.. Choose the Owning Org Unit of the shelving location. 
 .. Type the name of the shelving location in the name field.
 .. _Is OPAC Visible?_, choose whether you would like items in this shelving location to appear in the catalog.
 .. _Can Circulate?_ can items in this location circulate?
@@ -74,7 +74,7 @@ Evergreen preserves shelving locations in the database, so no statistical inform
 
 == Modifying shelving location order ==
 
-By default Evergreen displays shelving locations in alphabetical order. This order can be modified per Org Unit. 
+By default Evergreen displays shelving locations in alphabetical order. This order can be modified per organizational unit. 
 
 To modify the order of shelving locations, Go to *Administration -> Local Administration -> Shelving Location Order*
 
@@ -82,9 +82,9 @@ image::shelving_location/shelving_location_order.png[Shelving Location Order]
 
 To change the order:
 
-. Choose the Org Unit you are wanting to reorder.
+. Choose the organizational unit you are wanting to reorder.
 . Drag and drop the locations until you are satisfied with their order.
-. Click _Apply changes_.
+. Click _Save changes_.
 
 
 == Shelving location groups ==
@@ -94,7 +94,7 @@ To change the order:
 Mayberry Public Library provides a scope allowing users to search for all children's materials in their library. The library's children's scope incorporates several shelving locations used at the library, including  picture Books, Children's Fiction, Children's Non-Fiction, Easy Readers, and Children's DVDs. The library also builds a similar scope for YA materials that incorporates several shelving locations.
 ****
 
-This feature allows staff to create and name sets of shelving locations to use as a search filter in the catalog.  OPAC-visible groups will display within the library selector in the [.underline]#Public Catalog#.  When a user selects a group and performs a search, the set of results will be limited to records that have items in one of the shelving locations within the group.  Groups can live at any level of the library hierarchy and may include shelving locations from any parent org unit or child org unit.
+This feature allows staff to create and name sets of shelving locations to use as a search filter in the catalog.  OPAC-visible groups will display within the library selector in the [.underline]#Public Catalog#.  When a user selects a group and performs a search, the set of results will be limited to records that have items in one of the shelving locations within the group.  Groups can live at any level of the library hierarchy and may include shelving locations from any parent organizational unit or child organizational unit.
 
 NOTE: To work with shelving location groups, you will need the ADMIN_COPY_LOCATION_GROUP permission.
 
@@ -103,22 +103,22 @@ image::shelving_location/shelving_location_groups_editor.png[Shelving Location G
 === Create a shelving location group ===
 
 . Click *Administration ->  Local Administration -> Shelving Location Groups*.
-. At the top of the screen is a menu that displays the org unit tree. Select the unit within the org tree to which you want to add a shelving location group. The shelving locations associated with the org unit appear in the shelving locations column.
+. The library selector at the screen defaults to the highlest level organizational unit. Select the organizational unit to which you want to add a shelving location group;  the associated shelving locations will appear in the shelving locations column.
 . Click _New Location Group_.
 +
 image::shelving_location/new_shelving_location_group.png[New Shelving Location Group]
 +
-. Choose how you want the shelving location group to display to patrons in the catalog's org unit tree in the OPAC. By default, when you add a new shelving location group, the group displays in the org unit tree beneath any branches or sub-libraries of its parental org unit. If you select _Yes_ for _Display Above Orgs_, then the group will appear above the branches or sub-libraries of its parental org unit.
+. Choose how you want the shelving location group to display to patrons in the catalog's organizational unit tree in the OPAC. By default, when you add a new shelving location group, the group displays in the organizational unit tree beneath any branches or sub-libraries of its parental organizational unit. If you select _Yes_ for _Display Above Orgs_, then the group will appear above the branches or sub-libraries of its parental organizational unit.
 . To make the shelving location group visible to users searching the public catalog, select _Yes_ for _Is OPAC Visible?_
 . _Position_ will order the display of the shelving location group.  This takes integers with 0 being first.
 . Enter a _Name_ for the shelving location group.
 . Click Save. The name of the shelving location group appears in the location groups.
-. Select the shelving locations that you want to add to the group, and click Add. The shelving locations will populate the middle column, Group Entries.
-. The shelving location group is now visible in the org unit tree in the catalog. Search the catalog to retrieve results from any of the shelving locations that you added to the shelving location group.
+. Select the shelving locations that you want to add to the group, and click _Add to group_. The shelving locations will populate the middle column, Shelving Locations in Group.
+. The shelving location group is now visible in the organizational unit tree in the catalog. Search the catalog to retrieve results from any of the shelving locations that you added to the shelving location group.
 
 === Order shelving location groups ===
 
-If you create more than one shelving location group, then you can order the groups in the org unit tree.
+If you create more than one shelving location group, then you can order the groups in the organizational unit tree.
 
 image::shelving_location/sl_groups_example.png[Shelving Location Group Display Example]
 
