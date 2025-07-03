@@ -22,7 +22,7 @@ following form:
     ** +acns+ (call number suffixes)
     ** +acp+ (items)
     ** +acpn+ (item notes)
-    ** +aou+ (org units)
+    ** +aou+ (organizational units)
     ** +ascecm+ (item stat cat entries)
     ** +auri+ (located URIs)
     ** +bmp+ (monographic parts)
@@ -49,13 +49,13 @@ following form:
     by commas)
   * followed, optionally, by limit and offset in square brackets
   * followed, optionally, by a comma-separated list of "includes"
-    enclosed in curly brackets.  The list of includes is
+    enclosed in curly brackets. The list of includes is
     the same as the list of classes with the following addition:
     ** +bre.extern+ (information from the non-MARC parts of a bib
       record)
-   * followed, optionally, by +/+ and org unit; "-" signifies
-     the top of the org unit tree
-   * followed, optionally, by +/+ and org unit depth
+   * followed, optionally, by +/+ and organizational unit; "-" signifies
+     the top of the organizational unit tree
+   * followed, optionally, by +/+ and organizational unit depth
    * followed, optionally, by +/+ and a path. If the path
      is +barcode+ and the class is +acp+, the record ID is taken
      to be an item barcode rather than an item ID; for example, in
