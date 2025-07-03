@@ -24,11 +24,11 @@ Sets for authority records are based on the browse axis of the heading for the r
 
 All generated Sets for bib records currently test for effective search visibility on the three described components.
 
-In order to retrieve item data from a specific branch of the org tree, a harvester must use a Set that contains `COPIES:`. The hierarchical shortnames of the org units follow the colon, so in a freshly installed system a Set with the setSpec of `COPIES:CONS:SYS2:BR3` will retrieve all bib records that have visible copies at BR3, and include only the item data for that org unit.
+In order to retrieve item data from a specific branch of the org tree, a harvester must use a Set that contains `COPIES:`. The hierarchical shortnames of the organizational units follow the colon, so in a freshly installed system a Set with the setSpec of `COPIES:CONS:SYS2:BR3` will retrieve all bib records that have visible copies at BR3, and include only the item data for that organizational unit.
 
-To retrieve records with Located URIs, which behave in the hierarchical reverse of copies by limiting display to those org units "inside" the branch of the tree where the licensing "lives", a harvester should supply a setSpec with an org unit shortname that would display the Located URI. For example: `LURIS:CONS:SYS2:BR3`
+To retrieve records with Located URIs, which behave in the hierarchical reverse of copies by limiting display to those organizational units "inside" the branch of the tree where the licensing "lives", a harvester should supply a setSpec with an organizational unit shortname that would display the Located URI. For example: `LURIS:CONS:SYS2:BR3`
 
-Note: the `LURI:` org unit is also used to restrict any item data that may be available for LURI-filtered records.
+Note: the `LURI:` organizational unit is also used to restrict any item data that may be available for LURI-filtered records.
 
 To retrieve records that are in a transcendent bib source, a harvester can used a setSpec starting with `SOURCES:` followed by the source name.
 
