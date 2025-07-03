@@ -99,7 +99,7 @@ image::acq_funds/claiming1.PNG[Claiming]
 [[acq_claim_policy]]
 === Create a claim policy ===
 
-To create a claim policy, go to _Administration -> Acquisitions Administration>Claiming_. The first tab in this interface is labeled _Claim Policies_. Claim Policies enables you to name the claim policy and specify the organization that owns it.
+To create a claim policy, go to _Administration -> Acquisitions Administration -> Claiming_. The first tab in this interface is labeled _Claim Policies_. Claim Policies enables you to name the claim policy and specify the organization that owns it.
 
 . To create a claim policy, click _New Claim Policy_.
 
@@ -107,7 +107,7 @@ To create a claim policy, go to _Administration -> Acquisitions Administration>C
 
 . Enter a claim policy Description. No limits exist on the number of characters that can be entered in this field. Example: Materials overdue by 30 days.
 
-. Select an Org Unit from the drop-down menu. The org unit indicates the organizational units whose staff can use this claim policy. This menu is populated with the Short (Policy) Name codes that you created for your libraries in the organizational units tree (See Administration -> Server Administration -> Organizational Units).
+. Select an Owner from the drop-down menu. The Owner indicates the organizational units whose staff can use this claim policy. This menu is populated with the Short (Policy) Name codes that you created for your libraries in the organizational units tree (See Administration -> Server Administration -> Organizational Units).
 
 [NOTE] The rule of parental inheritance applies to this list.
 
@@ -124,7 +124,7 @@ The claim type link enables you to specify the reason for a type of claim.
 
 . Enter a Code and a Description. No limits exist on the number of characters that can be entered in these fields. Example: Past due, Damaged, Wrong Item, etc. 
 
-. Select an Org Unit from the drop-down menu. The org unit indicates the organizational units whose staff can use this claim type. This menu is populated with the Short (Policy) Name codes that you created for your libraries in the organizational units tree (See Administration -> Server Administration -> Organizational Units).
+. Select an Owner from the drop-down menu. The Owner indicates the organizational units whose staff can use this claim type. This menu is populated with the Short (Policy) Name codes that you created for your libraries in the organizational units tree (See Administration -> Server Administration -> Organizational Units).
 
 [NOTE] The rule of parental inheritance applies to this list.
 
@@ -145,7 +145,7 @@ The claim event type describes the physical action that should occur when an ite
 
 [NOTE] Currently, all claims are initiated by a user. The ILS cannot automatically claim an issue.
 
-. Select an Org Unit from the drop-down menu. The org unit indicates the organizational units whose staff can use this event type. This menu is populated with the Short (Policy) Name codes that you created for your libraries in the organizational units tree (See Administration -> Server Administration -> Organizational Units).
+. Select an Owner from the drop-down menu. The Owner indicates the organizational units whose staff can use this event type. This menu is populated with the Short (Policy) Name codes that you created for your libraries in the organizational units tree (See Administration -> Server Administration -> Organizational Units).
 
 [NOTE] The rule of parental inheritance applies to this list.
 
@@ -239,7 +239,7 @@ needed.
 
 . Enter a Formula Name. No limits exist on the number of characters that can be entered in this field.
 
-. Choose a Formula Owner from the drop-down menu. The Formula Owner indicates the organizational units whose staff can use this formula. TThe drop-down menu is controlled by permissions and you will see a list of org units that your user account has permission to create distribution formulas for.
+. Choose a Formula Owner from the drop-down menu. The Formula Owner indicates the organizational units whose staff can use this formula. The drop-down menu is controlled by permissions and you will see a list of organizational units that your user account has permission to create distribution formulas for.
 .
 
 [NOTE] The rule of parental inheritance applies to this list.
@@ -528,7 +528,7 @@ If your library does not wish to track fund accounting, you can create one large
 
 In the funds interface, you can create funds; allocate credits from funding sources to funds; transfer money between funds; and apply fund tags to funds.
 
-Funds are created for a specific year, either fiscal or calendar, and are owned by an org unit or library. At the top of the funds interface, you can set a contextual org unit or library to view the associated funds. Within the grid display of funds you can filter by year to view the funds for a specific year only.
+Funds are created for a specific year, either fiscal or calendar, and are owned by an organizational unit or library. At the top of the funds interface, you can set a contextual organizational unit or library to view the associated funds. Within the grid display of funds you can filter by year to view the funds for a specific year only.
 
 The Funds tab will give you a general overview of the configuration and status of your funds.
 
@@ -541,7 +541,7 @@ To create a new Fund:
 . Enter a Name for the fund. No limits exist on the number of characters that can be entered in this field.
 . Create a Code for the fund. No limits exist on the number of characters that can be entered in this field.
 . Enter a Year for the fund. This can be a fiscal year or a calendar year. The format of the year is YYYY. The year entry is restricted to a range of 10 years before through 10 years after the current year.
-. Select an Org Unit from the drop-down menu. The org unit indicates the organizational units whose staff can use this fund. This menu is populated with the Short (Policy) Name codes that you created for your libraries in the organizational units tree (See Administration -> Server Administration -> Organizational Units).
+. Select an Owner from the drop-down menu. The owner indicates the organizational units whose staff can use this fund. This menu is populated with the Short (Policy) Name codes that you created for your libraries in the organizational units tree (See Administration -> Server Administration -> Organizational Units).
 . Check the Active box to make this an active fund. You cannot make purchases from this fund if it is not active.
 . Select a Currency Type from the drop-down menu. This menu consists of entries Currencies and Exchange Rates interface. When a fund is applied to a line item or copy, the price of the item will be encumbered in the currency associated with the fund.
 . Check the Propagate box if you want to propagate funds during fiscal year close out procedures.
@@ -612,16 +612,16 @@ To perform the year end closeout of funds:
 
 . Go to _Administration -> Acquisitions Administration -> Fund Administration_.
 . Review your current funds.
-.. Confirm that the correct Org Unit is selected.
+.. Confirm that the correct organizational unit is selected.
 .. Double check the Year Filter.  It defaults to the current year, so you may need to switch back to a previous year to view funds that have not been rolled over yet.  If the list is blank, check this.
 .. Double check that the correct funds have Propagate and Rollover set. 
 . Click _Fiscal Propagation and Rollover_.
 . Verify the Context Org Unit for the close out operation.
 . Select the Year that you want to close out.
-. Include funds from descendant Org Units: check this box if you want to include funds owned by descendant org units of the Context Org Unit.
+. Include funds from descendant Org Units: check this box if you want to include funds owned by descendant organizational units of the Context Org Unit.
 . Fund Propagation: This will happen automatically when _Process_ is clicked, if the Fund’s Propagate setting is enabled.
 . Perform Fiscal Year Close-Out: check this box to move encumbrances and unspent funds to the analogous fund for the next fiscal year. It will also deactivate funds for the selected fiscal year. Evergreen will only move encumbrances and unspent funds if the Rollover setting is enabled for a fund.
-.. Limit Fiscal Year Close-Out to Encumbrances: check this box if only encumbered funds should be moved to the analogous fund for the next fiscal year. Unspent funds will not be carried forward to the next fiscal year. This setting will only display if the ‘Allow funds to be rolled over without bringing the money along’ Library Setting has been enabled. This setting is available in the Library Setting Editor accessible via Administration -> Local Administration -> Library Settings Editor.
+.. Limit Fiscal Year Close-Out to Encumbrances: check this box if only encumbered funds should be moved to the analogous fund for the next fiscal year. Unspent funds will not be carried forward to the next fiscal year. This setting will only display if the ‘Allow funds to be rolled over without bringing the money along’ library setting has been enabled. This setting is available in the Library Setting Editor accessible via Administration -> Local Administration -> Library Settings Editor.
 . Dry Run: check this box if you want to test changes to the funds before they are enacted. Evergreen will generate a summary of the changes that would occur during the selected operations. No data will be changed.
 . Click _Process_.
 . Evergreen will begin the propagation process. Evergreen will make a clone of each fund, but it will increment the year by 1.
@@ -786,7 +786,7 @@ To create a new Provider Account, follow one of the paths listed above to retrie
 .. _Default Claim Policy_: assign a default claim policy to be applied to purchase orders created with this provider. Claim policies are set up in Acquisitions Administration. (optional)
 .. _Default # Copies_: assign a default number of copies to be automatically created for each line item in purchase orders created with this provider. (optional)
 .. _EDI Default_: assign the EDI Account to be used on purchase orders created with this provider. EDI Accounts can be set up from within the Provider record or from Acquisitions Administration->EDI Accounts. (optional)
-.. _Owner_: assign the org unit that will use this provider account. This field will default to the org unit of the workstation you are logged in at. (required)
+.. _Owner_: assign the organizational unit that will use this provider account. This field will default to the organizational unit of the workstation you are logged in at. (required)
 .. _URL_: add a URL associated with the provider (optional). URLs must include the prefix, such as http:// or https:// in order to link correctly.
 .. _SAN_: assign the provider’s SAN. (required if using EDI ordering)
 .. _Prepayment Required_: indicate if prepayment is required for orders with this provider. (optional)
