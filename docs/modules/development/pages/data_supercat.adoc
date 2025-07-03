@@ -214,9 +214,9 @@ Note the following features:
 
 Example: http://gapines.org/opac/extras/feed/freshmeat/atom/biblio/import/10/2008-01-01
 
-==== Filtering by Org Unit ====
+==== Filtering by Organizational Unit ====
 
-You can generate a similar list, with the added ability to limit by Org Unit, using the item-age browse axis.
+You can generate a similar list, with the added ability to limit by organizational unit, using the item-age browse axis.
 
 To produce an RSS feed by item date rather than bib date, and to restrict it to a particular system within a consortium:
 
@@ -224,7 +224,7 @@ Example: http://gapines.org/opac/extras/browse/atom/item-age/ARL-BOG/1/10
 
 Note the following:
 
-* ARL-BOG should be the short name of the org unit you're interested in
+* ARL-BOG should be the short name of the organizational unit you're interested in
 * 1 is the page (since you are browsing through pages of results)
 * 10 is the number of results to return per page
 
