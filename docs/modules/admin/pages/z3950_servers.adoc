@@ -135,6 +135,8 @@ image::z3950/Restrict_Z39_50_Sources_by_Permission_Group3.jpg[User interface sho
 NOTE: As an alternative to creating a new permission to restrict use, you can use a preexisting permission.  For example, your library uses a permission group called SuperCat, and only members in this group should have access to a restricted Z39.50 source.  Identify a permission that is unique to the SuperCat group (e.g. CREATE_MARC) and apply that permission to the restricted Z39.50 server.  Because these users are in the only group with the permission, they will be the only group w/ access to the restricted server.
 
 
+////
+The following steps are no longer valid, due to https://bugs.launchpad.net/evergreen/+bug/1989137
 == Storing Z39.50 Server Credentials ==
 
 Staff have the option to apply Z39.50 login credentials to each Z39.50 server at different levels of the organizational unit hierarchy.  Credentials can be set at the library branch or system level, or for an entire consortium.  When credentials are set for a Z39.50 server, searches of the Z39.50 server will use the stored credentials.  If a staff member provides alternate credentials in the Z39.50 search interface, the supplied credentials will override the stored ones.  Staff have the ability to apply new credentials or clear existing ones in this interface.  For security purposes, it is not possible for staff to retrieve or report on passwords.
@@ -146,8 +148,9 @@ To set up stored credentials for a Z39.50 server:
 
 2) Select a *Z39.50 Source* by clicking on the hyperlinked source name.  This will take you the Z39.50 Attributes for the source.
 
-3) At the top of the screen, select the *org unit* for which you would like to configure the credentials.  
+3) At the top of the screen, select the *organizational unit* for which you would like to configure the credentials.  
 
 4) Enter the *Username* and *Password*, and click *Apply Credentials*.  
 
 image::z3950/storing_z3950_credentials.jpg[Storing Z39.50 Credentials]
+////
