@@ -101,13 +101,22 @@ export class TreeComponent {
         }
     }
 
-    handleNodeClick(node: TreeNode) {
+    handleNodeClick(node: TreeNode, $event) {
         if (this.disableRootSelector && node === this.rootNode()) {
             return;
         }
         if (!this.disabled) {
+            if (!this.disableStateFlagRangeSelect     // If shift-click range selection is allowed ...
+                && $event?.shiftKey                   // ... and shift is currently pressed ...
+                && this._prev_stateFlagClick          // ... and range selection has been started ...
+                && this._prev_stateFlagClick !== node // ... and this isn't the same node as the selection start ...
+            ) { // ... then we treat this as a checkbox range selection shift-click.
+                this.handleStateFlagClick(node, $event);
+            } else {
+                this._prev_stateFlagClick = null; // forget last state flag click
+                this.nodeClicked.emit(node);
+            }
             this.tree.selectNode(node);
-            this.nodeClicked.emit(node);
             TreeComponent.lastClickedTree = this;
         }
     }
@@ -116,9 +125,12 @@ export class TreeComponent {
         if (!this.disabled) {
             node.toggleStateFlag();
             if (!this.disableStateFlagRangeSelect) { // shift-click child selection is allowed
-                if ($event.shiftKey) { // shift-click child selection happened
+                if ($event?.shiftKey) { // shift-click child selection happened
                     this.tree.visibleDescendants(node).forEach(n => n.stateFlag = node.stateFlag); // make descendants match clicked state flag
                     if (this._prev_stateFlagClick && this._prev_stateFlagClick !== node) { // shift-click range selection, different previous node
+                        const new_state = this._prev_stateFlagClick.stateFlag;
+                        node.stateFlag = new_state;
+
                         const NL = this.tree.visibleDescendants(this.rootNode());
                         let range_start = NL.indexOf(this._prev_stateFlagClick);
                         let range_end = NL.indexOf(node);
@@ -129,15 +141,14 @@ export class TreeComponent {
                                 [range_start, range_end] = [range_end, range_start];
                                 range_end++;
                             }
-                            NL.slice(range_start,range_end).forEach(n => n.stateFlag = node.stateFlag);
+                            NL.slice(range_start,range_end).forEach(n => n.stateFlag = new_state);
                         }
                     }
-                    this._prev_stateFlagClick = null; // forget last state flag click now that range selection is complete
-                } else {
-                    this._prev_stateFlagClick = node; // remember last state flag click
                 }
+                this._prev_stateFlagClick = node; // remember last state flag click
             }
             this.stateFlagClicked.emit(node);
+            TreeComponent.lastClickedTree = this;
         }
     }
 
@@ -169,7 +180,7 @@ export class TreeComponent {
         switch ($event.key) {
             case 'Enter':
             case ' ':
-                this.handleNodeClick(node);
+                this.handleNodeClick(node, $event);
                 $event.stopPropagation();
                 $event.preventDefault();
                 break;

@@ -61,7 +61,7 @@
         [disabled]="disabled"
 		[attr.tabindex]="node.selected ? '0' : '-1'"
 		[attr.aria-label]="'Select ' + node.label" i18n-aria-label
-		(click)="handleNodeClick(node)">{{node.label}}</button>
+		(click)="handleNodeClick(node, $event)">{{node.label}}</button>
       <ng-container *ngTemplateOutlet="rowTrailingTemplate; context: {$implicit: node}"></ng-container>
   </div>
   <ul class="eg-tree-branch" *ngIf="node.expanded && _tree.visibleChildren(node).length">

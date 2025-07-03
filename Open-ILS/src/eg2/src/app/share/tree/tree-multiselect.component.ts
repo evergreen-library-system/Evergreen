@@ -102,13 +102,12 @@ export class TreeMultiselectComponent implements OnInit {
     }
 
     handleInternalTreeNodeClicked(node: TreeNode) {
-        node.toggleStateFlag(); // toggle the state flag when the label is clicked, wiring them together
-        //this.nodeClicked.emit(node);
-        this.onChange.emit(this.compileCurrentValue());
+        this.nodeClicked.emit(node);
+        this.internalTree.handleStateFlagClick(node, null); // toggle the state flag when the label is clicked, wiring them together
     }
 
     handleInternalTreeStateFlagClicked(node: TreeNode) {
-        //this.stateFlagClicked.emit(node);
+        this.stateFlagClicked.emit(node);
         this.onChange.emit(this.compileCurrentValue());
     }
 
