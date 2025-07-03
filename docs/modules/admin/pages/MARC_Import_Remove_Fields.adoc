@@ -13,7 +13,7 @@ To create a MARC Import Remove Fields profile, go to *Administration -> Server A
 
 . Click *New Field Group*.
 . Assign the Field Group a *Label*.  This label will appear in the import interfaces.
-. Assign an Org Unit *Owner*.
+. Assign an Organizational Unit *Owner*.
 . Check the box next to *Always Apply* if you want Evergreen to apply this Remove Fields profile to all MARC records that are imported through the three affected interfaces.  If you do not select *Always Apply*, staff will have the option to choose which Remove Fields profile to use when importing records.
 . Click *Save*.
 . The profile that you created will now appear in the list of MARC Import Remove Fields.
