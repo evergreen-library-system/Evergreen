@@ -96,7 +96,8 @@ implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
     @Input() startsWith = false;
 
     @Input() clearOnAsync = false;
-    @Input() isEditable = true;
+    // Master ON switch for ngbTypeahead; always true. Use allowFreeText to enable free text entry.
+    isEditable = true;
     @Input() selectOnExact = false;
 
     // Add a 'required' attribute to the input
