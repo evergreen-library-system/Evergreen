@@ -6,7 +6,7 @@
 To enable the course materials module, go to Administration ->
 Local Administration -> Library Settings Editor. Find the setting called
 "Opt Org Unit into the Course Materials Module". Set it to True for the
-org units that want to use the module.  You may add courses and materials
+organizational units that want to use the module.  You may add courses and materials
 prior to enabling this setting.  However, they will not display in the
 catalog until the setting is enabled.
 
