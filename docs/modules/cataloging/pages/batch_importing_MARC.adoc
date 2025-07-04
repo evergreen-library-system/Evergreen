@@ -235,7 +235,7 @@ NOTE: Quality ratio affects only the *Merge on Single Match* and *Merge on Best 
 * The current copy associated with that line item detail is in the status _In process_.
 . Select a _Remove MARC Field Groups_ set, if applicable. 
 * Select _Auto-overlay On-order Cataloging Items_ if you wish to overlay your items in On Order status with the items in your import file.
-* Select _Use Org Unit Matching in Copy to Determine Best Match_ if you want the importer to match incoming copies to on order copies in the same Org Unit. This is used in conjunction with _Auto-overlay On-order Cataloging Items_. 
+* Select _Use Org Unit Matching in Copy to Determine Best Match_ if you want the importer to match incoming copies to on order copies in the same organizational unit. This is used in conjunction with _Auto-overlay On-order Cataloging Items_. 
 
 Once you have set your import parameters, you can set your upload parameters.
 
