@@ -84,7 +84,7 @@ record. These users will only see the URL belonging to SYS1.
 * Any user searching BR4 will find the record. These users will only see the
 URL belonging to BR4.
 * A user searching SYS2 will NOT find the record because SYS2 is a parent of
-an owning org unit, not a child. The same thing happens if the user is searching
+an owning organizational unit, not a child. The same thing happens if the user is searching
 the consortium. In this case, the system assumes the user is unlikely to
 have access to this resource and therefore does not retrieve it.
 * A logged-in user with a preferred search library of BR4 will find the record
@@ -116,7 +116,7 @@ both URLs in the record. In this case, the system sees this user as a potential
 user of SYS2 or BR4 and therefore offers them the option of accessing the
 resource through either URL.
 * A user searching SYS2 will find the record because SYS2 is a parent of
-an owning org unit. The user will see the URL belonging to BR4. Once again, 
+an owning organizational unit. The user will see the URL belonging to BR4. Once again, 
 the system sees this user as a potential user of BR4 and therefore offers
 them the option of accessing this resource. 
 * A user searching BR3 will NOT find the record because BR3 is neither a child
