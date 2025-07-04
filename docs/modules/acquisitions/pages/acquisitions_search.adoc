@@ -22,7 +22,7 @@ Several actions can be take from the line items search results grid:
 * Apply Claim Policy
 * Cancel Selected
 * Create Invoice from Selected Line Items
-* Create Purchas Order From Selected Line Items
+* Create Purchase Order From Selected Line Items
 * Deleted Selected
 * Export Single Attribute List
 * Link Selected Line Items to Invoice
@@ -91,7 +91,7 @@ From the selection list search results you can take the following actions:
 
 Right-click on the row of the selection list to access the _Actions for Selected Rows_ menu to choose an action. Multiple selection lists can be deleted or merged by checking the boxes of the selections lists you want to work with and then right-clicking to access the _Actions for Selected Rows_ menu. 
 
-When a selection list is cloned, the new list’s creator, owner, editor, org unit, etc. are set to the current user and workstation.
+When a selection list is cloned, the new list’s creator, owner, editor, organizational unit, etc. are set to the current user and workstation.
 
 [[default_acquisitions_search]]
 == Creating a New Default Search ==
@@ -117,7 +117,7 @@ To create your search, choose if your search should match _all_ or _any_ of the 
 
 Next, select a search attribute from the drop down menu. This menu provides search options related to line items, purchase orders, selection lists, and invoices; the search results will return relevant line items. 
 
-The search entry box will display a controlled list of values via a dropdown menu when available. You will see this when searching for an org unit, owner, state, status, and provider, among others. Search is case-insensitive.
+The search entry box will display a controlled list of values via a dropdown menu when available. You will see this when searching for an organizational unit, owner, state, status, and provider, among others. Search is case-insensitive.
 
 As part of transitioning the General Search interface to Angular, several changes have been made to improve the display and usability of the module:
 
@@ -144,7 +144,7 @@ As part of transitioning the General Search interface to Angular, several change
 * PO cancel reason
 * invoice receive method
 * invoice payment method
-. Searches based on an organizational unit value, such as _Selection List - Org Unit_ and _Purchase Order - Ordering Agency_ search only the org unit selected by default and do not use inheritance in the search. If search results spanning multiple branches/systems are needed, then a broader search can be performed. The search results can be filtered using the relevant org unit column and can be adjusted in the filter to include ancestor and/or descendant org units
+. Searches based on an organizational unit value, such as _Selection List - Org Unit_ and _Purchase Order - Ordering Agency_ search only the organizational unit selected by default and do not use inheritance in the search. If search results spanning multiple branches/systems are needed, then a broader search can be performed. The search results can be filtered using the relevant organizational unit column and can be adjusted in the filter to include ancestor and/or descendant organizational units
 
 +
 image::acquisitions_search/acq_ou_filter.png[Org Unit Column Filter]
