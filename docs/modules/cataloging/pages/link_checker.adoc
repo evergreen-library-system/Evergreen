@@ -19,10 +19,10 @@ image::link_checker/lc_session_modal.png[Create Link Checker Session modal]
 . _Owning Library_ (required) - This will default to the library of your workstation registration.
 . _Search Scope_ - This is the location where you want your search to look for bibs. Link Checker will look for locations of physical copies as well as 856$9 designations. 
 .. Records that would be retrieved by searching Example Branch 1 (BR1) in an OPAC search will be retrieved here. 
-.. For example, a record that describes an electronic resource with a URL in the 856$u and an org unit code, such as BR1, in the 856$9, would be retrieved by a search of relevant keywords. 
+.. For example, a record that describes an electronic resource with a URL in the 856$u and an organizational unit code, such as BR1, in the 856$9, would be retrieved by a search of relevant keywords. 
 .. Records that contain a URL without the $9 subfield, but also have physical copies at BR1, would be retrieved.
-.. This search will honor the `opac.located_uri.act_as_copy` global flag when determining whether a bib should be retrieved. If this flag is false, bibs with located URIs (856$9) will only be retrieved if the specific org unit is specified in the search. If this flag is true, child org units will also be considered in the search.
-.. Note that you can skip this step if you enter the org unit code of the location that you want to search in the _Search_ field below.
+.. This search will honor the `opac.located_uri.act_as_copy` global flag when determining whether a bib should be retrieved. If this flag is false, bibs with located URIs (856$9) will only be retrieved if the specific organizational unit is specified in the search. If this flag is true, child organizational units will also be considered in the search.
+.. Note that you can skip this step if you enter the organizational unit code of the location that you want to search in the _Search_ field below.
 . _Saved Searches_ - these are saved search strings that will include a bib-level audience search parameter. They can be edited at the database level.
 .. Children’s Materials - audience(a,b,c)
 .. Young Adult Materials - audience(j,d)
