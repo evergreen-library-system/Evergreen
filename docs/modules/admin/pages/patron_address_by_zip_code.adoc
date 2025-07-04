@@ -21,7 +21,7 @@ Please be aware of the following when using this feature.
 
 There are no staff client permissions associated with this feature since there is no staff client interface.
 
-This feature affects all users of the system; there is no way to have separate settings per Org Unit.
+This feature affects all users of the system; there is no way to have separate settings per organizational unit.
 
 == Setup Steps ==
 
