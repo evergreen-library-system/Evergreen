@@ -51,7 +51,7 @@ for this service.
 == OverDrive API integration ==
 Before enabling OverDrive API integration, you will need to request API
 access from OverDrive.  OverDrive will provide the values to be used for
-the following new org unit settings:
+the following library settings:
 
   * *OverDrive Basic Token*: The basic token used for API client
     authentication.  To generate your basic token, combine your client
@@ -105,7 +105,7 @@ in `config.tt2`:
 == OneClickdigital API integration ==
 Before enabling OneClickdigital API integration, you will need to
 request API access from OneClickdigital.  OneClickdigital will provide
-the values to be used for the following new org unit settings:
+the values to be used for the following library settings:
 
   * *OneClickdigital Library ID*: The identifier assigned to your
     library by OneClickdigital.
