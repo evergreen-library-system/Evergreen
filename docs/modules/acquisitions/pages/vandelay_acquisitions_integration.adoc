@@ -58,7 +58,7 @@ When uploading records, you can choose several different options related to purc
 * _Provider_ (this field is required) - the vendor associated with the purchase order.
 ** You will see a list of providers available to you based on your permissions and assigned working locations.
 * _Ordering Agency_ (this field is required) - the library organizational unit associated with the purchase order.
-** The context org unit is the org unit responsible for placing and managing the order. It defines what organizational unit settings (e.g. locations) are in scope, what fiscal year to use, who is allowed to view/modify the PO, where the items should be delivered and the EDI SAN.
+** This is the organizational unit responsible for placing and managing the order. It defines what organizational unit settings (e.g. locations) are in scope, what fiscal year to use, who is allowed to view/modify the PO, where the items should be delivered and the EDI SAN.
 ** In the case of a multi-branch system uploading records for multiple branches, choosing the system is probably best. Single branch libraries or branches responsible for their own orders should probably select the branch.
 ** Note that while this field is not marked as required, it is actually required.
 * _Fiscal Year_ (this field is required) - the fiscal year for this purchase order.
