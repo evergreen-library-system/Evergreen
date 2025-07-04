@@ -26,7 +26,7 @@ The summary section contains the following fields, some for entry and other whic
 * _Provider_ (required) - Select a provider, if this field is empty. If you have created an invoice from a purchase order this field will be generated from the purchase order and is entered by default.
 * _Shipper_ (required) - This defaults to the provider that was entered in the provider field.
 * _Receive Method_ (required) - Select a receive method. The system will default to _Paper_.
-* _Receiver_ (required) - The receiver defaults to the branch at which your workstation is registered. You can change the receiver by selecting a different org unit.
+* _Receiver_ (required) - The receiver defaults to the branch at which your workstation is registered. You can change the receiver by selecting a different organizational unit.
 *_Invoice Type_ (optional) - This is a free text field.
 * _Payment Method_ (optional) - Select a payment method. Payment methods are set in xref:admin:acquisitions_admin.adoc#invoice_payment_method[Acquisitions Administration].
 * _Payment Auth_ (optional) - This is a free text field.
