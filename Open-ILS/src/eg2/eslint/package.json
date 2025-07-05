@@ -1,0 +1,19 @@
+{
+  "name": "eg-custom-lint-rules",
+  "version": "1.0.0",
+  "main": "index.js",
+  "files": [
+    "./utils.js",
+    "./rules/**/*.js"
+  ],
+  "scripts": {
+    "test": "vitest"
+  },
+  "type": "module",
+  "devDependencies": {
+    "@angular-eslint/test-utils": "^20.1.1",
+    "@angular-eslint/utils": "^20.1.1",
+    "@typescript-eslint/utils": "^8.35.1",
+    "vitest": "^3.2.4"
+  }
+}

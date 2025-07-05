@@ -8,6 +8,7 @@ import { fileURLToPath } from "node:url";
 import js from "@eslint/js";
 import { FlatCompat } from "@eslint/eslintrc";
 import rxjsX from 'eslint-plugin-rxjs-x';
+import egRules from 'eg-custom-eslint-rules';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -22,7 +23,7 @@ export default defineConfig([globalIgnores(["projects/**/*"]), {
 
     plugins: {
         "@typescript-eslint": tsEslintPlugin,
-        "rxjs-x": rxjsX
+        "rxjs-x": rxjsX,
     },
 
     extends: [...compat.extends(
@@ -139,6 +140,7 @@ export default defineConfig([globalIgnores(["projects/**/*"]), {
     },
     plugins: {
             '@angular-eslint': angularPlugin,
+            'eg-custom-eslint-rules': egRules
     },
 
     rules: {
@@ -154,5 +156,6 @@ export default defineConfig([globalIgnores(["projects/**/*"]), {
         "@angular-eslint/template/click-events-have-key-events": "error",
         "@angular-eslint/template/mouse-events-have-key-events": "error",
         "@angular-eslint/template/button-has-type": "error",
+        "eg-custom-eslint-rules/bg-info-on-modal-header": "error",
     },
 }]);
