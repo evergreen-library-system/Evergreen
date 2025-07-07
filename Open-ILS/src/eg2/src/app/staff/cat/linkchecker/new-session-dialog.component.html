@@ -101,7 +101,8 @@
                     <div class="col-lg-3">
                         <input
                             class="form-control"
-                            name="selector_tag_{{idx}}"
+                            [attr.name]="'selector_tag_' + idx"
+                            [id]="'selector_tag_' + idx"
                             type="text"
                             required="true"
                             [(ngModel)]="selectorModels['tag'][idx]"
@@ -114,6 +115,8 @@
                         <input
                             class="form-control"
                             name="selector_subfields_{{idx}}"
+                            [attr.name]="'selector_subfields_' + idx"
+                            [id]="'selector_subfields_' + idx"
                             type="text"
                             required="true"
                             [(ngModel)]="selectorModels['subfields'][idx]"
