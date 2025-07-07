@@ -420,7 +420,7 @@ var MARC21 = {
             /*
             console.debug('008', MARC21.Record._ff_pos[field]._8);
             console.debug('006', MARC21.Record._ff_pos[field]._6);
-            console.debug('001', MARC21.Record._ff_pos[field]._1);
+            console.debug('001', MARC21.Record._ff_pos[field]._l);
             /***/
         
             var rtype = this.recordType();
@@ -431,7 +431,7 @@ var MARC21 = {
             if (_6 && MARC21.Record._ff_pos[field]._6 && MARC21.Record._ff_pos[field]._6[rtype])
                 return !!MARC21.Record._ff_pos[field]._6[rtype].multivalue || false;
 
-            if (_l && MARC21.Record._ff_pos[field]._1 && MARC21.Record._ff_pos[field]._1[rtype])
+            if (_l && MARC21.Record._ff_pos[field]._l && MARC21.Record._ff_pos[field]._l[rtype])
                 return !!MARC21.Record._ff_pos[field]._l[rtype].multivalue || false;
 
             return false;
