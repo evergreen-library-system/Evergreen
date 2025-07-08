@@ -411,8 +411,6 @@ implements OnInit, AfterViewInit, OnDestroy {
             case 'ind1': this.field.ind1 = value; break;
             case 'ind2': this.field.ind2 = value; break;
             case 'ffld':
-                // TODO: concatenate multi-character fields
-
                 // Track locally and propagate to the record.
                 this.ffValue = value;
                 this.record.setFixedField(this.fixedFieldCode, value);
