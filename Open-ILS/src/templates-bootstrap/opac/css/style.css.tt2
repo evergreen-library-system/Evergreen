@@ -332,6 +332,10 @@ Novelist Styling
 .result_table_utils.btn-group-vertical {
     border: 1px solid [% css_colors.action_button_border %];
     border-radius: 0.25rem;
+    display: block;
+    list-style: none;
+    padding: 0;
+    width: 100%;
 }
 
 /* round corners in button groups correctly when the last child is .hidden */
