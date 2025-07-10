@@ -33,6 +33,8 @@ my @api_fields_renew = (
     {name => 'pref_family_name', class => 'au'},
     {name => 'pref_prefix', class => 'au'},
     {name => 'pref_suffix', class => 'au'},
+    {name => 'usrname', class => 'au'},
+    {name => 'expire_date', class => 'au'},
     {name => 'passwd', class => 'au'},
     {name => 'locale', class => 'au'},
     {name => 'physical_id', class => 'aua'},
@@ -477,6 +479,8 @@ sub load_ecard_submit {
         return $self->compile_response unless $self->add_stat_cats; # TODO: test
         $logger->debug( "ECARD: save_user" );
         return $self->compile_response unless $self->save_user;
+        $logger->debug( "ECARD: add_usr_settings" );
+        return $self->compile_response unless $self->add_usr_settings;
         $logger->debug( "ECARD: response->status = $ctx->{response}->{status}" );
         return $self->compile_response if $ctx->{response}->{status};
     }
@@ -508,6 +512,7 @@ sub load_ecard_submit {
         #$cache->put_cache('account_renew_ok','false',3600);
     } else {
         $logger->debug( "ECARD: register" );
+        $ctx->{response}->{patron_id} = $ctx->{user}->id;
         $ctx->{response}->{barcode} = $ctx->{user}->card->barcode;
         $ctx->{response}->{expiration_date} = substr($ctx->{user}->expire_date, 0, 10);
     }
@@ -759,6 +764,14 @@ sub update_user {
         $val = undef if $field eq 'evening_phone' && $val eq '--';
         $val = undef if $field eq 'other_phone' && $val eq '--';
         $val = $au->home_ou if $field eq 'home_ou' && $val eq '';
+
+        if ($field eq 'expire_date') {
+            if ($val) {
+                $val = substr($val, 0, 10)
+            } else {
+                next; # don't change expire_date if not explicitly passed
+            }
+        }
 
         # avoid emptying the password
         next if $field eq 'passwd' && !$val;

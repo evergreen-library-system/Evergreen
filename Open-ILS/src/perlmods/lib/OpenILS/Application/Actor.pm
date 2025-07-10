@@ -2129,9 +2129,21 @@ sub user_opac_renewal {
     my $user = $e->retrieve_actor_user([ $user_id, {
         flesh => 1,
         flesh_fields => {
-            au => ['card', 'billing_address', 'mailing_address']
+            au => ['card', 'billing_address', 'mailing_address', 'stat_cat_entries', 'settings']
         }
         }]);
+
+    my %limit_to_these = map { $_ => 1 } (
+      'opac.hold_notify',
+      'opac.default_pickup_location',
+      'opac.default_phone',
+      'opac.default_sms_notify',
+      'opac.default_sms_carrier'
+      );
+    my %munged_settings = map { $_->name => OpenSRF::Utils::JSON->JSON2perl($_->value) }
+      grep { exists $limit_to_these{ $_->name } } @{ $user->settings || [] };
+
+    my %munged_statcat_entries = map { $_->stat_cat => $_->stat_cat_entry } @{ $user->stat_cat_entries || [] };
 
     return {
         user => {
@@ -2159,20 +2171,22 @@ sub user_opac_renewal {
             dob               => $user->dob,
             home_ou           => $user->home_ou,
             barcode           => $user->card->barcode,
-            physical_street1  => $user->billing_address->street1,
-            physical_street2  => $user->billing_address->street2,
-            physical_city     => $user->billing_address->city,
-            physical_post_code => $user->billing_address->post_code,
-            physical_county   => $user->billing_address->county,
-            physical_state    => $user->billing_address->state,
-            physical_country  => $user->billing_address->country,
-            mailing_street1   => $user->mailing_address->street1,
-            mailing_street2   => $user->mailing_address->street2,
-            mailing_city      => $user->mailing_address->city,
-            mailing_post_code => $user->mailing_address->post_code,
-            mailing_county    => $user->mailing_address->county,
-            mailing_state     => $user->mailing_address->state,
-            mailing_country   => $user->mailing_address->country
+            physical_street1  => $user->billing_address && $user->billing_address->street1,
+            physical_street2  => $user->billing_address && $user->billing_address->street2,
+            physical_city     => $user->billing_address && $user->billing_address->city,
+            physical_post_code => $user->billing_address && $user->billing_address->post_code,
+            physical_county   => $user->billing_address && $user->billing_address->county,
+            physical_state    => $user->billing_address && $user->billing_address->state,
+            physical_country  => $user->billing_address && $user->billing_address->country,
+            mailing_street1   => $user->mailing_address && $user->mailing_address->street1,
+            mailing_street2   => $user->mailing_address && $user->mailing_address->street2,
+            mailing_city      => $user->mailing_address && $user->mailing_address->city,
+            mailing_post_code => $user->mailing_address && $user->mailing_address->post_code,
+            mailing_county    => $user->mailing_address && $user->mailing_address->county,
+            mailing_state     => $user->mailing_address && $user->mailing_address->state,
+            mailing_country   => $user->mailing_address && $user->mailing_address->country,
+            settings          => \%munged_settings,
+            stat_cat_entries  => \%munged_statcat_entries
         }
     };
 }
