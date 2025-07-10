@@ -48,7 +48,11 @@
     
     [% INCLUDE "opac/parts/searchbar.tt2" %]
 
-
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="my_nav">
+                <div class="btn-group-vertical">
                 [%- FOREACH page IN myopac_pages;
                     IF page.url == myopac_page || page.url == parent;
                         active = "active";
