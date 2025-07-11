@@ -1,0 +1,5 @@
+== Added Shelving Location to Hold Policies ==
+
+A new Shelving Location field has been added to hold policies
+and hold policy weights.  This allows libraries to configure
+hold placement options based on which location the item belongs to.
