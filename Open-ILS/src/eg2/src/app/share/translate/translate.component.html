@@ -8,45 +8,55 @@
   </div>
   <div class="modal-body form-common form-validated" *ngIf="idlObj">
     <div class="form-group row">
-      <label class="form-label col-lg-4 text-end fw-bold" 
+      <label class="form-label col-form-label col-form-label col-lg-4 text-end fw-bold" 
         i18n>Field Name</label>
-      <input 
-        type="text" 
-        [disabled]="true"
-        class="form-control col-lg-7"
-        value="{{idlClassDef.field_map[field].label}}">
+      <div class="col-lg-8">
+        <input 
+          type="text" 
+          [disabled]="true"
+          class="form-control"
+          value="{{idlClassDef.field_map[field].label}}">
+      </div>
     </div>
     <div class="form-group row">
-      <label class="form-label col-lg-4 text-end fw-bold" 
+      <label class="form-label col-form-label col-form-label col-lg-4 text-end fw-bold" 
         i18n>Current Value</label>
-      <input 
-        type="text" 
-        [disabled]="true"
-        class="form-control col-lg-7"
-        value="{{idlObj[field]()}}">
+      <div class="col-lg-8">
+        <input 
+          type="text" 
+          [disabled]="true"
+          class="form-control"
+          value="{{idlObj[field]()}}">
+      </div>
+      
     </div>
     <div class="form-group row">
-      <label class="form-label col-lg-4 text-end fw-bold" 
+      <label class="form-label col-form-label col-form-label col-lg-4 text-end fw-bold" 
         i18n>Select Locale</label>
-      <select class="form-control col-lg-7" 
-        (change)="localeChanged($event)"
-        [(ngModel)]="selectedLocale">
-        <option value="{{locale.code()}}" *ngFor="let locale of locales">
-          {{locale.name()}}
-        </option>
-      </select>
+      <div class="col-lg-8">
+        <select class="form-control" 
+          (change)="localeChanged($event)"
+          [(ngModel)]="selectedLocale">
+          <option value="{{locale.code()}}" *ngFor="let locale of locales">
+            {{locale.name()}}
+          </option>
+        </select>
+      </div>
+      
     </div>
     <div class="form-group row">
-      <label class="form-label col-lg-4 text-end fw-bold" i18n>Translation</label>
-      <input 
-        id='translation-input'
-        type="text" 
-        class="form-control col-lg-7"
-        required
-        i18n-placeholder
-        (keyup.enter)="translate()"
-        placeholder="Translation..." 
-        [(ngModel)]="translatedValue"/>
+      <label class="form-label col-form-label col-form-label col-lg-4 text-end fw-bold" i18n>Translation</label>
+      <div class="col-lg-8">
+        <input 
+          id='translation-input'
+          type="text" 
+          class="form-control"
+          required
+          i18n-placeholder
+          (keyup.enter)="translate()"
+          placeholder="Translation..." 
+          [(ngModel)]="translatedValue"/>
+      </div>
     </div>
   </div>
   <div class="modal-footer">
