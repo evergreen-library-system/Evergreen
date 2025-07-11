@@ -1,0 +1,30 @@
+name: Run Angular Unit Tests
+on:
+  push:
+    paths:
+      - '.github/workflows/**'
+      - 'Open-ILS/src/eg2/**'
+  pull_request:
+    paths:
+      - '.github/workflows/**'
+      - 'Open-ILS/src/eg2/**'
+defaults:
+  run:
+    working-directory: Open-ILS/src/eg2
+jobs:
+  lint:
+    name: Run Angular unit tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+      - uses: browser-actions/setup-chrome@v1
+      - uses: browser-actions/setup-firefox@v1
+        with:
+          node-version: 22
+          cache: 'npm'
+          cache-dependency-path: Open-ILS/src/eg2/package-lock.json
+      - name: Install dependencies
+        run: npm ci --ignore-scripts && sudo apt-get install -y libxml-libxslt-perl
+      - name: test
+        run: npm run test
