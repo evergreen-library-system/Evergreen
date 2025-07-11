@@ -18,7 +18,7 @@ NOTE: The existing permission UPDATE_COPY is required to assign a tag to a item
 
 New Library Settings:
 
-* OPAC: Enable Digital Bookplate Search: when set to _True_ for a given org unit, the digital bookplate search option will be available in the catalog.
+* OPAC: Enable Digital Bookplate Search: when set to _True_ for a given organizational  unit, the digital bookplate search option will be available in the catalog.
 
 
 == Creating item Tags ==
