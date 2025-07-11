@@ -7,25 +7,25 @@ Org Unit Proximity Adjustments allow libraries to indicate lending preferences f
 an Evergreen consortium.  When a hold is placed in Evergreen, the hold targeter looks for items that can fill
 the hold.  One factor that the hold targeter uses to choose the best item to fill the hold is the distance,
 or proximity, between the capturing library and the pickup library for the request.  The proximity is based
-on the number of steps through the org tree that it takes to get from one org unit to another.
+on the number of steps through the org tree that it takes to get from one organizational unit to another.
 
 image::org_unit_prox/Org_Unit_Prox_Adj1.png[Org Unit Proximity]
 Org Unit Proximity between BR1 and BR4 = 4
 
-Org Unit Proximity Adjustments allow libraries to customize the distances between org units, which provides
+Org Unit Proximity Adjustments allow libraries to customize the distances between organizational units, which provides
 more control over which libraries are looked at when targeting copies to fill a hold.  Evergreen can also be
 configured to take Org Unit Proximity Adjustments into account during opportunistic capture through the
 creation of a custom Best-Hold Selection Sort Order.  See documentation xref:admin:Best_Hold_Selection_Sort_Order.adoc[here]
 for more information on Best-Hold Selection Sort Order. 
  
-An Org Unit Proximity Adjustment can be created to tell Evergreen which libraries to look at first for items to fill a hold or which library to look at last.  This may be useful for accounting for true transit costs or physical distances between libraries.  It can also be used to identify libraries that have special lending agreements or preferences.  Org Unit Proximity Adjustments can be created for all holds between two org units, or they can be created for holds on specific Shelving Locations and Circulation Modifiers.  
+An Org Unit Proximity Adjustment can be created to tell Evergreen which libraries to look at first for items to fill a hold or which library to look at last.  This may be useful for accounting for true transit costs or physical distances between libraries.  It can also be used to identify libraries that have special lending agreements or preferences.  Org Unit Proximity Adjustments can be created for all holds between two organizational units, or they can be created for holds on specific Shelving Locations and Circulation Modifiers.  
  
 == Absolute and Relative Adjustments ==
 Two types of proximity adjustments can be created in Evergreen: Absolute adjustments and Relative adjustments.  
 
-Absolute proximity adjustments allow you to replace the default proximity distance between two org units.  An absolute adjustment could be made to tell the hold targeter to look at a specific library or library system first to find an item to fill a hold, before looking elsewhere in the consortium.  
+Absolute proximity adjustments allow you to replace the default proximity distance between two organizational units.  An absolute adjustment could be made to tell the hold targeter to look at a specific library or library system first to find an item to fill a hold, before looking elsewhere in the consortium.  
  
-Relative proximity adjustments allows the proximity between org units to be treated as closer or farther from one another than the default distance.  A relative proximity adjustment could be used to identify a library that has limited hours or slow transit times to tell the hold targeter to look at that library last for items to fill a hold.  
+Relative proximity adjustments allows the proximity between organizational units to be treated as closer or farther from one another than the default distance.  A relative proximity adjustment could be used to identify a library that has limited hours or slow transit times to tell the hold targeter to look at that library last for items to fill a hold.  
 
 == Create an Org Unit Proximity Adjustment ==
 .To create an Org Unit Proximity Adjustment between two libraries:
@@ -41,7 +41,7 @@ Relative proximity adjustments allows the proximity between org units to be trea
 
 image::org_unit_prox/Org_Unit_Prox_Adj2.png[Org Unit Proximity Adjustment]
 
-This will create a one-way proximity adjustment between Org Units.  In this example this adjustment will apply to items requested at by a patron BR4 and filled at BR1.  To create the reciprocal proximity adjustment, for items requested at BR1 and filled at BR4, create a second proximity adjustment between the two Org Units.
+This will create a one-way proximity adjustment between organizational units.  In this example this adjustment will apply to items requested at by a patron BR4 and filled at BR1.  To create the reciprocal proximity adjustment, for items requested at BR1 and filled at BR4, create a second proximity adjustment between the two organizational units.
 
 == Permissions to use this Feature ==
 To create Org Unit Proximity Adjustments, you will need the following permission:
