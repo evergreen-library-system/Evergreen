@@ -74,7 +74,7 @@ image::staff_client_column_filters/orgunit_filter.png[Organizational Unit Filter
 
 NOTE: Be aware that when using Operator types such as _Contains_, _Starts with_, or _Ends with_ there is a risk of invoking a full table scan and thus the possibility of a noticeable slowness in retrieval. This risk is less likely for _Starts with_, as many text columns already have database indexes that lend themselves to left-anchored searches.
 
-As of this writing, columns with a date data type will only accept typed entry in YYYY-MM-DD format and do not honor the date.format Organizational Unit Setting. This is a known bug. If an invalid date is entered into the Entry Box, the box will have red styling on the left to indicate this as shown in the image below.
+As of this writing, columns with a date data type will only accept typed entry in YYYY-MM-DD format and do not honor the date.format Library Setting. This is a known bug. If an invalid date is entered into the Entry Box, the box will have red styling on the left to indicate this as shown in the image below.
 
 image::staff_client_column_filters/incorrect_date.png[Invalid Date Entry]
 
@@ -93,5 +93,5 @@ As part of this project, several improvements were made to existing Angular widg
 * The date selector now has better visual styling.
 * The date selector now supports hitting the enter key to enable an action once a date has been entered.
 * The date selector now highlights when an incorrectly-formatted date has been entered by the user.
-* The date selector and org unit selector widgets now offer methods for code to readily reset their states and fetch the current entered value.
+* The date selector and organizational unit selector widgets now offer methods for code to readily reset their states and fetch the current entered value.
 * The patron date of birth field could be incorrectly displayed by the Angular client; this is now fixed.
