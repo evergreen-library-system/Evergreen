@@ -214,9 +214,9 @@ export class MarcRichEditorComponent implements OnInit {
     onKeyDown(evt: KeyboardEvent, field: MarcField, subfield?: MarcSubfield) {
         switch (evt.key) {
             case 'ArrowLeft':
-            case 'ArrowRight':
+            case 'ArrowRight': {
                 // console.debug("ArrowRight: ", evt, field, subfield);
-                // eslint-disable-next-line no-case-declarations
+
                 const el = evt.target as HTMLElement;
                 // do nothing if we are in a text input
                 if (el.nodeName && (el.nodeName.toLowerCase() === 'input' || el.nodeName.toLowerCase() === 'textarea')) {
@@ -225,10 +225,10 @@ export class MarcRichEditorComponent implements OnInit {
                 // otherwise, move focus from the group to the subfield code if it's empty, or the value if not
                 evt.preventDefault();
                 evt.stopPropagation();
-                const target = subfield[0] == ' ' ? 'sfc' : 'sfv';
+                const target = subfield[0] === ' ' ? 'sfc' : 'sfv';
                 this.context.focusSubfield(field, subfield[2], target);
                 break;
-
+            }
             // all remaining shortcuts duplicated from editable-content.component.ts
             // minus combobox shortcuts
             case 'y':

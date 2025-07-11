@@ -440,7 +440,7 @@ export class MarcEditContext {
     }
 
     // Focus the requested subfield by its position.
-    focusSubfield(field: MarcField, position: number, target?: MARC_EDITABLE_FIELD_TYPE | "group" | "move") {
+    focusSubfield(field: MarcField, position: number, target?: MARC_EDITABLE_FIELD_TYPE | 'group' | 'move') {
         // console.debug("focusSubfield()", field, position, group);
         const focus: FieldFocusRequest = {fieldId: field.fieldId, target: 'sfv'};
 
