@@ -24,9 +24,9 @@ process.  Please test in your environment before using in production.
 *Local Administrator* permission is needed to access the admin interface of the 
 Barcode Completion feature.
 
-Each rule requires an owner org unit, which is how scoping of the rules is 
-handled.  Rules are applied for staff users with the same org unit or 
-descendants of that org unit.
+Each rule requires an owner organizational  unit, which is how scoping of the rules is 
+handled.  Rules are applied for staff users with the same organizational  unit or 
+descendants of that organizational  unit.
   
 
 == Access Points ==
@@ -84,7 +84,7 @@ The following data fields can be set for each Barcode Completion rule.
 .Barcode Completion Fields
 |=======
 |*Active*          | Check to indicate entry is active. *Required*
-|*Owner*           | Setting applies to this Org Unit and to all children. *Required*
+|*Owner*           | Setting applies to this organizational unit and to all children. *Required*
 |*Prefix*          | Sequence that appears at the beginning of barcode.
 |*Suffix*          | Sequence that appears at the end of barcode.
 |*Length*          | Total length of barcode.
@@ -152,7 +152,7 @@ To match this 10 character barcode by only typing in *123* we need the
 following settings.
 
  * *Active* - Checked
- * *Owner* - Set to your org unit.
+ * *Owner* - Set to your organizational  unit.
  * *Prefix* - 4545 - This is the prefix that the barcode starts with.
  * *Length* - 10 - Total length of the barcode.
  * *Padding* - 0 - Zeros will be used to pad out non significant parts of the barcode.
@@ -170,7 +170,7 @@ To match this 10 character barcode by only typing in *123* we need the
 following settings.
 
  * *Active* - Checked
- * *Owner* - Set to your org unit.
+ * *Owner* - Set to your organizational  unit.
  * *Suffix* - book - This is the suffix that the barcode ends with.
  * *Length* - 10 - Total length of the barcode.
  * *Padding* - 0 - Zeros will be used to pad out non significant parts of the barcode.
@@ -189,7 +189,7 @@ To match this 10 character barcode by only typing in *123* we need the
 following settings.
 
  * *Active* - Checked
- * *Owner* - Set to your org unit.
+ * *Owner* - Set to your organizational  unit.
  * *Length* - 10 - Total length of the barcode.
  * *Padding* - 0 - Zeros will be used to pad out non significant parts of the barcode.
  * *Applies to Items* and/or *Applies to Users* - Checked
@@ -206,7 +206,7 @@ To match this 10 character barcode by only typing in *123* we need the
 following settings.
 
  * *Active* - Checked
- * *Owner* - Set to your org unit.
+ * *Owner* - Set to your organizational  unit.
  * *Length* - 10 - Total length of the barcode.
  * *Padding* - 0 - Zeros will be used to pad out non significant parts of the barcode.
  * *Padding at End* - Checked
@@ -229,7 +229,7 @@ These settings will simply add the prefix and suffix to any barcode entered and
 search for that.
 
  * *Active* - Checked
- * *Owner* - Set to your org unit.
+ * *Owner* - Set to your organizational  unit.
  * *Length/Padding* - 0/null - Set the length to 0 and/or leave the padding blank. 
  * *Prefix* - a - This is the prefix that the barcode starts with.
  * *Suffix* - b - This is the suffix that the barcode starts with.
