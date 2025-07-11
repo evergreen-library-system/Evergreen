@@ -46,11 +46,11 @@ The manual flag dictates whether or not the "Manual Floating Active" checkin mod
 
 === Floating Group Members ===
 
-Each member of a floating group references an org unit and has a stop depth, an optional max depth, and an exclude flag.
+Each member of a floating group references an organizational unit and has a stop depth, an optional max depth, and an exclude flag.
 
 === Org Unit ===
 
-The org unit and all descendants are included, unless max depth is set, in which case the tree is cut off at the max depth.
+The organizational unit and all descendants are included, unless max depth is set, in which case the tree is cut off at the max depth.
 
 === Stop Depth ===
 
@@ -58,11 +58,11 @@ The stop depth is the highest point from the current item circ library to the ch
 
 === Max Depth ===
 
-As mentioned with the org unit, the max depth is the furthest down on the tree from the org unit that gets included. This is based on the entire tree, not just off of the org unit. So in the default tree a max depth of 1 will stop at the system level no matter if org unit is set to CONS or SYS1.
+As mentioned with the organizational unit, the max depth is the furthest down on the tree from the organizational unit that gets included. This is based on the entire tree, not just off of the organizational unit. So in the default tree a max depth of 1 will stop at the system level no matter if Org Unit is set to CONS or SYS1.
 
 === Exclude ===
 
-Exclude, if set, causes floating to not happen for the member. Excludes always take priority, so you can remove an org unit from floating without having to worry about other rules overriding it.
+Exclude, if set, causes floating to not happen for the member. Excludes always take priority, so you can remove an organizational unit from floating without having to worry about other rules overriding it.
 
 == Examples ==
 
@@ -114,7 +114,7 @@ One member:
 
 This would permit an item to float between BR1 and BR3 specifically, excluding sublibraries and bookmobiles.
 
-It would consist of two members, identical other than the org unit:
+It would consist of two members, identical other than the organizational unit:
 
 * Org Unit: BR1 / BR3
 * Stop Depth: 0
@@ -125,7 +125,7 @@ It would consist of two members, identical other than the org unit:
 
 This would allow an item to float anywhere except for BM1. It accomplishes this with two members.
 
-The first includes all org units, just like Float Everywhere:
+The first includes all organizational units, just like Float Everywhere:
 
 * Org Unit: CONS
 * Stop Depth: 0
