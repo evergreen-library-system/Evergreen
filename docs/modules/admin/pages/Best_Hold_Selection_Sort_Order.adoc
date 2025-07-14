@@ -108,13 +108,13 @@ image::Best_Hold_Selection_Sort_Order/edit_bhsso.png[Edit Best-Hold Selection So
 * Hold Request Time can be viewed as the “tie-breaking” criteria.
 
 == Choosing the Best-Hold Selection Sort Order ==
-The Best-Hold Selection Sort Order can be set for an Org Unit in the *Library Settings Editor*.  
+The Best-Hold Selection Sort Order can be set for an Organizational Unit in the *Library Settings Editor*.  
 
-To select the Best-Hold Selection Sort Order that your Org Unit will use:
+To select the Best-Hold Selection Sort Order that your Organizational Unit will use:
 
 . Go to *Administration -> Local Administration ->  Library Settings Editor*.  
 . Locate the setting *Holds: Best-hold selection sort order*, and click *Edit*.
-. Choose the *Context* org unit for this setting.
+. Choose the *Context* organizational unit for this setting.
 . Select the Best-hold selection sort order, or *Value*, from the drop down menu.
 . Click *Update Setting*. 
 
