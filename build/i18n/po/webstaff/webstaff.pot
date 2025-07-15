@@ -137,8 +137,8 @@ msgstr ""
 msgid "%1 %2 %3&#13;&#10;%4 %5&#13;&#10;%6, %7 %8"
 msgstr ""
 
-#. ("{{patron().pref_prefix() || patron().prefix()}}", "{{patron().pref_family_name() || patron().family_name()}}", "{{patron().pref_first_given_name() || patron().first_given_name()}}", "{{patron().pref_second_given_name() || patron().second_given_name()}}", "{{patron().pref_suffix() || patron().suffix()}}")
 #. ("{{patron().prefix()}}", "{{patron().family_name()}}", "{{patron().first_given_name()}}", "{{patron().second_given_name()}}", "{{patron().suffix()}}")
+#. ("{{patron().pref_prefix() || patron().prefix()}}", "{{patron().pref_family_name() || patron().family_name()}}", "{{patron().pref_first_given_name() || patron().first_given_name()}}", "{{patron().pref_second_given_name() || patron().second_given_name()}}", "{{patron().pref_suffix() || patron().suffix()}}")
 #: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:118 ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:159
 msgid "%1 %2, %3 %4 %5"
 msgstr ""
@@ -230,15 +230,15 @@ msgstr ""
 msgid "%1, %2"
 msgstr ""
 
-#. ("{{lname}}", "{{fname}}", "{{mname}}")
 #. ("{{patron().pref_family_name() || patron().family_name()}}", "{{patron().pref_first_given_name() || patron().first_given_name()}}", "{{patron().pref_second_given_name() || patron().second_given_name()}}")
+#. ("{{lname}}", "{{fname}}", "{{mname}}")
 #: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:80 ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:34
 msgid "%1, %2 %3"
 msgstr ""
 
 #. ("{{user.family_name()}}", "{{user.first_given_name()}}", "{{user.second_given_name()}}", "{{user.card().barcode()}}")
-#. ("{{circ.usr().family_name()}}", "{{circ.usr().first_given_name()}}", "{{circ.usr().second_given_name()}}", "{{circ.usr().card().barcode()}}")
 #. ("{{prev_circ_usr.family_name()}}", "{{prev_circ_usr.first_given_name()}}", "{{prev_circ_usr.second_given_name()}}", "{{prev_circ_usr.card().barcode()}}")
+#. ("{{circ.usr().family_name()}}", "{{circ.usr().first_given_name()}}", "{{circ.usr().second_given_name()}}", "{{circ.usr().card().barcode()}}")
 #. ("{{hold.usr().family_name()}}", "{{hold.usr().first_given_name()}}", "{{hold.usr().second_given_name()}}", "{{hold.usr().card().barcode()}}")
 #. ("{{hold.requestor().family_name()}}", "{{hold.requestor().first_given_name()}}", "{{hold.requestor().second_given_name()}}", "{{hold.requestor().card().barcode()}}")
 #. ("{{extra.user_obj.family_name}}", "{{extra.user_obj.first_given_name}}", "{{extra.user_obj.second_given_name}}", "{{extra.user_obj.home_ou.shortname}}")
@@ -470,7 +470,7 @@ msgid "Activate"
 msgstr ""
 
 #. ("{{num_holds}}")
-#: ../../Open-ILS/src/templates/staff/circ/share/hold_strings.tt2:14
+#: ../../Open-ILS/src/templates/staff/circ/share/hold_strings.tt2:15
 msgid "Activate %1 Hold(s)?"
 msgstr ""
 
@@ -1394,8 +1394,8 @@ msgstr ""
 msgid "Between"
 msgstr ""
 
-#. ("{{record_id}}")
 #. ("{{lead_id}}")
+#. ("{{record_id}}")
 #: ../../Open-ILS/src/templates/staff/cat/bucket/record/t_merge_records.tt2:49 ../../Open-ILS/src/templates/staff/cat/catalog/index.tt2:66
 msgid "Bib %1"
 msgstr ""
@@ -4616,6 +4616,10 @@ msgstr ""
 msgid "From: %1 To: %2 <br> When: %3 <br> Barcode: %4 Title: %5"
 msgstr ""
 
+#: ../../Open-ILS/src/templates/staff/circ/share/hold_strings.tt2:14
+msgid "Fulfilled"
+msgstr ""
+
 #: ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:114 ../../Open-ILS/src/templates/staff/circ/holds/t_shelf_list.tt2:91 ../../Open-ILS/src/templates/staff/circ/patron/t_holds_list.tt2:91
 msgid "Fulfilling Library"
 msgstr ""
@@ -6582,7 +6586,7 @@ msgid "Most Recently Logged Staff Actions"
 msgstr ""
 
 #. ("{{num_holds}}")
-#: ../../Open-ILS/src/templates/staff/circ/share/hold_strings.tt2:17
+#: ../../Open-ILS/src/templates/staff/circ/share/hold_strings.tt2:18
 msgid "Move %1 Hold(s) to the front of the holds queue above other holds that are not likewise flagged as Top of Queue?"
 msgstr ""
 
@@ -6919,7 +6923,7 @@ msgstr ""
 msgid "No patrons recently accessed."
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/circ/share/hold_strings.tt2:26
+#: ../../Open-ILS/src/templates/staff/circ/share/hold_strings.tt2:27
 msgid "No record is marked as a hold transfer target!"
 msgstr ""
 
@@ -8999,7 +9003,7 @@ msgid "Reset Record Marks"
 msgstr ""
 
 #. ("{{hold_ids}}")
-#: ../../Open-ILS/src/templates/staff/circ/share/hold_strings.tt2:28
+#: ../../Open-ILS/src/templates/staff/circ/share/hold_strings.tt2:29
 msgid "Reset hold(s) %1?"
 msgstr ""
 
@@ -10243,7 +10247,7 @@ msgid "Suspend"
 msgstr ""
 
 #. ("{{num_holds}}")
-#: ../../Open-ILS/src/templates/staff/circ/share/hold_strings.tt2:15
+#: ../../Open-ILS/src/templates/staff/circ/share/hold_strings.tt2:16
 msgid "Suspend %1 Hold(s)?"
 msgstr ""
 
@@ -10748,7 +10752,7 @@ msgid "Transfer"
 msgstr ""
 
 #. ("{{num_holds}}", "{{bib_id}}")
-#: ../../Open-ILS/src/templates/staff/circ/share/hold_strings.tt2:22
+#: ../../Open-ILS/src/templates/staff/circ/share/hold_strings.tt2:23
 msgid "Transfer %1 Hold(s) to bib record ID %2?"
 msgstr ""
 
@@ -10769,7 +10773,7 @@ msgid "Transfer To Marked Title"
 msgstr ""
 
 #. ("{{num_bibs}}", "{{bib_id}}")
-#: ../../Open-ILS/src/templates/staff/circ/share/hold_strings.tt2:24
+#: ../../Open-ILS/src/templates/staff/circ/share/hold_strings.tt2:25
 msgid "Transfer holds on %1 bib(s) to bib record ID %2?"
 msgstr ""
 
@@ -10977,7 +10981,7 @@ msgid "Unset"
 msgstr ""
 
 #. ("{{num_holds}}")
-#: ../../Open-ILS/src/templates/staff/circ/share/hold_strings.tt2:20
+#: ../../Open-ILS/src/templates/staff/circ/share/hold_strings.tt2:21
 msgid "Unset the Top of Queue flag for %1 Hold(s)?"
 msgstr ""
 
