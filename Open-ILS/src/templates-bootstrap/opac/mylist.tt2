@@ -1,9 +1,11 @@
-[%- PROCESS "opac/parts/header.tt2";
+[%- 
+    ctx.page = "basket";
+    PROCESS "opac/parts/header.tt2";
     PROCESS "opac/parts/misc_util.tt2";
     WRAPPER "opac/parts/base.tt2";
     INCLUDE "opac/parts/topnav.tt2";
     ctx.metalinks.push('<meta name="robots" content="noindex,follow">');
-    ctx.page_title = l("Record Detail") %]
+    ctx.page_title = l("Basket") %]
 <main id="main">
     <h2 class="sr-only">[% l('Basket') %]</h2>
     <div>
