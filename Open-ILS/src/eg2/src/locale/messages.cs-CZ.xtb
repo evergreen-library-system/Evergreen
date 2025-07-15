@@ -6437,4 +6437,8 @@ Zkopírováno <ph name="INTERPOLATION"/></translation>
   <translation id="7333108368858028030"> More than one Bib Record found with TCN: <ph name="INTERPOLATION"/> </translation>
   <translation id="1720909217045418517"> The server encountered an error. Please try a different search. </translation>
   <translation id="8388582053032794203"> Calculated fine amount is <ph name="START_TAG_SPAN"/> <ph name="INTERPOLATION"/> <ph name="CLOSE_TAG_SPAN"/></translation>
+  <translation id="7190467351988659949">Serial Records</translation>
+  <translation id="1554318653244181133">Unsaved changes will be lost.  Continue navigation?</translation>
+  <translation id="3660069197046561180">Item Notes</translation>
+  <translation id="968227549005903387"><ph name="INTERPOLATION"/> position <ph name="INTERPOLATION_1"/></translation>
 </translationbundle>
