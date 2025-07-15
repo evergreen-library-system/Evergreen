@@ -137,8 +137,8 @@ msgstr ""
 msgid "%1 %2 %3&#13;&#10;%4 %5&#13;&#10;%6, %7 %8"
 msgstr ""
 
-#. ("{{patron().pref_prefix() || patron().prefix()}}", "{{patron().pref_family_name() || patron().family_name()}}", "{{patron().pref_first_given_name() || patron().first_given_name()}}", "{{patron().pref_second_given_name() || patron().second_given_name()}}", "{{patron().pref_suffix() || patron().suffix()}}")
 #. ("{{patron().prefix()}}", "{{patron().family_name()}}", "{{patron().first_given_name()}}", "{{patron().second_given_name()}}", "{{patron().suffix()}}")
+#. ("{{patron().pref_prefix() || patron().prefix()}}", "{{patron().pref_family_name() || patron().family_name()}}", "{{patron().pref_first_given_name() || patron().first_given_name()}}", "{{patron().pref_second_given_name() || patron().second_given_name()}}", "{{patron().pref_suffix() || patron().suffix()}}")
 #: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:118 ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:159
 msgid "%1 %2, %3 %4 %5"
 msgstr ""
@@ -230,15 +230,15 @@ msgstr ""
 msgid "%1, %2"
 msgstr ""
 
-#. ("{{lname}}", "{{fname}}", "{{mname}}")
 #. ("{{patron().pref_family_name() || patron().family_name()}}", "{{patron().pref_first_given_name() || patron().first_given_name()}}", "{{patron().pref_second_given_name() || patron().second_given_name()}}")
+#. ("{{lname}}", "{{fname}}", "{{mname}}")
 #: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:80 ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:34
 msgid "%1, %2 %3"
 msgstr ""
 
 #. ("{{user.family_name()}}", "{{user.first_given_name()}}", "{{user.second_given_name()}}", "{{user.card().barcode()}}")
-#. ("{{circ.usr().family_name()}}", "{{circ.usr().first_given_name()}}", "{{circ.usr().second_given_name()}}", "{{circ.usr().card().barcode()}}")
 #. ("{{prev_circ_usr.family_name()}}", "{{prev_circ_usr.first_given_name()}}", "{{prev_circ_usr.second_given_name()}}", "{{prev_circ_usr.card().barcode()}}")
+#. ("{{circ.usr().family_name()}}", "{{circ.usr().first_given_name()}}", "{{circ.usr().second_given_name()}}", "{{circ.usr().card().barcode()}}")
 #. ("{{hold.usr().family_name()}}", "{{hold.usr().first_given_name()}}", "{{hold.usr().second_given_name()}}", "{{hold.usr().card().barcode()}}")
 #. ("{{hold.requestor().family_name()}}", "{{hold.requestor().first_given_name()}}", "{{hold.requestor().second_given_name()}}", "{{hold.requestor().card().barcode()}}")
 #. ("{{extra.user_obj.family_name}}", "{{extra.user_obj.first_given_name}}", "{{extra.user_obj.second_given_name}}", "{{extra.user_obj.home_ou.shortname}}")
@@ -470,7 +470,7 @@ msgid "Activate"
 msgstr ""
 
 #. ("{{num_holds}}")
-#: ../../Open-ILS/src/templates/staff/circ/share/hold_strings.tt2:14
+#: ../../Open-ILS/src/templates/staff/circ/share/hold_strings.tt2:15
 msgid "Activate %1 Hold(s)?"
 msgstr ""
 
@@ -724,18 +724,6 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/navbar.tt2:633 ../../Open-ILS/src/templates/staff/t_splash.tt2:78
 msgid "Administration"
-msgstr ""
-
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_splash.tt2:156
-msgid "Advanced (default)"
-msgstr ""
-
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_splash.tt2:151
-msgid "Advanced Search Default Pane"
-msgstr ""
-
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_splash.tt2:152
-msgid "Advanced search has secondary panes for Numeric and MARC Expert searching. You can change which one is loaded by default when opening a new catalog window here."
 msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/reporter/share/report_strings.tt2:100 ../../Open-ILS/src/templates/staff/reporter/share/report_strings.tt2:19
@@ -1394,8 +1382,8 @@ msgstr ""
 msgid "Between"
 msgstr ""
 
-#. ("{{record_id}}")
 #. ("{{lead_id}}")
+#. ("{{record_id}}")
 #: ../../Open-ILS/src/templates/staff/cat/bucket/record/t_merge_records.tt2:49 ../../Open-ILS/src/templates/staff/cat/catalog/index.tt2:66
 msgid "Bib %1"
 msgstr ""
@@ -3270,10 +3258,6 @@ msgstr ""
 msgid "Default SMS/Text Number"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_splash.tt2:123
-msgid "Default Search Library"
-msgstr ""
-
 #. ("{{printerOptions.defaultPrintColor}}")
 #. ("{{printerOptions.defaultPaperSource}}")
 #. ("{{printerOptions.defaultPaper}}")
@@ -4618,6 +4602,10 @@ msgstr ""
 #. ("{{transit.source.shortname}}", "{{transit.dest.shortname}}", "{{transit.source_send_time | date:$root.egDateAndTimeFormat}}", "{{transit.target_copy.barcode}}", "{{transit.target_copy.call_number.record.simple_record.title}}")
 #: ../../Open-ILS/src/templates/staff/share/print_templates/t_transit_list.tt2:20
 msgid "From: %1 To: %2 <br> When: %3 <br> Barcode: %4 Title: %5"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/circ/share/hold_strings.tt2:14
+msgid "Fulfilled"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:114 ../../Open-ILS/src/templates/staff/circ/holds/t_shelf_list.tt2:91 ../../Open-ILS/src/templates/staff/circ/patron/t_holds_list.tt2:91
@@ -6065,10 +6053,6 @@ msgstr ""
 msgid "MARC Edit"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_splash.tt2:158
-msgid "MARC Expert"
-msgstr ""
-
 #: ../../Open-ILS/src/templates/staff/navbar.tt2:511
 msgid "MARC Federated Search"
 msgstr ""
@@ -6590,7 +6574,7 @@ msgid "Most Recently Logged Staff Actions"
 msgstr ""
 
 #. ("{{num_holds}}")
-#: ../../Open-ILS/src/templates/staff/circ/share/hold_strings.tt2:17
+#: ../../Open-ILS/src/templates/staff/circ/share/hold_strings.tt2:18
 msgid "Move %1 Hold(s) to the front of the holds queue above other holds that are not likewise flagged as Top of Queue?"
 msgstr ""
 
@@ -6927,7 +6911,7 @@ msgstr ""
 msgid "No patrons recently accessed."
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/circ/share/hold_strings.tt2:26
+#: ../../Open-ILS/src/templates/staff/circ/share/hold_strings.tt2:27
 msgid "No record is marked as a hold transfer target!"
 msgstr ""
 
@@ -7162,10 +7146,6 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/cat/catalog/t_request_items.tt2:53
 msgid "Number of titles: "
-msgstr ""
-
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_splash.tt2:157
-msgid "Numeric"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_apply_tags.tt2:34 ../../Open-ILS/src/templates/staff/cat/bucket/record/t_records_not_deleted.tt2:16 ../../Open-ILS/src/templates/staff/cat/catalog/t_choose_vol_target_lib.tt2:20 ../../Open-ILS/src/templates/staff/cat/catalog/t_conjoined_selector.tt2:21 ../../Open-ILS/src/templates/staff/cat/catalog/t_request_items.tt2:56 ../../Open-ILS/src/templates/staff/cat/volcopy/t_copy_alerts.tt2:34 ../../Open-ILS/src/templates/staff/cat/volcopy/t_copy_notes.tt2:35 ../../Open-ILS/src/templates/staff/cat/volcopy/t_copy_tags.tt2:34 ../../Open-ILS/src/templates/staff/circ/patron/bucket/t_changesets.tt2:38 ../../Open-ILS/src/templates/staff/circ/patron/t_edit_due_date_dialog.tt2:21 ../../Open-ILS/src/templates/staff/circ/share/t_hold_note_dialog.tt2:47 ../../Open-ILS/src/templates/staff/circ/share/t_hold_notification_dialog.tt2:29 ../../Open-ILS/src/templates/staff/circ/share/t_new_message_dialog.tt2:110 ../../Open-ILS/src/templates/staff/circ/share/t_noncat_dialog.tt2:21 ../../Open-ILS/src/templates/staff/serials/t_clone_subscription.tt2:54 ../../Open-ILS/src/templates/staff/serials/t_link_mfhd.tt2:32 ../../Open-ILS/src/templates/staff/serials/t_notes.tt2:39 ../../Open-ILS/src/templates/staff/share/t_add_copy_alert_dialog.tt2:34 ../../Open-ILS/src/templates/staff/share/t_alert_dialog.tt2:14 ../../Open-ILS/src/templates/staff/share/t_copy_alert_editor_dialog.tt2:50
@@ -8082,10 +8062,6 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:153
 msgid "Pref Language"
-msgstr ""
-
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_splash.tt2:137
-msgid "Preferred Library"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:236
@@ -9011,7 +8987,7 @@ msgid "Reset Record Marks"
 msgstr ""
 
 #. ("{{hold_ids}}")
-#: ../../Open-ILS/src/templates/staff/circ/share/hold_strings.tt2:28
+#: ../../Open-ILS/src/templates/staff/circ/share/hold_strings.tt2:29
 msgid "Reset hold(s) %1?"
 msgstr ""
 
@@ -9333,6 +9309,10 @@ msgstr ""
 msgid "Search In Progress"
 msgstr ""
 
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_splash.tt2:122
+msgid "Search Preferences in the catalog &rarr;"
+msgstr ""
+
 #: ../../Open-ILS/src/templates/staff/navbar.tt2:53
 msgid "Search for Items by Barcode"
 msgstr ""
@@ -9461,10 +9441,6 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/reporter/share/report_strings.tt2:132
 msgid "Select the value, or cancel:"
-msgstr ""
-
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_splash.tt2:129 ../../Open-ILS/src/templates/staff/admin/workstation/t_splash.tt2:143
-msgid "Select..."
 msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/circ/patron/t_bill_history.tt2:21
@@ -10263,7 +10239,7 @@ msgid "Suspend"
 msgstr ""
 
 #. ("{{num_holds}}")
-#: ../../Open-ILS/src/templates/staff/circ/share/hold_strings.tt2:15
+#: ../../Open-ILS/src/templates/staff/circ/share/hold_strings.tt2:16
 msgid "Suspend %1 Hold(s)?"
 msgstr ""
 
@@ -10406,10 +10382,6 @@ msgstr ""
 msgid "The card used to retrieve this account is inactive and may not be used to circulate items."
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_splash.tt2:124
-msgid "The default search library setting determines what library is searched from the advanced search screen and portal page by default. Manual selection of a search library will override it. One recommendation is to set the search library to the highest point you would normally want to search."
-msgstr ""
-
 #: ../../Open-ILS/src/templates/staff/serials/t_subscription_manager.tt2:40
 msgid "The difference between the nominal publishing date of an issue and the date that you expect to receive your item."
 msgstr ""
@@ -10437,10 +10409,6 @@ msgstr ""
 #. ("{{id}}", "{{tcn}}", "{{live_id}}", "{{live_tcn}}")
 #: ../../Open-ILS/src/templates/staff/cat/share/z3950_strings.tt2:14
 msgid "The overlay target has changed from %1 (TCN %2) to %3 (TCN %4).  Continue with overlay of record %3?"
-msgstr ""
-
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_splash.tt2:138
-msgid "The preferred library is used to show copies and URIs regardless of the library searched. One recommendation is to set this to your workstation library so that local copies show up first in search results."
 msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/cat/bucket/batch_hold/index.tt2:74 ../../Open-ILS/src/templates/staff/cat/bucket/copy/index.tt2:73 ../../Open-ILS/src/templates/staff/cat/bucket/record/index.tt2:70 ../../Open-ILS/src/templates/staff/circ/patron/bucket/index.tt2:71
@@ -10772,7 +10740,7 @@ msgid "Transfer"
 msgstr ""
 
 #. ("{{num_holds}}", "{{bib_id}}")
-#: ../../Open-ILS/src/templates/staff/circ/share/hold_strings.tt2:22
+#: ../../Open-ILS/src/templates/staff/circ/share/hold_strings.tt2:23
 msgid "Transfer %1 Hold(s) to bib record ID %2?"
 msgstr ""
 
@@ -10793,7 +10761,7 @@ msgid "Transfer To Marked Title"
 msgstr ""
 
 #. ("{{num_bibs}}", "{{bib_id}}")
-#: ../../Open-ILS/src/templates/staff/circ/share/hold_strings.tt2:24
+#: ../../Open-ILS/src/templates/staff/circ/share/hold_strings.tt2:25
 msgid "Transfer holds on %1 bib(s) to bib record ID %2?"
 msgstr ""
 
@@ -11001,7 +10969,7 @@ msgid "Unset"
 msgstr ""
 
 #. ("{{num_holds}}")
-#: ../../Open-ILS/src/templates/staff/circ/share/hold_strings.tt2:20
+#: ../../Open-ILS/src/templates/staff/circ/share/hold_strings.tt2:21
 msgid "Unset the Top of Queue flag for %1 Hold(s)?"
 msgstr ""
 
