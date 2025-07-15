@@ -91,7 +91,7 @@
       (onClick)="newSubfolder($event)">
     </eg-grid-toolbar-button>
  
-    <eg-grid-toolbar-button label="Share Folder" i18n-label *ngIf="currentFolder && RSvc.folderIsMine(currentFolder) && currentFolder.shared() === 'f'"
+    <eg-grid-toolbar-button label="Share Folder" i18n-label *ngIf="RSvc.globalCanShare && currentFolder && RSvc.folderIsMine(currentFolder) && currentFolder.shared() === 'f'"
       #share (onClick)="shareFolder(share)">
     </eg-grid-toolbar-button>
 

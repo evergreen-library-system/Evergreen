@@ -524,6 +524,9 @@ export class ReporterService {
     reportFolder: IdlObject = null;
     outputFolder: IdlObject = null;
 
+    globalCanShare: boolean = false;
+    topPermOrg = { RUN_REPORTS: -1, SHARE_REPORT_FOLDER: -1, VIEW_REPORT_OUTPUT: -1 };
+
     constructor (
         private evt: EventService,
         private auth: AuthService,
@@ -769,7 +772,20 @@ export class ReporterService {
             }))
         };
 
+        const perm_list = [ 'RUN_REPORTS', 'SHARE_REPORT_FOLDER', 'VIEW_REPORT_OUTPUT' ];
         return Promise.all([
+            new Promise<void>((resolve, reject) => {
+                this.net.request(
+                    'open-ils.actor',
+                    'open-ils.actor.user.perm.highest_org.batch',
+                    this.auth.token(), this.auth.user().id(), perm_list
+                ).toPromise()
+                .then(permset => {
+                    permset.forEach((perm_org,ind) => this.topPermOrg[perm_list[ind]] = perm_org);
+                    if (this.topPermOrg.SHARE_REPORT_FOLDER > -1) this.globalCanShare = true;
+                    resolve();
+                });
+            }),
             new Promise<void>((resolve, reject) => {
                 this.net.request(
                     'open-ils.reporter',
