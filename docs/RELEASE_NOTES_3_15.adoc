@@ -80,6 +80,7 @@ We would like to thank the following individuals who contributed code, testing, 
 * Jason Boyer
 * Jason Stephenson
 * Jeff Davis
+* Jeff Godin
 * Jennifer Pringle
 * John Amundson
 * Josh Stompro
