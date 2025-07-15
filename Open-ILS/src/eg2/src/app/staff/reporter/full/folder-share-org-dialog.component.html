@@ -18,7 +18,7 @@
     </div>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-success" 
+    <button type="button" class="btn btn-success" [disabled]="!this.RSvc.globalCanShare" 
       (click)="close(contextOrg)" i18n>Save</button>
     <button type="button" class="btn btn-outline-dark" 
       (click)="close()" i18n>Cancel</button>
