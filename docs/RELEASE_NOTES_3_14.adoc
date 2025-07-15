@@ -9,7 +9,7 @@ This release contains bug fixes and documentation fixes improving on Evergreen 3
 
 === Upgrade notes ===
 
-The following bugfixes require an upgrade script:
+The following bugfixes require running an upgrade script:
 
 * Clear Form now resets \"Home Library\" to consortium and retains the sticky setting for \"Include Inactive.\" (https://bugs.launchpad.net/evergreen/+bug/1721131[Bug 1721131])
 * Fixes 'Save Grid Settings' for Standing Penalties. (https://bugs.launchpad.net/evergreen/+bug/2069222[Bug 2069222])
@@ -54,7 +54,9 @@ The following bugfixes require an upgrade script:
 * Clear Form now resets \"Home Library\" to consortium and retains the sticky setting for \"Include Inactive.\" (https://bugs.launchpad.net/evergreen/+bug/1721131[Bug 1721131])
 * Docs update to surveys.adoc (https://bugs.launchpad.net/evergreen/+bug/2089025[Bug 2089025])
 
-=== Contributors ===
+=== Acknowledgements ===
+
+We would like to thank the following individuals who contributed code, testing, documentation, and patches to the 3.14.8 point release of Evergreen:
 
 * Andrea Buntz Neiman
 * Blake Graham-Henderson
@@ -63,14 +65,17 @@ The following bugfixes require an upgrade script:
 * Elizabeth Davis
 * Galen Charlton
 * Garry Collum
+* Gina Monti
 * Ian Skelskey
 * Jane Sandberg
 * Jason Boyer
 * Jason Stephenson
 * Jeff Davis
+* Jeff Godin
 * Jennifer Pringle
 * John Amundson
 * Josh Stompro
+* Martha Driscoll
 * Michele Morgan
 * Mike Rylander
 * Ruth Frasur Davis
@@ -83,6 +88,8 @@ The following bugfixes require an upgrade script:
 * Terran McCanna
 
 === Sponsors ===
+
+The following organizations sponsored development in the 3.14.8 release of Evergreen:
 
 * BC Libraries Cooperative
 
