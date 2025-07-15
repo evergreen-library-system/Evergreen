@@ -2,15 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2025-03-25 10:35-0400\n"
+"POT-Creation-Date: 2025-06-17 16:56-0400\n"
 "PO-Revision-Date: 2025-03-25 15:00+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: UISK <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2025-03-26 08:05+0000\n"
-"X-Generator: Launchpad (build d61bb8eb9830eb975fb0e8573deec46f2e0bb15b)\n"
+"X-Launchpad-Export-Date: 2025-06-18 05:19+0000\n"
+"X-Generator: Launchpad (build 102302b48d804bc4284f26b4edb16220a44bef79)\n"
 "X-Poedit-Language: Czech\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
 "X-Poedit-SourceCharset: utf-8\n"
@@ -3727,6 +3727,7 @@ msgstr ""
 #: 950.data.seed-values.sql:2046
 msgid "Allow setting and unsetting hold from top of hold queue (cut in line)"
 msgstr ""
+"Povolit nastavení nebo zrušení nastavení na začátku fronty (předběhnutí řady)"
 
 # id::pgt.name__1
 #: 950.data.seed-values.sql:2067
@@ -3810,35 +3811,35 @@ msgstr "Dobrovolníci"
 
 #: 950.data.seed-values.sql:2101
 msgid "API Integrator"
-msgstr ""
+msgstr "Integrátor API"
 
 #: 950.data.seed-values.sql:2103
 msgid "Patron API"
-msgstr ""
+msgstr "API pro uživatele"
 
 #: 950.data.seed-values.sql:2105
 msgid "Org Unit API"
-msgstr ""
+msgstr "API pro organizační jednotku"
 
 #: 950.data.seed-values.sql:2107
 msgid "Bib Record API"
-msgstr ""
+msgstr "API pro bibliografický záznam"
 
 #: 950.data.seed-values.sql:2109
 msgid "Item Record API"
-msgstr ""
+msgstr "API pro  jednotky"
 
 #: 950.data.seed-values.sql:2111
 msgid "Holds API"
-msgstr ""
+msgstr "API pro rezervace"
 
 #: 950.data.seed-values.sql:2113
 msgid "Debt Collection API"
-msgstr ""
+msgstr "API pro vymáhání dluhů"
 
 #: 950.data.seed-values.sql:2115
 msgid "Course Reserves API"
-msgstr ""
+msgstr "API pro materiály ke kurzům"
 
 #: 950.data.seed-values.sql:3050
 msgid "Stacks"
@@ -13674,6 +13675,8 @@ msgstr ""
 #: 950.data.seed-values.sql:12916
 msgid "Change this value to force staff clients to clear some cached values"
 msgstr ""
+"Změnou této hodnoty donutíte služebního klienta vymazat některé hodnoty z "
+"mezipaměti."
 
 #: 950.data.seed-values.sql:12937 950.data.seed-values.sql:12938
 msgid "Historical Circulation Retention Start Date"
@@ -15738,13 +15741,15 @@ msgstr ""
 
 #: 950.data.seed-values.sql:18477
 msgid "Place holds for recent patrons"
-msgstr ""
+msgstr "Zadat rezervaci pro posledního čtenáře"
 
 #: 950.data.seed-values.sql:18483
 msgid ""
 "Loading a patron in the place holds interface designates them as recent. "
 "Show the interface to load recent patrons when placing holds."
 msgstr ""
+"Načtení čtenářů v rozhraní pro zadání rezervace je označí jako nedávné. Při "
+"zadávání rezervace zobrazit rozhraní pro načtení nedávných čtenářů."
 
 #: 950.data.seed-values.sql:18563
 msgid ""
@@ -15899,7 +15904,7 @@ msgstr "Refereční pole položky (RPP) používá pouze ID položky"
 
 #: 950.data.seed-values.sql:18668
 msgid "Lineitems Are Enumerated Sequentially"
-msgstr ""
+msgstr "Položky jsou vyjmenovány postupně"
 
 #: 950.data.seed-values.sql:18756
 msgid "No attempt to code"
@@ -17820,6 +17825,10 @@ msgid ""
 "that you are monitoring disk space on your database server and have a cron "
 "job set up to delete click records after the desired retention interval."
 msgstr ""
+"Sledování kliknutí na odkazy na elektronické zdroje. Než tento globální "
+"indikátor aktivujete, ujistěte se, že monitorujete  místo na disku "
+"databázového serveru a máte nastavenou úlohu cronu, která po uplynutí "
+"požadovaného intervalu uchovávání odstraní záznamy o kliknutí."
 
 #: 950.data.seed-values.sql:23737
 msgid "Custom PATRON_EXCEEDS_FINES penalty"
@@ -18015,27 +18024,27 @@ msgstr ""
 
 #: 950.data.seed-values.sql:23973
 msgid "Staff Client patron search: show name fields"
-msgstr ""
+msgstr "Hledání čtenáře ve služebním rozhraní: Zobrazit pole se jménem"
 
 #: 950.data.seed-values.sql:23976
 msgid "Displays the name row of advanced patron search fields"
-msgstr ""
+msgstr "V pokročilém hledání čtenáře zobrazí řádek pro hledání jména"
 
 #: 950.data.seed-values.sql:23987
 msgid "Staff Client patron search: show ID fields"
-msgstr ""
+msgstr "Hledání čtenáře ve služebním rozhraní: Zobrazit pole s ID"
 
 #: 950.data.seed-values.sql:23990
 msgid "Displays the ID row of advanced patron search fields"
-msgstr ""
+msgstr "V pokročilém hledání čtenáře zobrazí řádek pro hledání ID"
 
 #: 950.data.seed-values.sql:24001
 msgid "Staff Client patron search: show address fields"
-msgstr ""
+msgstr "Hledání čtenáře ve služebním rozhraní: Zobrazit pole s adresami"
 
 #: 950.data.seed-values.sql:24004
 msgid "Displays the address row of advanced patron search fields"
-msgstr ""
+msgstr "V pokročilém hledání čtenáře zobrazí řádek pro hledání adresy"
 
 #: 950.data.seed-values.sql:24013
 msgid "Grid Config: admin.config.circ_matrix_matchpoint"
@@ -18378,7 +18387,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:24954
 msgid "Show \"Save Template\" in Holdings Editor"
-msgstr ""
+msgstr "V editoru  jednotek zobrazit \"Uložit šablonu\""
 
 #: 950.data.seed-values.sql:24960
 msgid ""
@@ -18386,28 +18395,33 @@ msgid ""
 "Volume/Copy/Holdings Editor. By default, this is only displayed when working "
 "with templates from the Admin interface."
 msgstr ""
+"Zobrazí tlačítko \"uložit šablonu na liště šablon v editoru "
+"signatur/jednotek. Ve výchozím nastavení je toto tlačítko zobrazeno pouze "
+"pokud se pracuje se šablonami v administrátorském rozhraní."
 
 #: 950.data.seed-values.sql:24973
 msgid "Hide the entire template bar in Holdings Editor"
-msgstr ""
+msgstr "V editoru jednotek skrýt celou lištu pro šablony"
 
 #: 950.data.seed-values.sql:24979
 msgid ""
 "Hides the template bar in the Volume/Copy/Holdings Editor. By default, the "
 "template bar is displayed in this interface."
 msgstr ""
+"V editoru signatur/jednotek skryje lištu pro šablony.  Ve výchozím nastavení "
+"je lišta pro šablony v tomto rozhraní zobrazena."
 
 #: 950.data.seed-values.sql:24990
 msgid "Holdings Template Grid Settings"
-msgstr ""
+msgstr "Nastavení sloupců pro šablony jednotek"
 
 #: 950.data.seed-values.sql:25000
 msgid "Copy Tag Maps Template Grid Settings"
-msgstr ""
+msgstr "Nastavení sloupců pro nastavení tagů jednotek"
 
 #: 950.data.seed-values.sql:25012
 msgid "Staff Client: disable single-letter keyboard shortcuts"
-msgstr ""
+msgstr "Služební rozhraní: vypnout jednopísmenné klávesové zkratky"
 
 #: 950.data.seed-values.sql:25015
 msgid ""
@@ -18415,68 +18429,83 @@ msgid ""
 "users should set this to true to avoid interference with standard keyboard "
 "shortcuts."
 msgstr ""
+"Pokud je nastaveno na hodnotu Pravda, budou vypnuty jednopísmenné klávesové "
+"zkratky. Uživatelé odečítačů obrazovek by si jednopísmenné zkratky měli "
+"vypnout, aby nedošlo ke kolizi s běžně používanými klávesovými zkratkami."
 
 #: 950.data.seed-values.sql:25021
 msgid "Grid Config: catalog.record.parts"
+msgstr "Nastavení sloupců: catalog.record.parts"
+
+#: 950.data.seed-values.sql:25032
+msgid "Grid Config: eg.grid.admin.config.coded_value_map"
 msgstr ""
 
-#: 950.data.seed-values.sql:25035
+#: 950.data.seed-values.sql:25044
 msgid "Grid UI density"
-msgstr ""
+msgstr "Hustota tabulek v uživatelském rozhraní"
 
-#: 950.data.seed-values.sql:25038
+#: 950.data.seed-values.sql:25047
 msgid ""
 "Whitespace around table cells in staff UI data grids. Default is "
 "\"standard\"."
 msgstr ""
+"Mezery kolem buněk tabulky v datových tabulkách služebního rozhraní. Výchozí "
+"hodnotou je \"standardní\"."
 
-#: 950.data.seed-values.sql:25049
+#: 950.data.seed-values.sql:25058
 msgid "OPAC Alert Banner: Display"
-msgstr ""
+msgstr "Výstražná lišta v OPACu: Zobrazit"
 
-#: 950.data.seed-values.sql:25052
+#: 950.data.seed-values.sql:25061
 msgid "Show an alert banner in the OPAC. Default is false."
 msgstr ""
+"Zobrazit v OPACu výstražnou lištu. Ve výchozím nastavení lišta není "
+"zobrazena."
 
-#: 950.data.seed-values.sql:25059
+#: 950.data.seed-values.sql:25068
 msgid "OPAC Alert Banner: Type"
-msgstr ""
+msgstr "Výstražná lišta v OPACu: Typ"
 
-#: 950.data.seed-values.sql:25062
+#: 950.data.seed-values.sql:25071
 msgid ""
 "Determine the display of the banner. Options are: success, info, warning, "
 "danger."
 msgstr ""
+"Určete způsob zobrazení lišty. Možnosti: úspěch, informace, varování, "
+"nebezpečí."
 
-#: 950.data.seed-values.sql:25069
+#: 950.data.seed-values.sql:25078
 msgid "OPAC Alert Banner: Text"
-msgstr ""
+msgstr "Výstražná lišta v OPACu: Text"
 
-#: 950.data.seed-values.sql:25072
+#: 950.data.seed-values.sql:25081
 msgid "Text that will display in the alert banner."
-msgstr ""
+msgstr "Text, který se zobrazí na výstražné liště."
 
-#: 950.data.seed-values.sql:25083
+#: 950.data.seed-values.sql:25092
 msgid "Google Analytics: Enable"
-msgstr ""
+msgstr "Google Analytics: Aktivovat"
 
-#: 950.data.seed-values.sql:25086
+#: 950.data.seed-values.sql:25095
 msgid "Enable Google Analytics in the OPAC. Default is false."
 msgstr ""
+"Aktivovat Google Analytics v OPACu. Ve výchozím nastavení není aktivováno."
 
-#: 950.data.seed-values.sql:25093
+#: 950.data.seed-values.sql:25102
 msgid "Google Analytics: Code"
-msgstr ""
+msgstr "Google Analytics: Měřící kód"
 
-#: 950.data.seed-values.sql:25096
+#: 950.data.seed-values.sql:25105
 msgid "Account code provided by Google. (Example: G-GVGQ11X12)"
-msgstr ""
+msgstr "Měřící kód, který Google poskytl k účtu. (Příklad: G-GVGQ11X12)"
 
-#: 950.data.seed-values.sql:25107
+#: 950.data.seed-values.sql:25116
 msgid "Staff Client: no new tabs"
-msgstr ""
+msgstr "Služební rozhraní: žádné nové karty"
 
-#: 950.data.seed-values.sql:25110
+#: 950.data.seed-values.sql:25119
 msgid ""
 "Prevents links in the staff interface from opening in new tabs or windows."
 msgstr ""
+"Zakáže otevírat ve služebním rozhraní odkazy na nové kartě nebo v novém okně."

@@ -2,15 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2025-03-25 10:35-0400\n"
+"POT-Creation-Date: 2025-06-17 16:56-0400\n"
 "PO-Revision-Date: 2025-03-25 15:00+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2025-03-26 08:09+0000\n"
-"X-Generator: Launchpad (build d61bb8eb9830eb975fb0e8573deec46f2e0bb15b)\n"
+"X-Launchpad-Export-Date: 2025-06-18 05:24+0000\n"
+"X-Generator: Launchpad (build 102302b48d804bc4284f26b4edb16220a44bef79)\n"
 
 #: 950.data.seed-values.sql:2
 msgid "oclc"
@@ -16635,63 +16635,67 @@ msgstr ""
 msgid "Grid Config: catalog.record.parts"
 msgstr ""
 
-#: 950.data.seed-values.sql:25035
+#: 950.data.seed-values.sql:25032
+msgid "Grid Config: eg.grid.admin.config.coded_value_map"
+msgstr ""
+
+#: 950.data.seed-values.sql:25044
 msgid "Grid UI density"
 msgstr ""
 
-#: 950.data.seed-values.sql:25038
+#: 950.data.seed-values.sql:25047
 msgid ""
 "Whitespace around table cells in staff UI data grids. Default is "
 "\"standard\"."
 msgstr ""
 
-#: 950.data.seed-values.sql:25049
+#: 950.data.seed-values.sql:25058
 msgid "OPAC Alert Banner: Display"
 msgstr ""
 
-#: 950.data.seed-values.sql:25052
+#: 950.data.seed-values.sql:25061
 msgid "Show an alert banner in the OPAC. Default is false."
 msgstr ""
 
-#: 950.data.seed-values.sql:25059
+#: 950.data.seed-values.sql:25068
 msgid "OPAC Alert Banner: Type"
 msgstr ""
 
-#: 950.data.seed-values.sql:25062
+#: 950.data.seed-values.sql:25071
 msgid ""
 "Determine the display of the banner. Options are: success, info, warning, "
 "danger."
 msgstr ""
 
-#: 950.data.seed-values.sql:25069
+#: 950.data.seed-values.sql:25078
 msgid "OPAC Alert Banner: Text"
 msgstr ""
 
-#: 950.data.seed-values.sql:25072
+#: 950.data.seed-values.sql:25081
 msgid "Text that will display in the alert banner."
 msgstr ""
 
-#: 950.data.seed-values.sql:25083
+#: 950.data.seed-values.sql:25092
 msgid "Google Analytics: Enable"
 msgstr ""
 
-#: 950.data.seed-values.sql:25086
+#: 950.data.seed-values.sql:25095
 msgid "Enable Google Analytics in the OPAC. Default is false."
 msgstr ""
 
-#: 950.data.seed-values.sql:25093
+#: 950.data.seed-values.sql:25102
 msgid "Google Analytics: Code"
 msgstr ""
 
-#: 950.data.seed-values.sql:25096
+#: 950.data.seed-values.sql:25105
 msgid "Account code provided by Google. (Example: G-GVGQ11X12)"
 msgstr ""
 
-#: 950.data.seed-values.sql:25107
+#: 950.data.seed-values.sql:25116
 msgid "Staff Client: no new tabs"
 msgstr ""
 
-#: 950.data.seed-values.sql:25110
+#: 950.data.seed-values.sql:25119
 msgid ""
 "Prevents links in the staff interface from opening in new tabs or windows."
 msgstr ""
