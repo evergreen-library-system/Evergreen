@@ -3,6 +3,89 @@
 :numbered:
 :toclevels: 3
 
+== Evergreen 3.14.8 ==
+
+This release contains bug fixes and documentation fixes improving on Evergreen 3.14.7.
+
+=== Upgrade notes ===
+
+The following bugfixes require an upgrade script:
+
+* Clear Form now resets \"Home Library\" to consortium and retains the sticky setting for \"Include Inactive.\" (https://bugs.launchpad.net/evergreen/+bug/1721131[Bug 1721131])
+* Fixes 'Save Grid Settings' for Standing Penalties. (https://bugs.launchpad.net/evergreen/+bug/2069222[Bug 2069222])
+* Fixes bug where MARC import with items might never finish when "Use Org Unit Matching in Copy to Determine Best Match" is in effect (https://bugs.launchpad.net/evergreen/+bug/1848375[Bug 1848375])
+
+=== Accessibility ===
+
+* Fixes AngularJS modal close button contrast in light mode. (https://bugs.launchpad.net/evergreen/+bug/2112613[Bug 2112613])
+* Adds missing form labels, revises heading for metarecord holds formats and languages options (https://bugs.launchpad.net/evergreen/+bug/2115824[Bug 2115824])
+* Fixes focused buttons' text color in self-checkout (https://bugs.launchpad.net/evergreen/+bug/2110163[Bug 2110163])
+
+=== Cataloging ===
+
+* Fixes bug where MARC import with items might never finish when "Use Org Unit Matching in Copy to Determine Best Match" is in effect (https://bugs.launchpad.net/evergreen/+bug/1848375[Bug 1848375])
+* Fixes inability to add items to Record Bucket from Item Status Detail View. (https://bugs.launchpad.net/evergreen/+bug/1952388[Bug 1952388])
+* Fixes record match set display for acquisitions in Vandelay interface by restoring 'bib-acq' type handling. (https://bugs.launchpad.net/evergreen/+bug/1901615[Bug 1901615])
+* Display match set types with appropriate labels in MARC Batch Import/Export. (https://bugs.launchpad.net/evergreen/+bug/1973754[Bug 1973754])
+* Removes "Add/Manage" from item alerts, notes, and tags contextual menu items for consistency with other menus. (https://bugs.launchpad.net/evergreen/+bug/2004026[Bug 2004026])
+* Displays multivalue fixed fields (Ills, Cont, etc) as separate single-character inputs with combobox suggestions. (https://bugs.launchpad.net/evergreen/+bug/2083026[Bug 2083026])
+* Fills in user email for MARC Import/Export background imports (https://bugs.launchpad.net/evergreen/+bug/2091648[Bug 2091648])
+* Focuses on subfield code input rather than value when the code is empty (as when adding a new subfield). (https://bugs.launchpad.net/evergreen/+bug/2111948[Bug 2111948])
+* Allow text in a holdings editor dialog to be translated. (https://bugs.launchpad.net/evergreen/+bug/2115267[Bug 2115267])
+
+=== Developer ===
+
+* Removes an obsolete option from the build tools' make_release script. (https://bugs.launchpad.net/evergreen/+bug/2092338[Bug 2092338])
+
+=== Public catalog ===
+
+* OPAC "Show more copies" link now leads directly to the URL fragment of the first additional copy (https://bugs.launchpad.net/evergreen/+bug/2107576[Bug 2107576])
+* Fixes wrapping and alignment for tooltip text (https://bugs.launchpad.net/evergreen/+bug/2092899[Bug 2092899])
+* Adds a separate navigation landmark for OPAC basket (https://bugs.launchpad.net/evergreen/+bug/2115535[Bug 2115535])
+* Corrects the order of the OPAC checkout history table's cover and checkbox columns (https://bugs.launchpad.net/evergreen/+bug/2104204[Bug 2104204])
+* Changes "Stay logged in?" to "Remember language setting" in the OPAC login form (https://bugs.launchpad.net/evergreen/+bug/2114929[Bug 2114929])
+* Corrects OPAC advanced filters applied count; refactors filter show/hide link as details/summary (https://bugs.launchpad.net/evergreen/+bug/1785697[Bug 1785697])
+
+=== Miscellaneous ===
+
+* Fixes 'Save Grid Settings' for Standing Penalties. (https://bugs.launchpad.net/evergreen/+bug/2069222[Bug 2069222])
+* Makes report template description field more visible and browser-friendly. (https://bugs.launchpad.net/evergreen/+bug/2115261[Bug 2115261])
+* Adds string for 'Fulfilled' hold status for AngularJS interfaces. (https://bugs.launchpad.net/evergreen/+bug/1753795[Bug 1753795])
+* Clear Form now resets \"Home Library\" to consortium and retains the sticky setting for \"Include Inactive.\" (https://bugs.launchpad.net/evergreen/+bug/1721131[Bug 1721131])
+* Docs update to surveys.adoc (https://bugs.launchpad.net/evergreen/+bug/2089025[Bug 2089025])
+
+=== Contributors ===
+
+* Andrea Buntz Neiman
+* Blake Graham-Henderson
+* Dan Briem
+* Dan Guarracino
+* Elizabeth Davis
+* Galen Charlton
+* Garry Collum
+* Ian Skelskey
+* Jane Sandberg
+* Jason Boyer
+* Jason Stephenson
+* Jeff Davis
+* Jennifer Pringle
+* John Amundson
+* Josh Stompro
+* Michele Morgan
+* Mike Rylander
+* Ruth Frasur Davis
+* Sarah Cruz
+* Shula Link
+* Stephanie Leary
+* Steven Mayo
+* Susan Morrison
+* Tara Kunesh
+* Terran McCanna
+
+=== Sponsors ===
+
+* BC Libraries Cooperative
+
 == Evergreen 3.14.7 ==
 
 === Circulation ===
