@@ -103,7 +103,7 @@
   <button type="button" i18n class="btn btn-outline-dark m-1"
     *ngIf="currentFolder && RSvc.folderIsMine(currentFolder)" (click)="newSubfolder()">Add Subfolder</button>
   <button type="button" i18n class="btn btn-outline-dark m-1"
-	*ngIf="currentFolder && RSvc.folderIsMine(currentFolder) && currentFolder.shared() === 'f'" (click)="shareFolder()">Share Folder</button>
+	*ngIf="RSvc.globalCanShare && currentFolder && RSvc.folderIsMine(currentFolder) && currentFolder.shared() === 'f'" (click)="shareFolder()">Share Folder</button>
   <button type="button" i18n class="btn btn-outline-dark m-1"
 	*ngIf="currentFolder && RSvc.folderIsMine(currentFolder) && currentFolder.shared() === 't'" (click)="unshareFolder()">Unshare Folder</button>
 </div>
