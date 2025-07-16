@@ -1,5 +1,7 @@
 BEGIN;
 
+SELECT evergreen.upgrade_deps_block_check('1477', :eg_version);
+
 ALTER TABLE config.hold_matrix_matchpoint ADD COLUMN copy_location INT REFERENCES asset.copy_location (id) DEFERRABLE INITIALLY DEFERRED;
 
 DROP INDEX config.chmm_once_per_paramset;
