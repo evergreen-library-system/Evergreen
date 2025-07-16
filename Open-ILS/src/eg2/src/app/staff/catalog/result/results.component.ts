@@ -95,9 +95,7 @@ export class ResultsComponent implements OnInit, OnDestroy {
 
         this.serverStore.getItem('eg.staff.catalog.results.show_sidebar').then(
             show_sidebar => {
-                this.facetsCollapsed = !show_sidebar;
-                console.debug('Sidebar: ', show_sidebar);
-                console.debug('Collapsed: ', this.facetsCollapsed);
+                this.facetsCollapsed = show_sidebar === false;
                 // Set how many columns the results may take.
                 this.setResultsWidth();
             }
