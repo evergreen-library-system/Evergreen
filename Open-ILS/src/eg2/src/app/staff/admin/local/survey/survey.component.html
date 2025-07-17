@@ -2,7 +2,7 @@
 </eg-staff-banner>
 
 <eg-grid #grid idlClass="asv" [dataSource]="gridDataSource"
-[sortable]="true">
+[sortable]="true" persistKey="admin.local.config.survey">
     <eg-grid-toolbar-button label="New Survey" i18n-label [action]="createNew">
     </eg-grid-toolbar-button>
     <eg-grid-toolbar-action label="Edit Selected" i18n-label [action]="editSelected">
