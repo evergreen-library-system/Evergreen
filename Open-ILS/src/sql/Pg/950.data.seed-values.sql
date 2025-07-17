@@ -26098,5 +26098,11 @@ VALUES (
         'EDI Attribute Sets Grid Settings',
         'cwst', 'label'
     )
+), (
+    'eg.grid.admin.local.config.survey', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.local.config.survey',
+        'Grid Config: admin.local.config.survey',
+        'cwst', 'label'
+    )
 );
-
