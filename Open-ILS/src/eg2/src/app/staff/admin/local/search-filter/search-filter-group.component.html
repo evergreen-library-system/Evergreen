@@ -1,7 +1,7 @@
 <eg-staff-banner bannerText="Search Filter Group Configuration" i18n-bannerText>
     </eg-staff-banner>
 
-<eg-grid #grid idlClass="asfg" [dataSource]="gridDataSource" [sortable]="true">
+<eg-grid #grid idlClass="asfg" [dataSource]="gridDataSource" [sortable]="true" persistKey="admin.local.config.search_filter_group">
 <eg-grid-column label="ID" path="id" name="id" datatype="id" [hidden]="true"></eg-grid-column>
     <eg-grid-toolbar-button label="New Search Filter Group" i18n-label 
         (onClick)="createNew()"></eg-grid-toolbar-button>
