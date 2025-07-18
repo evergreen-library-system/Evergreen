@@ -12,7 +12,7 @@ IF authtimeout %]
 <script>
 const opac_logout_url = "[% mkurl(ctx.opac_root _ '/logout', {active_logout => 1}, 1) %]";
 // confirmation dialog appears 3 minutes before the limit (which must be at least 4 minutes)
-const authTimeout = Math.max([% authtimeout %], (4 * 60 * 1000));
+const authTimeout = Math.max(([% authtimeout %] * 1000), (4 * 60 * 1000));
 const authTimeoutInMinutes = Math.floor(authTimeout / 60 / 1000);
 const dialogPopupInMinutes = Math.max((authTimeoutInMinutes - 3), 1);
 const dialogPopup = Math.floor(dialogPopupInMinutes * 60 * 1000);
