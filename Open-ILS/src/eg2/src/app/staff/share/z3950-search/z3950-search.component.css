@@ -32,7 +32,7 @@ td.z3950_default {
 }
 
 .marc-file:nth-child(odd) {
-  background-color: #EFF1F3;
+  background-color: var(--bs-body-bg);
 }
 
 .marc-name {
