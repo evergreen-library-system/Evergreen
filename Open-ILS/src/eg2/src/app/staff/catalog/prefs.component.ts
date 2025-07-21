@@ -68,7 +68,7 @@ export class PreferencesComponent implements OnInit {
 
     paneChanged(entry: ComboboxEntry) {
         this.updateValue('eg.search.adv_pane', entry ? entry.id : null)
-            .then(value => this.staffCat.defaultTab = value);
+            .then(value => this.staffCat.defaultTab = value || null);
     }
 
     countChanged() {
