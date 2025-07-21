@@ -546,7 +546,7 @@ body>.dropdown-menu {z-index: 2100;}
  */
 #worksheet-outlet thead th { 
   font-weight: bold; 
-  background-color: var(--bs-gray-400); 
+  background-color: var(--grid-header-row); 
   text-align: center; 
   border-bottom: 1px var(--bs-black) solid; 
   border-right: 1px var(--bs-black) solid; 
