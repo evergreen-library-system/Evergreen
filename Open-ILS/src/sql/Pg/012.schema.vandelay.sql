@@ -1179,8 +1179,18 @@ CREATE OR REPLACE FUNCTION vandelay.add_field ( target_xml TEXT, source_xml TEXT
                 } else {
                     for my $to_field (@tos) {
                         if (exists($fields{$f}{match})) {
-                            my @match_list = grep { $to_field->subfield($_) =~ $fields{$f}{match}{$_} } keys %{$fields{$f}{match}};
-                            next unless (scalar(@match_list) == scalar(keys %{$fields{$f}{match}}));
+                            my @match_list;
+                            for my $match_key_sf_code ( keys %{$fields{$f}{match}} ) {
+                                # We loop here because there might be multiple SFs, such as multiple
+                                # $0s in an authority controlled datafield, where one has the EG-special
+                                # format, and others are links to external heading data.
+                                for my $sf_content ($to_field->subfield($match_key_sf_code)) {
+                                    if ($sf_content =~ $fields{$f}{match}{$match_key_sf_code}) {
+                                        push @match_list, $sf_content;
+                                    }
+                                }
+                            }
+                            next unless (scalar(@match_list) >= scalar(keys %{$fields{$f}{match}}));
                         }
                         for my $old_sf ($from_field->subfields) {
                             $to_field->add_subfields( @$old_sf ) if grep(/$$old_sf[0]/,@{$fields{$f}{sf}});
@@ -1253,8 +1263,18 @@ CREATE OR REPLACE FUNCTION vandelay.strip_field(xml text, field text) RETURNS te
     for my $f ( keys %fields) {
         for my $to_field ($r->field( $f )) {
             if (exists($fields{$f}{match})) {
-                my @match_list = grep { $to_field->subfield($_) =~ $fields{$f}{match}{$_} } keys %{$fields{$f}{match}};
-                next unless (scalar(@match_list) == scalar(keys %{$fields{$f}{match}}));
+                my @match_list;
+                for my $match_key_sf_code ( keys %{$fields{$f}{match}} ) {
+                    # We loop here because there might be multiple SFs, such as multiple
+                    # $0s in an authority controlled datafield, where one has the EG-special
+                    # format, and others are links to external heading data.
+                    for my $sf_content ($to_field->subfield($match_key_sf_code)) {
+                        if ($sf_content =~ $fields{$f}{match}{$match_key_sf_code}) {
+                            push @match_list, $sf_content;
+                        }
+                    }
+                }
+                next unless (scalar(@match_list) >= scalar(keys %{$fields{$f}{match}}));
             }
 
             if ( @{$fields{$f}{sf}} ) {
@@ -1421,8 +1441,18 @@ CREATE OR REPLACE FUNCTION vandelay.replace_field
             # field spec contains a regex for this field.  Confirm field on 
             # target record matches the specified regex before replacing.
             if (exists($fields{$f}{match})) {
-                my @match_list = grep { $target_field->subfield($_) =~ $fields{$f}{match}{$_} } keys %{$fields{$f}{match}};
-                next unless (scalar(@match_list) == scalar(keys %{$fields{$f}{match}}));
+                my @match_list;
+                for my $match_key_sf_code ( keys %{$fields{$f}{match}} ) {
+                    # We loop here because there might be multiple SFs, such as multiple
+                    # $0s in an authority controlled datafield, where one has the EG-special
+                    # format, and others are links to external heading data.
+                    for my $sf_content ($target_field->subfield($match_key_sf_code)) {
+                        if ($sf_content =~ $fields{$f}{match}{$match_key_sf_code}) {
+                            push @match_list, $sf_content;
+                        }
+                    }
+                }
+                next unless (scalar(@match_list) >= scalar(keys %{$fields{$f}{match}}));
             }
 
             my @new_subfields;
