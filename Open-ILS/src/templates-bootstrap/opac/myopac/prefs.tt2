@@ -177,13 +177,11 @@
                 </div>
                 <div class='col-md-4'></div>
             </div>
-            [% IF ctx.account_renew_message %]
             <div class="row">
                 <div class='col-md-12 color_4 light_border'>
-                        [% PROCESS "opac/parts/erenew.tt2"; %]
+                    [% PROCESS "opac/parts/erenew.tt2"; %]
                 </div>
             </div>
-            [% END %]
             [% IF ctx.user.stat_cat_entries.size;
                 FOR statcat IN ctx.user.stat_cat_entries;
                     IF statcat.stat_cat.opac_visible == 't'; %]

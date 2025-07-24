@@ -386,6 +386,14 @@ sub load_common {
         $ctx->{hostname} = 'remote';
     }
 
+    my $cache = OpenSRF::Utils::Cache->new('global');
+    $ctx->{cache_account_renew_ok} = sub {
+        my $is_eligible = shift;
+        my $val = $is_eligible ? 'true' : 'false';
+        my $key = 'account_renew_ok_' . $ctx->{user}->id;
+        return $cache->put_cache($key, $val, 3600); # 1 hour expiration
+    };
+
     $ctx->{carousel_loc} = $self->get_carousel_loc;
     $ctx->{physical_loc} = $self->get_physical_loc;
     my $geo_sort = $e->retrieve_config_global_flag('opac.use_geolocation');

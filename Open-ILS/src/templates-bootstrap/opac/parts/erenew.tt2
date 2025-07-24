@@ -1,6 +1,7 @@
 [%
     account_renew_message = '';
 
+    cache_key = ctx.cache_account_renew_ok(0);
     IF !ctx.ecard.renew_enabled;
         account_renew_message = '';
     ELSIF ctx.hastemprenew == 1;
@@ -21,7 +22,7 @@
         account_renew_message = '<span class="light_border"><a class="btn btn-sm btn-action" href="/eg/opac/ecard/renew"><i class="fas fa-user-cog"></i>';
         account_renew_message = account_renew_message _ l("Click here to renew your account");
         account_renew_message = account_renew_message _ '</a></span>';
-        ctx.cache.put_cache('account_renew_ok', 'true', 3600);
+        cache_key = ctx.cache_account_renew_ok(1);
     END;
 %]
 

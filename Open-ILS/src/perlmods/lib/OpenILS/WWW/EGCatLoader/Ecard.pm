@@ -390,10 +390,19 @@ sub load_ecard_submit {
 
     #If this is a renewal, double-check that they are eligible to renew
     my $cache = OpenSRF::Utils::Cache->new('global');
+    my $key = 'account_renew_ok_' . $self->cgi->param('patron_id');
+    my $account_renew_ok = $cache->get_cache($key);
     if ($update_type eq 'renew') {
-        if ($ctx->{ecard}->{renew_enabled} && $cache->get_cache("account_renew_ok") && $cache->get_cache("account_renew_ok") eq 'true') {
+        if ($ctx->{ecard}->{renew_enabled} && defined $account_renew_ok && $account_renew_ok eq 'true') {
         } else {
-            $logger->error("ERENEW - User not in correct status to renew account");
+            $logger->error('ECARD: ERENEW - User not in correct status to renew account');
+            $logger->error("ECARD: ERENEW - renew_enabled = $ctx->{ecard}->{renew_enabled}");
+            $logger->error("ECARD: ERENEW - cache key = $key");
+            if (defined $account_renew_ok) {
+                $logger->error("ECARD: ERENEW - account_renew_ok = $account_renew_ok");
+            } else {
+                $logger->error('ECARD: ERENEW - account_renew_ok = undef');
+            }
             return $self->compile_response;
         }
     }
@@ -509,7 +518,7 @@ sub load_ecard_submit {
             $ctx->{response}->{temp_renew} = 0;
         }
         #set renewal flag in cache to false to prevent user from refreshing the page and submitting again
-        #$cache->put_cache('account_renew_ok','false',3600);
+        #$cache->put_cache('account_renew_ok_' . $self->cgi->param('patron_id'),'false',3600);
     } else {
         $logger->debug( "ECARD: register" );
         $ctx->{response}->{patron_id} = $ctx->{user}->id;
@@ -556,7 +565,7 @@ sub login_vendor {
 
     return unless $auth && $auth->{textcode} eq 'SUCCESS';
 
-    $self->ctx->{authtoken} = $auth->{payload}->{authtoken};
+    $self->ctx->{vendor_authtoken} = $auth->{payload}->{authtoken};
 
     return 1;
 }
@@ -708,7 +717,7 @@ sub update_user {
         {
             flesh => 1,
             flesh_fields => {
-                au => ['billing_address', 'mailing_address', 'groups', 'permissions', 'standing_penalties']
+                au => ['billing_address', 'mailing_address', 'groups', 'permissions', 'standing_penalties', 'settings']
             }
         }
     ]);
@@ -766,9 +775,7 @@ sub update_user {
         $val = $au->home_ou if $field eq 'home_ou' && $val eq '';
 
         if ($field eq 'expire_date') {
-            if ($val) {
-                $val = substr($val, 0, 10)
-            } else {
+            if (!$val) {
                 next; # don't change expire_date if not explicitly passed
             }
         }
@@ -1026,11 +1033,22 @@ sub add_usr_settings {
     my $self = shift;
     my $ctx = $self->ctx;
     my $user = $ctx->{user};
-    my %settings = (
+
+    # defaults
+    my %settings =(
         'opac.hold_notify' => 'email', # default
         'opac.default_pickup_location' => $user->home_ou,
         'opac.default_phone' => $user->day_phone
     );
+
+    # existing settings if any, and they need to be deserialized I think
+    foreach my $setting (@{$user->settings}) {
+        if ($setting->name =~ qr/opac.hold_notify|opac.default_pickup_location|opac.default_phone/) {
+            $settings{$setting->name} = OpenSRF::Utils::JSON->JSON2perl($setting->value);
+        }
+    }
+
+    # quipu overrides if any
     my $opac_hold_notify = $self->cgi->param('opac.hold_notify');
     if ($opac_hold_notify && $opac_hold_notify =~ /^(?!.*?(email|sms|phone).*?\1)(email|sms|phone)(:(?2))*$/) {
         $settings{'opac.hold_notify'} = $opac_hold_notify;
@@ -1055,7 +1073,7 @@ sub add_usr_settings {
     $U->simplereq(
         'open-ils.actor',
         'open-ils.actor.patron.settings.update',
-        $self->ctx->{authtoken}, $user->id, \%settings);
+        $self->ctx->{vendor_authtoken}, $user->id, \%settings);
 
     return 1;
 }
@@ -1105,25 +1123,48 @@ sub add_stat_cats { # or rather: actor.stat_cat_entry_usr_map
         foreach my $asceum_param ($self->cgi->param('asceum')) {
             my ($asc_id, $asce_id) = split ':', $asceum_param;
             my $entry_value = $asce_id;  # default to using the provided value
+            $logger->debug("ECARD: stat cat ID $asce_id paired with entry $asce_id");
 
             # If $asce_id looks like an integer, try to look up the actual value
             if ($asce_id =~ /^\d+$/) {
                 my $stat_cat_entry = $e->retrieve_actor_stat_cat_entry($asce_id);
                 if ($stat_cat_entry) {
                     $entry_value = $stat_cat_entry->value;
+                    $logger->debug("ECARD: entry ID mapped to $entry_value");
                 } else {
                     $logger->info("ECARD: Could not find stat_cat_entry for ID $asce_id, using as-is");
                 }
             }
 
-            my $statcat = Fieldmapper::actor::stat_cat_entry_user_map->new;
-            $statcat->id(-1);
-            $statcat->isnew(1);
-            $statcat->stat_cat($asc_id);
-            $statcat->stat_cat_entry($entry_value);
+            my $sc_entry_usr_map;
+            my $results;
+            if ($user->id) {
+                # search for existing stat cat entry user map if any
+                my $search = {
+                    stat_cat => $asc_id,
+                    target_usr => $user->id
+                };
+                $logger->debug("ECARD: searching for existing stat cat entry user map with criteria: "
+                  . OpenSRF::Utils::JSON->perl2JSON($search));
+                $results = $e->search_actor_stat_cat_entry_user_map($search);
+                $logger->debug("ECARD: search results: " . OpenSRF::Utils::JSON->perl2JSON($results));
+            }
+            # alternative? my $found_statcat = ( $e->search_actor_stat_cat_entry_user_map($search)->@* )[0];
+            if ($results && ref($results) eq 'ARRAY' && @$results) {
+              $sc_entry_usr_map = $results->[0];
+              $logger->debug("ECARD: search for existing stat cat entry user map found a match");
+              $sc_entry_usr_map->ischanged(1);
+            } else {
+              $sc_entry_usr_map = Fieldmapper::actor::stat_cat_entry_user_map->new;
+              $sc_entry_usr_map->id(-1);
+              $sc_entry_usr_map->isnew(1);
+              $sc_entry_usr_map->stat_cat($asc_id);
+              $logger->debug("ECARD: no matching stat cat entry user map found, creating a new one");
+            }
+            $sc_entry_usr_map->stat_cat_entry($entry_value);
 
-            push @statcats, $statcat;
-            $logger->info("ECARD: Added stat cat mapping - cat:$asc_id entry:$entry_value");
+            push @statcats, $sc_entry_usr_map;
+            $logger->info("ECARD: Added stat cat mapping " . OpenSRF::Utils::JSON->perl2JSON($sc_entry_usr_map));
         }
     };
     if ($@) {
@@ -1265,7 +1306,7 @@ sub save_user {
     my $resp = $U->simplereq(
         'open-ils.actor',
         'open-ils.actor.patron.update',
-        $self->ctx->{authtoken}, $user
+        $self->ctx->{vendor_authtoken}, $user
     );
 
     $resp = {textcode => 'UNKNOWN_ERROR'} unless $resp;

@@ -3855,10 +3855,6 @@ sub check_account_exp {
         $ctx->{hasproblem} = 0;
     }
 
-    #determine which message to show (if any)
-    my $cache = OpenSRF::Utils::Cache->new('global');
-    $cache->put_cache('account_renew_ok','false',3600);
-
     my $home_ou = $ctx->{user}->home_ou;
     $home_ou = ref($home_ou) ? $home_ou->id : $home_ou; # this is not consistently fleshed
     my $erenewal_offer_window = $self->ctx->{get_org_setting}->(
@@ -3872,27 +3868,7 @@ sub check_account_exp {
         $ctx->{within_renewal_offer_period} = 1;
     }
 
-    # TODO: while the intended logic is now in the template opac/parts/erenew.tt2
-    #       more testing is likely needed
-    if ($ctx->{hastemprenew} eq 1) { #user already has active temp renewal
-        $ctx->{account_renew_message} = '<div style="border:2px solid green;padding:5px;">Your account
-        could only be temporarily renewed because your address changed. Please visit your
-        library with proof of identity and curreent address to complete your account renewal.</div>';
-    } elsif (DateTime->today->add(days=>$erenewal_offer_window) < $expire_date) {
-        #expiration date is too far in future - don't show message
-        $ctx->{account_renew_message} = '';
-    } elsif ($ctx->{hasproblem} eq 1 or $ctx->{eligible_permgroup} eq 0) { #see other problems above
-        $ctx->{account_renew_message} = '<div style="border:2px solid green;padding:5px;">Your account is
-        due for renewal, but it cannot be renewed online. Please visit your
-        library with proof of identity and current address to update and renew your account.</div>';
-    } elsif ($ctx->{user_stats}->{fines}->{balance_owed} > 0) { #user has fines
-        $ctx->{account_renew_message} = '<div style="border:2px solid green;padding:5px;">Your account
-        is due for renewal. Please pay your outstanding fines in order to renew your account.</div>';
-    } else {
-        $ctx->{account_renew_message} = '<span class="light_border"><a class="btn btn-sm btn-action"
-        href="/eg/opac/ecard/renew"><i class="fas fa-user-cog"></i>Click here to renew your account</a></span>';
-        $cache->put_cache('account_renew_ok','true',3600);
-    }
+    # The rest of the business logic and the setting of the cache is handled in erenew.tt2 now
 
     return 1;
 }

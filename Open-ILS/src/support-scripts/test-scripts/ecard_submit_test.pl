@@ -29,6 +29,10 @@ my $VENDOR_USERNAME = 'admin';
 #           ('vendor.quipu.ecard.account_id', 4, 1234),
 #           ('opac.ecard_registration_enabled', 1, true),
 #           ('opac.ecard_renewal_enabled', 1, true);
+# TODO: insert into actor.stat_cat (owner, name, opac_visible, usr_summary, checkout_archive, required, allow_freetext)
+#       values (1, 'Nintendo or Sega?', true, true, false, false, false);
+#       insert into actor.stat_cat_entry (stat_cat, owner, value)
+#       values (1, 1, 'Nintendo'), (1, 1, 'Sega');
 my $VENDOR_PASSWORD = 'ecard_password';
 my $ECARD_SUBMIT_URL = "https://$host/eg/opac/ecard/submit";
 my $OSRF_GATEWAY_URL = "https://$host/osrf-gateway-v1";
@@ -93,10 +97,36 @@ sub osrf_gateway_request {
 subtest 'API Tests' => sub {
     my $ua = create_ua();
 
+    # https://host/osrf-gateway-v1?service=open-ils.auth&method=open-ils.auth.login&param=
+
+    my $auth_token;
+
+    # Test: auth token
+    {
+        my $response = osrf_gateway_request($ua, [
+            service => 'open-ils.auth',
+            method => 'open-ils.auth.login',
+            param => encode_json({ username => "admin", password => "demo123" }) # for expediency; the vendor credentials we added earlier will not suffice here currently
+        ]);
+        ok($response->is_success, 'Login submission succeeds');
+        my $content = eval { decode_json($response->decoded_content) };
+        if (defined $content->{payload} && defined $content->{payload}->[0] && defined $content->{payload}->[0]->{payload} && defined $content->{payload}->[0]->{payload}->{authtoken}) {
+            $auth_token = $content->{payload}->[0]->{payload}->{authtoken};
+        }
+        ok($auth_token, 'Received authtoken');
+        diag(Dumper($auth_token || $content));
+    }
+
+    my $first_patron_id;
+
     # Test: Valid submission
     {
         my $response = ecard_submit_request($ua, {
             %ecard_data,
+            asceum => '1:Sega',
+            'opac.hold_notify' => 'phone',
+            'opac.default_phone' => '987-654-3210',
+            'opac.default_pickup_location' => '8',
             vendor_username => $VENDOR_USERNAME,
             vendor_password => $VENDOR_PASSWORD,
             security_token => generate_ecard_token($SHARED_SECRET),
@@ -105,6 +135,38 @@ subtest 'API Tests' => sub {
         my $content = eval { decode_json($response->decoded_content) };
         ok(!$@, 'Response is valid JSON');
         diag(Dumper($content || (defined $response->title ? $response->title : $response)));
+        $first_patron_id = $content->{patron_id};
+    }
+
+    my $expire_date;
+
+    # open-ils.actor.user.opac.renewal
+    {
+        my $response = osrf_gateway_request($ua, [
+            service => 'open-ils.actor',
+            method => 'open-ils.actor.user.opac.renewal',
+            param => encode_json($auth_token),
+            param => encode_json($first_patron_id)
+        ]);
+        ok($response->is_success, 'Patron retrieval submission succeeds');
+        my $content = eval { decode_json($response->decoded_content) };
+        ok(!$@, 'Response is valid JSON');
+        is($content->{status}, '200', 'Retrieval succeeded');
+        my $user = $content->{payload}[0]->{user};
+        is($user->{email}, $ecard_data{'email'}, 'Email matches');
+        $expire_date = $user->{expire_date};
+        diag("expire_date = $expire_date");
+        ok(defined $user->{settings}->{'opac.hold_notify'}, 'opac.hold_notify is set');
+        is($user->{settings}->{'opac.hold_notify'}, 'phone', 'opac.hold_notify is set to phone');
+        ok(defined $user->{settings}->{'opac.default_phone'}, 'opac.default_phone is set');
+        is($user->{settings}->{'opac.default_phone'}, '987-654-3210', 'opac.default_phone is set to 987-654-3210');
+        ok(defined $user->{settings}->{'opac.default_pickup_location'}, 'opac.default_pickup_location is set');
+        is($user->{settings}->{'opac.default_pickup_location'}, '8', 'opac.default_pickup_location is set to 8');
+        diag('user settings => ' . Dumper($user->{settings}));
+        ok(defined $user->{stat_cat_entries}->{1}, 'stat cat is set');
+        is($user->{stat_cat_entries}->{1}, 'Sega', 'stat cat is set to Sega');
+        diag('user stat cat entries => ' . Dumper($user->{stat_cat_entries}));
+        #diag(Dumper($content || (defined $response->title ? $response->title : $response)));
     }
 
     # Test: Expired token
@@ -170,7 +232,7 @@ subtest 'API Tests' => sub {
         ok($response->is_success, 'API test mode submission succeeds');
         my $content = eval { decode_json($response->decoded_content) };
         ok(!$@, 'API test mode response is valid JSON');
-        diag(Dumper($content || (defined $response->title ? $response->title : $response)));
+        #diag(Dumper($content || (defined $response->title ? $response->title : $response)));
     }
 
     # Test: Data mode test
@@ -184,7 +246,7 @@ subtest 'API Tests' => sub {
         ok($response->is_success, 'Data mode test submission succeeds');
         my $content = eval { decode_json($response->decoded_content) };
         ok(!$@, 'Data mode response is valid JSON');
-        diag(Dumper($content || (defined $response->title ? $response->title : $response)));
+        #diag(Dumper($content || (defined $response->title ? $response->title : $response)));
     }
 
     # Test: Username taken
@@ -234,28 +296,6 @@ subtest 'API Tests' => sub {
         $patron_id = $content->{patron_id};
         diag("patron_id = $patron_id");
     }
-
-    # https://host/osrf-gateway-v1?service=open-ils.auth&method=open-ils.auth.login&param=
-
-    my $auth_token;
-
-    # Test: auth token
-    {
-        my $response = osrf_gateway_request($ua, [
-            service => 'open-ils.auth',
-            method => 'open-ils.auth.login',
-            param => encode_json({ username => "admin", password => "demo123" }) # for expediency; the vendor credentials we added earlier will not suffice here currently
-        ]);
-        ok($response->is_success, 'Login submission succeeds');
-        my $content = eval { decode_json($response->decoded_content) };
-        if (defined $content->{payload} && defined $content->{payload}->[0] && defined $content->{payload}->[0]->{payload} && defined $content->{payload}->[0]->{payload}->{authtoken}) {
-            $auth_token = $content->{payload}->[0]->{payload}->{authtoken};
-        }
-        ok($auth_token, 'Received authtoken');
-        diag(Dumper($auth_token || $content));
-    }
-
-    my $expire_date;
 
     # open-ils.actor.user.opac.renewal
     {
@@ -334,10 +374,13 @@ subtest 'API Tests' => sub {
     );
 
     # diag(Dumper($login_resp));
-
     ok($login_resp->is_redirect, 'Patron login is successful (redirects)');
 
+    diag('starting second page load...');
+
     # This sets an eligibility key in a cache that gets checked
+    my $second_page_load = $patron_ua->get("https://$host/eg/opac/myopac/prefs");
+    # diag(Dumper($second_page_load));
 
     # Test: User editing (for renewal)
     {
@@ -353,7 +396,8 @@ subtest 'API Tests' => sub {
         my $content = eval { decode_json($response->decoded_content) };
         diag(Dumper($content || (defined $response->title ? $response->title : $response)));
         ok(!$@, 'Response is valid JSON');
-        isnt($content->{status}, undef, 'User should be eligible');
+        isnt($content->{status}, undef, 'User should be eligible (status not undef)');
+        isnt($content->{status}, 'UPDATE_ERR', 'User should be eligible (status not UPDATE_ERR)');
     }
 
     # open-ils.actor.user.opac.renewal
@@ -376,6 +420,152 @@ subtest 'API Tests' => sub {
         #diag(Dumper($content || (defined $response->title ? $response->title : $response)));
     }
 
+
+    {
+        my $response = ecard_submit_request($ua, {
+            patron_id => $patron_id,
+            %ecard_data,
+            asceum => '1:Nintendo',
+            'opac.hold_notify' => 'email',
+            'opac.default_phone' => '555-555-5555',
+            'opac.default_pickup_location' => '4',
+            expire_date => $new_expire_date, # TODO: this will get reset if we don't provide it; I think that's a bug
+            vendor_username => $VENDOR_USERNAME,
+            vendor_password => $VENDOR_PASSWORD,
+            security_token => generate_ecard_token($SHARED_SECRET),
+        });
+        ok($response->is_success, 'Renewal submission succeeds for adding stat cat and settings');
+        my $content = eval { decode_json($response->decoded_content) };
+        diag(Dumper($content || (defined $response->title ? $response->title : $response)));
+        ok(!$@, 'Response is valid JSON');
+        isnt($content->{status}, undef, 'User should be eligible (status not undef)');
+        isnt($content->{status}, 'UPDATE_ERR', 'User should be eligible (status not UPDATE_ERR)');
+    }
+
+    # open-ils.actor.user.opac.renewal
+    {
+        my $response = osrf_gateway_request($ua, [
+            service => 'open-ils.actor',
+            method => 'open-ils.actor.user.opac.renewal',
+            param => encode_json($auth_token),
+            param => encode_json($patron_id)
+        ]);
+        ok($response->is_success, 'Patron retrieval submission for checking added stat cat and settings succeeds');
+        my $content = eval { decode_json($response->decoded_content) };
+        ok(!$@, 'Response is valid JSON');
+        is($content->{status}, '200', 'Retrieval succeeded');
+        my $user = $content->{payload}[0]->{user};
+        is($user->{email}, $ecard_data{'email'}, 'Email matches');
+        $expire_date = $user->{expire_date};
+        diag("expire_date = $expire_date");
+        ok(defined $user->{settings}->{'opac.hold_notify'}, 'opac.hold_notify is set');
+        is($user->{settings}->{'opac.hold_notify'}, 'email', 'opac.hold_notify is set to email');
+        ok(defined $user->{settings}->{'opac.default_phone'}, 'opac.default_phone is set');
+        is($user->{settings}->{'opac.default_phone'}, '555-555-5555', 'opac.default_phone is set to 555-555-5555');
+        ok(defined $user->{settings}->{'opac.default_pickup_location'}, 'opac.default_pickup_location is set');
+        is($user->{settings}->{'opac.default_pickup_location'}, '4', 'opac.default_pickup_location is set to 4');
+        diag('user settings => ' . Dumper($user->{settings}));
+        ok(defined $user->{stat_cat_entries}->{1}, 'stat cat is set');
+        is($user->{stat_cat_entries}->{1}, 'Nintendo', 'stat cat is set to Nintendo');
+        diag('user stat cat entries => ' . Dumper($user->{stat_cat_entries}));
+        #diag(Dumper($content || (defined $response->title ? $response->title : $response)));
+    }
+
+    # now for editing
+    {
+        my $response = ecard_submit_request($ua, {
+            patron_id => $patron_id,
+            %ecard_data,
+            asceum => '1:Sega',
+            'opac.hold_notify' => 'phone:email',
+            'opac.default_phone' => '999-999-9999',
+            'opac.default_pickup_location' => '5',
+            expire_date => $new_expire_date, # TODO: this will get reset if we don't provide it; I think that's a bug
+            vendor_username => $VENDOR_USERNAME,
+            vendor_password => $VENDOR_PASSWORD,
+            security_token => generate_ecard_token($SHARED_SECRET),
+        });
+        ok($response->is_success, 'Renewal submission succeeds for editing stat cats and settings');
+        my $content = eval { decode_json($response->decoded_content) };
+        diag(Dumper($content || (defined $response->title ? $response->title : $response)));
+        ok(!$@, 'Response is valid JSON');
+        isnt($content->{status}, undef, 'User should be eligible (status not undef)');
+        isnt($content->{status}, 'UPDATE_ERR', 'User should be eligible (status not UPDATE_ERR)');
+    }
+
+    {
+        my $response = osrf_gateway_request($ua, [
+            service => 'open-ils.actor',
+            method => 'open-ils.actor.user.opac.renewal',
+            param => encode_json($auth_token),
+            param => encode_json($patron_id)
+        ]);
+        ok($response->is_success, 'Patron retrieval submission for checking edited stat cat and settings succeeds');
+        my $content = eval { decode_json($response->decoded_content) };
+        ok(!$@, 'Response is valid JSON');
+        is($content->{status}, '200', 'Retrieval succeeded');
+        my $user = $content->{payload}[0]->{user};
+        is($user->{email}, $ecard_data{'email'}, 'Email matches');
+        $expire_date = $user->{expire_date};
+        diag("expire_date = $expire_date");
+        ok(defined $user->{settings}->{'opac.hold_notify'}, 'opac.hold_notify is set');
+        is($user->{settings}->{'opac.hold_notify'}, 'phone:email', 'opac.hold_notify is set to phone:email');
+        ok(defined $user->{settings}->{'opac.default_phone'}, 'opac.default_phone is set');
+        is($user->{settings}->{'opac.default_phone'}, '999-999-9999', 'opac.default_phone is set to 999-999-9999');
+        ok(defined $user->{settings}->{'opac.default_pickup_location'}, 'opac.default_pickup_location is set');
+        is($user->{settings}->{'opac.default_pickup_location'}, '5', 'opac.default_pickup_location is set to 5');
+        diag('user settings => ' . Dumper($user->{settings}));
+        ok(defined $user->{stat_cat_entries}->{1}, 'stat cat is set');
+        is($user->{stat_cat_entries}->{1}, 'Sega', 'stat cat is set to Sega');
+        diag('user stat cat entries => ' . Dumper($user->{stat_cat_entries}));
+        #diag(Dumper($content || (defined $response->title ? $response->title : $response)));
+    }
+
+    # this time, let's edit and leave the settings alone and see if they change (they should not)
+    {
+        my $response = ecard_submit_request($ua, {
+            patron_id => $patron_id,
+            %ecard_data,
+            expire_date => $new_expire_date, # TODO: this will get reset if we don't provide it; I think that's a bug
+            vendor_username => $VENDOR_USERNAME,
+            vendor_password => $VENDOR_PASSWORD,
+            security_token => generate_ecard_token($SHARED_SECRET),
+        });
+        ok($response->is_success, 'Renewal submission succeeds for editing stat cats and settings');
+        my $content = eval { decode_json($response->decoded_content) };
+        diag(Dumper($content || (defined $response->title ? $response->title : $response)));
+        ok(!$@, 'Response is valid JSON');
+        isnt($content->{status}, undef, 'User should be eligible (status not undef)');
+        isnt($content->{status}, 'UPDATE_ERR', 'User should be eligible (status not UPDATE_ERR)');
+    }
+
+    {
+        my $response = osrf_gateway_request($ua, [
+            service => 'open-ils.actor',
+            method => 'open-ils.actor.user.opac.renewal',
+            param => encode_json($auth_token),
+            param => encode_json($patron_id)
+        ]);
+        ok($response->is_success, 'Patron retrieval submission for checking stat cats and settings');
+        my $content = eval { decode_json($response->decoded_content) };
+        ok(!$@, 'Response is valid JSON');
+        is($content->{status}, '200', 'Retrieval succeeded');
+        my $user = $content->{payload}[0]->{user};
+        is($user->{email}, $ecard_data{'email'}, 'Email matches');
+        $expire_date = $user->{expire_date};
+        diag("expire_date = $expire_date");
+        ok(defined $user->{settings}->{'opac.hold_notify'}, 'opac.hold_notify is set');
+        is($user->{settings}->{'opac.hold_notify'}, 'phone:email', 'opac.hold_notify is set to phone:email');
+        ok(defined $user->{settings}->{'opac.default_phone'}, 'opac.default_phone is set');
+        is($user->{settings}->{'opac.default_phone'}, '999-999-9999', 'opac.default_phone is set to 999-999-9999');
+        ok(defined $user->{settings}->{'opac.default_pickup_location'}, 'opac.default_pickup_location is set');
+        is($user->{settings}->{'opac.default_pickup_location'}, '5', 'opac.default_pickup_location is set to 5');
+        diag('user settings => ' . Dumper($user->{settings}));
+        ok(defined $user->{stat_cat_entries}->{1}, 'stat cat is set');
+        is($user->{stat_cat_entries}->{1}, 'Sega', 'stat cat is set to Sega');
+        diag('user stat cat entries => ' . Dumper($user->{stat_cat_entries}));
+        #diag(Dumper($content || (defined $response->title ? $response->title : $response)));
+    }
 };
 
 done_testing();
