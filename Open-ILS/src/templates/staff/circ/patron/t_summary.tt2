@@ -210,9 +210,9 @@
         <textarea id="patron-address-copy-{{addr.id()}}" rows="2" 
           style="visibility:hidden">[%- l(
             '[_1] [_2] [_3]&#13;&#10;[_4] [_5]&#13;&#10;[_6], [_7] [_8]', 
-            '{{patron().first_given_name()}}',
-            '{{patron().second_given_name()}}',
-            '{{patron().family_name()}}',
+            '{{patron().pref_first_given_name() || patron().first_given_name()}}',
+            '{{patron().pref_second_given_name() || patron().second_given_name()}}',
+            '{{patron().pref_family_name() || patron().family_name()}}',
             '{{addr.street1()}}',
             '{{addr.street2()}}',
             '{{addr.city()}}',
