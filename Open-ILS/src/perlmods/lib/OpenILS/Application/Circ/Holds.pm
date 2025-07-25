@@ -895,25 +895,19 @@ sub recently_canceled_holds_filter {
     $filters ||= {};
     $filters->{where} ||= {};
 
-    my $cancel_age;
+    my $cancel_age = $U->ou_ancestor_setting_value(
+        $e->requestor->ws_ou, 'circ.holds.canceled.display_age', $e);
+
     my $cancel_count = $U->ou_ancestor_setting_value(
-            $e->requestor->ws_ou, 'circ.holds.canceled.display_count', $e);
+        $e->requestor->ws_ou, 'circ.holds.canceled.display_count', $e);
+    $cancel_count = 10 unless ($cancel_age || $cancel_count);
 
-    unless($cancel_count) {
-        $cancel_age = $U->ou_ancestor_setting_value(
-            $e->requestor->ws_ou, 'circ.holds.canceled.display_age', $e);
-
-        # if no settings are defined, default to last 10 cancelled holds
-        $cancel_count = 10 unless $cancel_age;
-    }
-
-    if($cancel_count) { # limit by count
-
+    if ($cancel_count) {
         $filters->{where}->{cancel_time} = {'!=' => undef};
         $filters->{limit} = $cancel_count;
+    }
 
-    } elsif($cancel_age) { # limit by age
-
+    if ($cancel_age) {
         # find all of the canceled holds that were canceled within the configured time frame
         my $date = DateTime->now->subtract(seconds => 
             OpenILS::Utils::DateTime->interval_to_seconds($cancel_age));
@@ -3852,6 +3846,7 @@ sub stream_wide_holds {
             $filter->{where}->{$_} for keys %{$filter->{where}};
 
         $limit = $filter->{limit} if $filter->{limit};
+        $order_by = [{cancel_time => {dir => 'desc'}}];
     }
 
     my $filters = OpenSRF::Utils::JSON->perl2JSON($restrictions);
