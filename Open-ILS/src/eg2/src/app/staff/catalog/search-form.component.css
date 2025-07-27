@@ -34,6 +34,6 @@ select.form-control:not([size]):not([multiple]) {
   margin-bottom: 0;
 }
 
-[data-bs-theme="dark"] .btn.btn-light {
+[data-bs-theme="dark"] :host .btn.btn-light {
   border-color: transparent;
 }

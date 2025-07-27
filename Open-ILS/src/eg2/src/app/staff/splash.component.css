@@ -15,7 +15,7 @@
   margin: 30px 0; 
 }
 
-[data-bs-theme="dark"] img.eg-logo {
+[data-bs-theme="dark"] :host img.eg-logo {
   filter: brightness(90%);
 }
 

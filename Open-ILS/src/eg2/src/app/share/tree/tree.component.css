@@ -89,7 +89,7 @@
   border: 1px solid var(--tree-border);
 }
 
-[data-bs-theme="dark"] .eg-tree-branch .eg-tree-node.active > .eg-tree-node-wrapper {
+[data-bs-theme="dark"] :host .eg-tree-branch .eg-tree-node.active > .eg-tree-node-wrapper {
   background-color: rgba(255,255,255, 0.1);
 }
 
@@ -98,7 +98,7 @@
     border-color: var(--bs-gray-300);
 }
 
-[data-bs-theme="dark"] .eg-tree.blurred .eg-tree-node.active > .eg-tree-node-wrapper {
+[data-bs-theme="dark"] :host .eg-tree.blurred .eg-tree-node.active > .eg-tree-node-wrapper {
   background-color: transparent;
   border-color: var(--bs-gray-600);
 }

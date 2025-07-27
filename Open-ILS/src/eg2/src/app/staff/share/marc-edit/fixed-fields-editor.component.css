@@ -10,7 +10,7 @@
 
 [data-bs-theme="dark"] .ff-field:hover,
 [data-bs-theme="dark"] .ff-field:has(:focus) {
-  background-color: var(--bs-yellow-025);
+  background-color: var(--bs-body-bg-highlight);
 }
 
 /* Tighten up fixed field code and value */

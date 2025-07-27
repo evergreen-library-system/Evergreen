@@ -64,8 +64,8 @@
   opacity: 1;
 }
 
-[data-bs-theme="dark"] .eg-grid-toolbar-utilities .btn-outline-dark.disabled,
-[data-bs-theme="dark"] .eg-grid-toolbar-utilities .btn-outline-dark:disabled {
+[data-bs-theme="dark"] :host .eg-grid-toolbar-utilities .btn-outline-dark.disabled,
+[data-bs-theme="dark"] :host .eg-grid-toolbar-utilities .btn-outline-dark:disabled {
   opacity: 1;
 }
 

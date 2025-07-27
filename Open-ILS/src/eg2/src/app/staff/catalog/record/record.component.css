@@ -2,7 +2,7 @@
   background-color: hsla(223, 25%, 91%, 1);
 }
 
-[data-bs-theme="dark"] #marcEditor {
+[data-bs-theme="dark"] :host #marcEditor {
   background-color: var(--bs-body-bg-alt);
 }
 

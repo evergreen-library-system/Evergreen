@@ -2,8 +2,14 @@ eg-marc-rich-editor,
 #eg-marc-rich-editor {
   background-color: var(--gray-125);
 }
-[data-bs-theme="dark"] #eg-marc-rich-editor {
+
+#eg-marc-rich-editor {
+  border-block-end: 1px solid var(--border);
+}
+
+[data-bs-theme="dark"] :host #eg-marc-rich-editor {
   background-color: var(--bs-body-bg-alt);
+  border-block-end: 1px solid var(--bs-gray-700);
 }
 
 .fixed-fields-container {
@@ -25,9 +31,9 @@ eg-marc-rich-editor,
   border-color: var(--bs-gray-600);
   color: white;
 }
-[data-bs-theme="dark"] .marc-toolbar,
-[data-bs-theme="dark"] .marc-toolbar .btn-secondary {
-  background-color: var(--bs-gray-900);
+[data-bs-theme="dark"] :host .marc-toolbar,
+[data-bs-theme="dark"] :host .marc-toolbar .btn-secondary {
+  background-color: var(--bs-gray-850);
   border-color: var(--bs-gray-900);
   color: white;
 }
@@ -36,15 +42,15 @@ eg-marc-rich-editor,
 .marc-toolbar .btn-secondary:hover {
   background-color: var(--gray-650);
 }
-[data-bs-theme="dark"] .marc-toolbar .btn-secondary:focus,
-[data-bs-theme="dark"] .marc-toolbar .btn-secondary:hover {
+[data-bs-theme="dark"] :host .marc-toolbar .btn-secondary:focus,
+[data-bs-theme="dark"] :host .marc-toolbar .btn-secondary:hover {
   background-color: var(--bs-gray-700);
 }
 
 .marc-toolbar .badge-dark {
   background-color: var(--gray-300);
 }
-[data-bs-theme="dark"] .marc-toolbar .badge-dark {
+[data-bs-theme="dark"] :host .marc-toolbar .badge-dark {
   background-color: var(--bs-gray-700);
 }
 
@@ -73,7 +79,7 @@ eg-marc-rich-editor,
   width: 100%;
   --bs-table-bg: var(--gray-125);
 }
-[data-bs-theme="dark"] .marc-table {
+[data-bs-theme="dark"] :host .marc-table {
   margin-bottom: 0;
   table-layout: fixed;
   width: 100%;
@@ -138,30 +144,30 @@ eg-marc-rich-editor,
 .marc-table tr {
   background-color: var(--gray-125);
 }
-[data-bs-theme="dark"] .marc-table tr {
-  background-color: var(--bs-gray-950);
+[data-bs-theme="dark"] :host .marc-table tr {
+  background-color: var(--bs-body-bg-alt)
 }
 
 .start-even tr:not(.changed):nth-child(odd),
 .marc-table:not(.start-even) tr:not(.changed):nth-child(even) {
   background-color: var(--gray-100);
 }
-[data-bs-theme="dark"] .start-even tr:not(.changed):nth-child(odd),
-[data-bs-theme="dark"] .marc-table:not(.start-even) tr:not(.changed):nth-child(even) {
+[data-bs-theme="dark"] :host .start-even tr:not(.changed):nth-child(odd),
+[data-bs-theme="dark"] :host .marc-table:not(.start-even) tr:not(.changed):nth-child(even) {
   background-color: var(--gray-925);
 }
 
 .marc-table tr.changed {
   background-color: var(--gray-200);
 }
-[data-bs-theme="dark"] .marc-table tr.changed {
+[data-bs-theme="dark"] :host .marc-table tr.changed {
   background-color: var(--bs-gray-900);
 }
 
 .marc-table tr.changed th.tag {
   border-left: .2rem dotted black;
 }
-[data-bs-theme="dark"] .marc-table tr.changed th.tag {
+[data-bs-theme="dark"] :host .marc-table tr.changed th.tag {
   border-left: .2rem dotted white;
 }
 
@@ -177,10 +183,10 @@ tr:nth-child(odd):hover,
   -webkit-transform: scale(1);
   -moz-transform: scale(1);
 }
-[data-bs-theme="dark"] tr:nth-child(even):hover,
-[data-bs-theme="dark"] tr:nth-child(odd):hover,
-[data-bs-theme="dark"] .start-even tr:nth-child(even):hover,
-[data-bs-theme="dark"] .start-even tr:nth-child(odd):hover {
+[data-bs-theme="dark"] :host tr:nth-child(even):hover,
+[data-bs-theme="dark"] :host tr:nth-child(odd):hover,
+[data-bs-theme="dark"] :host .start-even tr:nth-child(even):hover,
+[data-bs-theme="dark"] :host .start-even tr:nth-child(odd):hover {
   background-color: var(--bs-blue-900-desat) !important;
 }
 
@@ -191,10 +197,10 @@ tr#marc-tag-END:hover {
   background-color: var(--bs-table-bg) !important;
   box-shadow: none;
 }
-[data-bs-theme="dark"] tr#marc-tag-END,
-[data-bs-theme="dark"] tr#marc-tag-END:not(.changed):nth-child(even),
-[data-bs-theme="dark"] tr#marc-tag-END:hover {
-  background-color: var(--bs-table-bg) !important;
+[data-bs-theme="dark"] :host tr#marc-tag-END,
+[data-bs-theme="dark"] :host tr#marc-tag-END:not(.changed):nth-child(even),
+[data-bs-theme="dark"] :host tr#marc-tag-END:hover {
+  background-color: var(--bs-body-bg) !important;
 }
 
 .marc-table td,
@@ -312,7 +318,7 @@ tr#marc-tag-END:hover {
   padding-bottom: 0.25rem;
   font-weight: 600;
 }
-[data-bs-theme="dark"] .field-hints h5 {
+[data-bs-theme="dark"] :host .field-hints h5 {
   border-bottom: 1px solid var(--border);
 }
 
@@ -357,7 +363,7 @@ button.delete-subfield {
   border-left: 1px solid var(--gray-150);
   border-radius: 0;
 }
-[data-bs-theme="dark"] button.delete-subfield {
+[data-bs-theme="dark"] :host button.delete-subfield {
   color: var(--bs-gray-400);
   background-color: var(--bs-gray-900);
   border: 1px solid var(--bs-gray-800);
@@ -370,10 +376,10 @@ button.delete-subfield:hover,
 .marc-table tr.marc-field:hover button.delete-subfield {
   color: var(--gray-700);
 }
-[data-bs-theme="dark"] button.delete-subfield:focus,
-[data-bs-theme="dark"] button.delete-subfield:hover,
-[data-bs-theme="dark"] .marc-table tr.marc-field:focus button.delete-subfield,
-[data-bs-theme="dark"] .marc-table tr.marc-field:hover button.delete-subfield {
+[data-bs-theme="dark"] :host button.delete-subfield:focus,
+[data-bs-theme="dark"] :host button.delete-subfield:hover,
+[data-bs-theme="dark"] :host .marc-table tr.marc-field:focus button.delete-subfield,
+[data-bs-theme="dark"] :host .marc-table tr.marc-field:hover button.delete-subfield {
   color: var(--bs-gray-300);
 }
 
@@ -389,7 +395,7 @@ button.delete-subfield:hover,
   border: 1px solid var(--gray-700);
   box-shadow: 1px 1px .25rem rgba(0,0,0,0.25);
 }
-[data-bs-theme="dark"] .btn-tiny:hover {
+[data-bs-theme="dark"] :host .btn-tiny:hover {
   border: 1px solid var(--bs-gray-300);
 }
 
