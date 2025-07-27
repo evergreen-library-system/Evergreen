@@ -307,9 +307,9 @@ function($scope,  $q , $location , $filter , egCore , egNet , egUser , egAlertDi
                 egCore.strings.setPageTitle(
                     egCore.strings.PAGE_TITLE_PATRON_NAME, 
                     egCore.strings['PAGE_TITLE_PATRON_' + tab.toUpperCase()],
-                    {   lname : patronSvc.current.family_name(),
-                        fname : patronSvc.current.first_given_name(),
-                        mname : patronSvc.current.second_given_name()
+                    {   lname : patronSvc.current.pref_family_name() || patronSvc.current.family_name(),
+                        fname : patronSvc.current.pref_first_given_name() || patronSvc.current.first_given_name(),
+                        mname : patronSvc.current.pref_second_given_name() || patronSvc.current.second_given_name()
                     }
                 );
             })
@@ -583,7 +583,7 @@ function($scope , $location , egCore , egConfirmDialog , egUser , patronSvc , $u
                                 barcode_map[match.barcode] = user.id();
                                 matches.push( {
                                     barcode: match.barcode,
-                                    title: user.first_given_name() + ' ' + user.family_name(),
+                                    title: (user.pref_first_given_name() || user.first_given_name()) + ' ' + (user.pref_family_name() || user.family_name()),
                                     org_name: user.home_ou().name(),
                                     org_shortname: user.home_ou().shortname()
                                 });
@@ -650,8 +650,8 @@ function($scope , $location , egCore , egConfirmDialog , egUser , patronSvc , $u
                     egConfirmDialog.open(
                         egCore.strings.OPT_IN_DIALOG_TITLE,
                         egCore.strings.OPT_IN_DIALOG,
-                        {   family_name : user.family_name(),
-                            first_given_name : user.first_given_name(),
+                        {   family_name : user.pref_family_name() || user.family_name(),
+                            first_given_name : user.pref_first_given_name() || user.first_given_name(),
                             org_name : org.name(),
                             org_shortname : org.shortname(),
                             ok : function() { createOptIn(user.id()) },
