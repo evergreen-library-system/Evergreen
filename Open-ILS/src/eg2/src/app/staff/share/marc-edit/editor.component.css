@@ -1,12 +1,11 @@
 /* eg-marc-editor background set in parent record.component.css */
 
 .nav-tabs {
-  background: var(--gray-125);
+  background: var(--bs-body-bg);
   border-color: var(--gray-250);
   padding-inline-start: 0.5rem; /* separate active tab from page background */
 }
-[data-bs-theme="dark"] .nav-tabs {
-  background: var(--bs-body-bg-alt);
+[data-bs-theme="dark"] :host .nav-tabs {
   border-color: var(--border);
 }
 
@@ -15,9 +14,9 @@
   border-color: var(--gray-250);
   color: var(--bs-blue-650);
 }
-[data-bs-theme="dark"] .nav-tabs .nav-link {
-  background: var(--bs-body-bg);
-  border-color: var(--bs-body-bg-highlight);
+[data-bs-theme="dark"] :host .nav-tabs .nav-link {
+  background: var(--bs-body-bg-alt);
+  border-color: var(--bs-gray-800) var(--bs-gray-800) var(--bs-gray-700);
   color: var(--bs-blue-400);
 }
 
@@ -30,7 +29,7 @@
   border-left-color: var(--gray-400);
 }
 
-[data-bs-theme="dark"] .nav-tabs .nav-link.active {
+[data-bs-theme="dark"] :host .nav-tabs .nav-link.active {
   border-top-color: var(--bs-gray-800);
   border-right-color: var(--bs-gray-700);
   border-bottom-color: var(--bs-gray-900);
@@ -42,7 +41,7 @@
   position: relative;
   background: var(--gray-125);
 }
-[data-bs-theme="dark"] .nav-tabs .nav-item:has(.nav-link.active) {
+[data-bs-theme="dark"] :host .nav-tabs .nav-item:has(.nav-link.active) {
   background: var(--bs-body-bg-alt);
 }
 
@@ -54,20 +53,20 @@
   border-bottom-color: var(--gray-125);
   border-left-color: var(--gray-600);
 }
-[data-bs-theme="dark"] .nav-tabs .nav-link:hover,
-[data-bs-theme="dark"] .nav-tabs .nav-link:focus {
-  background-color: var(--bs-gray-900);
-  border-top-color: var(--bs-gray-400);
-  border-right-color: var(--bs-gray-400);
-  border-bottom-color: var(--bs-gray-900);
-  border-left-color: var(--bs-gray-400);
+[data-bs-theme="dark"] :host .nav-tabs .nav-link:hover,
+[data-bs-theme="dark"] :host .nav-tabs .nav-link:focus {
+  background-color: var(--bs-body-bg-alt);
+  border-top-color: var(--bs-gray-600);
+  border-right-color: var(--bs-gray-600);
+  border-bottom-color: var(--bs-body-bg-alt);
+  border-left-color: var(--bs-gray-600);
 }
 
 .btn-destroy {
   background-color: var(--gray-550);
   color: var(--white);
 }
-[data-bs-theme="dark"] .btn-destroy {
+[data-bs-theme="dark"] :host .btn-destroy {
   background-color: var(--bs-gray-700);
 }
 
@@ -76,8 +75,8 @@
   background-color: var(--danger);
   color: var(--white);
 }
-[data-bs-theme="dark"] .btn-destroy:hover,
-[data-bs-theme="dark"] .btn-destroy:focus {
+[data-bs-theme="dark"] :host .btn-destroy:hover,
+[data-bs-theme="dark"] :host .btn-destroy:focus {
   background-color: var(--danger);
   color: var(--white);
 }

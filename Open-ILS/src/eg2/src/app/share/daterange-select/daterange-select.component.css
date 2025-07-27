@@ -11,6 +11,6 @@
   border-radius: 5px;
 }
 
-[data-bs-theme="dark"] .today {
+[data-bs-theme="dark"] :host .today {
   border: solid 2px var(--bs-blue-900);
 }
