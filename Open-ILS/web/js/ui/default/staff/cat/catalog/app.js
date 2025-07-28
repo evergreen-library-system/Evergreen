@@ -234,8 +234,15 @@ function($scope , $routeParams , $location , $window , $q , egCore) {
                 'open-ils.cat',
                 'open-ils.cat.biblio.marc_template.retrieve',
                 $scope.template_name
-            ).then(function(template) {
-                $scope.marc_template = template;
+            ).then(function(xml) {
+                const today = new Date();
+                const yy = String(today.getFullYear().toString().substring(2));
+                const mm = String(today.getMonth() + 1).padStart(2, '0'); // 0 index
+                const dd = String(today.getDate()).padStart(2, '0');
+                const date = yy + mm + dd;
+                const pattern = new RegExp(/tag="008">(.{6})/m);
+                const index = xml.search(pattern) + 'tag="008">'.length;
+                $scope.marc_template = xml.substring(0, index) + date + xml.substring(index + date.length);
                 $scope.have_template = true;
                 egCore.hatch.setSessionItem('eg.cat.last_bib_marc_template', $scope.template_name);
             });
