@@ -26064,7 +26064,6 @@ VALUES (
     'aou'
 );
 
-
 INSERT INTO config.workstation_setting_type (name, grp, datatype, label)
 VALUES (
     'eg.grid.admin.acq.edi_attr_set', 'gui', 'object', 
@@ -26078,6 +26077,16 @@ VALUES (
     oils_i18n_gettext(
         'eg.grid.admin.local.config.survey',
         'Grid Config: admin.local.config.survey',
+        'cwst', 'label'
+    )
+);
+
+INSERT INTO config.workstation_setting_type (name, grp, datatype, label)
+VALUES (
+    'cat.vandelay.queue.bib.record_matches', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.cat.vandelay.queue.bib.record_matches',
+        'Grid Config: cat.vandelay.queue.bib.record_matches',
         'cwst', 'label'
     )
 );
