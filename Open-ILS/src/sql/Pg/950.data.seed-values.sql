@@ -26073,7 +26073,6 @@ UPDATE config.org_unit_setting_type
 INSERT INTO config.usr_setting_type (name,label,grp) VALUES ('REST.api.whitelist_properties','Globally whitelisted Fieldmapper properties','openapi');
 INSERT INTO config.usr_setting_type (name,label,grp) VALUES ('REST.api.blacklist_properties','Globally filtered Fieldmapper properties','openapi');
 
-<<<<<<< HEAD
 INSERT INTO config.workstation_setting_type (name, grp, label, description, datatype, fm_class)
 VALUES (
     'eg.circ.patron.search.ou',
@@ -26089,7 +26088,6 @@ VALUES (
     'link',
     'aou'
 );
-
 
 INSERT INTO config.workstation_setting_type (name, grp, datatype, label)
 VALUES (
@@ -26115,3 +26113,12 @@ VALUES (
     )
 );
 
+INSERT INTO config.workstation_setting_type (name, grp, datatype, label)
+VALUES (
+    'cat.vandelay.queue.bib.record_matches', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.cat.vandelay.queue.bib.record_matches',
+        'Grid Config: cat.vandelay.queue.bib.record_matches',
+        'cwst', 'label'
+    )
+);
