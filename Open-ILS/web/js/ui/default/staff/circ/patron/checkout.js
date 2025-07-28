@@ -425,6 +425,7 @@ function($scope , $q , $routeParams , egCore , egUser , patronSvc ,
 
     // Redirect the user to the barcode entry page to load a new patron.
     $scope.done_redirect = function() {
+        egCore.strings.setPageTitle( egCore.strings.PAGE_TITLE_PATRON_SEARCH );
         $location.path('/circ/patron/bcsearch');
     }
 }])
