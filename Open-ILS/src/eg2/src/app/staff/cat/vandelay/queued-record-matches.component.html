@@ -14,7 +14,7 @@
 </ng-template>
 
 <ng-container *ngIf="queueType === 'bib'">
-  <eg-grid #bibGrid [dataSource]="bibDataSource" 
+  <eg-grid #bibGrid [dataSource]="bibDataSource" persistKey="cat.vandelay.queue.bib.record_matches"
     (onRowClick)="matchRowClick($event)"
     [cellTextGenerator]="cellTextGenerator"
     [disableSelect]="true" [disableMultiSelect]="true">
