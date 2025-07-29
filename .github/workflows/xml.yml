@@ -1,0 +1,44 @@
+name: Check XML structure and schema conformance
+on:
+  push:
+    paths:
+      - '.github/workflows/**'
+      - 'Open-ILS/examples/**'
+  pull_request:
+    paths:
+      - '.github/workflows/**'
+      - 'Open-ILS/examples/**'
+  workflow_dispatch:
+
+jobs:
+  make-test:
+    name: Make test examples
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Clone OpenSRF repository
+        run: git clone --branch main git://git.evergreen-ils.org/OpenSRF.git
+      - name: "OpenSRF: install dependencies"
+        run: sudo make -f src/extras/Makefile.install ubuntu-jammy
+        working-directory: ./OpenSRF
+      - name: "OpenSRF: configure and make"
+        run: autoreconf -i && ./configure --prefix=/openils --sysconfdir=/openils/conf && make
+        working-directory: ./OpenSRF
+      - name: "OpenSRF: make install"
+        run: sudo make install
+        working-directory: ./OpenSRF
+
+      - uses: actions/checkout@v4
+        with:
+          path: Evergreen
+      - name: "Evergreen: install dependencies"
+        run: sudo make -f Open-ILS/src/extras/Makefile.install ubuntu-jammy && sudo make -f Open-ILS/src/extras/Makefile.install ubuntu-jammy-developer
+        working-directory: ./Evergreen
+      - name: "Evergreen: install dependencies required by the Makefile in Open-ILS/examples"
+        run: sudo apt -y install libxml2-utils bc
+        working-directory: ./Evergreen
+      - name: "Evergreen: configure"
+        run: autoreconf -i && PATH=/openils/bin:$PATH ./configure --prefix=/openils --sysconfdir=/openils/conf
+        working-directory: ./Evergreen
+      - name: "Evergreen: make test xml examples"
+        run: make test
+        working-directory: ./Evergreen/Open-ILS/examples

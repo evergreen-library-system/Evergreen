@@ -34,6 +34,7 @@ $(warning opensrf_core.xml is not well-formed)
 endif
 
 test: test_idl test_osrf test_osrf_core
+	@exit $(RETURNCODE)
 # First we count the number of characters returned
 SUCCESSES ?= $(shell echo $(SUCCESS) | wc -m )
 FAILED ?= $(shell echo $(FAILURE) | wc -m )
@@ -42,6 +43,7 @@ TOTALED ?= $(shell echo $(TOTAL) | wc -m )
 SUCCESSTESTS ?= $(shell echo $(SUCCESSES) - 1 | bc )
 FAILEDTESTS ?= $(shell echo $(FAILED) -1 | bc )
 TOTALTESTS ?= $(shell echo $(TOTALED) -1 | bc )
+RETURNCODE ?= $(shell echo $(TOTALTESTS) - $(SUCCESSTESTS) | bc )
 $(info Succesful tests: $(SUCCESSTESTS)/$(TOTALTESTS))
 $(info Failed tests: $(FAILEDTESTS)/$(TOTALTESTS))
 
