@@ -9964,8 +9964,8 @@ SELECT  usr,
 		</permacrud>
 	</class>
 
-	<class id="acqfs" controller="open-ils.cstore open-ils.reporter-store open-ils.pcrud" oils_obj:fieldmapper="acq::funding_source" oils_persist:tablename="acq.funding_source" reporter:label="Funding Source">
-		<fields oils_persist:primary="id" oils_persist:sequence="acq.funding_source_id_seq" oils_persist:cardinality="low">
+	<class id="acqfs" controller="open-ils.cstore open-ils.reporter-store open-ils.pcrud" oils_obj:fieldmapper="acq::funding_source" oils_persist:tablename="acq.funding_source" reporter:label="Funding Source" oils_persist:cardinality="low">
+		<fields oils_persist:primary="id" oils_persist:sequence="acq.funding_source_id_seq">
 			<field reporter:label="Funding Source ID" name="id" reporter:datatype="id" reporter:selector="code"/>
 			<field reporter:label="Funding Source Name" name="name" reporter:datatype="text" oils_persist:i18n="true" oils_obj:required="true"/>
 			<field reporter:label="Owner" name="owner" reporter:datatype="org_unit" oils_obj:required="true"/>

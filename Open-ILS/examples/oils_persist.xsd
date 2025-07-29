@@ -62,6 +62,14 @@ foreign end of a link, has an expected cardinality scale.  Useful values are:
  * unbounded - unknown, but potentially many thousands of rows
 
 -->
-<xs:attribute name="cardinality"/>
+<xs:attribute name="cardinality">
+    <xs:simpleType>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="low"/>
+            <xs:enumeration value="high"/>
+            <xs:enumeration value="unbounded"/>
+        </xs:restriction>
+    </xs:simpleType>
+</xs:attribute>
 
 </xs:schema>

@@ -163,6 +163,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
   <xs:attribute ref="repsec:projection_function_parameters"/>
   <xs:attribute ref="repsec:restriction_function"/>
   <xs:attribute ref="repsec:restriction_function_parameters"/>
+  <xs:attribute ref="oils_persist:cardinality" />
  </xs:complexType>
 </xs:element>
 
