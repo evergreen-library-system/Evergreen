@@ -20844,6 +20844,13 @@ VALUES (
         'Grid Config: admin.server.config.z3950_source',
         'cwst', 'label'
     )
+), (
+    'eg.grid.admin.server.actor.org_unit_proximity_adjustment', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.server.actor.org_unit_proximity_adjustment',
+        'Grid Config: eg.grid.admin.server.actor.org_unit_proximity_adjustment',
+        'cwst', 'label'
+    )
 );
 
 INSERT INTO config.org_unit_setting_type

@@ -36,6 +36,31 @@
   </select>
 </ng-template>
 
+<ng-template #numericFilter>
+  <div class="input-group">
+    <div ngbDropdown container="body" class="d-inline-block py-1" autoClose="outside" placement="bottom-left"
+      [ngClass]="{'border rounded border-secondary eg-grid-col-is-filtered' : col.isFiltered}">
+      <button type="button" ngbDropdownToggle class="no-dropdown-caret btn">
+        <ng-container *ngTemplateOutlet="dropdownToggle"></ng-container>
+      </button>
+      <div ngbDropdownMenu class="eg-grid-filter-menu">
+        <div class="dropdown-item">
+          <div>
+            <label class="form-label" for="eg-filter-op-select-{{col.name}}" i18n>Operator</label>
+            <ng-container *ngTemplateOutlet="numericOperators"></ng-container>
+          </div>
+          <div class="pt-2">
+            <input type="number" class="form-control"
+              [(ngModel)]="col.filterValue" (change)="applyFilterCommon(col)"
+              [disabled]="col.filterInputDisabled || context.dataSource.requestingData">
+          </div>
+          <ng-container *ngTemplateOutlet="actionsTemplate"></ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
 <div *ngIf="col.isFilterable" class="eg-grid-filter-control">
   <div [ngSwitch]="col.datatype">
     <div *ngSwitchCase="'link'">
@@ -172,28 +197,10 @@
       </div>
     </div>
     <div *ngSwitchCase="'float'">
-      <div class="input-group">
-        <div ngbDropdown container="body" class="d-inline-block py-1" autoClose="outside" placement="bottom-left" 
-          [ngClass]="{'border rounded border-secondary eg-grid-col-is-filtered' : col.isFiltered}">
-          <button type="button" ngbDropdownToggle class="no-dropdown-caret btn">
-            <ng-container *ngTemplateOutlet="dropdownToggle"></ng-container>
-          </button>
-          <div ngbDropdownMenu class="eg-grid-filter-menu">
-            <div class="dropdown-item">
-              <div>
-                <label class="form-label" for="eg-filter-op-select-{{col.name}}" i18n>Operator</label>
-                <ng-container *ngTemplateOutlet="numericOperators"></ng-container>
-              </div>
-              <div class="pt-2">
-                <input type="number" class="form-control" 
-                  [(ngModel)]="col.filterValue" (change)="applyFilterCommon(col)"
-                  [disabled]="col.filterInputDisabled || context.dataSource.requestingData">
-              </div>
-              <ng-container *ngTemplateOutlet="actionsTemplate"></ng-container>
-            </div>
-          </div>
-        </div>
-      </div>
+      <ng-container *ngTemplateOutlet="numericFilter"></ng-container>
+    </div>
+    <div *ngSwitchCase="'number'">
+      <ng-container *ngTemplateOutlet="numericFilter"></ng-container>
     </div>
     <div *ngSwitchCase="'money'">
       <div class="input-group">
