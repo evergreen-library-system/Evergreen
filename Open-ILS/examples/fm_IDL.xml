@@ -1035,7 +1035,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 
 	<class id="crad" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::record_attr_definition" oils_persist:tablename="config.record_attr_definition" reporter:label="SVF Record Attribute Defintion" oils_persist:field_safe="true">
 		<fields oils_persist:primary="name">
-			<field reporter:label="Name" name="name" reporter:datatype="id" reporter:selector="label" oils_obj:required="true"/>
+			<field reporter:label="Name" name="name" reporter:datatype="text" reporter:selector="label" oils_obj:required="true"/>
 			<field reporter:label="Label" name="label" reporter:datatype="text" oils_obj:required="true" oils_persist:i18n="true"/>
 			<field reporter:label="Description" name="description" reporter:datatype="text" oils_persist:i18n="true"/>
 			<field reporter:label="Multi-valued?" name="multi" reporter:datatype="bool"/>
@@ -2004,7 +2004,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 
 	<class id="cubt" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="container::user_bucket_type" oils_persist:tablename="container.user_bucket_type" reporter:label="User Bucket Type" oils_persist:field_safe="true">
 		<fields oils_persist:primary="code">
-			<field reporter:label="Code" name="code" reporter:selector="name" reporter:datatype="id" oils_obj:required="true"/>
+			<field reporter:label="Code" name="code" reporter:selector="name" reporter:datatype="text" oils_obj:required="true"/>
 			<field reporter:label="Label" name="label" reporter:datatype="text" oils_persist:i18n="true" oils_obj:required="true"/>
 		</fields>
 		<links/>
@@ -2903,7 +2903,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 
 	<class id="at" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="authority::thesaurus" oils_persist:tablename="authority.thesaurus" reporter:label="Authority Thesaurus" oils_persist:field_safe="true">
 		<fields oils_persist:primary="code">
-			<field reporter:label="Thesaurus Code" name="code" reporter:datatype="id" reporter:selector="name" oils_obj:required="true"/>
+			<field reporter:label="Thesaurus Code" name="code" reporter:datatype="text" reporter:selector="name" oils_obj:required="true"/>
 			<field reporter:label="Control Set" name="control_set" reporter:datatype="link" config_field="true"/>
 			<field reporter:label="Name" name="name" reporter:datatype="text" oils_persist:i18n="true" oils_obj:required="true"/>
 			<field reporter:label="Description" name="description" reporter:datatype="text" oils_persist:i18n="true"/>
@@ -12610,7 +12610,7 @@ SELECT  usr,
 
 	<class id="cmpctm" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::marc21_physical_characteristic_type_map" oils_persist:tablename="config.marc21_physical_characteristic_type_map" reporter:label="MARC21 Physical Characteristic Type Map" oils_persist:field_safe="true">
 		<fields oils_persist:primary="ptype_key">
-			<field reporter:label="Type Key" name="ptype_key" reporter:datatype="id" oils_obj:required="true"/>
+			<field reporter:label="Type Key" name="ptype_key" reporter:datatype="text" oils_obj:required="true"/>
 			<field reporter:label="Label" name="label" reporter:datatype="text" oils_obj:required="true"/>
 		</fields>
 		<links/>
@@ -12977,7 +12977,7 @@ SELECT  usr,
 
 	<class id="cmrtm" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::marc21_rec_type_map" oils_persist:tablename="config.marc21_rec_type_map" reporter:label="MARC21 Record Type Map" oils_persist:field_safe="true">
 		<fields oils_persist:primary="code">
-			<field reporter:label="Code" name="code" reporter:datatype="id" oils_obj:required="true"/>
+			<field reporter:label="Code" name="code" reporter:datatype="text" oils_obj:required="true"/>
 			<field reporter:label="Type Value" name="type_val" reporter:datatype="text" oils_obj:required="true"/>
 			<field reporter:label="BLvl Value" name="blvl_val" reporter:datatype="text" oils_obj:required="true"/>
 		</fields>
@@ -14147,7 +14147,7 @@ SELECT  usr,
 	</class>
 	<class id="cctt" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::copy_tag_type" oils_persist:tablename="config.copy_tag_type" reporter:label="Item Tag Types" oils_persist:field_safe="true" oils_persist:cardinality="low">
 		<fields oils_persist:primary="code">
-			<field reporter:label="Code" name="code" reporter:selector="label" reporter:datatype="id" oils_obj:required="true"/>
+			<field reporter:label="Code" name="code" reporter:selector="label" reporter:datatype="text" oils_obj:required="true"/>
 			<field reporter:label="Tag Type" name="label" reporter:datatype="text" oils_obj:required="true"/>
 			<field reporter:label="Owner" name="owner" reporter:datatype="org_unit" oils_obj:required="true"/>
 		</fields>
@@ -14482,7 +14482,7 @@ SELECT  usr,
 	<!-- OpenAPI class defs -->
 	<class id="ojsd" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="openapi::json_schema_datatype" oils_persist:tablename="openapi.json_schema_datatype" reporter:label="OpenAPI JSON Schema Datatype">
 		<fields oils_persist:primary="name">
-			<field name="name" reporter:label="Name" reporter:datatype="id"/>
+			<field name="name" reporter:label="Name" reporter:datatype="text"/>
 			<field name="label" reporter:label="Label" reporter:datatype="text" oils_obj:required="true"/>
 			<field name="description" reporter:label="Description" reporter:datatype="text"/>
 		</fields>
@@ -14498,7 +14498,7 @@ SELECT  usr,
 
 	<class id="ojsf" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="openapi::json_schema_format" oils_persist:tablename="openapi.json_schema_format" reporter:label="OpenAPI JSON Schema Data Format">
 		<fields oils_persist:primary="name">
-			<field name="name" reporter:label="Name" reporter:datatype="id"/>
+			<field name="name" reporter:label="Name" reporter:datatype="text"/>
 			<field name="label" reporter:label="Label" reporter:datatype="text" oils_obj:required="true"/>
 			<field name="description" reporter:label="Description" reporter:datatype="text"/>
 		</fields>
@@ -14768,7 +14768,7 @@ SELECT  usr,
 
 	<class id="oes" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="openapi::endpoint_set" oils_persist:tablename="openapi.endpoint_set" reporter:label="OpenAPI Endpoint Set">
 		<fields oils_persist:primary="name">
-			<field name="name" reporter:label="Set Name" reporter:datatype="id"/>
+			<field name="name" reporter:label="Set Name" reporter:datatype="text"/>
 			<field name="description" reporter:label="Set Description" reporter:datatype="text" oils_obj:required="true"/>
 			<field name="active" reporter:label="Active" reporter:datatype="bool" oils_obj:required="true"/>
 			<field name="endpoint" reporter:label="Endpoints" reporter:datatype="link" oils_persist:virtual="true"/>
