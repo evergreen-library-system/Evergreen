@@ -488,7 +488,9 @@
               <kbd i18n>Shift+F8</kbd>
             </button>
             <div class="dropdown-divider"></div>
-            <a href="/eg/staff/cat/catalog/new_bib" ngbDropdownItem class="dropdown-item"
+            <a routerLink="/staff/catalog/create-marc" 
+              routerLinkActive="active" ariaCurrentWhenActive="page" 
+              ngbDropdownItem class="dropdown-item"
               (click)="isMenuCollapsed = true"
               (keydown.space)="isMenuCollapsed = true"
               (keydown.enter)="isMenuCollapsed = true"

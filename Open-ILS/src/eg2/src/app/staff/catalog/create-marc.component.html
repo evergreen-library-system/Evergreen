@@ -1,0 +1,17 @@
+<eg-staff-banner bannerText="Create New MARC Record" i18n-bannerText></eg-staff-banner>
+
+<div class="row">
+  <div class="hstack form-inline gap-2">
+    <label for="select-marc-template" class="control-label" i18n>Select MARC template</label>
+    <select id="select-marc-template" class="form-select w-auto" [(ngModel)]="template_name">
+      <option value="" i18n>None</option>
+      <option *ngFor="let template of template_list; trackBy: trackByTemplateName" 
+        [selected]="template_name === template" [value]="template">{{template}}</option>
+    </select>
+    <button type="button" class="btn btn-primary" (click)="loadTemplate()" [disabled]="!template_name" i18n>Load</button>
+    <button type="button" class="btn btn-normal" (click)="setDefaultTemplate()" i18n>Set Workstation Default</button>
+  </div>
+</div>
+<div *ngIf="have_template" class="row col-md-12 mt-3">
+  <eg-marc-editor [recordXml]="marc_template" [recordId]="new_bib_id" [showFastAdd]="true"></eg-marc-editor>
+</div>

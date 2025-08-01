@@ -21,33 +21,29 @@
 
   <ng-content select="eg-fast-add-selector"></ng-content>
 
-  <div class="flex-1"></div>
+    <h3 class="ms-auto me-2">
+      <span class="col-form-label rounded p-2" i18n>
+        Record Type {{record ? record.recordType() : ''}}
+      </span>
+    </h3>
+      
+    @if (recordType === 'biblio') {
 
-  <h3 class="me-2">
-    <span class="col-form-label rounded p-2" i18n>
-      Record Type {{record ? record.recordType() : ''}}
-    </span>
-  </h3>
+      <div class="me-2">
+        <eg-combobox #sourceSelector
+          idlClass="cbs"
+          [selectedId]="recordSource"
+          [asyncSupportsEmptyTermClick]="true"
+          (onChange)="updateRecordSource($event)"
+          placeholder="Select a Source..."
+          i18n-placeholder>
+        </eg-combobox>
+      </div>
     
-  @if (recordType === 'biblio') {
-
-    <div class="me-2">
-      <eg-combobox #sourceSelector
-        idlClass="cbs"
-        [selectedId]="recordSource"
-        [asyncSupportsEmptyTermClick]="true"
-        (onChange)="updateRecordSource($event)"
-        placeholder="Select a Source..."
-        i18n-placeholder>
-      </eg-combobox>
-    </div>
-  
 }
 
-  <div class="pe-3 me-3 border-end">
     <button type="button" class="btn btn-success" (click)="saveRecord()"
       [disabled]="record && (record.deleted || record.id === -1)" i18n>Save Changes</button>
-  </div>
 
   @if (record && record.id) {
 
@@ -106,11 +102,11 @@
 </div>
 }
 
-<div class="row p-2 m-2 text-end">
-  <div>
-    <button type="button" class="btn btn-success" (click)="saveRecord()"
-      [disabled]="record && (record.deleted || record.id === -1)" i18n>Save Changes</button>
+  <div class="row p-2 m-2 text-end">
+    <div class="col-12">
+      <button type="button" class="btn btn-success ms-auto" (click)="saveRecord()"
+        [disabled]="record && (record.deleted || record.id === -1)" i18n>Save Changes</button>
+    </div>
   </div>
 </div>
-
 

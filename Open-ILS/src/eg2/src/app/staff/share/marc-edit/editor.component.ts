@@ -109,6 +109,8 @@ export class MarcEditorComponent implements OnInit, AfterContentInit {
     // in-place MARC modification interface.
     @Input() inPlaceMode: boolean;
 
+    @Input() showFastAdd = false;
+
     // In inPlaceMode, this is emitted in lieu of saving the record
     // in th database.  When inPlaceMode is false, this is emitted after
     // the record is successfully saved.
@@ -122,6 +124,9 @@ export class MarcEditorComponent implements OnInit, AfterContentInit {
     @ViewChild('failMsg', {static: false}) failMsg: StringComponent;
 
     @ContentChild(FastAddSelectorComponent) fastAddSelector: FastAddSelectorComponent;
+    fastItemLabel: string;
+    fastItemBarcode: string;
+    initCalled = false;
 
     initCalled = false;
     private fastAddIntent: Maybe<FastAddItem> = new None();

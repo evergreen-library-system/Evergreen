@@ -40,6 +40,7 @@ import { SortOrderSelectComponent } from './sort-order-select/sort-order-select.
 import { CatalogOrgSelectComponent } from './catalog-org-select/catalog-org-select.component';
 import { FastAddSelectorComponent } from '../share/marc-edit/fast-add-selector.component';
 import { MakeBookableDialogComponent } from '../share/booking/make-bookable-dialog.component';
+import { CreateMarcComponent } from './create-marc.component';
 
 @NgModule({
     imports: [
@@ -70,6 +71,7 @@ import { MakeBookableDialogComponent } from '../share/booking/make-bookable-dial
         CnBrowseResultsComponent,
         BrowsePagerComponent,
         SortOrderSelectComponent,
+        CreateMarcComponent,
         StaffCommonModule,
         FastAddSelectorComponent,
         FmRecordEditorModule,
