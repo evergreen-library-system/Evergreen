@@ -10,6 +10,15 @@
   <eg-grid-menu-item label="[% l('New Hold Group') %]" standalone="true"
     handler="openCreateBucketDialog"></eg-grid-menu-item>
 
+  <eg-grid-action label="[% l('Current Users') %]"
+    handler="viewBucket" disabled="need_one_selected"></eg-grid-action>
+
+  <eg-grid-action label="[% l('Add User') %]" 
+    handler="addBucketUsers" disabled="need_one_selected"></eg-grid-action>
+
+  <eg-grid-action label="[% l('Manage Hold Group Events') %]" 
+    handler="manageBucketEvents" disabled="need_one_selected"></eg-grid-action>
+
   <eg-grid-field path="id" required hidden></eg-grid-field>
   <eg-grid-field label="[% l('Name') %]" path="name" visible></eg-grid-field>
   <eg-grid-field label="[% l('Description') %]" path="description" visible></eg-grid-field>
