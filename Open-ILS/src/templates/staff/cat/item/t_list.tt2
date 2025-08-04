@@ -28,7 +28,7 @@
     disabled="need_at_least_one_selected"
     label="[% l('Create Carousel from Selected Items') %]"></eg-grid-action>
   <eg-grid-action handler="requestItems"
-    label="[% l('Request Items') %]"></eg-grid-action>
+    label="[% l('Place Item Holds') %]"></eg-grid-action>
   <eg-grid-action handler="attach_to_peer_bib"
     label="[% l('Link as Conjoined to Previously Marked Bib Record') %]"></eg-grid-action>
   <eg-grid-action handler="selectedHoldingsCopyDelete"
