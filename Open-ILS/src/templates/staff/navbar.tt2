@@ -121,7 +121,7 @@
           <li>
             <a href="/eg2/staff/circ/holds/pull-list">
               <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
-              [% l('Pull List for Hold Requests') %]
+              [% l('Holds Pull List') %]
             </a>
            </li>
            <li ng-if="username">
@@ -312,7 +312,7 @@
           <li>
             <a href="/eg2/staff/circ/holds/pull-list">
               <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
-              <span>[% l('Pull List for Hold Requests') %]</span>
+              <span>[% l('Holds Pull List') %]</span>
             </a>
           </li>
           <li>
