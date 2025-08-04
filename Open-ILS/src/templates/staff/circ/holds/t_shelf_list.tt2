@@ -84,7 +84,7 @@
   <eg-grid-field label="[% l('Expire Time') %]" path='hold.expire_time' datatype="timestamp" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Hold Cancel Date/Time') %]" path='hold.cancel_time' datatype="timestamp" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Cancelation note') %]" path='hold.cancel_note' hidden></eg-grid-field>
-  <eg-grid-field label="[% l('Hold Canceling Staff') %]" path='hold.canceled_by_usrname' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Hold Canceling User') %]" path='hold.canceled_by_usrname' hidden></eg-grid-field>
   <eg-grid-field label="[% l('Hold Canceling Workstation') %]" path='hold.canceling_ws_name' hidden></eg-grid-field>
   <eg-grid-field label="[% l('Hold Target') %]" path='hold.target' hidden></eg-grid-field>
   <eg-grid-field label="[% l('Current Copy') %]" path='hold.current_copy' hidden></eg-grid-field>
