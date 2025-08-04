@@ -286,6 +286,20 @@ function($scope,  $location,  $q,  $timeout,  $uibModal,
                 $scope.tab + '/' + encodeURIComponent(id));
     }
 
+    $scope.viewBucket = function(buckets) {
+        console.debug('viewBucket', buckets[buckets.length - 1].id);
+        $location.path('cat/bucket/batch_hold/view/' + encodeURIComponent(buckets[0].id));
+    }
+
+    $scope.addBucketUsers = function() {
+        $location.path('/cat/bucket/batch_hold/pending/');
+    }
+
+    $scope.manageBucketEvents = function(buckets) {
+        console.debug('manageBucketEvents', buckets[buckets.length - 1].id);
+        $location.path('cat/bucket/batch_hold/event/' + encodeURIComponent(buckets[0].id));
+    }
+
     $scope.addToBucket = function(recs) {
         if (recs.length == 0) return;
         bucketSvc.bucketNeedsRefresh = true;
