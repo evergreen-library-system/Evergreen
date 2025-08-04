@@ -6788,7 +6788,7 @@ SELECT  usr,
 			<field reporter:label="Target Object ID" name="target" reporter:datatype="link" oils_obj:required="true"/>
 			<field reporter:label="Hold User" name="usr" reporter:datatype="link" oils_obj:required="true"/>
 			<field reporter:label="Hold Cancel Date/Time" name="cancel_time" reporter:datatype="timestamp"/>
-			<field reporter:label="Hold Canceling Staff" name="canceled_by" reporter:datatype="link"/>
+			<field reporter:label="Hold Canceling User" name="canceled_by" reporter:datatype="link"/>
 			<field reporter:label="Hold Canceling Workstation" name="canceling_ws" reporter:datatype="link"/>
 			<field reporter:label="Notify Time" name="notify_time" oils_persist:virtual="true" reporter:datatype="timestamp"/>
 			<field reporter:label="Notify Count" name="notify_count" oils_persist:virtual="true" reporter:datatype="int"/>
