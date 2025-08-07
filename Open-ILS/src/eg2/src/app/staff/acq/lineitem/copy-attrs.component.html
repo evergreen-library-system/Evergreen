@@ -87,6 +87,9 @@
   <div class="flex-1 p-1" *ngIf="showReceiver">
     {{copy.receiver()?.usrname()}}
   </div>
+  <div class="flex-1 p-1" *ngIf="showReceivedTime">
+    {{copy.recv_time() | date:'short'}}
+  </div>
   <ng-container *ngIf="!embedded && !gatherParamsOnly">
     <div class="flex-2 p-1 pe-2 ps-2">
       <ng-container *ngIf="!batchMode">

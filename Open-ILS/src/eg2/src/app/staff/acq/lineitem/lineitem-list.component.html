@@ -712,9 +712,10 @@
         <div class="flex-1 p-1" i18n>Callnumber</div>
         <div class="flex-1 p-1" i18n>Barcode</div>
         <div class="flex-1 p-1" i18n>Receiver</div>
+        <div class="flex-1 p-1" i18n>Received On</div>
       </div>
       <div class="batch-copy-row" *ngFor="let copy of li.lineitem_details()">
-        <eg-lineitem-copy-attrs [embedded]="true" [showReceiver]="true" [copy]="copy">
+        <eg-lineitem-copy-attrs [embedded]="true" [showReceiver]="true" [showReceivedTime]="true"  [copy]="copy">
           <div class="flex-1 p-1" *ngIf="batchReceiveMode || batchClaimMode">
             <input type="checkbox" class="form-check-input"
               [(ngModel)]="lineitemDetailSelectionMap[li.id()][copy.id()]"
