@@ -235,14 +235,21 @@ function($scope , $routeParams , $location , $window , $q , egCore) {
                 'open-ils.cat.biblio.marc_template.retrieve',
                 $scope.template_name
             ).then(function(xml) {
-                const today = new Date();
-                const yy = String(today.getFullYear().toString().substring(2));
-                const mm = String(today.getMonth() + 1).padStart(2, '0'); // 0 index
-                const dd = String(today.getDate()).padStart(2, '0');
-                const date = yy + mm + dd;
-                const pattern = new RegExp(/tag="008">(.{6})/m);
-                const index = xml.search(pattern) + 'tag="008">'.length;
-                $scope.marc_template = xml.substring(0, index) + date + xml.substring(index + date.length);
+                let new_record = new MARC21.Record();
+                new_record.fromXmlString(xml);
+                new_record.generate008();
+
+                // now we need to redo the date (not sure why generate008() sometimes gives us spaces)
+                var now = new Date();
+                var y = now.getUTCFullYear().toString().substr(2,2);
+                var m = now.getUTCMonth() + 1;
+                if (m < 10) m = '0' + m;
+                var d = now.getUTCDate();
+                if (d < 10) d = '0' + d;
+                let new_008_data = y + m + d + new_record.field('008').data.substring(6);
+                new_record.field('008').update(new_008_data);
+
+                $scope.marc_template = new_record.toXmlString();
                 $scope.have_template = true;
                 egCore.hatch.setSessionItem('eg.cat.last_bib_marc_template', $scope.template_name);
             });
