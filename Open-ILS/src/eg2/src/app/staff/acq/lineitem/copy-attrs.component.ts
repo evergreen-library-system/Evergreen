@@ -59,6 +59,7 @@ export class LineitemCopyAttrsComponent implements OnInit {
     @Input() embedded = false;
 
     @Input() showReceiver = false;
+    @Input() showReceivedTime = false;
 
     // Emits an 'acqlid' object;
     @Output() batchApplyRequested: EventEmitter<IdlObject> = new EventEmitter<IdlObject>();
