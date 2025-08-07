@@ -31,6 +31,8 @@
       "[% l('Hold not successfully requested') %]";
     s.SUCCESS_CAROUSEL_CREATE =
       "[% l('Successfully created new carousel from items') %]";
+    s.FAILURE_FILE_NO_BARCODES =
+	  "[% l('No items could be retrieved from the uploaded file') %]";
   }])
 </script>
 [% END %]

@@ -21,6 +21,19 @@
         <label for="edit-bucket-owner">[% l('Owning Library') %]</label>
         <eg-org-selector id="edit-bucket-owner" selected="args.owning_lib"></eg-org-selector>
       </div>
+      <div ng-show="allow_upload" class="form-group">
+        <label for="edit-bucket-file-input">
+            [% l('Upload File') %]
+            <eg-help-popover help-text="[% l('File Format: One barcode per line. All whitespace and commas will be removed before processing.') %]"/>
+        </label>
+        <input type="file" id="edit-bucket-file-input"/>
+        <div class="checkbox">
+          <label>
+            <input ng-model="args.deleted" type="checkbox"/>
+            <span>[% l('Include deleted?') %]</span>
+          </label>
+        </div>
+      </div>
        <div class="checkbox">
         <label>
           <input ng-model="args.pub" type="checkbox">
