@@ -256,12 +256,12 @@ document.addEventListener("DOMContentLoaded", () => {
                             <span style='font-weight: bold;'><label for='select_hold_part'>[%
                                 hdata.part_required ? l('Select a Part:') : l('Select a Part (optional):')
                             %]</label></span>
-                            <select id='select_hold_part' name='part' onchange='maybeToggleNumCopies(this);'>
+                            <select id='select_hold_part' class='form-control form-control-sm w-50' name='part' onchange='maybeToggleNumCopies(this);'>
                                 [% IF !hdata.part_required %]
                                 <option selected='selected' value=''>[% ctx.any_part_label %]</option>
                                 [% END %]
                                 [% FOR part IN hdata.parts %]
-                                <option value='[% part.id %]'>[% part.label | html %]</option>
+                                <option value='[% part.id %]'>[% part.label | html %] ([% part.holdable_count %] [% l('available') %])</option>
                                 [% END %]
                             </select>
                           [% END %]

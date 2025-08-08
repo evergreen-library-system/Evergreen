@@ -2932,9 +2932,23 @@ sub fetch_slim_record {
 __PACKAGE__->register_method(
     method    => 'rec_hold_parts',
     api_name  => 'open-ils.search.biblio.record_hold_parts',
-    signature => q/
-       Returns a list of {label :foo, id : bar} objects for viable monograph parts for a given record
-    /
+    signature => {
+        desc => q/
+            For a given record, returns a list of monograph parts with holdable items, their user-readable label, and the number of holdable items with each part.
+       /,
+       params => [
+            {desc => q/Args object:
+                rec : bib record id targeted by this hold
+                mrec : metarecord id - unused
+                pickup_lib : org unit id of pickup library for this hold (for determining if there's a hard boundary)/,
+                type => 'object'}
+       ],
+       return => {
+        desc => q/ A list of {id :foo, label : bar, holdable_count : boo} objects for monograph parts with holdable items on the given record. 
+            'holdable_count' is the number of holdable items with the part applied to them. /
+       }
+
+    }
 );
 
 sub rec_hold_parts {
@@ -2946,23 +2960,26 @@ sub rec_hold_parts {
     my $e = new_editor();
 
     my $query = {
-        select => {bmp => ['id', 'label']},
-        from => 'bmp',
-        where => {
-            id => {
-                in => {
-                    select => {'acpm' => ['part']},
-                    from => {acpm => {acp => {join => {acn => {join => 'bre'}, 'ccs', {},'acpl'}}}},
-                    where => {
-                        '+acp' => {'deleted' => 'f', 'holdable', 't'},
-                        '+bre' => {id => $rec},
-                        '+ccs' => {holdable => 't'},
-                        '+acpl' => {holdable => 't'}
+        select => {
+            bmp => [{column => 'id', distinct => 1}, {column => 'label'}], 
+            acp => [{alias => 'holdable_count', column => 'id', transform => 'count', aggregate => 1, distinct => 1}]
+        },
+        from => {
+            'acpm' => {
+                'acp' => {join => {
+                    'acn' => {join => 'bre'}, 
+                    'ccs', {}, # Yes, the empty hash does need to be here, so that acpl doesn't get treated as a property of ccs
+                    'acpl'}
                     },
-                    distinct => 1,
-                }
-            },
-            deleted => 'f'
+                'bmp'
+            }
+        },
+        where => {
+            '+bmp' => {deleted => 'f'},
+            '+acp' => {deleted => 'f', holdable => 't'},
+            '+bre' => {id => $rec},
+            '+ccs' => {holdable => 't'},
+            '+acpl' => {holdable => 't'}
         },
         order_by =>[{class=>'bmp', field=>'label_sortkey'}]
     };

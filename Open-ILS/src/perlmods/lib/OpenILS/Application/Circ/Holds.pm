@@ -5339,6 +5339,7 @@ sub hold_metadata {
             issuance => $issuance,
             part => $part,
             parts => [],
+            part_counts => {}, # hash of {id -> holdable_count} for each part
             part_required => 'f',
             bibrecord => $bre,
             metarecord => $metarecord,
@@ -5370,6 +5371,8 @@ sub hold_metadata {
             {
                 my $part_ids = [map {$_->{'id'}} @$parts];
                 $meta->{parts} = $e->search_biblio_monograph_part({id=>$part_ids});
+
+                $meta->{part_counts} = {map {$_->{'id'} => $_->{'holdable_count'}} @$parts};
             }
 
             # T holds on records that have parts are normally OK, but if the record has

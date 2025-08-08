@@ -4024,12 +4024,7 @@ label[for*=expert_]
     padding-bottom: 10px;
 }
 .hold-div{
-    [% IF rtl == 't' -%]
-    padding-right: 10px;
-    [% ELSE -%]
-    padding-left: 10px;
-    [% END -%]
-    padding-bottom: 15px;
+    padding-bottom: 0.375rem;
 }
 .hold-span{font-weight: bold;}
 .padding-left-6{
