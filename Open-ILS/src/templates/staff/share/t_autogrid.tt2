@@ -197,11 +197,12 @@
           [% l('Reset Columns') %]
         </a></li>
         <li><a ng-click="generateCSVExportURL($event)" 
+          ng-class="{disabled: !grid.totalCount}"
           download="{{csvExportFileName}}.csv" ng-href="{{csvExportURL}}">
           <span class="glyphicon glyphicon-download"></span>
           [% l('Download Full CSV') %]
         </a></li>
-        <li><a href ng-click="printHTML()">
+        <li><a href ng-click="printHTML()" ng-class="{disabled: !grid.totalCount}">
           <span class="glyphicon glyphicon-print"></span>
           [% l('Print Full Grid') %]
         </a></li>
