@@ -1,0 +1,23 @@
+BEGIN;
+
+SELECT plan(2);
+
+CREATE TEMPORARY TABLE merged AS SELECT vandelay.merge_record_xml(
+        '<record><datafield tag="650" ind1=" " ind2="0"><subfield code="a">Cookery</subfield><subfield code="0">https://id.loc.gov/authorities/subjects/sh2010008400</subfield><subfield code="0">(MySystem)123</subfield></datafield></record>',
+        '<record><datafield tag="650" ind1=" " ind2="0"><subfield code="a">Cooking</subfield></datafield><datafield tag="905" ind1=" " ind2=" "><subfield code="r">650a[0~\)123$]</subfield></datafield></record>'
+        )::xml result;
+
+SELECT is(
+    xpath('//marc:datafield[@tag="650"]/marc:subfield[@code="a"]/text()', result, ARRAY[ARRAY['marc', 'http://www.loc.gov/MARC21/slim']])::text[],
+    ARRAY['Cooking'],
+    'it can update the field when the first relevant subfield does not match but the second one does'
+) FROM merged;
+
+SELECT is(
+    xpath('//marc:datafield[@tag="650"]/marc:subfield[@code="0"]/text()', result, ARRAY[ARRAY['marc', 'http://www.loc.gov/MARC21/slim']])::text[],
+    ARRAY['https://id.loc.gov/authorities/subjects/sh2010008400', '(MySystem)123'],
+    'it keeps the existing subfields that are not marked for replacement'
+) FROM merged;
+
+
+ROLLBACK;
