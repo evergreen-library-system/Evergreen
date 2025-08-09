@@ -180,12 +180,14 @@
           <span class="ms-2" i18n>Reset Columns</span>
         </button>
         <a nbgDropdownItem class="dropdown-item label-with-material-icon" 
+          [ngClass]="{'disabled': !gridContext.dataSource.data.length}"
           (click)="generateCsvExportUrl($event)" type="button"
           [download]="csvExportFileName" [href]="csvExportUrl">
           <span class="material-icons" aria-hidden="true">cloud_download</span>
           <span class="ms-2" i18n>Download Full CSV</span>
         </a>
         <button nbgDropdownItem class="dropdown-item label-with-material-icon"
+          [disabled]="!gridContext.dataSource.data.length"
           (click)="printHtml()" type="button">
           <span class="material-icons" aria-hidden="true">print</span>
           <span class="ms-2" i18n>Print Full Grid</span>
