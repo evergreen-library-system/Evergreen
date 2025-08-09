@@ -306,7 +306,7 @@ intervals. Once a matching copy is found, the item’s barcode number is assigne
 
 The _Holds Pull List_ is updated constantly. Once an item on the list is no longer available or a hold on the list is captured, the items will disappear from the list. The _Holds Pull List_ should be printed at least once a day. 
 
-To retrieve your _Holds Pull List_, select _Circulation_ -> _Pull List for Hold Requests_.
+To retrieve your _Holds Pull List_, select _Circulation_ -> _Holds Pull List_.
 
 image::basic_holds/holds-pull-1.png[holds-pull-1]
 
@@ -577,10 +577,10 @@ interfaces. XUL-based hold interfaces are those that number the items on the
 interface.  This can be overridden by saving column configurations that remove
 the _Type_ column.
 . The hold type indicator will display by default on the HTML-based pull list.
-To access, click _Circulation_ -> _Pull List for Hold Requests_ -> _Print Full
+To access, click _Circulation_ -> _Holds Pull List_ -> _Print Full
 Pull List (Alternate Strategy)_.
 . The hold type indicator can be added to the Simplified Pull List.  To access,
-click _Circulation_ -> _Pull List for Hold Requests_ -> _Simplified Pull List
+click _Circulation_ -> _Holds Pull List_ -> _Simplified Pull List
 Interface_.
 
 To add the hold type indicator to the simplified pull list, click _Simplified

@@ -1,1 +1,2 @@
-
+* In the staff client, the circulation menu's "Pull List for Hold Requests" has been
+  renamed to "Holds Pull List" for consistency.
