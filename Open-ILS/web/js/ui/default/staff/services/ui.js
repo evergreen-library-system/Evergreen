@@ -1691,8 +1691,8 @@ https://stackoverflow.com/questions/24764802/angular-js-automatically-focus-inpu
 .factory('egLinkTargetService', ['egCore', function(egCore) {
     const newTabsDisabledKey = 'ui.staff.disable_links_newtabs';
 
-    let initSettingLoaded = false;
-    let firstSharedResponse = null;
+    var initSettingLoaded = false;
+    var firstSharedResponse = null;
 
     function getSetting() {
         return egCore.hatch.getItem(newTabsDisabledKey);
@@ -1710,7 +1710,7 @@ https://stackoverflow.com/questions/24764802/angular-js-automatically-focus-inpu
         // share first Promise to avoid multiple server requests
         if (!initSettingLoaded) {
             if (!firstSharedResponse) {
-                firstSharedResponse = getSetting().finally(() => {
+                firstSharedResponse = getSetting().finally(function() {
                     initSettingLoaded = true;
                 });
             }
@@ -1721,7 +1721,11 @@ https://stackoverflow.com/questions/24764802/angular-js-automatically-focus-inpu
         return getSetting();
     }
 
-    return { disableNewTabs, enableNewTabs, newTabsDisabled };
+    return {
+        disableNewTabs: disableNewTabs,
+        enableNewTabs: enableNewTabs,
+        newTabsDisabled: newTabsDisabled
+    };
 }])
 
 /**
@@ -1757,7 +1761,7 @@ https://stackoverflow.com/questions/24764802/angular-js-automatically-focus-inpu
                 if (SAME_TAB_TARGETS.has(attrs.target)) { return; }
 
                 egLinkTargetService.newTabsDisabled()
-                    .then(disabled => {
+                    .then(function(disabled) {
                         if (disabled) {
                             elem.attr('target', null);
                         } else {
