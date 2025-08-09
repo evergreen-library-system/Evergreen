@@ -1,2 +1,4 @@
 * In the staff client, the circulation menu's "Pull List for Hold Requests" has been
   renamed to "Holds Pull List" for consistency.
+* The SlimPAC, which was an early version of the Evergreen catalog without Javascript,
+  has been removed from Evergreen's code.
