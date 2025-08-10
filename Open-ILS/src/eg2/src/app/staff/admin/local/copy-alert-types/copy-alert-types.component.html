@@ -9,8 +9,8 @@
         [required]="field.isRequired()" [ngModel]="record[field.name]()"
         (ngModelChange)="record['event']($event)">
       <option value="" [selected]="!record[field.name]()" i18n>Any Event</option>
-      <option value="CHECKIN" [selected]="record[field.name]() == 'CHECKIN'" i18n>Checkin</option>
-      <option value="CHECKOUT" [selected]="record[field.name]() == 'CHECKOUT'" i18n>Checkout</option>
+      <option value="CHECKIN" [selected]="record[field.name]() === 'CHECKIN'" i18n>Checkin</option>
+      <option value="CHECKOUT" [selected]="record[field.name]() === 'CHECKOUT'" i18n>Checkout</option>
     </select>
 </ng-template>
 

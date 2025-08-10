@@ -29,7 +29,23 @@ export class MockGenerators {
     }
 
     static idlService(classes: {}) {
-        return jasmine.createSpyObj<IdlService>(['getClassSelector'], {classes: classes});
+        const service = jasmine.createSpyObj<IdlService>(['getClassSelector', 'create'], {classes: classes});
+        service.create.and.callFake((cls: string, seed?: any) => {
+            return new Proxy({
+                a: [],
+                classname: cls,
+                _isfieldmapper: true
+            }, {
+                get(target, property, receiver) {
+                    if (['a', 'classname', '_isfieldmapper'].includes(property as string)) {
+                        return target[property];
+                    } else {
+                        return (value) => null;
+                    }
+                }
+            });
+        });
+        return service;
     }
 
     // Use the method response map to say which OpenSRF methods
