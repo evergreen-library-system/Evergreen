@@ -2960,37 +2960,13 @@ sub rec_hold_parts {
     my $e = new_editor();
 
     my $query = {
-        select => {
-            bmp => [{column => 'id', distinct => 1}, {column => 'label'}], 
-            acp => [{alias => 'holdable_count', column => 'id', transform => 'count', aggregate => 1, distinct => 1}]
-        },
-        from => {
-            'acpm' => {
-                'acp' => {join => {
-                    'acn' => {join => 'bre'}, 
-                    'ccs', {}, # Yes, the empty hash does need to be here, so that acpl doesn't get treated as a property of ccs
-                    'acpl'}
-                    },
-                'bmp'
-            }
-        },
-        where => {
-            '+bmp' => {deleted => 'f'},
-            '+acp' => {deleted => 'f', holdable => 't'},
-            '+bre' => {id => $rec},
-            '+ccs' => {holdable => 't'},
-            '+acpl' => {holdable => 't'}
-        },
-        order_by =>[{class=>'bmp', field=>'label_sortkey'}]
-    };
+        from => [
+            'asset.count_holdable_parts_on_record',
+            $rec,
+            $pickup_lib
+        ],
 
-    if(defined $pickup_lib) {
-        my $hard_boundary = $U->ou_ancestor_setting_value($pickup_lib, OILS_SETTING_HOLD_HARD_BOUNDARY);
-        if($hard_boundary) {
-            my $orgs = $e->json_query({from => ['actor.org_unit_descendants' => $pickup_lib, $hard_boundary]});
-            $query->{where}->{'+acp'}->{circ_lib} = [ map { $_->{id} } @$orgs ];
-        }
-    }
+    };
 
     return $e->json_query($query);
 }
