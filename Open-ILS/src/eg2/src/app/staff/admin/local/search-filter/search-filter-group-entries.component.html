@@ -12,8 +12,8 @@
 
 <eg-grid #grid idlClass="asfge" [dataSource]="dataSource" [sortable]="false"
     hideFields="grp,query">
-    <eg-grid-column path="query.label" label="Query Label"></eg-grid-column>
-    <eg-grid-column path="query.query_text" label="Query Text"></eg-grid-column>
+    <eg-grid-column path="query.label" label="Query Label" i18n-label></eg-grid-column>
+    <eg-grid-column path="query.query_text" label="Query Text" i18n-label></eg-grid-column>
     <eg-grid-toolbar-button label="New" i18n-label 
         (onClick)="createQuery()"></eg-grid-toolbar-button>
     <eg-grid-toolbar-action label="Edit Selected" i18n-label 

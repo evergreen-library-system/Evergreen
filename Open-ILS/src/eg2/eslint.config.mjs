@@ -157,5 +157,6 @@ export default defineConfig([globalIgnores(["projects/**/*"]), {
         "@angular-eslint/template/mouse-events-have-key-events": "error",
         "@angular-eslint/template/button-has-type": "error",
         "eg-custom-eslint-rules/bg-info-on-modal-header": "error",
+        "eg-custom-eslint-rules/grid-column-label-not-marked-for-translation": "error",
     },
 }]);
