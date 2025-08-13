@@ -7,7 +7,7 @@ import {Component, TemplateRef, OnInit, Input, ViewEncapsulation} from '@angular
 
     <div class="staff-banner" [ngClass]="bannerStyle">
       <h1 id="staff-banner" tabindex="0" *ngIf="bannerText || bannerIcon">
-        <i class="material-icons align-middle text-left" aria-hidden="true" *ngIf="bannerIcon">{{bannerIcon}}</i>
+        <i class="material-icons align-middle text-start" aria-hidden="true" *ngIf="bannerIcon">{{bannerIcon}}</i>
         <span i18n>{{bannerText}}</span>
       </h1>
       <ng-container *ngIf="bannerTemplateRef">

@@ -12,7 +12,7 @@ import {ActivatedRoute} from '@angular/router';
         <eg-staff-banner bannerText="Course Term Configuration" i18n-bannerText>
         </eg-staff-banner>
         <div class="row">
-            <div class="col text-right">
+            <div class="col text-end">
                 <a class="btn btn-info ms-3" routerLink="/staff/admin/local/asset/course_list" i18n>
                     <i class="material-icons align-middle" aria-hidden="true">keyboard_return</i>
                     <span class="align-middle">Return to Course List</span>
