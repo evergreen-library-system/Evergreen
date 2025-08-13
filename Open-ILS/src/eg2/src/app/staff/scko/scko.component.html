@@ -9,7 +9,7 @@
   <div class="flex-1"></div>
 </div>
 
-<div *ngIf="scko.auth.token() && scko.patronSummary" class="row mr-0 mt-5">
+<div *ngIf="scko.auth.token() && scko.patronSummary" class="row me-0 mt-5">
   <div class="col-lg-9">
     <div class="ms-2 scko-page">
       <router-outlet></router-outlet>
@@ -71,10 +71,10 @@
 </eg-string>
 
 <ng-template let-ctx="ctx" #batchRenewResultTmpl>
-  <span class="mr-1" *ngIf="ctx && ctx.renewSuccessCount > 0" i18n>
+  <span class="me-1" *ngIf="ctx && ctx.renewSuccessCount > 0" i18n>
     {{ctx.renewSuccessCount}} item(s) successfully renewed.
   </span>
-  <span class="mr-1" *ngIf="ctx && ctx.renewFailCount > 0" i18n>
+  <span class="me-1" *ngIf="ctx && ctx.renewFailCount > 0" i18n>
     {{ctx.renewFailCount}} item(s) failed to renew.
   </span>
 </ng-template>
