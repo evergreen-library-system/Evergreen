@@ -596,10 +596,13 @@ CREATE TABLE action.hold_request_reset_reason_entry (
     reset_reason INT REFERENCES action.hold_request_reset_reason (id) DEFERRABLE INITIALLY DEFERRED,
     note TEXT,
     reset_time TIMESTAMP WITH TIME ZONE,
-    previous_copy BIGINT REFERENCES asset.copy (id) DEFERRABLE INITIALLY DEFERRED,
     requestor INT REFERENCES actor.usr (id) DEFERRABLE INITIALLY DEFERRED,
     requestor_workstation INT REFERENCES actor.workstation (id) DEFERRABLE INITIALLY DEFERRED
 );
+
+CREATE TRIGGER action_hold_request_reset_reason_entry_previous_copy_trig
+    AFTER INSERT OR UPDATE ON action.hold_request_reset_reason_entry
+    FOR EACH ROW EXECUTE FUNCTION fake_fkey_tgr('previous_copy');
 
 CREATE INDEX ahrrre_hold_idx ON action.hold_request_reset_reason_entry (hold);
 
