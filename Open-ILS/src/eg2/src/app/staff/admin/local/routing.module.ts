@@ -42,7 +42,9 @@ const routes: Routes = [{
         readonlyFields: 'deleted',
         initialFilterValues: {deleted: 'f'},
         orgFieldsDefaultingToContextOrg: 'owning_lib',
-        fieldOrder: 'owning_lib,name,opac_visible,circulate,holdable,hold_verify,checkin_alert,deleted,label_prefix,label_suffix,url,id'}]
+        fieldOrder: 'owning_lib,name,opac_visible,circulate,holdable,hold_verify,checkin_alert,deleted,label_prefix,label_suffix,url,id',
+        fieldOptions: { owning_lib:{isRequired:true} }
+    }]
 }, {
     path: 'asset/shelving_location_groups',
     loadChildren: () =>
