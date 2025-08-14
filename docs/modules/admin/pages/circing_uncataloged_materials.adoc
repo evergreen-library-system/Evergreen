@@ -42,6 +42,7 @@ items.
 NOTE: Evergreen always sets the owning library of pre-cataloged items to be the
 consortium.
 
+[[noncat-items]]
 == Non-cataloged item settings ==
 
 indexterm:[ephemeral items]
