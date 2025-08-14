@@ -41,6 +41,7 @@ const routes: Routes = [{
         enableUndelete: true,
         readonlyFields: 'deleted',
         initialFilterValues: {deleted: 'f'},
+        orgFieldsDefaultingToContextOrg: 'owning_lib',
         fieldOrder: 'owning_lib,name,opac_visible,circulate,holdable,hold_verify,checkin_alert,deleted,label_prefix,label_suffix,url,id'}]
 }, {
     path: 'asset/shelving_location_groups',
