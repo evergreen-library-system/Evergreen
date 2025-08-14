@@ -544,7 +544,7 @@ There are two independent library settings that will allow copy alerts to displa
 *Display copy location check in alert for in-house-use* set to true will cause an alert message indicating that the item needs to be routed to its location if the location has check in alert set to true.
 ====================================
  
-3) To record in-house use for non-cataloged items, enter number of uses, choose non-cataloged type from drop-down menu, and click *Submit*.
+3) To record in-house use for non-cataloged items, enter number of uses, choose non-cataloged type from drop-down menu, and click *Submit*.  xref:admin:circing_uncataloged_materials.adoc#noncat-items[Click here to manage non-cataloged items.]
 
 image::circulating_items_web_client/in_house_use_non_cat.png[In-House Use entry screen for non-cataloged items.]
  
