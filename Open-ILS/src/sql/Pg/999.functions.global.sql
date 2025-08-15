@@ -1250,13 +1250,14 @@ BEGIN
 		moved_objects := moved_objects + 1;
 	END LOOP;
 
-	-- Find parts attached to the source ...
-	FOR source_part IN SELECT * FROM biblio.monograph_part WHERE record = source_record LOOP
+	-- Find active parts attached to the source ...
+	FOR source_part IN SELECT * FROM biblio.monograph_part WHERE record = source_record AND deleted = false LOOP
 
 		SELECT	INTO target_part *
 		  FROM	biblio.monograph_part
 		  WHERE	label = source_part.label
-			AND record = target_record;
+			AND record = target_record
+			AND NOT deleted;
 
 		-- ... and if there's a conflicting one on the target ...
 		IF FOUND THEN
