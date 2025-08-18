@@ -3320,7 +3320,7 @@ INSERT into config.org_unit_setting_type
         'OPAC Inactivity Timeout (in seconds)',
         'coust', 'label'),
     oils_i18n_gettext('auth.opac_timeout',
-        'OPAC Inactivity Timeout (in seconds)',
+        'Number of seconds of inactivity before the patron is logged out of the OPAC. The minimum value that can be entered is 240 seconds. At the 180 second mark a countdown will appear and patrons can choose to end the session, continue the session, or allow it to time out.',
         'coust', 'description'),
     'integer', null)
 
