@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2025-06-18 03:52+0000\n"
+"POT-Creation-Date: 2025-07-15 17:04+0000\n"
 "PO-Revision-Date: 2024-10-03 18:50+0000\n"
 "Last-Translator: Andi Chandler <Unknown>\n"
 "Language-Team: English (United Kingdom) <en_GB@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2025-06-19 11:20+0000\n"
-"X-Generator: Launchpad (build 7aa962af79d02042917108fba5eb8636b85ecd02)\n"
+"X-Launchpad-Export-Date: 2025-07-16 09:53+0000\n"
+"X-Generator: Launchpad (build 2d6e9435c2df831e66deb7fcbe9f03f78dd14743)\n"
 "Language: en_GB\n"
 
 #: ../../Open-ILS/src/templates/opac/register.tt2:66
@@ -106,9 +106,9 @@ msgstr "%1 "
 msgid "%1 %2"
 msgstr "%1 %2"
 
+#. (title, hold.hold.part.label)
 #. (copy.label, copy_org.name)
 #. (title, part.label)
-#. (title, hold.hold.part.label)
 #: ../../Open-ILS/src/templates/opac/myopac/holds.tt2:200 ../../Open-ILS/src/templates/opac/myopac/holds/edit.tt2:27 ../../Open-ILS/src/templates/opac/myopac/lists.tt2:363 ../../Open-ILS/src/templates/opac/parts/anon_list.tt2:77 ../../Open-ILS/src/templates/opac/parts/place_hold_result.tt2:46
 msgid "%1 (%2)"
 msgstr "%1 (%2)"
@@ -138,10 +138,10 @@ msgstr "%1 km"
 msgid "%1 mi"
 msgstr "%1 mi"
 
-#. (attrs.copy_counts.$depth.available, attrs.copy_counts.$depth.count, ou_name)
-#. (attrs.plib_copy_counts.$depth.available, attrs.plib_copy_counts.$depth.count, ou_name)
 #. (ou_avail, ou_count, ou_name)
-#: ../../Open-ILS/src/templates/opac/parts/record/copy_counts.tt2:22 ../../Open-ILS/src/templates/opac/parts/record/copy_counts.tt2:41 ../../Open-ILS/src/templates/opac/parts/result/copy_counts.tt2:14 ../../Open-ILS/src/templates/opac/parts/result/copy_counts.tt2:34
+#. (attrs.plib_copy_counts.$depth.available, attrs.plib_copy_counts.$depth.count, ou_name)
+#. (attrs.copy_counts.$depth.available, attrs.copy_counts.$depth.count, ou_name)
+#: ../../Open-ILS/src/templates/opac/parts/record/copy_counts.tt2:29 ../../Open-ILS/src/templates/opac/parts/record/copy_counts.tt2:48 ../../Open-ILS/src/templates/opac/parts/result/copy_counts.tt2:21 ../../Open-ILS/src/templates/opac/parts/result/copy_counts.tt2:41
 msgid "%1 of %quant(%2,copy,copies) available at %3."
 msgstr "%1 of %quant(%2,copy,copies) available at %3."
 
@@ -190,11 +190,11 @@ msgstr "(' _ note _ ')"
 msgid "(Example: %1)"
 msgstr "(Example: %1)"
 
-#: ../../Open-ILS/src/templates/opac/parts/record/copy_counts.tt2:47
+#: ../../Open-ILS/src/templates/opac/parts/record/copy_counts.tt2:54
 msgid "(Show preferred library)"
 msgstr "(Show preferred library)"
 
-#: ../../Open-ILS/src/templates/opac/parts/record/copy_counts.tt2:27
+#: ../../Open-ILS/src/templates/opac/parts/record/copy_counts.tt2:34
 msgid "(Show)"
 msgstr "(Show)"
 
@@ -765,7 +765,7 @@ msgstr "Awards, Reviews, & Suggested Reads"
 msgid "Back"
 msgstr "Back"
 
-#: ../../Open-ILS/src/templates/opac/myopac/main_pay.tt2:58
+#: ../../Open-ILS/src/templates/opac/myopac/main_pay.tt2:62
 msgid "Back to Account Summary"
 msgstr "Back to Account Summary"
 
@@ -2070,7 +2070,7 @@ msgid "Entity and Attribute Information Note: "
 msgstr "Entity and Attribute Information Note: "
 
 #. ((ctx.printable_receipt.textcode ? ctx.printable_receipt.textcode _ ' / ' _ ctx.printable_receipt.desc : 0) || ctx.printable_receipt.error_output.data || l("No receipt data returned from server"))
-#: ../../Open-ILS/src/templates/opac/myopac/main_pay.tt2:49
+#: ../../Open-ILS/src/templates/opac/myopac/main_pay.tt2:53
 msgid "Error creating receipt: %1"
 msgstr "Error creating receipt: %1"
 
@@ -3372,7 +3372,7 @@ msgstr "No items were selected"
 msgid "No messages found."
 msgstr "No messages found."
 
-#: ../../Open-ILS/src/templates/opac/myopac/main_pay.tt2:49 ../../Open-ILS/src/templates/opac/myopac/receipt_print.tt2:14
+#: ../../Open-ILS/src/templates/opac/myopac/main_pay.tt2:53 ../../Open-ILS/src/templates/opac/myopac/receipt_print.tt2:14
 msgid "No receipt data returned from server"
 msgstr "No receipt data returned from server"
 
@@ -4941,7 +4941,7 @@ msgid "Show all results, not just those matching this term"
 msgstr "Show all results, not just those matching this term"
 
 #. (ou_name)
-#: ../../Open-ILS/src/templates/opac/parts/record/copy_counts.tt2:26 ../../Open-ILS/src/templates/opac/parts/record/copy_counts.tt2:46
+#: ../../Open-ILS/src/templates/opac/parts/record/copy_counts.tt2:33 ../../Open-ILS/src/templates/opac/parts/record/copy_counts.tt2:53
 msgid "Show copies at %1"
 msgstr "Show copies at %1"
 
