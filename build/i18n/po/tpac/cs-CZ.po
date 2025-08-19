@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2025-06-17 23:34+0000\n"
-"PO-Revision-Date: 2025-03-25 15:00+0000\n"
+"POT-Creation-Date: 2025-07-15 17:04+0000\n"
+"PO-Revision-Date: 2024-10-03 18:50+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2025-06-18 05:33+0000\n"
-"X-Generator: Launchpad (build 102302b48d804bc4284f26b4edb16220a44bef79)\n"
+"X-Launchpad-Export-Date: 2025-07-16 09:48+0000\n"
+"X-Generator: Launchpad (build 2d6e9435c2df831e66deb7fcbe9f03f78dd14743)\n"
 
 #: ../../Open-ILS/src/templates/opac/register.tt2:66
 msgid ""
@@ -107,9 +107,9 @@ msgstr "%1 "
 msgid "%1 %2"
 msgstr "%1 %2"
 
+#. (title, hold.hold.part.label)
 #. (copy.label, copy_org.name)
 #. (title, part.label)
-#. (title, hold.hold.part.label)
 #: ../../Open-ILS/src/templates/opac/myopac/holds.tt2:200 ../../Open-ILS/src/templates/opac/myopac/holds/edit.tt2:27 ../../Open-ILS/src/templates/opac/myopac/lists.tt2:363 ../../Open-ILS/src/templates/opac/parts/anon_list.tt2:77 ../../Open-ILS/src/templates/opac/parts/place_hold_result.tt2:46
 msgid "%1 (%2)"
 msgstr "%1 (%2)"
@@ -139,10 +139,10 @@ msgstr "%1 km"
 msgid "%1 mi"
 msgstr "%1 mi"
 
-#. (attrs.copy_counts.$depth.available, attrs.copy_counts.$depth.count, ou_name)
-#. (attrs.plib_copy_counts.$depth.available, attrs.plib_copy_counts.$depth.count, ou_name)
 #. (ou_avail, ou_count, ou_name)
-#: ../../Open-ILS/src/templates/opac/parts/record/copy_counts.tt2:22 ../../Open-ILS/src/templates/opac/parts/record/copy_counts.tt2:41 ../../Open-ILS/src/templates/opac/parts/result/copy_counts.tt2:14 ../../Open-ILS/src/templates/opac/parts/result/copy_counts.tt2:34
+#. (attrs.plib_copy_counts.$depth.available, attrs.plib_copy_counts.$depth.count, ou_name)
+#. (attrs.copy_counts.$depth.available, attrs.copy_counts.$depth.count, ou_name)
+#: ../../Open-ILS/src/templates/opac/parts/record/copy_counts.tt2:29 ../../Open-ILS/src/templates/opac/parts/record/copy_counts.tt2:48 ../../Open-ILS/src/templates/opac/parts/result/copy_counts.tt2:21 ../../Open-ILS/src/templates/opac/parts/result/copy_counts.tt2:41
 msgid "%1 of %quant(%2,copy,copies) available at %3."
 msgstr "Dostupné pro výpůjčku: %1 z %2 exemplářů  (%3)"
 
@@ -189,11 +189,11 @@ msgstr "(' _ poznámka _ ')"
 msgid "(Example: %1)"
 msgstr "(Příklad: %1)"
 
-#: ../../Open-ILS/src/templates/opac/parts/record/copy_counts.tt2:47
+#: ../../Open-ILS/src/templates/opac/parts/record/copy_counts.tt2:54
 msgid "(Show preferred library)"
 msgstr "(Zobrazit preferovanou knihovnu)"
 
-#: ../../Open-ILS/src/templates/opac/parts/record/copy_counts.tt2:27
+#: ../../Open-ILS/src/templates/opac/parts/record/copy_counts.tt2:34
 msgid "(Show)"
 msgstr "(Zobrazit)"
 
@@ -766,7 +766,7 @@ msgstr "Ocenění, recenze a další doporučené čtení"
 msgid "Back"
 msgstr "Zpět"
 
-#: ../../Open-ILS/src/templates/opac/myopac/main_pay.tt2:58
+#: ../../Open-ILS/src/templates/opac/myopac/main_pay.tt2:62
 msgid "Back to Account Summary"
 msgstr "Zpět na přehled účtu"
 
@@ -2014,10 +2014,6 @@ msgstr "E-mailová adresa ve čtenářském kontě:"
 msgid "Email address: "
 msgstr "E-mailová adresa: "
 
-#: ../../Open-ILS/src/templates/opac/myopac/main_pay.tt2:46
-msgid "Email receipt"
-msgstr "E-mailové potvrzení"
-
 #: ../../Open-ILS/src/templates/opac/myopac/lists.tt2:294 ../../Open-ILS/src/templates/opac/parts/anon_list.tt2:24
 msgid "Email title details"
 msgstr "Poslat e-mailem detaily o titulu"
@@ -2076,7 +2072,7 @@ msgid "Entity and Attribute Information Note: "
 msgstr "Poznámka k informaci o entitách a atributech: "
 
 #. ((ctx.printable_receipt.textcode ? ctx.printable_receipt.textcode _ ' / ' _ ctx.printable_receipt.desc : 0) || ctx.printable_receipt.error_output.data || l("No receipt data returned from server"))
-#: ../../Open-ILS/src/templates/opac/myopac/main_pay.tt2:49
+#: ../../Open-ILS/src/templates/opac/myopac/main_pay.tt2:53
 msgid "Error creating receipt: %1"
 msgstr "Během vytváření potvrzení %1 došlo k chybě"
 
@@ -3383,7 +3379,7 @@ msgstr "Nebyly vybrány žádné položky"
 msgid "No messages found."
 msgstr "Nebyly nalezeny žádné zprávy"
 
-#: ../../Open-ILS/src/templates/opac/myopac/main_pay.tt2:49 ../../Open-ILS/src/templates/opac/myopac/receipt_print.tt2:14
+#: ../../Open-ILS/src/templates/opac/myopac/main_pay.tt2:53 ../../Open-ILS/src/templates/opac/myopac/receipt_print.tt2:14
 msgid "No receipt data returned from server"
 msgstr "Ze serveru nebyla vrácena data pro vystavení potvrzení"
 
@@ -4953,7 +4949,7 @@ msgid "Show all results, not just those matching this term"
 msgstr "Zobrazit všechny výsledky, nejen ty, které odpovídají tomuto termínu"
 
 #. (ou_name)
-#: ../../Open-ILS/src/templates/opac/parts/record/copy_counts.tt2:26 ../../Open-ILS/src/templates/opac/parts/record/copy_counts.tt2:46
+#: ../../Open-ILS/src/templates/opac/parts/record/copy_counts.tt2:33 ../../Open-ILS/src/templates/opac/parts/record/copy_counts.tt2:53
 msgid "Show copies at %1"
 msgstr "Zobrazit exempláře v knihovně  %1"
 
@@ -6150,6 +6146,15 @@ msgstr "zobrazit"
 #: ../../Open-ILS/src/templates/opac/parts/place_hold_result.tt2:156
 msgid "volume"
 msgstr "signatura"
+
+#~ msgid "- All Parts -"
+#~ msgstr "- Všecny části -"
+
+#~ msgid "All Parts"
+#~ msgstr "Všechny části"
+
+#~ msgid "View Borrowing History"
+#~ msgstr "Zobrazit historii výpůjček"
 
 #~ msgid "Remove filter set %1"
 #~ msgstr "Odstranit sadu filtrů %1"

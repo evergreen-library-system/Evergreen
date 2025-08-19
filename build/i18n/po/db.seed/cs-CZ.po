@@ -2,15 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2025-06-17 16:56-0400\n"
-"PO-Revision-Date: 2025-03-25 15:00+0000\n"
+"POT-Creation-Date: 2025-07-15 15:34-0400\n"
+"PO-Revision-Date: 2024-10-03 18:50+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: UISK <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2025-06-18 05:19+0000\n"
-"X-Generator: Launchpad (build 102302b48d804bc4284f26b4edb16220a44bef79)\n"
+"X-Launchpad-Export-Date: 2025-07-16 09:36+0000\n"
+"X-Generator: Launchpad (build 2d6e9435c2df831e66deb7fcbe9f03f78dd14743)\n"
 "X-Poedit-Language: Czech\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
 "X-Poedit-SourceCharset: utf-8\n"
@@ -3724,11 +3724,6 @@ msgid "Allow sharing of user buckets with specific orgs"
 msgstr ""
 "Povolit sdílení skupin uživatelů s konkrétními organizačními jednotkami"
 
-#: 950.data.seed-values.sql:2046
-msgid "Allow setting and unsetting hold from top of hold queue (cut in line)"
-msgstr ""
-"Povolit nastavení nebo zrušení nastavení na začátku fronty (předběhnutí řady)"
-
 # id::pgt.name__1
 #: 950.data.seed-values.sql:2067
 msgid "Users"
@@ -3808,38 +3803,6 @@ msgstr "Přehled dat"
 #: 950.data.seed-values.sql:2099
 msgid "Volunteers"
 msgstr "Dobrovolníci"
-
-#: 950.data.seed-values.sql:2101
-msgid "API Integrator"
-msgstr "Integrátor API"
-
-#: 950.data.seed-values.sql:2103
-msgid "Patron API"
-msgstr "API pro uživatele"
-
-#: 950.data.seed-values.sql:2105
-msgid "Org Unit API"
-msgstr "API pro organizační jednotku"
-
-#: 950.data.seed-values.sql:2107
-msgid "Bib Record API"
-msgstr "API pro bibliografický záznam"
-
-#: 950.data.seed-values.sql:2109
-msgid "Item Record API"
-msgstr "API pro  jednotky"
-
-#: 950.data.seed-values.sql:2111
-msgid "Holds API"
-msgstr "API pro rezervace"
-
-#: 950.data.seed-values.sql:2113
-msgid "Debt Collection API"
-msgstr "API pro vymáhání dluhů"
-
-#: 950.data.seed-values.sql:2115
-msgid "Course Reserves API"
-msgstr "API pro materiály ke kurzům"
 
 #: 950.data.seed-values.sql:3050
 msgid "Stacks"
@@ -13672,12 +13635,6 @@ msgstr ""
 "Násobitel důležitosti maximální popularity pro hledání s využitím relevance "
 "upravené podle populary (desetinné číslo mezi 1,0 a 2,0)"
 
-#: 950.data.seed-values.sql:12916
-msgid "Change this value to force staff clients to clear some cached values"
-msgstr ""
-"Změnou této hodnoty donutíte služebního klienta vymazat některé hodnoty z "
-"mezipaměti."
-
 #: 950.data.seed-values.sql:12937 950.data.seed-values.sql:12938
 msgid "Historical Circulation Retention Start Date"
 msgstr "Počáteční datum uchovávání historických výpůjček"
@@ -15739,18 +15696,6 @@ msgstr ""
 "Počet posledních čtenářů, jejichž konto může být znovu načteno ve služebním "
 "klientovi. Hodnota 0 nebo menší tuto funkci deaktivuje. Výchozí hodnota je 1."
 
-#: 950.data.seed-values.sql:18477
-msgid "Place holds for recent patrons"
-msgstr "Zadat rezervaci pro posledního čtenáře"
-
-#: 950.data.seed-values.sql:18483
-msgid ""
-"Loading a patron in the place holds interface designates them as recent. "
-"Show the interface to load recent patrons when placing holds."
-msgstr ""
-"Načtení čtenářů v rozhraní pro zadání rezervace je označí jako nedávné. Při "
-"zadávání rezervace zobrazit rozhraní pro načtení nedávných čtenářů."
-
 #: 950.data.seed-values.sql:18563
 msgid ""
 "Forgive fines when checking out a lost item and copy alert is suppressed?"
@@ -15901,10 +15846,6 @@ msgstr ""
 #: 950.data.seed-values.sql:18665
 msgid "Lineitem Reference Field (RFF) Uses Lineitem ID Only"
 msgstr "Refereční pole položky (RPP) používá pouze ID položky"
-
-#: 950.data.seed-values.sql:18668
-msgid "Lineitems Are Enumerated Sequentially"
-msgstr "Položky jsou vyjmenovány postupně"
 
 #: 950.data.seed-values.sql:18756
 msgid "No attempt to code"
@@ -16930,79 +16871,83 @@ msgstr "Nastavení sloupců: admin.local.permission.grp_penalty_threshold"
 msgid "Grid Config: admin.local.config.non_cataloged_type"
 msgstr "Nastavení sloupců: admin.local.config.non_cataloged_type"
 
-#: 950.data.seed-values.sql:21177
+#: 950.data.seed-values.sql:21172
+msgid "Grid Config: admin.local.config.standing_penalty"
+msgstr ""
+
+#: 950.data.seed-values.sql:21184
 msgid "Address Label"
 msgstr "Označení adresy"
 
-#: 950.data.seed-values.sql:21203
+#: 950.data.seed-values.sql:21210
 msgid "Holds for Bib Record"
 msgstr "Rezervace k bibliografickému záznanu"
 
-#: 950.data.seed-values.sql:21256
+#: 950.data.seed-values.sql:21263
 msgid "Booking capture slip"
 msgstr "Průvod zachycení rezervovaného zdroje"
 
-#: 950.data.seed-values.sql:21296
+#: 950.data.seed-values.sql:21303
 msgid "Grid Config: Booking Manage Reservations"
 msgstr "Nastavení sloupců: Spravovat rezervace v Rezervacích zdrojů"
 
-#: 950.data.seed-values.sql:21302
+#: 950.data.seed-values.sql:21309
 msgid "Grid Config: Booking Ready to pick up grid"
 msgstr "Nastavení sloupců: Tabulka Rezervace zdrojů připravené k vyzvednutí"
 
-#: 950.data.seed-values.sql:21308
+#: 950.data.seed-values.sql:21315
 msgid "Grid Config: Booking Already Picked Up grid"
 msgstr "Nastavení sloupců: Tabulka Vyzvednuté rezervace zdrojů"
 
-#: 950.data.seed-values.sql:21314
+#: 950.data.seed-values.sql:21321
 msgid "Grid Config: Booking Return Patron tab Already Picked Up grid"
 msgstr ""
 "Nastavení sloupců: karta Vrácené zdroje čtenáře, tabulka Vyzvednuté "
 "rezervace zdrojů"
 
-#: 950.data.seed-values.sql:21320
+#: 950.data.seed-values.sql:21327
 msgid "Grid Config: Booking Return Patron tab Returned Today grid"
 msgstr ""
 "Nastavení sloupců: karta Vrácené zdroje čtenáře, tabulka Dnes vrácené"
 
-#: 950.data.seed-values.sql:21326
+#: 950.data.seed-values.sql:21333
 msgid "Grid Config: Booking Return Resource tab Already Picked Up grid"
 msgstr ""
 "Nastavení sloupců: karta Vrácené zdroje, tabulka Vyzvednuté rezervace zdrojů"
 
-#: 950.data.seed-values.sql:21332
+#: 950.data.seed-values.sql:21339
 msgid "Grid Config: Booking Return Resource tab Returned Today grid"
 msgstr "Nastavení sloupců: karta Vrácené zdroje, tabulka Dnes vrácené"
 
-#: 950.data.seed-values.sql:21338
+#: 950.data.seed-values.sql:21345
 msgid "Grid Config: Booking Captured Reservations"
 msgstr "Nastavení sloupců: Rezervované zdrojů - Zachycené rezervace"
 
-#: 950.data.seed-values.sql:21344
+#: 950.data.seed-values.sql:21351
 msgid "Grid Config: Booking Pull List"
 msgstr "Nastavení sloupců: Rezervované zdrojů - Rezervace k zachycení"
 
-#: 950.data.seed-values.sql:21350
+#: 950.data.seed-values.sql:21357
 msgid "Sticky setting for pickup ou family in Manage Reservations screen"
 msgstr ""
 "Naposledy použité nastavení pro rodinu knihoven pro vyzvednutí v rozraní pro "
 "správu rezervace zdrojů"
 
-#: 950.data.seed-values.sql:21356
+#: 950.data.seed-values.sql:21363
 msgid "Sticky setting for tab in Booking Return"
 msgstr "Naposledy použité nastavení pro tabulku vracení zamluvených zdrojů"
 
-#: 950.data.seed-values.sql:21362
+#: 950.data.seed-values.sql:21369
 msgid "Sticky setting for granularity combobox in Booking Create"
 msgstr ""
 "Naposledy použité nastavení pro granularitu kombinovaného pole ve vytvoření "
 "zamluvených zdrojů"
 
-#: 950.data.seed-values.sql:21368
+#: 950.data.seed-values.sql:21375
 msgid "Default to creating multiday booking reservations"
 msgstr "Výchozí pro vytvoření vícedenní zamluvení  rezervace zdrojů"
 
-#: 950.data.seed-values.sql:21374
+#: 950.data.seed-values.sql:21381
 msgid ""
 "Include only resources that have been captured in the Ready grid in the "
 "Pickup screen"
@@ -17010,39 +16955,39 @@ msgstr ""
 "Zahrnout pouze zdroje, který byly zachyceny v tabulce Připravené v rozhraní "
 "pro zachycení"
 
-#: 950.data.seed-values.sql:21380
+#: 950.data.seed-values.sql:21387
 msgid "Grid Config: circ.patron.xact_details_details_bills"
 msgstr "Nastevení sloupců: circ.patron.xact_details_details_bills"
 
-#: 950.data.seed-values.sql:21386
+#: 950.data.seed-values.sql:21393
 msgid "Grid Config: circ.patron.xact_details_details_payments"
 msgstr "Nastavení sloupců: circ.patron.xact_details_details_payments"
 
-#: 950.data.seed-values.sql:21395
+#: 950.data.seed-values.sql:21402
 msgid "Use Hatch for printing"
 msgstr "Pro tisk použít Hatch"
 
-#: 950.data.seed-values.sql:21408
+#: 950.data.seed-values.sql:21415
 msgid "Instructor"
 msgstr "Učitel"
 
-#: 950.data.seed-values.sql:21409
+#: 950.data.seed-values.sql:21416
 msgid "Teaching assistant"
 msgstr "Asistent učitele"
 
-#: 950.data.seed-values.sql:21410
+#: 950.data.seed-values.sql:21417
 msgid "Student"
 msgstr "Student"
 
-#: 950.data.seed-values.sql:21418
+#: 950.data.seed-values.sql:21425
 msgid "Catalog Results Page Size"
 msgstr "Velikost stránky katalogu s výsledky"
 
-#: 950.data.seed-values.sql:21430
+#: 950.data.seed-values.sql:21437
 msgid "Age billings and payments when circulations are aged."
 msgstr "Při archivaci výpůjček archivovat poplatky a platby"
 
-#: 950.data.seed-values.sql:21439
+#: 950.data.seed-values.sql:21446
 msgid ""
 "Age billings and payments whose transactions were completed this long ago.  "
 "For circulation transactions, this setting is superseded by the "
@@ -17052,121 +16997,121 @@ msgstr ""
 "před velmi dávnou dobou. Pro výpůjčky je toto nastavení potlačeno nastavením "
 "\"history.money.age_with_circs\""
 
-#: 950.data.seed-values.sql:21451
+#: 950.data.seed-values.sql:21458
 msgid "Default org unit for catalog holds org unit selector"
 msgstr ""
 "Výchozí organizační jednotka pro výběr organizační jednotky pro rezervace v "
 "katalogu"
 
-#: 950.data.seed-values.sql:21458
+#: 950.data.seed-values.sql:21465
 msgid "Default org unit for patron search"
 msgstr "Výchozí knihovna pro vyhledávání čtenářů"
 
-#: 950.data.seed-values.sql:21465
+#: 950.data.seed-values.sql:21472
 msgid "Default org unit for hopeless holds interface"
 msgstr "Výchozí organizační jednotka pro rozhraní beznadějných rezervací"
 
-#: 950.data.seed-values.sql:21472
+#: 950.data.seed-values.sql:21479
 msgid "Grid Config: eg.grid.cat.authority.browse"
 msgstr "Nastavení sloupců: eg.grid.cat.authority.browse"
 
-#: 950.data.seed-values.sql:21478
+#: 950.data.seed-values.sql:21485
 msgid "Grid Config: eg.grid.cat.authority.manage.bibs"
 msgstr "Nastavení sloupců: eg.grid.cat.authority.manage.bibs"
 
-#: 950.data.seed-values.sql:21488
+#: 950.data.seed-values.sql:21495
 msgid "Acquisitions Default Search: Lineitems"
 msgstr "Výchozí vyhledávání v akvizici:  Položky"
 
-#: 950.data.seed-values.sql:21494
+#: 950.data.seed-values.sql:21501
 msgid "Acquisitions Default Search: Purchase Orders"
 msgstr "Výchozí vyhledávání v akvizici:  Objednávky"
 
-#: 950.data.seed-values.sql:21500
+#: 950.data.seed-values.sql:21507
 msgid "Acquisitions Default Search: Invoices"
 msgstr "Výchozí vyhledávání v akvizici: Faktury"
 
-#: 950.data.seed-values.sql:21506
+#: 950.data.seed-values.sql:21513
 msgid "Acquisitions Default Search: Selection Lists"
 msgstr "Výchozí vyhledávání v akvizici:  Akviziční seznam"
 
-#: 950.data.seed-values.sql:21516
+#: 950.data.seed-values.sql:21523
 msgid "Acquisitions Search: Immediately Search Lineitems"
 msgstr "Vyhledávání v akvizici: Okamžitě hledat položky"
 
-#: 950.data.seed-values.sql:21522
+#: 950.data.seed-values.sql:21529
 msgid "Acquisitions Search: Immediately Search Purchase Orders"
 msgstr "Vyhledávání  v akvizici:  Okamžitě hledat objednávky"
 
-#: 950.data.seed-values.sql:21528
+#: 950.data.seed-values.sql:21535
 msgid "Acquisitions Search: Immediately Search Invoices"
 msgstr "Vyhledávání v akvizici: okamžitě hledat faktury"
 
-#: 950.data.seed-values.sql:21534
+#: 950.data.seed-values.sql:21541
 msgid "Acquisitions Search: Immediately Search Selection Lists"
 msgstr "Vyhledávání v akvizic: okamžitě hledat akviziční seznamy"
 
-#: 950.data.seed-values.sql:21544
+#: 950.data.seed-values.sql:21551
 msgid "Grid Config: acq.search.lineitems"
 msgstr "Nastavení sloupců: acq.search.lineitems"
 
-#: 950.data.seed-values.sql:21550
+#: 950.data.seed-values.sql:21557
 msgid "Grid Config: acq.search.purchaseorders"
 msgstr "Nastavení sloupců: acq.search.purchaseorders"
 
-#: 950.data.seed-values.sql:21556
+#: 950.data.seed-values.sql:21563
 msgid "Grid Config: acq.search.selectionlists"
 msgstr "Nastavení sloupců: acq.search.selectionlists"
 
-#: 950.data.seed-values.sql:21562
+#: 950.data.seed-values.sql:21569
 msgid "Grid Config: acq.search.invoices"
 msgstr "Nastavení sloupců: acq.search.invoices"
 
-#: 950.data.seed-values.sql:21576
+#: 950.data.seed-values.sql:21583
 msgid "Grid Config: acq.provider.addresses"
 msgstr "Nastavení sloupců: acq.provider.addresses"
 
-#: 950.data.seed-values.sql:21582
+#: 950.data.seed-values.sql:21589
 msgid "Grid Config: acq.provider.attributes"
 msgstr "Nastavení sloupců: acq.provider.attributes"
 
-#: 950.data.seed-values.sql:21588
+#: 950.data.seed-values.sql:21595
 msgid "Grid Config: acq.provider.contact.addresses"
 msgstr "Nastavení sloupců: acq.provider.contact.addresses"
 
-#: 950.data.seed-values.sql:21594
+#: 950.data.seed-values.sql:21601
 msgid "Grid Config: acq.provider.contacts"
 msgstr "Nastavení sloupců: acq.provider.contacts"
 
-#: 950.data.seed-values.sql:21600
+#: 950.data.seed-values.sql:21607
 msgid "Grid Config: acq.provider.edi_accounts"
 msgstr "Nastavení sloupců: acq.provider.edi_accounts"
 
-#: 950.data.seed-values.sql:21606
+#: 950.data.seed-values.sql:21613
 msgid "Grid Config: acq.provider.edi_messages"
 msgstr "Nastavení sloupců: acq.provider.edi_messages"
 
-#: 950.data.seed-values.sql:21612
+#: 950.data.seed-values.sql:21619
 msgid "Grid Config: acq.provider.holdings"
 msgstr "Nastavení sloupců: acq.provider.holdings"
 
-#: 950.data.seed-values.sql:21618
+#: 950.data.seed-values.sql:21625
 msgid "Grid Config: acq.provider.invoices"
 msgstr "Nastavení sloupců: acq.provider.invoices"
 
-#: 950.data.seed-values.sql:21624
+#: 950.data.seed-values.sql:21631
 msgid "Grid Config: acq.provider.purchaseorders"
 msgstr "Nastavení sloupců: acq.provider.purchaseorders"
 
-#: 950.data.seed-values.sql:21630
+#: 950.data.seed-values.sql:21637
 msgid "Grid Config: acq.provider.search.results"
 msgstr "Nastavení sloupců: acq.provider.search.results"
 
-#: 950.data.seed-values.sql:21640
+#: 950.data.seed-values.sql:21647
 msgid "Matomo Site ID"
 msgstr "ID stránky pro Matomo"
 
-#: 950.data.seed-values.sql:21644
+#: 950.data.seed-values.sql:21651
 msgid ""
 "The Site ID for your Evergreen catalog. You can find the Site ID in the "
 "tracking code you got from Matomo."
@@ -17174,11 +17119,11 @@ msgstr ""
 "ID stránky pro váš katalog Evergreen.  ID stránky najdete ve sledovacím "
 "kódu, který jste dostali do Matomo."
 
-#: 950.data.seed-values.sql:21650
+#: 950.data.seed-values.sql:21657
 msgid "Matomo URL"
 msgstr "URL pro Matomo"
 
-#: 950.data.seed-values.sql:21653
+#: 950.data.seed-values.sql:21660
 msgid ""
 "The URL for your the Matomo software. Be sure to include the trailing slash, "
 "e.g. https://my-evergreen.matomo.cloud/"
@@ -17186,11 +17131,11 @@ msgstr ""
 "URL pro váš software Matomo. Dejte pozor, abyste jej zadali včetně koncového "
 "lomítka, např.  https://my-evergreen.matomo.cloud/"
 
-#: 950.data.seed-values.sql:21662
+#: 950.data.seed-values.sql:21669
 msgid "Enable curbside pickup functionality at library."
 msgstr "Povolit v knihovně  funkce bezkontaktního vyzvednutí."
 
-#: 950.data.seed-values.sql:21666
+#: 950.data.seed-values.sql:21673
 msgid ""
 "When set to TRUE, enable staff and public interfaces to schedule curbside "
 "pickup of holds that become available for pickup."
@@ -17198,25 +17143,25 @@ msgstr ""
 "Pokud je tato volba nastavena na PRAVDA,  ve služebním a veřejném katalogu "
 "bude možné plánovat čas bezkontaktního vyzvednutí   pro splněné rezervace."
 
-#: 950.data.seed-values.sql:21675 950.data.seed-values.sql:21679
+#: 950.data.seed-values.sql:21682 950.data.seed-values.sql:21686
 msgid "Time interval between curbside appointments"
 msgstr "Časový interval mezi termíny bezkontaktního vyzvednutí"
 
-#: 950.data.seed-values.sql:21688 950.data.seed-values.sql:21692
+#: 950.data.seed-values.sql:21695 950.data.seed-values.sql:21699
 msgid ""
 "Maximum number of patrons that may select a particular curbside pickup time"
 msgstr ""
 "Maximální počet čtenářů, kteří smějí zvolit stejný termín bezkontaktního "
 "vyzvednutí."
 
-#: 950.data.seed-values.sql:21701
+#: 950.data.seed-values.sql:21708
 msgid ""
 "Disable patron modification of curbside appointments in public catalog"
 msgstr ""
 "Zakázat čtenářům ve veřejném katalogu změny termínu pro bezkontaktní "
 "vyzvednutí"
 
-#: 950.data.seed-values.sql:21705
+#: 950.data.seed-values.sql:21712
 msgid ""
 "When set to TRUE, patrons cannot use the My Account interface to select "
 "curbside pickup times"
@@ -17224,12 +17169,12 @@ msgstr ""
 "Pokud je nastavena volba PRAVDA, uživatelé nemohou ve svém čtenářském kontě "
 "vybrat čas bezkontaktního vyzvednutí"
 
-#: 950.data.seed-values.sql:21723
+#: 950.data.seed-values.sql:21730
 msgid "Hook used to trigger the notification of an offer of curbside pickup"
 msgstr ""
 "Háček použitý pro spuštění oznámení nabídky bezkontaktního vyzvednutí"
 
-#: 950.data.seed-values.sql:21736
+#: 950.data.seed-values.sql:21743
 msgid ""
 "Hook used to trigger the notification of the creation or update of a "
 "curbside pickup appointment with an arrival URL"
@@ -17237,15 +17182,15 @@ msgstr ""
 "Hák použitý k odeslání oznámení o vytvoření nebo aktualizaci schůzky pro "
 "bezkontaktní vyzvednutí s URL příjezdu"
 
-#: 950.data.seed-values.sql:21760
+#: 950.data.seed-values.sql:21767
 msgid "Offer use of geographic location services in the public catalog"
 msgstr "Nabídka využití geolokačních služeb ve veřejném katalogu"
 
-#: 950.data.seed-values.sql:21770
+#: 950.data.seed-values.sql:21777
 msgid "Enable Holdings Sort by Geographic Proximity"
 msgstr "Umožnit řazení jednotek podle geografické blízkosti knihoven"
 
-#: 950.data.seed-values.sql:21774
+#: 950.data.seed-values.sql:21781
 msgid ""
 "When set to TRUE, will cause the record details page to display the controls "
 "for sorting holdings by geographic proximity. This also depends on the "
@@ -17255,11 +17200,11 @@ msgstr ""
 "prvky pro řazení jednotek podle geografické blízkosti, v závislosti  na tom, "
 "jestli je aktivní globální indikátor opac.use_geolocation."
 
-#: 950.data.seed-values.sql:21783
+#: 950.data.seed-values.sql:21790
 msgid "Show Geographic Proximity in Miles"
 msgstr "Zobrazit geografickou blízkost v mílích"
 
-#: 950.data.seed-values.sql:21787
+#: 950.data.seed-values.sql:21794
 msgid ""
 "When set to TRUE, will cause the record details page to show distances for "
 "geographic proximity in miles instead of kilometers."
@@ -17268,11 +17213,11 @@ msgstr ""
 "rámci geografické blízkosti knihoven zobrazena v mílích, nikoliv v "
 "kilometrech."
 
-#: 950.data.seed-values.sql:21796
+#: 950.data.seed-values.sql:21803
 msgid "Geographic Location Service to use for Addresses"
 msgstr "Geolokační služba, která se má použít pro adresy"
 
-#: 950.data.seed-values.sql:21800
+#: 950.data.seed-values.sql:21807
 msgid ""
 "Specifies which geographic location service to use for converting address "
 "input to geographic coordinates."
@@ -17280,7 +17225,7 @@ msgstr ""
 "Specifikuje, která geolokační služba se má použít pro převod zadané adresy  "
 "na zeměpisné souřadnice."
 
-#: 950.data.seed-values.sql:21825
+#: 950.data.seed-values.sql:21832
 msgid ""
 "Cover image uploads are converted to PNG files with this compression, on a "
 "scale of 0 (no compression) to 9 (maximum compression), or -1 for the zlib "
@@ -17290,7 +17235,7 @@ msgstr ""
 "od  0 (bez komprese) do 9 (maximální komprese), nebo -1 pro výchozí hodnoty "
 "zlib."
 
-#: 950.data.seed-values.sql:21835
+#: 950.data.seed-values.sql:21842
 msgid ""
 "Maximum file size for uploaded cover image files (at time of upload, prior "
 "to rescaling)."
@@ -17298,7 +17243,7 @@ msgstr ""
 "Maximální velikost souboru pro nahrané obrázky obálek (v době nahrání, před "
 "přeškálováním)."
 
-#: 950.data.seed-values.sql:21839
+#: 950.data.seed-values.sql:21846
 msgid ""
 "The number of bytes to allow for a cover image upload.  If unset, defaults "
 "to 10737418240 (roughly 10GB)."
@@ -17306,17 +17251,17 @@ msgstr ""
 "Počet bytů povolených pro nahráné obrázky obálek. Pokud není nastaveno, "
 "použije se výchozí hodnota  10737418240 (přibližně  10GB)."
 
-#: 950.data.seed-values.sql:21852
+#: 950.data.seed-values.sql:21859
 msgid "Holds: Require Monographic Part When Present for hold check."
 msgstr ""
 "Rezervace: Pro zaškrtnutí rezervací vyžadovat části monografií, pokud jsou "
 "přítomny"
 
-#: 950.data.seed-values.sql:21862
+#: 950.data.seed-values.sql:21869
 msgid "Require Monographic Part when Present"
 msgstr "Požadovat části monografií, pokud jsou přítomny"
 
-#: 950.data.seed-values.sql:21866
+#: 950.data.seed-values.sql:21873
 msgid ""
 "Normally the selection of a monographic part during hold placement is "
 "optional if there is at least one copy on the bib without a monographic "
@@ -17332,36 +17277,36 @@ msgstr ""
 "část přidána před uložením jakýchkoliv změn nebo vytvořením nového exempláře "
 "v editaci exemplářů, jsou-li k bibliografickému záznamu připojeny části."
 
-#: 950.data.seed-values.sql:22106
+#: 950.data.seed-values.sql:22113
 msgid "Staff Catalog \"Exclude Electronic Resources\" Option"
 msgstr "Možnost \"Vyloučit elektronické zdroje\" ve služebním katalogu"
 
-#: 950.data.seed-values.sql:22113
+#: 950.data.seed-values.sql:22120
 msgid "Add the \"Reserves material\" dropdown to refine search results"
 msgstr ""
 "Pro zpřesnění výsledků vyhledávání přidat rozbalovací nabídku \"Materiály ke "
 "kurzům\""
 
-#: 950.data.seed-values.sql:22123
+#: 950.data.seed-values.sql:22130
 msgid "Default org unit for catalog holdings tab"
 msgstr ""
 "Výchozí knihovna pro zobrazení knihovních jednotek v rozhlraní pro správu "
 "exemplářů"
 
-#: 950.data.seed-values.sql:22133
+#: 950.data.seed-values.sql:22140
 msgid "Catalog Search Form Visibility Sticky Setting"
 msgstr ""
 "Přetrvávající nastavení viditelnosti formuláře pro vyhledávání v katalogu"
 
-#: 950.data.seed-values.sql:22143
+#: 950.data.seed-values.sql:22150
 msgid "Grid Config: eg.grid.catalog.record.copies"
 msgstr "Nastavení sloupců: eg.grid.catalog.record.copies"
 
-#: 950.data.seed-values.sql:22152
+#: 950.data.seed-values.sql:22159
 msgid "Grid Config: eg.grid.catalog.record.notes"
 msgstr "Nastavení sloupců: eg.grid.catalog.record.notes"
 
-#: 950.data.seed-values.sql:22164
+#: 950.data.seed-values.sql:22171
 msgid ""
 "Block the ability of expired user with the STAFF_LOGIN permission to log "
 "into Evergreen."
@@ -17369,35 +17314,35 @@ msgstr ""
 "Blokovat možnos přihlášení personálu (STAFF_LOGIN) do Evergreenu, pokud "
 "vypršela platnost účtu."
 
-#: 950.data.seed-values.sql:22174
+#: 950.data.seed-values.sql:22181
 msgid ""
 "Staff Catalog Search: Display shelving location groups with library groups"
 msgstr ""
 "Vyhledávání ve služebním katalogu: Zobrazit skupiny umístění regálů se "
 "skupinami knihoven"
 
-#: 950.data.seed-values.sql:22187
+#: 950.data.seed-values.sql:22194
 msgid "Limit suggestion generation to searches with this many terms or less"
 msgstr ""
 "Omezit vytváření návrhů pro vyhledávání s tímto nebo s nižším počtem termínů"
 
-#: 950.data.seed-values.sql:22201
+#: 950.data.seed-values.sql:22208
 msgid "Show more details in Angular staff catalog"
 msgstr "Zobrazit další podrobnosti v angularizovaném služebním katalogu"
 
-#: 950.data.seed-values.sql:22212
+#: 950.data.seed-values.sql:22219
 msgid "Grid Config: item.event_grid"
 msgstr "Nastavení sloupců: item.event_grid"
 
-#: 950.data.seed-values.sql:22218
+#: 950.data.seed-values.sql:22225
 msgid "Grid Config: patron.event_grid"
 msgstr "Nastavení sloupců: patron.event_grid"
 
-#: 950.data.seed-values.sql:22229
+#: 950.data.seed-values.sql:22236
 msgid "Stripe ISO 4217 currency code"
 msgstr "Kód měny podle ISO 4217 pro Stripe"
 
-#: 950.data.seed-values.sql:22235
+#: 950.data.seed-values.sql:22242
 msgid ""
 "Use an all lowercase version of a Stripe-supported ISO 4217 currency code.  "
 "Defaults to \"usd\""
@@ -17405,82 +17350,82 @@ msgstr ""
 "Použít verzi kódu měny malými písmeny podle ISO 4217 podporovanou Stripe. "
 "Výchozí hodnota \"usd\"."
 
-#: 950.data.seed-values.sql:22248
+#: 950.data.seed-values.sql:22255
 msgid "Grid Config: eg.grid.acq.fund.fund_debit"
 msgstr "Nastavení sloupců: eg.grid.acq.fund.fund_debit"
 
-#: 950.data.seed-values.sql:22255
+#: 950.data.seed-values.sql:22262
 msgid "Grid Config: eg.grid.acq.fund.fund_transfer"
 msgstr "Nastavení sloupců: eg.grid.acq.fund.fund_transfer"
 
-#: 950.data.seed-values.sql:22262
+#: 950.data.seed-values.sql:22269
 msgid "Grid Config: eg.grid.acq.fund.fund_allocation"
 msgstr "Nastavení sloupců: eg.grid.acq.fund.fund_allocation"
 
-#: 950.data.seed-values.sql:22269
+#: 950.data.seed-values.sql:22276
 msgid "Grid Config: eg.grid.admin.acq.fund"
 msgstr "Nastavení sloupců: eg.grid.admin.acq.fund"
 
-#: 950.data.seed-values.sql:22276
+#: 950.data.seed-values.sql:22283
 msgid "Grid Config: eg.grid.admin.acq.funding_source"
 msgstr "Nastavení sloupců: eg.grid.admin.acq.funding_source"
 
-#: 950.data.seed-values.sql:22283
+#: 950.data.seed-values.sql:22290
 msgid "Grid Config: eg.grid.acq.funding_source.fund_allocation"
 msgstr "Nastavení sloupců: eg.grid.acq.funding_source.fund_allocation"
 
-#: 950.data.seed-values.sql:22290
+#: 950.data.seed-values.sql:22297
 msgid "Grid Config: eg.grid.acq.funding_source.credit"
 msgstr "Nastavení sloupců: eg.grid.acq.funding_source.credit"
 
-#: 950.data.seed-values.sql:22297
+#: 950.data.seed-values.sql:22304
 msgid "Grid Config: eg.grid.admin.acq.fiscal_calendar"
 msgstr "Nastavení sloupců: eg.grid.admin.acq.fiscal_calendar"
 
-#: 950.data.seed-values.sql:22304
+#: 950.data.seed-values.sql:22311
 msgid "Grid Config: eg.grid.admin.acq.fiscal_year"
 msgstr "Nastavení sloupců: eg.grid.admin.acq.fiscal_year"
 
-#: 950.data.seed-values.sql:22314
+#: 950.data.seed-values.sql:22321
 msgid "Grid Config: Acq Lineitem History"
 msgstr "Nastavení sloupců: Historie  položek akvizice"
 
-#: 950.data.seed-values.sql:22321
+#: 950.data.seed-values.sql:22328
 msgid "Grid Config: Acq PO History"
 msgstr "Nastavení sloupců: Historie objednávek"
 
-#: 950.data.seed-values.sql:22328
+#: 950.data.seed-values.sql:22335
 msgid "Grid Config: Acq PO EDI Messages"
 msgstr "Nastavení sloupců: EDI zprávy k objednávkám"
 
-#: 950.data.seed-values.sql:22335
+#: 950.data.seed-values.sql:22342
 msgid "ACQ Lineitem List Page Size"
 msgstr "Velikost stránky seznamu akvizičních položek"
 
-#: 950.data.seed-values.sql:22342
+#: 950.data.seed-values.sql:22349
 msgid "Enable Experimental ACQ Selection/Purchase Search Interface Links"
 msgstr ""
 "Zapnout odkazy na experimentální rozhraní vyhledávání akvizičních seznamů a "
 "objednávek"
 
-#: 950.data.seed-values.sql:22352
+#: 950.data.seed-values.sql:22359
 msgid "Holdings Editor Default Values and Visibility"
 msgstr "Výchozí hodnoty a zobrazení v editoru jednotek"
 
-#: 950.data.seed-values.sql:22362
+#: 950.data.seed-values.sql:22369
 msgid "ACQ Lineitem List Sort Order"
 msgstr "Řazení seznamů akvizičních položek"
 
-#: 950.data.seed-values.sql:22372
+#: 950.data.seed-values.sql:22379
 msgid "Display Links to Deprecated Acquisitions Interfaces"
 msgstr "Zobrazit odkaz na staré akviziční rozhraní"
 
-#: 950.data.seed-values.sql:22384
+#: 950.data.seed-values.sql:22391
 msgid "Use Item Price or Cost as Primary Item Value"
 msgstr ""
 "Použít cenu nebo náklady na pořízení jednoty jako primární hodnotu jednotky"
 
-#: 950.data.seed-values.sql:22390
+#: 950.data.seed-values.sql:22397
 msgid ""
 "Expects \"price\" or \"cost\" and defaults to price.  This refers to the "
 "corresponding field on the item record and gets used in such contexts as "
@@ -17493,12 +17438,12 @@ msgstr ""
 "(nastavení nebo pravidla pokut) a pro naúčtování poplatků za dlouhodobě "
 "nevrácené, poškozené nebo ztracené jednotky."
 
-#: 950.data.seed-values.sql:22404
+#: 950.data.seed-values.sql:22411
 msgid "Use Item Price or Cost as Backup Item Value"
 msgstr ""
 "Použít cenu nebo náklady na pořízení pro stanovení hodnoty náhradní jednotky"
 
-#: 950.data.seed-values.sql:22410
+#: 950.data.seed-values.sql:22417
 msgid ""
 "Expects \"price\" or \"cost\", but defaults to neither.  This refers to the "
 "corresponding field on the item record and is used as a second-pass fall-"
@@ -17511,11 +17456,11 @@ msgstr ""
 "případě potřeby Evergreen jako poslední náhradní hodnotu používá nastavení "
 "\"Výchozí cena jednotky\"."
 
-#: 950.data.seed-values.sql:22423
+#: 950.data.seed-values.sql:22430
 msgid "Staff Catalog Search Filters"
 msgstr "Filtry pro vyhledávání ve služebním katalogu"
 
-#: 950.data.seed-values.sql:22427
+#: 950.data.seed-values.sql:22434
 msgid ""
 "Array of advanced search filters to display, e.g. "
 "[\"item_lang\",\"audience\",\"lit_form\"]"
@@ -17523,37 +17468,37 @@ msgstr ""
 "Uspořádání zobrazení filtrů pokročilého vyhledávání, např.  "
 "[\"item_lang\",\"audience\",\"lit_form\"]"
 
-#: 950.data.seed-values.sql:22441
+#: 950.data.seed-values.sql:22448
 msgid "Hold Pull List "
 msgstr "Seznam rezervací k zachycení "
 
-#: 950.data.seed-values.sql:22489
+#: 950.data.seed-values.sql:22496
 msgid "Hold Pull List Grid Settings"
 msgstr "Nastavení sloupců v Seznamu rezervací k zachycení"
 
-#: 950.data.seed-values.sql:22496
+#: 950.data.seed-values.sql:22503
 msgid "Hold Pull List Prefetch Preference"
 msgstr "Předvolby předběžného načtení seznamu požadavků na rezervace"
 
-#: 950.data.seed-values.sql:22506
+#: 950.data.seed-values.sql:22513
 msgid "Grid Config: eg.grid.admin.local.container.carousel_org_unit"
 msgstr "Nastavení sloupců: eg.grid.admin.local.container.carousel_org_unit"
 
-#: 950.data.seed-values.sql:22513
+#: 950.data.seed-values.sql:22520
 msgid "Grid Config: eg.grid.admin.container.carousel"
 msgstr "Nastavení sloupců: eg.grid.admin.container.carousel"
 
-#: 950.data.seed-values.sql:22520
+#: 950.data.seed-values.sql:22527
 msgid "Grid Config: eg.grid.admin.server.config.carousel_type"
 msgstr "Nastavení sloupců: eg.grid.admin.server.config.carousel_type"
 
-#: 950.data.seed-values.sql:22532
+#: 950.data.seed-values.sql:22539
 msgid "Workstation OU is the default for staff-placed holds"
 msgstr ""
 "Oragnizační jednotka pracovní stanice je výchozí pro rezervace zadané "
 "personálem"
 
-#: 950.data.seed-values.sql:22538
+#: 950.data.seed-values.sql:22545
 msgid ""
 "For staff-placed holds, regardless of the patron preferred pickup location, "
 "the staff workstation OU is the default pickup location"
@@ -17563,157 +17508,157 @@ msgstr ""
 "knihovnou pro vyzvednutí organizační jednotka, v níž je zaregistrovaná "
 "pracovní stanice personálu"
 
-#: 950.data.seed-values.sql:22550
+#: 950.data.seed-values.sql:22557
 msgid "Grid Config: eg.grid.admin.local.triggers.atevdef"
 msgstr "Nastavení sloupců: eg.grid.admin.local.triggers.atevdef"
 
-#: 950.data.seed-values.sql:22557
+#: 950.data.seed-values.sql:22564
 msgid "Grid Config: eg.grid.admin.local.triggers.atenv"
 msgstr "Nastavení sloupců: eg.grid.admin.local.triggers.atenv"
 
-#: 950.data.seed-values.sql:22564
+#: 950.data.seed-values.sql:22571
 msgid "Grid Config: eg.grid.admin.local.triggers.atevparam"
 msgstr "Nastavení sloupců: eg.grid.admin.local.triggers.atevparam"
 
-#: 950.data.seed-values.sql:22574
+#: 950.data.seed-values.sql:22581
 msgid "Grid Config: eg.grid.cat.bucket.batch_hold.view"
 msgstr "Nastavení sloupců: eg.grid.cat.bucket.batch_hold.view"
 
-#: 950.data.seed-values.sql:22581
+#: 950.data.seed-values.sql:22588
 msgid "Grid Config: eg.grid.cat.bucket.batch_hold.pending"
 msgstr "Nastavení sloupců: eg.grid.cat.bucket.batch_hold.pending"
 
-#: 950.data.seed-values.sql:22588
+#: 950.data.seed-values.sql:22595
 msgid "Grid Config: eg.grid.cat.bucket.batch_hold.events"
 msgstr "Nastavení sloupců: eg.grid.cat.bucket.batch_hold.events"
 
-#: 950.data.seed-values.sql:22595
+#: 950.data.seed-values.sql:22602
 msgid "Grid Config: eg.grid.cat.bucket.batch_hold.list"
 msgstr "Nastavení sloupců: eg.grid.cat.bucket.batch_hold.list"
 
-#: 950.data.seed-values.sql:22604
+#: 950.data.seed-values.sql:22611
 msgid "Link"
 msgstr "Odkaz"
 
-#: 950.data.seed-values.sql:22605
+#: 950.data.seed-values.sql:22612
 msgid "Menu Item"
 msgstr "Položka menu"
 
-#: 950.data.seed-values.sql:22606
+#: 950.data.seed-values.sql:22613
 msgid "Text and/or HTML"
 msgstr "Text a/nebo HTML"
 
-#: 950.data.seed-values.sql:22607
+#: 950.data.seed-values.sql:22614
 msgid "Header"
 msgstr "Záhlaví"
 
-#: 950.data.seed-values.sql:22608
+#: 950.data.seed-values.sql:22615
 msgid "Catalog Search Box"
 msgstr "Vyhledávací pole katalogu"
 
-#: 950.data.seed-values.sql:22613
+#: 950.data.seed-values.sql:22620
 msgid "Circulation and Patrons"
 msgstr "Výpůjčky a čtenáři"
 
-#: 950.data.seed-values.sql:22614
+#: 950.data.seed-values.sql:22621
 msgid "Check Out Items"
 msgstr "Půjčit"
 
-#: 950.data.seed-values.sql:22615
+#: 950.data.seed-values.sql:22622
 msgid "Check In Items"
 msgstr "Vrátit"
 
-#: 950.data.seed-values.sql:22616
+#: 950.data.seed-values.sql:22623
 msgid "Search For Patron By Name"
 msgstr "Vyhledat čtenáře podle jména"
 
-#: 950.data.seed-values.sql:22617
+#: 950.data.seed-values.sql:22624
 msgid "Item Search and Cataloging"
 msgstr "Vyhledávání exemplářů a katalogizace"
 
-#: 950.data.seed-values.sql:22618
+#: 950.data.seed-values.sql:22625
 msgid "Search Catalog"
 msgstr "Hledat v katalogu"
 
-#: 950.data.seed-values.sql:22619
+#: 950.data.seed-values.sql:22626
 msgid "Record Buckets"
 msgstr "Skupiny záznamů"
 
-#: 950.data.seed-values.sql:22620
+#: 950.data.seed-values.sql:22627
 msgid "Item Buckets"
 msgstr "Skupiny jednotek"
 
-#: 950.data.seed-values.sql:22621
+#: 950.data.seed-values.sql:22628
 msgid "Administration"
 msgstr "Administrace"
 
-#: 950.data.seed-values.sql:22622
+#: 950.data.seed-values.sql:22629
 msgid "Evergreen Documentation"
 msgstr "Dokumentace Evergreenu"
 
-#: 950.data.seed-values.sql:22623
+#: 950.data.seed-values.sql:22630
 msgid "Workstation Administration"
 msgstr "Nastavení pracovní stanice"
 
-#: 950.data.seed-values.sql:22624
+#: 950.data.seed-values.sql:22631
 msgid "Reports"
 msgstr "Zprávy a statistiky"
 
-#: 950.data.seed-values.sql:22633
+#: 950.data.seed-values.sql:22640
 msgid "Grid Config: admin.config.ui_staff_portal_page_entry"
 msgstr "Nastavení sloupců: admin.config.ui_staff_portal_page_entry"
 
-#: 950.data.seed-values.sql:22643
+#: 950.data.seed-values.sql:22650
 msgid "Library Selector Show Combined Names"
 msgstr "Výběr knihovny zobrazuje kombionované názvy"
 
-#: 950.data.seed-values.sql:22650
+#: 950.data.seed-values.sql:22657
 msgid "Patrons With Negative Balances Grid Settings"
 msgstr "Nastavení sloupců Čtenáři s negativní bilancí"
 
-#: 950.data.seed-values.sql:22657
+#: 950.data.seed-values.sql:22664
 msgid "Default org unit for patron negative balances interface"
 msgstr "Výchozí organizační jednotka pro rozhraní negativní bilance čtenářů"
 
-#: 950.data.seed-values.sql:22668
+#: 950.data.seed-values.sql:22675
 msgid "GUI: Enable Traditional Staff Catalog"
 msgstr "Grafické rozhraní: Aktivovat tradiční katalog personálu"
 
-#: 950.data.seed-values.sql:22673
+#: 950.data.seed-values.sql:22680
 msgid ""
 "Display an entry point in the browser client for the traditional staff "
 "catalog."
 msgstr ""
 "Zobrazit v prohlížeči klienta vstupní bod pro tradiční služební katalog."
 
-#: 950.data.seed-values.sql:22681 950.data.seed-values.sql:22686
+#: 950.data.seed-values.sql:22688 950.data.seed-values.sql:22693
 msgid "Enable Angular Circulation Menu"
 msgstr "Povolit Menu pro výpůjčky v Angularu"
 
-#: 950.data.seed-values.sql:22893
+#: 950.data.seed-values.sql:22900
 msgid "Picklist Upload Form Templates"
 msgstr "Šablony formuláře pro nahrání seznamu pro vyzvednutí"
 
-#: 950.data.seed-values.sql:23579
+#: 950.data.seed-values.sql:23586
 msgid "Grid Config: admin.local.cash_reports.desk_payments"
 msgstr "Nastavení sloupců: admin.local.cash_reports.desk_payments"
 
-#: 950.data.seed-values.sql:23586
+#: 950.data.seed-values.sql:23593
 msgid "Grid Config: admin.local.cash_reports.user_payments"
 msgstr "Nastavení sloupců: admin.local.cash_reports.user_payments"
 
-#: 950.data.seed-values.sql:23598
+#: 950.data.seed-values.sql:23605
 msgid "Limit the number of global concurrent matching search queries"
 msgstr ""
 "Omezit počet globálních souběžných odpovídajících vyhledávacích dotazů"
 
-#: 950.data.seed-values.sql:23607
+#: 950.data.seed-values.sql:23614
 msgid "Limit the number of global concurrent searches per client IP address"
 msgstr ""
 "Omezit počet globálních souběžných odpovídajících vyhledávacích dotazů na IP "
 "adresu klienta"
 
-#: 950.data.seed-values.sql:23616
+#: 950.data.seed-values.sql:23623
 msgid ""
 "Restrict post-login redirection to local URLs, or those that match the "
 "supplied comma-separated list of foreign domains or host names."
@@ -17722,7 +17667,7 @@ msgstr ""
 "odpovídají zadanému seznamu cizích domén nebo názvů hostitelů oddělených "
 "čárkami."
 
-#: 950.data.seed-values.sql:23625
+#: 950.data.seed-values.sql:23632
 msgid ""
 "Queued Ingest: Maximum number of database workers allowed for queued ingest "
 "processes"
@@ -17730,7 +17675,7 @@ msgstr ""
 "Postupné vkládání dat: maximální počet databázových procesů povolených pro "
 "postupné vkládání dat"
 
-#: 950.data.seed-values.sql:23632
+#: 950.data.seed-values.sql:23639
 msgid ""
 "Queued Ingest: Abort transaction on ingest error rather than simply logging "
 "an error"
@@ -17738,7 +17683,7 @@ msgstr ""
 "Postupné vkládání dat: v případě chyby při vkládání dat zrušit transakci, "
 "nikoliv pouze zaznamenat chybu"
 
-#: 950.data.seed-values.sql:23639
+#: 950.data.seed-values.sql:23646
 msgid ""
 "Queued Ingest: Queue all bib record updates on authority change propagation, "
 "even if bib queuing is not generally enabled"
@@ -17747,22 +17692,22 @@ msgstr ""
 "aktualizace bibliografických záznamů postupně, a to i v případě že postupné "
 "vkládání u bibliografických záznamů není obecně povoleno"
 
-#: 950.data.seed-values.sql:23646
+#: 950.data.seed-values.sql:23653
 msgid ""
 "Queued Ingest: Use Queued Ingest for all bib and authority record ingest"
 msgstr ""
 "Postupné vkládání dat: bibliografické a autoritní záznamy vždy vkládat "
 "postupně"
 
-#: 950.data.seed-values.sql:23653
+#: 950.data.seed-values.sql:23660
 msgid "Queued Ingest: Use Queued Ingest for all bib record ingest"
 msgstr "Postupné vkládání dat: bibliografické záznamy vždy vkládat postupně"
 
-#: 950.data.seed-values.sql:23660
+#: 950.data.seed-values.sql:23667
 msgid "Queued Ingest: Use Queued Ingest for all authority record ingest"
 msgstr "Postupné vkládání dat: autoritní záznamy vždy vkládat postupně"
 
-#: 950.data.seed-values.sql:23667
+#: 950.data.seed-values.sql:23674
 msgid ""
 "Queued Ingest: Do NOT use Queued Ingest when creating a new bib, or "
 "undeleting a bib, via the MARC editor"
@@ -17770,14 +17715,14 @@ msgstr ""
 "Postupné vkládání dat: NEPOUŽÍVAT postupné vkládání dat při vytváření nových "
 "nebo obnově smazaných bibliografických záznamů prostřednictvím editoru"
 
-#: 950.data.seed-values.sql:23674
+#: 950.data.seed-values.sql:23681
 msgid ""
 "Queued Ingest: Use Queued Ingest for bib record ingest on insert and undelete"
 msgstr ""
 "Postupné vkládání dat: používat postupné vkládání dat při vkládání a obnově "
 "smazaných bibliografických záznamů"
 
-#: 950.data.seed-values.sql:23681
+#: 950.data.seed-values.sql:23688
 msgid ""
 "Queued Ingest: Use Queued Ingest for authority record ingest on insert and "
 "undelete"
@@ -17785,7 +17730,7 @@ msgstr ""
 "Postupné vkládání dat: používat postupné vkládání dat při vkládání a obnově "
 "smazaných autoritních záznamů"
 
-#: 950.data.seed-values.sql:23688
+#: 950.data.seed-values.sql:23695
 msgid ""
 "Queued Ingest: Do NOT Use Queued Ingest when editing bib records via the "
 "MARC Editor"
@@ -17793,48 +17738,37 @@ msgstr ""
 "Postupné vkládání dat: NEPOUŽÍVAT postupné vkládání dat při úpravách "
 "bibliografických záznamů v editoru"
 
-#: 950.data.seed-values.sql:23695
+#: 950.data.seed-values.sql:23702
 msgid "Queued Ingest: Use Queued Ingest for bib record ingest on update"
 msgstr ""
 "Postupné vkládání dat: používat postupné vkládání dat při aktualizaci "
 "bibliografických záznamů"
 
-#: 950.data.seed-values.sql:23702
+#: 950.data.seed-values.sql:23709
 msgid ""
 "Queued Ingest: Use Queued Ingest for authority record ingest on update"
 msgstr ""
 "Postupné vkládání dat: používat postupné vkládání dat při aktualizaci "
 "autoritních záznamů"
 
-#: 950.data.seed-values.sql:23709
+#: 950.data.seed-values.sql:23716
 msgid "Queued Ingest: Use Queued Ingest for bib record ingest on delete"
 msgstr ""
 "Postupné vkládání dat: používat postupné vkládání dat při mazání "
 "bibliografických záznamů"
 
-#: 950.data.seed-values.sql:23716
+#: 950.data.seed-values.sql:23723
 msgid ""
 "Queued Ingest: Use Queued Ingest for authority record ingest on delete"
 msgstr ""
 "Postupné vkládání dat: používat postupné vkládání dat při mazání autoritních "
 "záznamů"
 
-#: 950.data.seed-values.sql:23729
-msgid ""
-"Track clicks on eresources links.  Before enabling this global flag, be sure "
-"that you are monitoring disk space on your database server and have a cron "
-"job set up to delete click records after the desired retention interval."
-msgstr ""
-"Sledování kliknutí na odkazy na elektronické zdroje. Než tento globální "
-"indikátor aktivujete, ujistěte se, že monitorujete  místo na disku "
-"databázového serveru a máte nastavenou úlohu cronu, která po uplynutí "
-"požadovaného intervalu uchovávání odstraní záznamy o kliknutí."
-
-#: 950.data.seed-values.sql:23737
+#: 950.data.seed-values.sql:23744
 msgid "Custom PATRON_EXCEEDS_FINES penalty"
 msgstr "Vlastní penále ČTENÁŘ_PŘEKROČIL_POKUTY"
 
-#: 950.data.seed-values.sql:23741
+#: 950.data.seed-values.sql:23748
 msgid ""
 "Specifies a non-default standing penalty to apply to patrons that exceed the "
 "max-fine threshold for their group."
@@ -17842,11 +17776,11 @@ msgstr ""
 "Specifikuje jiné než výchozí penále, které má být použito u čtenáře, který "
 "překročil maximální limit pokut pro svou skupinu."
 
-#: 950.data.seed-values.sql:23746
+#: 950.data.seed-values.sql:23753
 msgid "Custom PATRON_EXCEEDS_OVERDUE_COUNT penalty"
 msgstr "Vlastní penále ČTENÁŘ_PŘEKROČIL_LIMIT_PO_LHŮTĚ"
 
-#: 950.data.seed-values.sql:23750
+#: 950.data.seed-values.sql:23757
 msgid ""
 "Specifies a non-default standing penalty to apply to patrons that exceed the "
 "overdue count threshold for their group."
@@ -17854,11 +17788,11 @@ msgstr ""
 "Specifikuje jiné než výchozí penále, které má být použito u čtenáře, který "
 "překročil povolený počet výpůjček s uplynulou lhůtou pro svou skupinu."
 
-#: 950.data.seed-values.sql:23755
+#: 950.data.seed-values.sql:23762
 msgid "Custom PATRON_EXCEEDS_CHECKOUT_COUNT penalty"
 msgstr "Vlastní penále ČTENÁŘ_PŘEKROČIL_POČET_VÝPŮJČEK"
 
-#: 950.data.seed-values.sql:23759
+#: 950.data.seed-values.sql:23766
 msgid ""
 "Specifies a non-default standing penalty to apply to patrons that exceed the "
 "checkout count threshold for their group."
@@ -17866,13 +17800,13 @@ msgstr ""
 "Specifikuje jinou než výchozí pokutu, která se má použít u čtenáře, který "
 "překročil povolený počet výpůjček pro svou skupinu."
 
-#: 950.data.seed-values.sql:23764
+#: 950.data.seed-values.sql:23771
 msgid "Custom PATRON_EXCEEDS_COLLECTIONS_WARNING penalty"
 msgstr ""
 "Vlastní sankce PATRON_EXCEEDS_COLLECTIONS_WARNING - "
 "ČTENÁŘ_PŘEKROČIL_VAROVÁNÍ_PRO_POHLEDÁVKY"
 
-#: 950.data.seed-values.sql:23768
+#: 950.data.seed-values.sql:23775
 msgid ""
 "Specifies a non-default standing penalty to apply to patrons that exceed the "
 "collections fine warning threshold for their group."
@@ -17880,11 +17814,11 @@ msgstr ""
 "Určuje jinou než výchozí sankci, která se použije na čtenáře,  kteří "
 "překročí úroveň pro  varování pro pohledávky pro svou skupinu."
 
-#: 950.data.seed-values.sql:23773
+#: 950.data.seed-values.sql:23780
 msgid "Custom PATRON_EXCEEDS_LOST_COUNT penalty"
 msgstr "Vlastní penále ČTENÁŘ PŘEKROČIL_POČET_ZTRACENÝCH"
 
-#: 950.data.seed-values.sql:23777
+#: 950.data.seed-values.sql:23784
 msgid ""
 "Specifies a non-default standing penalty to apply to patrons that exceed the "
 "lost item count threshold for their group."
@@ -17892,11 +17826,11 @@ msgstr ""
 "Specifikuje jiné než výchozí pokuty, které se mají použít u čtenáře, který "
 "překročil povolený počet ztracených jednotek pro svou skupinu."
 
-#: 950.data.seed-values.sql:23782
+#: 950.data.seed-values.sql:23789
 msgid "Custom PATRON_EXCEEDS_LONGOVERDUE_COUNT penalty"
 msgstr "Vlastní penál ČTENÁŘ_PŘEKROČIL_POČET_DLOUHODOBĚ_NEVRÁCENÝCH"
 
-#: 950.data.seed-values.sql:23786
+#: 950.data.seed-values.sql:23793
 msgid ""
 "Specifies a non-default standing penalty to apply to patrons that exceed the "
 "long-overdue item count threshold for their group."
@@ -17904,11 +17838,11 @@ msgstr ""
 "Specifikuje jinou než výchozí pokutu, která se má použít u čtenáře, který "
 "překročil povolený limit dlouhodobě nevrácených jednotek pro svou skupinu."
 
-#: 950.data.seed-values.sql:23791
+#: 950.data.seed-values.sql:23798
 msgid "Custom PATRON_IN_COLLECTIONS penalty"
 msgstr "Vlastní sankce PATRON_IN_COLLECTIONS  - ČTENÁŘ MÁ DLUŽNÉ POHLEDÁVKY"
 
-#: 950.data.seed-values.sql:23795
+#: 950.data.seed-values.sql:23802
 msgid ""
 "Specifies a non-default standing penalty that may have been applied to "
 "patrons that have been placed into collections and that should be "
@@ -17922,30 +17856,30 @@ msgstr ""
 "limit pro danou skupinu. Použití této funkce bude pravděpodobně vyžadovat "
 "konfiguraci a koordinaci s externí inkasní agenturou."
 
-#: 950.data.seed-values.sql:23804
+#: 950.data.seed-values.sql:23811
 msgid ""
 "Holds pull list filter values for pickup library and shelving locations."
 msgstr ""
 "Hodnoty filtru rezervací k zachycení pro knihovnu pro vyzvednutí a umístění "
 "regálů."
 
-#: 950.data.seed-values.sql:23816
+#: 950.data.seed-values.sql:23823
 msgid "Staff Client added content: NoveList Select API version"
 msgstr "Přidaný obsah služebního klienta: API verze NoveList Select"
 
-#: 950.data.seed-values.sql:23819
+#: 950.data.seed-values.sql:23826
 msgid ""
 "API version used to provide NoveList Select added content in the Staff Client"
 msgstr ""
 "API verze použitá pro poskytování přidaného obsahu NoveList Select ve "
 "služebním klientu"
 
-#: 950.data.seed-values.sql:23830
+#: 950.data.seed-values.sql:23837
 msgid "Staff Client added content: NoveList Select profile/user"
 msgstr ""
 "Přidaný obsahu ve služebním klientu: profil/užitvatel NoveList Select"
 
-#: 950.data.seed-values.sql:23833
+#: 950.data.seed-values.sql:23840
 msgid ""
 "Profile/user used to provide NoveList Select added content in the Staff "
 "Client"
@@ -17953,66 +17887,66 @@ msgstr ""
 "Profil/uživatel využívaný pro přidaný obsah NoveList Select ve služebním "
 "klientu"
 
-#: 950.data.seed-values.sql:23844
+#: 950.data.seed-values.sql:23851
 msgid "Staff Client added content: NoveList Select key/password"
 msgstr "Přidaný obsah ve služebním klientu: Klíč/heslo pro NoveList Select"
 
-#: 950.data.seed-values.sql:23847
+#: 950.data.seed-values.sql:23854
 msgid ""
 "Key/password used to provide NoveList Select added content in the Staff "
 "Client"
 msgstr ""
 "Klíč/heslo využívaný pro přidaný obsah NoveList Select ve služebním klientu"
 
-#: 950.data.seed-values.sql:23857 950.data.seed-values.sql:23862
+#: 950.data.seed-values.sql:23864 950.data.seed-values.sql:23869
 msgid "URL Override for NoveList Select added content javascript"
 msgstr "Překonání URL pro javascript přidaného obsahu pro NoveList Select"
 
-#: 950.data.seed-values.sql:23872
+#: 950.data.seed-values.sql:23879
 msgid "Grid Config: catalog.link_checker"
 msgstr "Nastavení sloupců: catalog.link_checker"
 
-#: 950.data.seed-values.sql:23879
+#: 950.data.seed-values.sql:23886
 msgid "Grid Config: catalog.link_checker.attempt"
 msgstr "Nastavení sloupců: catalog.link_checker.attempt"
 
-#: 950.data.seed-values.sql:23886
+#: 950.data.seed-values.sql:23893
 msgid "Grid Config: catalog.link_checker.url"
 msgstr "Nastavení sloupců: catalog.link_checker.url"
 
-#: 950.data.seed-values.sql:23893
+#: 950.data.seed-values.sql:23900
 msgid "Grid Filter Sets: catalog.link_checker"
 msgstr "Grid Filter Sets: catalog.link_checker"
 
-#: 950.data.seed-values.sql:23900
+#: 950.data.seed-values.sql:23907
 msgid "Grid Filter Sets: catalog.link_checker.attempt"
 msgstr "Nastavení filtru: catalog.link_checker.attempt"
 
-#: 950.data.seed-values.sql:23907
+#: 950.data.seed-values.sql:23914
 msgid "Grid Filter Sets: catalog.link_checker.url"
 msgstr "Nastavení filtru: catalog.link_checker.url"
 
-#: 950.data.seed-values.sql:23917
+#: 950.data.seed-values.sql:23924
 msgid "Grid Config: admin.local.actor.stat_cat"
 msgstr "Nastavení sloupců: admin.local.actor.stat_cat"
 
-#: 950.data.seed-values.sql:23924
+#: 950.data.seed-values.sql:23931
 msgid "Grid Config: admin.local.asset.stat_cat"
 msgstr "Nastavení sloupců: admin.local.asset.stat_cat"
 
-#: 950.data.seed-values.sql:23934
+#: 950.data.seed-values.sql:23941
 msgid "Grid Config: admin.local.actor.stat_cat_entry"
 msgstr "Nastavení sloupců: admin.local.actor.stat_cat_entry"
 
-#: 950.data.seed-values.sql:23941
+#: 950.data.seed-values.sql:23948
 msgid "Grid Config: admin.local.asset.stat_cat_entry"
 msgstr "Nastavení sloupců: admin.local.asset.stat_cat_entry"
 
-#: 950.data.seed-values.sql:23953
+#: 950.data.seed-values.sql:23960
 msgid "Patron view discovery layer URL"
 msgstr "URL pro zobrazení z pohledu čtenáře v discovery rozhraní"
 
-#: 950.data.seed-values.sql:23959
+#: 950.data.seed-values.sql:23966
 msgid ""
 "URL for displaying an item in the \"patron view\" discovery layer with a "
 "placeholder for the bib record ID: {eg_record_id}. For example: "
@@ -18022,85 +17956,85 @@ msgstr ""
 "zástupnou hodnotu pro ID bibliografického záznamu:  {eg_id_zaznamu}. "
 "Například: https://example.com/Record/{eg_id_zaznamu}"
 
-#: 950.data.seed-values.sql:23973
+#: 950.data.seed-values.sql:23980
 msgid "Staff Client patron search: show name fields"
 msgstr "Hledání čtenáře ve služebním rozhraní: Zobrazit pole se jménem"
 
-#: 950.data.seed-values.sql:23976
+#: 950.data.seed-values.sql:23983
 msgid "Displays the name row of advanced patron search fields"
 msgstr "V pokročilém hledání čtenáře zobrazí řádek pro hledání jména"
 
-#: 950.data.seed-values.sql:23987
+#: 950.data.seed-values.sql:23994
 msgid "Staff Client patron search: show ID fields"
 msgstr "Hledání čtenáře ve služebním rozhraní: Zobrazit pole s ID"
 
-#: 950.data.seed-values.sql:23990
+#: 950.data.seed-values.sql:23997
 msgid "Displays the ID row of advanced patron search fields"
 msgstr "V pokročilém hledání čtenáře zobrazí řádek pro hledání ID"
 
-#: 950.data.seed-values.sql:24001
+#: 950.data.seed-values.sql:24008
 msgid "Staff Client patron search: show address fields"
 msgstr "Hledání čtenáře ve služebním rozhraní: Zobrazit pole s adresami"
 
-#: 950.data.seed-values.sql:24004
+#: 950.data.seed-values.sql:24011
 msgid "Displays the address row of advanced patron search fields"
 msgstr "V pokročilém hledání čtenáře zobrazí řádek pro hledání adresy"
 
-#: 950.data.seed-values.sql:24013
+#: 950.data.seed-values.sql:24020
 msgid "Grid Config: admin.config.circ_matrix_matchpoint"
 msgstr "Nastavení sloupců: admin.config.circ_matrix_matchpoint"
 
-#: 950.data.seed-values.sql:24024
+#: 950.data.seed-values.sql:24031
 msgid "ACQ Claim-Ready Lineitem List Sort Order"
 msgstr "Řazení seznamu položek akvizice k reklamaci"
 
-#: 950.data.seed-values.sql:24031
+#: 950.data.seed-values.sql:24038
 msgid "ACQ Claim-Ready Lineitem List Page Size"
 msgstr "Velikost stránky seznamu položek akvizice k reklamaci"
 
-#: 950.data.seed-values.sql:24038
+#: 950.data.seed-values.sql:24045
 msgid "ACQ Lineitem Search Filter to Invoiceable"
 msgstr "Vyhledávání v akvizici Filtrovat na fakturovatelné"
 
-#: 950.data.seed-values.sql:24045
+#: 950.data.seed-values.sql:24052
 msgid "ACQ Lineitem Search Keep Results Between Searches"
 msgstr "Vyhledávání v akvizici  Uchovat výsledky mezi hledáními"
 
-#: 950.data.seed-values.sql:24052
+#: 950.data.seed-values.sql:24059
 msgid "ACQ Lineitem Search Trim List When Keeping Results"
 msgstr "Vyhledávání v akvizici Při uchování výsledků oříznout seznam"
 
-#: 950.data.seed-values.sql:24062
+#: 950.data.seed-values.sql:24069
 msgid "Z39.50 Search default field"
 msgstr "Výchozí pole pro hledání pomocí Z39.50"
 
-#: 950.data.seed-values.sql:24068
+#: 950.data.seed-values.sql:24075
 msgid "Z39.50 Search default targets"
 msgstr "Výchozí cíle pro hledání pomocí Z39.50"
 
-#: 950.data.seed-values.sql:24078
+#: 950.data.seed-values.sql:24085
 msgid "Grid Config: Z39.50 Search Results"
 msgstr "Nastavení sloupců: Výsledky vyhledávání pomocí Z39.50"
 
-#: 950.data.seed-values.sql:24084
+#: 950.data.seed-values.sql:24091
 msgid "Default ACQ Brief Record Bibliographic Template"
 msgstr "Výchozí šablona pro předběžný záznam v akvizici"
 
-#: 950.data.seed-values.sql:24090
+#: 950.data.seed-values.sql:24097
 msgid "Grid Config: Vandelay ACQ Queue List"
 msgstr "Nastavení sloupců: Seznam front  ve Vandelay do Akvizice"
 
-#: 950.data.seed-values.sql:24097
+#: 950.data.seed-values.sql:24104
 msgid "Grid Config: Vandelay Background Import List"
 msgstr "Nastavení sloupců: Seznam importů ve Vandelay na pozadí"
 
-#: 950.data.seed-values.sql:24108
+#: 950.data.seed-values.sql:24115
 msgid "ACQ: Which import tab(s) display in general Import/Export?"
 msgstr ""
 "Akvizice: Kterou importní tabulku(tabulky) zobrazit při obecném "
 "importu/exportu?"
 
-#: 950.data.seed-values.sql:24113
+#: 950.data.seed-values.sql:24120
 msgid ""
 "Valid values are: \"cat\" for Import for Cataloging, \"acq\" for Import for "
 "Acquisitions, \"both\" or unset to display both."
@@ -18108,40 +18042,40 @@ msgstr ""
 "Platné hodnoty jsou: \"kat\" pro import pro katalogizaci, \"akv\" pro import "
 "pro akvizici, \"obojí\" nebo nic pro zobrazení obou."
 
-#: 950.data.seed-values.sql:24123
+#: 950.data.seed-values.sql:24130
 msgid "A Import/Overlay background job was requested"
 msgstr "Byla vyžádána úloha importu/přepsání na pozadí"
 
-#: 950.data.seed-values.sql:24125
+#: 950.data.seed-values.sql:24132
 msgid "A Import/Overlay background job was completed"
 msgstr "Úloha importu/přepsání na pozadí byla dokončena."
 
-#: 950.data.seed-values.sql:24196
+#: 950.data.seed-values.sql:24203
 msgid "Regex for default_phone field on patron registration"
 msgstr "Regulární výraz pro pole  výchozí_telefon pře registraci čtenáře"
 
-#: 950.data.seed-values.sql:24202
+#: 950.data.seed-values.sql:24209
 msgid ""
 "The Regular Expression for validation on the default_phone field in patron "
 "registration."
 msgstr ""
 "Regulární výraz pro validaci pole výchozí_telefon při registraci čtenáře."
 
-#: 950.data.seed-values.sql:24212
+#: 950.data.seed-values.sql:24219
 msgid "Example for default_phone field on patron registration"
 msgstr "Příklad pro pole výchozí_telefon při registraci čtenáře"
 
-#: 950.data.seed-values.sql:24218
+#: 950.data.seed-values.sql:24225
 msgid ""
 "The Example for validation on the default_phone field in patron registration."
 msgstr "Příklad pro validaci pole výchozí_telefon při registraci čtenáře."
 
-#: 950.data.seed-values.sql:24228
+#: 950.data.seed-values.sql:24235
 msgid "Regex for default_sms_notify field on patron registration"
 msgstr ""
 "Regulární výraz pro pole výchozí_pro_sms_notifikaci při registraci čtenáře"
 
-#: 950.data.seed-values.sql:24234
+#: 950.data.seed-values.sql:24241
 msgid ""
 "The Regular Expression for validation on the default_sms_notify field in "
 "patron registration."
@@ -18149,34 +18083,34 @@ msgstr ""
 "Regulární výraz pro validaci pole výchozí_pro_sms_notifikaci při registraci "
 "čtenáře"
 
-#: 950.data.seed-values.sql:24244
+#: 950.data.seed-values.sql:24251
 msgid "Example for default_sms_notify field on patron registration"
 msgstr "Příklad pro pole výchozí_pro_sms_notifikaci při registraci čtenáře"
 
-#: 950.data.seed-values.sql:24250
+#: 950.data.seed-values.sql:24257
 msgid ""
 "The Example for validation on the default_sms_notify field in patron "
 "registration."
 msgstr ""
 "Příklad pro validaci pole výchozí_pro_sms_notifikaci při registraci čtenáře"
 
-#: 950.data.seed-values.sql:24262
+#: 950.data.seed-values.sql:24269
 msgid "Pending report output grid settings"
 msgstr "Natavení sloupců pro výstupy nevyřízených sestav"
 
-#: 950.data.seed-values.sql:24265
+#: 950.data.seed-values.sql:24272
 msgid "Completed report output grid settings"
 msgstr "Natavení sloupců pro výstupy dokončených sestav"
 
-#: 950.data.seed-values.sql:24268
+#: 950.data.seed-values.sql:24275
 msgid "Report template grid settings"
 msgstr "Nastavení sloupců pro šablony sestav"
 
-#: 950.data.seed-values.sql:24271
+#: 950.data.seed-values.sql:24278
 msgid "Report definition grid settings"
 msgstr "Nastavení sloupců pro definici sestav"
 
-#: 950.data.seed-values.sql:24288
+#: 950.data.seed-values.sql:24295
 msgid ""
 "Activate status-before-login-support and define the institution value which "
 "should be used in the response"
@@ -18184,15 +18118,15 @@ msgstr ""
 "Aktivujte stav-pře-podporou-přihlášení  a definujte hodnotu pro instituci, "
 "která má být použita v odpovědi"
 
-#: 950.data.seed-values.sql:24298
+#: 950.data.seed-values.sql:24305
 msgid "Monetary amounts are reported in this currency"
 msgstr "Peněžní částky jsou uváděny v této měně"
 
-#: 950.data.seed-values.sql:24304
+#: 950.data.seed-values.sql:24311
 msgid "AV Format. Options: eg_legacy, 3m, swyer_a, swyer_b"
 msgstr "AV Formát. Možnosti: eg_legacy, 3m, swyer_a, swyer_b"
 
-#: 950.data.seed-values.sql:24310
+#: 950.data.seed-values.sql:24317
 msgid ""
 "Due date uses 18-char date format (YYYYMMDDZZZZHHMMSS).  Otherwise \"YYYY-MM-"
 "DD HH:MM:SS"
@@ -18200,7 +18134,7 @@ msgstr ""
 "Datum vrácení používá 18znakový formát data (RRRRMMDDZZZZHHMMSS). Jinak "
 "„RRRR-MM-DD HH:MM:SS"
 
-#: 950.data.seed-values.sql:24316
+#: 950.data.seed-values.sql:24323
 msgid ""
 "Checkout and renewal are allowed even when penalties blocking these actions "
 "exist"
@@ -18208,79 +18142,79 @@ msgstr ""
 "Výpůjčky a prodloužení jsou povoleny, i když existují sankce, které tyto "
 "akce blokují"
 
-#: 950.data.seed-values.sql:24322
+#: 950.data.seed-values.sql:24329
 msgid ""
 "Holds, checkouts, and renewals allowed regardless of blocking penalties"
 msgstr ""
 "Rezervace, výpůjčky a prodloužení jsou povoleny bez ohledu na sankce, které "
 "tyto akce blokují"
 
-#: 950.data.seed-values.sql:24328 950.data.seed-values.sql:24340
+#: 950.data.seed-values.sql:24335 950.data.seed-values.sql:24347
 msgid "Patron holds data may be returned as either \"title\" or \"barcode\""
 msgstr ""
 "Údaje o rezervacích čtenáře mohou být vráceny buď jako \"název\" nebo jako  "
 "\"čárový kód\""
 
-#: 950.data.seed-values.sql:24334
+#: 950.data.seed-values.sql:24341
 msgid ""
 "Patron circulation data may be returned as either \"title\" or \"barcode\""
 msgstr ""
 "Údaje o výpůjčkách  čtenáře mohou být vráceny buď jako \"název\" nebo jako  "
 "\"čárový kód\""
 
-#: 950.data.seed-values.sql:24346
+#: 950.data.seed-values.sql:24353
 msgid "Only return information on available holds"
 msgstr "Vrátit pouze informace o dostupných rezervacích"
 
-#: 950.data.seed-values.sql:24352
+#: 950.data.seed-values.sql:24359
 msgid "Checkout override copy alert message"
 msgstr "Výpůjčka překoná upozornění k jednotce"
 
-#: 950.data.seed-values.sql:24358
+#: 950.data.seed-values.sql:24365
 msgid "Checkout override copy not available message"
 msgstr "Výpůjčka překoná upozornění o nedostupnosti jednotky"
 
-#: 950.data.seed-values.sql:24364
+#: 950.data.seed-values.sql:24371
 msgid "Checkin override copy alert message"
 msgstr "Vrácení překoná upozornění k jednotce"
 
-#: 950.data.seed-values.sql:24370
+#: 950.data.seed-values.sql:24377
 msgid "Checkin override bad copy status"
 msgstr "Vrácení překoná špatný status exempláře"
 
-#: 950.data.seed-values.sql:24376
+#: 950.data.seed-values.sql:24383
 msgid "Checkin override copy status missing"
 msgstr "Vrácení překoná status exempláře Postrádá se"
 
-#: 950.data.seed-values.sql:24382
+#: 950.data.seed-values.sql:24389
 msgid "Checkin local holds as transits"
 msgstr "Vrátit lokální rezervace jako přepravy"
 
-#: 950.data.seed-values.sql:24388
+#: 950.data.seed-values.sql:24395
 msgid "Support ACS Resend Messages (code 97)"
 msgstr "Podpora opakovaného odesílání zpráv ACS (kód 97)"
 
-#: 950.data.seed-values.sql:24397
+#: 950.data.seed-values.sql:24404
 msgid "This item is already checked out"
 msgstr "Tato jednotka je už vypůjčena"
 
-#: 950.data.seed-values.sql:24403
+#: 950.data.seed-values.sql:24410
 msgid "Patron is not allowed to checkout the selected item"
 msgstr "Čtenáři nemá povolení k půjčení vybrané jednotky"
 
-#: 950.data.seed-values.sql:24409
+#: 950.data.seed-values.sql:24416
 msgid "Overpayment not allowed"
 msgstr "Přeplatky nejsou povoleny"
 
-#: 950.data.seed-values.sql:24415
+#: 950.data.seed-values.sql:24422
 msgid "Bill not found"
 msgstr "Účet nebyl nalezen"
 
-#: 950.data.seed-values.sql:24425
+#: 950.data.seed-values.sql:24432
 msgid "Search Highlight"
 msgstr "Zvýraznění při vyhledávání"
 
-#: 950.data.seed-values.sql:24431
+#: 950.data.seed-values.sql:24438
 msgid ""
 "A toggle deciding whether to highlight strings in a keyword search result "
 "matching the searched term(s)"
@@ -18289,11 +18223,11 @@ msgstr ""
 "výsledky odpovídající klíčovému slovu / klíčovým slovům z vyhledávacího "
 "dotazu"
 
-#: 950.data.seed-values.sql:24443
+#: 950.data.seed-values.sql:24450
 msgid "Default sort order upon first opening a catalog search"
 msgstr "Výchozí řazení při prvním vyhledávání v katalogu"
 
-#: 950.data.seed-values.sql:24451
+#: 950.data.seed-values.sql:24458
 msgid ""
 "Whether to search for only bibs with available items upon first opening a "
 "catalog search"
@@ -18301,20 +18235,20 @@ msgstr ""
 "Vrátit při prvním vyhledávání v katalogu pouze bibliografické záznamy s "
 "dostupnými exempláři?"
 
-#: 950.data.seed-values.sql:24459
+#: 950.data.seed-values.sql:24466
 msgid "Whether to group formats/editions upon first opening a catalog search"
 msgstr "Seskupovat při prvním vyhledávání v katalogu formáty/vydání?"
 
-#: 950.data.seed-values.sql:24469
+#: 950.data.seed-values.sql:24476
 msgid "Grid Config: admin.acq.distribution_formula"
 msgstr "Nastavení sloupců: admin.acq.distribution_formula"
 
-#: 950.data.seed-values.sql:24481
+#: 950.data.seed-values.sql:24488
 msgid "Staff Client toast alert duration (seconds)"
 msgstr ""
 "Doba, po kterou je ve služebním klientu zobrazeno upozornění (v sekundách)"
 
-#: 950.data.seed-values.sql:24484
+#: 950.data.seed-values.sql:24491
 msgid ""
 "The number of seconds a toast alert should remain visible if not manually "
 "dismissed. Default is 10."
@@ -18322,15 +18256,15 @@ msgstr ""
 "Počet sekund, kdy by upozornění mělo zůstat zobrazeno (není-li ručně "
 "zavřeno). Výchozí hodnota je 10."
 
-#: 950.data.seed-values.sql:24505
+#: 950.data.seed-values.sql:24512
 msgid "Grid Config: catalog.record.conjoined"
 msgstr "Nastavení sloupců: catalog.record.conjoined"
 
-#: 950.data.seed-values.sql:24523
+#: 950.data.seed-values.sql:24530
 msgid "Security: MFA recheck interval"
 msgstr "Bezpečnost: doba, po které má opětovně nastat vícefázové ověření"
 
-#: 950.data.seed-values.sql:24529
+#: 950.data.seed-values.sql:24536
 msgid ""
 "How long before MFA verification is required again, when MFA is required for "
 "a user."
@@ -18338,16 +18272,16 @@ msgstr ""
 "Doba, za kterou je opět vyžadováno vícefázové ověření (je-li u uživatele "
 "vyžadováno)."
 
-#: 950.data.seed-values.sql:24603
+#: 950.data.seed-values.sql:24610
 msgid "Generic MFA authentication confirmation"
 msgstr "Obecné potvrzení vícefázového ověření identity"
 
-#: 950.data.seed-values.sql:24881
+#: 950.data.seed-values.sql:24888
 msgid "Allow adjacent copies to capture when Soft Stalling"
 msgstr ""
 "Umožnit zachycení sousedních exemplářů v případě měkkého intervalu pro odklad"
 
-#: 950.data.seed-values.sql:24887
+#: 950.data.seed-values.sql:24894
 msgid ""
 "Allow adjacent copies at the targeted library to capture when Soft Stalling "
 "interval is set"
@@ -18355,157 +18289,84 @@ msgstr ""
 "Umožnit zachycení sousedních exemplářů  v cílové knihovně v případě, že je "
 "nastaven měkký interval pro odklad"
 
-#: 950.data.seed-values.sql:24898
+#: 950.data.seed-values.sql:24905
 msgid "Grid Config: catalog.record_buckets"
 msgstr "Nastavení sloupců: catalog.record_buckets"
 
-#: 950.data.seed-values.sql:24905
+#: 950.data.seed-values.sql:24912
 msgid "Grid Config: catalog.record_bucket.content"
 msgstr "Nastavení sloupců: catalog.record_bucket.content"
 
-#: 950.data.seed-values.sql:24912
+#: 950.data.seed-values.sql:24919
 msgid "Grid Filters: catalog.record_buckets"
 msgstr "Nastavení filtrů: catalog.record_buckets"
 
-#: 950.data.seed-values.sql:24919
+#: 950.data.seed-values.sql:24926
 msgid "Grid Filters: catalog.record_bucket.content"
 msgstr "Nastavení filtrů: catalog.record_bucket.content"
 
-#: 950.data.seed-values.sql:24926
+#: 950.data.seed-values.sql:24933
 msgid "Grid Config: eg.grid.buckets.user_shares"
 msgstr "Nastavení sloupců: eg.grid.buckets.user_shares"
 
-#: 950.data.seed-values.sql:24938
+#: 950.data.seed-values.sql:24945
 msgid "Staff catalog: show sidebar"
 msgstr "Služební katalog: Zobrazit postranní panel"
 
-#: 950.data.seed-values.sql:24941
+#: 950.data.seed-values.sql:24948
 msgid "Show the sidebar in staff catalog search results. Default is true."
 msgstr ""
 "Zobrazit postranní panel u výsledků vyhledávání ve služebním katalogu. "
 "Výchozí hodnota je pravda."
 
-#: 950.data.seed-values.sql:24954
-msgid "Show \"Save Template\" in Holdings Editor"
-msgstr "V editoru  jednotek zobrazit \"Uložit šablonu\""
-
-#: 950.data.seed-values.sql:24960
-msgid ""
-"Displays the \"Save Template\" button for the template bar in the "
-"Volume/Copy/Holdings Editor. By default, this is only displayed when working "
-"with templates from the Admin interface."
-msgstr ""
-"Zobrazí tlačítko \"uložit šablonu na liště šablon v editoru "
-"signatur/jednotek. Ve výchozím nastavení je toto tlačítko zobrazeno pouze "
-"pokud se pracuje se šablonami v administrátorském rozhraní."
-
-#: 950.data.seed-values.sql:24973
-msgid "Hide the entire template bar in Holdings Editor"
-msgstr "V editoru jednotek skrýt celou lištu pro šablony"
-
-#: 950.data.seed-values.sql:24979
-msgid ""
-"Hides the template bar in the Volume/Copy/Holdings Editor. By default, the "
-"template bar is displayed in this interface."
-msgstr ""
-"V editoru signatur/jednotek skryje lištu pro šablony.  Ve výchozím nastavení "
-"je lišta pro šablony v tomto rozhraní zobrazena."
-
-#: 950.data.seed-values.sql:24990
-msgid "Holdings Template Grid Settings"
-msgstr "Nastavení sloupců pro šablony jednotek"
-
-#: 950.data.seed-values.sql:25000
-msgid "Copy Tag Maps Template Grid Settings"
-msgstr "Nastavení sloupců pro nastavení tagů jednotek"
-
-#: 950.data.seed-values.sql:25012
-msgid "Staff Client: disable single-letter keyboard shortcuts"
-msgstr "Služební rozhraní: vypnout jednopísmenné klávesové zkratky"
-
-#: 950.data.seed-values.sql:25015
-msgid ""
-"Disables single-letter keyboard shortcuts if set to true. Screen reader "
-"users should set this to true to avoid interference with standard keyboard "
-"shortcuts."
-msgstr ""
-"Pokud je nastaveno na hodnotu Pravda, budou vypnuty jednopísmenné klávesové "
-"zkratky. Uživatelé odečítačů obrazovek by si jednopísmenné zkratky měli "
-"vypnout, aby nedošlo ke kolizi s běžně používanými klávesovými zkratkami."
-
-#: 950.data.seed-values.sql:25021
+#: 950.data.seed-values.sql:25028
 msgid "Grid Config: catalog.record.parts"
 msgstr "Nastavení sloupců: catalog.record.parts"
 
-#: 950.data.seed-values.sql:25032
-msgid "Grid Config: eg.grid.admin.config.coded_value_map"
+#: 950.data.seed-values.sql:26038
+msgid "Staff Client patron search: home organization unit"
 msgstr ""
 
-#: 950.data.seed-values.sql:25044
-msgid "Grid UI density"
-msgstr "Hustota tabulek v uživatelském rozhraní"
-
-#: 950.data.seed-values.sql:25047
-msgid ""
-"Whitespace around table cells in staff UI data grids. Default is "
-"\"standard\"."
+#: 950.data.seed-values.sql:26042
+msgid "Specifies the home organization unit for patron search"
 msgstr ""
-"Mezery kolem buněk tabulky v datových tabulkách služebního rozhraní. Výchozí "
-"hodnotou je \"standardní\"."
 
-#: 950.data.seed-values.sql:25058
-msgid "OPAC Alert Banner: Display"
-msgstr "Výstražná lišta v OPACu: Zobrazit"
+#~ msgid "Format Times with this pattern."
+#~ msgstr "Formátovat časy podle tohoto vzoru"
 
-#: 950.data.seed-values.sql:25061
-msgid "Show an alert banner in the OPAC. Default is false."
-msgstr ""
-"Zobrazit v OPACu výstražnou lištu. Ve výchozím nastavení lišta není "
-"zobrazena."
+#~ msgid ""
+#~ "Format Dates with this pattern (examples: \"yyyy-MM-dd\" for \"2010-04-26\", "
+#~ "\"MMM d, yyyy\" for \"Apr 26, 2010\")"
+#~ msgstr ""
+#~ "Formátovazt data podle tohoto vzoru (příklady: \"rrrr-MM-dd\" pro  \"2010-04-"
+#~ "26\", \"MMM d, rrrr\" pro \"26. dub 2010\")"
 
-#: 950.data.seed-values.sql:25068
-msgid "OPAC Alert Banner: Type"
-msgstr "Výstražná lišta v OPACu: Typ"
+#~ msgid ""
+#~ "Format Times with this pattern (examples: \"h:m:s.SSS a z\" for "
+#~ "\"2:07:20.666 PM Eastern Daylight Time\", \"HH:mm\" for \"14:07\")"
+#~ msgstr ""
+#~ "Formátovat časy podle tohoto vzoru  (příklady: \"h:m:s.SSS a z\" pro "
+#~ "\"2:07:20.666 PM Eastern Daylight Time nebo \", \"HH:mm\" pro \"14:07\")"
 
-#: 950.data.seed-values.sql:25071
-msgid ""
-"Determine the display of the banner. Options are: success, info, warning, "
-"danger."
-msgstr ""
-"Určete způsob zobrazení lišty. Možnosti: úspěch, informace, varování, "
-"nebezpečí."
+#~ msgid "Format Dates with this pattern."
+#~ msgstr "Formátovat datum podle tohoto vzoru"
 
-#: 950.data.seed-values.sql:25078
-msgid "OPAC Alert Banner: Text"
-msgstr "Výstražná lišta v OPACu: Text"
+#~ msgid ""
+#~ "The course materials module will use this bib source for any new brief "
+#~ "bibliographic records made inside that module. For best results, use a "
+#~ "transcendant bib source."
+#~ msgstr ""
+#~ "Modul materiály ke kurzům bude používat tento bibliografický zdroj pro "
+#~ "všechny bibliografické záznamy, které v něm budou vytvořeny. Pro nejlepší "
+#~ "výsledky zvolte transcendentní bibliografický zdroj."
 
-#: 950.data.seed-values.sql:25081
-msgid "Text that will display in the alert banner."
-msgstr "Text, který se zobrazí na výstražné liště."
-
-#: 950.data.seed-values.sql:25092
-msgid "Google Analytics: Enable"
-msgstr "Google Analytics: Aktivovat"
-
-#: 950.data.seed-values.sql:25095
-msgid "Enable Google Analytics in the OPAC. Default is false."
-msgstr ""
-"Aktivovat Google Analytics v OPACu. Ve výchozím nastavení není aktivováno."
-
-#: 950.data.seed-values.sql:25102
-msgid "Google Analytics: Code"
-msgstr "Google Analytics: Měřící kód"
-
-#: 950.data.seed-values.sql:25105
-msgid "Account code provided by Google. (Example: G-GVGQ11X12)"
-msgstr "Měřící kód, který Google poskytl k účtu. (Příklad: G-GVGQ11X12)"
-
-#: 950.data.seed-values.sql:25116
-msgid "Staff Client: no new tabs"
-msgstr "Služební rozhraní: žádné nové karty"
-
-#: 950.data.seed-values.sql:25119
-msgid ""
-"Prevents links in the staff interface from opening in new tabs or windows."
-msgstr ""
-"Zakáže otevírat ve služebním rozhraní odkazy na nové kartě nebo v novém okně."
+#~ msgid ""
+#~ "Normally the selection of a monographic part during hold placement is "
+#~ "optional if there is at least one copy on the bib without a monographic "
+#~ "part.  A true value for this setting will require part selection even under "
+#~ "this condition."
+#~ msgstr ""
+#~ "Výběr části monografie při rezervacích je obvykle volitelný, pokud je k "
+#~ "bibliografickému záznamu připojen alespoň jeden exemplář, který nemá žádné "
+#~ "části monografií.  Pokud zde nastavíte hodnotu na Ano,  bude nutné vybrat "
+#~ "část monografie, i když bude platit, že existuje exemplář bez částí."
