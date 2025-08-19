@@ -119,21 +119,21 @@
   <msg id="3681645078742590636"><source>src/app/share/grid/grid-filter-control.component.html:32</source>Is greater than</msg>
   <msg id="1350548707196346345"><source>src/app/share/grid/grid-filter-control.component.html:33</source>Is less than or equal to</msg>
   <msg id="5458686882290704641"><source>src/app/share/grid/grid-filter-control.component.html:34</source>Is greater than or equal to</msg>
-  <msg id="4697415121084295304"><source>src/app/share/grid/grid-filter-control.component.html:54</source>Enter value to filter by</msg>
-  <msg id="3184700926171002527"><source>src/app/share/grid/grid-filter-control.component.html:75</source>Any</msg>
-  <msg id="1179184907489210406"><source>src/app/share/grid/grid-filter-control.component.html:96</source>Operator</msg>
-  <msg id="6238291467288576076"><source>src/app/share/grid/grid-filter-control.component.html:101</source>Contains</msg>
-  <msg id="6026830463967999464"><source>src/app/share/grid/grid-filter-control.component.html:102</source>Does not contain</msg>
-  <msg id="8863611568205528132"><source>src/app/share/grid/grid-filter-control.component.html:103</source>Starts with</msg>
-  <msg id="7402672269023827698"><source>src/app/share/grid/grid-filter-control.component.html:104</source>Ends with</msg>
-  <msg id="3890131054593067798"><source>src/app/share/grid/grid-filter-control.component.html:245</source>Between</msg>
-  <msg id="3929281485914893910"><source>src/app/share/grid/grid-filter-control.component.html:253</source>and</msg>
-  <msg id="3197014835541337613"><source>src/app/share/grid/grid-filter-control.component.html:279</source>Is (or includes)</msg>
-  <msg id="3148711546248491324"><source>src/app/share/grid/grid-filter-control.component.html:280</source>Is not (or excludes)</msg>
-  <msg id="6169615151051315407"><source>src/app/share/grid/grid-filter-control.component.html:288</source>+ Ancestors</msg>
-  <msg id="8654149606703826544"><source>src/app/share/grid/grid-filter-control.component.html:294</source>+ Descendants</msg>
-  <msg id="4880728824338713664"><source>src/app/share/grid/grid-filter-control.component.html:298</source>Filter by</msg>
-  <msg id="5200630867515447055"><source>src/app/share/grid/grid-filter-control.component.html:301</source>Enter library to filter by</msg>
+  <msg id="1179184907489210406"><source>src/app/share/grid/grid-filter-control.component.html:48</source>Operator</msg>
+  <msg id="4697415121084295304"><source>src/app/share/grid/grid-filter-control.component.html:79</source>Enter value to filter by</msg>
+  <msg id="3184700926171002527"><source>src/app/share/grid/grid-filter-control.component.html:100</source>Any</msg>
+  <msg id="6238291467288576076"><source>src/app/share/grid/grid-filter-control.component.html:126</source>Contains</msg>
+  <msg id="6026830463967999464"><source>src/app/share/grid/grid-filter-control.component.html:127</source>Does not contain</msg>
+  <msg id="8863611568205528132"><source>src/app/share/grid/grid-filter-control.component.html:128</source>Starts with</msg>
+  <msg id="7402672269023827698"><source>src/app/share/grid/grid-filter-control.component.html:129</source>Ends with</msg>
+  <msg id="3890131054593067798"><source>src/app/share/grid/grid-filter-control.component.html:252</source>Between</msg>
+  <msg id="3929281485914893910"><source>src/app/share/grid/grid-filter-control.component.html:260</source>and</msg>
+  <msg id="3197014835541337613"><source>src/app/share/grid/grid-filter-control.component.html:286</source>Is (or includes)</msg>
+  <msg id="3148711546248491324"><source>src/app/share/grid/grid-filter-control.component.html:287</source>Is not (or excludes)</msg>
+  <msg id="6169615151051315407"><source>src/app/share/grid/grid-filter-control.component.html:295</source>+ Ancestors</msg>
+  <msg id="8654149606703826544"><source>src/app/share/grid/grid-filter-control.component.html:301</source>+ Descendants</msg>
+  <msg id="4880728824338713664"><source>src/app/share/grid/grid-filter-control.component.html:305</source>Filter by</msg>
+  <msg id="5200630867515447055"><source>src/app/share/grid/grid-filter-control.component.html:308</source>Enter library to filter by</msg>
   <msg id="3198246956957447925"><source>src/app/share/grid/grid-header.component.html:8</source>All rows</msg>
   <msg id="712849904168814810"><source>src/app/share/grid/grid-header.component.html:16</source>Row Number</msg>
   <msg id="8526674125130747446" desc="Row Number Header" meaning="number"><source>src/app/share/grid/grid-header.component.html:16</source>#</msg>
@@ -201,13 +201,13 @@ Error generating print content for template name=&quot;<ph name="INTERPOLATION"/
   <msg id="8436223332064456837"><source>src/app/share/toast/toast.component.ts:37</source><ph name="PH"/> - <ph name="PH_1"/></msg>
   <msg id="3880981592087246043"><source>src/app/share/translate/translate.component.html:2,5</source> <ph name="INTERPOLATION"/> </msg>
   <msg id="1301244316831267771"><source>src/app/share/translate/translate.component.html:11</source>Field Name</msg>
-  <msg id="3486823319169991405"><source>src/app/share/translate/translate.component.html:20</source>Current Value</msg>
-  <msg id="8591080221781472156"><source>src/app/share/translate/translate.component.html:29</source>Select Locale</msg>
-  <msg id="6870893562392932905"><source>src/app/share/translate/translate.component.html:39</source>Translation</msg>
-  <msg id="4295587384096251683"><source>src/app/share/translate/translate.component.html:47</source>Translation...</msg>
-  <msg id="346828805070618953"><source>src/app/share/translate/translate.component.html:53</source>Prev String</msg>
-  <msg id="1076462705547011441"><source>src/app/share/translate/translate.component.html:55</source>Next String</msg>
-  <msg id="4391289919356861627"><source>src/app/share/translate/translate.component.html:56</source>Apply</msg>
+  <msg id="3486823319169991405"><source>src/app/share/translate/translate.component.html:22</source>Current Value</msg>
+  <msg id="8591080221781472156"><source>src/app/share/translate/translate.component.html:34</source>Select Locale</msg>
+  <msg id="6870893562392932905"><source>src/app/share/translate/translate.component.html:47</source>Translation</msg>
+  <msg id="4295587384096251683"><source>src/app/share/translate/translate.component.html:56</source>Translation...</msg>
+  <msg id="346828805070618953"><source>src/app/share/translate/translate.component.html:63</source>Prev String</msg>
+  <msg id="1076462705547011441"><source>src/app/share/translate/translate.component.html:65</source>Next String</msg>
+  <msg id="4391289919356861627"><source>src/app/share/translate/translate.component.html:66</source>Apply</msg>
   <msg id="3797570084942068182"><source>src/app/share/tree/tree-multiselect.component.ts:68</source>Select</msg>
   <msg id="7531602241051125940"><source>src/app/share/tree/tree-multiselect.component.ts:137</source>Objects</msg>
   <msg id="2152960452087805667"><source>src/app/share/tree/tree.component.html:3</source>Filter:</msg>
@@ -617,21 +617,20 @@ Error generating print content for template name=&quot;<ph name="INTERPOLATION"/
   <msg id="4840250331185227752"><source>src/app/staff/acq/picklist/upload.component.html:261</source>Request background import</msg>
   <msg id="4818360316512530495"><source>src/app/staff/acq/picklist/upload.component.html:262</source>Not available when PO or Selection List actions are requested</msg>
   <msg id="2333224037311600167"><source>src/app/staff/acq/picklist/upload.component.html:273</source>Background Import Notification Email</msg>
-  <msg id="6658573107890146327"><source>src/app/staff/acq/picklist/upload.component.html:278</source>Email address...</msg>
-  <msg id="3789568336896215449"><source>src/app/staff/acq/picklist/upload.component.html:288</source> Importing <ph name="INTERPOLATION"/> Record(s)</msg>
-  <msg id="8847263831331692548"><source>src/app/staff/acq/picklist/upload.component.html:290,292</source> Importing Queue <ph name="INTERPOLATION"/></msg>
-  <msg id="6643491865635415566"><source>src/app/staff/acq/picklist/upload.component.html:294,296</source> Clear Selection </msg>
-  <msg id="6932865105766151309"><source>src/app/staff/acq/picklist/upload.component.html:302</source>Upload</msg>
-  <msg id="8050455581553957291"><source>src/app/staff/acq/picklist/upload.component.html:314</source>Upload File to Server</msg>
-  <msg id="9125863990926708066"><source>src/app/staff/acq/picklist/upload.component.html:323,325</source><ph name="START_ITALIC_TEXT"/>Processing...<ph name="CLOSE_ITALIC_TEXT"/></msg>
-  <msg id="6392399410860790904"><source>src/app/staff/acq/picklist/upload.component.html:329</source>Upload Error!</msg>
-  <msg id="3655046102277239032"><source>src/app/staff/acq/picklist/upload.component.html:331</source>Error <ph name="INTERPOLATION"/> (<ph name="INTERPOLATION_1"/>)</msg>
-  <msg id="3484994613114698934"><source>src/app/staff/acq/picklist/upload.component.html:338</source>Upload Complete</msg>
-  <msg id="5870755039715035007"><source>src/app/staff/acq/picklist/upload.component.html:339</source>Upload Complete for Background Import</msg>
-  <msg id="3090028305710073560"><source>src/app/staff/acq/picklist/upload.component.html:343</source>Go to:</msg>
-  <msg id="538743482909979705"><source>src/app/staff/acq/picklist/upload.component.html:345</source>Queue</msg>
-  <msg id="8539371122738145965"><source>src/app/staff/acq/picklist/upload.component.html:348</source>Background Import Management</msg>
-  <msg id="5328362138101966180"><source>src/app/staff/acq/picklist/upload.component.ts:447</source>Background import requested</msg>
+  <msg id="3789568336896215449"><source>src/app/staff/acq/picklist/upload.component.html:287</source> Importing <ph name="INTERPOLATION"/> Record(s)</msg>
+  <msg id="8847263831331692548"><source>src/app/staff/acq/picklist/upload.component.html:289,291</source> Importing Queue <ph name="INTERPOLATION"/></msg>
+  <msg id="6643491865635415566"><source>src/app/staff/acq/picklist/upload.component.html:293,295</source> Clear Selection </msg>
+  <msg id="6932865105766151309"><source>src/app/staff/acq/picklist/upload.component.html:301</source>Upload</msg>
+  <msg id="8050455581553957291"><source>src/app/staff/acq/picklist/upload.component.html:313</source>Upload File to Server</msg>
+  <msg id="9125863990926708066"><source>src/app/staff/acq/picklist/upload.component.html:322,324</source><ph name="START_ITALIC_TEXT"/>Processing...<ph name="CLOSE_ITALIC_TEXT"/></msg>
+  <msg id="6392399410860790904"><source>src/app/staff/acq/picklist/upload.component.html:328</source>Upload Error!</msg>
+  <msg id="3655046102277239032"><source>src/app/staff/acq/picklist/upload.component.html:330</source>Error <ph name="INTERPOLATION"/> (<ph name="INTERPOLATION_1"/>)</msg>
+  <msg id="3484994613114698934"><source>src/app/staff/acq/picklist/upload.component.html:337</source>Upload Complete</msg>
+  <msg id="5870755039715035007"><source>src/app/staff/acq/picklist/upload.component.html:338</source>Upload Complete for Background Import</msg>
+  <msg id="3090028305710073560"><source>src/app/staff/acq/picklist/upload.component.html:342</source>Go to:</msg>
+  <msg id="538743482909979705"><source>src/app/staff/acq/picklist/upload.component.html:344</source>Queue</msg>
+  <msg id="8539371122738145965"><source>src/app/staff/acq/picklist/upload.component.html:347</source>Background Import Management</msg>
+  <msg id="5328362138101966180"><source>src/app/staff/acq/picklist/upload.component.ts:448</source>Background import requested</msg>
   <msg id="6876230716502438191"><source>src/app/staff/acq/po/charges.component.html:1,6</source>Direct Charges, Taxes, Fees, etc. <ph name="START_TAG_BUTTON"/>New Charge<ph name="CLOSE_TAG_BUTTON"/></msg>
   <msg id="6671318668652796008"><source>src/app/staff/acq/po/charges.component.html:39</source>Fund <ph name="INTERPOLATION"/> in use until a change is saved.</msg>
   <msg id="6294362952326333916"><source>src/app/staff/acq/po/charges.component.html:63</source>Estimated Cost...</msg>
@@ -1352,7 +1351,7 @@ Delete Provider</msg>
   <msg id="605934986999656348"><source>src/app/staff/admin/local/standing-penalty.component.html:7</source>Standing Penalty Update Failed</msg>
   <msg id="3997023353603850463"><source>src/app/staff/admin/local/standing-penalty.component.html:8</source>Delete of Standing Penalty failed or was not allowed</msg>
   <msg id="1901539617949483663"><source>src/app/staff/admin/local/standing-penalty.component.html:9</source>Delete of Standing Penalty succeeded</msg>
-  <msg id="858661655577834366"><source>src/app/staff/admin/local/standing-penalty.component.html:20</source>New Standing Penalty Type</msg>
+  <msg id="858661655577834366"><source>src/app/staff/admin/local/standing-penalty.component.html:21</source>New Standing Penalty Type</msg>
   <msg id="9065206845573465793"><source>src/app/staff/admin/local/survey/survey-edit.component.html:0</source>Survey ID # <ph name="INTERPOLATION"/></msg>
   <msg id="2681760814147954588"><source>src/app/staff/admin/local/survey/survey-edit.component.html:4</source>Edit Survey</msg>
   <msg id="5879805865821004570"><source>src/app/staff/admin/local/survey/survey-edit.component.html:9,12</source> End Survey Now </msg>
@@ -1694,17 +1693,17 @@ Delete Provider</msg>
   <msg id="1191641649788163422"><source>src/app/staff/admin/workstation/printers/printers.component.html:167</source>Automatic Margins</msg>
   <msg id="7955539807501837976"><source>src/app/staff/admin/workstation/printers/printers.component.html:175</source>Default: <ph name="INTERPOLATION"/></msg>
   <msg id="9023511754492392551"><source>src/app/staff/admin/workstation/printers/printers.component.html:183</source>Manual Margins</msg>
-  <msg id="6293970137138896363"><source>src/app/staff/admin/workstation/printers/printers.component.html:199</source>Top</msg>
-  <msg id="3568940932272598597"><source>src/app/staff/admin/workstation/printers/printers.component.html:221</source>Bottom</msg>
-  <msg id="4252792026985897633"><source>src/app/staff/admin/workstation/printers/printers.component.html:233</source>Page Ranges</msg>
-  <msg id="7430884907505313369"><source>src/app/staff/admin/workstation/printers/printers.component.html:239</source>All Pages</msg>
-  <msg id="2970653083063135574"><source>src/app/staff/admin/workstation/printers/printers.component.html:244</source>Page Range</msg>
-  <msg id="5162686434580248853"><source>src/app/staff/admin/workstation/printers/printers.component.html:251</source>Start</msg>
-  <msg id="1241348629231510663"><source>src/app/staff/admin/workstation/printers/printers.component.html:261</source>End</msg>
-  <msg id="213475269179011913"><source>src/app/staff/admin/workstation/printers/printers.component.html:277</source>Compiled Printer Settings</msg>
-  <msg id="5849303862621184350"><source>src/app/staff/admin/workstation/printers/printers.component.html:294</source>Print with Dialog</msg>
-  <msg id="2876624092226999866"><source>src/app/staff/admin/workstation/printers/printers.component.html:302</source>Plain Text</msg>
-  <msg id="7913678223536081420"><source>src/app/staff/admin/workstation/printers/printers.component.html:308</source>HTML</msg>
+  <msg id="6293970137138896363"><source>src/app/staff/admin/workstation/printers/printers.component.html:196</source>Top</msg>
+  <msg id="3568940932272598597"><source>src/app/staff/admin/workstation/printers/printers.component.html:214</source>Bottom</msg>
+  <msg id="4252792026985897633"><source>src/app/staff/admin/workstation/printers/printers.component.html:225</source>Page Ranges</msg>
+  <msg id="7430884907505313369"><source>src/app/staff/admin/workstation/printers/printers.component.html:231</source>All Pages</msg>
+  <msg id="2970653083063135574"><source>src/app/staff/admin/workstation/printers/printers.component.html:236</source>Page Range</msg>
+  <msg id="5162686434580248853"><source>src/app/staff/admin/workstation/printers/printers.component.html:242</source>Start</msg>
+  <msg id="1241348629231510663"><source>src/app/staff/admin/workstation/printers/printers.component.html:250</source>End</msg>
+  <msg id="213475269179011913"><source>src/app/staff/admin/workstation/printers/printers.component.html:265</source>Compiled Printer Settings</msg>
+  <msg id="5849303862621184350"><source>src/app/staff/admin/workstation/printers/printers.component.html:282</source>Print with Dialog</msg>
+  <msg id="2876624092226999866"><source>src/app/staff/admin/workstation/printers/printers.component.html:290</source>Plain Text</msg>
+  <msg id="7913678223536081420"><source>src/app/staff/admin/workstation/printers/printers.component.html:296</source>HTML</msg>
   <msg id="7390058263711243394"><source>src/app/staff/admin/workstation/workstations/workstations.component.html:0</source>Workstation Administration</msg>
   <msg id="2222955184841578201"><source>src/app/staff/admin/workstation/workstations/workstations.component.html:3</source>Manage Workstations</msg>
   <msg id="1997822011035487300"><source>src/app/staff/admin/workstation/workstations/workstations.component.html:9</source>Workstation Exists</msg>
@@ -1737,17 +1736,17 @@ Delete Provider</msg>
   <msg id="4713151336247961822"><source>src/app/staff/booking/create-reservation-dialog.component.html:12</source>Patron barcode</msg>
   <msg id="7732774133897019679"><source>src/app/staff/booking/create-reservation-dialog.component.html:23,27</source> <ph name="INTERPOLATION"/> <ph name="INTERPOLATION_1"/> <ph name="INTERPOLATION_2"/> </msg>
   <msg id="3770761673682962465"><source>src/app/staff/booking/create-reservation-dialog.component.html:30</source>Start time</msg>
-  <msg id="3029887440722063094"><source>src/app/staff/booking/create-reservation-dialog.component.html:38</source>End time</msg>
-  <msg id="653649827000852183"><source>src/app/staff/booking/create-reservation-dialog.component.html:45</source>Start time must be before end time</msg>
-  <msg id="2974693120982748634"><source>src/app/staff/booking/create-reservation-dialog.component.html:50,52</source> Reservation location </msg>
-  <msg id="1248707501774452115"><source>src/app/staff/booking/create-reservation-dialog.component.html:56</source>The library where the resource is picked up or used</msg>
-  <msg id="424870090577028136"><source>src/app/staff/booking/create-reservation-dialog.component.html:62</source>Reservation location is in the <ph name="INTERPOLATION"/> timezone</msg>
-  <msg id="1664620352147673062"><source>src/app/staff/booking/create-reservation-dialog.component.html:66</source>Resource</msg>
-  <msg id="6638736673517346270"><source>src/app/staff/booking/create-reservation-dialog.component.html:72</source>Any resource</msg>
-  <msg id="6155532629582446437"><source>src/app/staff/booking/create-reservation-dialog.component.html:80</source>Notify by email?</msg>
-  <msg id="3211588401417695137"><source>src/app/staff/booking/create-reservation-dialog.component.html:91</source>Confirm reservation</msg>
-  <msg id="8769902851392509715"><source>src/app/staff/booking/create-reservation-dialog.component.html:93,95</source> Confirm and show patron reservations </msg>
-  <msg id="5540793927294137302"><source>src/app/staff/booking/create-reservation-dialog.component.html:99</source>Could not create this reservation</msg>
+  <msg id="3029887440722063094"><source>src/app/staff/booking/create-reservation-dialog.component.html:40</source>End time</msg>
+  <msg id="653649827000852183"><source>src/app/staff/booking/create-reservation-dialog.component.html:49</source>Start time must be before end time</msg>
+  <msg id="2974693120982748634"><source>src/app/staff/booking/create-reservation-dialog.component.html:54,56</source> Reservation location </msg>
+  <msg id="1248707501774452115"><source>src/app/staff/booking/create-reservation-dialog.component.html:61</source>The library where the resource is picked up or used</msg>
+  <msg id="424870090577028136"><source>src/app/staff/booking/create-reservation-dialog.component.html:68</source>Reservation location is in the <ph name="INTERPOLATION"/> timezone</msg>
+  <msg id="1664620352147673062"><source>src/app/staff/booking/create-reservation-dialog.component.html:72</source>Resource</msg>
+  <msg id="6638736673517346270"><source>src/app/staff/booking/create-reservation-dialog.component.html:79</source>Any resource</msg>
+  <msg id="6155532629582446437"><source>src/app/staff/booking/create-reservation-dialog.component.html:88</source>Notify by email?</msg>
+  <msg id="3211588401417695137"><source>src/app/staff/booking/create-reservation-dialog.component.html:104</source>Confirm reservation</msg>
+  <msg id="8769902851392509715"><source>src/app/staff/booking/create-reservation-dialog.component.html:106,108</source> Confirm and show patron reservations </msg>
+  <msg id="5540793927294137302"><source>src/app/staff/booking/create-reservation-dialog.component.html:112</source>Could not create this reservation</msg>
   <msg id="497728370667410908"><source>src/app/staff/booking/create-reservation.component.html:0</source>Create Reservation</msg>
   <msg id="5360100160458018907"><source>src/app/staff/booking/create-reservation.component.html:8</source>Reservation type</msg>
   <msg id="8654677463254099684"><source>src/app/staff/booking/create-reservation.component.html:10,12</source><ph name="INTERPOLATION"/></msg>
@@ -1907,13 +1906,13 @@ Delete Provider</msg>
   <msg id="8854094932942190741"><source>src/app/staff/cat/linkchecker/new-session-dialog.component.html:85</source>Search...</msg>
   <msg id="2852280074496556287"><source>src/app/staff/cat/linkchecker/new-session-dialog.component.html:93</source>URL Selectors</msg>
   <msg id="1825829511397926879"><source>src/app/staff/cat/linkchecker/new-session-dialog.component.html:98</source>Tag</msg>
-  <msg id="3987978067922842514"><source>src/app/staff/cat/linkchecker/new-session-dialog.component.html:107</source>856...</msg>
-  <msg id="597660756711197578"><source>src/app/staff/cat/linkchecker/new-session-dialog.component.html:110</source>Subfields</msg>
-  <msg id="5942818989605665099"><source>src/app/staff/cat/linkchecker/new-session-dialog.component.html:119</source>u...</msg>
-  <msg id="3118979861489926679"><source>src/app/staff/cat/linkchecker/new-session-dialog.component.html:124</source>Add Selector Row</msg>
-  <msg id="2006732450387085357"><source>src/app/staff/cat/linkchecker/new-session-dialog.component.html:130</source>Remove Selector Row</msg>
-  <msg id="4193301651357889388"><source>src/app/staff/cat/linkchecker/new-session-dialog.component.html:141</source>Create Session and test all URLs</msg>
-  <msg id="2051052984978896204"><source>src/app/staff/cat/linkchecker/new-session-dialog.component.html:143</source>Create Session</msg>
+  <msg id="3987978067922842514"><source>src/app/staff/cat/linkchecker/new-session-dialog.component.html:108</source>856...</msg>
+  <msg id="597660756711197578"><source>src/app/staff/cat/linkchecker/new-session-dialog.component.html:111</source>Subfields</msg>
+  <msg id="5942818989605665099"><source>src/app/staff/cat/linkchecker/new-session-dialog.component.html:122</source>u...</msg>
+  <msg id="3118979861489926679"><source>src/app/staff/cat/linkchecker/new-session-dialog.component.html:127</source>Add Selector Row</msg>
+  <msg id="2006732450387085357"><source>src/app/staff/cat/linkchecker/new-session-dialog.component.html:133</source>Remove Selector Row</msg>
+  <msg id="4193301651357889388"><source>src/app/staff/cat/linkchecker/new-session-dialog.component.html:144</source>Create Session and test all URLs</msg>
+  <msg id="2051052984978896204"><source>src/app/staff/cat/linkchecker/new-session-dialog.component.html:146</source>Create Session</msg>
   <msg id="5928272937070793389"><source>src/app/staff/cat/linkchecker/new-session-dialog.component.ts:212</source>Creating session...</msg>
   <msg id="8457304189805937724"><source>src/app/staff/cat/linkchecker/new-session-dialog.component.ts:231</source>Creating URL selectors...</msg>
   <msg id="8326756894103834542"><source>src/app/staff/cat/linkchecker/new-session-dialog.component.ts:254</source>Searching and extracting URLs...</msg>
@@ -2017,11 +2016,11 @@ Delete Provider</msg>
   <msg id="945332359235727772"><source>src/app/staff/cat/vandelay/import.component.html:236,239</source> Use Org Unit Matching in Copy to Determine Best Match </msg>
   <msg id="5140682479609280001"><source>src/app/staff/cat/vandelay/import.component.html:248</source>This Upload</msg>
   <msg id="5630749362851202314"><source>src/app/staff/cat/vandelay/import.component.html:262</source>Select or Create a Queue...</msg>
-  <msg id="4146759437902554818"><source>src/app/staff/cat/vandelay/import.component.html:318</source>Upload Progress</msg>
-  <msg id="409647756283979918"><source>src/app/staff/cat/vandelay/import.component.html:326</source>Enqueue Progress</msg>
-  <msg id="4211111309632890253"><source>src/app/staff/cat/vandelay/import.component.html:334</source>Import Progress</msg>
-  <msg id="3391680224336643433"><source>src/app/staff/cat/vandelay/import.component.html:344</source>Go To Queue</msg>
-  <msg id="3063233671426292489"><source>src/app/staff/cat/vandelay/import.component.html:351</source>Go To Background Import Management</msg>
+  <msg id="4146759437902554818"><source>src/app/staff/cat/vandelay/import.component.html:317</source>Upload Progress</msg>
+  <msg id="409647756283979918"><source>src/app/staff/cat/vandelay/import.component.html:325</source>Enqueue Progress</msg>
+  <msg id="4211111309632890253"><source>src/app/staff/cat/vandelay/import.component.html:333</source>Import Progress</msg>
+  <msg id="3391680224336643433"><source>src/app/staff/cat/vandelay/import.component.html:343</source>Go To Queue</msg>
+  <msg id="3063233671426292489"><source>src/app/staff/cat/vandelay/import.component.html:350</source>Go To Background Import Management</msg>
   <msg id="3742284469838142371"><source>src/app/staff/cat/vandelay/match-set-expression.component.html:1,8</source><ph name="START_TAG_NG_CONTAINER"/><ph name="START_TAG_SPAN"/>NOT <ph name="CLOSE_TAG_SPAN"/><ph name="START_TAG_SPAN_1"/>Normalized Heading<ph name="CLOSE_TAG_SPAN"/><ph name="START_TAG_SPAN_2"/><ph name="INTERPOLATION"/><ph name="INTERPOLATION_1"/><ph name="INTERPOLATION_2"/><ph name="CLOSE_TAG_SPAN"/><ph name="START_TAG_SPAN_3"/> ‡<ph name="INTERPOLATION_3"/><ph name="CLOSE_TAG_SPAN"/><ph name="START_TAG_SPAN_4"/> | Match score <ph name="INTERPOLATION_4"/><ph name="CLOSE_TAG_SPAN"/><ph name="CLOSE_TAG_NG_CONTAINER"/></msg>
   <msg id="6812871516942651060"><source>src/app/staff/cat/vandelay/match-set-expression.component.html:14,17</source> Your Expression: <ph name="INTERPOLATION"/> </msg>
   <msg id="6205540213661359687"><source>src/app/staff/cat/vandelay/match-set-expression.component.html:20</source>Add New:</msg>
@@ -2034,8 +2033,9 @@ Delete Provider</msg>
   <msg id="1186369943030718123"><source>src/app/staff/cat/vandelay/match-set-expression.component.html:49,53</source><ph name="START_LIST_ITEM"/>Define a new match point using the above fields.<ph name="CLOSE_LIST_ITEM"/><ph name="START_LIST_ITEM"/>Select a boolean node in the tree.<ph name="CLOSE_LIST_ITEM"/><ph name="START_LIST_ITEM"/>Click the &quot;Add...&quot; button to add the new matchpoint as a child of the selected node.<ph name="CLOSE_LIST_ITEM"/></msg>
   <msg id="5093216674362518382"><source>src/app/staff/cat/vandelay/match-set-expression.component.html:60,63</source> Remove Selected Node </msg>
   <msg id="3807355661675884532"><source>src/app/staff/cat/vandelay/match-set-expression.component.html:64,67</source> Save Changes </msg>
-  <msg id="8517132738060131009"><source>src/app/staff/cat/vandelay/match-set-list.component.html:4,7</source> Owner </msg>
-  <msg id="7587326642021274158"><source>src/app/staff/cat/vandelay/match-set-list.component.html:24</source>New Match Set</msg>
+  <msg id="8517132738060131009"><source>src/app/staff/cat/vandelay/match-set-list.component.html:3,6</source> Owner </msg>
+  <msg id="7587326642021274158"><source>src/app/staff/cat/vandelay/match-set-list.component.html:23</source>New Match Set</msg>
+  <msg id="7190467351988659949"><source>src/app/staff/cat/vandelay/match-set-list.component.ts:76</source>Serial Records</msg>
   <msg id="6630137344798872260"><source>src/app/staff/cat/vandelay/match-set-new-point.component.html:4</source>Record Attribute:</msg>
   <msg id="7939419250366658413"><source>src/app/staff/cat/vandelay/match-set-new-point.component.html:9</source>Record Attribute...</msg>
   <msg id="7978273686665519179"><source>src/app/staff/cat/vandelay/match-set-new-point.component.html:16</source>Tag:</msg>
@@ -2327,6 +2327,7 @@ Delete Provider</msg>
   <msg id="7958041240750560294"><source>src/app/staff/cat/volcopy/vol-edit.component.html:513</source>Remove Item</msg>
   <msg id="5334015510831689920"><source>src/app/staff/cat/volcopy/volcopy.component.html:0</source>Holdings Editor</msg>
   <msg id="1733377437659896047"><source>src/app/staff/cat/volcopy/volcopy.component.html:3</source>Unsaved Changes Confirmation</msg>
+  <msg id="1554318653244181133"><source>src/app/staff/cat/volcopy/volcopy.component.html:4</source>Unsaved changes will be lost.  Continue navigation?</msg>
   <msg id="568720014687281587"><source>src/app/staff/cat/volcopy/volcopy.component.html:8</source>Uneditable Items</msg>
   <msg id="9076370638893312987"><source>src/app/staff/cat/volcopy/volcopy.component.html:9</source>Just a reminder, these items were not edited for lack of an adequately scoped UPDATE_COPY permission.</msg>
   <msg id="7275989946002419237"><source>src/app/staff/cat/volcopy/volcopy.component.html:30</source>Operator Change Failed</msg>
@@ -2486,9 +2487,8 @@ Delete Provider</msg>
   <msg id="5873179874485934360"><source>src/app/staff/catalog/record/holdings.component.html:91</source>Request Items</msg>
   <msg id="6653383051054354510"><source>src/app/staff/catalog/record/holdings.component.html:95</source>Link as Conjoined to Marked Bib Record</msg>
   <msg id="5117253013271867323"><source>src/app/staff/catalog/record/holdings.component.html:112</source>Add Call Numbers and Items</msg>
-  <msg id="615650639567942676"><source>src/app/staff/catalog/record/holdings.component.html:117</source>Add/Manage Item Alerts</msg>
-  <msg id="7124902344649982213"><source>src/app/staff/catalog/record/holdings.component.html:122</source>Add/Manage Item Tags</msg>
-  <msg id="2524541709994955040"><source>src/app/staff/catalog/record/holdings.component.html:127</source>Add/Manage Item Notes</msg>
+  <msg id="5881686510060749294"><source>src/app/staff/catalog/record/holdings.component.html:117</source>Item Alerts</msg>
+  <msg id="3660069197046561180"><source>src/app/staff/catalog/record/holdings.component.html:127</source>Item Notes</msg>
   <msg id="6445738484686351287"><source>src/app/staff/catalog/record/holdings.component.html:132</source>Add Items To Bucket</msg>
   <msg id="6217322650629547196"><source>src/app/staff/catalog/record/holdings.component.html:139</source>Book Item Now</msg>
   <msg id="7379382393049527575"><source>src/app/staff/catalog/record/holdings.component.html:144</source>Make Items Bookable</msg>
@@ -3213,17 +3213,17 @@ Delete Provider</msg>
   <msg id="2467350389511877336"><source>src/app/staff/reporter/full/definition.component.html:22</source>Close report editor, abandoning any unsaved changes?</msg>
   <msg id="3957525923593650417"><source>src/app/staff/reporter/full/definition.component.html:27</source>Report Name</msg>
   <msg id="652354181775762388"><source>src/app/staff/reporter/full/definition.component.html:43</source>Report Description</msg>
-  <msg id="3087857313586976299"><source>src/app/staff/reporter/full/definition.component.html:50</source>Template Description</msg>
-  <msg id="8173536715858808931"><source>src/app/staff/reporter/full/definition.component.html:59</source>Template Documentation</msg>
-  <msg id="4163272119298020373"><source>src/app/staff/reporter/full/definition.component.html:112</source>Filters</msg>
-  <msg id="2537682266888947391"><source>src/app/staff/reporter/full/definition.component.html:159</source>Layout and Scheduling</msg>
-  <msg id="8157372473189397040"><source>src/app/staff/reporter/full/definition.component.html:173</source>Errors</msg>
-  <msg id="2729375497983663426"><source>src/app/staff/reporter/full/definition.component.html:176</source>Report name not set</msg>
-  <msg id="3508986606776744200"><source>src/app/staff/reporter/full/definition.component.html:177</source>Report folder not set</msg>
-  <msg id="7404603759592292544"><source>src/app/staff/reporter/full/definition.component.html:178</source>Output folder not set</msg>
-  <msg id="3576604568845761616"><source>src/app/staff/reporter/full/definition.component.html:179</source>Filters are missing required values</msg>
-  <msg id="2079698957049147257"><source>src/app/staff/reporter/full/definition.component.html:186</source>Save Report</msg>
-  <msg id="5771879578297863982"><source>src/app/staff/reporter/full/definition.component.html:189</source>Save and schedule report</msg>
+  <msg id="3087857313586976299"><source>src/app/staff/reporter/full/definition.component.html:53</source>Template Description</msg>
+  <msg id="8173536715858808931"><source>src/app/staff/reporter/full/definition.component.html:64</source>Template Documentation</msg>
+  <msg id="4163272119298020373"><source>src/app/staff/reporter/full/definition.component.html:117</source>Filters</msg>
+  <msg id="2537682266888947391"><source>src/app/staff/reporter/full/definition.component.html:164</source>Layout and Scheduling</msg>
+  <msg id="8157372473189397040"><source>src/app/staff/reporter/full/definition.component.html:178</source>Errors</msg>
+  <msg id="2729375497983663426"><source>src/app/staff/reporter/full/definition.component.html:181</source>Report name not set</msg>
+  <msg id="3508986606776744200"><source>src/app/staff/reporter/full/definition.component.html:182</source>Report folder not set</msg>
+  <msg id="7404603759592292544"><source>src/app/staff/reporter/full/definition.component.html:183</source>Output folder not set</msg>
+  <msg id="3576604568845761616"><source>src/app/staff/reporter/full/definition.component.html:184</source>Filters are missing required values</msg>
+  <msg id="2079698957049147257"><source>src/app/staff/reporter/full/definition.component.html:191</source>Save Report</msg>
+  <msg id="5771879578297863982"><source>src/app/staff/reporter/full/definition.component.html:194</source>Save and schedule report</msg>
   <msg id="1247631053131914134"><source>src/app/staff/reporter/full/editor.component.html:0</source>Template Saved Successfully</msg>
   <msg id="5413696436247671769"><source>src/app/staff/reporter/full/editor.component.html:1</source>Error Saving Template</msg>
   <msg id="982108440000415158"><source>src/app/staff/reporter/full/editor.component.html:4</source>Clone Template</msg>
@@ -3425,10 +3425,10 @@ Delete Provider</msg>
   <msg id="3170129286594788904"><source>src/app/staff/reporter/full/reporter.component.html:101</source>Search templates for string:</msg>
   <msg id="2756416348487803063"><source>src/app/staff/reporter/full/reporter.component.html:105</source>Search in field:</msg>
   <msg id="8759158498877514194"><source>src/app/staff/reporter/full/reporter.component.html:113</source>Folder to search:</msg>
-  <msg id="3807020072885027035"><source>src/app/staff/reporter/share/reporter.service.ts:708</source>All Folders</msg>
-  <msg id="5433675495457939071"><source>src/app/staff/reporter/share/reporter.service.ts:716</source>Templates</msg>
-  <msg id="4313421995804582576"><source>src/app/staff/reporter/share/reporter.service.ts:734</source>Outputs</msg>
-  <msg id="1205037876874222931"><source>src/app/staff/reporter/share/reporter.service.ts:853</source>Folders</msg>
+  <msg id="3807020072885027035"><source>src/app/staff/reporter/share/reporter.service.ts:711</source>All Folders</msg>
+  <msg id="5433675495457939071"><source>src/app/staff/reporter/share/reporter.service.ts:719</source>Templates</msg>
+  <msg id="4313421995804582576"><source>src/app/staff/reporter/share/reporter.service.ts:737</source>Outputs</msg>
+  <msg id="1205037876874222931"><source>src/app/staff/reporter/share/reporter.service.ts:869</source>Folders</msg>
   <msg id="7470145033999124546"><source>src/app/staff/reporter/simple/simple-reporter.component.html:7</source>My Reports</msg>
   <msg id="4135570901184946873"><source>src/app/staff/reporter/simple/simple-reporter.component.html:11</source>My Outputs</msg>
   <msg id="1634851297177555465"><source>src/app/staff/reporter/simple/sr-editor.component.html:2</source>New Simple Report</msg>
@@ -3583,12 +3583,12 @@ Delete Provider</msg>
   <msg id="5148832089116637648"><source>src/app/staff/serials/serials-receive.component.html:44</source>Circulation modifier</msg>
   <msg id="2520515360425898057"><source>src/app/staff/serials/serials-receive.component.html:46</source>Receive this issue?</msg>
   <msg id="1217298361325220846"><source>src/app/staff/serials/serials-receive.component.html:47</source>Print routing list for this issue?</msg>
-  <msg id="1884005344345039602"><source>src/app/staff/serials/serials-receive.component.html:83</source>Template default</msg>
-  <msg id="7513055354338888453"><source>src/app/staff/serials/serials-receive.component.html:105</source>Apply to the following <ph name="ICU"/></msg>
-  <msg id="1433160408343868753"><source>src/app/staff/serials/serials-receive.component.html:105</source>{VAR_PLURAL, plural, =1 {issue} other {issues}}</msg>
-  <msg id="5027441549136370245"><source>src/app/staff/serials/serials-receive.component.html:188,190</source> No routing list is configured for this stream. </msg>
-  <msg id="1943541715636491272"><source>src/app/staff/serials/serials-receive.component.html:203,205</source> Receive </msg>
-  <msg id="3290149003362654744"><source>src/app/staff/serials/serials-receive.component.html:211,213</source> Receive and print routing list </msg>
+  <msg id="1884005344345039602"><source>src/app/staff/serials/serials-receive.component.html:80</source>Template default</msg>
+  <msg id="7513055354338888453"><source>src/app/staff/serials/serials-receive.component.html:101</source>Apply to the following <ph name="ICU"/></msg>
+  <msg id="1433160408343868753"><source>src/app/staff/serials/serials-receive.component.html:101</source>{VAR_PLURAL, plural, =1 {issue} other {issues}}</msg>
+  <msg id="5027441549136370245"><source>src/app/staff/serials/serials-receive.component.html:180,182</source> No routing list is configured for this stream. </msg>
+  <msg id="1943541715636491272"><source>src/app/staff/serials/serials-receive.component.html:195,197</source> Receive </msg>
+  <msg id="3290149003362654744"><source>src/app/staff/serials/serials-receive.component.html:203,205</source> Receive and print routing list </msg>
   <msg id="8833550620496898654"><source>src/app/staff/serials/serials-receive.component.ts:275</source>Items received</msg>
   <msg id="7830707034534607415"><source>src/app/staff/serials/subscription-selector.component.html:5</source>Subscription</msg>
   <msg id="6621421014045079565"><source>src/app/staff/serials/subscription-selector.component.html:14,17</source> There is no serials subscription for this record at this location.
@@ -3920,7 +3920,6 @@ Delete Provider</msg>
   <msg id="8842147425243358121"><source>src/app/staff/share/holdings/copy-alert-manager.component.html:15</source>Item was marked long overdue</msg>
   <msg id="4409090521040795853"><source>src/app/staff/share/holdings/copy-alert-manager.component.html:17</source>Item was marked claims never checked out</msg>
   <msg id="3586254325432026751"><source>src/app/staff/share/holdings/copy-alert-manager.component.html:19</source>Normal checkout</msg>
-  <msg id="5881686510060749294"><source>src/app/staff/share/holdings/copy-alert-manager.component.html:57</source>Item Alerts</msg>
   <msg id="1095339679131257270"><source>src/app/staff/share/holdings/copy-alert-manager.component.html:76</source>Next item status:</msg>
   <msg id="117209782056122399"><source>src/app/staff/share/holdings/copy-alert-manager.component.html:93</source>Manage Alerts</msg>
   <msg id="5000614869310455556"><source>src/app/staff/share/holdings/copy-alert-manager.component.html:94</source>Alert Set Modified</msg>
@@ -3985,7 +3984,7 @@ Delete Provider</msg>
   <msg id="2980098087875154794"><source>src/app/staff/share/holdings/mark-damaged-dialog.component.html:25,28</source> Item was previously checked out </msg>
   <msg id="6067256309136371647"><source>src/app/staff/share/holdings/mark-damaged-dialog.component.html:30,38</source> Item was last checked out by patron <ph name="START_LINK"/> <ph name="INTERPOLATION"/>, <ph name="INTERPOLATION_1"/> (<ph name="INTERPOLATION_2"/>) <ph name="CLOSE_LINK"/>. </msg>
   <msg id="1360779131419187967"><source>src/app/staff/share/holdings/mark-damaged-dialog.component.html:38,44</source> Item was due <ph name="INTERPOLATION"/> and returned <ph name="INTERPOLATION_1"/>. </msg>
-  <msg id="3623830635283351872"><source>src/app/staff/share/holdings/mark-damaged-dialog.component.html:45,50</source> Calucated fine amount is <ph name="START_TAG_SPAN"/> <ph name="INTERPOLATION"/> <ph name="CLOSE_TAG_SPAN"/></msg>
+  <msg id="8388582053032794203"><source>src/app/staff/share/holdings/mark-damaged-dialog.component.html:45,50</source> Calculated fine amount is <ph name="START_TAG_SPAN"/> <ph name="INTERPOLATION"/> <ph name="CLOSE_TAG_SPAN"/></msg>
   <msg id="2558174311687621439"><source>src/app/staff/share/holdings/mark-damaged-dialog.component.html:58</source>Billing Type...</msg>
   <msg id="6856855156849510159"><source>src/app/staff/share/holdings/mark-damaged-dialog.component.html:66</source>Charge Amount</msg>
   <msg id="3948552872055355542"><source>src/app/staff/share/holdings/mark-damaged-dialog.component.html:92</source>Mark Damaged</msg>
@@ -4925,7 +4924,8 @@ Delete Provider</msg>
   <msg id="5912230745040135544"><source>src/app/staff/share/marc-edit/editor.component.html:71</source>Undelete Record</msg>
   <msg id="5857384757296482678"><source>src/app/staff/share/marc-edit/editor.component.html:89</source>Enhanced MARC Editor</msg>
   <msg id="3141491731819537551"><source>src/app/staff/share/marc-edit/editor.component.html:97</source>Flat Text Editor</msg>
-  <msg id="8591653833355310892"><source>src/app/staff/share/marc-edit/fixed-field.component.html:2</source><ph name="INTERPOLATION"/></msg>
+  <msg id="8591653833355310892"><source>src/app/staff/share/marc-edit/fixed-field.component.html:3</source><ph name="INTERPOLATION"/></msg>
+  <msg id="968227549005903387"><source>src/app/staff/share/marc-edit/fixed-field.component.html:20</source><ph name="INTERPOLATION"/> position <ph name="INTERPOLATION_1"/></msg>
   <msg id="2206092107169689788"><source>src/app/staff/share/marc-edit/fixed-fields-editor.component.html:12</source>UpdStatus</msg>
   <msg id="6035590988694933546"><source>src/app/staff/share/marc-edit/fixed-fields-editor.component.html:18</source>ELvl</msg>
   <msg id="3890586622799618803"><source>src/app/staff/share/marc-edit/fixed-fields-editor.component.html:24</source>Srce</msg>
@@ -5039,9 +5039,9 @@ Delete Provider</msg>
   <msg id="2051804867984750393"><source>src/app/staff/share/marc-edit/rich-editor.component.html:412</source>Add new field after <ph name="INTERPOLATION"/></msg>
   <msg id="8811654603887222317"><source>src/app/staff/share/marc-edit/simplified-editor/simplified-editor.component.html:7</source>&lt;None selected&gt;</msg>
   <msg id="6011229620473146275"><source>src/app/staff/share/op-change/op-change.component.html:10,14</source> Permission denied. Please enter credentials for an account that has the <ph name="INTERPOLATION"/> permission. </msg>
-  <msg id="3654715412336559693"><source>src/app/staff/share/op-change/op-change.component.html:51</source>Login Type</msg>
-  <msg id="1375567914096137086"><source>src/app/staff/share/op-change/op-change.component.html:60</source>Temporary</msg>
-  <msg id="6076000394909025469"><source>src/app/staff/share/op-change/op-change.component.html:62</source>Persistent</msg>
+  <msg id="3654715412336559693"><source>src/app/staff/share/op-change/op-change.component.html:56</source>Login Type</msg>
+  <msg id="1375567914096137086"><source>src/app/staff/share/op-change/op-change.component.html:66</source>Temporary</msg>
+  <msg id="6076000394909025469"><source>src/app/staff/share/op-change/op-change.component.html:68</source>Persistent</msg>
   <msg id="1591700599178852066"><source>src/app/staff/share/patron/merge-dialog.component.html:2</source>Merge Patrons</msg>
   <msg id="5064880517080062406"><source>src/app/staff/share/patron/note-dialog.component.html:0</source>Note Successfully Updated</msg>
   <msg id="6716407502549785852"><source>src/app/staff/share/patron/note-dialog.component.html:1</source>Failed To Update Note</msg>
