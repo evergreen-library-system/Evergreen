@@ -3,6 +3,93 @@
 :numbered:
 :toclevels: 3
 
+
+= Evergreen 3.14.9 ==
+
+This release contains bug fixes and documentation fixes improving on Evergreen 3.14.8.
+
+=== Upgrade notes ===
+
+The following bugfixes require running an upgrade script:
+
+* Adds a workstation setting for the org unit proximity adjustment admin grid so the grid configuration saves. Adds support to the GridFilterControlComponent to filter by datatype number using the same logic as datatype float. (https://bugs.launchpad.net/evergreen/+bug/2118783[Bug 2118783])
+* Adds grid settings for EDI Attribute Sets administration. (https://bugs.launchpad.net/evergreen/+bug/1958076[Bug 1958076])
+* Fixes authority propagation in fields with multiple $0s where the first one is NOT the special EG-linking content. (https://bugs.launchpad.net/evergreen/+bug/2117419[Bug 2117419])
+* Adds grid settings for MARC Import/Export record matches (https://bugs.launchpad.net/evergreen/+bug/1927538[Bug 1927538])
+
+=== Acquisitions ===
+
+* Adds grid settings for EDI Attribute Sets administration. (https://bugs.launchpad.net/evergreen/+bug/1958076[Bug 1958076])
+
+=== Cataloging ===
+
+* Fixes authority propagation in fields with multiple $0s where the first one is NOT the special EG-linking content. (https://bugs.launchpad.net/evergreen/+bug/2117419[Bug 2117419])
+* Adds grid settings for MARC Import/Export record matches (https://bugs.launchpad.net/evergreen/+bug/1927538[Bug 1927538])
+
+=== Circulation ===
+
+* Allows opac.hold_notify to be an empty string in Angular hold interface. (https://bugs.launchpad.net/evergreen/+bug/2111291[Bug 2111291])
+* Clears patron's name from page title after checkout (https://bugs.launchpad.net/evergreen/+bug/1773464[Bug 1773464])
+
+=== Developer ===
+
+* Allows angular unit tests to run without OpenSRF installed. (https://bugs.launchpad.net/evergreen/+bug/2111731[Bug 2111731])
+
+=== Documentation ===
+
+* Updates "org unit" terminology in several documentation files
+* Updates to In House Use docs (https://bugs.launchpad.net/evergreen/+bug/2120648[Bug 2120648])
+
+=== Public Catalog ===
+
+* Replaces ban icon with circle-xmark for OPAC Cancel buttons (https://bugs.launchpad.net/evergreen/+bug/2115369[Bug 2115369])
+
+=== Reports ===
+
+* Restores the SHARE_REPORT_FOLDER permission check. (https://bugs.launchpad.net/evergreen/+bug/2102221[Bug 2102221])
+* Fixes incorrect link between hold_request and hold_request_cancel_cause (https://bugs.launchpad.net/evergreen/+bug/1161616[Bug 1161616])
+
+=== Staff Client ===
+
+* Adds a workstation setting for the org unit proximity adjustment admin grid so the grid configuration saves. Adds support to the GridFilterControlComponent to filter by datatype number using the same logic as datatype float. (https://bugs.launchpad.net/evergreen/+bug/2118783[Bug 2118783])
+* Removes @Input() decorator for combobox isEditable property; Allows staff to clear the default catalog search pane preference; Sets the combobox's isEditable property to true.  (https://bugs.launchpad.net/evergreen/+bug/2106034[Bug 2106034])
+* Staff catalog results side bar is now visible by default. (https://bugs.launchpad.net/evergreen/+bug/2116982[Bug 2116982])
+* Fixes numerous small visual regressions due to Bootstrap 4 vs. 5 class changes in recent updates. (https://bugs.launchpad.net/evergreen/+bug/2106421[Bug 2106421])
+
+=== Acknowledgements ===
+
+We would like to thank the following individuals who contributed code, testing, documentation, and patches to the 3.14.9 point release of Evergreen:
+
+* Andrea Buntz Neiman
+* Blake Graham-Henderson
+* Chris Amorosi
+* Christine Burns
+* Dan Briem
+* Dan Guarracino
+* Garry Collum
+* Gina Monti
+* Jane Sandberg
+* Jeff Godin
+* Jennifer Pringle
+* Josh Stompro
+* Michele Morgan
+* Mike Rylander
+* Robin Fitch
+* Ruth Frasur Davis
+* Shula Link
+* Stephanie Leary
+* Steven Callender
+* Steven Mayo
+* Susan Morrison
+* Terran McCanna
+
+=== Sponsors ===
+
+The following organizations sponsored development in the 3.14.9 release of Evergreen:
+
+* BC Libraries Cooperative
+
+
 == Evergreen 3.14.8 ==
 
 This release contains bug fixes and documentation fixes improving on Evergreen 3.14.7.
