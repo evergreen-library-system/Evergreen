@@ -5641,7 +5641,7 @@ Zadat rezervaci <ph name="START_SMALL_TEXT"/> (<ph name="INTERPOLATION"/>, <ph n
   <translation id="8915863152660536032"> <ph name="ICU"/> </translation>
   <translation id="6254481959763294254">{VAR_PLURAL, plural, =1 {1 tag přidán} other {<ph name="INTERPOLATION"/> tagů přidáno}}</translation>
   <translation id="357185828795946630"> <ph name="ICU"/> </translation>
-  <translation id="1274197352968559955">{VAR_PLURAL, plural, =1 {1 tag upraven} other {<ph name="INTERPOLATION"/> tagů upraveno}</translation>
+  <translation id="1274197352968559955">{VAR_PLURAL, plural, =1 {1 tag upraven} other {<ph name="INTERPOLATION"/> tagů upraveno}}</translation>
   <translation id="1825770760726643095"> <ph name="ICU"/> </translation>
   <translation id="881503560521782270">{VAR_PLURAL, plural, =1 {1 tag smazán} other {<ph name="INTERPOLATION"/> tagů smazáno}}</translation>
   <translation id="5777286666792507777"> Upravit tagy jednotek </translation>
@@ -5734,10 +5734,10 @@ Zadat rezervaci <ph name="START_SMALL_TEXT"/> (<ph name="INTERPOLATION"/>, <ph n
   <translation id="1319916607408529154">Při úpravě tagů jednotek nastala chyba</translation>
   <translation id="1613909657966923007">Typ tagu je povinný</translation>
   <translation id="3231700351227771103">Výběr tagu je povinný</translation>
-  <translation id="2716314679019299400">Správa <ph name="INTERPOLACE"/> pro položku <ph name="INTERPOLACE_1"/></translation>
+  <translation id="2716314679019299400">Správa <ph name="INTERPOLATION"/> pro položku <ph name="INTERPOLATION_1"/></translation>
   <translation id="3437085031045154598">Správa <ph name="INTERPOLATION"/> společně pro <ph name="INTERPOLATION_1"/> položku(položky)</translation>
   <translation id="8723138734613671561">Správa tagů</translation>
-  <translation id="4767144758625794267">Správa <ph name="INTERPOLACE"/> pro položku <ph name="INTERPOLACE_1"/></translation>
+  <translation id="4767144758625794267">Správa <ph name="INTERPOLATION"/> pro položku <ph name="INTERPOLATION_1"/></translation>
   <translation id="7880669478947676673">Správa <ph name="INTERPOLATION"/> společně pro <ph name="INTERPOLATION_1"/> položku(položky)</translation>
   <translation id="1884913290102746564">Nové nevyřízené <ph name="INTERPOLATION"/></translation>
   <translation id="265693727367209518">Editovat na administrativní obrazovce tabů</translation>
