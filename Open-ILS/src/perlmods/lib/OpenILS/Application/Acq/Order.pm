@@ -787,7 +787,8 @@ sub receive_lineitem_detail {
         if ($copy->status == OILS_COPY_STATUS_ON_ORDER) {
             my $custom_status = $U->ou_ancestor_setting_value(
                 $e->requestor->ws_ou, 'acq.copy_status_on_receiving', $e);
-            my $new_status = $custom_status || OILS_COPY_STATUS_IN_PROCESS;
+            # Available status would be 0 (falsey) so use // instead of || just in case we want our received items available IMMEDIATELY
+            my $new_status = $custom_status // OILS_COPY_STATUS_IN_PROCESS;
             $copy->status($new_status);
         }
         $copy->edit_date('now');
@@ -829,10 +830,17 @@ sub rollback_receive_lineitem_detail {
 
     if ($lid->eg_copy_id) {
         my $copy = $e->retrieve_asset_copy($lid->eg_copy_id) or return 0;
-        $copy->status(OILS_COPY_STATUS_ON_ORDER);
-        $copy->edit_date('now');
-        $copy->editor($e->requestor->id);
-        $e->update_asset_copy($copy) or return 0;
+
+        # Only revert the copy's status to on-order if it hasn't been updated by a user. (in the initial status)
+        my $custom_status = $U->ou_ancestor_setting_value(
+                $e->requestor->ws_ou, 'acq.copy_status_on_receiving', $e);
+        my $initial_received_status = $custom_status // OILS_COPY_STATUS_IN_PROCESS;
+        if ($copy->status == $initial_received_status) {
+            $copy->status(OILS_COPY_STATUS_ON_ORDER);
+            $copy->edit_date('now');
+            $copy->editor($e->requestor->id);
+            $e->update_asset_copy($copy) or return 0;
+        }
     }
 
     $mgr->add_lid;
