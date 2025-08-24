@@ -23,6 +23,10 @@
       <div ngbDropdownMenu aria-labelledby="basketActions">
         <button type="button" class="dropdown-item" ngbDropdownItem [disabled]="isMetarecordSearch()"
           (click)="applyAction('add_all')" i18n>Add All Search Results</button>
+        <button type="button" class="dropdown-item" ngbDropdownItem *ngIf="canAddRecord()"
+          (click)="applyAction('add_record')" i18n>Add This Record</button>
+        <button type="button" class="dropdown-item" ngbDropdownItem *ngIf="canRemoveRecord()"
+          (click)="applyAction('remove_record')" i18n>Remove This Record</button>
         <button type="button" class="dropdown-item" ngbDropdownItem [disabled]="!basketCount()"
           (click)="applyAction('view')" i18n>View Basket</button>
         <button type="button" class="dropdown-item" ngbDropdownItem [disabled]="!basketCount()"
