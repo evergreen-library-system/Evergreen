@@ -19,6 +19,8 @@ const MAX_FROM_SEARCH_RESULTS = 1000;
 export class BasketActionsComponent {
 
     basketAction: string;
+    recordId: number;
+    recordInBasket: boolean;
 
     @ViewChild('addBasketToBucketDialog', { static: true })
         addToBucketDialog: BucketDialogComponent;
@@ -33,13 +35,30 @@ export class BasketActionsComponent {
         private printer: PrintService,
         private basket: BasketService,
         private cat: CatalogService,
-        private staffCat: StaffCatalogService
+        private staffCat: StaffCatalogService,
     ) {
         this.basketAction = '';
     }
 
+    ngOnInit() {
+        this.recordId = this.staffCat.searchContext.currentRecordId;
+        this.recordInBasket = this.basket.hasRecordId(this.recordId);
+    }
+
     basketCount(): number {
         return this.basket.recordCount();
+    }
+
+    isRecordView(): Boolean {
+        return !this.staffCat.searchContext.showBasket && this.recordId !== null && this.recordId !== undefined;
+    }
+
+    canAddRecord(): Boolean {
+        return this.isRecordView() && !this.recordInBasket;
+    }
+
+    canRemoveRecord(): Boolean {
+        return this.isRecordView() && this.recordInBasket;
     }
 
     isMetarecordSearch(): boolean {
@@ -68,6 +87,16 @@ export class BasketActionsComponent {
                     .then(_ => this.basket.addRecordIds(ctx.currentResultIds()))
                     .then(_ => this.addAllProgress.close());
 
+                break;
+
+            case 'add_record':
+                this.basket.addRecordIds([this.recordId]);
+                this.recordInBasket = this.basket.hasRecordId(this.recordId);
+                break;
+            
+            case 'remove_record':
+                this.basket.removeRecordIds([this.recordId]);
+                this.recordInBasket = this.basket.hasRecordId(this.recordId);
                 break;
 
             case 'view':

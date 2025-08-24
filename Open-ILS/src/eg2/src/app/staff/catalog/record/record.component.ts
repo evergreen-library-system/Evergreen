@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild, HostListener} from '@angular/core';
+import {Component, OnInit, ViewChild, HostListener, OnDestroy} from '@angular/core';
 import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {IdlObject} from '@eg/core/idl.service';
@@ -19,7 +19,7 @@ import { ServerStoreService } from '@eg/core/server-store.service';
     templateUrl: 'record.component.html',
     styleUrls: ['./record.component.css']
 })
-export class RecordComponent implements OnInit {
+export class RecordComponent implements OnInit, OnDestroy {
 
     recordId: number;
     recordTab: string;
@@ -66,6 +66,7 @@ export class RecordComponent implements OnInit {
         this.route.paramMap.subscribe((params: ParamMap) => {
             this.recordTab = params.get('tab');
             this.recordId = +params.get('id');
+            this.staffCat.searchContext.currentRecordId = this.recordId;
             this.searchContext = this.staffCat.searchContext;
 
             this.store.setLocalItem('eg.cat.last_record_retrieved', this.recordId);
@@ -76,6 +77,10 @@ export class RecordComponent implements OnInit {
 
             this.loadRecord();
         });
+    }
+
+    ngOnDestroy(): void {
+        this.staffCat.searchContext.currentRecordId = null;
     }
 
     setDefaultTab() {

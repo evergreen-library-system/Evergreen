@@ -94,6 +94,12 @@
       <button type="button" ngbDropdownItem class="dropdown-item" (click)="recordCarouselDialog.open({size: 'lg'})">
         <span i18n>Add To Carousel</span>
       </button>
+      <button type="button" ngbDropdownItem class="dropdown-item" *ngIf="!basket.hasRecordId(recId)" (click)="addToBasket()">
+        <span i18n>Add To Basket</span>
+      </button>
+      <button type="button" ngbDropdownItem class="dropdown-item" *ngIf="basket.hasRecordId(recId)" (click)="removeFromBasket()">
+        <span i18n>Remove From Basket</span>
+      </button>
       <button type="button" ngbDropdownItem class="dropdown-item" (click)="jacketImageDialog.open({size: 'lg'})">
         <span i18n>Upload Cover Image</span>
       </button>
