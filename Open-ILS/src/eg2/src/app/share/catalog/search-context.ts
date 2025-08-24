@@ -369,6 +369,9 @@ export class CatalogSearchContext {
     // List of IDs in page/offset context.
     resultIds: number[];
 
+    // Set by the record component when viewing a single result record
+    currentRecordId?: number;
+
     // If a bib ID is provided, instruct the search code to
     // only fetch field highlight data for a single record instead
     // of all search results.

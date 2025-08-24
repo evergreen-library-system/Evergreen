@@ -6,6 +6,7 @@ import {CatalogService} from '@eg/share/catalog/catalog.service';
 import {CatalogSearchContext} from '@eg/share/catalog/search-context';
 import {CatalogUrlService} from '@eg/share/catalog/catalog-url.service';
 import {StaffCatalogService} from '../catalog.service';
+import {BasketService} from '@eg/share/catalog/basket.service';
 import {StringService} from '@eg/share/string/string.service';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {HoldingsService} from '@eg/staff/share/holdings/holdings.service';
@@ -74,6 +75,7 @@ export class RecordActionsComponent implements OnInit {
         private cat: CatalogService,
         private catUrl: CatalogUrlService,
         private staffCat: StaffCatalogService,
+        protected basket: BasketService,
         private holdings: HoldingsService,
         private http: HttpClient
     ) {}
@@ -113,6 +115,14 @@ export class RecordActionsComponent implements OnInit {
 
     addHoldings() {
         this.addHoldingsRequested.emit();
+    }
+
+    addToBasket() {
+        this.basket.addRecordIds([this.recId]);
+    }
+
+    removeFromBasket() {
+        this.basket.removeRecordIds([this.recId]);
     }
 
     clearAddedContentCache() {
