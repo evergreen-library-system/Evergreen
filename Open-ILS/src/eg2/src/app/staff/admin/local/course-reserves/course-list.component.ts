@@ -1,4 +1,4 @@
-import {Component, Input, ViewChild, OnInit, AfterViewInit} from '@angular/core';
+import {Component, Input, ViewChild, OnInit, AfterViewInit, InjectionToken, inject} from '@angular/core';
 import {Router} from '@angular/router';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
@@ -9,16 +9,11 @@ import {GridDataSource, GridColumn} from '@eg/share/grid/grid';
 import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
 import {StringComponent} from '@eg/share/string/string.component';
 import {ToastService} from '@eg/share/toast/toast.service';
-import {LocaleService} from '@eg/core/locale.service';
 import {AuthService} from '@eg/core/auth.service';
 import {OrgService} from '@eg/core/org.service';
 import {OrgFamily} from '@eg/share/org-family-select/org-family-select.component';
 
-import {CourseAssociateMaterialComponent
-} from './course-associate-material.component';
-
-import {CourseAssociateUsersComponent
-} from './course-associate-users.component';
+export const WINDOW = new InjectionToken<Window>('Browser window', {  providedIn: 'root',  factory: () => window});
 
 @Component({
     templateUrl: './course-list.component.html',
@@ -41,10 +36,6 @@ export class CourseListComponent implements OnInit, AfterViewInit {
     @ViewChild('unarchiveSuccessString', { static: true }) unarchiveSuccessString: StringComponent;
     @ViewChild('duplicateFailedString', { static: true }) duplicateFailedString: StringComponent;
     @ViewChild('duplicateSuccessString', { static: true }) duplicateSuccessString: StringComponent;
-    @ViewChild('courseMaterialDialog', {static: true})
-    private courseMaterialDialog: CourseAssociateMaterialComponent;
-    @ViewChild('courseUserDialog', {static: true})
-    private courseUserDialog: CourseAssociateUsersComponent;
 
     @Input() sortField: string;
     @Input() idlClass = 'acmc';
@@ -60,7 +51,6 @@ export class CourseListComponent implements OnInit, AfterViewInit {
 
     constructor(
         private courseSvc: CourseService,
-        private locale: LocaleService,
         private auth: AuthService,
         private idl: IdlService,
         private org: OrgService,
@@ -68,6 +58,8 @@ export class CourseListComponent implements OnInit, AfterViewInit {
         private router: Router,
         private toast: ToastService
     ) {}
+
+    private window = inject(WINDOW);
 
     ngOnInit() {
         this.getSource();
@@ -117,18 +109,13 @@ export class CourseListComponent implements OnInit, AfterViewInit {
         };
     }
 
-    navigateToCoursePage(id_arr: IdlObject[]) {
+    private navigateToCoursePage(id_arr: IdlObject[]) {
         if (typeof id_arr === 'number') { id_arr = [id_arr]; }
-        const urls = [];
-        id_arr.forEach(id => {
-            console.log(this.router.url);
-            urls.push([this.locale.currentLocaleCode() + this.router.url + '/' +  id]);
-        });
         if (id_arr.length === 1) {
             this.router.navigate([this.router.url + '/' + id_arr[0]]);
         } else {
-            urls.forEach(url => {
-                window.open(url);
+            id_arr.forEach(id => {
+                this.window.open(`${this.window.location.href}/${id}`, `course-${id}`);
             });
         }
     }
