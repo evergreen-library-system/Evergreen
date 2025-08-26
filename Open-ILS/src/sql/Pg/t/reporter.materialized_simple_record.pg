@@ -1,0 +1,23 @@
+BEGIN;
+
+SELECT plan(1);
+
+INSERT INTO biblio.record_entry (marc, last_xact_id)
+VALUES ($$<record xmlns="http://www.loc.gov/MARC21/slim">
+  <datafield tag="245" ind1="1" ind2="0">
+    <subfield code="a">Star Wars. </subfield>
+    <subfield code="n"> Episodio IV, </subfield>
+    <subfield code="p"> Una nueva esperanza = </subfield>
+    <subfield code="b"> a new hope </subfield>
+    <subfield code="c"> 20th Century Fox.</subfield>
+  </datafield>
+</record>$$, 'reporter.materialized_simple_record test');
+
+SELECT is(title, 'Star Wars. Episodio IV, Una nueva esperanza = a new hope', 'Title subfields should be presented in the order specified in the record')
+  FROM reporter.materialized_simple_record rmsr
+  INNER JOIN biblio.record_entry bre
+  ON bre.id=rmsr.id
+  WHERE bre.last_xact_id='reporter.materialized_simple_record test';
+
+
+ROLLBACK;

@@ -1,3 +1,7 @@
+BEGIN;
+
+-- SELECT evergreen.upgrade_deps_block_check('xxxx', :eg_version);
+
 UPDATE config.xml_transform SET xslt=$$<?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns="http://www.loc.gov/mods/v3" xmlns:marc="http://www.loc.gov/MARC21/slim" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" exclude-result-prefixes="xlink marc" version="1.0">
 	<xsl:output encoding="UTF-8" indent="yes" method="xml"/>
@@ -3354,4 +3358,7 @@ Added Log Comment
 			<xsl:otherwise><xsl:value-of select="$chopString"/></xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
-</xsl:stylesheet>$$ WHERE name = 'mods32';
+</xsl:stylesheet>$$ WHERE name = 'mods32' AND md5(xslt) = 'c69307123585414b4a98f9719fdd2a34';
+
+COMMIT;
+

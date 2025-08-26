@@ -1,0 +1,12 @@
+== Item status displays title information in the order presented in the MARC record ==
+
+In previous versions of Evergreen, the subfields $n and $p appeared at the end of
+the title in the Item Status screen, regardless of the order they appeared in the
+MARC record's 245 field.
+
+These subfields now appear in the order they were specified in the 245 field.
+
+Note that if you have customized the mods32 XML transform, you will need to make
+the relevant adjustments yourself: in the titleNonfiling section, the list of
+subfields should include include 'n' and 'p', and this section should not call
+the "part" template.
