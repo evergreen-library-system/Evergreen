@@ -328,7 +328,7 @@ sub init_ro_object_cache {
                 $cache{i18ns}{$locale}{$string_id} = $string_obj->string;
             };
             if ($@) {
-                my $err = shift;
+                my $err = shift; # XXX This is wrong, probably left over from try/catch. Should be `my $err = $@;`
                 $logger->warn("get_i18n_string{$locale}{$string_id}, err = $err");
             }
             $cache{i18ns}{$locale}{$string_id} ||= $fallback_string || 'XXX';
@@ -983,6 +983,8 @@ sub load_org_util_funcs {
     # scoped tree as ctx_ou. both ou's are org unit objects.
     $ctx->{org_within_scope} = sub {
         my ($ctx_ou, $test_ou, $depth) = @_;
+
+        return 1 if !$ctx_ou or !$test_ou; # bad input, we'll just show it
 
         return 1 if $ctx_ou->id == $test_ou->id;
 
