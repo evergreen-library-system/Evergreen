@@ -7,8 +7,7 @@ import {ActivatedRoute} from '@angular/router';
 import {Location} from '@angular/common';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
-import {LinkedCircLimitSetsComponent} from './linked-circ-limit-sets.component';
-import {CircMatrixMatchpointDialogComponent} from './circ-matrix-matchpoint-dialog.component';
+import {HoldMatrixMatchpointDialogComponent} from './hold-matrix-matchpoint-dialog.component';
 import {StringComponent} from '@eg/share/string/string.component';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {ToastService} from '@eg/share/toast/toast.service';
@@ -18,21 +17,15 @@ import {OrgService} from '@eg/core/org.service';
 import {OrgFamily} from '@eg/share/org-family-select/org-family-select.component';
 
   @Component({
-      templateUrl: './circ-matrix-matchpoint.component.html'
+      templateUrl: './hold-matrix-matchpoint.component.html'
   })
-export class CircMatrixMatchpointComponent implements OnInit {
+export class HoldMatrixMatchpointComponent implements OnInit {
     recId: number;
-    orgField = 'org_unit';
+    orgField = 'pickup_ou';
     disableOrgFilter = false;
     initDone = false;
     dataSource: GridDataSource;
     gridFilters: {[key: string]: string | number};
-    showLinkLimitSets = false;
-    cloneMode = false;
-    cloneLS = true;
-    usedSetLimitList = {};
-    linkedLimitSets = [];
-    limitSetNames = {};
     dividerStyle = {
         width: '30%',
         marginTop: '25px',
@@ -40,17 +33,15 @@ export class CircMatrixMatchpointComponent implements OnInit {
     };
     notOneSelectedRow: (rows: IdlObject[]) => boolean;
 
-    @ViewChild('limitSets', { static: false }) limitSets: ElementRef;
-    @ViewChild('circLimitSets', { static: true }) limitSetsComponent: LinkedCircLimitSetsComponent;
     @ViewChild('editDialog', { static: true }) editDialog: FmRecordEditorComponent;
-    @ViewChild('matchpointDialog', { static: true }) matchpointDialog: CircMatrixMatchpointDialogComponent;
+    @ViewChild('matchpointDialog', { static: true }) matchpointDialog: HoldMatrixMatchpointDialogComponent;
     @ViewChild('grid', { static: true }) grid: GridComponent;
     @ViewChild('successString', { static: true }) successString: StringComponent;
     @ViewChild('createString', { static: false }) createString: StringComponent;
     @ViewChild('createErrString', { static: false }) createErrString: StringComponent;
     @ViewChild('updateFailedString', { static: false }) updateFailedString: StringComponent;
 
-    @Input() idlClass = 'ccmm';
+    @Input() idlClass = 'chmm';
     // Default sort field, used when no grid sorting is applied.
     @Input() sortField: string;
 
@@ -60,7 +51,6 @@ export class CircMatrixMatchpointComponent implements OnInit {
     pkeyField: string;
     contextOrg: IdlObject;
     searchOrgs: OrgFamily;
-    orgFieldLabel: string;
     viewPerms: string;
     canCreate: boolean;
 
@@ -101,21 +91,13 @@ export class CircMatrixMatchpointComponent implements OnInit {
             return;
         }
 
-        if (!this.orgField) {
-            // If no org unit field is specified, try to find one.
-            // If an object type has multiple org unit fields, the
-            // caller should specify one or disable org unit filter.
-            this.idlClassDef.fields.forEach(field => {
-                if (field['class'] === 'aou') {
-                    this.orgField = field.name;
-                }
-            });
-        }
-
-        if (this.orgField) {
-            this.orgFieldLabel = this.idlClassDef.field_map[this.orgField].label;
-            this.contextOrg = this.org.get(orgId) || this.org.get(this.auth.user().ws_ou()) || this.org.root();
-            this.searchOrgs = {primaryOrgId: this.contextOrg.id()};
+        if (!orgId) { // clear it
+            this.searchOrgs = null;
+        } else if (this.orgField) {
+            this.contextOrg = this.org.get(orgId);
+            if (this.contextOrg) {
+                this.searchOrgs = {primaryOrgId: this.contextOrg.id()};
+            }
         }
     }
 
@@ -164,9 +146,8 @@ export class CircMatrixMatchpointComponent implements OnInit {
             const search: any[] = new Array();
             const orgFilter: any = {};
 
-            if (this.orgField && (this.searchOrgs || this.contextOrg)) {
-                orgFilter[this.orgField] =
-                    this.searchOrgs.orgIds || [this.contextOrg.id()];
+            if (this.orgField && this.searchOrgs?.orgIds.length) {
+                orgFilter[this.orgField] = this.searchOrgs.orgIds;
                 search.push(orgFilter);
             }
 
@@ -191,12 +172,6 @@ export class CircMatrixMatchpointComponent implements OnInit {
             return this.pcrud.search(
                 this.idlClass, search, searchOps, {fleshSelectors: true});
         };
-    }
-
-    clearLinkedCircLimitSets() {
-        console.debug('clearLinkedCircLimitSets',this.limitSetsComponent);
-        this.limitSetsComponent.reset();
-        this.linkedLimitSets = [];
     }
 
     closeDialog() {
@@ -225,9 +200,6 @@ export class CircMatrixMatchpointComponent implements OnInit {
     }
 
     showEditDialog(field: IdlObject): Promise<any> {
-        this.limitSetsComponent.showLinkLimitSets = true;
-        this.getLimitSets(field.id());
-        this.cloneMode = false;
         this.editDialog.mode = 'update';
         this.editDialog.recordId = field['id']();
         this.editDialog.defaultNewRecord = null;
@@ -255,10 +227,8 @@ export class CircMatrixMatchpointComponent implements OnInit {
     }
 
     showCloneDialog(field: IdlObject): Promise<any> {
-        return this.pcrud.retrieve('ccmm', field.id()).toPromise().then( clean_obj => {
-            this.limitSetsComponent.showLinkLimitSets = true;
-            this.getLimitSets(clean_obj.id());
-            this.cloneMode = true;
+        return this.pcrud.retrieve('chmm', field.id()).toPromise().then( clean_obj => {
+            clean_obj.id(null);
             this.editDialog.mode = 'create';
             this.editDialog.recordId = null;
             this.editDialog.record = null;
@@ -283,9 +253,6 @@ export class CircMatrixMatchpointComponent implements OnInit {
     }
 
     createNew() {
-        this.getLimitSets(null);
-        this.limitSetsComponent.showLinkLimitSets = true;
-        this.cloneMode = false;
         this.editDialog.mode = 'create';
         this.editDialog.recordId = null;
         this.editDialog.record = null;
@@ -297,7 +264,6 @@ export class CircMatrixMatchpointComponent implements OnInit {
             ok => {
                 this.createString.current()
                     .then(str => this.toast.success(str));
-                this.limitSetsComponent.showLinkLimitSets = false;
                 this.grid.reload();
             },
             (rejection: unknown) => {
@@ -305,92 +271,7 @@ export class CircMatrixMatchpointComponent implements OnInit {
                     this.createErrString.current()
                         .then(str => this.toast.danger(str));
                 }
-                this.limitSetsComponent.showLinkLimitSets = false;
             }
         );
-    }
-
-    setLimitSets(sets) {
-        this.linkedLimitSets = sets;
-    }
-
-    /**
-     * Runs through the different CRUD operations, specified by the object that is passed into each.
-     * @param matchpoint
-     */
-    configureLimitSets(matchpoint) {
-        console.debug('configureLimitSets',this.limitSetsComponent);
-        if (this.cloneMode && this.cloneLS) {
-            this.setLimitSets(this.limitSetsComponent.linkedSetList);
-            this.linkedLimitSets.forEach(l => {
-                l.isNew = l.created = true;
-                l.linkedLimitSet.id(null);
-            });
-            this.cloneMode = false;
-            console.debug('...cloning these',this.linkedLimitSets);
-        }
-
-        const linkedSets = this.linkedLimitSets;
-        Object.keys(linkedSets).forEach((key) => {
-            const ls = linkedSets[key];
-            if (ls.created) {
-                this.deleteLimitSets(ls).then(() => {
-                    if (ls.isNew && !ls.isDeleted) {
-                        this.pcrud.create(this.createLimitSets(ls.linkedLimitSet, matchpoint)).subscribe(() => {});
-                    } else if (!ls.isNew && !ls.isDeleted) {
-                        this.updateLimitSets(ls.linkedLimitSet);
-                    }
-                });
-            }
-        });
-    }
-
-    getLimitSets(id) {
-        this.clearLinkedCircLimitSets();
-        this.pcrud.search('ccmlsm', {matchpoint:id}).subscribe((res) => {
-            /**
-             * If the limit set's matchpoint equals the matchpoint given
-             * by the user, then add that to the set limit list
-             */
-            //this.limitSetsComponent.usedSetLimitList[res.limit_set()] = res.id();
-            //if (res.matchpoint() === id) {
-                this.limitSetsComponent.createFilledLimitSetObject(res);
-            //}
-        });
-        /**
-         * Retrives all limit set names
-         */
-        this.pcrud.retrieveAll('ccls').subscribe((res) => {
-            this.limitSetsComponent.limitSetNames[res.id()] = res.name();
-        });
-    }
-
-    createLimitSets(limitSet, matchpoint) {
-        if (typeof matchpoint === 'number' || typeof matchpoint === 'string') {
-            limitSet.matchpoint(matchpoint);
-        } else {
-            limitSet.matchpoint(matchpoint.id());
-        }
-        return limitSet;
-    }
-
-    updateLimitSets(limitSet) {
-        this.pcrud.update(limitSet).subscribe(() => {});
-    }
-
-    deleteLimitSets(limitSet) {
-        return new Promise<void>((resolve, reject) => {
-            if (limitSet.isDeleted) {
-                if (limitSet.linkedLimitSet.id()) {
-                    this.pcrud.remove(limitSet.linkedLimitSet).subscribe(res => {
-                        resolve();
-                    });
-                } else {
-                    resolve();
-                }
-            } else {
-                resolve();
-            }
-        });
     }
 }

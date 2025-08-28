@@ -2049,10 +2049,15 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Hold Weights ID" name="id" reporter:datatype="id" reporter:selector="name"/>
 			<field reporter:label="Name" name="name" reporter:datatype="text" oils_obj:required="true"/>
 			<field reporter:label="User Home Library" name="user_home_ou" reporter:datatype="float" oils_obj:required="true"/>
+			<field reporter:label="User Home Library Group" name="user_home_lasso" reporter:datatype="float" oils_obj:required="true"/>
 			<field reporter:label="Request Library" name="request_ou" reporter:datatype="float" oils_obj:required="true"/>
+			<field reporter:label="Request Library Group" name="request_lasso" reporter:datatype="float" oils_obj:required="true"/>
 			<field reporter:label="Pickup Library" name="pickup_ou" reporter:datatype="float" oils_obj:required="true"/>
+			<field reporter:label="Pickup Library Group" name="pickup_lasso" reporter:datatype="float" oils_obj:required="true"/>
 			<field reporter:label="Owning Library" name="item_owning_ou" reporter:datatype="float" oils_obj:required="true"/>
+			<field reporter:label="Owning Library Group" name="item_owning_lasso" reporter:datatype="float" oils_obj:required="true"/>
 			<field reporter:label="Item Circ Library" name="item_circ_ou" reporter:datatype="float" oils_obj:required="true"/>
+			<field reporter:label="Item Circ Library Group" name="item_circ_lasso" reporter:datatype="float" oils_obj:required="true"/>
 			<field reporter:label="User Permission Group" name="usr_grp" reporter:datatype="float" oils_obj:required="true"/>
 			<field reporter:label="Requestor Permission Group" name="requestor_grp" reporter:datatype="float" oils_obj:required="true"/>
 			<field reporter:label="Circulation Modifier" name="circ_modifier" reporter:datatype="float" oils_obj:required="true"/>
@@ -2081,10 +2086,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Circ Weights ID" name="id" reporter:datatype="id" reporter:selector="name"/>
 			<field reporter:label="Name" name="name" reporter:datatype="text" oils_obj:required="true"/>
 			<field reporter:label="Renewal?" name="is_renewal" reporter:datatype="float" oils_obj:required="true"/>
-			<field reporter:label="Org Unit" name="org_unit" reporter:datatype="float" oils_obj:required="true"/>
+			<field reporter:label="Checkout Library" name="org_unit" reporter:datatype="float" oils_obj:required="true"/>
+			<field reporter:label="Checkout Library Group" name="org_lasso" reporter:datatype="float" oils_obj:required="true"/>
 			<field reporter:label="Item Circ Library" name="copy_circ_lib" reporter:datatype="float" oils_obj:required="true"/>
+			<field reporter:label="Item Circ Library Group" name="copy_circ_lasso" reporter:datatype="float" oils_obj:required="true"/>
 			<field reporter:label="Item Owning Library" name="copy_owning_lib" reporter:datatype="float" oils_obj:required="true"/>
+			<field reporter:label="Item Owning Library Group" name="copy_owning_lasso" reporter:datatype="float" oils_obj:required="true"/>
 			<field reporter:label="User Home Library" name="user_home_ou" reporter:datatype="float" oils_obj:required="true"/>
+			<field reporter:label="User Home Library Group" name="user_home_lasso" reporter:datatype="float" oils_obj:required="true"/>
 			<field reporter:label="Permission Group" name="grp" reporter:datatype="float" oils_obj:required="true"/>
 			<field reporter:label="Circulation Modifier" name="circ_modifier" reporter:datatype="float" oils_obj:required="true"/>
 			<field reporter:label="Shelving Location" name="copy_location" reporter:datatype="float" oils_obj:required="true"/>
@@ -2138,10 +2147,15 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Active?" name="active" reporter:datatype="bool"/>
 			<field reporter:label="Strict OU matches?" name="strict_ou_match" reporter:datatype="bool"/>
 			<field reporter:label="User Home Library" name="user_home_ou" reporter:datatype="org_unit"/>
+			<field reporter:label="User Home Library Group" name="user_home_lasso" reporter:datatype="link"/>
 			<field reporter:label="Request Library" name="request_ou" reporter:datatype="org_unit"/>
+			<field reporter:label="Request Library Group" name="request_lasso" reporter:datatype="link"/>
 			<field reporter:label="Pickup Library" name="pickup_ou" reporter:datatype="org_unit"/>
+			<field reporter:label="Pickup Library Group" name="pickup_lasso" reporter:datatype="link"/>
 			<field reporter:label="Owning Library" name="item_owning_ou" reporter:datatype="org_unit"/>
+			<field reporter:label="Owning Library Group" name="item_owning_lasso" reporter:datatype="link"/>
 			<field reporter:label="Item Circ Library" name="item_circ_ou" reporter:datatype="org_unit"/>
+			<field reporter:label="Item Circ Library Group" name="item_circ_lasso" reporter:datatype="link"/>
 			<field reporter:label="User Permission Group" name="usr_grp" reporter:datatype="link"/>
 			<field reporter:label="Requestor Permission Group" name="requestor_grp" reporter:datatype="link" oils_obj:required="true"/>
 			<field reporter:label="Circulation Modifier" name="circ_modifier" oils_persist:primitive="string" reporter:datatype="link"/>
@@ -2167,6 +2181,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="pickup_ou" reltype="has_a" key="id" map="" class="aou"/>
 			<link field="item_owning_ou" reltype="has_a" key="id" map="" class="aou"/>
 			<link field="item_circ_ou" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="user_home_lasso" reltype="has_a" key="id" map="" class="lasso"/>
+			<link field="request_lasso" reltype="has_a" key="id" map="" class="lasso"/>
+			<link field="pickup_lasso" reltype="has_a" key="id" map="" class="lasso"/>
+			<link field="item_owning_lasso" reltype="has_a" key="id" map="" class="lasso"/>
+			<link field="item_circ_lasso" reltype="has_a" key="id" map="" class="lasso"/>
 			<link field="usr_grp" reltype="has_a" key="id" map="" class="pgt"/>
 			<link field="requestor_grp" reltype="has_a" key="id" map="" class="pgt"/>
 			<link field="circ_modifier" reltype="has_a" key="code" map="" class="ccm"/>
@@ -2194,9 +2213,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Renewal?" name="is_renewal" reporter:datatype="bool"/>
 			<field reporter:label="Active?" name="active" reporter:datatype="bool" oils_obj:required="true"/>
 			<field reporter:label="Checkout Library" name="org_unit" reporter:datatype="org_unit" oils_obj:required="true"/>
+			<field reporter:label="Checkout Library Group" name="org_lasso" reporter:datatype="link"/>
 			<field reporter:label="Item Circ Library" name="copy_circ_lib" reporter:datatype="org_unit"/>
+			<field reporter:label="Item Circ Library Group" name="copy_circ_lasso" reporter:datatype="link"/>
 			<field reporter:label="Item Owning Library" name="copy_owning_lib" reporter:datatype="org_unit"/>
+			<field reporter:label="Item Owning Library Group" name="copy_owning_lasso" reporter:datatype="link"/>
 			<field reporter:label="User Home Library" name="user_home_ou" reporter:datatype="org_unit"/>
+			<field reporter:label="User Home Library Group" name="user_home_lasso" reporter:datatype="link"/>
 			<field reporter:label="Permission Group" name="grp" reporter:datatype="link" oils_obj:required="true"/>
 			<field reporter:label="Circulation Modifier" name="circ_modifier" oils_persist:primitive="string" reporter:datatype="link"/>
 			<field reporter:label="Shelving Location" name="copy_location" reporter:datatype="link"/>
@@ -2228,6 +2251,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="copy_circ_lib" reltype="has_a" key="id" map="" class="aou"/>
 			<link field="copy_owning_lib" reltype="has_a" key="id" map="" class="aou"/>
 			<link field="user_home_ou" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="org_lasso" reltype="has_a" key="id" map="" class="lasso"/>
+			<link field="copy_circ_lasso" reltype="has_a" key="id" map="" class="lasso"/>
+			<link field="copy_owning_lasso" reltype="has_a" key="id" map="" class="lasso"/>
+			<link field="user_home_lasso" reltype="has_a" key="id" map="" class="lasso"/>
 			<link field="grp" reltype="has_a" key="id" map="" class="pgt"/>
 			<link field="circ_modifier" reltype="has_a" key="code" map="" class="ccm"/>
 			<link field="copy_location" reltype="has_a" key="id" map="" class="acpl"/>

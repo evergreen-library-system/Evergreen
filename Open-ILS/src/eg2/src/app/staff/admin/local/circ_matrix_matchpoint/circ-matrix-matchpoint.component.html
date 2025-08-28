@@ -44,6 +44,10 @@
     (onClick)="editSelected($event)"
     [disableOnRows]="notOneSelectedRow">
   </eg-grid-toolbar-action>
+  <eg-grid-toolbar-action
+    label="Clone Selected" i18n-label
+    (onClick)="cloneSelected($event)"
+    [disableOnRows]="notOneSelectedRow"/>
 </eg-grid>
 
 <eg-circ-matrix-matchpoint-dialog #matchpointDialog
@@ -55,8 +59,44 @@
         #circLimitSets
         (outputLinkedLimitSet)="setLimitSets($event)">
       </eg-linked-circ-limit-sets>
+      <div class="row" *ngIf="cloneMode">
+        <div class="col-lg-4">
+          <div id="clone-linked-limit-set" i18n>Clone Linked Limit Sets?</div>
+        </div>
+        <div class="col-lg-2">
+          <div class="d-flex justify-content-center">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              attr.aria-labelledby="clone-linked-limit-set"
+              [(ngModel)]="cloneLS"/>
+          </div>
+        </div>
+      </div>
+      <hr/>
     </ng-container>
   </div>
+
+  <ng-template #lassoSelection let-idPrefix="idPrefix" let-field="field" let-record="record" let-org_field="org_field">
+    <eg-combobox
+      domId="{{idPrefix}}-{{field.name}}" name="{{field.name}}"
+      [attr.aria-describedby]="field.helpText ? idPrefix+'-'+field.name+'-help' : null"
+      [required]="field.isRequired()"
+      [idlClass]="field.class"
+      [clearOnAsync]="true"
+      [asyncSupportsEmptyTermClick]="true"
+      [idlBaseQuery]="
+        {'-or':[
+          {global:'t'},
+          {id:{in:{select:{lmap:['lasso']},from:'lmap',where:{org_unit:org.get(record[org_field]())?.id()}}}},
+          {'-exists':{select:{aou:['id']},from:'aou',where:{id:org.get(record[org_field]())?.id(), parent_ou:null}}},
+        ]}
+      "
+      [idlField]="field.selector"
+      [selectedId]="idFromMaybeObject(record[field.name]())"
+      (onChange)="record[field.name]($event ? $event.id : null)">
+    </eg-combobox>
+  </ng-template>
 
   <ng-template #active let-idPrefix="idPrefix" let-field="field" let-record="record">
     <div class="row">
@@ -81,9 +121,16 @@
     [preloadLinkedValues]="true"
     readonlyFields="name"
     displayMode="inline"
-    fieldOrder="id,active,grp,org_unit,copy_circ_lib,copy_owning_lib,user_home_ou,is_renewal,juvenile_flag,circ_modifier,copy_location,marc_type,marc_form,marc_bib_level,marc_vr_format,ref_flag,usr_age_lower_bound,usr_age_upper_bound,item_age,circulate,duration_rule,renewals,hard_due_date,recurring_fine_rule,grace_period,max_fine_rule,available_copy_hold_ratio,total_copy_hold_ratio,script_test,description"
+    fieldOrder="id,active,grp,org_unit,org_lasso,copy_circ_lib,copy_circ_lasso,copy_owning_lib,copy_owning_lasso,user_home_ou,user_home_lasso,is_renewal,juvenile_flag,circ_modifier,copy_location,marc_type,marc_form,marc_bib_level,marc_vr_format,ref_flag,usr_age_lower_bound,usr_age_upper_bound,item_age,circulate,duration_rule,renewals,hard_due_date,recurring_fine_rule,grace_period,max_fine_rule,available_copy_hold_ratio,total_copy_hold_ratio,script_test,description"
     requiredFields="active,grp,org_unit"
     (recordSaved)="configureLimitSets($event); clearLinkedCircLimitSets(); closeDialog()"
-    [fieldOptions]="{active:{appendTemplate:{template:active}}, item_age:{appendTemplate:{template:item_age}}}">
+    [fieldOptions]="{
+      org_lasso:         {customTemplate: {template: lassoSelection, context: {org_field: 'org_unit'}}},
+      copy_circ_lasso:   {customTemplate: {template: lassoSelection, context: {org_field: 'copy_circ_lib'}}},
+      copy_owning_lasso: {customTemplate: {template: lassoSelection, context: {org_field: 'copy_owning_lib'}}},
+      user_home_lasso:   {customTemplate: {template: lassoSelection, context: {org_field: 'user_home_ou'}}},
+      active:            {appendTemplate: {template: active}},
+      item_age:          {appendTemplate: {template: item_age}}
+    }">
   </eg-fm-record-editor>
 </eg-circ-matrix-matchpoint-dialog>

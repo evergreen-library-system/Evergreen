@@ -404,12 +404,24 @@ export class FmRecordEditorComponent
             // NOTE: Set this._record (not this.record) to avoid
             // loop in initRecord()
             if (this.defaultNewRecord) {
-                // Clone to avoid polluting the stub record
+                // Clone to avoid polluting the stub record ...
                 this._record = this.idl.clone(this.defaultNewRecord);
+                // ... and make sure the pkey is empty
+                this._record[this.idl.classes[this.idlClass].pkey](null);
+            } else if (this.recordId) {
+                return this.pcrud.retrieve(this.idlClass, this.recordId)
+                    .toPromise().then( rec => {
+                        this._record = rec ? rec : this.idl.create(this.idlClass);
+                        this._record[this.idl.classes[this.idlClass].pkey](null);
+                        this.convertDatatypesToJs();
+                        this._recordId = null; // avoid future confusion
+                        return this.getFieldList();
+                    });
             } else {
                 this._record = this.idl.create(this.idlClass);
             }
         }
+        this.convertDatatypesToJs();
         this._recordId = null; // avoid future confusion
 
         return this.getFieldList();

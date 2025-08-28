@@ -24335,6 +24335,16 @@ VALUES (
 );
 
 INSERT INTO config.workstation_setting_type (name, grp, datatype, label)
+VALUES (
+    'eg.grid.admin.config.hold_matrix_matchpoint', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.config.hold_matrix_matchpoint',
+        'Grid Config: admin.config.hold_matrix_matchpoint',
+        'cwst', 'label'
+    )
+);
+
+INSERT INTO config.workstation_setting_type (name, grp, datatype, label)
 VALUES 
 (
     'acq.lineitem.sort_order.claims', 'gui', 'integer',

@@ -34,10 +34,15 @@ CREATE TABLE config.hold_matrix_matchpoint (
     strict_ou_match         BOOL    NOT NULL DEFAULT FALSE,
     -- Match Fields
     user_home_ou            INT        REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,    -- Set to the top OU for the matchpoint applicability range; we can use org_unit_prox to choose the "best"
+    user_home_lasso         INT        REFERENCES actor.org_lasso (id) DEFERRABLE INITIALLY DEFERRED,
     request_ou              INT        REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,    -- Set to the top OU for the matchpoint applicability range; we can use org_unit_prox to choose the "best"
+    request_lasso           INT        REFERENCES actor.org_lasso (id) DEFERRABLE INITIALLY DEFERRED,
     pickup_ou               INT        REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,    -- Set to the top OU for the matchpoint applicability range; we can use org_unit_prox to choose the "best"
+    pickup_lasso            INT        REFERENCES actor.org_lasso (id) DEFERRABLE INITIALLY DEFERRED,
     item_owning_ou          INT        REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,    -- Set to the top OU for the matchpoint applicability range; we can use org_unit_prox to choose the "best"
+    item_owning_lasso       INT        REFERENCES actor.org_lasso (id) DEFERRABLE INITIALLY DEFERRED,
     item_circ_ou            INT        REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,    -- Set to the top OU for the matchpoint applicability range; we can use org_unit_prox to choose the "best"
+    item_circ_lasso         INT        REFERENCES actor.org_lasso (id) DEFERRABLE INITIALLY DEFERRED,
     usr_grp                 INT        REFERENCES permission.grp_tree (id) DEFERRABLE INITIALLY DEFERRED,    -- Set to the top applicable group from the group tree; will need descendents and prox functions for filtering
     requestor_grp           INT        NOT NULL REFERENCES permission.grp_tree (id) DEFERRABLE INITIALLY DEFERRED,    -- Set to the top applicable group from the group tree; will need descendents and prox functions for filtering
     circ_modifier           TEXT    REFERENCES config.circ_modifier (code) DEFERRABLE INITIALLY DEFERRED,
@@ -61,7 +66,7 @@ CREATE TABLE config.hold_matrix_matchpoint (
 );
 
 -- Nulls don't count for a constraint match, so we have to coalesce them into something that does.
-CREATE UNIQUE INDEX chmm_once_per_paramset ON config.hold_matrix_matchpoint (COALESCE(user_home_ou::TEXT, ''), COALESCE(request_ou::TEXT, ''), COALESCE(pickup_ou::TEXT, ''), COALESCE(item_owning_ou::TEXT, ''), COALESCE(item_circ_ou::TEXT, ''), COALESCE(usr_grp::TEXT, ''), COALESCE(requestor_grp::TEXT, ''), COALESCE(circ_modifier, ''), COALESCE(copy_location::TEXT, ''), COALESCE(marc_type, ''), COALESCE(marc_form, ''), COALESCE(marc_bib_level, ''), COALESCE(marc_vr_format, ''), COALESCE(juvenile_flag::TEXT, ''), COALESCE(ref_flag::TEXT, ''), COALESCE(item_age, '0 seconds')) WHERE active;
+CREATE UNIQUE INDEX chmm_once_per_paramset ON config.hold_matrix_matchpoint (COALESCE(user_home_ou::TEXT, ''), COALESCE(request_ou::TEXT, ''), COALESCE(pickup_ou::TEXT, ''), COALESCE(item_owning_ou::TEXT, ''), COALESCE(item_circ_ou::TEXT, ''), COALESCE(user_home_lasso::TEXT, ''), COALESCE(request_lasso::TEXT, ''), COALESCE(pickup_lasso::TEXT, ''), COALESCE(item_owning_lasso::TEXT, ''), COALESCE(item_circ_lasso::TEXT, ''), COALESCE(usr_grp::TEXT, ''), COALESCE(requestor_grp::TEXT, ''), COALESCE(circ_modifier, ''), COALESCE(copy_location::TEXT, ''), COALESCE(marc_type, ''), COALESCE(marc_form, ''), COALESCE(marc_bib_level, ''), COALESCE(marc_vr_format, ''), COALESCE(juvenile_flag::TEXT, ''), COALESCE(ref_flag::TEXT, ''), COALESCE(item_age, '0 seconds')) WHERE active;
 
 /*
 Figure out which rules apply for a given hold
@@ -127,6 +132,11 @@ BEGIN
         weights.pickup_ou       := 5.0;
         weights.item_owning_ou  := 5.0;
         weights.item_circ_ou    := 5.0;
+        weights.user_home_lasso := 5.0;
+        weights.request_lasso   := 5.0;
+        weights.pickup_lasso    := 5.0;
+        weights.item_owning_lasso := 5.0;
+        weights.item_circ_lasso := 5.0;
         weights.usr_grp         := 7.0;
         weights.requestor_grp   := 8.0;
         weights.circ_modifier   := 4.0;
@@ -174,6 +184,11 @@ BEGIN
             LEFT JOIN actor.org_unit_ancestors_distance( item_cn_object.owning_lib ) cnoua ON m.item_owning_ou = cnoua.id
             LEFT JOIN actor.org_unit_ancestors_distance( item_object.circ_lib ) iooua ON m.item_circ_ou = iooua.id
             LEFT JOIN actor.org_unit_ancestors_distance( user_object.home_ou  ) uhoua ON m.user_home_ou = uhoua.id
+            LEFT JOIN actor.org_lasso_map puol ON (puol.lasso = m.pickup_lasso AND puol.org_unit = v_pickup_ou)
+            LEFT JOIN actor.org_lasso_map rqol ON (rqol.lasso = m.request_lasso AND rqol.org_unit = v_request_ou)
+            LEFT JOIN actor.org_lasso_map cnol ON (cnol.lasso = m.item_owning_lasso AND cnol.org_unit = item_cn_object.owning_lib)
+            LEFT JOIN actor.org_lasso_map iool ON (iool.lasso = m.item_circ_lasso AND iool.org_unit = item_object.circ_lib)
+            LEFT JOIN actor.org_lasso_map uhol ON (uhol.lasso = m.user_home_lasso AND uhol.org_unit = user_object.home_ou)
       WHERE m.active
             -- Permission Groups
          -- AND (m.requestor_grp        IS NULL OR upgad.id IS NOT NULL) -- Optional Requestor Group?
@@ -184,6 +199,11 @@ BEGIN
             AND (m.item_owning_ou       IS NULL OR (cnoua.id IS NOT NULL AND (cnoua.distance = 0 OR NOT m.strict_ou_match)))
             AND (m.item_circ_ou         IS NULL OR (iooua.id IS NOT NULL AND (iooua.distance = 0 OR NOT m.strict_ou_match)))
             AND (m.user_home_ou         IS NULL OR (uhoua.id IS NOT NULL AND (uhoua.distance = 0 OR NOT m.strict_ou_match)))
+            AND (m.pickup_lasso         IS NULL OR puol.id IS NOT NULL)
+            AND (m.request_lasso        IS NULL OR rqol.id IS NOT NULL)
+            AND (m.item_owning_lasso    IS NULL OR cnol.id IS NOT NULL)
+            AND (m.item_circ_lasso      IS NULL OR iool.id IS NOT NULL)
+            AND (m.user_home_lasso      IS NULL OR uhol.id IS NOT NULL)
             -- Static User Checks
             AND (m.juvenile_flag        IS NULL OR m.juvenile_flag = user_object.juvenile)
             -- Static Item Checks
@@ -201,10 +221,15 @@ BEGIN
             CASE WHEN upgad.distance    IS NOT NULL THEN 2^(2*weights.usr_grp - (upgad.distance/denominator)) ELSE 0.0 END +
             -- Org Units
             CASE WHEN puoua.distance    IS NOT NULL THEN 2^(2*weights.pickup_ou - (puoua.distance/denominator)) ELSE 0.0 END +
+            CASE WHEN puol.id           IS NOT NULL THEN weights.pickup_lasso ELSE 0.0 END +
             CASE WHEN rqoua.distance    IS NOT NULL THEN 2^(2*weights.request_ou - (rqoua.distance/denominator)) ELSE 0.0 END +
+            CASE WHEN rqol.id           IS NOT NULL THEN weights.request_lasso ELSE 0.0 END +
             CASE WHEN cnoua.distance    IS NOT NULL THEN 2^(2*weights.item_owning_ou - (cnoua.distance/denominator)) ELSE 0.0 END +
+            CASE WHEN cnol.id           IS NOT NULL THEN weights.item_owning_lasso ELSE 0.0 END +
             CASE WHEN iooua.distance    IS NOT NULL THEN 2^(2*weights.item_circ_ou - (iooua.distance/denominator)) ELSE 0.0 END +
+            CASE WHEN iool.id           IS NOT NULL THEN weights.item_circ_lasso ELSE 0.0 END +
             CASE WHEN uhoua.distance    IS NOT NULL THEN 2^(2*weights.user_home_ou - (uhoua.distance/denominator)) ELSE 0.0 END +
+            CASE WHEN uhol.id           IS NOT NULL THEN weights.user_home_lasso ELSE 0.0 END +
             -- Static User Checks       -- Note: 4^x is equiv to 2^(2*x)
             CASE WHEN m.juvenile_flag   IS NOT NULL THEN 4^weights.juvenile_flag ELSE 0.0 END +
             -- Static Item Checks

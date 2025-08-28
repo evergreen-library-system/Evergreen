@@ -56,6 +56,7 @@ CREATE TABLE config.circ_matrix_matchpoint (
     active               BOOL    NOT NULL DEFAULT TRUE,
     -- Match Fields
     org_unit             INT        NOT NULL REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,    -- Set to the top OU for the matchpoint applicability range; we can use org_unit_prox to choose the "best"
+    org_lasso            INT     REFERENCES actor.org_lasso (id) DEFERRABLE INITIALLY DEFERRED, -- optional lasso match for "where the circulation is happening". Global lassos always available, all lassos available when org_unit = CONS, restricted in the UI by membership when org_unit != CONS.
     grp                  INT     NOT NULL REFERENCES permission.grp_tree (id) DEFERRABLE INITIALLY DEFERRED,    -- Set to the top applicable group from the group tree; will need descendents and prox functions for filtering
     circ_modifier        TEXT    REFERENCES config.circ_modifier (code) DEFERRABLE INITIALLY DEFERRED,
     copy_location        INT     REFERENCES asset.copy_location (id) DEFERRABLE INITIALLY DEFERRED,
@@ -64,8 +65,11 @@ CREATE TABLE config.circ_matrix_matchpoint (
     marc_bib_level       TEXT,
     marc_vr_format       TEXT,
     copy_circ_lib        INT     REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,
+    copy_circ_lasso      INT     REFERENCES actor.org_lasso (id) DEFERRABLE INITIALLY DEFERRED, -- same visiblity rules as org_lasso
     copy_owning_lib      INT     REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,
+    copy_owning_lasso    INT     REFERENCES actor.org_lasso (id) DEFERRABLE INITIALLY DEFERRED, -- same visiblity rules as org_lasso
     user_home_ou         INT     REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,
+    user_home_lasso      INT     REFERENCES actor.org_lasso (id) DEFERRABLE INITIALLY DEFERRED, -- same visiblity rules as org_lasso
     ref_flag             BOOL,
     juvenile_flag        BOOL,
     is_renewal           BOOL,
@@ -89,7 +93,7 @@ CREATE TABLE config.circ_matrix_matchpoint (
 );
 
 -- Nulls don't count for a constraint match, so we have to coalesce them into something that does.
-CREATE UNIQUE INDEX ccmm_once_per_paramset ON config.circ_matrix_matchpoint (org_unit, grp, COALESCE(circ_modifier, ''), COALESCE(copy_location::TEXT, ''), COALESCE(marc_type, ''), COALESCE(marc_form, ''), COALESCE(marc_bib_level,''), COALESCE(marc_vr_format, ''), COALESCE(copy_circ_lib::TEXT, ''), COALESCE(copy_owning_lib::TEXT, ''), COALESCE(user_home_ou::TEXT, ''), COALESCE(ref_flag::TEXT, ''), COALESCE(juvenile_flag::TEXT, ''), COALESCE(is_renewal::TEXT, ''), COALESCE(usr_age_lower_bound, '0 seconds'), COALESCE(usr_age_upper_bound, '0 seconds'), COALESCE(item_age, '0 seconds')) WHERE active;
+CREATE UNIQUE INDEX ccmm_once_per_paramset ON config.circ_matrix_matchpoint (org_unit, grp, COALESCE(circ_modifier, ''), COALESCE(copy_location::TEXT, ''), COALESCE(marc_type, ''), COALESCE(marc_form, ''), COALESCE(marc_bib_level,''), COALESCE(marc_vr_format, ''), COALESCE(copy_circ_lib::TEXT, ''), COALESCE(copy_owning_lib::TEXT, ''), COALESCE(user_home_ou::TEXT, ''), COALESCE(ref_flag::TEXT, ''), COALESCE(juvenile_flag::TEXT, ''), COALESCE(is_renewal::TEXT, ''), COALESCE(usr_age_lower_bound, '0 seconds'), COALESCE(usr_age_upper_bound, '0 seconds'), COALESCE(item_age, '0 seconds'),COALESCE(org_lasso::TEXT,''),COALESCE(copy_circ_lasso::TEXT, ''), COALESCE(copy_owning_lasso::TEXT, ''), COALESCE(user_home_lasso::TEXT, '')) WHERE active;
 
 -- Limit groups for circ counting
 CREATE TABLE config.circ_limit_group (
@@ -199,6 +203,7 @@ BEGIN
     IF weights.id IS NULL THEN
         weights.grp                 := 11.0;
         weights.org_unit            := 10.0;
+        weights.org_lasso           := 10.0;
         weights.circ_modifier       := 5.0;
         weights.copy_location       := 5.0;
         weights.marc_type           := 4.0;
@@ -206,8 +211,11 @@ BEGIN
         weights.marc_bib_level      := 2.0;
         weights.marc_vr_format      := 2.0;
         weights.copy_circ_lib       := 8.0;
+        weights.copy_circ_lasso     := 8.0;
         weights.copy_owning_lib     := 8.0;
+        weights.copy_owning_lasso   := 8.0;
         weights.user_home_ou        := 8.0;
+        weights.user_home_lasso     := 8.0;
         weights.ref_flag            := 1.0;
         weights.juvenile_flag       := 6.0;
         weights.is_renewal          := 7.0;
@@ -236,14 +244,22 @@ BEGIN
                 LEFT JOIN actor.org_unit_ancestors_distance( cn_object.owning_lib ) cnoua ON m.copy_owning_lib = cnoua.id
                 LEFT JOIN actor.org_unit_ancestors_distance( item_object.circ_lib ) iooua ON m.copy_circ_lib = iooua.id
                 LEFT JOIN actor.org_unit_ancestors_distance( user_object.home_ou  ) uhoua ON m.user_home_ou = uhoua.id
+                LEFT JOIN actor.org_lasso_map olm ON (olm.lasso = m.org_lasso AND olm.org_unit = context_ou)
+                LEFT JOIN actor.org_lasso_map cclm ON (cclm.lasso = m.copy_circ_lasso AND cclm.org_unit = item_object.circ_lib)
+                LEFT JOIN actor.org_lasso_map colm ON (colm.lasso = m.copy_owning_lasso AND colm.org_unit = cn_object.owning_lib)
+                LEFT JOIN actor.org_lasso_map uhlm ON (uhlm.lasso = m.user_home_lasso AND uhlm.org_unit = user_object.home_ou)
           WHERE m.active
                 -- Permission Groups
              -- AND (m.grp                      IS NULL OR upgad.id IS NOT NULL) -- Optional Permission Group?
                 -- Org Units
              -- AND (m.org_unit                 IS NULL OR ctoua.id IS NOT NULL) -- Optional Org Unit?
+                AND (m.org_lasso                IS NULL OR olm.id IS NOT NULL)
                 AND (m.copy_owning_lib          IS NULL OR cnoua.id IS NOT NULL)
+                AND (m.copy_owning_lasso        IS NULL OR colm.id IS NOT NULL)
                 AND (m.copy_circ_lib            IS NULL OR iooua.id IS NOT NULL)
+                AND (m.copy_circ_lasso          IS NULL OR cclm.id IS NOT NULL)
                 AND (m.user_home_ou             IS NULL OR uhoua.id IS NOT NULL)
+                AND (m.user_home_lasso          IS NULL OR uhlm.id IS NOT NULL)
                 -- Circ Type
                 AND (m.is_renewal               IS NULL OR m.is_renewal = renewal)
                 -- Static User Checks
@@ -264,9 +280,13 @@ BEGIN
                 CASE WHEN upgad.distance        IS NOT NULL THEN 2^(2*weights.grp - (upgad.distance/denominator)) ELSE 0.0 END +
                 -- Org Units
                 CASE WHEN ctoua.distance        IS NOT NULL THEN 2^(2*weights.org_unit - (ctoua.distance/denominator)) ELSE 0.0 END +
+                CASE WHEN olm.id                IS NOT NULL THEN weights.org_lasso ELSE 0.0 END +
                 CASE WHEN cnoua.distance        IS NOT NULL THEN 2^(2*weights.copy_owning_lib - (cnoua.distance/denominator)) ELSE 0.0 END +
+                CASE WHEN colm.id               IS NOT NULL THEN weights.copy_owning_lasso ELSE 0.0 END +
                 CASE WHEN iooua.distance        IS NOT NULL THEN 2^(2*weights.copy_circ_lib - (iooua.distance/denominator)) ELSE 0.0 END +
+                CASE WHEN cclm.id               IS NOT NULL THEN weights.copy_circ_lasso ELSE 0.0 END +
                 CASE WHEN uhoua.distance        IS NOT NULL THEN 2^(2*weights.user_home_ou - (uhoua.distance/denominator)) ELSE 0.0 END +
+                CASE WHEN uhlm.id               IS NOT NULL THEN weights.user_home_lasso ELSE 0.0 END +
                 -- Circ Type                    -- Note: 4^x is equiv to 2^(2*x)
                 CASE WHEN m.is_renewal          IS NOT NULL THEN 4^weights.is_renewal ELSE 0.0 END +
                 -- Static User Checks
