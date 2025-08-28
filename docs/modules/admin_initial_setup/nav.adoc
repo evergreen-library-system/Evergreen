@@ -34,6 +34,7 @@
 ** xref:admin:hold_targeter_service.adoc[hold-targeter service]
 ** xref:admin:phonelist.adoc[Phonelist.pm Module]
 ** xref:admin:sip_server.adoc[SIP Server]
+** xref:admin:sip_server_communication.adoc[SIP Communication]
 ** xref:admin:audio_alerts.adoc[Managing Audio Alerts]
 ** xref:admin_initial_setup:oaipmh.adoc[OAI-PMH Data Provider Support]
 ** xref:admin:multi_factor_authentication.adoc[Staff Multi Factor Authentication]

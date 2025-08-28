@@ -1,0 +1,402 @@
+= SIP Communication and Message Types Reference =
+:toc:
+
+See also the overview, installation, and privacy guidance:
+xref:sip_server.adoc[SIP Server Overview, Installation, and Privacy].
+
+== SIP Communication ==
+
+indexterm:[SIP Server, SIP Communication]
+
++SIP+ generally communicates over a +TCP+ connection (either raw sockets or over +telnet+), but can also 
+communicate via serial connections and other methods. In Evergreen, the most common deployment is a +RAW+ socket 
+connection on port 6001.
+
++SIP+ communication consists of strings of messages, each message request and response begin with a 2-digit 
+``command'' - Requests usually being an odd number and responses usually increased by 1 to be an even number. The 
+combination numbers for the request command and response is often referred to as a _Message Pair_ (for example, 
+a 23 command is a request for patron status, a 24 response is a patron status, and the message pair 23/24 is patron 
+status message pair). The table in the next section shows the message pairs and a description of them. 
+
+For clarification, the ``Request'' is from the device (selfcheck or otherwise) to the ILS/ACS. The response is… the 
+response to the request ;). 
+
+Within each request and response, a number of fields (either a fixed width or separated with a | [pipe symbol] and 
+preceded with a 2-character field identifier) are used. The fields vary between message pairs. 
+
+|===========================================================================
+| *Pair* | *Name*              | *Supported?*          |*Details* 
+| 01     | Block Patron        | Yes                   |<<sip_01_block_patron, 01/Block_Patron>> - ACS responds with 24 Patron Status Response 
+| 09-10  | Checkin             | Yes (with extensions) |<<sip_09-10_checkin, 09/10_Checkin>> 
+| 11-12  | Checkout            | Yes (no renewals)     |<<sip_11-12_checkout, 11/12_Checkout>> 
+| 15-16  | Hold                | Partially supported   |<<sip_15-16_hold, 15/16_Hold>>  
+| 17-18  | Item Information    | Yes (no extensions)   |<<sip_17-18_item_information, 17/18_Item_Information>> 
+| 19-20  | Item Status Update  | No                    |<<sip_19-20_item_status_update, 19/20_Item_Status_Update>> - Returns Patron Enable response, but doesn't make any changes in EG  
+| 23-24  | Patron Status       | Yes                   |<<sip_23-24_patron_status, 23/24_Patron_Status>> - 63/64 ``Patron Information'' preferred 
+| 25-26  | Patron Enable       | No                    |<<sip_25-26_patron_enable, 25/26_Patron_Enable>> - Used during system testing and validation 
+| 29-30  | Renew               | Yes                   |<<sip_29-30_renew, 29/30_Renew>> 
+| 35-36  | End Session         | Yes                   |<<sip_35-36_end_session, 35/36_End_Session>>
+| 37-38  | Fee Paid            | Yes                   |<<sip_37-38_fee_paid, 37/38_Fee_Paid>> 
+| 63-64  | Patron Information  | Yes (no extensions)   |<<sip_63-64_patron_information, 63/64_Patron_Information>> 
+| 65-66  | Renew All           | Yes                   |<<sip_65-66_renew_all, 65/66_Renew_All>> 
+| 93-94  | Login               | Yes                   |<<sip_93-94_login, 93/94_Login>> - Must be first command to Evergreen ACS (via socket) or +SIP+ will terminate 
+| 97-96  | Resend last message | Yes                   |<<sip_97-96_resend, 97/96_Resend>> 
+| 99-98  | SC-ACS Status       | Yes                   |<<sip_99-98_sc_and_acs_status, 99/98_SC_and_ACS_Status>> 
+|===========================================================================
+
+[#sip_01_block_patron]
+
+=== 01 Block Patron ===
+
+indexterm:[SelfCheck]
+
+A selfcheck will issue a *Block Patron* command if a patron leaves their card in a selfcheck machine or if the 
+selfcheck detects tampering (such as attempts to disable multiple items during a single item checkout, multiple failed 
+pin entries, etc). 
+
+In Evergreen, this command does the following:
+
+* User alert message: _CARD BLOCKED BY SELF-CHECK MACHINE_ (this is independent of the AL _Blocked 
+Card Message_ field). 
+
+* Card is marked inactive. 
+
+The request looks like: 
+
+   01<card retained><date>[fields AO, AL, AA, AC] 
+
+_Card Retained_: A single character field of Y or N - tells the ACS whether the SC has retained the card (ex: left in 
+the machine) or not. 
+
+_Date_: An 18 character field for the date/time when the block occurred. 
+
+_Format_: YYYYMMDDZZZZHHMMSS (ZZZZ being zone - 4 blanks when local time, ``Z'' (3 blanks and a Z) 
+represents UTC(GMT/Zulu) 
+
+_Fields_: See <<fields, Fields>> for more details.
+
+The response is a 24 ``Patron Status Response'' with the following: 
+
+* Charge privileges denied 
+* Renewal privileges denied 
+* Recall privileges denied (hard-coded in every 24 or 64 response) 
+* hold privileges denied 
+* Screen Message 1 (AF): _blocked_ 
+* Patron 
+
+[#sip_09-10_checkin]
+
+=== 09/10 Checkin ===
+
+~The request looks like: 
+
+   09<No block (Offline)><xact date><return date>[Fields AP,AO,AB,AC,CH,BI] 
+
+_No Block (Offline)_: A single character field of _Y_ or _N_ - Offline transactions are not currently supported so send _N_. 
+
+_xact date_: an 18 character field for the date/time when the checkin occurred. Format: 
+YYYYMMDDZZZZHHMMSS (ZZZZ being zone - 4 blanks when local time, ``Z'' (3 blanks and a Z) represents 
+UTC(GMT/Zulu) 
+
+_Fields_: See <<fields, Fields>> for more details. 
+
+The response is a 10 ``Checkin Response'' with the following: 
+
+   10<resensitize><magnetic media><alert><xact date>[Fields AO,AB,AQ,AJ,CL,AA,CK,CH,CR,CS,CT,CV,CY,DA,AF,AG] 
+
+Example (with a remote hold): 
+
+  09N20100507    16593720100507    165937APCheckin Bin 5|AOBR1|AB1565921879|ACsip_01| 
+
+  101YNY20100623    165731AOBR1|AB1565921879|AQBR1|AJPerl 5 desktop reference|CK001|CSQA76.73.P33V76 1996 
+  |CTBR3|CY373827|DANicholas Richard Woodard|CV02|
+
+Here you can see a hold alert for patron CY _373827_, named DA _Nicholas Richard Woodard_, to be picked up at CT 
+``BR3''. Since the transaction is happening at AO ``BR1'', the alert type CV is 02 for _hold at remote library_. The 
+possible values for CV are: 
+
+* 00: unknown 
+
+* 01: local hold 
+
+* 02: remote hold 
+
+* 03: ILL transfer (not used by EG) 
+
+* 04: transfer 
+
+* 99: other 
+
+indexterm:[magnetic media]
+
+[NOTE]
+===============
+The logic for Evergreen to determine whether the content is magnetic_media comes from  
+or search_config_circ_modifier. The default is non-magnetic. The same is true for media_type (default 
+001). Evergreen does not populate the collection_code because it does not really have any, but it will provide 
+the call_number where available.
+
+Unlike the +item_id+ (barcode), the +title_id+ is actually a title string, unless the configuration forces the 
+return of the bib ID. 
+
+Don't be confused by the different branches that can show up in the same response line. 
+
+* AO is where the transaction took place, 
+
+* AQ is the ``permanent location'', and 
+
+* CT is the _destination location_ (i.e., pickup lib for a hold or target lib for a transfer). 
+===============
+
+[#sip_11-12_checkout]
+
+=== 11/12 Checkout ===
+
+
+[#sip_15-16_hold]
+
+=== 15/16 Hold ===
+
+Evergreen supports the Hold message for the purpose of canceling
+holds.  It does not currently support creating hold requests via SIP2.
+
+SIP2 hold cancellation example:
+
+SIP2: Request Sent::
+[source,txt]
+----
+15-20250824    190033AOBR1|AA99999376864|ABCONC40000613|AJHorn concertos|BON|AY3AZE79C
+----
+
+Brief breakdown:
+
+- 15: Hold request (Evergreen uses this message only for cancellations)
+- -: Hold action indicator (treated as a cancel request by Evergreen)
+- 20250824    190033: Transaction date/time (YYYYMMDDZZZZHHMMSS; ZZZZ = 4 blanks for local time)
+- AO BR1: Institution ID / SIP location
+- AA 99999376864: Patron identifier (e.g., barcode)
+- AB CONC40000613: Item identifier (e.g., barcode)
+- AJ Horn concertos: Title identifier (optional, informational; not required to cancel)
+- BO N: Optional flag (ignored by Evergreen for cancellation)
+- AY 3: Sequence number
+- AZ E79C: Checksum
+
+Behavior in Evergreen:
+
+- The server cancels the matching hold for the patron (AA) and item (AB) if one exists.
+
+[NOTE]
+===================
+SIP accounts must have the CANCEL_HOLDS permission to cancel holds.
+===================
+
+
+[#sip_17-18_item_information]
+
+=== 17/18 Item Information ===
+
+The request looks like: 
+
+    17<xact_date>[fields: AO,AB,AC] 
+
+The request is very terse. AC is optional. 
+
+The following response structure is for +SIP2+. (Version 1 of the protocol had only 6 total fields.) 
+
+    18<circulation_status><security_marker><fee_type><xact_date> 
+    [fields: CF,AH,CJ,CM,AB,AJ,BG,BH,BV,CK,AQ,AP,CH,AF,AG,+CT,+CS] 
+
+Example:
+
+   1720060110    215612AOBR1|ABno_such_barcode| 
+
+   1801010120100609    162510ABno_such_barcode|AJ| 
+
+   1720060110    215612AOBR1|AB1565921879| 
+
+   1810020120100623    171415AB1565921879|AJPerl 5 desktop reference|CK001|AQBR1|APBR1|BGBR1 
+   |CTBR3|CSQA76.73.P33V76 1996| 
+
+The first case is with a bogus barcode. The latter shows an item with a circulation_status of _10_ for _in transit between 
+libraries_. The known values of +circulation_status+ are enumerated in the spec. 
+
+indexterm:[Automated Material Handling (AMH)]
+
+EXTENSIONS: The CT field for _destination location_ and CS _call number_ are used by Automated Material Handling 
+systems. 
+
+
+[#sip_19-20_item_status_update]
+
+=== 19/20 Item Status Update ===
+
+
+[#sip_23-24_patron_status]
+
+=== 23/24 Patron Status ===
+
+Example: 
+
+   2300120060101    084235AOUWOLS|AAbad_barcode|ACsip_01|ADbad_password| 
+
+   24YYYY          00120100507    013934AE|AAbad_barcode|BLN|AOUWOLS|
+
+   2300120060101    084235AOCONS|AA999999|ACsip_01|ADbad_password| 
+
+   24  Y           00120100507    022318AEDoug Fiander|AA999999|BLY|CQN|BHUSD|BV0.00|AFOK|AOCONS| 
+
+   2300120060101    084235AOCONS|AA999999|ACsip_01|ADuserpassword|LY|CQN|BHUSD|BV0.00|AFOK|AOCONS| 
+
+   24  Y           00120100507    022803AEDoug Fiander|AA999999|BLY|CQY|BHUSD|BV0.00|AFOK|AOCONS| 
+
+. The BL field (+SIP2+, optional) is _valid patron_, so the _N_ value means _bad_barcode_ doesn't match a patron, the 
+_Y_ value means 999999 does. 
+
+. The CQ field (+SIP2+, optional) is _valid password_, so the _N_ value means _bad_password_ doesn't match 999999's 
+password, the _Y_ means _userpassword_ does. 
+
+So if you were building the most basic +SIP2+ authentication client, you would check for _|CQY|_ in the response to 
+know the user's barcode and password are correct (|CQY| implies |BLY|, since you cannot check the password 
+unless the barcode exists). However, in practice, depending on the application, there are other factors to consider in 
+authentication, like whether the user is blocked from checkout, owes excessive fines, reported their card lost, etc. 
+These limitations are reflected in the 14-character _patron status_ string immediately following the _24_ code. See the 
+field definitions in your copy of the spec. 
+
+
+[#sip_25-26_patron_enable]
+
+=== 25/26 Patron Enable ===
+
+Not yet supported. 
+
+
+[#sip_29-30_renew]
+
+=== 29/30 Renew ===
+
+Evergreen supports the Renew message. Evergreen checks whether a penalty is specifically configured to block
+renewals before blocking any SIP renewal.
+
+
+[#sip_35-36_end_session]
+
+=== 35/36 End Session ===
+
+   3520100505    115901AOBR1|AA999999|
+
+   36Y20100507    161213AOCONS|AA999999|AFThank you!| 
+   
+The _Y/N_ code immediately after the 36 indicates _success/failure_. Failure is not particularly meaningful or important 
+in this context, and for evergreen it is hardcoded _Y_. 
+
+
+
+[#sip_37-38_fee_paid]
+
+=== 37/38 Fee Paid ===
+
+Evergreen supports the Fee Paid message.
+
+
+[#sip_63-64_patron_information]
+
+=== 63/64 Patron Information ===
+
+Attempting to retrieve patron info with a bad barcode:
+
+   6300020060329    201700          AOBR1|AAbad_barcode| 
+   
+   64YYYY          00020100623    141130000000000000000000000000AE|AAbad_barcode|BLN|AOBR1| 
+
+Attempting to retrieve patron info with a good barcode (but bad patron password): 
+
+   6300020060329    201700          AOBR1|AA999999|ADbadpwd| 
+
+   64  Y           00020100623    141130000000000000000000000000AA999999|AEDavid J. Fiander|BHUSD|BV0.00 
+   |BD2 Meadowvale Dr. St Thomas, ON Canada 
+
+   90210|BEdjfiander@somemail.com|BF(519) 555 1234|AQBR1|BLY|CQN|PB19640925|PCPatrons 
+   |PIUnfiltered|AFOK|AOBR1| 
+
+See <<sip_23-24_patron_status, 23/24 Patron Status>> for info on +BL+ and +CQ+ fields. 
+
+
+
+[#sip_65-66_renew_all]
+
+=== 65/66 Renew All ===
+
+Evergreen supports the Renew All message.
+
+
+[#sip_93-94_login]
+
+=== 93/94 Login ===
+
+Example: 
+
+   9300CNsip_01|CObad_value|CPBR1| 
+  
+   [Connection closed by foreign host.] 
+   ... 
+
+   9300CNsip_01|COsip_01|CPBR1|
+
+   941 
+
+_941_ means successful terminal login. _940_ or getting dropped means failure.
+
+When using a version of SIPServer that supports the feature, the Location (CP) field of the Login (93) message will be used as the workstation name if supplied. Blank or missing location fields will be ignored. This allows users or reports to determine which selfcheck performed a circulation.
+
+
+[#sip_97-96_resend]
+
+=== 97/96 Resend ===
+
+
+[#sip_99-98_sc_and_acs_status]
+
+=== 99/98 SC and ACS Status ===
+
+   99<status code><max print width><protocol version> 
+ 
+All 3 fields are required:
+
+* 0: SC is OK
+
+* 1: SC is out of paper 
+
+* 2: SC shutting down
+
+* status code - 1 character 
+
+* max print width - 3 characters - the integer number of characters the client can print 
+
+* protocol version - 4 characters - x.xx 
+
+  98<on-line status><checkin ok><checkout ok><ACS renewal policy>
+  <status update ok><offline ok><timeout period> 
+
+  <retries allowed><date/time sync><protocol version><institution id> 
+  <library name><supported messages><terminal 
+
+  location><screen message><print line> 
+
+Example: 
+
+  9910302.00 
+
+  98YYYYNN60000320100510    1717202.00AOCONS|BXYYYYYYYYYNYNNNYN|
+
+The Supported Messages field +BX+ appears only in +SIP2+, and specifies whether 16 different +SIP+ commands are 
+supported by the +ACS+ or not. 
+
+
+[#fields]
+
+=== Fields ===
+
+All fixed-length fields in a communication will appear before the first variable-length field. This allows for simple 
+parsing. Variable-length fields are by definition delimited, though there will not necessarily be an initial delimiter 
+between the last fixed-length field and the first variable-length one. It would be unnecessary, since you should know 
+the exact position where that field begins already.
