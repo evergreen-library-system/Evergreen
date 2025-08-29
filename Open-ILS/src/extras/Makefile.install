@@ -4,12 +4,14 @@
 #
 # Makefile to install prerequisites for OpenSRF and Evergreen
 #
-# Currently supports Debian (bookworm, bullseye, buster),
+# Currently supports Debian (trixie, bookworm, bullseye, buster),
 # Ubuntu (22.04), Ubuntu (24.04).
 #
 # Installs Perl prereqs, libdbi, libdbi-drivers, and libyaz
 #
 # usage:
+# 	make -f Makefile.install debian-trixie
+# 	- or -
 # 	make -f Makefile.install debian-bookworm
 # 	- or -
 # 	make -f Makefile.install debian-bullseye
@@ -70,6 +72,8 @@ DIR = $(dir $(lastword $(MAKEFILE_LIST)))/install
 
 all:
 	@echo "please specify an OS" && exit 0
+debian-trixie:
+	@make -f $(DIR)/Makefile.debian-trixie
 debian-bookworm:
 	@make -f $(DIR)/Makefile.debian-bookworm
 debian-bullseye:
@@ -81,6 +85,16 @@ ubuntu-noble:
 ubuntu-jammy:
 	@make -f $(DIR)/Makefile.ubuntu-jammy
 
+postgres-server-debian-trixie-13:
+	@make -f $(DIR)/Makefile.debian-trixie install_postgres_server_13
+postgres-server-debian-trixie-14:
+	@make -f $(DIR)/Makefile.debian-trixie install_postgres_server_14
+postgres-server-debian-trixie-15:
+	@make -f $(DIR)/Makefile.debian-trixie install_postgres_server_15
+postgres-server-debian-trixie-16:
+	@make -f $(DIR)/Makefile.debian-trixie install_postgres_server_16
+postgres-server-debian-trixie-17:
+	@make -f $(DIR)/Makefile.debian-trixie install_postgres_server_17
 postgres-server-debian-bookworm-13:
 	@make -f $(DIR)/Makefile.debian-bookworm install_postgres_server_13
 postgres-server-debian-bookworm-14:
@@ -137,6 +151,8 @@ ubuntu-noble-developer:
 ubuntu-jammy-developer:
 	@make -f $(DIR)/Makefile.ubuntu-jammy install_developer
 
+debian-trixie-developer:
+	@make -f $(DIR)/Makefile.debian-trixie install_developer
 debian-bookworm-developer:
 	@make -f $(DIR)/Makefile.debian-bookworm install_developer
 debian-bullseye-developer:
@@ -148,6 +164,8 @@ ubuntu-noble-translator:
 	@make -f $(DIR)/Makefile.ubuntu-noble install_translator
 ubuntu-jammy-translator:
 	@make -f $(DIR)/Makefile.ubuntu-jammy install_translator
+debian-trixie-translator:
+	@make -f $(DIR)/Makefile.debian-trixie install_translator
 debian-bookworm-translator:
 	@make -f $(DIR)/Makefile.debian-bookworm install_translator
 debian-bullseye-translator:
@@ -159,6 +177,8 @@ ubuntu-noble-packager:
 	@make -f $(DIR)/Makefile.ubuntu-noble install_packager
 ubuntu-jammy-packager:
 	@make -f $(DIR)/Makefile.ubuntu-jammy install_packager
+debian-trixie-packager:
+	@make -f $(DIR)/Makefile.debian-trixie install_packager
 debian-bookworm-packager:
 	@make -f $(DIR)/Makefile.debian-bookworm install_packager
 debian-bullseye-packager:
