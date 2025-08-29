@@ -1245,15 +1245,14 @@ INSERT INTO actor.passwd_type (code, name, login, crypt_algo, iter_count)
     VALUES ('api', 'OpenAPI Integration Password', TRUE, 'bf', 10)
 ON CONFLICT DO NOTHING;
 
--- Move top-level perms "down" ...
-INSERT INTO permission.grp_perm_map (grp,perm,depth,grantable)
- SELECT  DISTINCT g.id, p.perm, p.depth, p.grantable
-   FROM  permission.grp_perm_map p,
-         permission.grp_tree g
-   WHERE g.parent = 1 AND p.grp = 1;
-
--- ... then remove the User version ...
-DELETE FROM permission.grp_perm_map WHERE grp = 1;
+-- Move top-level perms "down" while avoiding direct-child-defined overrides
+WITH old_perms AS ( DELETE FROM permission.grp_perm_map WHERE grp = 1 RETURNING * )
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
+  SELECT  g.id, o.perm, o.depth, o.grantable
+    FROM  old_perms o,
+          permission.grp_tree g
+    WHERE g.parent = 1
+  ON CONFLICT DO NOTHING; -- Conflicts with perm_grp_once to skip existing entries
 
 -- ... and add a new branch to the group tree for API perms
 INSERT INTO permission.grp_tree (name, parent, description, application_perm)
