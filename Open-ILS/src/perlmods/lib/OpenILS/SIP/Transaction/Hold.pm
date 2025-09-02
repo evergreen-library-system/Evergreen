@@ -46,8 +46,17 @@ sub do_hold_cancel {
     $self->cancel_ok(1);
     $self->ok(1);
 
-    $self->item($sip->find_item($self->hold->current_copy->barcode))
-        if $self->hold->current_copy;
+    # Safely resolve current_copy (ID) to a copy object to fetch the barcode
+    if ($self->hold->current_copy) {
+        my $copy = $U->simplereq(
+            'open-ils.cstore',
+            'open-ils.cstore.direct.asset.copy.retrieve',
+            $self->hold->current_copy
+        );
+        if ($copy && !$U->event_code($copy) && $copy->barcode) {
+            $self->item($sip->find_item($copy->barcode));
+        }
+    }
 
     return $self;
 }
