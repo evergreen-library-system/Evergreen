@@ -11,7 +11,7 @@ eg-holdings-maintenance {
 
     --row-color-selected: var(--bs-blue-900)
 }
-[data-bs-theme="dark"] :host eg-holdings-maintenance {
+[data-bs-theme="dark"] eg-holdings-maintenance {
     --holdings-org-row-bg: var(--bs-gray-900);
     --holdings-org-row-bg-selected:  hsl(216, 60%, 15%);
 
