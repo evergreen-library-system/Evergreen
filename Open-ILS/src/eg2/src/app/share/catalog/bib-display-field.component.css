@@ -7,7 +7,7 @@ mark {
   --highlight-id-border: 61, 213, 243;
 }
 
-[data-bs-theme="dark"] :host mark {
+[data-bs-theme="dark"] mark {
   --highlight-bg-opacity: 0.15;
   --highlight-border-opacity: 0.45;
 }
