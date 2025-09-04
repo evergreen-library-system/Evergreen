@@ -210,6 +210,8 @@ function($scope,  $q,  $routeParams,  egCore,  egUser,  patronSvc,
                 } else {
                     // egProgressDialog.increment();
                     var new_item = { id : hold_data.id, hold : hold_data };
+                    new_item.hold.tr_source = egCore.org.get(new_item.hold.tr_source)?.shortname();
+                    new_item.hold.tr_dest = egCore.org.get(new_item.hold.tr_dest)?.shortname();
                     new_item.status_string =
                         egCore.strings['HOLD_STATUS_' + hold_data.hold_status]
                         || hold_data.hold_status;
