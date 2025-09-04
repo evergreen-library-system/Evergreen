@@ -124,7 +124,8 @@
                   [(ngModel)]="col.filterOperator" (change)="operatorChanged(col)">
                   <option value="=" i18n>Is exactly</option>
                   <option value="!=" i18n>Is not</option>
-                  <option value="like" i18n>Contains</option>
+                  <option *ngIf="col.allowFilterILike" value="ilike" i18n>Contains</option>
+                  <option value="like" i18n>Contains (case-sensitive)</option>
                   <option value="not like" i18n>Does not contain</option>
                   <option value="startswith" i18n>Starts with</option>
                   <option value="endswith" i18n>Ends with</option>

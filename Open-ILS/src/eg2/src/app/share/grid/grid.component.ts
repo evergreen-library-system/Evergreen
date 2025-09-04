@@ -126,6 +126,12 @@ export class GridComponent implements OnInit, AfterViewInit, OnDestroy {
     // that interface.
     @Input() migrateLegacyFilterSets: string;
 
+    // allowFilterILike: if set to false, case-insensitive ('ilike') filters
+    // will not be allowed regardless of IDL class cardinality or
+    // column-specific settings. See allowCaseInsensitiveSearch() in grid.ts for
+    // details.
+    @Input() allowFilterILike: boolean;
+
     // sticky grid header
     //
     // stickyHeader: true of the grid header should be
@@ -205,6 +211,7 @@ export class GridComponent implements OnInit, AfterViewInit, OnDestroy {
         this.context.cellTextGenerator = this.cellTextGenerator;
         this.context.ignoredFields = [];
         this.context.reloadOnColumnChange = this.reloadOnColumnChange;
+        this.context.allowFilterILike = this.allowFilterILike;
 
         if (this.showFields) {
             // Stripping spaces allows users to add newlines to

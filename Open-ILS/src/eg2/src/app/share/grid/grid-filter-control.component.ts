@@ -297,15 +297,16 @@ export class GridFilterControlComponent implements OnInit {
             } else if (col.filterOperator === 'not null') {
                 op  = '!=';
                 val = null;
-            } else if (col.filterOperator === 'like' || col.filterOperator === 'not like') {
+            } else if (col.filterOperator === 'like' || col.filterOperator === 'ilike' || col.filterOperator === 'not like') {
                 val = '%' + val + '%';
             } else if (col.filterOperator === 'startswith') {
-                op = 'like';
+                op = col.allowFilterILike ? 'ilike' : 'like';
                 val = val + '%';
             } else if (col.filterOperator === 'endswith') {
-                op = 'like';
+                op = col.allowFilterILike ? 'ilike' : 'like';
                 val = '%' + val;
             }
+
             const filt: any = {};
             if (col.filterOperator === 'not like') {
                 filt['-not'] = {};

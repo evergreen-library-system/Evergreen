@@ -34,6 +34,12 @@ export class GridColumnComponent implements OnInit {
     @Input() initialFilterOperator: string;
     @Input() initialFilterValue: string;
 
+    // allowFilterILike: if set to false, case-insensitive ('ilike') filters
+    // will not be allowed regardless of IDL class cardinality or
+    // grid settings. See allowCaseInsensitiveSearch() in grid.ts for
+    // details. Leave empty to determine the value from the grid or IDL class.
+    @Input() allowFilterILike: boolean;
+
     // Display date and time when datatype = timestamp
     @Input() datePlusTime: boolean;
 
@@ -91,6 +97,7 @@ export class GridColumnComponent implements OnInit {
         col.idlClass = this.idlClass;
         col.dateOnlyIntervalField = this.dateOnlyIntervalField;
         col.isAuto = false;
+        col.allowFilterILike = this.allowFilterILike;
 
         this.grid.context.columnSet.add(col);
 

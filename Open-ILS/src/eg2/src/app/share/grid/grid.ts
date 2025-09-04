@@ -56,6 +56,7 @@ export class GridColumn {
     filterInputDisabled: boolean;
     filterIncludeOrgAncestors: boolean;
     filterIncludeOrgDescendants: boolean;
+    allowFilterILike: boolean;
 
     flesher: (obj: any, col: GridColumn, item: any) => any;
 
@@ -123,6 +124,7 @@ export class GridColumn {
         col.isFilterable = this.isFilterable;
         col.isMultiSortable = this.isMultiSortable;
         col.datatype = this.datatype;
+        col.allowFilterILike = this.allowFilterILike;
         col.datePlusTime = this.datePlusTime;
         col.ternaryBool = this.ternaryBool;
         col.timezoneContextOrg = this.timezoneContextOrg;
@@ -145,6 +147,7 @@ export class GridColumnSet {
     idl: IdlService;
     defaultHiddenFields: string[];
     defaultVisibleFields: string[];
+    allowFilterILike: boolean;
 
     constructor(idl: IdlService, idlClass?: string) {
         this.idl = idl;
@@ -235,6 +238,7 @@ export class GridColumnSet {
             newCol.path = dotpath ? dotpath + '.' + field.name : field.name;
             newCol.label = dotpath ? classObj.label + ': ' + field.label : field.label;
             newCol.datatype = field.datatype;
+            newCol.allowFilterILike = field.allowFilterILike;
 
             // Avoid including the class label prefix in the main grid
             // header display so it doesn't take up so much horizontal space.
@@ -380,8 +384,31 @@ export class GridColumnSet {
         if (!col.label) { col.label = col.name; }
         if (!col.datatype) { col.datatype = 'text'; }
         if (!col.isAuto) { col.headerLabel = col.label; }
+        if (!col.allowFilterILike) { col.allowFilterILike = this.allowCaseInsensitiveSearch(col) }
 
         col.visible = !col.hidden;
+    }
+
+    allowCaseInsensitiveSearch(col: GridColumn) {
+        // if the grid itself said not to allow ILike or we don't have an IDL class or this isn't even text, forget it
+        if (this.allowFilterILike === false || !col.idlClass || col.datatype !== 'text') {
+            return false;
+        }
+
+        // if cardinality is set in the IDL, respect it
+        const cardinality = this.idl.classes[col.idlClass].cardinality;
+        if (cardinality === 'high' || cardinality === 'unbounded') {
+            return false; 
+        }
+
+        // if cardinality wasn't set at all, let's make extra sure this isn't a log or history table
+        const table = this.idl.classes[col.idlClass].table;
+        if (cardinality === '' && (table.substring(table.length - 4) === '_log' || table.substring(table.length - 8) === '_history')) {
+            return false;
+        }
+
+        // ... all right, we'll allow 'ilike'
+        return true;
     }
 
     applyColumnSortability(col: GridColumn) {
@@ -689,6 +716,7 @@ export class GridContext {
     initialFilterValues: {[field: string]: string};
     allowNamedFilterSets: boolean;
     migrateLegacyFilterSets: string;
+    allowFilterILike: boolean;
     stickyGridHeader: boolean;
     isMultiSortable: boolean;
     useLocalSort: boolean;
@@ -766,6 +794,7 @@ export class GridContext {
         this.columnSet.isMultiSortable = this.isMultiSortable === true;
         this.columnSet.defaultHiddenFields = this.defaultHiddenFields;
         this.columnSet.defaultVisibleFields = this.defaultVisibleFields;
+        this.columnSet.allowFilterILike = this.allowFilterILike;
         if (!this.pager.limit) {
             this.pager.limit = this.disablePaging ? MAX_ALL_ROW_COUNT : 10;
         }
