@@ -592,6 +592,13 @@ export class CopyAttrsComponent implements OnInit, OnDestroy, AfterViewInit {
         if (value === undefined) {
             value = this.values[field];
         } else {
+            // If the field is number-ish, the empty string means null. Force that here.
+            // ??? Should all fields be forced to null on empty string?
+            if (value === '' &&
+                ['float','int','number','money'].includes(this.idl.classes.acp.field_map[field]?.datatype)
+            ) {
+                value = null;
+            }
             this.values[field] = value;
         }
 
