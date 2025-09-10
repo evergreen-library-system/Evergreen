@@ -28,8 +28,24 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
  attributeFormDefault="unqualified"
 >
 
+<xs:simpleType name="datatype_type">
+  <xs:restriction base="xs:string">
+    <xs:enumeration value="bool"/>
+    <xs:enumeration value="float"/>
+    <xs:enumeration value="id"/>
+    <xs:enumeration value="int"/>
+    <xs:enumeration value="interval"/>
+    <xs:enumeration value="link"/>
+    <xs:enumeration value="money"/>
+    <xs:enumeration value="number"/>
+    <xs:enumeration value="org_unit"/>
+    <xs:enumeration value="text"/>
+    <xs:enumeration value="timestamp"/>
+  </xs:restriction>
+</xs:simpleType>
+
 <xs:attribute name="core" type="xs:boolean"/>
-<xs:attribute name="datatype"/>
+<xs:attribute name="datatype" type="datatype_type"/>
 <xs:attribute name="label"/>
 <xs:attribute name="selector"/>
 
