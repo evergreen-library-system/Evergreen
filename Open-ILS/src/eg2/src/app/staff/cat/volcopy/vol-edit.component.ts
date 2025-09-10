@@ -278,6 +278,13 @@ export class VolEditComponent implements OnInit {
 
     applyCopyValue(copy: IdlObject, key: string, value: any) {
         if (copy[key]() !== value) {
+            // If the field is number-ish, the empty string means null. Force that here.
+            // ??? Should all fields be forced to null on empty string?
+            if (value === '' &&
+                ['float','int','number','money'].includes(this.idl.classes.acp.field_map[key]?.datatype)
+            ) {
+                value = null;
+            }
             copy[key](value);
             copy.ischanged(true);
         }
