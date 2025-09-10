@@ -1242,7 +1242,10 @@ export class CopyAttrsComponent implements OnInit, OnDestroy, AfterViewInit {
                     this.context.newTagMaps.push( newTagMap ); // for our pending display
                     console.debug('applying tags...', this);
                 });
-                this.context.updateInMemoryCopiesWithTags();
+                // wait for the async tag calls to finish
+                setTimeout(() => {
+                    this.context.updateInMemoryCopiesWithTags();
+                }, 100);
 
                 return;
             }
