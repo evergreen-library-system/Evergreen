@@ -66,7 +66,7 @@ Events. The default columns for display are note in _italics_:
 * _Event Run Time_ - the time the event was run
 * _Event State_ - the event state. Possible values include “complete”,
 “pending”, or “error”
-* _Context Library_ - the shortname of the library / Org Unit associated
+* _Context Library_ - the shortname of the library / organizational unit associated
 with the event
 * _Title_ - the title of the item associated with the event
 * _Author_ - the author of the item associated with the event
@@ -154,7 +154,7 @@ and overdue notices have a hook of *checkout.due* (due date)
 associated with the event
 ** Note that if the staff user doesn’t have appropriate VIEW_USER
 permissions, they will see the database ID in this column.
-* Context Library - the database ID of the library / Org Unit associated
+* Context Library - the database ID of the library / organizational unit associated
 with the event
 * Context Bib - the database ID of the bib record associated with the
 event

@@ -437,7 +437,7 @@ New notes, alerts, and blocks can be added by clicking the *Create Note* button.
 
 * _Edit Note_ - allows staff to modify the original note, alert, or block
 ** Patron visible notes, alerts, and blocks that have been read by the patron cannot be edited by staff.
-** When a note, alert, or block is edited, the note will retain the original context org unit instead of the current workstation library.
+** When a note, alert, or block is edited, the note will retain the original context organizational unit instead of the current workstation library.
 * _Remove Note_ - will permanently delete the note, alert, or block. There will not be a record of it on the patron account once it has been removed.
 ** Patron visible notes, alerts, and blocks that have been read by the patron cannot be deleted by staff.
 * _Archive Note_ - will move the note, alert, or block to the Archived Notes section of the screen.
@@ -468,7 +468,7 @@ To create a new Note:
 . Select _Note_ at the top of the screen.
 . Check the box next to _Patron Visible_ for a note that will display in the patron’s OPAC account. Leave it unchecked to create a note that is staff visible only.
 . The _Depth_ drop down menu controls the visibility of the note. Values correspond to OPAC labels, and by default they are This Branch, Local Library System, and Everywhere.
-.. By default, the Location will be set to the library the staff member’s workstation is registered to. The note will be visible to the workstation library, as well as all Org Units that are ancestors and descendants in the Org Unit hierarchy.
+.. By default, the Location will be set to the library the staff member’s workstation is registered to. The note will be visible to the workstation library, as well as all organizational units that are ancestors and descendants in the organizational unit hierarchy.
 . Enter a title or subject for the note in the _Title…_ field. The title field is required.
 . Enter the main content of the note in the _Note Text…_ field.
 . Enter your initials if your library requires initials when creating notes on patron accounts.
@@ -514,7 +514,7 @@ To create a new Alert:
 . A modal will appear where you can create a new Alert. Required fields are highlighted in yellow.
 . Select _Alert_ at the top of the screen.
 . The _Depth_ drop down menu controls the visibility of the note. Values correspond to OPAC labels, and by default they are This Branch, Local Library System, and Everywhere.
-.. By default, the Location will be set to the library the staff member’s workstation is registered to. The note will be visible to the workstation library, as well as all Org Units that are ancestors and descendants in the Org Unit hierarchy.
+.. By default, the Location will be set to the library the staff member’s workstation is registered to. The note will be visible to the workstation library, as well as all organizational units that are ancestors and descendants in the organizational unit hierarchy.
 . Enter a title or subject for the alert in the _Title…_ field. The Title field is required.
 . Enter the main content of the alert te in the _Note Text…_ field.
 . Enter your initials if your library requires initials when creating alerts on patron accounts.
@@ -549,7 +549,7 @@ To create a new Block:
 .. The default Block is a block on CIRC, HOLD, RENEW
 .. Other Penalty Types can be selected from the drop down menu. These Penalty Types are configured in _Local Administration -> Standing Penalties_.
 . The _Depth_ drop down menu controls the visibility of the note. Values correspond to OPAC labels, and by default they are This Branch, Local Library System, and Everywhere.
-.. By default, the Location will be set to the library the staff member’s workstation is registered to. The note will be visible to the workstation library, as well as all Org Units that are ancestors and descendants in the Org Unit hierarchy.
+.. By default, the Location will be set to the library the staff member’s workstation is registered to. The note will be visible to the workstation library, as well as all organizational units that are ancestors and descendants in the organizational unit hierarchy.
 . Enter a title or subject for the alert in the _Title…_ field. The Title field is required.
 . Enter the main content of the block in the _Note…_ field.
 . Enter your initials if your library requires initials when creating blocks on patron accounts.
