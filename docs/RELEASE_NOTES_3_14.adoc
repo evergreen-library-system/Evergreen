@@ -3,8 +3,79 @@
 :numbered:
 :toclevels: 3
 
+== Evergreen 3.14.10 ==
 
-= Evergreen 3.14.9 ==
+This release contains bug fixes and documentation fixes improving on Evergreen 3.14.9.
+
+=== Upgrade Notes ===
+
+This release requires no unusual upgrade steps, but does change several
+core templates in the Bootstrap public catalog. Consequently, if the
+public catalog has custom templates, additional care may be needed to
+bring in the changes for the new public catalog session timeout dialog.
+
+One database update is included that updates the description of the
+public catalog session timeout library setting.
+
+=== Acquisitions ===
+
+* Fixes issue where unreceiving a line item could result in changing the status of the associated real item back to "On Order" inappropriately (https://bugs.launchpad.net/evergreen/+bug/1932626[Bug 1932626])
+* Fixes the background color of the header rows in Acquisitions worksheet tables (https://bugs.launchpad.net/evergreen/+bug/2093225[Bug 2093225])
+
+=== Cataloging ===
+
+* Corrects the background color of odd-numbered results in the Z39.50 View MARC modal dialog (https://bugs.launchpad.net/evergreen/+bug/2097385[Bug 2097385])
+* Show users, not organizational units, as MARC Import/Export queue owners (https://bugs.launchpad.net/evergreen/+bug/1856711[Bug 1856711])
+* Displays MARC import queue owner as username, not ID (https://bugs.launchpad.net/evergreen/+bug/1856711[Bug 1856711])
+
+=== Circulation ===
+
+* Uses the preferred name when available for the Copy Mailing Address feature on the patron record (https://bugs.launchpad.net/evergreen/+bug/2118587[Bug 2118587])
+
+=== Course Reserves ===
+
+* Fixes Archive Course and Unarchive Course button colors (https://bugs.launchpad.net/evergreen/+bug/2063375[Bug 2063375])
+
+=== Public Catalog ===
+
+* Adds new public catalog session timeout dialog with countdown, activity recognition, ARIA alerts, and improved keyboard navigation support (https://bugs.launchpad.net/evergreen/+bug/2114920[Bug 2114920])
+
+=== Reports ===
+
+* Forces Simple Reports folders to be used by the Simple Reports interfaces (https://bugs.launchpad.net/evergreen/+bug/2096672[Bug 2096672])
+
+=== Staff Client ===
+
+* Corrects dark mode colors in several components, primarily the MARC rich editor (https://bugs.launchpad.net/evergreen/+bug/2107141[Bug 2107141])
+* Fixes staff catalog search filter visual cues when using multiple filters (https://bugs.launchpad.net/evergreen/+bug/2088199[Bug 2088199])
+
+=== Acknowledgements ===
+
+We would like to thank the following individuals who contributed code, testing, documentation, and patches to the 3.14.10 point release of Evergreen:
+
+* Blake Graham-Henderson
+* Galen Charlton
+* Jane Sandberg
+* Jason Boyer
+* Jennifer Pringle
+* Martha Driscoll
+* Michele Morgan
+* Mike Rylander
+* Scott Angel
+* Shula Link
+* Ruth Frasur Davis
+* Stephanie Leary
+* Steven Callender
+* Steven Mayo
+* Terran McCanna
+
+=== Sponsors ===
+
+The following organizations sponsored development in the 3.14.10 release of Evergreen:
+
+* BC Libraries Cooperative
+
+== Evergreen 3.14.9 ==
 
 This release contains bug fixes and documentation fixes improving on Evergreen 3.14.8.
 
