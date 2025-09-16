@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2025-07-15 17:03+0000\n"
-"PO-Revision-Date: 2024-10-03 18:50+0000\n"
+"POT-Creation-Date: 2025-07-15 18:23+0000\n"
+"PO-Revision-Date: 2025-03-25 15:00+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2025-07-16 09:33+0000\n"
-"X-Generator: Launchpad (build 2d6e9435c2df831e66deb7fcbe9f03f78dd14743)\n"
+"X-Launchpad-Export-Date: 2025-07-17 07:33+0000\n"
+"X-Generator: Launchpad (build 4a935a27f849d9e76af17c154eb3e276e860afb7)\n"
 
 #: ../../Open-ILS/src/templates-bootstrap/opac/register.tt2:62
 msgid ""
@@ -2111,6 +2111,10 @@ msgstr "E-mailová adresa: "
 msgid "Email notification"
 msgstr "Upozornění e-mailem"
 
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/main_pay.tt2:46
+msgid "Email receipt"
+msgstr "E-mailové potvrzení"
+
 #: ../../Open-ILS/src/templates-bootstrap/opac/myopac/lists.tt2:268
 msgid "Email title details"
 msgstr "Poslat e-mailem detaily o titulu"
@@ -3758,10 +3762,6 @@ msgstr "Čtenář dosáhl maximální povolené výše pokut"
 #: ../../Open-ILS/src/templates-bootstrap/opac/myopac/charges.tt2:77
 msgid "Pay %1 fine"
 msgstr "Zaplatit pokutu ve výši %1"
-
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/charges.tt2:227
-msgid "Pay All Charges"
-msgstr "Zaplatit všechny poplatky"
 
 #: ../../Open-ILS/src/templates-bootstrap/opac/myopac/main_payment_form.tt2:18
 msgid "Pay Charges"
@@ -6177,242 +6177,14 @@ msgstr "zobrazit"
 msgid "volume"
 msgstr "signatura"
 
-#~ msgid " Add %1 to basket"
-#~ msgstr " Přidat %1 do košíku"
-
-#~ msgid " Remove %1 from basket"
-#~ msgstr " Odebrat %1 z košíku"
-
-#~ msgid " View My Basket"
-#~ msgstr " Zobrazit můj košík"
-
 #~ msgid "%quant(%1,filter,filters) applied"
 #~ msgstr "%quant(%1,filtr,filtry) applied"
-
-#~ msgid "- All Parts -"
-#~ msgstr "- Všecny části -"
-
-#~ msgid ""
-#~ "<i class='fas fa-book' aria-hidden='true'></i> <span "
-#~ "class='sumNum'>%1</span>Items Checked Out"
-#~ msgstr ""
-#~ "<i class='fas fa-book' aria-hidden='true'></i> <span "
-#~ "class='sumNum'>%1</span>Vypůjčené jednotky"
-
-#~ msgid ""
-#~ "<i class='fas fa-clock' aria-hidden='true'></i> <span "
-#~ "class='sumNum'>%1</span>Holds / <span class='sumNum'>%2</span> Ready"
-#~ msgstr ""
-#~ "<i class='fas fa-clock' aria-hidden='true'></i> <span "
-#~ "class='sumNum'>%1</span>Rezervace / <span class='sumNum'>%2</span> Připraveno"
-
-#~ msgid "<i class='fas fa-desktop' aria-hidden='true'></i> E-Items on Hold"
-#~ msgstr ""
-#~ "<i class='fas fa-desktop' aria-hidden='true'></i> Rezervované e-knihy"
-
-#~ msgid ""
-#~ "<i class='fas fa-download' aria-hidden='true'></i>  E-Items Ready for "
-#~ "Checkout"
-#~ msgstr ""
-#~ "<i class='fas fa-download' aria-hidden='true'></i>  E-knihy připravené k "
-#~ "vyzvednutí"
-
-#~ msgid "<i class='fas fa-hands' aria-hidden='true'></i> Items on Hold"
-#~ msgstr "<i class='fas fa-hands' aria-hidden='true'></i> Rezervované jednotky"
-
-#~ msgid "?"
-#~ msgstr "?"
-
-#~ msgid "Account Registration"
-#~ msgstr "Registrace účtu"
-
-#~ msgid "Account Login Form"
-#~ msgstr "Formulář pro přihlášení do účtu"
-
-#~ msgid "Active Addresses"
-#~ msgstr "Aktivní adresy"
-
-#~ msgid "Account preference"
-#~ msgstr "Nastavení účtu"
 
 #~ msgid "Add Search Row"
 #~ msgstr "Přidat vyhledávací řádek"
 
-#~ msgid "Additional search filters and navigation"
-#~ msgstr "Další vyhledávací filtry a navigace"
-
-#~ msgid "Add to new list"
-#~ msgstr "Přidat do nového seznamu"
-
-#~ msgid "All Parts"
-#~ msgstr "Všechny části"
-
 #~ msgid "Back to My Acccount"
 #~ msgstr "Zpět do Mého účtu"
 
-#~ msgid "Cancel on"
-#~ msgstr "Zrušení"
-
-#~ msgid "Catalog Search"
-#~ msgstr "Vyhledávání v katalogu"
-
-#~ msgid "Catalog Browse"
-#~ msgstr "Prohlížení katalogu"
-
-#~ msgid "Catalog"
-#~ msgstr "Katalog"
-
-#~ msgid "Change preferred library"
-#~ msgstr "Změnit preferovanou knihovnu"
-
-#~ msgid "Current Username"
-#~ msgstr "Současné uživatelské jméno"
-
-#~ msgid "Default Font Size"
-#~ msgstr "Výchozí velikost písma"
-
-#~ msgid "Edit Email Address"
-#~ msgstr "Upravit e-mailovou adresu"
-
-#~ msgid "Evergreen Logo"
-#~ msgstr "Logo Evergreenu"
-
-#~ msgid "Go to record %1"
-#~ msgstr "Přejít na záznam  %1"
-
-#~ msgid "Identifier"
-#~ msgstr "Identifikátor"
-
-#~ msgid "Large Font"
-#~ msgstr "Velké písmo"
-
-#~ msgid "Pending Addresses"
-#~ msgstr "Nevyřízené adresy"
-
-#~ msgid "Pay this fine"
-#~ msgstr "Zaplatit tuto pokutu"
-
-#~ msgid "Records In Basket"
-#~ msgstr "Záznamy v košíku"
-
-#~ msgid "Record Holdings Summary"
-#~ msgstr "Přehled  jednotek připojených k záznamu"
-
-#~ msgid "Regular Font"
-#~ msgstr "Běžné písmo"
-
-#~ msgid "Remove row"
-#~ msgstr "Odstranit řádek"
-
-#~ msgid "Results %1 - %2 of %3"
-#~ msgstr "Výsledky  %1 - %2 z %3"
-
-#~ msgid "Search Filter"
-#~ msgstr "Vyhledávací filtr"
-
-#~ msgid "Secondary search date"
-#~ msgstr "Sekundární datum vyhledávání"
-
-#~ msgid "Select Item"
-#~ msgstr "Vybrat položku"
-
-#~ msgid "Select %1 - %2"
-#~ msgstr "Vybrat %1 - %2"
-
-#~ msgid "Select item type:"
-#~ msgstr "Vyberte typ dokumentu"
-
-#~ msgid "Select record"
-#~ msgstr "Vybrat záznam"
-
-#~ msgid "Select hold %1"
-#~ msgstr "Vybrat rezervaci %1"
-
 #~ msgid "Select your desired format(s)."
 #~ msgstr "Vyberte požadovaný formát(y)"
-
-#~ msgid "Additional Resources"
-#~ msgstr "Doplňkové zdroje"
-
-#~ msgid "Update Password"
-#~ msgstr "Aktualizovat heslo"
-
-#~ msgid "View Borrowing History"
-#~ msgstr "Zobrazit historii výpůjček"
-
-#~ msgid "View all formats and editions "
-#~ msgstr "Zobrazit všechny formáty a vydání "
-
-#~ msgid "You are now browsing %1"
-#~ msgstr "Prohlížíte knihovnu:  %1"
-
-#~ msgid "Course Search Input"
-#~ msgstr "Zadání vyhledávání v kurzech"
-
-#~ msgid "Cover Image"
-#~ msgstr "Obrázek obálky"
-
-#~ msgid ""
-#~ "<i class='fas fa-book-reader' aria-hidden='true'></i> Items Checked Out"
-#~ msgstr ""
-#~ "<i class='fas fa-book-reader' aria-hidden='true'></i> Vypůjčené jednotky"
-
-#~ msgid "<i class='fas fa-desktop' aria-hidden='true'></i> E-Items Checked Out"
-#~ msgstr "<i class='fas fa-desktop' aria-hidden='true'></i> Vypůjčené e-knihy"
-
-#~ msgid "Amount Owed"
-#~ msgstr "Dlužná částka"
-
-#~ msgid "Change the amount of items shown while viewing a 'My List'."
-#~ msgstr "Změnit počet zobrazených položek, když prohlížíte  'Moje seznamy'."
-
-#~ msgid "Change the amount of lists shown in 'My Lists'."
-#~ msgstr "Změnit počet položek zobrazeních ve vašich seznamech."
-
-#~ msgid "Change the amount of results shown in a search while signed in."
-#~ msgstr "Změnit počet zobrazených výsledků hledání když jste přihlášeni."
-
-#~ msgid "Date of Billing"
-#~ msgstr "Datum naúčtování poplatku"
-
-#~ msgid "Date of Message"
-#~ msgstr "DAtum zprávy"
-
-#~ msgid "Hold Number %1"
-#~ msgstr "Číslo rezervace %1"
-
-#~ msgid "Hold Status"
-#~ msgstr "Status rezervace"
-
-#~ msgid "Login To Evergreen"
-#~ msgstr "Přihlášení do Evergreenu"
-
-#~ msgid "Message Number %1"
-#~ msgstr "Zpráva číslo %1"
-
-#~ msgid "Message Options"
-#~ msgstr "Možnosti zpráv"
-
-#~ msgid "Pay This Bill"
-#~ msgstr "Zaplatit tyto poplatky"
-
-#~ msgid "Read"
-#~ msgstr "Přečteno"
-
-#~ msgid "Read %1"
-#~ msgstr "Read %1"
-
-#~ msgid "Title of Message"
-#~ msgstr "Název zprávy"
-
-#~ msgid "Your password is not visible."
-#~ msgstr "Vaše heslo se nezobrazuje."
-
-#~ msgid "Your password is visible!"
-#~ msgstr "Vaše heslo se zobrazuje"
-
-#~ msgid "Open Hours"
-#~ msgstr "Otevření"
-
-#~ msgid "Remove filter"
-#~ msgstr "Odebrat filtr"

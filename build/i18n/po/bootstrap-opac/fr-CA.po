@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2025-07-15 17:03+0000\n"
-"PO-Revision-Date: 2024-10-03 18:50+0000\n"
+"POT-Creation-Date: 2025-07-15 18:23+0000\n"
+"PO-Revision-Date: 2025-03-25 15:00+0000\n"
 "Last-Translator: Jennifer Pringle <Unknown>\n"
 "Language-Team: French <fr@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2025-07-16 09:33+0000\n"
-"X-Generator: Launchpad (build 2d6e9435c2df831e66deb7fcbe9f03f78dd14743)\n"
+"X-Launchpad-Export-Date: 2025-07-17 07:33+0000\n"
+"X-Generator: Launchpad (build 4a935a27f849d9e76af17c154eb3e276e860afb7)\n"
 
 #: ../../Open-ILS/src/templates-bootstrap/opac/register.tt2:62
 msgid ""
@@ -2110,6 +2110,10 @@ msgstr "Adresse courriel : "
 msgid "Email notification"
 msgstr "Avis par courriel"
 
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/main_pay.tt2:46
+msgid "Email receipt"
+msgstr ""
+
 #: ../../Open-ILS/src/templates-bootstrap/opac/myopac/lists.tt2:268
 msgid "Email title details"
 msgstr "Envoyer les détails du titre par courriel"
@@ -3764,10 +3768,6 @@ msgstr "Montant d’amendes maximal atteint pour cet usager"
 #: ../../Open-ILS/src/templates-bootstrap/opac/myopac/charges.tt2:77
 msgid "Pay %1 fine"
 msgstr ""
-
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/charges.tt2:227
-msgid "Pay All Charges"
-msgstr "Payer tous les frais"
 
 #: ../../Open-ILS/src/templates-bootstrap/opac/myopac/main_payment_form.tt2:18
 msgid "Pay Charges"
@@ -6188,213 +6188,14 @@ msgstr "afficher"
 msgid "volume"
 msgstr "volume"
 
-#~ msgid " View My Basket"
-#~ msgstr " Voir ma liste temporaire"
-
 #~ msgid "%quant(%1,filter,filters) applied"
 #~ msgstr "%quant(%1,filtre, filtres) appliqué(s)"
-
-#~ msgid "- All Parts -"
-#~ msgstr "- Toutes les parties -"
-
-#~ msgid "?"
-#~ msgstr "?"
-
-#~ msgid "Account preference"
-#~ msgstr "Préférence du compte"
-
-#~ msgid "Account Registration"
-#~ msgstr "Enregistrement du compte"
-
-#~ msgid "Account Login Form"
-#~ msgstr "Formulaire d’ouverture de session"
-
-#~ msgid "Active Addresses"
-#~ msgstr "Adresses actives"
-
-#~ msgid "Add to new list"
-#~ msgstr "Ajouter à une nouvelle liste"
-
-#~ msgid "Additional search filters and navigation"
-#~ msgstr "Filtres de recherche additionnels et navigation"
-
-#~ msgid "Additional Resources"
-#~ msgstr "Ressources supplémentaires"
-
-#~ msgid "All Parts"
-#~ msgstr "Toutes les parties"
-
-#~ msgid "Cancel on"
-#~ msgstr "Annuler à"
-
-#~ msgid "Catalog Browse"
-#~ msgstr "Parcourir le catalogue"
-
-#~ msgid "Change preferred library"
-#~ msgstr "Modifier la bibliothèque de préférence"
-
-#~ msgid "Current Username"
-#~ msgstr "Mot de passe actuel"
-
-#~ msgid "Default Font Size"
-#~ msgstr "Taille de police par défaut"
-
-#~ msgid "Edit Email Address"
-#~ msgstr "Modifier l’adresse électronique"
-
-#~ msgid "Evergreen Logo"
-#~ msgstr "Logo d'Evergreen"
-
-#~ msgid "Go to record %1"
-#~ msgstr "Allez à la notice %1"
-
-#~ msgid "Pay this fine"
-#~ msgstr "Payer cette amende"
-
-#~ msgid "Pending Addresses"
-#~ msgstr "Adresses en attente"
-
-#~ msgid "Record Holdings Summary"
-#~ msgstr "Sommaire des fonds de bibliothèque"
-
-#~ msgid "Remove row"
-#~ msgstr "Supprimer la rangée"
-
-#~ msgid "Results %1 - %2 of %3"
-#~ msgstr "Résultats %1 - %2 de %3"
-
-#~ msgid "Search Filter"
-#~ msgstr "Filtre de recherche"
-
-#~ msgid "Select %1 - %2"
-#~ msgstr "Sélectionner %1 à %2"
-
-#~ msgid "Secondary search date"
-#~ msgstr "Deuxième date de recherche"
-
-#~ msgid "Select item type:"
-#~ msgstr "Sélectionner le type d’article :"
-
-#~ msgid "Select hold %1"
-#~ msgstr "Sélectionner la réservation pour %1"
 
 #~ msgid "Select your desired format(s)."
 #~ msgstr "Sélectionner le(s) format(s) désiré(s)."
 
-#~ msgid "Update Password"
-#~ msgstr "Mise à jour du mot de passe"
-
-#~ msgid "View Borrowing History"
-#~ msgstr "Visualiser l’historique des emprunts"
-
-#~ msgid "View all formats and editions "
-#~ msgstr "Voir tous les formats et toutes les éditions "
-
-#~ msgid "You are now browsing %1"
-#~ msgstr "Vous explorez maintenant %1"
-
 #~ msgid "Add Search Row"
 #~ msgstr "Ajouter une rangée de recherche"
 
-#~ msgid "Catalog Search"
-#~ msgstr "Chercher dans le catalogue"
-
-#~ msgid "Course Search Input"
-#~ msgstr "Entrée de recherche de cours"
-
-#~ msgid "Large Font"
-#~ msgstr "Gros caractère"
-
-#~ msgid "Regular Font"
-#~ msgstr "Police régulière"
-
-#~ msgid "Select record"
-#~ msgstr "Sélectionnez un dossier"
-
-#~ msgid " Remove %1 from basket"
-#~ msgstr " Enlever %1 du panier"
-
-#~ msgid " Add %1 to basket"
-#~ msgstr " Ajouter %1 au panier"
-
-#~ msgid "Catalog"
-#~ msgstr "Catalogue"
-
-#~ msgid "Identifier"
-#~ msgstr "Identificateur"
-
-#~ msgid "Records In Basket"
-#~ msgstr "dossiers dans le panier"
-
-#~ msgid ""
-#~ "<i class='fas fa-book' aria-hidden='true'></i> <span "
-#~ "class='sumNum'>%1</span>Items Checked Out"
-#~ msgstr ""
-#~ "<i class='fas fa-book' aria-hidden='true'></i> <span "
-#~ "class='sumNum'>%1</span>Documents empruntés"
-
-#~ msgid "<i class='fas fa-desktop' aria-hidden='true'></i> E-Items on Hold"
-#~ msgstr ""
-#~ "<i class='fas fa-desktop' aria-hidden='true'></i> Articles électroniques "
-#~ "réservés"
-
-#~ msgid "<i class='fas fa-hands' aria-hidden='true'></i> Items on Hold"
-#~ msgstr "<i class='fas fa-hands' aria-hidden='true'></i> Documents réservés"
-
-#~ msgid ""
-#~ "<i class='fas fa-download' aria-hidden='true'></i>  E-Items Ready for "
-#~ "Checkout"
-#~ msgstr ""
-#~ "<i class='fas fa-download' aria-hidden='true'></i> Articles électroniques "
-#~ "prêts pour emprunt"
-
-#~ msgid "Amount Owed"
-#~ msgstr "Montant dû"
-
 #~ msgid "Back to My Acccount"
 #~ msgstr "Retour à mon compete bibliothèque"
-
-#~ msgid "Change the amount of items shown while viewing a 'My List'."
-#~ msgstr ""
-#~ "Modifier la quantité d'articles affichés lors de l'affichage de \"ma liste\"."
-
-#~ msgid "Change the amount of lists shown in 'My Lists'."
-#~ msgstr "Modifier la quantité de listes affichées en \"ma liste\"."
-
-#~ msgid "Change the amount of results shown in a search while signed in."
-#~ msgstr ""
-#~ "Modifier le nombre de résultats affichés dans une recherche lorsque vous "
-#~ "êtes connecté(e)."
-
-#~ msgid "Cover Image"
-#~ msgstr "Image de couverture"
-
-#~ msgid "Date of Billing"
-#~ msgstr "Date de facturation"
-
-#~ msgid "Date of Message"
-#~ msgstr "Date du mesage"
-
-#~ msgid "Login To Evergreen"
-#~ msgstr "Connectez-vous à Evergreen"
-
-#~ msgid "Message Number %1"
-#~ msgstr "Message numéro %1"
-
-#~ msgid "Pay This Bill"
-#~ msgstr "Payer cette facture"
-
-#~ msgid "Read"
-#~ msgstr "Lire"
-
-#~ msgid "Read %1"
-#~ msgstr "Lire %1"
-
-#~ msgid "Title of Message"
-#~ msgstr "Titre du message"
-
-#~ msgid "Your password is not visible."
-#~ msgstr "Votre mot de passe n'est pas visible."
-
-#~ msgid "Your password is visible!"
-#~ msgstr "Votre mot de passe est visible!"
