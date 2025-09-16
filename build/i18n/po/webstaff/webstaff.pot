@@ -132,7 +132,7 @@ msgstr ""
 msgid "#%1"
 msgstr ""
 
-#. ("{{patron().first_given_name()}}", "{{patron().second_given_name()}}", "{{patron().family_name()}}", "{{addr.street1()}}", "{{addr.street2()}}", "{{addr.city()}}", "{{addr.state()}}", "{{addr.post_code()}}")
+#. ("{{patron().pref_first_given_name() || patron().first_given_name()}}", "{{patron().pref_second_given_name() || patron().second_given_name()}}", "{{patron().pref_family_name() || patron().family_name()}}", "{{addr.street1()}}", "{{addr.street2()}}", "{{addr.city()}}", "{{addr.state()}}", "{{addr.post_code()}}")
 #: ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:211
 msgid "%1 %2 %3&#13;&#10;%4 %5&#13;&#10;%6, %7 %8"
 msgstr ""
