@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2025-08-19 16:44:48-0400\n"
+"POT-Creation-Date: 2025-09-16 15:58:31-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -4862,9 +4862,18 @@ msgstr ""
 msgid "Temporary call number prefix"
 msgstr ""
 
-# id::coust.label__auth.opac_timeout id::coust.description__auth.opac_timeout
-#: 950.data.seed-values.sql:3371 950.data.seed-values.sql:3374
+# id::coust.label__auth.opac_timeout
+#: 950.data.seed-values.sql:3371
 msgid "OPAC Inactivity Timeout (in seconds)"
+msgstr ""
+
+# id::coust.description__auth.opac_timeout
+#: 950.data.seed-values.sql:3374
+msgid ""
+"Number of seconds of inactivity before the patron is logged out of the OPAC."
+" The minimum value that can be entered is 240 seconds. At the 180 second "
+"mark a countdown will appear and patrons can choose to end the session, "
+"continue the session, or allow it to time out."
 msgstr ""
 
 # id::coust.label__auth.persistent_login_interval
