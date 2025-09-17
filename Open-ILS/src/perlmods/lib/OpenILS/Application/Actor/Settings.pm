@@ -7,6 +7,7 @@ use OpenILS::Application::AppUtils;
 use OpenILS::Utils::CStoreEditor q/:funcs/;
 use OpenILS::Utils::Fieldmapper;
 use OpenSRF::Utils::JSON;
+use Types::Serialiser;
 use OpenILS::Event;
 my $U = "OpenILS::Application::AppUtils";
 
@@ -422,6 +423,139 @@ sub setting_value_for_all_orgs {
     }
 
     return undef;
+}
+
+__PACKAGE__->register_method (
+    method      => 'notify_opt_ins',
+    api_name    => 'open-ils.actor.settings.notify.opt_ins.crud',
+    stream      => 1,
+    signature => {
+        desc => q/
+            Returns true or false per notice opt-in notication type per group 
+            indicating to what extent the user has opted in to each group.
+            If every notice type for a group is opted in, then the group
+            is in effect opted in.
+        /,
+        params => [
+            {desc => 'authtoken', type => 'string'},
+            {desc => 'user id; Optional', type => 'number'},
+            {desc => 'new_values; Optional; applies new values', type => 'object'},
+        ],
+        return => {
+            desc => q/
+                Returns {$notice_group => {$one_notice => 1|0, ...}, ...}
+            /,
+            type => 'object'
+        }
+    }
+);
+
+sub notify_opt_ins {
+    my ($self, $client, $auth, $user_id, $new_values) = @_;
+
+    my $e = new_editor(xact => 1, authtoken => $auth);
+    return $e->die_event unless $e->checkauth;
+
+    if ($user_id) {
+        if ($user_id ne $e->requestor->id) {
+            my $user = $e->retrieve_actor_user($user_id) or return $e->die_event;
+            my $perm = $new_values ? 'UPDATE_USER' : 'VIEW_USER';
+            return $e->die_event unless $e->allowed($perm, $user->home_ou);
+        }
+    } else {
+        $user_id = $e->requestor->id;
+    }
+
+    if ($new_values) {
+        while (my ($group, $enable) = each %$new_values) {
+            if (defined $enable) {
+                set_notice_group_opt_in($self, $e, $user_id, $group, $enable);
+            }
+        }
+    }
+
+    # Get the full set of possible opt-in notices and return opt-in
+    # values for each notice within each group.  From here the caller
+    # can see if a user is opted into all, some, none of a given notice type.
+
+    my $names = $e->json_query({
+        select => {csg => ['name']},
+        from => 'csg',
+        where => {name => {'~' => '^notify\.'}}
+    });
+
+
+    my $responses = {};
+    for my $group (map {$_->{name}} @$names) {
+        $group =~ s/notify\.//g;
+        $responses->{$group} = get_notice_group_opt_in($self, $e, $user_id, $group);
+    }
+
+    return $responses;
+}
+
+# Get true/false opt-in values for every notice type within a notice group.
+sub get_notice_group_opt_in {
+    my ($self, $e, $user_id, $group) = @_;
+    my $get_method = $self->method_lookup('open-ils.actor.patron.settings.retrieve');
+
+    my $stypes = $e->search_config_usr_setting_type({grp => "notify.$group"});
+    my $stype_names = ['opac.hold_notify', map {$_->name} @$stypes];
+
+    my ($values) = $get_method->run($e->authtoken, $user_id, $stype_names);
+
+    my $default_hold_notify = 0;
+    if (my $hold_notify = $values->{'opac.hold_notify'}) {
+        $default_hold_notify = ($hold_notify =~ /$group/) ? 1 : 0;
+        delete $values->{'opac.hold_notify'};
+    }
+
+    $values->{_default_hold_notify} = $default_hold_notify;
+
+    # Serialize these values as JSON true/false instead of 1/0 to play 
+    # more predictably with external consumers.
+    while (my ($stype, $enabled) = each %$values) {
+        $values->{$stype} = $enabled ? $Types::Serialiser::true : $Types::Serialiser::false;
+    }
+
+    return $values;
+}
+
+
+# If $enable is false, this becomes disable
+sub set_notice_group_opt_in {
+    my ($self, $e, $user_id, $group, $enable) = @_;
+
+    # We need an explicit request.
+    return unless defined $enable;
+
+    my $set_method = $self->method_lookup('open-ils.actor.patron.settings.update');
+    my $get_method = $self->method_lookup('open-ils.actor.patron.settings.retrieve');
+
+    my ($multi_value) = $get_method->run($e->authtoken, $user_id, 'opac.hold_notify');
+    $multi_value ||= '';
+
+    if ($enable && ($multi_value !~ /$group/)) {
+        # Append the group to the multi value setting.
+        $multi_value = "$group:$multi_value";
+
+    } elsif (!$enable && ($multi_value =~ /$group/)) {
+        # Remove the group from the multi value setting.
+        $multi_value =~ s/$group:?//gm;
+    }
+
+    my $values = {'opac.hold_notify' => $multi_value};
+
+    my $setting_types = $e->search_config_usr_setting_type({grp => "notify.$group"});
+
+    # Apply the on/off value for each setting type in the group for the user.
+    $values->{$_->name} = $enable for (@$setting_types);
+
+    my ($resp) = $set_method->run($e->authtoken, $user_id, $values);
+
+    $logger->info("Applied settings [resp=$resp]: " .  OpenSRF::Utils::JSON->perl2JSON($values));
+
+    return undef; 
 }
 
 
