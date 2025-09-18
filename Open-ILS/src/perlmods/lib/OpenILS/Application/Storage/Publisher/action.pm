@@ -2392,7 +2392,7 @@ SELECT  h.id, h.request_time, h.capture_time, h.fulfillment_time, h.checkin_time
         JOIN permission.grp_tree pgt ON (u.profile = pgt.id)
         JOIN actor.card uc ON (uc.id = u.card)
         JOIN actor.usr ru ON (ru.id = h.requestor)
-        JOIN actor.card ruc ON (ruc.id = ru.card)
+        LEFT JOIN actor.card ruc ON (ruc.id = ru.card)
         JOIN actor.org_unit pl ON (h.pickup_lib = pl.id)
         JOIN actor.org_unit rl ON (h.request_lib = rl.id)
         JOIN actor.org_unit sl ON (h.selection_ou = sl.id)
