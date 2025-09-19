@@ -389,7 +389,7 @@ sub put_sftp {
     if ($self->_sftp->error or not $res) {
         $logger->error(
             $self->_error(
-                "SFTP put to", $self->remote_host, "failed with error: $self->_sftp->error"
+                "SFTP put to", $self->remote_host, "failed with error: " . $self->_sftp->error
             )
         );
         return;
@@ -412,7 +412,7 @@ sub get_sftp {
     if ($self->_sftp->error or not $success) {
         $logger->error(
             $self->_error(
-                "get from", $self->remote_host, "failed with error: $self->_sftp->error"
+                "get from", $self->remote_host, "failed with error: " . $self->_sftp->error
             )
         );
         return;
