@@ -596,6 +596,7 @@ CREATE TABLE action.hold_request_reset_reason_entry (
     reset_reason INT REFERENCES action.hold_request_reset_reason (id) DEFERRABLE INITIALLY DEFERRED,
     note TEXT,
     reset_time TIMESTAMP WITH TIME ZONE,
+    previous_copy BIGINT,
     requestor INT REFERENCES actor.usr (id) DEFERRABLE INITIALLY DEFERRED,
     requestor_workstation INT REFERENCES actor.workstation (id) DEFERRABLE INITIALLY DEFERRED
 );
