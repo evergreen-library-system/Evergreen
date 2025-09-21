@@ -22,7 +22,61 @@ import {BarcodeSelectComponent
 import {WorkLogService} from '@eg/staff/share/worklog/worklog.service';
 import {getI18nString} from '@eg/share/util/i18ns';
 import {StoreService} from '@eg/core/store.service';
-import {firstValueFrom, toArray} from 'rxjs';
+import {firstValueFrom, lastValueFrom, tap, toArray} from 'rxjs';
+
+export class HoldRequestStats {
+    private successes = 0;
+    private attempts = 0;
+    private failureCodes: Set<string> = new Set();
+
+    public addSuccess(): void {
+        this.successes++;
+        this.attempts++;
+    }
+    public addFailure(failureCode: string): void {
+        this.attempts++;
+        this.failureCodes.add(failureCode);
+    }
+    public reset(): void {
+        this.successes = 0;
+        this.attempts = 0;
+    }
+    public summary():
+        {overall: 'AllHoldsPlaced'} |
+        {overall: 'SomeHoldsPlaced', successes: number, attempts: number, failures: number} |
+        {overall: 'NoHoldsPlaced', failureCodes: Set<string>} |
+        {overall: 'NoHoldsAttempted'} {
+        if (this.attempts === 0) {
+            return {overall: 'NoHoldsAttempted'};
+        } else if (this.successes === this.attempts) {
+            return {overall: 'AllHoldsPlaced'};
+        } else if (this.successes === 0) {
+            return {overall: 'NoHoldsPlaced', failureCodes: this.failureCodes};
+        } else {
+            return {
+                overall: 'SomeHoldsPlaced',
+                successes: this.successCount(),
+                attempts: this.attemptCount(),
+                failures: this.failureCount()
+            };
+        }
+    }
+    private successCount(): number {
+        return this.includesSummary() ? this.successes - 1 : this.successes;
+    }
+    private attemptCount(): number {
+        return this.includesSummary() ? this.attempts - 1 : this.attempts;
+    }
+    private failureCount(): number {
+        return this.attempts-this.successes;
+    }
+
+    // Do the stats include a "Summary" message from the backend that should be removed
+    // from the counts?
+    private includesSummary() {
+        return this.attempts > 1;
+    }
+}
 
 class HoldContext {
     holdMeta: HoldRequestTarget;
@@ -31,6 +85,7 @@ class HoldContext {
     canOverride?: boolean;
     processing: boolean;
     selectedFormats: any;
+    stats = new HoldRequestStats;
     success = false;
 
     constructor(target: number) {
@@ -647,6 +702,7 @@ export class HoldComponent implements OnInit, OnDestroy {
             override = true;
         }
 
+        ctx.stats.reset();
         ctx.processing = true;
         const selectedFormats = this.mrSelectorsToFilters(ctx);
 
@@ -667,7 +723,7 @@ export class HoldComponent implements OnInit, OnDestroy {
 
         console.debug(`Placing ${hType}-type hold on ${hTarget}`);
 
-        return this.holds.placeHold({
+        return lastValueFrom(this.holds.placeHold({
             holdTarget: hTarget,
             holdType: hType,
             recipient: this.user?.id(),
@@ -684,7 +740,13 @@ export class HoldComponent implements OnInit, OnDestroy {
             frozen: this.suspend,
             holdableFormats: selectedFormats
 
-        }).toPromise().then(
+        }).pipe(tap((request) => {
+            if (request.result.success) {
+                ctx.stats.addSuccess();
+            } else {
+                ctx.stats.addFailure(request.result?.evt?.textcode);
+            }
+        }))).then(
             request => {
                 ctx.lastRequest = request;
                 ctx.processing = false;

@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { HoldComponent } from './hold.component';
+import { HoldComponent, HoldRequestStats } from './hold.component';
 import { ActivatedRoute } from '@angular/router';
-import { of } from 'rxjs';
+import { EMPTY, from, of } from 'rxjs';
 import { NetService } from '@eg/core/net.service';
 import { AuthService } from '@eg/core/auth.service';
 import { PcrudService } from '@eg/core/pcrud.service';
@@ -127,7 +127,8 @@ describe('HoldComponent', () => {
                         processing: false,
                         selectedFormats: {formats: {}, langs: {}},
                         success: false,
-                        clone: function (target: number): any {}
+                        clone: function (target: number): any {},
+                        stats: new HoldRequestStats()
                     }
                 ];
                 component.pickupLib = 789;
@@ -224,7 +225,8 @@ describe('HoldComponent', () => {
                         processing: false,
                         selectedFormats: {formats: {}, langs: {}},
                         success: false,
-                        clone: function (target: number): any {}
+                        clone: function (target: number): any {},
+                        stats: new HoldRequestStats()
                     }
                 ];
                 component.pickupLib = 789;
@@ -237,6 +239,76 @@ describe('HoldComponent', () => {
 
                 expect(component['holds'].placeHold).toHaveBeenCalledWith(expectedParams);
             });
+        });
+    });
+
+    describe('when some holds in a group succeed and others fail', () => {
+        beforeEach(() => {
+            const holdsService = jasmine.createSpyObj<HoldsService>(['getHoldTargetMeta', 'placeHold']);
+            holdsService.placeHold.and.returnValue(from([{
+                holdType: 'B',
+                holdTarget: 1,
+                recipient: 2,
+                requestor: 3,
+                pickupLib: 4,
+                result: { success: true } // The perl code includes an initial, often inaccurate "summary" message
+            }, {
+                holdType: 'B',
+                holdTarget: 1,
+                recipient: 2,
+                requestor: 3,
+                pickupLib: 4,
+                result: { success: true, holdId: 345 }
+            }, {
+                holdType: 'B',
+                holdTarget: 1,
+                recipient: 46,
+                requestor: 3,
+                pickupLib: 4,
+                result: { success: false }
+            }
+            ]));
+            holdsService.getHoldTargetMeta.and.returnValue(EMPTY);
+            testbed.overrideProvider(PcrudService, {useValue: MockGenerators.pcrudService({ search: [
+                MockGenerators.idlObject({id: 27, name: 'Hold Group 1'}),
+                MockGenerators.idlObject({id: 35, name: 'Hold Group 2'}),
+            ] })});
+            testbed.overrideProvider(HoldsService, {useValue: holdsService});
+            testbed.compileComponents();
+            fixture = TestBed.createComponent(HoldComponent);
+            component = fixture.componentInstance;
+
+            fixture.detectChanges();
+        });
+
+        it('summarizes it as SomeHoldsPlaced', () => {
+            component.holdContexts = [
+                {
+                    holdMeta: {
+                        target: 333_444
+                    },
+                    holdTarget: 333_444,
+                    lastRequest: undefined,
+                    processing: false,
+                    selectedFormats: {formats: {}, langs: {}},
+                    success: false,
+                    clone: function (target: number): any {},
+                    stats: new HoldRequestStats()
+                }
+            ];
+            component.pickupLib = 789;
+            component.user = MockGenerators.idlObject({id: 456, family_name: 'Name'});
+            component.notifyPhone = null;
+            component.holdFor = 'group';
+            component.selectedHoldGroup = {id: 777, label: 'Excellent book club'};
+
+            component.placeHolds();
+            const ctx = component.holdContexts.pop();
+            const summary = ctx.stats.summary();
+            expect(summary.overall).toEqual('SomeHoldsPlaced');
+            if (summary.overall !== 'SomeHoldsPlaced') { return; };
+            expect(summary.successes).toEqual(1); // it knows to disregard the initial summary
+            expect(summary.attempts).toEqual(2);
         });
     });
 });

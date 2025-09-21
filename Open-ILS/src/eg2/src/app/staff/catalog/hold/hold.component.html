@@ -372,10 +372,14 @@
             <div class="alert alert-primary p-1 ms-2" i18n>Hold Processing...</div>
           </ng-container>
           <ng-container *ngIf="ctx.lastRequest">
-            <ng-container *ngIf="ctx.lastRequest.result.success">
+            <ng-container *ngIf="ctx.stats.summary().overall === 'AllHoldsPlaced'">
               <div class="alert alert-success p-1 ms-2" i18n>Hold Succeeded</div>
             </ng-container>
-            <ng-container *ngIf="!ctx.lastRequest.result.success">
+            <ng-container *ngIf="ctx.stats.summary().overall === 'SomeHoldsPlaced'">
+              <div class="alert alert-success p-1 ms-2" i18n>{{ctx.stats.summary().successes}} of {{ctx.stats.summary().attempts}} holds placed</div>
+              <a href="/eg/staff/cat/bucket/batch_hold/event/{{selectedHoldGroup?.id}}" i18n *ngIf="selectedHoldGroup?.id">Details</a>
+            </ng-container>
+            <ng-container *ngIf="ctx.stats.summary().overall === 'NoHoldsPlaced'">
               <div class="alert alert-danger p-1 ms-2"
                 title="{{ctx.lastRequest.result.evt.textcode}}">
                 {{ctx.lastRequest.result.evt.textcode}}
