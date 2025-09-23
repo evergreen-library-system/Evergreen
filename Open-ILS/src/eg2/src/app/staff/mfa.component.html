@@ -80,9 +80,9 @@
               <form *ngIf="!factorsConfiguredHere().includes('totp')">
                 <div *ngIf="!totp_uri"><button type="submit" class="btn btn-primary" (click)="initFactorSetup('totp')" i18n>Enable</button></div>
                 <div *ngIf="totp_uri">
-                  <div class="qrcodeImage"><qrcode [width]="200" [qrdata]="totp_uri" [allowEmptyString]="false" [cssClass]="'center'"/></div>
+                  <div class="qrcodeImage"><a href="{{totp_uri}}"><qrcode [width]="200" [qrdata]="totp_uri" [allowEmptyString]="false" [cssClass]="'center'"/></a></div>
                   <p i18n>
-                    Scan this QR Code in your authentication app and provide the current
+                    Scan this QR Code in your authentication app, or tap the QR Code to proceed on this device, then provide the current
                     {{ factor_flags.totp.digits.value() }} digit one-time code from
                     {{ factor_flags.totp.issuer.value() }} in order to confirm this secondary authentication factor
                   </p>
