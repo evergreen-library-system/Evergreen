@@ -81,10 +81,17 @@
                 <div *ngIf="!totp_uri"><button type="submit" class="btn btn-primary" (click)="initFactorSetup('totp')" i18n>Enable</button></div>
                 <div *ngIf="totp_uri">
                   <div class="qrcodeImage"><a href="{{totp_uri}}"><qrcode [width]="200" [qrdata]="totp_uri" [allowEmptyString]="false" [cssClass]="'center'"/></a></div>
-                  <p i18n>
-                    Scan this QR Code in your authentication app, or tap the QR Code to proceed on this device, then provide the current
+                  <div *ngIf="totp_uri_parts.issuer_label" class="row"><div class="col-sm-2"><b i18n>Issuer:</b></div><div class="col-sm-10 btn-outline-dark">{{totp_uri_parts.issuer_label}}</div></div>
+                  <div *ngIf="totp_uri_parts.account" class="row"><div class="col-sm-2"><b i18n>Account:</b></div><div class="col-sm-10 btn-outline-dark">{{totp_uri_parts.account}}</div></div>
+                  <div *ngIf="totp_uri_parts.secret" class="row"><div class="col-sm-2"><b i18n>Secret:</b></div><div class="col-sm-10 btn-outline-dark">{{totp_uri_parts.secret}}</div></div>
+                  <div *ngIf="totp_uri_parts.digits != 6" class="row"><div class="col-sm-2"><b i18n>Digits:</b></div><div class="col-sm-10 btn-outline-dark">{{totp_uri_parts.digits}}</div></div>
+                  <div *ngIf="totp_uri_parts.period != 30" class="row"><div class="col-sm-2"><b i18n>Period:</b></div><div i18n class="col-sm-10 btn-outline-dark">{{totp_uri_parts.period}} seconds</div></div>
+                  <div *ngIf="totp_uri_parts.algorithm != 'SHA1'" class="row"><div class="col-sm-2"><b i18n>Algorithm:</b></div><div i18n class="col-sm-10 btn-outline-dark">{{totp_uri_parts.algorithm}}</div></div>
+                  <p class="p-2" i18n>
+                    Scan this QR Code in your authentication app, or click the QR Code to proceed on this device, then provide the current
                     {{ factor_flags.totp.digits.value() }} digit one-time code from
-                    {{ factor_flags.totp.issuer.value() }} in order to confirm this secondary authentication factor
+                    {{ factor_flags.totp.issuer.value() }} in order to confirm this secondary authentication factor.  If your
+                    authentication application does not open when clicking the QR Code above, you can copy the Secret above directly.
                   </p>
                   <div class="input-group">
                     <label for="totp_code" class="form-label input-group-text" i18n>{{ factor_flags.totp.digits.value() }} digit code:</label>

@@ -20,6 +20,7 @@ export class StaffMFAComponent implements OnInit {
     active_factor = 'CONFIG';
     method_suffix = '';
     totp_uri = '';
+    totp_uri_parts = {};
     provisional = false;
     required_for_token = true;
     allowed_for_token = true;
@@ -168,6 +169,22 @@ export class StaffMFAComponent implements OnInit {
         }
     }
 
+    parse_totp_uri_parts(): any {
+        var params = this.totp_uri.split('?')[1];
+        var path = this.totp_uri.split('?')[0];
+
+        var who = path.split('/')[3];
+
+        var stuff = {
+            type         : path.split('/')[2],
+            issuer_label : decodeURIComponent(who.split(':')[0]),
+            account      : decodeURIComponent(who.split(':')[1]),
+        };
+
+        params.split('&').forEach( p => { var x = p.split('='); stuff[x[0]] = decodeURIComponent(x[1]); } )
+        this.totp_uri_parts = stuff;
+    }
+
     initFactorSetup(factor: string, data?: any) {
         this.net.request(
             'open-ils.auth_mfa',
@@ -177,6 +194,10 @@ export class StaffMFAComponent implements OnInit {
             if (res) {
                 if (factor === 'totp') {
                     this.totp_uri = res.uri;
+                    /* Angular's DefaultUrlSerializer is crap and returns an empty UrlTree for otpauth URIs */
+                    // const parser = new DefaultUrlSerializer();
+                    // this.parsed_totp_uri = parser.parse(this.totp_uri);
+                    this.parse_totp_uri_parts();
                 } else if (factor === 'email') {
                     this.email_otp_addr = res.email;
                     this.email_otp_sent = !!res.sent;
@@ -250,6 +271,7 @@ export class StaffMFAComponent implements OnInit {
             if (res) {
                 if (factor === 'totp') {
                     this.totp_uri = '';
+                    this.totp_uri_parts = {};
                 } else if (factor === 'email') {
                     this.email_otp_addr = '';
                     this.email_otp_sent = false;
@@ -273,6 +295,7 @@ export class StaffMFAComponent implements OnInit {
             if (res) {
                 if (factor === 'totp') {
                     this.totp_uri = '';
+                    this.totp_uri_parts = {};
                 } else if (factor === 'email') {
                     this.email_otp_sent = false;
                 } else if (factor === 'sms') {
@@ -361,6 +384,7 @@ export class StaffMFAComponent implements OnInit {
                 console.debug(`factor ${factor} initialized for removal`);
                 if (factor === 'totp') {
                     this.totp_uri = '';
+                    this.totp_uri_parts = {};
                 } else if (factor === 'email') {
                     this.email_otp_sent = true;
                 } else if (factor === 'sms') {
