@@ -163,12 +163,12 @@
                 (onChange)="setSingleValue($event)"/>
             </div>
             <div class="reporter-field-value-input-inner reporter-field-value-org-unit" *ngSwitchCase="'org_unit'">
-              <eg-tree
+              <eg-tree #me_tree
                 id="FV-{{pathId}}"
                 [disabled]="disabled || editorMode === 'report' && field.with_value_input"
                 [showLabelFilter]="true"
                 [tree]="orgTree"
-                (nodeClicked)="combineLabelAndStateClick($event)"
+                (nodeClicked)="combineLabelAndStateClick($event, me_tree)"
                 (stateFlagClicked)="saveFlaggedOrgs()">
               </eg-tree>
               <p class='form-text' i18n>Hold the Shift key to select a range.</p>
