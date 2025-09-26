@@ -106,8 +106,6 @@ export class TreeComponent {
         if (!this.disabled) {
             if (!this.disableStateFlagRangeSelect     // If shift-click range selection is allowed ...
                 && $event?.shiftKey                   // ... and shift is currently pressed ...
-                && this._prev_stateFlagClick          // ... and range selection has been started ...
-                && this._prev_stateFlagClick !== node // ... and this isn't the same node as the selection start ...
             ) { // ... then we treat this as a checkbox range selection shift-click.
                 this.handleStateFlagClick(node, $event);
             } else {
@@ -121,14 +119,22 @@ export class TreeComponent {
 
     handleStateFlagClick(node: TreeNode, $event) {
         if (!this.disabled) {
+            const originalStateFlag = node.stateFlag;
             node.toggleStateFlag();
             if (!this.disableStateFlagRangeSelect) { // shift-click child selection is allowed
                 if ($event?.shiftKey) { // shift-click child selection happened
-                    this.tree.visibleDescendants(node).forEach(n => n.stateFlag = node.stateFlag); // make descendants match clicked state flag
                     if (this._prev_stateFlagClick && this._prev_stateFlagClick !== node) { // shift-click range selection, different previous node
-                        const new_state = this._prev_stateFlagClick.stateFlag;
+                        // If nodes were different, set nodes to 'what the last node was'.
+                        // If nodes were the same, set nodes to opposite of 'what the last node was'.
+                        // No, I can't explain why this feels right, but it does. I imagine there's a complicated UX diagram one could make about it.
+                        let new_state = this._prev_stateFlagClick.stateFlag;
+                        if (originalStateFlag == this._prev_stateFlagClick.stateFlag) { 
+                            new_state = !new_state;
+                        }
                         node.stateFlag = new_state;
 
+                        // Find all nodes between(inclusive) the last click and the new click
+                        // This doesn't go by tree depth but by the same ordering lining them up vertically
                         const NL = this.tree.visibleDescendants(this.rootNode());
                         let range_start = NL.indexOf(this._prev_stateFlagClick);
                         let range_end = NL.indexOf(node);
@@ -141,6 +147,8 @@ export class TreeComponent {
                             }
                             NL.slice(range_start,range_end).forEach(n => n.stateFlag = new_state);
                         }
+                    } else { // Shift-click, same or no previous node: shift-click child selection
+                        this.tree.visibleDescendants(node).forEach(n => n.stateFlag = node.stateFlag); // make descendants match clicked state flag
                     }
                 }
                 this._prev_stateFlagClick = node; // remember last state flag click
