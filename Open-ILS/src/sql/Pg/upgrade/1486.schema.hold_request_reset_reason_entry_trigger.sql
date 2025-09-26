@@ -1,6 +1,6 @@
 BEGIN;
 
---SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1486', :eg_version);
 
 ALTER TABLE action.hold_request_reset_reason_entry DROP CONSTRAINT hold_request_reset_reason_entry_previous_copy_fkey;
 
