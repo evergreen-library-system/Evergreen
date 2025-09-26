@@ -122,7 +122,7 @@ sub test_and_create_hold_batch {
                         my $opac_default_phone = $e->search_actor_user_setting(
                             {usr => $$params{patronid}, name => 'opac.default_phone'})->[0];
                         # FIXME - what's up with the ->value putting quotes around the string?
-                        if ($opac_default_phone && $opac_default_phone->value =~ /^"(.*)"$/) {
+                        if ($opac_default_phone && $opac_default_phone->value =~ /^"(.+?)"$/) {
                             $$params{phone_notify} = $1;
                         }
                     }
@@ -132,7 +132,7 @@ sub test_and_create_hold_batch {
                         $$params{sms_carrier} = $opac_default_sms_carrier->value if $opac_default_sms_carrier;
                         my $opac_default_sms_notify = $e->search_actor_user_setting(
                             {usr => $$params{patronid}, name => 'opac.default_sms_notify'})->[0];
-                        if ($opac_default_sms_notify && $opac_default_sms_notify->value =~ /^"(.*)"$/) {
+                        if ($opac_default_sms_notify && $opac_default_sms_notify->value =~ /^"(.+?)"$/) {
                             $$params{sms_notify} = $1;
                         }
                     }
