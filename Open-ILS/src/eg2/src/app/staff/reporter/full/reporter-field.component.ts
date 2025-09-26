@@ -217,9 +217,8 @@ export class ReporterFieldComponent implements OnInit {
         ).toPromise();
     }
 
-    combineLabelAndStateClick (node: TreeNode) {
-        node.toggleStateFlag();
-        this.saveFlaggedOrgs();
+    combineLabelAndStateClick (node: TreeNode, treeComponent) {
+        treeComponent.handleStateFlagClick(node, null);
     }
 
     saveFlaggedOrgs() {
