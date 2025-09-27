@@ -81,6 +81,14 @@ indexterm:[Linux, Ubuntu]
 make -f Open-ILS/src/extras/Makefile.install [distribution]
 ------------------------------------------------------------
 +
+[NOTE]
+To save time while installing prerequisites, set the environment variable `NO_CPAN_TEST` to `1`:
++
+[source, bash]
+------------------------------------------------------------
+NO_CPAN_TEST=1 make -f Open-ILS/src/extras/Makefile.install [distribution]
+------------------------------------------------------------
++
 . As the *opensrf* user, configure and compile Evergreen:
 +
 [source, bash]

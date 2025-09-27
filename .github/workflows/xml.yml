@@ -32,7 +32,7 @@ jobs:
         with:
           path: Evergreen
       - name: "Evergreen: install dependencies"
-        run: sudo make -f Open-ILS/src/extras/Makefile.install ubuntu-jammy && sudo make -f Open-ILS/src/extras/Makefile.install ubuntu-jammy-developer
+        run: sudo NO_CPAN_TEST=1 make -f Open-ILS/src/extras/Makefile.install ubuntu-jammy && sudo make -f Open-ILS/src/extras/Makefile.install ubuntu-jammy-developer
         working-directory: ./Evergreen
       - name: "Evergreen: install dependencies required by the Makefile in Open-ILS/examples"
         run: sudo apt -y install libxml2-utils bc

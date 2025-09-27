@@ -79,6 +79,14 @@ before you can successfully configure, compile, and install Evergreen.
 make -f Open-ILS/src/extras/Makefile.install <osname>
 ------------------------------------------------------------------------------
 +
+[NOTE]
+To save time while installing prerequisites, set the environment variable `NO_CPAN_TEST` to `1`:
++
+[source, bash]
+------------------------------------------------------------
+NO_CPAN_TEST=1 make -f Open-ILS/src/extras/Makefile.install <osname>
+------------------------------------------------------------
++
 [[optional_developer_additions]]
 3. OPTIONAL: Developer additions
 +

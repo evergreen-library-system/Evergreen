@@ -40,7 +40,7 @@ jobs:
 
       # Next, let's install dependencies
       - name: Install postgres and dependencies
-        run: sudo make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-jammy-${{ matrix.pg-version }}
+        run: sudo NO_CPAN_TEST=1 make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-jammy-${{ matrix.pg-version }}
       - name: Install libdbi-perl
         run: sudo apt update && sudo apt install -y libdbi-perl
       - name: Install pg_prove

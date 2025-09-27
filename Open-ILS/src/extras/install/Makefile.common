@@ -1,16 +1,22 @@
 # Functions used by all installers
 
+ifeq ($(NO_CPAN_TEST), 1)
+CPAN_INSTALL_COMMAND = notest install
+else
+CPAN_INSTALL_COMMAND = install
+endif
+
 # Install the CPAN modules
 install_cpan:
-	for m in $(CPAN_MODULES); do perl -MCPAN -e "install \"$$m\";"; done
+	for m in $(CPAN_MODULES); do echo "$(CPAN_INSTALL_COMMAND) $$m" | perl -MCPAN -e shell ; done
 
 install_cpan_force:
 	for m in $(CPAN_MODULES_FORCE); do \
-		echo "force install $$m" | perl -MCPAN -e shell ;\
+		echo "force $(CPAN_INSTALL_COMMAND) $$m" | perl -MCPAN -e shell ;\
 	done
 
 install_cpan_pgsql:
-	for m in $(CPAN_MODULES_PGSQL); do perl -MCPAN -e "install \"$$m\";"; done
+	for m in $(CPAN_MODULES_PGSQL); do echo "$(CPAN_INSTALL_COMMAND) $$m" | perl -MCPAN -e shell ; done
 
 install_net_z3950_simpleserver:
 	if [ ! -f $(LIBNET_Z3950_SIMPLESERVER).tar.gz ]; \
