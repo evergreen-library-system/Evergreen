@@ -3401,6 +3401,7 @@ sub load_myopac_bookbag_update {
         my $url = $self->ctx->{opac_root} . '/place_hold?hold_type=T';
         $url .= ';hold_target=' . $_ for @hold_recs;
         $url .= ';from_basket=1' if $from_basket;
+        $url .= ';clear_cart=1' if $cgi->param('clear_cart');
         foreach my $param (('loc', 'qtype', 'query')) {
             if ($cgi->param($param)) {
                 my @vals = $cgi->param($param);
