@@ -31,7 +31,7 @@
             </div>
         </div>
            <div class="form-check m-2">
-                <input class="form-check-input" type="checkbox" value="" id="clear_cart">
+                <input class="form-check-input" type="checkbox" id="clear_cart" name="clear_cart">
                 <label class="form-check-label" for="clear_cart">
                    [% l('Clear entire basket when the above action is complete.') %]
                 </label>
@@ -54,7 +54,7 @@
                         <th scope="col" role="columnheader"  class='list_checkbox'>
                             <input type="checkbox" checked="checked"
                                 aria-label="[% l('Select all records') %]" 
-                                onclick="checkAll()" onkeydown="maybeCheckAll($e)" />
+                                id="selectAllListContent" />
                         </th>
                         <th scope="col" role="columnheader"><a href="[% mkurl('', {anonsort=>(CGI.param('anonsort') == 'titlesort' ? 'titlesort.descending' : 'titlesort')}) %]">[% l('Title') %]</a></th>
                         <th scope="col" role="columnheader"><a href="[% mkurl('', {anonsort=>(CGI.param('anonsort') == 'authorsort' ? 'authorsort.descending' : 'authorsort')}) %]">[% l('Author(s)') %]</a></th>
@@ -103,18 +103,26 @@
         </div>
 
         <script>
-            function checkAll() {
+            function checkAll(self) {
+                self = self || this;
                 var inputs=document.getElementsByTagName('input');
                         for (i = 0; i < inputs.length; i++) {
-                            if (inputs[i].name == 'record' && !inputs[i].disabled) 
-                                inputs[i].checked = this.checked;
+                            if (inputs[i].name == 'record' && !inputs[i].disabled)
+                                inputs[i].checked = self.checked;
                         }
             }
 
-            function maybeCheckAll($e) {
+            function maybeCheckAll($e,self) {
                 if ($e.key && $e.key == 'Enter') {
-                    checkAll();
+                    self.checked = !!self.checked;
+                    $e.preventDefault();
+                    $e.stopPropagation();
+                    self.click();
                 }
             }
+
+            var el = document.getElementById('selectAllListContent');
+            el.addEventListener('click', function(){checkAll(el)});
+            el.addEventListener('keydown', function(e){maybeCheckAll(e,el)});
         </script>
         [% END %]
