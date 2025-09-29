@@ -392,7 +392,7 @@ document.addEventListener("DOMContentLoaded", () => {
          [% IF CGI.param('from_basket') %]
 
            <div class="form-check m-2">
-                    <input class="form-check-input" type="checkbox" value="" id="clear_cart" />
+                    <input class="form-check-input" type="checkbox" id="clear_cart" name="clear_cart" [% IF CGI.param('clear_cart') %]checked="checked"[% END %]/>
                     <label class="form-check-label" for="clear_cart">
                         [% l('Clear basket after holds are requested?') %]
                     </label>
