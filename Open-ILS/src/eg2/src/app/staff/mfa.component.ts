@@ -170,19 +170,24 @@ export class StaffMFAComponent implements OnInit {
     }
 
     parse_totp_uri_parts(): any {
-        var params = this.totp_uri.split('?')[1];
-        var path = this.totp_uri.split('?')[0];
+        const path = this.totp_uri.split('?')[0];
 
-        var who = path.split('/')[3];
+        // eslint-disable-next-line no-magic-numbers
+        const who = path.split('/')[3]; // 3 isn't a magic number here, any more than 0 above, or 1 below. whatevs.
 
-        var stuff = {
+        this.totp_uri_parts = {
             type         : path.split('/')[2],
             issuer_label : decodeURIComponent(who.split(':')[0]),
             account      : decodeURIComponent(who.split(':')[1]),
         };
 
-        params.split('&').forEach( p => { var x = p.split('='); stuff[x[0]] = decodeURIComponent(x[1]); } )
-        this.totp_uri_parts = stuff;
+        this.totp_uri // split up the cgi params
+            .split('?')[1]
+            .split('&')
+            .forEach( p => {
+                const x = p.split('=');
+                this.totp_uri_parts[x[0]] = decodeURIComponent(x[1]);
+            });
     }
 
     initFactorSetup(factor: string, data?: any) {
