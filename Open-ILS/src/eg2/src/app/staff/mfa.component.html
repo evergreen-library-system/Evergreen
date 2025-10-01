@@ -84,9 +84,11 @@
                   <div *ngIf="totp_uri_parts.issuer_label" class="row"><div class="col-sm-2"><b i18n>Issuer:</b></div><div class="col-sm-10 btn-outline-dark">{{totp_uri_parts.issuer_label}}</div></div>
                   <div *ngIf="totp_uri_parts.account" class="row"><div class="col-sm-2"><b i18n>Account:</b></div><div class="col-sm-10 btn-outline-dark">{{totp_uri_parts.account}}</div></div>
                   <div *ngIf="totp_uri_parts.secret" class="row"><div class="col-sm-2"><b i18n>Secret:</b></div><div class="col-sm-10 btn-outline-dark">{{totp_uri_parts.secret}}</div></div>
+                  <!-- eslint-disable @angular-eslint/template/eqeqeq, no-magic-numbers -->
                   <div *ngIf="totp_uri_parts.digits != 6" class="row"><div class="col-sm-2"><b i18n>Digits:</b></div><div class="col-sm-10 btn-outline-dark">{{totp_uri_parts.digits}}</div></div>
                   <div *ngIf="totp_uri_parts.period != 30" class="row"><div class="col-sm-2"><b i18n>Period:</b></div><div i18n class="col-sm-10 btn-outline-dark">{{totp_uri_parts.period}} seconds</div></div>
                   <div *ngIf="totp_uri_parts.algorithm != 'SHA1'" class="row"><div class="col-sm-2"><b i18n>Algorithm:</b></div><div i18n class="col-sm-10 btn-outline-dark">{{totp_uri_parts.algorithm}}</div></div>
+                  <!-- eslint-enable @angular-eslint/template/eqeqeq, no-magic-numbers -->
                   <p class="p-2" i18n>
                     Scan this QR Code in your authentication app, or click the QR Code to proceed on this device, then provide the current
                     {{ factor_flags.totp.digits.value() }} digit one-time code from
