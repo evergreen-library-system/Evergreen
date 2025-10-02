@@ -5,5 +5,5 @@ INSERT INTO config.upgrade_log (version, applied_to) VALUES ('3.15.1', :eg_versi
 COMMIT;
 
 -- Update auditor tables to catch changes to source tables.
---   Can be removed/skipped if there were no schema changes.
+-- Can be removed/skipped if there were no schema changes.
 SELECT auditor.update_auditors();
