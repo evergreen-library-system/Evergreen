@@ -29,7 +29,7 @@ CREATE TABLE actor.usr (
 	profile			INT				NOT NULL, -- patron profile
 	usrname			TEXT				NOT NULL UNIQUE,
 	email			TEXT,
-	passwd			TEXT				NOT NULL,
+	passwd			TEXT,
 	standing		INT				NOT NULL DEFAULT 1 REFERENCES config.standing (id) DEFERRABLE INITIALLY DEFERRED,
 	ident_type		INT				NOT NULL REFERENCES config.identification_type (id) DEFERRABLE INITIALLY DEFERRED,
 	ident_value		TEXT,
