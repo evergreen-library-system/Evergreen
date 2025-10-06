@@ -108,6 +108,13 @@ int osrfAppInitialize( void ) {
 	}
 	dbi_conn_close( handle );
 
+	// See if we should use retail or wholesale vis testing
+	char* dv = osrf_settings_host_value(
+		"/apps/%s/app_settings/disable_query_visibility_tests", modulename );
+	int disable_new_vis_tests = 0;
+	if (dv && !strcmp("true", dv))
+		disable_new_vis_tests = 1;
+
 	// Get the maximum flesh depth from the settings
 	char* md = osrf_settings_host_value(
 		"/apps/%s/app_settings/max_query_recursion", modulename );
@@ -119,7 +126,7 @@ int osrfAppInitialize( void ) {
 	else if( max_flesh_depth > 1000 )
 		max_flesh_depth = 1000;
 
-	oilsSetSQLOptions( modulename, enforce_pcrud, max_flesh_depth );
+	oilsSetSQLOptions( modulename, enforce_pcrud, max_flesh_depth, disable_new_vis_tests );
 
 	// Now register all the methods
 	growing_buffer* method_name = osrf_buffer_init(64);
@@ -173,7 +180,8 @@ int osrfAppInitialize( void ) {
 		"update",
 		"delete",
 		"search",
-		"id_list"
+		"id_list",
+		"Count"
 	};
 	const int global_method_count
 		= sizeof( global_method ) / sizeof ( global_method[0] );
@@ -232,7 +240,7 @@ int osrfAppInitialize( void ) {
 
 			// Treat "id_list" or "search" as forms of "retrieve"
 			const char* tmp_method = method_type;
-			if ( *tmp_method == 'i' || *tmp_method == 's') {  // "id_list" or "search"
+			if ( *tmp_method == 'i' || *tmp_method == 's' || *tmp_method == 'C' ) {  // "id_list" or "search" or "Count"
 				tmp_method = "retrieve";
 			}
 			// Skip this method if there is no permacrud entry for it
@@ -247,7 +255,10 @@ int osrfAppInitialize( void ) {
 			osrf_buffer_reset( method_name );
 
 			// Build the method name: MODULENAME.method_type.classname
-			osrf_buffer_fadd(method_name, "%s.%s.%s", modulename, method_type, classname);
+			if (*method_type == 'C') // special case for count
+				osrf_buffer_fadd(method_name, "%s.count.%s", modulename, classname);
+			else
+				osrf_buffer_fadd(method_name, "%s.%s.%s", modulename, method_type, classname);
 
 			// For an id_list or search method we specify the OSRF_METHOD_STREAMING option.
 			// The consequence is that we implicitly create an atomic method in addition to
@@ -330,6 +341,8 @@ int dispatchCRUDMethod( osrfMethodContext* ctx ) {
 		return doSearch( ctx );
 	else if( !strcmp(methodtype, "id_list" ))
 		return doIdList( ctx );
+	else if( !strcmp(methodtype, "Count" ))
+		return doCount( ctx );
 	else {
 		osrfAppRespondComplete( ctx, NULL );      // should be unreachable...
 		return 0;

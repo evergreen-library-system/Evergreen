@@ -118,7 +118,7 @@ int osrfAppInitialize( void ) {
 	else if( max_flesh_depth > 1000 )
 		max_flesh_depth = 1000;
 
-	oilsSetSQLOptions( modulename, enforce_pcrud, max_flesh_depth );
+	oilsSetSQLOptions( modulename, enforce_pcrud, max_flesh_depth, 0 );
 
 	// Now register all the methods
 	growing_buffer* method_name = osrf_buffer_init(64);
@@ -178,7 +178,8 @@ int osrfAppInitialize( void ) {
 		"update",
 		"delete",
 		"search",
-		"id_list"
+		"id_list",
+		"Count"
 	};
 	const int global_method_count
 		= sizeof( global_method ) / sizeof ( global_method[0] );
@@ -247,7 +248,10 @@ int osrfAppInitialize( void ) {
 				OSRF_BUFFER_ADD(method_name, part);
 			}
 			OSRF_BUFFER_ADD_CHAR(method_name, '.');
-			OSRF_BUFFER_ADD(method_name, method_type);
+			if (*method_type == 'C') // Special case for count
+				OSRF_BUFFER_ADD(method_name, "count");
+			else
+				OSRF_BUFFER_ADD(method_name, method_type);
 			free(_fm);
 
 			// For an id_list or search method we specify the OSRF_METHOD_STREAMING option.
@@ -331,6 +335,8 @@ int dispatchCRUDMethod( osrfMethodContext* ctx ) {
 		return doSearch( ctx );
 	else if( !strcmp(methodtype, "id_list" ))
 		return doIdList( ctx );
+	else if( !strcmp(methodtype, "Count" ))
+		return doCount( ctx );
 	else {
 		osrfAppRespondComplete( ctx, NULL );      // should be unreachable...
 		return 0;

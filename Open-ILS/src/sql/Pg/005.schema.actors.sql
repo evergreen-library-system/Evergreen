@@ -160,7 +160,7 @@ CREATE TRIGGER actor_crypt_pw_insert_trigger
 	BEFORE INSERT ON actor.usr FOR EACH ROW
 	EXECUTE PROCEDURE actor.crypt_pw_insert ();
 
-CREATE RULE protect_user_delete AS ON DELETE TO actor.usr DO INSTEAD UPDATE actor.usr SET deleted = TRUE WHERE OLD.id = actor.usr.id;
+CREATE RULE protect_user_delete AS ON DELETE TO actor.usr DO INSTEAD UPDATE actor.usr SET deleted = TRUE WHERE OLD.id = actor.usr.id RETURNING *;
 
 CREATE OR REPLACE FUNCTION actor.user_ingest_name_keywords() 
     RETURNS TRIGGER AS $func$
@@ -934,12 +934,7 @@ ALTER TABLE actor.usr_standing_penalty ALTER COLUMN id SET DEFAULT nextval('acto
 ALTER TABLE actor.usr_standing_penalty ADD COLUMN usr_message BIGINT REFERENCES actor.usr_message(id);
 CREATE INDEX usr_standing_penalty_usr_message_idx ON actor.usr_standing_penalty (usr_message);
 
-CREATE RULE protect_usr_message_delete AS
-	ON DELETE TO actor.usr_message DO INSTEAD (
-		UPDATE	actor.usr_message
-		  SET	deleted = TRUE
-		  WHERE	OLD.id = actor.usr_message.id
-	);
+CREATE RULE protect_usr_message_delete AS ON DELETE TO actor.usr_message DO INSTEAD UPDATE actor.usr_message SET deleted = TRUE WHERE OLD.id = actor.usr_message.id RETURNING *;
 
 -- limited view to ensure that a library user who somehow
 -- manages to figure out how to access pcrud cannot change

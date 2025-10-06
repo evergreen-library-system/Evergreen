@@ -117,7 +117,7 @@ int osrfAppInitialize( void ) {
 	else if( max_flesh_depth > 1000 )
 		max_flesh_depth = 1000;
 
-	oilsSetSQLOptions( modulename, enforce_pcrud, max_flesh_depth );
+	oilsSetSQLOptions( modulename, enforce_pcrud, max_flesh_depth, 0 );
 
 	// Now register all the methods
 	growing_buffer* method_name = osrf_buffer_init(64);
