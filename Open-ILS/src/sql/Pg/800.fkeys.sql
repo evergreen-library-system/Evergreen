@@ -19,15 +19,8 @@
 
 BEGIN;
 
-CREATE RULE protect_bib_rec_delete AS
-    ON DELETE TO biblio.record_entry DO INSTEAD (
-        UPDATE biblio.record_entry
-            SET deleted = TRUE
-            WHERE OLD.id = biblio.record_entry.id
-    );
-
-CREATE RULE protect_bre_id_neg1 AS ON UPDATE TO biblio.record_entry WHERE OLD.id = -1 DO INSTEAD NOTHING;
-
+CREATE RULE protect_bib_rec_delete AS ON DELETE TO biblio.record_entry DO INSTEAD UPDATE biblio.record_entry SET deleted = TRUE WHERE OLD.id = biblio.record_entry.id RETURNING *;
+CREATE TRIGGER protect_bre_id_neg1 BEFORE UPDATE ON biblio.record_entry FOR EACH ROW WHEN (OLD.id = -1) EXECUTE PROCEDURE evergreen.raise_protected_row_exception();
 
 -- Kill any transaction that tries to mark a copy location as 
 -- deleted if the location contains any non-deleted copies.
@@ -48,11 +41,10 @@ BEGIN
 END;
 $FUNK$ LANGUAGE plpgsql;
 
-
 CREATE RULE protect_copy_location_delete AS
     ON DELETE TO asset.copy_location DO INSTEAD (
         SELECT asset.check_delete_copy_location(OLD.id); -- exception on error
-        UPDATE asset.copy_location SET deleted = TRUE WHERE OLD.id = asset.copy_location.id;
+        UPDATE asset.copy_location SET deleted = TRUE WHERE OLD.id = asset.copy_location.id RETURNING *;
         UPDATE acq.lineitem_detail SET location = NULL WHERE location = OLD.id;
         DELETE FROM asset.copy_location_order WHERE location = OLD.id;
         DELETE FROM asset.copy_location_group_map WHERE location = OLD.id;
@@ -79,7 +71,7 @@ CREATE RULE protect_mono_part_delete AS
     ON DELETE TO biblio.monograph_part DO INSTEAD (
         UPDATE biblio.monograph_part
             SET deleted = TRUE
-            WHERE OLD.id = biblio.monograph_part.id;
+            WHERE OLD.id = biblio.monograph_part.id RETURNING *;
         DELETE FROM asset.copy_part_map
         WHERE part = OLD.id
     );

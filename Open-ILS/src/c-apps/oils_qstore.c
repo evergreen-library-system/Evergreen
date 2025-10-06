@@ -79,7 +79,7 @@ int osrfAppInitialize() {
 
 	// Set the SQL options.  Here the second and third parameters are irrelevant, but we need
 	// to set the module name for use in error messages.
-	oilsSetSQLOptions( modulename, 0, 100 );
+	oilsSetSQLOptions( modulename, 0, 100, 0 );
 
 	growing_buffer* method_name = osrf_buffer_init( 64 );
 

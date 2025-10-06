@@ -27,7 +27,7 @@ CREATE INDEX serial_record_entry_owning_lib_idx ON serial.record_entry ( owning_
 CREATE TRIGGER b_maintain_901 BEFORE INSERT OR UPDATE ON serial.record_entry FOR EACH ROW EXECUTE PROCEDURE evergreen.maintain_901();
 CREATE TRIGGER c_maintain_control_numbers BEFORE INSERT OR UPDATE ON serial.record_entry FOR EACH ROW EXECUTE PROCEDURE evergreen.maintain_control_numbers();
 
-CREATE RULE protect_mfhd_delete AS ON DELETE TO serial.record_entry DO INSTEAD UPDATE serial.record_entry SET deleted = true WHERE old.id = serial.record_entry.id;
+CREATE RULE protect_mfhd_delete AS ON DELETE TO serial.record_entry DO INSTEAD UPDATE serial.record_entry SET deleted = true WHERE old.id = serial.record_entry.id RETURNING *;
 
 CREATE TABLE serial.subscription (
 	id                     SERIAL       PRIMARY KEY,
@@ -227,7 +227,7 @@ CREATE INDEX unit_editor_idx   ON serial.unit ( editor );
 CREATE INDEX unit_extant_by_circ_lib_idx ON serial.unit(circ_lib) WHERE deleted = FALSE OR deleted IS FALSE;
 
 -- must create this rule explicitly; it is not inherited from asset.copy
-CREATE RULE protect_serial_unit_delete AS ON DELETE TO serial.unit DO INSTEAD UPDATE serial.unit SET deleted = TRUE WHERE OLD.id = serial.unit.id;
+CREATE RULE protect_serial_unit_delete AS ON DELETE TO serial.unit DO INSTEAD UPDATE serial.unit SET deleted = TRUE WHERE OLD.id = serial.unit.id RETURNING *;
 
 -- must create this trigger explicitly; it is not inherited from asset.copy
 CREATE TRIGGER autogenerate_placeholder_barcode

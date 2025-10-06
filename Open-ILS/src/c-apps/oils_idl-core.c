@@ -375,15 +375,30 @@ osrfHash* oilsIDLInit( const char* idl_filename ) {
 									continue;
 								}
 
+								int is_delegate = 0;
+								int is_link = 0;
 								if( (prop_str = (char*)xmlGetNoNsProp(_f, BAD_CAST "link")) ) {
-									osrfLogDebug(OSRF_LOG_MARK,
-										"Permacrud context link definition is %s", prop_str );
+									is_link = 1;
+								} else if( (prop_str = (char*)xmlGetNoNsProp(_f, BAD_CAST "delegate")) ) {
+									is_delegate = 1;
+								}
 
-									osrfHash* _tmp_fcontext = osrfNewHash();
+								if (is_link || is_delegate) {
+									osrfLogDebug(OSRF_LOG_MARK,
+										"Permacrud context %s definition is %s", is_link ? "link" : "delegate", prop_str );
 
 									// Store pointers to elements already stored
 									// from the <link> aggregate
 									osrfHash* _flink = osrfHashGet( current_links_hash, prop_str );
+									xmlFree( prop_str );
+
+									osrfHash* _tmp_fcontext = osrfNewHash();
+									osrfHashSet(_tmp_fcontext, strdup(is_link ? "link" : "delegate"), "context_type");
+
+									char* context_class = osrfHashGet( _flink, "class" );
+									growing_buffer* context_key_buf = osrf_buffer_init(32);
+									osrf_buffer_add(context_key_buf, context_class);
+
 									if ( // virtual field, link on pkey
 										!strcmp(
 											(char*)osrfHashGet(
@@ -401,10 +416,25 @@ osrfHash* oilsIDLInit( const char* idl_filename ) {
 										osrfHashSet( _tmp_fcontext, osrfHashGet(_flink, "field"), "fkey" );
 									}
 									osrfHashSet( _tmp_fcontext, osrfHashGet(_flink, "key"), "field" );
-									xmlFree( prop_str );
 
-								    if( (prop_str = (char*)xmlGetNoNsProp(_f, BAD_CAST "jump")) )
-									    osrfHashSet( _tmp_fcontext, osrfStringArrayTokenize( prop_str, '.' ), "jump" );
+									if( (prop_str = (char*)xmlGetNoNsProp(_f, BAD_CAST "owning_user")) ) {
+										osrfHashSet( _tmp_fcontext, strdup(prop_str), "owning_user");
+										xmlFree( prop_str );
+									}
+
+									if( (prop_str = (char*)xmlGetNoNsProp(_f, BAD_CAST "jump")) )
+										osrfHashSet( _tmp_fcontext, osrfStringArrayTokenize( prop_str, '.' ), "jump" );
+
+									if (osrfHashGet(foreign_context, context_class)) {
+										// we need to make it unique, use the ultimate field name and jump list
+										if (prop_str) {
+											osrf_buffer_add_char(context_key_buf, '.');
+											osrf_buffer_add(context_key_buf, prop_str);
+										}
+										osrf_buffer_add_char(context_key_buf, '.');
+										osrf_buffer_add(context_key_buf, osrfHashGet(_tmp_fcontext, "field"));
+									}
+
 									xmlFree( prop_str );
 
 									// Tokenize field attribute into an osrfStringArray
@@ -417,7 +447,9 @@ osrfHash* oilsIDLInit( const char* idl_filename ) {
 									xmlFree( field_list );
 
 									// Insert the new hash into a hash attached to the parent node
-									osrfHashSet( foreign_context, _tmp_fcontext, osrfHashGet( _flink, "class" ) );
+									char* context_key = osrf_buffer_release(context_key_buf);
+									osrfHashSet( foreign_context, _tmp_fcontext, context_key );
+									free(context_key);
 
 								} else {
 

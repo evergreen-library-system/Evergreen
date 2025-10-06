@@ -9050,7 +9050,22 @@ SELECT  usr,
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
-				<retrieve permission="STAFF_LOGIN" global_required="true"/>
+				<retrieve permission="CREATE_BIB_BUCKET ADMIN_BIB_BUCKET VIEW_CONTAINER">
+					<context delegate="bucket" field="owning_lib" owning_user="owner"/>
+					<context delegate="bucket" jump="share_maps" field="share_org"/>
+				</retrieve>
+				<create permission="CREATE_BIB_BUCKET ADMIN_BIB_BUCKET UPDATE_CONTAINER">
+					<context delegate="bucket" field="owning_lib" owning_user="owner"/>
+					<context delegate="bucket" jump="share_maps" field="share_org"/>
+				</create>
+				<update permission="CREATE_BIB_BUCKET ADMIN_BIB_BUCKET UPDATE_CONTAINER">
+					<context delegate="bucket" field="owning_lib" owning_user="owner"/>
+					<context delegate="bucket" jump="share_maps" field="share_org"/>
+				</update>
+				<delete permission="CREATE_BIB_BUCKET ADMIN_BIB_BUCKET UPDATE_CONTAINER">
+					<context delegate="bucket" field="owning_lib" owning_user="owner"/>
+					<context delegate="bucket" jump="share_maps" field="share_org"/>
+				</delete>
 			</actions>
 		</permacrud>
 	</class>
@@ -11101,7 +11116,7 @@ SELECT  usr,
 			<link field="account" reltype="has_a" key="id" map="" class="acqedi"/>
 			<link field="purchase_order" reltype="has_a" key="id" map="" class="acqpo"/>
 		</links>
-		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1" ignore_object_perms="true">
 			<actions>
 				<retrieve permission="ADMIN_PROVIDER MANAGE_PROVIDER VIEW_PROVIDER">
 					<context link="account" jump="provider" field="owner"/>

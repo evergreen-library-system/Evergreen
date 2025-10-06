@@ -271,7 +271,7 @@ BEGIN
 
 	RETURN FALSE;
 END;
-$$ LANGUAGE PLPGSQL;
+$$ LANGUAGE PLPGSQL STABLE;
 
 CREATE OR REPLACE FUNCTION permission.usr_has_work_perm ( iuser INT, tperm TEXT, target_ou INT ) RETURNS BOOL AS $$
 DECLARE
@@ -317,15 +317,17 @@ BEGIN
 
 	RETURN FALSE;
 END;
-$$ LANGUAGE PLPGSQL;
+$$ LANGUAGE PLPGSQL STABLE;
 
 CREATE OR REPLACE FUNCTION permission.usr_has_object_perm ( iuser INT, tperm TEXT, obj_type TEXT, obj_id TEXT, target_ou INT ) RETURNS BOOL AS $$
 DECLARE
 	r_usr	actor.usr%ROWTYPE;
+	r_perm	permission.perm_list%ROWTYPE;
 	res     BOOL;
 BEGIN
 
 	SELECT * INTO r_usr FROM actor.usr WHERE id = iuser;
+	SELECT * INTO r_perm FROM permission.perm_list WHERE code = tperm;
 
 	IF r_usr.active = FALSE THEN
 		RETURN FALSE;
@@ -335,7 +337,7 @@ BEGIN
 		RETURN TRUE;
 	END IF;
 
-	SELECT TRUE INTO res FROM permission.usr_object_perm_map WHERE usr = r_usr.id AND object_type = obj_type AND object_id = obj_id;
+	SELECT TRUE INTO res FROM permission.usr_object_perm_map WHERE perm = r_perm.id AND usr = r_usr.id AND object_type = obj_type AND object_id = obj_id;
 
 	IF FOUND THEN
 		RETURN TRUE;
@@ -348,11 +350,11 @@ BEGIN
 	RETURN FALSE;
 
 END;
-$$ LANGUAGE PLPGSQL;
+$$ LANGUAGE PLPGSQL STABLE;
 
 CREATE OR REPLACE FUNCTION permission.usr_has_object_perm ( INT, TEXT, TEXT, TEXT ) RETURNS BOOL AS $$
     SELECT permission.usr_has_object_perm( $1, $2, $3, $4, -1 );
-$$ LANGUAGE SQL;
+$$ LANGUAGE SQL STABLE;
 
 CREATE OR REPLACE FUNCTION permission.usr_has_perm ( INT, TEXT, INT ) RETURNS BOOL AS $$
 	SELECT	CASE
@@ -360,7 +362,7 @@ CREATE OR REPLACE FUNCTION permission.usr_has_perm ( INT, TEXT, INT ) RETURNS BO
 			WHEN permission.usr_has_work_perm( $1, $2, $3 ) THEN TRUE
 			ELSE FALSE
 		END;
-$$ LANGUAGE SQL;
+$$ LANGUAGE SQL STABLE;
 
 
 CREATE OR REPLACE FUNCTION permission.usr_has_perm_at_nd(
@@ -563,7 +565,7 @@ BEGIN
 	RETURN;
 	--
 END;
-$$ LANGUAGE 'plpgsql' ROWS 1;
+$$ LANGUAGE 'plpgsql' ROWS 1 STABLE;
 
 
 CREATE OR REPLACE FUNCTION permission.usr_has_perm_at_all_nd(
@@ -607,7 +609,7 @@ BEGIN
 	RETURN;
 	--
 END;
-$$ LANGUAGE 'plpgsql' ROWS 1;
+$$ LANGUAGE 'plpgsql' ROWS 1 STABLE;
 
 
 CREATE OR REPLACE FUNCTION permission.usr_has_perm_at(
@@ -616,7 +618,7 @@ CREATE OR REPLACE FUNCTION permission.usr_has_perm_at(
 )
 RETURNS SETOF INTEGER AS $$
 SELECT DISTINCT * FROM permission.usr_has_perm_at_nd( $1, $2 );
-$$ LANGUAGE 'sql' ROWS 1;
+$$ LANGUAGE 'sql' ROWS 1 STABLE;
 
 
 CREATE OR REPLACE FUNCTION permission.usr_has_perm_at_all(
@@ -625,7 +627,7 @@ CREATE OR REPLACE FUNCTION permission.usr_has_perm_at_all(
 )
 RETURNS SETOF INTEGER AS $$
 SELECT DISTINCT * FROM permission.usr_has_perm_at_all_nd( $1, $2 );
-$$ LANGUAGE 'sql' ROWS 1;
+$$ LANGUAGE 'sql' ROWS 1 STABLE;
 
 CREATE TABLE permission.grp_tree_display_entry (
     id      SERIAL PRIMARY KEY,

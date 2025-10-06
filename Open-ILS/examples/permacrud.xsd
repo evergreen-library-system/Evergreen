@@ -35,6 +35,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 
 <xs:element name="context" nillable="true">
  <xs:complexType>
+  <xs:attribute name="delegate"/>
+  <xs:attribute name="owning_user"/>
   <xs:attribute name="link"/>
   <xs:attribute name="jump"/>
   <xs:attribute name="field" use="required"/>
@@ -45,7 +47,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 <xs:element name="create" nillable="true">
  <xs:complexType>
   <xs:sequence>
-   <xs:element ref="permacrud:context" minOccurs="0" maxOccurs="1"/>
+   <xs:element ref="permacrud:context" minOccurs="0" maxOccurs="unbounded"/>
   </xs:sequence>
   <xs:attribute name="permission" use="required"/>
   <xs:attribute name="context_field"/>
@@ -71,7 +73,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 <xs:element name="update" nillable="true">
  <xs:complexType>
   <xs:sequence>
-   <xs:element ref="permacrud:context" minOccurs="0" maxOccurs="1"/>
+   <xs:element ref="permacrud:context" minOccurs="0" maxOccurs="unbounded"/>
   </xs:sequence>
   <xs:attribute name="permission" use="required"/>
   <xs:attribute name="context_field"/>
@@ -85,7 +87,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 <xs:element name="delete" nillable="true">
  <xs:complexType>
   <xs:sequence>
-   <xs:element ref="permacrud:context" minOccurs="0" maxOccurs="1"/>
+   <xs:element ref="permacrud:context" minOccurs="0" maxOccurs="unbounded"/>
   </xs:sequence>
   <xs:attribute name="permission" use="required"/>
   <xs:attribute name="permit_field"/>

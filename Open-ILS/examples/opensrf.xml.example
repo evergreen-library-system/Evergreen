@@ -1176,6 +1176,7 @@ vim:et:ts=4:sw=4:
                 <app_settings>
                     <IDL>SYSCONFDIR/fm_IDL.xml</IDL>
                     <driver>pgsql</driver>
+                    <disable_query_visibility_tests>false</disable_query_visibility_tests>
                     <database>
                         <type>master</type>
                         <weight>2</weight>

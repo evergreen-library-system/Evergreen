@@ -27,7 +27,7 @@ extern "C" {
 #endif
 
 dbi_conn oilsConnectDB( const char* mod_name );
-void oilsSetSQLOptions( const char* module_name, int do_pcrud, int flesh_depth );
+void oilsSetSQLOptions( const char* module_name, int do_pcrud, int flesh_depth, int retail_vis_test );
 void oilsSetDBConnection( dbi_conn conn );
 int oilsIsDBConnected( dbi_conn handle );
 int oilsExtendIDL( dbi_conn handle );
@@ -52,6 +52,7 @@ int doUpdate( osrfMethodContext* ctx );
 int doDelete( osrfMethodContext* ctx );
 int doSearch( osrfMethodContext* ctx );
 int doIdList( osrfMethodContext* ctx );
+int doCount( osrfMethodContext* ctx );
 
 int is_identifier( const char* s);
 int is_good_operator( const char* op );

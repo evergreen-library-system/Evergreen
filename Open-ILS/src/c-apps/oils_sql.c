@@ -27,6 +27,13 @@
 #define AND_OP_JOIN     0
 #define OR_OP_JOIN      1
 
+// Bit flags describing the pcrud action
+#define ACTION_CREATE   1
+#define ACTION_RETRIEVE 2
+#define ACTION_UPDATE   4
+#define ACTION_DELETE   8
+#define ACTION_COUNT   16 
+
 struct ClassInfoStruct;
 typedef struct ClassInfoStruct ClassInfo;
 
@@ -96,7 +103,7 @@ static char* searchPredicate ( const ClassInfo*, osrfHash*, jsonObject*, osrfMet
 static char* searchJOIN ( const jsonObject*, const ClassInfo* left_info );
 static char* searchWHERE ( const jsonObject* search_hash, const ClassInfo*, int, osrfMethodContext* );
 static char* buildSELECT( const jsonObject*, jsonObject* rest_of_query,
-	osrfHash* meta, osrfMethodContext* ctx, char* new_cursor_name );
+	osrfHash* meta, osrfMethodContext* ctx, char* new_cursor_name, osrfStringArray* various_pcrud_conditions );
 static char* buildOrderByFromArray( osrfMethodContext* ctx, const jsonObject* order_array );
 
 char* buildQuery( osrfMethodContext* ctx, jsonObject* query, int flags );
@@ -125,7 +132,7 @@ static void clear_query_stack( void );
 static const jsonObject* verifyUserPCRUD( osrfMethodContext* );
 static const jsonObject* verifyUserPCRUDfull( osrfMethodContext*, int );
 static int verifyObjectPCRUD( osrfMethodContext*, osrfHash*, const jsonObject*, int );
-static const char* org_tree_root( osrfMethodContext* ctx );
+static char* org_tree_root( osrfMethodContext* ctx );
 static jsonObject* single_hash( const char* key, const char* value );
 
 static int child_initialized = 0;   /* boolean */
@@ -144,8 +151,10 @@ static dbi_conn dbhandle; /* our CURRENT db connection */
 
 static int max_flesh_depth = 100;
 
+static int NO_DIRECT_RESPONSE = 0;
 static int perm_at_threshold = 5;
 static int enforce_pcrud = 0;     // Boolean
+static int retail_vis_test = 0;   // Boolean
 static char* modulename = NULL;
 
 int writeAuditInfo( osrfMethodContext* ctx, const char* user_id, const char* ws_id);
@@ -252,7 +261,7 @@ dbi_conn oilsConnectDB( const char* mod_name ) {
 	Here we use the server name in messages to identify which kind of server issued them.
 	We use do_crud as a boolean to control whether or not to enforce the permissions scheme.
 */
-void oilsSetSQLOptions( const char* module_name, int do_pcrud, int flesh_depth ) {
+void oilsSetSQLOptions( const char* module_name, int do_pcrud, int flesh_depth, int disable_new_vis_tests ) {
 	if( !module_name )
 		module_name = "open-ils.cstore";   // bulletproofing with a default
 
@@ -262,6 +271,7 @@ void oilsSetSQLOptions( const char* module_name, int do_pcrud, int flesh_depth )
 	modulename = strdup( module_name );
 	enforce_pcrud = do_pcrud;
 	max_flesh_depth = flesh_depth;
+	retail_vis_test = disable_new_vis_tests;
 }
 
 /**
@@ -1331,6 +1341,94 @@ int doSearch( osrfMethodContext* ctx ) {
 }
 
 /**
+	@brief Implement the "count" method.
+	@param ctx Pointer to the method context.
+	@param err Pointer through which to return an error code.
+	@return Zero if successful, or -1 if not.
+
+	Method parameters:
+	- authkey (PCRUD only)
+	- WHERE clause, as jsonObject
+	- Other SQL clause(s), as a JSON_HASH; select, order_by , limit, and offset are ignored
+
+	Return to client: The count of rows of the relevant class that
+	satisfy a specified WHERE clause.
+
+	This method relies on the assumption that every class has a primary key consisting of
+	a single column.
+*/
+int doCount( osrfMethodContext* ctx ) {
+	if( osrfMethodVerifyContext( ctx )) {
+		osrfLogError( OSRF_LOG_MARK, "Invalid method context" );
+		return -1;
+	}
+
+	if( enforce_pcrud )
+		timeout_needs_resetting = 1;
+
+	jsonObject* where_clause;
+	jsonObject* rest_of_query;
+
+	// We use the where clause without change.  But we need to massage the rest of the
+	// query, so we work with a copy of it instead of modifying the original.
+
+	if( enforce_pcrud ) {
+		where_clause  = jsonObjectGetIndex( ctx->params, 1 );
+		rest_of_query = jsonObjectClone( jsonObjectGetIndex( ctx->params, 2 ) );
+	} else {
+		where_clause  = jsonObjectGetIndex( ctx->params, 0 );
+		rest_of_query = jsonObjectClone( jsonObjectGetIndex( ctx->params, 1 ) );
+	}
+
+	if( !where_clause ) {
+		osrfLogError( OSRF_LOG_MARK, "No WHERE clause parameter supplied" );
+		return -1;
+	}
+
+	// Eliminate certain SQL clauses, if present.
+	if( rest_of_query ) {
+		jsonObjectRemoveKey( rest_of_query, "select" );
+		jsonObjectRemoveKey( rest_of_query, "limit" );
+		jsonObjectRemoveKey( rest_of_query, "offset" );
+		jsonObjectRemoveKey( rest_of_query, "order_by" );
+		jsonObjectRemoveKey( rest_of_query, "no_i18n" );
+		jsonObjectRemoveKey( rest_of_query, "flesh" );
+		jsonObjectRemoveKey( rest_of_query, "flesh_fields" );
+	} else {
+		rest_of_query = jsonNewObjectType( JSON_HASH );
+	}
+
+	jsonObjectSetKey( rest_of_query, "no_i18n", jsonNewBoolObject( 1 ) );
+
+	// Get the class metadata
+	osrfHash* method_meta = (osrfHash*) ctx->method->userData;
+	osrfHash* class_meta = osrfHashGet( method_meta, "class" );
+
+	// Do the query
+	int err = 0;
+	jsonObject* obj =
+		doFieldmapperSearch( ctx, class_meta, where_clause, rest_of_query, &err );
+
+	jsonObjectFree( rest_of_query );
+	if( err ) {
+		osrfAppRespondComplete( ctx, NULL );
+		return -1;
+	}
+
+	// Return the one value, stashed in the pkey field for convenience
+    if (retail_vis_test) { // gotta return just size of the array
+        jsonObject* num = jsonNewNumberObject(obj->size);
+	    osrfAppRespondComplete( ctx, num );
+	    jsonObjectFree( num );
+    } else { // the db did it for us in wholesale (or non-pcrud) mode
+        osrfAppRespondComplete( ctx, oilsFMGetObject( jsonObjectGetIndex(obj, 0), osrfHashGet(class_meta, "primarykey") ) );
+    }
+
+	jsonObjectFree( obj );
+	return 0;
+}
+
+/**
 	@brief Implement the "id_list" method.
 	@param ctx Pointer to the method context.
 	@param err Pointer through which to return an error code.
@@ -1554,6 +1652,360 @@ static const jsonObject* verifyUserPCRUDfull( osrfMethodContext* ctx, int anon_o
 	return user;
 }
 
+static char* firstPart( const char* string, char delimiter ) {
+    if (!string || !*string) return NULL;
+    osrfStringArray* split_string = osrfStringArrayTokenize( string, delimiter );
+    char* first_part = strdup(osrfStringArrayGetString(split_string, 0));
+    osrfStringArrayFree(split_string);
+    return first_part;
+}
+
+osrfStringArray* generatePcrudVisibilityConditions ( osrfMethodContext* ctx, osrfHash *class ) {
+
+    osrfStringArray* various_conditions = osrfNewStringArray( 0 );
+
+    // Figure out what class and method are involved
+    osrfHash* method_metadata = (osrfHash*) ctx->method->userData;
+    const char* method_type = osrfHashGet( method_metadata, "methodtype" );
+
+    // Grab the name of the class we're dealing with, and the pkey field
+    char* classname = osrfHashGet( class, "classname" );
+    char* primary_key = osrfHashGet( class, "primarykey" );
+
+    int action_type = 0;
+    switch ((char)*method_type) {
+        case 'c':
+            break;
+        case 'u':
+            action_type |= ACTION_UPDATE;
+            break;
+        case 'd':
+            action_type |= ACTION_DELETE;
+            break;
+        case 'C':
+            method_type = "retrieve";
+            action_type |= ACTION_COUNT;
+            break;
+        default:
+            method_type = "retrieve";
+            action_type |= ACTION_RETRIEVE;
+            break;
+    }
+
+    if (!action_type) {
+        // This only happens for 'create', when we cannot use this method.
+        // Returning an empty condition set signals to the caller that they
+        // will need to use the brute-force application side permission checking
+        // mechanisms.
+        return various_conditions;
+    }
+
+    // Get the appropriate permacrud entry from the IDL, depending on method type
+    osrfHash* pcrud = osrfHashGet( osrfHashGet( class, "permacrud" ), method_type );
+
+    // Get a user object (might be anonymouse)
+    const jsonObject* user = verifyUserPCRUDfull( ctx, action_type & (ACTION_RETRIEVE|ACTION_COUNT) );
+
+    // Condition 0: can haz pcrud?
+    if (!pcrud || !user) {
+        // No permacrud for this method type on this class, or
+        // no user (even anonymous), disallowed!
+        osrfStringArrayAdd( various_conditions, "FALSE" );
+        return various_conditions;
+    }
+
+    int userid = atoi( oilsFMGetStringConst( user, "id" ) );
+
+    // Get a list of permissions from the permacrud entry.
+    osrfStringArray* permissions = osrfHashGet( pcrud, "permission" );
+
+    // See if we should ignore object-level permissions
+    int ignore_object_permissions = str_is_true( osrfHashGet(pcrud, "ignore_object_perms") );
+
+    // Condition 1: Maybe there are no required permissions? Only allowed for retrieve-type requests.
+    if (action_type & (ACTION_RETRIEVE|ACTION_COUNT) && permissions->size == 0) {
+        osrfStringArrayAdd( various_conditions, "TRUE" );
+        return various_conditions;
+    }
+
+    // Condition 2: There are permissions, but the user is anonymous
+    if (-1 == userid) {
+        // Anon users can't have permissions. Denied!
+        osrfStringArrayAdd( various_conditions, "FALSE" );
+        return various_conditions;
+    }
+
+    // Condition 3: Is there a "it's public" field?
+    char* pfield = osrfHashGet(pcrud, "permit_field");
+    char* pfield_value = osrfHashGet(pcrud, "permit_field_value");
+    if (action_type & (ACTION_RETRIEVE|ACTION_COUNT) && pfield && pfield_value) {
+        growing_buffer* permit_field_test_buf = osrf_buffer_init(64);
+        osrf_buffer_fadd( permit_field_test_buf, "%s.%s = '%s'", classname, pfield, pfield_value );
+        char* permit_field_test = osrf_buffer_release( permit_field_test_buf );
+
+        osrfStringArrayAdd( various_conditions, permit_field_test );
+        free(permit_field_test);
+    }
+
+    // Condition 4: Is there an owning_user field?
+    char* owning_user = osrfHashGet(pcrud, "owning_user");
+    if (owning_user && !ignore_object_permissions) {
+        growing_buffer* owning_user_field_test_buf = osrf_buffer_init(64);
+        osrf_buffer_fadd( owning_user_field_test_buf, "%s.%s = %d", classname, owning_user, userid );
+        char* owning_user_field_test = osrf_buffer_release( owning_user_field_test_buf );
+
+        osrfStringArrayAdd( various_conditions, owning_user_field_test );
+        free(owning_user_field_test);
+    }
+
+    osrfStringArray* local_context_fields = osrfHashGet( pcrud, "local_context" );
+    osrfHash* foreign_context = osrfHashGet( pcrud, "foreign_context" );
+    osrfStringArray* context_org_array = osrfNewStringArray( 0 );
+
+    // Condition 5, part a: Are the permissions globally required, or do we look at local field(s)?
+    if (str_is_true( osrfHashGet(pcrud, "global_required") )) {
+
+        // check for perm at top of org tree
+        char* org_tree_root_id = (char*)org_tree_root( ctx );
+
+        osrfStringArrayAdd( context_org_array, org_tree_root_id );
+        free(org_tree_root_id);
+
+    } else if (local_context_fields && local_context_fields->size > 0) {
+        for (int i = 0; i < local_context_fields->size; i++) {
+            osrfStringArrayAdd( context_org_array, osrfStringArrayGetString(local_context_fields, i) );
+        }
+    }
+
+    // Condition 5, part b: Look at the local org fields (or globally) for all the permissions
+    int perm_index = 0;
+    const char* permission = NULL;
+    while ( (permission = osrfStringArrayGetString(permissions, perm_index++)) ) {
+
+        // Condition 5, part b, local: Look at the local org fields (or globally) for all the permissions
+        int context_index = 0;
+        const char* context_org = NULL;
+        while ( (context_org = osrfStringArrayGetString(context_org_array, context_index++)) ) {
+            growing_buffer* context_org_test_buf = osrf_buffer_init(64);
+            if (!ignore_object_permissions) {
+                osrf_buffer_fadd(
+                    context_org_test_buf,
+                    "permission.usr_has_object_perm(%d, '%s', '%s', %s.%s::TEXT, %s)",
+                    userid, permission, classname, classname, primary_key, context_org
+                );
+            } else {
+                osrf_buffer_fadd(
+                    context_org_test_buf,
+                    "permission.usr_has_perm(%d, '%s', %s)",
+                    userid, permission, context_org
+                );
+            }
+            char* context_org_test = osrf_buffer_release( context_org_test_buf );
+
+            osrfStringArrayAdd( various_conditions, context_org_test );
+            free(context_org_test);
+        }
+    }
+    osrfStringArrayFree(context_org_array);
+
+    // Condition 5, part b, foreign: Look at foreign (linked) org fields for all permissions
+    // This is the only truly complicated check.  We have to build a select that walks from
+    // the current row to some distant foreign row, potentially several tables away from us,
+    // and use that as the context org value for the permission check.
+    if (foreign_context) {
+        osrfHash* foreign_context_entry = NULL;
+        osrfHashIterator* class_itr = osrfNewHashIterator( foreign_context );
+
+        while ( (foreign_context_entry = osrfHashIteratorNext( class_itr )) ) {
+            // firstPart() supports //*[@id="acqli"]/permacrud/actions/retrieve/context,
+            // the only class (ATTOW) to use a specific construct which allows one local
+            // field to lead to two different jump-linked org fields on 2+-step removed
+            // tables.  1-step multi-field tests can be supported by the normal space-separate
+            // "field" list value.
+            char* foreign_context_org_class = firstPart(osrfHashIteratorKey( class_itr ), '.');
+
+            osrfStringArray* foreign_context_field_list = osrfHashGet( foreign_context_entry, "context" );
+            char* local_linked_field = osrfHashGet( foreign_context_entry, "fkey" );
+            char* foreign_linked_field = osrfHashGet( foreign_context_entry, "field" );
+            char* context_type = osrfHashGet( foreign_context_entry, "context_type" );
+
+            osrfHash* foreign_class_meta = osrfHashGet( oilsIDL(), foreign_context_org_class);
+            char* foreign_context_table = oilsGetRelation(foreign_class_meta);
+            char* foreign_classname = osrfHashGet( foreign_class_meta, "classname" );
+            char* foreign_primary_key = osrfHashGet( foreign_class_meta, "primarykey" );
+
+            int foreign_context_field_pos = 0;
+            const char* foreign_context_org_field_name = NULL;
+            while ( (foreign_context_org_field_name = osrfStringArrayGetString(foreign_context_field_list, foreign_context_field_pos++)) ) {
+
+                // Construct the core FROM clause from the first linked class
+                growing_buffer* foreign_context_from_clause_buf = osrf_buffer_init(32);
+                osrf_buffer_fadd(
+                    foreign_context_from_clause_buf,
+                    "%s AS sub_%s",
+                    foreign_context_table,
+                    foreign_context_org_class
+                );
+
+                const char* jump_list_lhs_field = foreign_linked_field;
+                const char* jump_list_lhs_class = foreign_context_org_class;
+                const char* jump_list_rhs_field = jump_list_lhs_field;
+                const char* jump_list_rhs_class = jump_list_lhs_class;
+
+                // Early out if there is no jump list (the common case)
+                osrfStringArray* jump_list = osrfHashGet( foreign_context_entry, "jump" );
+                if (jump_list && jump_list->size > 0) {
+
+                    // If there is a jump attribute on the org context definition, walk the
+                    // list and add joins for each succeeding link.
+                    int jump_list_pos = 0;
+                    while (jump_list && (jump_list_lhs_field = osrfStringArrayGetString(jump_list, jump_list_pos++))) {
+
+                        osrfHash* jump_link_hash = oilsIDLFindPath( "/%s/links/%s", jump_list_lhs_class, jump_list_lhs_field );
+                        jump_list_rhs_class = osrfHashGet( jump_link_hash, "class" );
+                        jump_list_rhs_field = osrfHashGet( jump_link_hash, "key" );
+
+                        osrfHash* jump_class_meta = osrfHashGet( oilsIDL(), jump_list_rhs_class);
+                        char* jump_context_table = oilsGetRelation(jump_class_meta);
+
+                        if (strcmp("has_a", osrfHashGet( jump_link_hash, "reltype" )))
+                            jump_list_lhs_field = osrfHashGet( jump_class_meta, "primarykey" );
+
+                        osrf_buffer_fadd(
+                            foreign_context_from_clause_buf,
+                            " JOIN %s AS sub_%s ON (sub_%s.%s = sub_%s.%s)",
+                            jump_context_table,
+                            jump_list_rhs_class,
+                            jump_list_rhs_class,
+                            jump_list_rhs_field,
+                            jump_list_lhs_class,
+                            jump_list_lhs_field
+                        );
+
+                        free(jump_context_table);
+
+                        jump_list_lhs_class = jump_list_rhs_class;
+                    }
+
+                }
+                char* foreign_context_from_clause = osrf_buffer_release( foreign_context_from_clause_buf );
+
+                // Construct object-permission-appropriate function call for the link test
+                int is_delegate = strcmp(context_type, "link");
+                growing_buffer* context_org_function_buf = osrf_buffer_init(128);
+
+                char* classname_for_object_perms = classname;
+                char* classname_for_object_perms_prefix = "";
+                char* pkey_field_for_object_perms = primary_key;
+                if (is_delegate) {
+                    classname_for_object_perms = foreign_classname;
+                    classname_for_object_perms_prefix = "sub_";
+                    pkey_field_for_object_perms = foreign_primary_key;
+                }
+
+                if (action_type & (ACTION_RETRIEVE|ACTION_COUNT) && is_delegate) {
+                    // Is there a "it's public" field on the delegated foreign class for this method type?
+                    osrfHash* foreign_pcrud = osrfHashGet( osrfHashGet( osrfHashGet( oilsIDL(), jump_list_rhs_class), "permacrud" ), method_type );
+                    char* foriegn_pfield = osrfHashGet(foreign_pcrud, "permit_field");
+                    char* foriegn_pfield_value = osrfHashGet(foreign_pcrud, "permit_field_value");
+                    if (foriegn_pfield && foriegn_pfield_value) {
+
+                        osrf_buffer_fadd(
+                            context_org_function_buf,
+                            "sub_%s.%s = '%s'",
+                            jump_list_rhs_class,
+                            foriegn_pfield,
+                            foriegn_pfield_value
+                        );
+                    }
+                }
+
+                // Is there a foreign owning_user field?
+                char* foreign_owning_user = osrfHashGet( foreign_context_entry, "owning_user" );
+                if (foreign_owning_user && !ignore_object_permissions) {
+                    if (context_org_function_buf->n_used > 0)
+                        osrf_buffer_add( context_org_function_buf, " OR " );
+
+                    osrf_buffer_fadd(
+                        context_org_function_buf,
+                        "sub_%s.%s = %d",
+                        jump_list_rhs_class,
+                        foreign_owning_user,
+                        userid
+                    );
+                }
+
+                perm_index = 0;
+                permission = NULL;
+                while ( (permission = osrfStringArrayGetString(permissions, perm_index++)) ) {
+                    if (context_org_function_buf->n_used > 0)
+                        osrf_buffer_add( context_org_function_buf, " OR " );
+
+                    if (!ignore_object_permissions) {
+                        osrf_buffer_fadd(
+                            context_org_function_buf,
+                            "permission.usr_has_object_perm(%d, '%s', '%s', %s%s.%s::TEXT, sub_%s.%s)",
+                            userid,
+                            permission,
+                            classname_for_object_perms,
+                            classname_for_object_perms_prefix,
+                            classname_for_object_perms,
+                            pkey_field_for_object_perms,
+                            jump_list_rhs_class,
+                            foreign_context_org_field_name
+                        );
+                    } else {
+                        osrf_buffer_fadd(
+                            context_org_function_buf,
+                            "permission.usr_has_perm(%d, '%s', sub_%s.%s)",
+                            userid,
+                            permission,
+                            jump_list_rhs_class,
+                            foreign_context_org_field_name
+                        );
+                    }
+                }
+
+                char* context_org_function = osrf_buffer_release( context_org_function_buf );
+
+                // Construct WHERE clause for initial join in the list
+                growing_buffer* foreign_context_where_clause_buf = osrf_buffer_init(32);
+                osrf_buffer_fadd(
+                    foreign_context_where_clause_buf, // XXX building from clause of joins between classes in link/jump list
+                    "%s.%s = sub_%s.%s",
+                    classname, local_linked_field, foreign_context_org_class, foreign_linked_field
+                );
+
+                char* foreign_context_where_clause = osrf_buffer_release( foreign_context_where_clause_buf );
+
+                // Stitch the clauses together
+                growing_buffer* context_org_test_buf = osrf_buffer_init(256);
+                osrf_buffer_fadd(
+                    context_org_test_buf,
+                    "EXISTS (SELECT 1 FROM %s WHERE %s AND (%s))",
+                    foreign_context_from_clause,
+                    foreign_context_where_clause,
+                    context_org_function
+                );
+
+                char* context_org_test = osrf_buffer_release( context_org_test_buf );
+
+                osrfStringArrayAdd( various_conditions, context_org_test );
+
+                free(context_org_function);
+                free(foreign_context_from_clause);
+                free(foreign_context_where_clause);
+                free(context_org_test);
+            }
+            free(foreign_context_table);
+            free(foreign_context_org_class);
+        }
+        osrfHashIteratorFree( class_itr );
+    }
+
+    return various_conditions;
+}
+
 /**
 	@brief For PCRUD: Determine whether the current user may access the current row.
 	@param ctx Pointer to the method context.
@@ -1588,8 +2040,8 @@ static int verifyObjectPCRUD ( osrfMethodContext* ctx, osrfHash *class, const js
 	// but they aren't implemented yet.
 
 	int fetch = 0;
-	if( *method_type == 's' || *method_type == 'i' ) {
-		method_type = "retrieve"; // search and id_list are equivalent to retrieve for this
+	if( *method_type == 's' || *method_type == 'i' || *method_type == 'C' ) {
+		method_type = "retrieve"; // search, count, and id_list are equivalent to retrieve for this
 		fetch = 1;
 	} else if( *method_type == 'u' || *method_type == 'd' ) {
 		fetch = 1; // MUST go to the db for the object for update and delete
@@ -1663,6 +2115,7 @@ static int verifyObjectPCRUD ( osrfMethodContext* ctx, osrfHash *class, const js
 	// for storing lists of integers, so we fake it with a list of strings.)
 	osrfStringArray* context_org_array = osrfNewStringArray( 0 );
 
+	dbi_result result;
 	const char* context_org = NULL;
     const char* pkey = NULL;
     jsonObject *param = NULL;
@@ -1678,19 +2131,12 @@ static int verifyObjectPCRUD ( osrfMethodContext* ctx, osrfHash *class, const js
 		osrfLogDebug( OSRF_LOG_MARK,
 				"global-level permissions required, fetching top of the org tree" );
 
-		// no need to check perms for org tree root retrieval
-		osrfHashSet((osrfHash*) ctx->session->userData, "1", "inside_verify");
 		// check for perm at top of org tree
-		const char* org_tree_root_id = org_tree_root( ctx );
-		osrfHashSet((osrfHash*) ctx->session->userData, "0", "inside_verify");
+		char* org_tree_root_id = org_tree_root( ctx );
 
-		if( org_tree_root_id ) {
-			osrfStringArrayAdd( context_org_array, org_tree_root_id );
-			osrfLogDebug( OSRF_LOG_MARK, "top of the org tree is %s", org_tree_root_id );
-		} else  {
-			osrfStringArrayFree( context_org_array );
-			return 0;
-		}
+		osrfStringArrayAdd( context_org_array, org_tree_root_id );
+		osrfLogDebug( OSRF_LOG_MARK, "top of the org tree is %s", org_tree_root_id );
+		free(org_tree_root_id);
 
 	} else {
 		// If the global_required attribute is absent or false, then we look for
@@ -1786,7 +2232,7 @@ static int verifyObjectPCRUD ( osrfMethodContext* ctx, osrfHash *class, const js
 			// the value of each one, and if it isn't null, add it to the list of org units.
 			osrfLogDebug( OSRF_LOG_MARK, "%d class-local context field(s) specified",
 				local_context->size );
-			int i = 0;
+			i = 0;
 			const char* lcontext = NULL;
 			while ( (lcontext = osrfStringArrayGetString(local_context, i++)) ) {
 				const char* fkey_value = oilsFMGetStringConst( param, lcontext );
@@ -1813,24 +2259,28 @@ static int verifyObjectPCRUD ( osrfMethodContext* ctx, osrfHash *class, const js
 				// and add it to the list.
 				osrfHash* fcontext = NULL;
 				osrfHashIterator* class_itr = osrfNewHashIterator( foreign_context );
-				while( (fcontext = osrfHashIteratorNext( class_itr )) ) {
+				while(!OK && (fcontext = osrfHashIteratorNext( class_itr )) ) {
 					// For each class to which a foreign key points:
-					const char* class_name = osrfHashIteratorKey( class_itr );
-					osrfHash* fcontext = osrfHashGet( foreign_context, class_name );
+					char* class_name = firstPart(osrfHashIteratorKey( class_itr ), '.');
+					osrfStringArray* foreign_context_fields = osrfHashGet( fcontext, "context" );
+					char* context_type = osrfHashGet( fcontext, "context_type" );
 
 					osrfLogDebug(
 						OSRF_LOG_MARK,
 						"%d foreign context fields(s) specified for class %s",
-						((osrfStringArray*)osrfHashGet(fcontext,"context"))->size,
+						foreign_context_fields->size,
 						class_name
 					);
 
 					// Get the name of the key field in the foreign table
+					const char* local_linked_key = osrfHashGet( fcontext, "fkey" );
 					const char* foreign_pkey = osrfHashGet( fcontext, "field" );
+					const char* foreign_owning_user = osrfHashGet( fcontext, "owning_user" );
+					osrfStringArray* jump_list = osrfHashGet( fcontext, "jump" );
 
 					// Get the value of the foreign key pointing to the foreign table
 					const char* foreign_pkey_value =
-							oilsFMGetStringConst( param, osrfHashGet( fcontext, "fkey" ));
+							oilsFMGetStringConst( param, local_linked_key);
 					if( !foreign_pkey_value )
 						continue;    // Foreign key value is null; skip it
 
@@ -1841,25 +2291,23 @@ static int verifyObjectPCRUD ( osrfMethodContext* ctx, osrfHash *class, const js
 					jsonObject* top_list = doFieldmapperSearch(
 						ctx, osrfHashGet( oilsIDL(), class_name ), _tmp_params, NULL, &err );
 					osrfHashSet((osrfHash*) ctx->session->userData, "0", "inside_verify");
-					jsonObjectFree( _tmp_params );
 
 					int top_list_index = 0;
-					while( top_list->size > top_list_index ) {
+					while( !OK && top_list->size > top_list_index ) {
 						jsonObject* _fparam = jsonObjectClone(jsonObjectGetIndex( top_list, top_list_index++ ));
 
 						// At this point _fparam points a the row identified by the
 						// foreign key
 
-						osrfStringArray* jump_list = osrfHashGet( fcontext, "jump" );
-
+						osrfHash* foreign_class_meta = osrfHashGet( oilsIDL(), class_name );
 						const char* bad_class = NULL;  // For noting failed lookups
 						if( ! _fparam )
 							bad_class = class_name;    // Referenced row not found
-						else if( jump_list ) {
+						else if( jump_list && jump_list->size > 0 ) {
 							// Follow a chain of rows, linked by foreign keys, to find an owner
 							const char* flink = NULL;
 							int k = 0;
-							while ( (flink = osrfStringArrayGetString(jump_list, k++)) && _fparam ) {
+							while (_fparam && (flink = osrfStringArrayGetString(jump_list, k++))) {
 								// For each entry in the jump list.  Each entry (i.e. flink) is
 								// the name of a foreign key column in the current row.
 
@@ -1867,21 +2315,31 @@ static int verifyObjectPCRUD ( osrfMethodContext* ctx, osrfHash *class, const js
 								osrfHash* foreign_link_hash =
 										oilsIDLFindPath( "/%s/links/%s", _fparam->classname, flink );
 
+								// Can't test virtual columns in retail mode, just move on
+								if (strcmp("has_a", osrfHashGet( foreign_link_hash, "reltype" ))) {
+									jsonObjectFree( _fparam );
+									continue;
+								}
+
 								// Get the class metadata for the class
-								// to which the foreign key points
-								osrfHash* foreign_class_meta = osrfHashGet( oilsIDL(),
-										osrfHashGet( foreign_link_hash, "class" ));
+								// to which the foreign key points. We free
+								// the class_name later because the first
+								// one is locally allocated.
+								class_name = strdup(osrfHashGet( foreign_link_hash, "class" ));
+								foreign_class_meta = osrfHashGet( oilsIDL(), class_name );
 
 								// Get the name of the referenced key of that class
-								foreign_pkey = osrfHashGet( foreign_link_hash, "key" );
+								char * jump_foreign_pkey = osrfHashGet( foreign_link_hash, "key" );
 
 								// Get the value of the foreign key pointing to that class
-								const char* jump_foreign_pkey_value = oilsFMGetStringConst( _fparam, flink );
-								if( !jump_foreign_pkey_value )
-									break;    // Foreign key is null; quit looking
+								const char* jump_foreign_pkey_value = oilsFMGetStringConst( _fparam, jump_foreign_pkey );
+								if( !jump_foreign_pkey_value ) {
+									jsonObjectFree( _fparam );
+									continue;	// Foreign key is null; quit looking
+								}
 
 								// Build a WHERE clause for the lookup
-								_tmp_params = single_hash( foreign_pkey, jump_foreign_pkey_value );
+								_tmp_params = single_hash( jump_foreign_pkey, jump_foreign_pkey_value );
 
 								// Do the lookup
 								osrfHashSet((osrfHash*) ctx->session->userData, "1", "inside_verify");
@@ -1896,10 +2354,8 @@ static int verifyObjectPCRUD ( osrfMethodContext* ctx, osrfHash *class, const js
 								else {
 									// Referenced row not found
 									_fparam = NULL;
-									bad_class = osrfHashGet( foreign_link_hash, "class" );
 								}
 
-								jsonObjectFree( _tmp_params );
 								jsonObjectFree( _list );
 							}
 						}
@@ -1938,28 +2394,136 @@ static int verifyObjectPCRUD ( osrfMethodContext* ctx, osrfHash *class, const js
 						}
 
 						if( _fparam ) {
-							// Examine each context column of the foreign row,
-							// and add its value to the list of org units.
-							int j = 0;
-							const char* foreign_field = NULL;
-							const char* foreign_value = NULL;
-							osrfStringArray* ctx_array = osrfHashGet( fcontext, "context" );
-							while ( (foreign_field = osrfStringArrayGetString( ctx_array, j++ )) ) {
-								if( (foreign_value = oilsFMGetStringConst( _fparam, foreign_field )) ) {
-									osrfStringArrayAdd( context_org_array, foreign_value );
-									osrfLogDebug( OSRF_LOG_MARK,
-										"adding foreign class %s field %s (value: %s) "
-											"to the context org list",
-										class_name, foreign_field, foreign_value
-									);
+							if (!OK && *method_type == 'r' && *context_type == 'd') {
+								// Is there a "it's public" field on the delegated foreign class for this method type?
+								osrfHash* foreign_pcrud = osrfHashGet( osrfHashGet( foreign_class_meta, "permacrud" ), method_type );
+								char* foriegn_pfield = osrfHashGet(foreign_pcrud, "permit_field");
+								char* foriegn_pfield_test = osrfHashGet(foreign_pcrud, "permit_field_value");
+								if (foriegn_pfield && foriegn_pfield_test) {
+									const char* foreign_pfield_value = oilsFMGetStringConst( _fparam, foriegn_pfield );
+									if (foreign_pfield_value && !strcmp(foreign_pfield_value, foriegn_pfield_test))
+										OK = 1;
 								}
 							}
 
-						    jsonObjectFree( _fparam );
+							if (!OK && foreign_owning_user && !str_is_true( osrfHashGet(pcrud, "ignore_object_perms") )) { // Always honor
+								int foreign_ownerid = atoi( oilsFMGetStringConst( _fparam, foreign_owning_user ) );
+
+								// Allow the owner to do whatever
+								if (foreign_ownerid == userid)
+									OK = 1;
+							}
+
+							if (!OK && foreign_pkey_value && foreign_context_fields->size > 0) {
+								const char* foreign_context_field = NULL;
+								int foreign_context_field_pos = 0;
+								while (!OK && (foreign_context_field = osrfStringArrayGetString(foreign_context_fields, foreign_context_field_pos++))) {
+									i = 0;
+									while(!OK && (perm = osrfStringArrayGetString(permission, i++))) {
+
+										context_org = oilsFMGetStringConst( _fparam, foreign_context_field );
+										osrfLogDebug(
+											OSRF_LOG_MARK,
+											"Checking permission [%s] for user %d "
+													"on object %s (class %s) at org %d",
+											perm,
+											userid,
+											foreign_pkey_value,
+											class_name,
+											atoi( context_org )
+										);
+
+										if (!str_is_true( osrfHashGet(pcrud, "ignore_object_perms") )) { // Always honor
+											result = dbi_conn_queryf(
+												writehandle,
+												"SELECT permission.usr_has_object_perm(%d, '%s', '%s', '%s', %d)  AS has_perm;",
+												userid,
+												perm,
+												class_name,
+												foreign_pkey_value,
+												atoi( context_org )
+											);
+										} else {
+											result = dbi_conn_queryf(
+												writehandle,
+												"SELECT permission.usr_has_perm(%d, '%s', %d)  AS has_perm;",
+												userid,
+												perm,
+												atoi( context_org )
+											);
+										}
+
+										if( result ) {
+											osrfLogDebug(
+												OSRF_LOG_MARK,
+												"Received a result for object permission [%s] "
+														"for user %d on object %s (class %s) at org %d",
+												perm,
+												userid,
+												foreign_pkey_value,
+												class_name,
+												atoi( context_org )
+											);
+
+											if( dbi_result_first_row( result )) {
+												jsonObject* return_val = oilsMakeJSONFromResult( result );
+												const char* has_perm = jsonObjectGetString(
+														jsonObjectGetKeyConst( return_val, "has_perm" ));
+
+												osrfLogDebug(
+													OSRF_LOG_MARK,
+													"Status of object permission [%s] for user %d "
+															"on object %s (class %s) at org %d is %s",
+													perm,
+													userid,
+													foreign_pkey_value,
+													class_name,
+													atoi(context_org),
+													has_perm
+												);
+
+												if( *has_perm == 't' )
+													OK = 1;
+												jsonObjectFree( return_val );
+											}
+
+											dbi_result_free( result );
+										} else {
+											const char* msg;
+											int errnum = dbi_conn_error( writehandle, &msg );
+											osrfLogWarning( OSRF_LOG_MARK,
+												"Unable to call check object permissions: %d, %s",
+												errnum, msg ? msg : "(No description available)" );
+											if( !oilsIsDBConnected( writehandle ))
+												osrfAppSessionPanic( ctx->session );
+										}
+									}
+								}
+							}
+
+							if (!OK) {
+								// Examine each context column of the foreign row,
+								// and add its value to the list of org units.
+								int j = 0;
+								const char* foreign_field = NULL;
+								const char* foreign_value = NULL;
+								while ( (foreign_field = osrfStringArrayGetString( foreign_context_fields, j++ )) ) {
+									if( (foreign_value = oilsFMGetStringConst( _fparam, foreign_field )) ) {
+										osrfStringArrayAdd( context_org_array, foreign_value );
+										osrfLogDebug( OSRF_LOG_MARK,
+											"adding foreign class %s field %s (value: %s) "
+												"to the context org list",
+											class_name, foreign_field, foreign_value
+										);
+									}
+								}
+							}
 						}
+						jsonObjectFree( _fparam );
 					}
 
 					jsonObjectFree( top_list );
+					free(class_name);
 				}
 
 				osrfHashIteratorFree( class_itr );
@@ -1971,7 +2535,7 @@ static int verifyObjectPCRUD ( osrfMethodContext* ctx, osrfHash *class, const js
     // object perms on the object. CREATE can't use this. We only do this when we're not
     // ignoring object perms.
     char* owning_user_field = osrfHashGet( pcrud, "owning_user" );
-    if (
+    if (!OK &&
         *method_type != 'c' &&
         (!str_is_true( osrfHashGet(pcrud, "ignore_object_perms") ) || // Always honor
         owning_user_field)
@@ -2068,7 +2632,6 @@ static int verifyObjectPCRUD ( osrfMethodContext* ctx, osrfHash *class, const js
 				(perm = osrfStringArrayGetString(permission, i++)) &&
 				!str_is_true( osrfHashGet(pcrud, "ignore_object_perms"))
 		) {
-    		dbi_result result;
 
 			osrfLogDebug(
 				OSRF_LOG_MARK,
@@ -2142,7 +2705,6 @@ static int verifyObjectPCRUD ( osrfMethodContext* ctx, osrfHash *class, const js
 	// In other words permissions are additive.
 	i = 0;
 	while( !OK && (perm = osrfStringArrayGetString(permission, i++)) ) {
-		dbi_result result;
 
         osrfStringArray* pcache = NULL;
         if (rs_size > perm_at_threshold) { // grab and cache locations of user perms
@@ -2332,7 +2894,7 @@ static int verifyObjectPCRUD ( osrfMethodContext* ctx, osrfHash *class, const js
 
 	The calling code is responsible for freeing the returned string.
 */
-static const char* org_tree_root( osrfMethodContext* ctx ) {
+static char* org_tree_root( osrfMethodContext* ctx ) {
 
 	static char cached_root_id[ 32 ] = "";  // extravagantly large buffer
 	static time_t last_lookup_time = 0;
@@ -2345,10 +2907,19 @@ static const char* org_tree_root( osrfMethodContext* ctx ) {
 	}
 	last_lookup_time = current_time;
 
+	if (!ctx->session->userData)
+		(void) initSessionCache( ctx );
+
+	// This needs to be allowed in all cases; it is
+	// used internally for subsequent permission testing.
 	int err = 0;
 	jsonObject* where_clause = single_hash( "parent_ou", NULL );
+	NO_DIRECT_RESPONSE = 1; // This forces doFieldmapperSearch to give us the result instead of potentially sending it to the client
+	osrfHashSet((osrfHash*) ctx->session->userData, "1", "inside_verify");
 	jsonObject* result = doFieldmapperSearch(
 		ctx, osrfHashGet( oilsIDL(), "aou" ), where_clause, NULL, &err );
+	osrfHashSet((osrfHash*) ctx->session->userData, "0", "inside_verify");
+	NO_DIRECT_RESPONSE = 0;
 	jsonObjectFree( where_clause );
 
 	jsonObject* tree_top = jsonObjectGetIndex( result, 0 );
@@ -2375,7 +2946,7 @@ static const char* org_tree_root( osrfMethodContext* ctx ) {
 
 	strcpy( cached_root_id, root_org_unit_id );
 	jsonObjectFree( result );
-	return cached_root_id;
+	return strdup(cached_root_id);
 }
 
 /**
@@ -2723,7 +3294,7 @@ int doRetrieve( osrfMethodContext* ctx ) {
 	jsonObject* obj = jsonObjectExtractIndex( list, 0 );
 	jsonObjectFree( list );
 
-	if( enforce_pcrud ) {
+	if( enforce_pcrud && retail_vis_test ) {
 		// no result, skip this entirely
 		if(NULL != obj && !verifyObjectPCRUD( ctx, class_def, obj, 1 )) {
 			jsonObjectFree( obj );
@@ -5589,12 +6160,14 @@ static char* buildOrderByFromArray( osrfMethodContext* ctx, const jsonObject* or
 	The SELECT statements built here are distinct from those built for the json_query method.
 */
 static char* buildSELECT ( const jsonObject* search_hash, jsonObject* rest_of_query,
-	osrfHash* meta, osrfMethodContext* ctx, char* new_cursor_name ) {
+	osrfHash* meta, osrfMethodContext* ctx, char* new_cursor_name, osrfStringArray* various_pcrud_conditions ) {
 
 	const char* locale = osrf_message_get_last_locale();
 
+	char *methodtype = osrfHashGet( (osrfHash *) ctx->method->userData, "methodtype" );
 	osrfHash* fields = osrfHashGet( meta, "fields" );
 	const char* core_class = osrfHashGet( meta, "classname" );
+	const char* pkey_column = osrfHashGet( meta, "primarykey" );
 
 	const jsonObject* join_hash = jsonObjectGetKeyConst( rest_of_query, "join" );
 
@@ -5604,100 +6177,107 @@ static char* buildSELECT ( const jsonObject* search_hash, jsonObject* rest_of_qu
 	growing_buffer* sql_buf = osrf_buffer_init( 128 );
 	growing_buffer* select_buf = osrf_buffer_init( 128 );
 
-	if( !(selhash = jsonObjectGetKey( rest_of_query, "select" )) ) {
-		defaultselhash = jsonNewObjectType( JSON_HASH );
-		selhash = defaultselhash;
+	if (*methodtype == 'C' && !retail_vis_test) { // count, and in pcrud, with wholesale perm testing
+		osrf_buffer_fadd( select_buf, "COUNT(DISTINCT \"%s\".%s) AS %s", core_class, pkey_column, pkey_column );
 	}
 
-	// If there's no SELECT list for the core class, build one
-	if( !jsonObjectGetKeyConst( selhash, core_class ) ) {
-		jsonObject* field_list = jsonNewObjectType( JSON_ARRAY );
-
-		// Add every non-virtual field to the field list
-		osrfHash* field_def = NULL;
-		osrfHashIterator* field_itr = osrfNewHashIterator( fields );
-		while( ( field_def = osrfHashIteratorNext( field_itr ) ) ) {
-			if( ! str_is_true( osrfHashGet( field_def, "virtual" ) ) ) {
-				const char* field = osrfHashIteratorKey( field_itr );
-				jsonObjectPush( field_list, jsonNewObject( field ) );
-			}
-		}
-		osrfHashIteratorFree( field_itr );
-		jsonObjectSetKey( selhash, core_class, field_list );
-	}
-
-	// Build a list of columns for the SELECT clause
 	int first = 1;
 	const jsonObject* snode = NULL;
-	jsonIterator* class_itr = jsonNewIterator( selhash );
-	while( (snode = jsonIteratorNext( class_itr )) ) {        // For each class
+	if (select_buf->n_used == 0) {
 
-		// If the class isn't in the IDL, ignore it
-		const char* cname = class_itr->key;
-		osrfHash* idlClass = osrfHashGet( oilsIDL(), cname );
-		if( !idlClass )
-			continue;
-
-		// If the class isn't the core class, and isn't in the JOIN clause, ignore it
-		if( strcmp( core_class, class_itr->key )) {
-			if( !join_hash )
-				continue;
-
-			jsonObject* found = jsonObjectFindPath( join_hash, "//%s", class_itr->key );
-			if( !found->size ) {
-				jsonObjectFree( found );
-				continue;
-			}
-
-			jsonObjectFree( found );
+		if( !(selhash = jsonObjectGetKey( rest_of_query, "select" )) ) {
+			defaultselhash = jsonNewObjectType( JSON_HASH );
+			selhash = defaultselhash;
 		}
-
-		const jsonObject* node = NULL;
-		jsonIterator* select_itr = jsonNewIterator( snode );
-		while( (node = jsonIteratorNext( select_itr )) ) {
-			const char* item_str = jsonObjectGetString( node );
-			osrfHash* field = osrfHashGet( osrfHashGet( idlClass, "fields" ), item_str );
-			char* fname = osrfHashGet( field, "name" );
-
-			if( !field )
-				continue;
-
-			if (osrfStringArrayContains( osrfHashGet(field, "suppress_controller"), modulename ))
-				continue;
-
-			if( first ) {
-				first = 0;
-			} else {
-				OSRF_BUFFER_ADD_CHAR( select_buf, ',' );
+	
+		// If there's no SELECT list for the core class, build one
+		if( !jsonObjectGetKeyConst( selhash, core_class ) ) {
+			jsonObject* field_list = jsonNewObjectType( JSON_ARRAY );
+	
+			// Add every non-virtual field to the field list
+			osrfHash* field_def = NULL;
+			osrfHashIterator* field_itr = osrfNewHashIterator( fields );
+			while( ( field_def = osrfHashIteratorNext( field_itr ) ) ) {
+				if( ! str_is_true( osrfHashGet( field_def, "virtual" ) ) ) {
+					const char* field = osrfHashIteratorKey( field_itr );
+					jsonObjectPush( field_list, jsonNewObject( field ) );
+				}
 			}
-
-			if( locale ) {
-				const char* i18n;
-				const jsonObject* no_i18n_obj = jsonObjectGetKeyConst( rest_of_query, "no_i18n" );
-				if( obj_is_true( no_i18n_obj ) )    // Suppress internationalization?
-					i18n = NULL;
-				else
-					i18n = osrfHashGet( field, "i18n" );
-
-				if( str_is_true( i18n ) ) {
-					char* pkey = osrfHashGet( idlClass, "primarykey" );
-					char* tname = osrfHashGet( idlClass, "tablename" );
-
-					osrf_buffer_fadd( select_buf, " oils_i18n_xlate('%s', '%s', '%s', "
-							"'%s', \"%s\".%s::TEXT, '%s') AS \"%s\"",
-							tname, cname, fname, pkey, cname, pkey, locale, fname );
+			osrfHashIteratorFree( field_itr );
+			jsonObjectSetKey( selhash, core_class, field_list );
+		}
+	
+		// Build a list of columns for the SELECT clause
+		jsonIterator* class_itr = jsonNewIterator( selhash );
+		while( (snode = jsonIteratorNext( class_itr )) ) {		// For each class
+	
+			// If the class isn't in the IDL, ignore it
+			const char* cname = class_itr->key;
+			osrfHash* idlClass = osrfHashGet( oilsIDL(), cname );
+			if( !idlClass )
+				continue;
+	
+			// If the class isn't the core class, and isn't in the JOIN clause, ignore it
+			if( strcmp( core_class, class_itr->key )) {
+				if( !join_hash )
+					continue;
+	
+				jsonObject* found = jsonObjectFindPath( join_hash, "//%s", class_itr->key );
+				if( !found->size ) {
+					jsonObjectFree( found );
+					continue;
+				}
+	
+				jsonObjectFree( found );
+			}
+	
+			const jsonObject* node = NULL;
+			jsonIterator* select_itr = jsonNewIterator( snode );
+			while( (node = jsonIteratorNext( select_itr )) ) {
+				const char* item_str = jsonObjectGetString( node );
+				osrfHash* field = osrfHashGet( osrfHashGet( idlClass, "fields" ), item_str );
+				char* fname = osrfHashGet( field, "name" );
+	
+				if( !field )
+					continue;
+	
+				if (osrfStringArrayContains( osrfHashGet(field, "suppress_controller"), modulename ))
+					continue;
+	
+				if( first ) {
+					first = 0;
+				} else {
+					OSRF_BUFFER_ADD_CHAR( select_buf, ',' );
+				}
+	
+				if( locale ) {
+					const char* i18n;
+					const jsonObject* no_i18n_obj = jsonObjectGetKeyConst( rest_of_query, "no_i18n" );
+					if( obj_is_true( no_i18n_obj ) )	// Suppress internationalization?
+						i18n = NULL;
+					else
+						i18n = osrfHashGet( field, "i18n" );
+	
+					if( str_is_true( i18n ) ) {
+						char* pkey = osrfHashGet( idlClass, "primarykey" );
+						char* tname = osrfHashGet( idlClass, "tablename" );
+	
+						osrf_buffer_fadd( select_buf, " oils_i18n_xlate('%s', '%s', '%s', "
+								"'%s', \"%s\".%s::TEXT, '%s') AS \"%s\"",
+								tname, cname, fname, pkey, cname, pkey, locale, fname );
+					} else {
+						osrf_buffer_fadd( select_buf, " \"%s\".%s", cname, fname );
+					}
 				} else {
 					osrf_buffer_fadd( select_buf, " \"%s\".%s", cname, fname );
 				}
-			} else {
-				osrf_buffer_fadd( select_buf, " \"%s\".%s", cname, fname );
 			}
+	
+			jsonIteratorFree( select_itr );
 		}
-
-		jsonIteratorFree( select_itr );
+	
+		jsonIteratorFree( class_itr );
 	}
-
-	jsonIteratorFree( class_itr );
 
 	char* col_list = osrf_buffer_release( select_buf );
 	char* table = oilsGetRelation( meta );
@@ -5757,6 +6337,22 @@ static char* buildSELECT ( const jsonObject* search_hash, jsonObject* rest_of_qu
 		clear_query_stack();
 		return NULL;
 	} else {
+		if (various_pcrud_conditions && various_pcrud_conditions->size > 0) {
+			// If we got these, OR them all together and AND that to the generated predicate
+			growing_buffer* pcrud_pred_buf = osrf_buffer_init( 64 );
+			osrf_buffer_add_char(pcrud_pred_buf, '(');
+			int pred_pos = 0;
+			const char* predicate_condition = NULL;
+			while ((predicate_condition = osrfStringArrayGetString(various_pcrud_conditions, pred_pos++))) {
+				if (pred_pos > 1) { // OR between conditions
+					osrf_buffer_add( pcrud_pred_buf, " OR " );
+				}
+				osrf_buffer_add( pcrud_pred_buf, predicate_condition );
+			}
+			osrf_buffer_fadd(pcrud_pred_buf, ") AND %s", pred);
+			free(pred);
+			pred = osrf_buffer_release(pcrud_pred_buf);
+		}
 		osrf_buffer_add( sql_buf, pred );
 		free( pred );
 	}
@@ -6058,15 +6654,31 @@ static jsonObject* doFieldmapperSearch( osrfMethodContext* ctx, osrfHash* class_
 
 	int i_respond_directly = 0;
 	int flesh_depth = 0;
-    int offset = 0;
-    int limit = 0;
-    int can_get_cursor = 0;
-    int cursor_page_size = 100;
+	int offset = 0;
+	int limit = 0;
+	int can_get_cursor = 0;
+	int cursor_page_size = 100;
 
-    if (!cursor_name && need_to_verify) can_get_cursor = 1; // There is no cursor yet, and we are in PCRUD verify mode
-    if (*methodtype != 'r' && can_get_cursor) new_cursor_name = cursor_name = random_cursor_name(); /* Use a cursor for all but .retrieve */
+	if (!cursor_name && need_to_verify) can_get_cursor = retail_vis_test; // There is no cursor yet, and we are in PCRUD verify mode, use a cursor in retail check mode.
+	if (*methodtype != 'r' && can_get_cursor) new_cursor_name = cursor_name = random_cursor_name(); /* Use a cursor for all but .retrieve */
 
-	char* sql = buildSELECT( where_hash, query_hash, class_meta, ctx, new_cursor_name );
+	int local_enforce_pcrud = enforce_pcrud;
+	osrfStringArray* various_pcrud_conditions = NULL;
+	if (enforce_pcrud && !retail_vis_test) { // see if we can use wholesale permission checking WHERE conditions instead of retail checks of each object
+		if (need_to_verify) { // We are NOT in "inside_verify" mode, must test either with conditions, or verifyObjectPCRUD.
+			various_pcrud_conditions = generatePcrudVisibilityConditions(ctx, class_meta);
+			if (various_pcrud_conditions && various_pcrud_conditions->size > 0) { // Even "everyone can see everything" gives us a condition of "TRUE"
+				local_enforce_pcrud = 0;
+			}
+		} else { // We ARE in "inside_verify" mode, don't worry about testing.
+			local_enforce_pcrud = 0;
+		}
+	}
+
+	char* sql = buildSELECT( where_hash, query_hash, class_meta, ctx, new_cursor_name, various_pcrud_conditions );
+
+	osrfStringArrayFree(various_pcrud_conditions);
+
 	if( !sql ) {
 		osrfLogDebug( OSRF_LOG_MARK, "Problem building query, returning NULL" );
 		*err = -1;
@@ -6201,7 +6813,7 @@ static jsonObject* doFieldmapperSearch( osrfMethodContext* ctx, osrfHash* class_
 	// up a rs_size_req_%d, do nothing.
 	//	a. Incidentally, we can also use this opportunity to set i_respond_directly
 	int *rs_size = osrfHashGetFmt( (osrfHash *) ctx->session->userData, "rs_size_req_%d", ctx->request );
-	if( !rs_size ) {	// pointer null, so value not set in hash
+	if( !rs_size && !NO_DIRECT_RESPONSE ) {	// pointer null, so value not set in hash
 		// i_respond_directly can only be true at the /top/ of a recursive search, if even that.
 		i_respond_directly = ( *methodtype == 'r' || *methodtype == 'i' || *methodtype == 's' );
 
@@ -6257,7 +6869,7 @@ static jsonObject* doFieldmapperSearch( osrfMethodContext* ctx, osrfHash* class_
 				jsonObjectFree( row_obj );
 				free( pkey_val );
 			} else {
-				if( !enforce_pcrud || !need_to_verify ||
+				if( !local_enforce_pcrud || !need_to_verify ||
 						verifyObjectPCRUD( ctx, class_meta, row_obj, 0 /* means check user data for rs_size */ )) {
 					if (new_cursor_name) {
 						if (offset > -1 && offset) {
@@ -6631,10 +7243,21 @@ int doUpdate( osrfMethodContext* ctx ) {
 		return -1;
 	}
 
-	if( enforce_pcrud )
-		timeout_needs_resetting = 1;
-
 	osrfHash* meta = osrfHashGet( (osrfHash*) ctx->method->userData, "class" );
+	char* classname = osrfHashGet( meta, "classname" );
+
+	int session_enforce_pcrud = enforce_pcrud;
+	int local_enforce_pcrud = enforce_pcrud;
+	osrfStringArray* various_pcrud_conditions = NULL;
+	if (enforce_pcrud && !retail_vis_test) { // see if we can use wholesale permission checking WHERE conditions instead of retail checks of each object
+		various_pcrud_conditions = generatePcrudVisibilityConditions(ctx, meta);
+		if (various_pcrud_conditions && various_pcrud_conditions->size > 0) { // Even "everyone can see everything" gives us a condition of "TRUE"
+			local_enforce_pcrud = 0;
+		}
+	}
+
+	if( local_enforce_pcrud )
+		timeout_needs_resetting = 1;
 
 	jsonObject* target = NULL;
 	if( enforce_pcrud )
@@ -6642,7 +7265,9 @@ int doUpdate( osrfMethodContext* ctx ) {
 	else
 		target = jsonObjectGetIndex( ctx->params, 0 );
 
+	if (session_enforce_pcrud && !local_enforce_pcrud) enforce_pcrud = 0; // just check the class, not perms here
 	if(!verifyObjectClass( ctx, target )) {
+		if (session_enforce_pcrud && !local_enforce_pcrud) enforce_pcrud = 1; // maybe reset global pcrud flag
 		osrfAppSessionStatus(ctx->session, OSRF_STATUS_BADREQUEST,
 			"osrfMethodException", ctx->request,
 			"Invalid object or insufficient permissions"
@@ -6650,6 +7275,7 @@ int doUpdate( osrfMethodContext* ctx ) {
 		osrfAppRespondComplete( ctx, NULL );
 		return -1;
 	}
+	if (session_enforce_pcrud && !local_enforce_pcrud) enforce_pcrud = 1; // maybe reset global pcrud flag
 
 	if( getXactId( ctx ) == NULL ) {
 		osrfAppSessionStatus(
@@ -6703,7 +7329,7 @@ int doUpdate( osrfMethodContext* ctx ) {
 
 	dbhandle = writehandle;
 	growing_buffer* sql = osrf_buffer_init( 128 );
-	osrf_buffer_fadd( sql,"UPDATE %s SET", osrfHashGet( meta, "tablename" ));
+	osrf_buffer_fadd( sql,"UPDATE %s AS %s SET", osrfHashGet( meta, "tablename" ), classname);
 
 	int first = 1;
 	osrfHash* field_def = NULL;
@@ -6724,7 +7350,7 @@ int doUpdate( osrfMethodContext* ctx ) {
 
 		const jsonObject* field_object = oilsFMGetObject( target, field_name );
 
-		int value_is_numeric = 0;    // boolean
+		int value_is_numeric = 0;	// boolean
 		char* value;
 		if( field_object && field_object->classname ) {
 			value = oilsFMGetString(
@@ -6827,7 +7453,27 @@ int doUpdate( osrfMethodContext* ctx ) {
 	if( strcmp( get_primitive( osrfHashGet( osrfHashGet(meta, "fields"), pkey )), "number" ))
 		dbi_conn_quote_string( dbhandle, &id );
 
-	osrf_buffer_fadd( sql, " WHERE %s = %s;", pkey, id );
+	growing_buffer* pcrud_pred_buf = osrf_buffer_init( 64 );
+	if (various_pcrud_conditions && various_pcrud_conditions->size > 0) {
+		// If we got these, OR them all together and AND that to the generated predicate
+		osrf_buffer_add(pcrud_pred_buf, " AND (");
+		int pred_pos = 0;
+		const char* predicate_condition = NULL;
+		while ((predicate_condition = osrfStringArrayGetString(various_pcrud_conditions, pred_pos++))) {
+			if (pred_pos > 1) { // OR between conditions
+				osrf_buffer_add( pcrud_pred_buf, " OR " );
+			}
+			osrf_buffer_add( pcrud_pred_buf, predicate_condition );
+		}
+		osrf_buffer_add_char(pcrud_pred_buf, ')');
+	}
+	osrfStringArrayFree(various_pcrud_conditions);
+
+	char* pcrud_pred = osrf_buffer_release(pcrud_pred_buf);
+
+	osrf_buffer_fadd( sql, " WHERE %s.%s = %s%s RETURNING *;", classname, pkey, id, pcrud_pred );
+
+	free( pcrud_pred );
 
 	char* query = osrf_buffer_release( sql );
 	osrfLogDebug( OSRF_LOG_MARK, "%s: Update SQL [%s]", modulename, query );
@@ -6836,7 +7482,15 @@ int doUpdate( osrfMethodContext* ctx ) {
 	free( query );
 
 	int rc = 0;
-	if( !result ) {
+	if( result && dbi_result_get_numrows( result ) == 0 ) {
+		osrfAppSessionStatus(ctx->session, OSRF_STATUS_BADREQUEST,
+			"osrfMethodException", ctx->request,
+			"Invalid object or insufficient permissions"
+		);
+		rc = -1;
+		jsonObjectFree( obj );
+		obj = jsonNewObject( NULL );
+	} else if( !result ) {
 		jsonObjectFree( obj );
 		obj = jsonNewObject( NULL );
 		const char* msg;
@@ -6861,8 +7515,9 @@ int doUpdate( osrfMethodContext* ctx ) {
 		if( !oilsIsDBConnected( dbhandle ))
 			osrfAppSessionPanic( ctx->session );
 		rc = -1;
-	} else
-		dbi_result_free( result );
+	}
+
+	if (result) dbi_result_free( result );
 
 	free( id );
 	osrfAppRespondComplete( ctx, obj );
@@ -6876,10 +7531,21 @@ int doDelete( osrfMethodContext* ctx ) {
 		return -1;
 	}
 
-	if( enforce_pcrud )
-		timeout_needs_resetting = 1;
-
 	osrfHash* meta = osrfHashGet( (osrfHash*) ctx->method->userData, "class" );
+	char* classname = osrfHashGet( meta, "classname" );
+
+	int session_enforce_pcrud = enforce_pcrud;
+	int local_enforce_pcrud = enforce_pcrud;
+	osrfStringArray* various_pcrud_conditions = NULL;
+	if (enforce_pcrud && !retail_vis_test) { // see if we can use wholesale permission checking WHERE conditions instead of retail checks of each object
+		various_pcrud_conditions = generatePcrudVisibilityConditions(ctx, meta);
+		if (various_pcrud_conditions && various_pcrud_conditions->size > 0) { // Even "everyone can see everything" gives us a condition of "TRUE"
+			local_enforce_pcrud = 0;
+		}
+	}
+
+	if( local_enforce_pcrud )
+		timeout_needs_resetting = 1;
 
 	if( getXactId( ctx ) == NULL ) {
 		osrfAppSessionStatus(
@@ -6917,7 +7583,14 @@ int doDelete( osrfMethodContext* ctx ) {
 
 	char* id;
 	if( jsonObjectGetIndex( ctx->params, _obj_pos )->classname ) {
+
+		// verifyObjectClass will /also/ verify the object
+		// with verifyObjectPCRUD when the global enforce_pcrud
+		// is true.  We temporarily set it false if we're going
+		// to be using in-query permission checks, as .
+		if (session_enforce_pcrud && !local_enforce_pcrud) enforce_pcrud = 0; // just check the class, not perms here
 		if( !verifyObjectClass( ctx, jsonObjectGetIndex( ctx->params, _obj_pos ))) {
+			if (session_enforce_pcrud && !local_enforce_pcrud) enforce_pcrud = 1;
 			osrfAppSessionStatus(ctx->session, OSRF_STATUS_BADREQUEST,
 				"osrfMethodException", ctx->request,
 				"Invalid object or insufficient permissions"
@@ -6925,10 +7598,11 @@ int doDelete( osrfMethodContext* ctx ) {
 			osrfAppRespondComplete( ctx, NULL );
 			return -1;
 		}
+		if (session_enforce_pcrud && !local_enforce_pcrud) enforce_pcrud = 1; // maybe reset global pcrud flag
 
 		id = oilsFMGetString( jsonObjectGetIndex(ctx->params, _obj_pos), pkey );
 	} else {
-		if( enforce_pcrud && !verifyObjectPCRUD( ctx, meta, NULL, 1 )) {
+		if( local_enforce_pcrud && !verifyObjectPCRUD( ctx, meta, NULL, 1 )) {
 			osrfAppRespondComplete( ctx, NULL );
 			return -1;
 		}
@@ -6949,11 +7623,39 @@ int doDelete( osrfMethodContext* ctx ) {
 	if( strcmp( get_primitive( osrfHashGet( osrfHashGet(meta, "fields"), pkey ) ), "number" ) )
 		dbi_conn_quote_string( writehandle, &id );
 
-	dbi_result result = dbi_conn_queryf( writehandle, "DELETE FROM %s WHERE %s = %s;",
-		osrfHashGet( meta, "tablename" ), pkey, id );
+	growing_buffer* pcrud_pred_buf = osrf_buffer_init( 64 );
+	if (various_pcrud_conditions && various_pcrud_conditions->size > 0) {
+		// If we got these, OR them all together and AND that to the generated predicate
+		osrf_buffer_add(pcrud_pred_buf, " AND (");
+		int pred_pos = 0;
+		const char* predicate_condition = NULL;
+		while ((predicate_condition = osrfStringArrayGetString(various_pcrud_conditions, pred_pos++))) {
+			if (pred_pos > 1) { // OR between conditions
+				osrf_buffer_add( pcrud_pred_buf, " OR " );
+			}
+			osrf_buffer_add( pcrud_pred_buf, predicate_condition );
+		}
+		osrf_buffer_add_char(pcrud_pred_buf, ')');
+	}
+	osrfStringArrayFree(various_pcrud_conditions);
+
+	char* pcrud_pred = osrf_buffer_release(pcrud_pred_buf);
+
+	dbi_result result = dbi_conn_queryf( writehandle, "DELETE FROM %s AS %s WHERE %s.%s = %s%s RETURNING *;",
+		osrfHashGet( meta, "tablename" ), classname, classname, pkey, id, pcrud_pred );
+
+	free( pcrud_pred );
 
 	int rc = 0;
-	if( !result ) {
+	if( dbi_result_get_numrows( result ) == 0 ) {
+		osrfAppSessionStatus(ctx->session, OSRF_STATUS_BADREQUEST,
+			"osrfMethodException", ctx->request,
+			"Invalid object or insufficient permissions"
+		);
+		rc = -1;
+		jsonObjectFree( obj );
+		obj = jsonNewObject( NULL );
+	} else if( !result ) {
 		rc = -1;
 		jsonObjectFree( obj );
 		obj = jsonNewObject( NULL );
@@ -6978,8 +7680,9 @@ int doDelete( osrfMethodContext* ctx ) {
 		);
 		if( !oilsIsDBConnected( writehandle ))
 			osrfAppSessionPanic( ctx->session );
-	} else
-		dbi_result_free( result );
+	}
+
+	if (result) dbi_result_free( result );
 
 	free( id );
 

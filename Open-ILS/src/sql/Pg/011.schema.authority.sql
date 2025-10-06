@@ -285,7 +285,7 @@ CREATE INDEX authority_full_rec_value_tpo_index ON authority.full_rec (SUBSTRING
 /* But we still need this (boooo) for paging using >, <, etc */
 CREATE INDEX authority_full_rec_value_index ON authority.full_rec (SUBSTRING(value FOR 1024));
 
-CREATE RULE protect_authority_rec_delete AS ON DELETE TO authority.record_entry DO INSTEAD (UPDATE authority.record_entry SET deleted = TRUE WHERE OLD.id = authority.record_entry.id; DELETE FROM authority.full_rec WHERE record = OLD.id);
+CREATE RULE protect_authority_rec_delete AS ON DELETE TO authority.record_entry DO INSTEAD (UPDATE authority.record_entry SET deleted = TRUE WHERE OLD.id = authority.record_entry.id RETURNING *; DELETE FROM authority.full_rec WHERE record = OLD.id);
 
 CREATE OR REPLACE FUNCTION authority.extract_thesaurus( marcxml TEXT ) RETURNS TEXT AS $func$
 DECLARE
