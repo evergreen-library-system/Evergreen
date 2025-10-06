@@ -289,10 +289,10 @@ if test "x$openils_core" = "xtrue"; then
 
     #to check for the availability and function of a particular
     #driver we need a runtime check (since the driver is loaded
-    #dynamically). This example checks for the mysql driver
+    #dynamically). This example checks for the pgsql driver
     AC_MSG_CHECKING([for libdbi pgsql driver (dynamic load)])
     AC_RUN_IFELSE(
-      [AC_LANG_PROGRAM(,
+      [AC_LANG_PROGRAM([#include <dbi/dbi.h>],
         [[dbi_initialize(0); return(dbi_conn_new("pgsql") ? 0 : 1);]])],
       [AC_MSG_RESULT("yes")],
       [AC_MSG_FAILURE("pgsql driver not installed?")])
