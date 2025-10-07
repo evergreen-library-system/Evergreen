@@ -137,11 +137,12 @@ export class PatronService {
             this.auth.token(), id, fleshFields).toPromise();
     }
 
-    // Returns a name part (e.g. family_name) with preference for
-    // preferred name value where available.
+    // Returns a trimmed name part (e.g., family_name) preferring the
+    // preferred value when available. Null/undefined/empty become ''.
     namePart(patron: IdlObject, part: string): string {
         if (!patron) { return ''; }
-        return patron['pref_' + part]() || patron[part]();
+        const raw = patron['pref_' + part]() || patron[part]();
+        return (raw && String(raw).trim()) || '';
     }
 
 
