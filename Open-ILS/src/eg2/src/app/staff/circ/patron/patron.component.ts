@@ -366,14 +366,20 @@ export class PatronComponent implements OnInit {
         this.patronId = null;
     }
 
-    patronTitle(prefix = 'Patron', suffix?: string) {
-        if (!this.context.summary) {return;}
+    patronTitle(prefix = 'Patron', suffix?: string): string | void {
+        if (!this.context.summary) { return; }
 
-        const name = this.patronService.namePart(this.context.summary.patron, 'family_name') + ', ' +
-            this.patronService.namePart(this.context.summary.patron, 'first_given_name') + ' ' +
-            this.patronService.namePart(this.context.summary.patron, 'second_given_name');
+        const patron = this.context.summary.patron;
+        const family = this.patronService.namePart(patron, 'family_name');
+        const first  = this.patronService.namePart(patron, 'first_given_name');
+        const middle = this.patronService.namePart(patron, 'second_given_name');
 
-        if (suffix) {return [prefix, name, suffix].join(': ');} else {return [prefix, name].join(': ');}
+        const given = [first, middle].filter(Boolean).join(' ');
+
+        // If both family & given exist: "Family, Given"; otherwise whichever exists.
+        const name = family && given ? `${family}, ${given}` : (family || given);
+
+        return [prefix, name, suffix].filter(Boolean).join(': ');
     }
 }
 
