@@ -66,6 +66,11 @@ export class PatronSearchComponent implements OnInit, AfterViewInit {
     // If set, load a batch of patrons by ID.
     @Input() patronIds: number[];
 
+    // Only allow guaranteed-visible fields to be focused by default.
+    // Options are the DOM ids directly: 'card', 'family_name', 'first_given_name',
+    // 'profile_group', and 'home_ou' (Home Library). Default to 'family_name'.
+    @Input() autofocusField: 'card' | 'family_name' | 'first_given_name' | 'profile_group' | 'home_ou' = 'family_name';
+
     // Fires on dbl-click or Enter while one or more search result
     // rows are selected.
     @Output() patronsActivated: EventEmitter<any>;
@@ -101,7 +106,6 @@ export class PatronSearchComponent implements OnInit, AfterViewInit {
     ) {
         this.patronsActivated = new EventEmitter<any>();
         this.selectionChange = new EventEmitter<number[]>();
-        this.selectionChange = new EventEmitter<number[]>();
         this.searchFired = new EventEmitter<PatronSearch>();
 
         this.dataSource = new GridDataSource();
@@ -136,8 +140,10 @@ export class PatronSearchComponent implements OnInit, AfterViewInit {
     }
 
     ngAfterViewInit() {
-        const node = document.getElementById('card');
-        if (node) { node.focus(); }
+        requestAnimationFrame(() => {
+            const el = document.getElementById(this.autofocusField) as HTMLElement | null;
+            el.focus();
+        });
     }
 
     toggleNameFields() {

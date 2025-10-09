@@ -24,6 +24,10 @@ export class PatronSearchDialogComponent
     // If set, load a batch of patrons by ID.
     @Input() patronIds?: number[];
 
+    // Pass-through autofocus option for the embedded patron search.
+    // Allowed values align with DOM ids that are visible on load.
+    @Input() autofocusField: 'card' | 'family_name' | 'first_given_name' | 'profile_group' | 'home_ou' = 'family_name';
+
     @ViewChild('searchForm', {static: false})
         searchForm: PatronSearchComponent;
 
