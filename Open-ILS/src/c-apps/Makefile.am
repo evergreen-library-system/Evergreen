@@ -58,7 +58,7 @@ liboils_pcrud_la_LDFLAGS = $(AM_LDFLAGS) -loils_utils -module -version-info 2:0:
 liboils_pcrud_la_DEPENDENCIES = liboils_utils.la
 
 liboils_auth_la_SOURCES = oils_auth.c
-liboils_auth_la_LDFLAGS = -module -loils_utils -lpcre -version-info 2:0:0
+liboils_auth_la_LDFLAGS = -module -loils_utils -lpcre2-8 -version-info 2:0:0
 liboils_auth_la_DEPENDENCIES = liboils_utils.la
 
 liboils_auth_internal_la_SOURCES = oils_auth_internal.c

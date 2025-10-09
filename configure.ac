@@ -311,7 +311,7 @@ if test "x$openils_core" = "xtrue"; then
     AC_CHECK_LIB([hiredis], [redisConnect], [], AC_MSG_ERROR(***OpenSRF requires libhiredis))
     AC_CHECK_LIB([xslt], [main], [], AC_MSG_ERROR(*** OpenILS requires libxslt))
     AC_CHECK_LIB([pq], [main], [], AC_MSG_ERROR(*** OpenILS requires libpq))
-    PKG_CHECK_MODULES(pcre, libpcre >= 3.0.0)
+    PKG_CHECK_MODULES(pcre2, libpcre2-8 >= 10.0.0)
 
 
     #------------------------------------

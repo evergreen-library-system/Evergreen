@@ -70,7 +70,7 @@ export DEBS = \
 	libparent-perl\
 	libpq5\
 	libpq-dev\
-	libpcre3-dev\
+	libpcre2-dev\
 	librpc-xml-perl\
 	libsru-perl\
 	libssh2-1-dev\

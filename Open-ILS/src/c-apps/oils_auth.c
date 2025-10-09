@@ -6,7 +6,9 @@
 #include "openils/oils_utils.h"
 #include "openils/oils_constants.h"
 #include "openils/oils_event.h"
-#include <pcre.h>
+
+#define PCRE2_CODE_UNIT_WIDTH 8
+#include <pcre2.h>
 
 #define OILS_AUTH_CACHE_PRFX "oils_auth_"
 #define OILS_AUTH_COUNT_SFFX "_count"
@@ -359,48 +361,43 @@ static int oilsAuthIdentIsBarcode(const char* identifier, int org_id) {
     if (org_id < 1)
         org_id = oilsUtilsGetRootOrgId();
 
-    char* bc_regex = oilsUtilsFetchOrgSetting(org_id, "opac.barcode_regex");
+    PCRE2_SPTR bc_regex = (PCRE2_SPTR) oilsUtilsFetchOrgSetting(org_id, "opac.barcode_regex");
 
     if (!bc_regex) {
         // if no regex is set, assume any identifier starting
         // with a number is a barcode.
-        bc_regex = strdup("^\\d"); // dupe for later free'ing
+        bc_regex = (PCRE2_SPTR) strdup("^\\d"); // dupe for later free'ing
     }
 
-    const char *err_str;
-    int err_offset, match_ret;
+    int err_number;
+    PCRE2_SIZE err_offset;
 
-    pcre *compiled = pcre_compile(
-        bc_regex, 0, &err_str, &err_offset, NULL);
+    pcre2_code *compiled = pcre2_compile(bc_regex, PCRE2_ZERO_TERMINATED,
+                                         0, &err_number, &err_offset, NULL);
 
     if (compiled == NULL) {
-        osrfLogError(OSRF_LOG_MARK,
-            "Could not compile '%s': %s", bc_regex, err_str);
-        free(bc_regex);
-        pcre_free(compiled);
+        PCRE2_UCHAR err_str[256];
+        pcre2_get_error_message(err_number, err_str, sizeof(err_str));
+        osrfLogError(OSRF_LOG_MARK, "Could not compile '%s': %s",
+                     (char *) bc_regex, (char *) err_str);
+        free((void *)bc_regex);
+        pcre2_code_free(compiled);
         return 0;
     }
 
-    pcre_extra *extra = pcre_study(compiled, 0, &err_str);
+    pcre2_match_data *match_data = pcre2_match_data_create_from_pattern(compiled, NULL);
 
-    if(err_str != NULL) {
-        osrfLogError(OSRF_LOG_MARK,
-            "Could not study regex '%s': %s", bc_regex, err_str);
-        free(bc_regex);
-        pcre_free(compiled);
-        return 0;
-    } 
+    int match_ret = pcre2_match(compiled, (PCRE2_SPTR) identifier,
+                                (PCRE2_SIZE) sizeof(identifier), 0, 0,
+                                match_data, NULL);
 
-    match_ret = pcre_exec(
-        compiled, extra, identifier, strlen(identifier), 0, 0, NULL, 0);       
-
-    free(bc_regex);
-    pcre_free(compiled);
-    if (extra) pcre_free(extra);
+    free((void *)bc_regex);
+    pcre2_code_free(compiled);
+    pcre2_match_data_free(match_data);
 
     if (match_ret >= 0) return 1; // regex matched
 
-    if (match_ret != PCRE_ERROR_NOMATCH) 
+    if (match_ret != PCRE2_ERROR_NOMATCH)
         osrfLogError(OSRF_LOG_MARK, "Unknown error processing barcode regex");
 
     return 0; // regex did not match
