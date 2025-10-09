@@ -13,7 +13,11 @@
       <div class="row d-flex p-3">
         <div class="col">
           <span i18n>
-            Note for patron <b>{{patron?.family_name()}}, {{patron?.first_given_name()}}</b>
+            Note for patron
+            <b>
+              {{patron?.pref_family_name() || patron?.family_name()}},
+              {{patron?.pref_first_given_name() || patron?.first_given_name()}}
+            </b>
           </span>
         </div>
       </div>
