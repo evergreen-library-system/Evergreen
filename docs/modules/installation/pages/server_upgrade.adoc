@@ -8,11 +8,12 @@ All of the steps in this chapter are to be completed from the command line.
 
   * **PostgreSQL**: The minimum supported version is 13.
   * **Linux**: Evergreen 3.X.X has been tested on Debian Buster
-    (10.0), Debian Bullseye (11.0), Debian Bookworm (11.0), 
-    Ubuntu Jammy Jellyfish (22.04), and Ubuntu Noble Numbat (24.04).
-    If you are running an older version of these distributions, you 
-    may want to upgrade before upgrading Evergreen. For instructions
-    on upgrading these distributions, visit the Debian or Ubuntu websites.
+    (10.0), Debian Bullseye (11.0), Debian Bookworm (12.0),
+    Debian Trixie (13.0), Ubuntu Jammy Jellyfish (22.04), and
+    Ubuntu Noble Numbat (24.04). If you are running an older version
+    of these distributions, you may want to upgrade before upgrading
+    Evergreen. For instructions on upgrading these distributions,
+    visit the Debian or Ubuntu websites.
 * **OpenSRF**: The minimum supported version of OpenSRF is 3.3.0.
 
 
@@ -70,6 +71,7 @@ indexterm:[Linux, Ubuntu]
   * `debian-buster` for Debian Buster (10.0)
   * `debian-bullseye` for Debian Bullseye (11.0)
   * `debian-bookworm` for Debian Bookworm (12.0)
+  * `debian-trixie` for Debian Trixie (13.0)
   * `ubuntu-jammy` for Ubuntu Jammy Jellyfish (22.04)
   * `ubuntu-noble` for Ubuntu Noble Numbat (24.04)
 

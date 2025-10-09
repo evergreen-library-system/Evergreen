@@ -51,6 +51,7 @@ autoreconf -i
 
   * **PostgreSQL**: The minimum supported version is 13.
   * **Linux**: Evergreen has been tested on
+    Debian Trixie (13),
     Debian Bookworm (12),
     Debian Bullseye (11),
     Debian Buster (10), 
@@ -378,7 +379,7 @@ a2ensite eg.conf
 +
 . As the *root* Linux account, enable Apache to write
    to the lock directory; this is currently necessary because Apache
-   is running as the `opensrf` user:
+   is running as the `opensrf` user: (*You may skip this step on Debian 13.*)
 +
 [source,bash]
 ------------------------------------------------------------------------------
@@ -510,6 +511,7 @@ jit_above_cost = -1
 
 [source, bash]
 ------------------------------------------------------------------------------
+make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-trixie-13
 make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-bookworm-13
 make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-bullseye-13
 make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-buster-13
@@ -532,6 +534,7 @@ jit_above_cost = -1
 
 [source, bash]
 ------------------------------------------------------------------------------
+make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-trixie-14
 make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-bookworm-14
 make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-bullseye-14
 make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-buster-14
@@ -554,6 +557,7 @@ jit_above_cost = -1
 
 [source, bash]
 ------------------------------------------------------------------------------
+make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-trixie-15
 make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-bookworm-15
 make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-bullseye-15
 make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-buster-15
@@ -576,6 +580,7 @@ jit_above_cost = -1
 
 [source, bash]
 ------------------------------------------------------------------------------
+make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-trixie-16
 make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-bookworm-16
 make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-bullseye-16
 make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-buster-16
@@ -598,6 +603,7 @@ jit_above_cost = -1
 
 [source, bash]
 ------------------------------------------------------------------------------
+make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-trixie-17
 make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-bookworm-17
 make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-bullseye-17
 make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-buster-17
