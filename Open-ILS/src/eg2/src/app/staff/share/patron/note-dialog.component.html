@@ -92,9 +92,21 @@
       <div class="form-group row pad-vert">
         <div class="col-md-12">
           <label class="form-label" for="note_title" i18n>Note Title</label>
-          <textarea class="form-control" id="note_title" name="title" [(ngModel)]="title"
+          <textarea class="form-control" id="note_title" name="title" [(ngModel)]="title" required #titleModel="ngModel"
+            [class.is-invalid]="titleModel.invalid && titleModel.touched"
             [disabled]="readOnly || (note?.pub() && note.read_date()) || note?.isdeleted() || note?.stop_date()">
           </textarea>
+        </div>
+      </div>
+      <div class="form-group row pad-vert" *ngIf="requireInitials">
+        <div class="col-md-6">
+          <label class="form-label" for="note_initials" i18n>Staff Initials</label>
+     <input class="form-control" id="note_initials" name="initials"
+       [(ngModel)]="initials" (ngModelChange)="onInitialsInput($event)"
+       required #initialsModel="ngModel"
+       maxlength="3" pattern="^[A-Z]{1,3}$"
+       [class.is-invalid]="initialsModel.invalid && initialsModel.touched"
+       placeholder="ABC">
         </div>
       </div>
       <div class="form-group row pad-vert">
@@ -115,8 +127,8 @@
       <ng-container *ngIf="dataLoaded">
         <button type="button" class="btn btn-normal" 
                               (click)="close()" i18n>Cancel</button>
-        <button type="button" class="btn btn-primary ms-auto" 
-                              [disabled]="readOnly || !title" (click)="apply()" i18n>Save</button>
+  <button type="button" class="btn btn-primary ms-auto" 
+            [disabled]="readOnly || fmEditForm.invalid" (click)="apply()" i18n>Save</button>
         
       </ng-container>
     </div>

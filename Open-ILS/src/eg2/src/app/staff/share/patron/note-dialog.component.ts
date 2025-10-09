@@ -47,6 +47,8 @@ export class PatronNoteDialogComponent
     pub = false;
     title = '';
     message = '';
+    initials = '';
+    requireInitials = false;
 
     /* eslint-disable no-magic-numbers */
     ALERT_NOTE = 20;
@@ -108,6 +110,14 @@ export class PatronNoteDialogComponent
         this.subscription.unsubscribe(); // Clean up the subscription to avoid memory leaks
     }
 
+    // Coerce initials to up to 3 uppercase letters only
+    onInitialsInput(val: string) {
+        const cleaned = (val || '').toUpperCase().replace(/[^A-Z]/g, '').slice(0, 3);
+        if (cleaned !== this.initials) {
+            this.initials = cleaned;
+        }
+    }
+
     init(): Observable<any> {
 
         console.debug('NoteDialogComponent: init()');
@@ -119,7 +129,20 @@ export class PatronNoteDialogComponent
         const obs1 = this.pcrud.retrieve('au', this.patronId)
             .pipe(tap(usr => this.patron = usr));
 
+        // Load org setting for requiring initials on notes/penalties
+        const obsSettings = from(
+            this.org.settings([
+                'ui.staff.require_initials.patron_standing_penalty'
+            ])
+        ).pipe(tap(settings => {
+            // Single authoritative setting controls initials requirement
+            this.requireInitials = Boolean(
+                settings['ui.staff.require_initials.patron_standing_penalty']
+            );
+        }));
+
         const obs2 = obs1.pipe(
+            switchMap(() => obsSettings),
             switchMap(_ => {
                 console.debug('NoteDialogComponent: init(), first switchMap');
                 // Check if penaltyTypes is already loaded and includes the current note's penalty type if applicable
@@ -403,13 +426,23 @@ export class PatronNoteDialogComponent
         const msg = {};
         if (this.idl.toBoolean( this.note.isnew() )) {
             msg['title'] = this.title;
-            msg['message'] = this.message;
+            // Append initials if required / provided
+            let composedMessage = this.message || '';
+            if (this.initials) {
+                // Mimic legacy format: append initials in brackets; keep minimalist implementation
+                composedMessage = `${composedMessage}${composedMessage ? ' ' : ''}[${this.initials}]`;
+            }
+            msg['message'] = composedMessage;
             msg['pub'] = this.pub;
             msg['sending_lib'] = this.auth.user().ws_ou();
             msg['org_unit'] = this.usr_message?.sending_lib() ?? msg['sending_lib'];
         } else {
             this.usr_message.title( this.title );
-            this.usr_message.message( this.message ? this.message : '' );
+            let composedMessage = this.message ? this.message : '';
+            if (this.initials) {
+                composedMessage = `${composedMessage}${composedMessage ? ' ' : ''}[${this.initials}]`;
+            }
+            this.usr_message.message( composedMessage );
             this.usr_message.pub( this.idl.toBoolean( this.pub ) );
             this.usr_message.usr( this.patronId );
             this.usr_message.sending_lib( this.auth.user().ws_ou() );
@@ -439,8 +472,9 @@ export class PatronNoteDialogComponent
         ).subscribe(resp => {
             const e = this.evt.parse(resp);
             if (e) {
+                // Keep dialog open and preserve user input
                 this.errorMsg.current().then(m => this.toast.danger(m));
-                this.error(e, true);
+                return; // do not close
             } else {
                 // resp == penalty ID on success
                 this.successMsg.current().then(m => this.toast.success(m));
@@ -453,6 +487,7 @@ export class PatronNoteDialogComponent
     clear_fields() {
         this.title = this.defaultTitle ?? '';
         this.message = this.defaultMessage ?? '';
+        this.initials = '';
         this.pub = this.defaultPub ?? false;
         if (this.orgId) {
             this.org_unit = this.org.get(this.orgId);
