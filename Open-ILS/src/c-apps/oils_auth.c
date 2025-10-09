@@ -397,8 +397,12 @@ static int oilsAuthIdentIsBarcode(const char* identifier, int org_id) {
 
     if (match_ret >= 0) return 1; // regex matched
 
-    if (match_ret != PCRE2_ERROR_NOMATCH)
-        osrfLogError(OSRF_LOG_MARK, "Unknown error processing barcode regex");
+    if (match_ret != PCRE2_ERROR_NOMATCH) {
+        PCRE2_UCHAR err_str[256];
+        pcre2_get_error_message(match_ret, err_str, sizeof(err_str));
+        osrfLogError(OSRF_LOG_MARK, "Error processing barcode regex: %s",
+                     (char *) err_str);
+    }
 
     return 0; // regex did not match
 }
