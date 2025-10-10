@@ -14,6 +14,7 @@ interface PcrudReqOps {
     authoritative?: boolean;
     anonymous?: boolean;
     idlist?: boolean;
+    count_only?: boolean;
     atomic?: boolean;
     // If true, link-type fields which link to a class that defines a
     // selector will be fleshed with the linked value.  This affects
@@ -165,7 +166,12 @@ export class PcrudContext {
         reqOps = reqOps || {};
         this.authoritative = reqOps.authoritative || false;
 
-        const returnType = reqOps.idlist ? 'id_list' : 'search';
+        let returnType = reqOps.idlist ? 'id_list' : 'search';
+        if (reqOps.count_only) {
+            returnType = 'count';
+            reqOps.atomic = reqOps.fleshSelectors = false;
+        }
+
         let method = `open-ils.pcrud.${returnType}.${fmClass}`;
 
         if (reqOps.atomic) { method += '.atomic'; }

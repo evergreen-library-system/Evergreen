@@ -67,28 +67,13 @@ export class BucketService {
             item.target_biblio_record_entry(itemId);
             items.push(item);
         });
-        const requestObs = this.net.request(
-            'open-ils.actor',
-            'open-ils.actor.container.item.create',
-            this.auth.token(),
-            'biblio',
-            items
-        );
-
-        return lastValueFrom(requestObs);
+        return this.pcrud.create(items).toPromise().then(l => l.map(i => i.id()));
     }
 
     async removeBibsFromRecordBucket(bucketId: number, bibIds: number[]): Promise<any> {
-        const requestObs = this.net.request(
-            'open-ils.actor',
-            'open-ils.actor.container.item.delete.batch',
-            this.auth.token(),
-            'biblio_record_entry',
-            bucketId,
-            bibIds
-        );
-
-        return lastValueFrom(requestObs);
+        return this.pcrud.search(
+            'cbrebi', { bucket: bucketId, target_biblio_record_entry: bibIds }, {}, {atomic: true}
+        ).toPromise().then(entries => this.pcrud.remove(entries).toPromise());
     }
 
     async retrieveRecordBuckets(bucketIds: number[]): Promise<any[]> {

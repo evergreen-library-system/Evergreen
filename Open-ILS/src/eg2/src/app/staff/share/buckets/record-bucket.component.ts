@@ -132,12 +132,15 @@ export class RecordBucketComponent implements OnInit, OnDestroy {
     }
 
     search_or_count(justCount, hint, query, pcrudOps, pcrudReqOps): Observable<number | any[]>  {
-        if (justCount) {
-            return this.net.request('open-ils.actor', 'open-ils.actor.count_with_pcrud.authoritative',
-                this.auth.token(), hint, query);
-        } else {
-            return this.pcrud.search(hint, query, pcrudOps, pcrudReqOps);
+        if (!justCount) {
+            let query_filters = this.extractGridFitlers();
+
+            if (query_filters.length > 0) {
+                query['-and'] = query_filters;
+            }
         }
+
+        return this.pcrud.search(hint, {...query, btype: { '!=': 'temp' }}, pcrudOps, {...pcrudReqOps, count_only : justCount});
     }
 
     initViews() {
@@ -152,7 +155,7 @@ export class RecordBucketComponent implements OnInit, OnDestroy {
                     let result: BucketQueryResult;
                     const response  = await lastValueFrom(
                         this.search_or_count(justCount, 'cbreb',
-                            { id: { '!=' : null } },
+                            { owner: { '!=' : this.userId || this.auth.user().id() }, pub: 't' },
                             {
                                 ...(pager?.limit && { limit: pager.limit }),
                                 ...(pager?.offset && { offset: pager.offset }),
@@ -288,11 +291,21 @@ export class RecordBucketComponent implements OnInit, OnDestroy {
                     console.debug('translatedSort', translatedSort);
                     let result: BucketQueryResult;
                     const response  = await lastValueFrom(
-                        justCount
-                            ? this.net.request( 'open-ils.actor',
-                                'open-ils.actor.container.retrieve_biblio_record_entry_buckets_shared_with_others.count', this.auth.token())
-                            : this.net.request( 'open-ils.actor',
-                                'open-ils.actor.container.retrieve_biblio_record_entry_buckets_shared_with_others', this.auth.token())
+                        this.search_or_count(justCount, 'cbreb',
+                            { owner: { '=' : this.userId || this.auth.user().id() }, '-or': [
+                                {'-exists':{from:'cbrebs',where:{bucket:{'=':{'+cbreb':'id'}}}}},
+                                {'-exists':{from:'puopm',where:{
+                                    object_type:"cbreb",
+                                    "+cbreb":{id:{"=":{transform:"text",value:{"+puopm":"object_id"}}}}}}
+                                }
+                            ]},
+                            {
+                                ...(pager?.limit && { limit: pager.limit }),
+                                ...(pager?.offset && { offset: pager.offset }),
+                                ...(translatedSort && translatedSort),
+                            },
+                            { idlist: true, atomic: true }
+                        )
                     );
                     if (justCount) {
                         result = { bucketIds: [], count: response as number };
@@ -314,11 +327,15 @@ export class RecordBucketComponent implements OnInit, OnDestroy {
                     console.debug('translatedSort', translatedSort);
                     let result: BucketQueryResult;
                     const response  = await lastValueFrom(
-                        justCount
-                            ? this.net.request('open-ils.actor',
-                                'open-ils.actor.container.retrieve_biblio_record_entry_buckets_shared_with_user.count', this.auth.token())
-                            : this.net.request('open-ils.actor',
-                                'open-ils.actor.container.retrieve_biblio_record_entry_buckets_shared_with_user', this.auth.token())
+                        this.search_or_count(justCount, 'cbreb',
+                            { owner: { '!=' : this.userId || this.auth.user().id() }, pub: 'f' },
+                            {
+                                ...(pager?.limit && { limit: pager.limit }),
+                                ...(pager?.offset && { offset: pager.offset }),
+                                ...(translatedSort && translatedSort),
+                            },
+                            { idlist: true, atomic: true }
+                        )
                     );
                     if (justCount) {
                         result = { bucketIds: [], count: response as number };
@@ -353,15 +370,17 @@ export class RecordBucketComponent implements OnInit, OnDestroy {
 
         const viewKeys = this.getViewKeys();
 
-        try {
-            viewKeys.forEach( v => { this.views[v].count = -1; } );
-            // Wait for all bucketIdQuery operations for counting to complete
-            await Promise.all(viewKeys.map(v => this.views[v].bucketIdQuery(null, [], true)));
-        } catch (error) {
-            console.error('Error updating counts:', error);
-        }
-        this.countInProgress = false;
-        console.warn('countInProgress = false');
+        viewKeys.forEach( v => { this.views[v].count = -1; } );
+
+        // Wait for all bucketIdQuery operations for counting to complete
+        Promise.all(
+            viewKeys.map(v => this.views[v].bucketIdQuery(null, [], true))
+        ).catch(
+            error => console.error('Error updating counts:', error)
+        ).finally( () => {
+            this.countInProgress = false;
+            console.warn('countInProgress = false');
+        });
     }
 
     getViewKeys(): string[] {
@@ -458,12 +477,16 @@ export class RecordBucketComponent implements OnInit, OnDestroy {
         console.debug('switchTo', source);
         this.currentView = source;
         this.router.navigate([this.mapDatasourceToUrl(source)], { relativeTo: this.route.parent });
-        if (!this.initInProgress) {
-            this.grid.reload();
-            this.updateCounts();
-        }
+        // router navigation causes a grid refresh
     }
 
+    extractGridFitlers() {
+        let query_filters = [];
+        Object.keys(this.dataSource.filters).forEach(key => {
+            query_filters = query_filters.concat(this.dataSource.filters[key]);
+        });
+        return query_filters;
+    }
 
     buildRetrieveByIdsQuery(bucketIds: number[]) {
         console.debug('buildRetrieveByIdsQuery, bucketIds', bucketIds);
@@ -473,10 +496,7 @@ export class RecordBucketComponent implements OnInit, OnDestroy {
         // query something even if no ids to avoid exception
         query['id'] = bucketIds.length === 0 ? [-1] : bucketIds.map( b => this.idl.pkeyValue(b) );
 
-        let query_filters = [];
-        Object.keys(this.dataSource.filters).forEach(key => {
-            query_filters = query_filters.concat(this.dataSource.filters[key]);
-        });
+        let query_filters = this.extractGridFitlers();
 
         if (query_filters.length > 0) {
             query['-and'] = query_filters;

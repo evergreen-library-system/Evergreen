@@ -164,6 +164,7 @@ CREATE TABLE container.biblio_record_entry_bucket (
 	create_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
 	CONSTRAINT breb_name_once_per_owner UNIQUE (owner,name,btype)
 );
+CREATE INDEX cbreb_pub_owner_not_temp_idx ON container.biblio_record_entry_bucket (pub,owner) WHERE btype != 'temp';
 
 CREATE TABLE container.biblio_record_entry_bucket_shares (
     id          SERIAL      PRIMARY KEY,

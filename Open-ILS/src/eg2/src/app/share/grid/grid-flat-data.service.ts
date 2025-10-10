@@ -6,7 +6,12 @@ import {GridContext, GridColumnSort} from './grid';
 import {Pager} from '@eg/share/util/pager';
 
 interface FlatQueryFields {
-    [name: string]: string;
+    [name:string] : {
+        path: string,
+        sort?: boolean,
+        filter?: boolean,
+        display?: boolean
+    };
 }
 
 
@@ -27,11 +32,19 @@ export class GridFlatDataService {
         }
 
         const fields = this.compileFields(gridContext);
+
         const flatSort = sort.map(s => {
             const obj: any = {};
             obj[s.name] = s.dir;
+            fields[s.name].sort = true;
             return obj;
         });
+
+        if (query && query['-and']) {
+            query['-and'].forEach(col => {
+                Object.keys(col).forEach(k => fields[k].filter = true)
+            });
+        }
 
         return this.net.request(
             'open-ils.fielder',
@@ -52,7 +65,14 @@ export class GridFlatDataService {
             // Verify the column describes a proper IDL field
             const path = col.path || col.name;
             const info = gridContext.columnSet.idlInfoFromDotpath(path);
-            if (info) { fields[col.name] = path; }
+            if (info) {
+                fields[col.name] = {
+                    path   : path,
+                    display: true,
+                    sort   : false,
+                    filter : false
+                };
+            }
         });
 
         return fields;
