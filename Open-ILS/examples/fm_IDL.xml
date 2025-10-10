@@ -9050,19 +9050,19 @@ SELECT  usr,
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
-				<retrieve permission="CREATE_BIB_BUCKET ADMIN_BIB_BUCKET VIEW_CONTAINER">
-					<context delegate="bucket" field="owning_lib" owning_user="owner"/>
-					<context delegate="bucket" jump="share_maps" field="share_org"/>
-				</retrieve>
-				<create permission="CREATE_BIB_BUCKET ADMIN_BIB_BUCKET UPDATE_CONTAINER">
+				<create permission="CREATE_BIB_BUCKET ADMIN_BIB_BUCKET CREATE_CONTAINER_ITEM UPDATE_CONTAINER">
 					<context delegate="bucket" field="owning_lib" owning_user="owner"/>
 					<context delegate="bucket" jump="share_maps" field="share_org"/>
 				</create>
+				<retrieve permission="CREATE_BIB_BUCKET ADMIN_BIB_BUCKET VIEW_CONTAINER UPDATE_CONTAINER">
+					<context delegate="bucket" field="owning_lib" owning_user="owner"/>
+					<context delegate="bucket" jump="share_maps" field="share_org"/>
+				</retrieve>
 				<update permission="CREATE_BIB_BUCKET ADMIN_BIB_BUCKET UPDATE_CONTAINER">
 					<context delegate="bucket" field="owning_lib" owning_user="owner"/>
 					<context delegate="bucket" jump="share_maps" field="share_org"/>
 				</update>
-				<delete permission="CREATE_BIB_BUCKET ADMIN_BIB_BUCKET UPDATE_CONTAINER">
+				<delete permission="CREATE_BIB_BUCKET ADMIN_BIB_BUCKET DELETE_CONTAINER_ITEM UPDATE_CONTAINER">
 					<context delegate="bucket" field="owning_lib" owning_user="owner"/>
 					<context delegate="bucket" jump="share_maps" field="share_org"/>
 				</delete>
