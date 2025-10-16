@@ -1190,7 +1190,7 @@ export class ReporterService {
         templ.filterFields.forEach((el, idx) => {
             if (isSimple || !el.with_value_input) {
                 rrData[el.filter_placeholder] = el.force_filtervalues ? el.force_filtervalues : el.filter_value;
-                if (el.datatype === 'org_unit' && el.operator.name === '= any') { // special case for org selector
+                if (typeof rrData[el.filter_placeholder] === 'string' && el.datatype === 'org_unit' && el.operator.name === '= any') { // special case for org selector
                     const final_value = { transform: 'Bare', params: rrData[el.filter_placeholder] };
                     final_value['_org_family_primaryOrgId'] = el._org_family_primaryOrgId;
                     final_value['_org_family_includeAncestors'] = el._org_family_includeAncestors;
