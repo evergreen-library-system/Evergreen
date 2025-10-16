@@ -1,6 +1,6 @@
 BEGIN;
 
--- SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1490', :eg_version);
 
 CREATE TYPE asset.holdable_part_count AS (id INT, label TEXT, holdable_count BIGINT);
 CREATE OR REPLACE FUNCTION asset.count_holdable_parts_on_record (record_id BIGINT, pickup_lib INT DEFAULT NULL) RETURNS SETOF asset.holdable_part_count AS $func$
