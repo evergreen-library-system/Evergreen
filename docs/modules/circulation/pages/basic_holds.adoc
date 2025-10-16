@@ -858,7 +858,7 @@ the *Hold Groups* option won't appear in their OPAC account menu.
 
 indexterm:[Reset, Retarget, Reset Reason]
 
-Hold reset reasons allow staff to see when and why a hold request has been reset. Reset reasons are generated any time a hold has been reset, whether that's a manual reset from a staff member or automatically because a hold has reached the hold retarget interval. This can be very useful for debugging the hold targeter or identifying bad actors in the system.
+Hold reset reasons allow staff to see when and why a hold request has been reset. Reset reasons are generated any time a hold has been reset, whether that's a manual reset from a staff member (i.e.: retarget hold) or automatically because a hold has reached the hold retarget interval. This can be very useful for debugging the hold targeter or identifying bad actors in the system.
 
 === Types of Reset Reasons
 There are ten different types of reset reasons that can be identified.
@@ -881,6 +881,11 @@ Staff can view reset reasons for a hold via a patron's *holds* tab.
 . Click *holds* tab.
 . Select a hold to investigate.
 . Click *detail view*.
++
+image::hold_management/holds-detail-view.png[Detail View button in Holds]
++
 . Click *Reset Entries*
++
+image::hold_management/reset-entries.png[Reset Entries Tab]
 . Order can be reversed to show most recent resets first.
 
