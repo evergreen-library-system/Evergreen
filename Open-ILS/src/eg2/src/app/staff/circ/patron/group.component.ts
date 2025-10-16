@@ -28,6 +28,7 @@ export class PatronGroupComponent implements OnInit {
     totalOwed = 0;
     totalOut = 0;
     totalOverdue = 0;
+    totalLost = 0;
     usergroup: number;
 
     cellTextGenerator: GridCellTextGenerator;
@@ -76,10 +77,12 @@ export class PatronGroupComponent implements OnInit {
             {authoritative: true})
             .pipe(concatMap(u => {
 
+                u.home_ou(this.org.get(u.home_ou()));
                 const promise = this.patronService.getVitalStats(u)
                     .then(stats => {
                         this.totalOwed += stats.fines.balance_owed;
                         this.totalOut += stats.checkouts.total_out;
+                        this.totalLost += stats.checkouts.lost;
                         this.totalOverdue += stats.checkouts.overdue;
                         u._stats = stats;
                         this.patrons.push(u);
