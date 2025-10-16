@@ -7,6 +7,8 @@
   <div class="pad-horiz">{{totals.total_out}}</div>
   <div>[% l('Total Overdue: ') %]</div>
   <div class="pad-horiz">{{totals.overdue}}</div>
+  <div>[% l('Total Lost: ') %]</div>
+  <div class="pad-horiz">{{totals.lost}}</div>
 </div>
 <div class="pad-vert"></div>
 <eg-grid
@@ -42,10 +44,15 @@
   <eg-grid-field path="stats.fines.balance_owed" nonsortable label="[% l('Balance Owed') %]"></eg-grid-field>
   <eg-grid-field path="stats.checkouts.out" nonsortable label="[% l('Items Out') %]"></eg-grid-field>
   <eg-grid-field path="stats.checkouts.overdue" nonsortable label="[% l('Items Overdue') %]"></eg-grid-field>
+  <eg-grid-field path="stats.checkouts.lost" nonsortable label="[% l('Items Lost') %]"></eg-grid-field>
   <eg-grid-field path="pref_family_name" hidden></eg-grid-field>
   <eg-grid-field path="pref_first_given_name" hidden></eg-grid-field>
   <eg-grid-field path="pref_second_given_name" hidden></eg-grid-field>
-  <eg-grid-field path="expire_date" dateformat="{{$root.egDateFormat}}" datatype="timestamp" hidden></eg-grid-field>
+  <eg-grid-field path="expire_date" dateformat="{{$root.egDateFormat}}" datatype="timestamp" hidden required></eg-grid-field>
+  <eg-grid-field path="usrname" hidden required></eg-grid-field>
+  <eg-grid-field path="card.barcode" label="[% l('Current Library Card') %]" hidden required></eg-grid-field>
+  <eg-grid-field path="home_ou.shortname" label="[% l('Home Library') %]" hidden required></eg-grid-field>
+  <eg-grid-field path="alias" hidden required></eg-grid-field>
   <!-- needed for query, sorting -->
   <eg-grid-field path="id" hidden required></eg-grid-field>
   <eg-grid-field path="usrgroup" hidden required></eg-grid-field>
