@@ -375,7 +375,7 @@ xref:#_settings_overview[Return to Settings Overview]
 |Default hold shelf expire interval|Hold Shelf Expiry Time is calculated and inserted into hold record based on this interval when capturing a hold.|Duration|
 |Expire alert interval|Time before a hold expires at which to send an email notifying the patron|Duration|
 |Expire interval|Amount of time until an unfulfilled hold expires|Duration|
-|FIFO|Force holds to a more strict First-In, First-Out capture. Default is SAVE-GAS, which gives priority to holds with pickup location the same as checkin library.|True/False|Applies only to multi-branch libraries. Default is SAVE-GAS.
+|FIFO|Force holds to a more strict First-In, First-Out capture. This setting is deprecated in favor of using the setting "Best-hold selection sort order."|True/False|This setting is deprecated in favor of using the setting "Best-hold selection sort order."
 |Hard boundary|Limit holds to copies within this "organizational depth" boundary value 
   relative to the org_unit named in the context location in the library settings editor.|Number|0 = everyone shares, higher numbers are more limiting.
 |Hard stalling interval||Duration|
