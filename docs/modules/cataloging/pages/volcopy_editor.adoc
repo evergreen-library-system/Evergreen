@@ -51,9 +51,11 @@ image::volcopy_editor/holdings_editor.png[Holdings Editor]
 
 The Holdings Editor is where you can create or edit one or several items and call numbers. Call numbers are owned by an Organizational Unit, and items are individual items associated with a call number and Organizational Unit.
 
+The Holdings Editor will also display call number-level data such as call number prefixes and suffixes, and these affixes can be saved in a holdings template.
+
 To change an item attribute, click on the attribute. Depending on the attribute, you will have a dropdown (which allows typeaheads), a numeric area, a text area, or a modal. Once you have made your edits to the field, click _Apply_. The styling of the field will change to show that edits are pending. Once you have finished making edits, select either _Apply All & Save_ if you wish to make more changes, or _Apply All, Save & Exit_ if you wish to save and close the Holdings Editor.
 
-image::volcopy_editor/holdings_editor_post_edit.png[Styling changes following edits}
+image::volcopy_editor/holdings_editor_post_edit.png[Styling changes following edits]
 
 If you are editing a batch of items, the Holdings Editor will show all values of your currently selected items, including counts of which items have which attribute level. Any changes you make will be to all item attributes.
 
