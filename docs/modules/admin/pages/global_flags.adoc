@@ -45,6 +45,15 @@ changes |
 Disable automatic authority updates from modifying bib record editor and
 edit_date |No | | |
 |ingest.disable_authority_linking|Authority Automation: Disable bib-authority link tracking|No | |If enabled, Evergreen won't link authorities and won't propagate changes|
+|money.account_adjustment.is_refundable |Money: Enable to allow account adjustments to be refundable to patrons |No |No | |
+|money.forgive_payment.is_refundable |Money: Enable to allow forgive payments to be refundable to patrons |No |No | |
+|money.work_payment.is_refundable |Money: Enable to allow work payments to be refundable to patrons |No |No | |
+|money.credit_payment.is_refundable |Money: Enable to allow credit payments to be refundable to patrons |No |No | |
+|money.goods_payment.is_refundable |Money: Enable to allow goods payments to be refundable to patrons |No |No | |
+|money.credit_card_payment.is_refundable |Money: Enable to allow credit card payments to be refundable to patrons |Yes |Yes | |
+|money.cash_payment.is_refundable |Money: Enable to allow cash payments to be refundable to patrons |Yes |Yes | |
+|money.check_payment.is_refundable |Money: Enable to allow check payments to be refundable to patrons |Yes |Yes | |
+|money.debit_card_payment.is_refundable |Money: Enable to allow debit card payments to be refundable to patrons |Yes |Yes | |
 |opac.browse.holdings_visibility_test_limit|Don't look for more than this number of records with holdings when displaying browse headings with visible record counts.|Yes |100 | |
 |opac.browse.warnable_regexp_per_class|Map of search classes to regular expressions to warn user about leading articles.|No|{"title": "^(a\|the\|an)\\s"}|Warns users when they are entering a browse term that begins with an article |xref:opac:catalog_browse.adoc[Catalog Browse]
 |opac.cover_upload_compression|Cover image uploads are converted to PNG files with this compression, on a scale of 0 (no compression) to 9 (maximum compression), or -1 for the zlib default.|Yes|0|Accepts a numeric value from 0 (no compression) to 9 (most compression). The default is 0. All uploaded files are converted to png and use this flag.|xref:cataloging:cover_image_upload.adoc[Cover Image Uploader]

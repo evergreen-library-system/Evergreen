@@ -145,3 +145,4 @@ from being used without a positive number in this box.  The $1.00 payment won't 
 . If you go into *History* and look at the full details for the bill you will see it shows the payment 
 has been refunded.
 
+By default, payment types for Credit Card, Debit Card, Check, and Cash are refundable. Other types of payments are not marked as refundable by default. There are xref:admin:global_flags.adoc[Global Flags] to control refundability of payment types.
