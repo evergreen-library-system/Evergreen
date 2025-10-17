@@ -1,0 +1,84 @@
+= Queued Ingest =
+
+This feature allows for the separation of bib and authority record updates and the search (and other) indexing that occurs when a record is modified in some way. Prior to this feature, bib and authority records would be indexed immediately upon an update.
+
+While individual record ingest has not become a problem with regard to system performance or interface usability, there exist several batch operations which aggregate many inserts or updates and whose aggregate ingest time cost can be significant. These include, but are not limited to, reingest caused by authority control propagation, reingest required by the addition or modification of indexing configuration, cataloging and acquisitions record import and overlay from the staff interface, and upgrade-time reingest required by structural changes to the underlying indexing and search system.
+
+== Description == 
+
+The Queued Ingest mechanism consists of several parts working together:
+
+* A set of configuration flags that control when ingest should be performed immediately, and when it can be deferred until after the transaction commits and control is returned to the user.
+* Refactoring of the in-database ingest triggers to separate deciding what should happen to a record given a data modification event, and when/how that process should take place.
+* A set of queuing tables used to track which records are to be processed and in what ways, when that processing was requested, and the ability to group processing requests into named queues that can report who made a processing request and for what purpose.
+* A Queued Ingest Coordinator that runs in the background monitoring the queuing tables for activity and processes records as they are enqueued. This can run on any server that can connect to the database and has the OpenSRF Perl modules installed.
+* A command line tool to be usedby administrators to enqueue records for Queued Ingest processing, to create named queues, and to process enqueued records either in one queue or all outstanding enqueued entries. This tool can also report on the status of requested Queued Ingest processing, whether pending, ongoing, or complete, either for all time or since a particular date and time.
+
+== New Utility ==
+
+When Queued Ingest is enabled, a new control script, `ingest_ctl`, is available to perform several functions:
+
+* Run in the background to process the queues of indexing requests
+* Display statistics of queued ingest activity
+* Specify that a set of records should be reindexed.
+
+Here are some examples of how it is used:
+
+[source,bash]
+------------------------------------------------------------------------------------
+# Enqueue records 1-500000 for reingest later, just one worker for the queue
+/openils/bin/ingest_ctl --queue-threads 1
+  --queue-type biblio
+  --queue-run-at tomorrow
+  --queue-owner admin
+  --queue-name "slowly updating records due to new RDA attributes"
+  --start-id 1 --end-id 500000
+
+# Start the background worker
+/openils/bin/ingest_ctl --coordinator --max-child 20
+
+# Stop the background worker
+/openils/bin/ingest_ctl --coordinator --stop
+
+# Process whatever you can Right Now
+/openils/bin/ingest_ctl --max-child 20
+
+# Process a single queue Right Now
+/openils/bin/ingest_ctl --queue 1234 --max-child 20
+
+# Stats on Queued Ingest processing so far today
+/openils/bin/ingest_ctl --stats --since today --totals-only
+------------------------------------------------------------------------------------
+
+This script also requires the following switches (or environment variables) in order to connect to the database:
+
+* `--db_user` (or environment variable `PGUSER`)
+* `--db` (or environment variable `PGDATABASE`)
+* `--dbpw` (or environment variable `PGPASSWORD`)
+* `--db_port` (or environment variable `PGPORT`)
+
+=== New Settings ===
+
+This feature adds several new global flags:
+
+
+|===
+| Global Flag | Enabled
+
+| Queued Ingest: Abort transaction on ingest error rather than simply logging an error | no
+| Queued Ingest: Queue all bib record updates on authority change propagation, even if bib queuing is not generally enabled | no
+| Queued Ingest: Use Queued Ingest for bib record ingest on insert and undelete | no
+| Queued Ingest: Use Queued Ingest for authority record ingest on insert and undelete | no
+| Queued Ingest: Use Queued Ingest for bib record ingest on update | no
+| Queued Ingest: Use Queued Ingest for authority record ingest on update | no
+| Queued Ingest: Use Queued Ingest for bib record ingest on delete | no
+| Queued Ingest: Use Queued Ingest for authority record ingest on delete | no
+| Queued Ingest: Maximum number of database workers allowed for queued ingest processes | yes; default value 20
+| Queued Ingest: Use Queued Ingest for all bib record ingest | no
+| Queued Ingest: Use Queued Ingest for all bib and authority record ingest | no
+| Queued Ingest: Do NOT use Queued Ingest when creating a new bib, or undeleting a bib, via the MARC editor | yes
+| Queued Ingest: Use Queued Ingest for all authority record ingest | no
+| Queued Ingest: Do NOT Use Queued Ingest when editing bib records via the MARC Editor | yes
+|===
+
+This feature does not add any new library settings or permissions.

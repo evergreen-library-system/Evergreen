@@ -36,4 +36,5 @@
 ** xref:admin:sip_server.adoc[SIP Server]
 ** xref:admin:audio_alerts.adoc[Managing Audio Alerts]
 ** xref:admin_initial_setup:oaipmh.adoc[OAI-PMH Data Provider Support]
+** xref:admin_initial_setup:queued_ingest.adoc[Queued Ingest]
 ** xref:admin:multi_factor_authentication.adoc[Staff Multi Factor Authentication]
