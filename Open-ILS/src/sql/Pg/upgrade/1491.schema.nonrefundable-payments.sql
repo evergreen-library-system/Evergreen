@@ -1,5 +1,7 @@
 BEGIN;
 
+SELECT evergreen.upgrade_deps_block_check('1491', :eg_version);
+
 ALTER TABLE money.aged_payment ADD COLUMN refundable BOOL;
 
 CREATE OR REPLACE VIEW money.payment_view AS
