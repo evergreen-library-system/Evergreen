@@ -55,7 +55,7 @@
         <!-- if no adjacent templates, print the button alone with the usual classes -->
         <button *ngIf="!btn.adjacentPreceedingTemplateRef && !btn.adjacentSubsequentTemplateRef"
           [disabled]="btn.disabled" type="button"
-          [attr.aria-describedby]="btn.describedbySelectionCount ? gridDomId + '-selection-count' : null"
+          [attr.aria-describedby]="btn.describedbySelectionCount ? gridContext.gridDomId + '-selection-count' : null"
           class="btn btn-outline-dark btn-sm" [egButtonStyle]="btn.buttonStyle"
           (click)="performButtonAction(btn)">
           {{btn.label}}
@@ -81,7 +81,7 @@
 </div>
 
 <div class="eg-grid-toolbar-utilities">
-  <div class="eg-grid-selection-count" id="{{gridDomId}}-selection-count" *ngIf="!gridContext.disableSelect" i18n>
+  <div class="eg-grid-selection-count" id="{{gridContext.gridDomId}}-selection-count" *ngIf="!gridContext.disableSelect" i18n>
     {{gridContext.getSelectedRows().length}} selected
   </div>
   <div class="btn-group">
