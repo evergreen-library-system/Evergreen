@@ -112,7 +112,8 @@ export class PatronNoteDialogComponent
 
     // Coerce initials to up to 3 uppercase letters only
     onInitialsInput(val: string) {
-        const cleaned = (val || '').toUpperCase().replace(/[^A-Z]/g, '').slice(0, 3);
+        const maxLength = 3;
+        const cleaned = (val || '').toUpperCase().replace(/[^A-Z]/g, '').slice(0, maxLength);
         if (cleaned !== this.initials) {
             this.initials = cleaned;
         }

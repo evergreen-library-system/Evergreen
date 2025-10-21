@@ -1,4 +1,4 @@
-import {Component, ViewChild} from '@angular/core';
+import {Component, ViewChild, OnInit} from '@angular/core';
 import {BasketService} from '@eg/share/catalog/basket.service';
 import {Router} from '@angular/router';
 import {NetService} from '@eg/core/net.service';
@@ -16,7 +16,7 @@ const MAX_FROM_SEARCH_RESULTS = 1000;
     selector: 'eg-catalog-basket-actions',
     templateUrl: 'basket-actions.component.html'
 })
-export class BasketActionsComponent {
+export class BasketActionsComponent implements OnInit {
 
     basketAction: string;
     recordId: number;
@@ -93,7 +93,7 @@ export class BasketActionsComponent {
                 this.basket.addRecordIds([this.recordId]);
                 this.recordInBasket = this.basket.hasRecordId(this.recordId);
                 break;
-            
+
             case 'remove_record':
                 this.basket.removeRecordIds([this.recordId]);
                 this.recordInBasket = this.basket.hasRecordId(this.recordId);
