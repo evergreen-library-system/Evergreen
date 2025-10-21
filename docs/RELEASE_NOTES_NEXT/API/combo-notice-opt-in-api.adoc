@@ -1,0 +1,57 @@
+== Notification Opt-Ins by Notice Type API / Settings ==
+
+Creates a set of notification group entries to collect user settings related
+to opting in to different types of notices (email, sms, phone, print).
+
+Adds an API which reports on which notice types a user is opted in to and 
+allows for batch opt in/out for a collection of notice types.
+
+Handles Action/Trigger opt-in user settings and the generic 'opac.hold_notify' 
+user setting which combines different notice types into a single setting.
+
+=== Configuration ===
+
+Add Action/Trigger notification opt-in user settings to one of the provided 
+setting groups to enable it for global opt in/out.
+
+=== Example Srfsh Query ===
+
+This example sets the value of the specified notice types and returns opt-in 
+information about all known notice types for the provided (or logged in) user.
+
+`_default_hold_notify` is a special type which indicates whether the 
+notification is opted in/out via the generic `opac.hold_notify` user setting.
+This is not reported as `opac.hold_notify` since its value is not boolean like
+other opt-in settings.
+
+If all notices of a given grouping (e.g. 'sms') are true, the user is 
+in effect opted in to 'sms' notices.  If the values are mixed, which can
+happen via other work flows / staff client, it's up to the caller to 
+decide how to interpret the data.
+
+request open-ils.actor open-ils.actor.settings.notify.opt_ins.crud "AUTHTOKEN" 221 {"email": true, "phone": true, "sms": true}
+- - - - - - - - - - - - - - - - - - - - - - - - - -
+{
+  "sms": {
+    "sms.notices.all": true,
+    "_default_hold_notify": true
+  },
+  "phone": {
+    "_default_hold_notify": true
+  },
+  "print": {
+    "_default_hold_notify": false
+  },
+  "email": {
+    "_default_hold_notify": true,
+    "email.notices.all": true
+  }
+}
+
+In this example "email.notices.all" and "sms.notices.all" are local test settings.
+
+==== "SMS" vs. Text ====
+
+For internal consistency, this feature uses the label/code "sms" as a stand-in 
+for text notices in general.
+
