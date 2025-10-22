@@ -856,7 +856,7 @@ msgstr ""
 msgid "Basic Search"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/mylist.tt2:8 ../../Open-ILS/src/templates-bootstrap/opac/parts/anon_list.tt2:4 ../../Open-ILS/src/templates-bootstrap/opac/parts/cart.tt2:1 ../../Open-ILS/src/templates-bootstrap/opac/parts/cart_nav.tt2:2
+#: ../../Open-ILS/src/templates-bootstrap/opac/mylist.tt2:10 ../../Open-ILS/src/templates-bootstrap/opac/mylist.tt2:2 ../../Open-ILS/src/templates-bootstrap/opac/parts/anon_list.tt2:4 ../../Open-ILS/src/templates-bootstrap/opac/parts/cart.tt2:1 ../../Open-ILS/src/templates-bootstrap/opac/parts/cart_nav.tt2:2
 msgid "Basket"
 msgstr ""
 
@@ -2293,7 +2293,7 @@ msgstr ""
 msgid "Forger"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/login/login_fields.tt2:33
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/login/login_fields.tt2:35
 msgid "Forgot Your Password?"
 msgstr ""
 
@@ -3536,7 +3536,7 @@ msgstr ""
 msgid "Owning Library"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/login/login_fields.tt2:12
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/login/login_fields.tt2:13
 msgid "PIN"
 msgstr ""
 
@@ -4189,7 +4189,7 @@ msgstr ""
 msgid "Recent searches"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/mylist.tt2:1 ../../Open-ILS/src/templates-bootstrap/opac/record.tt2:1 ../../Open-ILS/src/templates-bootstrap/opac/record/email.tt2:1
+#: ../../Open-ILS/src/templates-bootstrap/opac/record.tt2:1 ../../Open-ILS/src/templates-bootstrap/opac/record/email.tt2:1
 msgid "Record Detail"
 msgstr ""
 
@@ -4334,7 +4334,7 @@ msgstr ""
 msgid "Reproduction Note: "
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/login/login_fields.tt2:28
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/login/login_fields.tt2:30
 msgid "Request A Card"
 msgstr ""
 
@@ -4410,7 +4410,7 @@ msgstr ""
 msgid "Restrictions on Access Note: "
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/mylist.tt2:18 ../../Open-ILS/src/templates-bootstrap/opac/mylist/email.tt2:28 ../../Open-ILS/src/templates-bootstrap/opac/mylist/print.tt2:26 ../../Open-ILS/src/templates-bootstrap/opac/myopac/list/update.tt2:33 ../../Open-ILS/src/templates-bootstrap/opac/record/email.tt2:26 ../../Open-ILS/src/templates-bootstrap/opac/record/email_preview.tt2:111 ../../Open-ILS/src/templates-bootstrap/opac/record/email_preview.tt2:95 ../../Open-ILS/src/templates-bootstrap/opac/record/print.tt2:11 ../../Open-ILS/src/templates-bootstrap/opac/record/print.tt2:29 ../../Open-ILS/src/templates-bootstrap/opac/record/print_preview.tt2:65 ../../Open-ILS/src/templates-bootstrap/opac/record/print_preview.tt2:80
+#: ../../Open-ILS/src/templates-bootstrap/opac/mylist.tt2:20 ../../Open-ILS/src/templates-bootstrap/opac/mylist/email.tt2:28 ../../Open-ILS/src/templates-bootstrap/opac/mylist/print.tt2:26 ../../Open-ILS/src/templates-bootstrap/opac/myopac/list/update.tt2:33 ../../Open-ILS/src/templates-bootstrap/opac/record/email.tt2:26 ../../Open-ILS/src/templates-bootstrap/opac/record/email_preview.tt2:111 ../../Open-ILS/src/templates-bootstrap/opac/record/email_preview.tt2:95 ../../Open-ILS/src/templates-bootstrap/opac/record/print.tt2:11 ../../Open-ILS/src/templates-bootstrap/opac/record/print.tt2:29 ../../Open-ILS/src/templates-bootstrap/opac/record/print_preview.tt2:65 ../../Open-ILS/src/templates-bootstrap/opac/record/print_preview.tt2:80
 msgid "Return"
 msgstr ""
 
@@ -4897,7 +4897,7 @@ msgstr ""
 msgid "Show only available holds"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/login/login_fields.tt2:18
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/login/login_fields.tt2:17
 msgid "Show password"
 msgstr ""
 
@@ -5238,7 +5238,7 @@ msgstr ""
 msgid "The barcode used to login is marked as inactive.  Please contact your local library."
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/mylist.tt2:17 ../../Open-ILS/src/templates-bootstrap/opac/mylist/email.tt2:27 ../../Open-ILS/src/templates-bootstrap/opac/mylist/print.tt2:25
+#: ../../Open-ILS/src/templates-bootstrap/opac/mylist.tt2:19 ../../Open-ILS/src/templates-bootstrap/opac/mylist/email.tt2:27 ../../Open-ILS/src/templates-bootstrap/opac/mylist/print.tt2:25
 msgid "The basket is empty."
 msgstr ""
 
