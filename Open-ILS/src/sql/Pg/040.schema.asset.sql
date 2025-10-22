@@ -752,6 +752,8 @@ $f$ LANGUAGE PLPGSQL;
 
 
 CREATE OR REPLACE FUNCTION asset.record_has_holdable_copy ( rid BIGINT, ou INT DEFAULT NULL) RETURNS BOOL AS $f$
+DECLARE
+    ous INT[] := (SELECT array_agg(id) FROM actor.org_unit_descendants(COALESCE(ou, (SELECT id FROM evergreen.org_top()))));
 BEGIN
     PERFORM 1
         FROM
@@ -766,7 +768,7 @@ BEGIN
             AND ccs.holdable = true
             AND acp.deleted = false
             AND acpl.deleted = false
-            AND acp.circ_lib IN (SELECT id FROM actor.org_unit_descendants(COALESCE($2,(SELECT id FROM evergreen.org_top()))))
+            AND acp.circ_lib = ANY(ous)
         LIMIT 1;
     IF FOUND THEN
         RETURN true;
