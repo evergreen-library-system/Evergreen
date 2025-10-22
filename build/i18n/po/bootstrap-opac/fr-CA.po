@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2025-07-15 18:23+0000\n"
-"PO-Revision-Date: 2025-03-25 15:00+0000\n"
-"Last-Translator: Jennifer Pringle <Unknown>\n"
+"POT-Creation-Date: 2025-09-17 00:56+0000\n"
+"PO-Revision-Date: 2025-10-21 14:54+0000\n"
+"Last-Translator: AO <Unknown>\n"
 "Language-Team: French <fr@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2025-07-17 07:33+0000\n"
-"X-Generator: Launchpad (build 4a935a27f849d9e76af17c154eb3e276e860afb7)\n"
+"X-Launchpad-Export-Date: 2025-10-22 05:26+0000\n"
+"X-Generator: Launchpad (build 304f53b38e34baf532daa616a9e3cb2ee8d98eb2)\n"
 
 #: ../../Open-ILS/src/templates-bootstrap/opac/register.tt2:62
 msgid ""
@@ -117,12 +117,12 @@ msgstr "%1 (élément étranger)"
 
 #. (ctx.page_title, libname)
 #. ("<time property=\"opens\" content=\"' _ date.format(open, { 'format' => '%H:%M:%S' }) _ '\">' _ date.format(open) _ '</time>", "<time property=\"closes\" content=\"' _ date.format(close, { 'format' => '%H:%M:%S' }) _ '\">' _ date.format(close) _ '</time>")
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/base.tt2:45 ../../Open-ILS/src/templates-bootstrap/opac/parts/base_simple.tt2:35 ../../Open-ILS/src/templates-bootstrap/opac/parts/library/hours.tt2:101 ../../Open-ILS/src/templates-bootstrap/opac/parts/library/hours.tt2:123 ../../Open-ILS/src/templates-bootstrap/opac/parts/library/hours.tt2:145 ../../Open-ILS/src/templates-bootstrap/opac/parts/library/hours.tt2:167 ../../Open-ILS/src/templates-bootstrap/opac/parts/library/hours.tt2:35 ../../Open-ILS/src/templates-bootstrap/opac/parts/library/hours.tt2:57 ../../Open-ILS/src/templates-bootstrap/opac/parts/library/hours.tt2:79
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/base.tt2:46 ../../Open-ILS/src/templates-bootstrap/opac/parts/base_simple.tt2:36 ../../Open-ILS/src/templates-bootstrap/opac/parts/library/hours.tt2:101 ../../Open-ILS/src/templates-bootstrap/opac/parts/library/hours.tt2:123 ../../Open-ILS/src/templates-bootstrap/opac/parts/library/hours.tt2:145 ../../Open-ILS/src/templates-bootstrap/opac/parts/library/hours.tt2:167 ../../Open-ILS/src/templates-bootstrap/opac/parts/library/hours.tt2:35 ../../Open-ILS/src/templates-bootstrap/opac/parts/library/hours.tt2:57 ../../Open-ILS/src/templates-bootstrap/opac/parts/library/hours.tt2:79
 msgid "%1 - %2"
 msgstr "%1 - %2"
 
 #. (libname)
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/base.tt2:47 ../../Open-ILS/src/templates-bootstrap/opac/parts/base_simple.tt2:37
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/base.tt2:48 ../../Open-ILS/src/templates-bootstrap/opac/parts/base_simple.tt2:38
 msgid "%1 OpenSearch"
 msgstr "%1 OuvrirRecherche"
 
@@ -180,7 +180,7 @@ msgid "&lt;&lt; Previous Page"
 msgstr "&lt;&lt; Page précédente"
 
 #. (ctx.user_stats.messages.unread)
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/base.tt2:41 ../../Open-ILS/src/templates-bootstrap/opac/parts/base_simple.tt2:31
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/base.tt2:42 ../../Open-ILS/src/templates-bootstrap/opac/parts/base_simple.tt2:32
 msgid "(%1)"
 msgstr "(%1)"
 
@@ -422,6 +422,12 @@ msgid ""
 "<i class='fas fa-user-cog' aria-hidden='true'></i> Personal Information"
 msgstr ""
 "<i class='fas fa-user-cog' aria-hidden='true'></i> Informations personnelles"
+
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/login/timeout_dialog.tt2:18
+msgid ""
+"<span id=\"timeStringMinutes\"></span> minutes and <span "
+"id=\"timeStringSeconds\"></span> seconds."
+msgstr ""
 
 #: ../../Open-ILS/src/templates-bootstrap/opac/myopac/list/update.tt2:15
 msgid "A list name is required"
@@ -1536,6 +1542,10 @@ msgstr "Contesté-appelant"
 msgid "Contestee-appellee"
 msgstr "Contesté-intimé"
 
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/login/timeout_dialog.tt2:27
+msgid "Continue Session"
+msgstr ""
+
 #: ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_notify.tt2:52
 msgid "Continue without updating"
 msgstr "Continuer sans la mise à jour"
@@ -2130,6 +2140,10 @@ msgstr "Ressort d’application"
 msgid "End"
 msgstr ""
 
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/login/timeout_dialog.tt2:28
+msgid "End Session"
+msgstr ""
+
 #: ../../Open-ILS/src/templates-bootstrap/opac/myopac/reservations.tt2:13 ../../Open-ILS/src/templates-bootstrap/opac/myopac/reservations.tt2:21
 msgid "End time"
 msgstr "Heure de fin"
@@ -2683,6 +2697,10 @@ msgid ""
 msgstr ""
 "Si vous ne trouvez pas ce que vous cherchez, élargissez la recherche au "
 "moyen du sélecteur à la droite de la barre de recherche"
+
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/login/timeout_dialog.tt2:23
+msgid "If you need more time, please click \"Continue Session.\""
+msgstr ""
 
 #: ../../Open-ILS/src/templates-bootstrap/opac/parts/relators.tt2:2
 msgid "Illuminator"
@@ -3549,7 +3567,7 @@ msgstr "Préférences relatives aux avis"
 
 #: ../../Open-ILS/src/templates-bootstrap/opac/parts/myopac/base.tt2:3
 msgid "Notifications"
-msgstr "Avis"
+msgstr "Notifications"
 
 #: ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds.tt2:219 ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds.tt2:91
 msgid "Notify Method"
@@ -4437,7 +4455,7 @@ msgstr "Enlever %1 du panier"
 msgid "Remove Default List"
 msgstr "Supprimer la liste par défaut"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/js.tt2:124
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/js.tt2:97
 msgid "Remove all records from basket?"
 msgstr "Enlever tous les dossiers du panier?"
 
@@ -4970,6 +4988,14 @@ msgstr "Septembre (9)"
 msgid "Series"
 msgstr "Séries"
 
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/login/timeout_dialog.tt2:33
+msgid "Session Ended"
+msgstr ""
+
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/login/timeout_dialog.tt2:2
+msgid "Session Timeout"
+msgstr ""
+
 #: ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:14 ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:355
 msgid "Set activation date"
 msgstr "Fixer la date d’activation"
@@ -5101,7 +5127,7 @@ msgstr "Chanteur"
 msgid "Skip directly to closest matching call number"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/base.tt2:67 ../../Open-ILS/src/templates-bootstrap/opac/parts/base_simple.tt2:63
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/base.tt2:68 ../../Open-ILS/src/templates-bootstrap/opac/parts/base_simple.tt2:64
 msgid "Skip to main content"
 msgstr ""
 
@@ -5969,7 +5995,7 @@ msgstr ""
 msgid "You don't have any lists yet"
 msgstr "Vous n'avez pas encore de listes."
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/js.tt2:66
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/js.tt2:39
 msgid ""
 "You have entered an invalid date, or an improperly formatted date.  Please "
 "enter Date of Birth in YYYY-MM-DD or YYYY/MM/DD format and try again."
@@ -6034,10 +6060,6 @@ msgstr ""
 "\"phrase se termine par\", respectivement, dans une phrase de recherche "
 "joint entre guillemets."
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/js.tt2:47
-msgid "You will be logged out in a few minutes. Would you like more time?"
-msgstr ""
-
 #. (here_link_text)
 #: ../../Open-ILS/src/templates-bootstrap/opac/record/email.tt2:0
 msgid "Your account does not currently have an email address set. %1"
@@ -6084,6 +6106,14 @@ msgstr "Paiement approuvé."
 #: ../../Open-ILS/src/templates-bootstrap/opac/myopac/receipt_email.tt2:14
 msgid "Your receipt will be emailed to %1"
 msgstr "Votre reçu sera envoyé par courriel à %1"
+
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/login/timeout_dialog.tt2:35
+msgid "Your session has ended. Redirecting to the home page..."
+msgstr ""
+
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/login/timeout_dialog.tt2:8
+msgid "Your session will expire in "
+msgstr ""
 
 #: ../../Open-ILS/src/templates-bootstrap/opac/password_reset.tt2:13
 msgid ""
