@@ -3,6 +3,121 @@
 :numbered:
 :toclevels: 3
 
+== Evergreen 3.14.11 ==
+
+This release contains bug fixes and documentation fixes improving on Evergreen 3.14.10.
+
+=== Upgrade Notes ===
+
+The following bugs require an upgrade script:
+
+* Fixes an issue with hold retargeting of serial items. (https://bugs.launchpad.net/evergreen/+bug/2107581[Bug 2107581])
+* Fixes an issue where merging bibliographic records can lose parts. (https://bugs.launchpad.net/evergreen/+bug/2120713[Bug 2120713])
+
+=== Administration ===
+
+* Fix SIP2 hold cancellation to return success message properly (https://bugs.launchpad.net/evergreen/+bug/2121886[Bug 2121886])
+* Marks deprecated passwd field as virtual (https://bugs.launchpad.net/evergreen/+bug/1729889[Bug 1729889])
+* Fixes hold targeter failures (https://bugs.launchpad.net/evergreen/+bug/2099920[Bug 2099920]
+* Add validation styles to required date fields in FM Editor (https://bugs.launchpad.net/evergreen/+bug/2023794[Bug 2023794])
+
+=== Acquisitions ===
+
+* Resolves an issue with some SFTP errors not being reported properly in acquisitions EDI processing. (https://bugs.launchpad.net/evergreen/+bug/2125232[Bug 2125232])
+* Removes account from EDI FTP login ((https://bugs.launchpad.net/evergreen/+bug/2045911[Bug 2045911])
+* Fixes an issue with hold retargeting of serial items. (https://bugs.launchpad.net/evergreen/+bug/2107581[Bug 2107581])
+
+=== Catalog ===
+
+* Adds "Add to Basket" to the basket and Other Actions menus on the individual catalog record page. (https://bugs.launchpad.net/evergreen/+bug/1949222[Bug 1949222])
+
+=== Cataloging ===
+
+* Fixes an issue where merging bibliographic records can lose parts. (https://bugs.launchpad.net/evergreen/+bug/2120713[Bug 2120713])
+
+=== Circulation ===
+
+* Sets user's preferred name as AngularJS patron page title (https://bugs.launchpad.net/evergreen/+bug/1945366[Bug 1945366])
+* Fixes "missing" holds where the requestor's card has been set to NULL or holds a value not represented in the card table. (https://bugs.launchpad.net/evergreen/+bug/2123871[Bug 2123871])
+* Patron name display now prioritizes preferred names in angular note dialog component. (https://bugs.launchpad.net/evergreen/+bug/2116126[Bug 2116126])
+* Staff patron banner no longer displays the string “null” when a patron’s name part is missing; name parts are trimmed and omitted when empty. (https://bugs.launchpad.net/evergreen/+bug/2127006[Bug 2127006])
+* Adds grid actions menu for Hold Groups (https://bugs.launchpad.net/evergreen/+bug/2058263[Bug 2058263])
+* Shows the holds transit source and destination org units' shortnames rather than IDs. (https://bugs.launchpad.net/evergreen/+bug/2087870[Bug 2087870])
+* Angular patron notes dialog now includes staff initials field, requires a title, and allows notes with title and no text. (https://bugs.launchpad.net/evergreen/+bug/2116129[Bug 2116129])
+
+
+=== Documentation ===
+
+* Updates org unit terminology in circulation_patron_records_web_client.adoc, basic_holds.adoc, and triggered_events.adoc
+* Updates Hold Reset Reason docs (https://bugs.launchpad.net/evergreen/+bug/2128149[Bug 2128149])
+* Corrects the docs description of the deprecated FIFO library setting. (https://bugs.launchpad.net/evergreen/+bug/2122128[Bug 2122128])
+* Adds Queued Ingest documentation.
+
+
+=== Public Catalog ===
+
+* Adds spacing around My Lists buttons (https://bugs.launchpad.net/evergreen/+bug/2107206[Bug 2107206])
+* Corrects OPAC advanced search form row layout (https://bugs.launchpad.net/evergreen/+bug/2114839[Bug 2114839])
+* Fixes an issue where if there was a blank value set in the hold notification user settings, it would no longer fall back on the default notification. This should now cause no notification to be set. (https://bugs.launchpad.net/+bug/2113981[Bug 2113981])
+* Moves the OPAC login form username and password hints from tooltips to persistent text below the inputs (https://bugs.launchpad.net/evergreen/+bug/2115372[Bug 2115372])
+* Fix heading order, title line height in OPAC Edit Holds (https://bugs.launchpad.net/evergreen/+bug/2104206[Bug 2104206])
+* Corrects the page title for the OPAC basket. (https://bugs.launchpad.net/evergreen/+bug/2117292[Bug 2117292])
+
+=== Reports ===
+
+* Speed up all Simple Reports created *after* this fix is applied. (https://bugs.launchpad.net/evergreen/+bug/2103717[Bug 2103717])
+* Implement RIGHT JOINs in the Angular Reporter. (https://bugs.launchpad.net/evergreen/+bug/2109382[Bug 2109382])
+
+=== Staff Client ===
+
+* Make on-device MFA authentication app registration simpler by wrapping the QR code in a link. (https://bugs.launchpad.net/evergreen/+bug/2125510[Bug 2125510])
+* Provide manual fallback for apps that don't follow standard practices to register an otpauth scheme handler. (https://bugs.launchpad.net/evergreen/+bug/2125510[Bug 2125510])
+* Remove incorrect words from permissions administration screen. (https://bugs.launchpad.net/evergreen/+bug/2075372[Bug 2075372])
+* Shows AngularJS grid cell checkboxes even when multiselect is disabled (https://bugs.launchpad.net/evergreen/+bug/1838316[Bug 1838316])
+
+
+=== Acknowledgements ===
+
+We would like to thank the following individuals who contributed code, testing, documentation, and patches to the 3.14.11 point release of Evergreen:
+
+* Andrea Buntz Neiman
+* Bill Erickson
+* Blake Graham-Henderson
+* Chris Sharp
+* Galen Charlton
+* Gina Monti
+* Ian Skelskey
+* Jane Sandberg
+* Jason Boyer
+* Jason Stephenson
+* Jeff Davis
+* Jennifer Pringle
+* John Amundson
+* Lindsay Stratton
+* Llewellyn Marshall
+* Michele Morgan
+* Mike Rylander
+* Ruth Frasur Davis
+* Sarah Cruz
+* Shula Link
+* Stephanie Leary
+* Steven Callender
+* Steven Mayo
+* Susan Morrison
+* Tara Kunesh
+* Terran McCanna
+
+=== Sponsors ===
+
+The following organizations sponsored development in the 3.14.11 release of Evergreen:
+
+* BC Libraries Cooperative
+
+
+
+
+
+
 == Evergreen 3.14.10 ==
 
 This release contains bug fixes and documentation fixes improving on Evergreen 3.14.9.
