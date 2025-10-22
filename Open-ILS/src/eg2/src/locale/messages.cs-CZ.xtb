@@ -6446,4 +6446,29 @@ Zkopírováno <ph name="INTERPOLATION"/></translation>
   <translation id="3509905366499209695">Item Import Attribute Definition</translation>
   <translation id="2878678133044560152">Match Bucket</translation>
   <translation id="291439248872552145">Create Time</translation>
+  <translation id="4088163825706718567"><ph name="INTERPOLATION"/> Administration</translation>
+  <translation id="1037841298560617020">
+    <ph name="INTERPOLATION"/>
+  </translation>
+  <translation id="1158949423398728289">Add This Record</translation>
+  <translation id="9137945136009837308">Remove This Record</translation>
+  <translation id="408791913458411716">Add To Basket</translation>
+  <translation id="214018288629758478">Remove From Basket</translation>
+  <translation id="1578741046646291108">Issuer:</translation>
+  <translation id="7962116630388168390">Account:</translation>
+  <translation id="2826556801109615631">Secret:</translation>
+  <translation id="5178303084083924779">Digits:</translation>
+  <translation id="5807319866572147637">Period:</translation>
+  <translation id="6700375366570151446"><ph name="INTERPOLATION"/> seconds</translation>
+  <translation id="7446818179582534212">Algorithm:</translation>
+  <translation id="6931104340356742775">
+    <ph name="INTERPOLATION"/>
+  </translation>
+  <translation id="8535693426088333574"> Scan this QR Code in your authentication app, or click the QR Code to proceed on this device, then provide the current <ph name="INTERPOLATION"/> digit one-time code from <ph name="INTERPOLATION_1"/> in order to confirm this secondary authentication factor. If your authentication application does not open when clicking the QR Code above, you can copy the Secret above directly. </translation>
+  <translation id="6105572993146771396">Right Join</translation>
+  <translation id="6010836800105764474"> -&gt; [Both Required] </translation>
+  <translation id="7821951224618627984"> -&gt; [Right Required] </translation>
+  <translation id="5037165785819501241"> -&gt; [Left Required] </translation>
+  <translation id="3090621596232753763"> Note for patron <ph name="START_BOLD_TEXT"/> <ph name="INTERPOLATION"/>, <ph name="INTERPOLATION_1"/> <ph name="CLOSE_BOLD_TEXT"/></translation>
+  <translation id="4620307130066356153">Staff Initials</translation>
 </translationbundle>
