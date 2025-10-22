@@ -2,15 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen ILS > db.seed.po\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2025-08-19 16:47-0400\n"
+"POT-Creation-Date: 2025-09-16 17:01-0400\n"
 "PO-Revision-Date: 2024-10-03 18:50+0000\n"
 "Last-Translator: Jennifer Pringle <Unknown>\n"
 "Language-Team: <warren.layton@gmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2025-08-20 09:17+0000\n"
-"X-Generator: Launchpad (build eba5590f12b81acee387956af292c18f73e89913)\n"
+"X-Launchpad-Export-Date: 2025-09-17 08:31+0000\n"
+"X-Generator: Launchpad (build 299e6cec2b88528c8351aab8852cf896cddc6846)\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-Country: CANADA\n"
 "X-Poedit-Language: English\n"
@@ -3878,8 +3878,16 @@ msgstr ""
 msgid "Temporary call number prefix"
 msgstr ""
 
-#: 950.data.seed-values.sql:3371 950.data.seed-values.sql:3374
+#: 950.data.seed-values.sql:3371
 msgid "OPAC Inactivity Timeout (in seconds)"
+msgstr ""
+
+#: 950.data.seed-values.sql:3374
+msgid ""
+"Number of seconds of inactivity before the patron is logged out of the OPAC. "
+"The minimum value that can be entered is 240 seconds. At the 180 second mark "
+"a countdown will appear and patrons can choose to end the session, continue "
+"the session, or allow it to time out."
 msgstr ""
 
 #: 950.data.seed-values.sql:3380
