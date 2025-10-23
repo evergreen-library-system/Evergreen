@@ -340,12 +340,9 @@ before using this feature.
 [[myaccount_payments]]
 == Making Payments in MyAccount ==
 
-[NOTE]
-====================
-The below instructions are specific to libraries using Stripe with Evergreen 3.8 or higher.
-====================
+=== Making Payments with Stripe ===
 
-If a patron has bills on their account and their library permits online payments, the patron will be given options to pay all or selected bills via MyAccount.
+If a patron has bills on their account and their library permits online payments, the patron will be given options to pay all or selected bills via MyAccount. Stripe is configured via 
 
 After logging in to MyAccount, the patron should select the **Charges** menu item, and then select **Current Charges**.
 
@@ -369,7 +366,7 @@ image::my_account/opac_cc_receipt.png[Credit Card Receipt]
 
 Receipts can also be printed or emailed by navigating to **Charges → Payment History** and selecting the relevant print or email option from the Payment History grid. Receipts can be configured in the xref:admin:actiontriggers.adoc[Notifications and Action Triggers] interface.
 
-=== Error Messages === 
+==== Error Messages ==== 
 
 If a credit card is declined, the patron will be given a declined message when they attempt to submit payment information.
 
@@ -380,3 +377,27 @@ Stripe supports sending various types of error messages, including messages for 
 If there is an error in Evergreen’s Stripe configuration, the patron will be presented with an error message when they attempt to initiate a payment. This will be displayed at the point when a patron selects either the **Pay Selected Charges** or **Pay All Charges** button, before the payment form is rendered.
 
 image::my_account/opac_cc_config_error.png[Configuration Error Message]
+
+=== Making Payments with SmartPay ===
+
+You will need to contact Comprise[https://comprisetechnologies.com/online-payment-management/] to complete the SmartPay setup. SmartPay is not a payment processor, it just manages payments via the Comprise system.
+
+. After logging in to MyAccount, the patron should select the **Charges** menu item, and then select **Current Charges**.
+. Next, they should (optionally) select the charges they wish to pay and then select either **Pay Selected Charges** or **Pay All Charges**.
+. They will be redirected to SmartPay's portal to complete the transaction.
++
+image::my_account/sp_cc_entry.png[SmartPay form]
++
+. Once they enter their payment details and select **Finish**, they will see the following message:
++
+image::my_account/sp_processing.png[SmartPay processing]
++
+. They will then be redirected back to Evergreen's MyAccount page where they will see either a success message or failure message.
+.. Success message:
++
+image::my_account/sp_approved.png[SmartPay approved]
++
+.. Failure messge: 
++
+image::my_account/sp_declined.png[SmartPay declined]
++
