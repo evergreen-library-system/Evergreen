@@ -78,13 +78,14 @@ By default Evergreen displays shelving locations in alphabetical order. This ord
 
 To modify the order of shelving locations, Go to *Administration -> Local Administration -> Shelving Location Order*
 
-image::shelving_location/shelving_location_order.png[Shelving Location Order]
+image::shelving_location/shelving_loc_order.png[Shelving Location Order]
 
 To change the order:
 
-. Choose the organizational unit you are wanting to reorder.
-. Drag and drop the locations until you are satisfied with their order.
-. Click _Save changes_.
+. Set the context organizational unit you are wanting to reorder.
+. Select the shelving location you wish to move and use the arrows to move it up, down, to the top, or to the bottom.
+. Repeat with other locations until you are satisfied with their order.
+. Select _Save changes_ when you are finished.
 
 
 == Shelving location groups ==
