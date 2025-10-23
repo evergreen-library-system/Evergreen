@@ -3,7 +3,7 @@
   <div ng-show="patron()" id="patron-summary-grid">
     <div class="row" 
       ng-class="{'patron-summary-divider' : !$index}"
-      ng-repeat="penalty in alert_penalties()">
+      ng-repeat="penalty in alert_penalties() | orderBy:'-set_date()'">
       <div 
         class="col-md-9 patron-summary-alert"
         title="{{penalty.standing_penalty().name()}} (id {{penalty.id()}}): {{penalty.usr_message().message()}}">
