@@ -1,6 +1,6 @@
 BEGIN;
 
--- SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1495', :eg_version);
 
 -- NOTE: Perm 627 is SSO_ADMIN
 INSERT INTO config.org_unit_setting_type
