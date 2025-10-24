@@ -2,7 +2,7 @@ BEGIN;
 
 -- Bootstrap KPAC Configuration Interface
 
--- SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1494', :eg_version);
 
 CREATE TABLE config.kpac_content_types (
     id              SERIAL PRIMARY KEY,
