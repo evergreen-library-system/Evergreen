@@ -24,8 +24,8 @@ export class CredentialInputComponent implements ControlValueAccessor, OnInit {
   passwordVisible: boolean;
 
   ngOnInit(): void {
-    // always show the credential input description; optionally append anything given in @Input()
-    this.ariaErrorMessage = 'credential-input-description ' +  this.ariaErrorMessage;
+      // always show the credential input description; optionally append anything given in @Input()
+      this.ariaErrorMessage = 'credential-input-description ' +  this.ariaErrorMessage;
   }
 
   togglePasswordVisibility() {

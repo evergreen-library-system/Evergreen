@@ -92,7 +92,7 @@ export class StaffLoginComponent implements OnInit {
         this.offline.pendingXactsDate().then(d => this.pendingXactsDate = d);
     }
 
-    redirectToSSO(type: string = 'login') {
+    redirectToSSO(type = 'login') {
         let url = `/eg/opac/staff/sso/${type}?ws=${this.args.workstation}`;
         if (this.routeTo) {
             url = url + '&redirect_to=' + encodeURIComponent(this.routeTo);
@@ -104,7 +104,7 @@ export class StaffLoginComponent implements OnInit {
         window.location.href = url;
     }
 
-    checkSSO(ws_name:string) { 
+    checkSSO(ws_name:string) {
         return this.auth.SSOSettings(ws_name).then(svc => {
             this.allowSSO = svc.SSOEnabled;
             this.allowNative = svc.allowNativeLogin;
