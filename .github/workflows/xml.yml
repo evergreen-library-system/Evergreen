@@ -15,6 +15,7 @@ jobs:
     name: Make test examples
     runs-on: ubuntu-24.04
     steps:
+      - run: sudo apt-get update -y
       - name: Clone OpenSRF repository
         run: git clone --branch main git://git.evergreen-ils.org/OpenSRF.git
       - name: "OpenSRF: install dependencies"
