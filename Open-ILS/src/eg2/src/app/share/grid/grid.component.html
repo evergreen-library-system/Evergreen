@@ -1,6 +1,6 @@
 <div id="{{gridDomId}}" class="eg-grid-wrapper col-12"
   [ngClass]="{'eg-grid-resize': context.resizeWrapper}"
-  role="region" [attr.aria-labelledby]="'eg-grid-caption-'+gridDomId" tabindex="0">
+  role="region" [attr.aria-labelledby]="'eg-grid-caption-'+gridDomId" tabindex="-1">
   
   <eg-grid-print #gridPrinter [gridContext]="context">
   </eg-grid-print>
@@ -21,7 +21,7 @@
   <div class="col m-0 p-1">
     
 <!-- tabindex so the grid can capture keyboard events -->
-<table #egGrid role="grid" tabindex="0" (keydown)="onGridKeyDown($event)"
+<table #egGrid role="grid" tabindex="-1" (keydown)="onGridKeyDown($event)"
   class="eg-grid table grid-key-{{persistKey ? persistKey.replaceAll('.', '_') : 'none'}}"
   [ngClass]="{'eg-grid-cell-truncate': context.truncateCells,
               'eg-grid-empty': dataSource.data.length === 0,
