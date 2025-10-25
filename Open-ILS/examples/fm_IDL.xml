@@ -16673,7 +16673,7 @@ SELECT  usr,
             <field reporter:label="ID" name="id" reporter:datatype="id"/>
             <field reporter:label="Name" name="name" reporter:datatype="text" oils_obj:required="true"/>
         </fields>
-        <permacrud>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
                 <create permission="KPAC_ADMIN" global_required="true"/>
                 <retrieve/>
