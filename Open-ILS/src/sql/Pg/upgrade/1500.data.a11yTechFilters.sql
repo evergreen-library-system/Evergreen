@@ -1,5 +1,7 @@
 BEGIN;
 
+SELECT evergreen.upgrade_deps_block_check('1500', :eg_version);
+
 INSERT INTO config.record_attr_definition (name,label,sorter,filter,tag,sf_list,multi,vocabulary) VALUES
  ('a11yAccessMode',oils_i18n_gettext('a11yAccessMode', 'Content access mode', 'crad', 'label'),FALSE,TRUE,'341','a',TRUE,'https://schema.org/accessMode'),
  ('a11yTextFeatures',oils_i18n_gettext('a11yTextFeatures', 'Textual assistive features', 'crad', 'label'),FALSE,TRUE,'341','b',TRUE,'https://schema.org/accessibilityFeature'),
@@ -7,8 +9,6 @@ INSERT INTO config.record_attr_definition (name,label,sorter,filter,tag,sf_list,
  ('a11yAuditoryFeatures',oils_i18n_gettext('a11yAuditoryFeatures', 'Auditory assistive features', 'crad', 'label'),FALSE,TRUE,'341','d',TRUE,'https://schema.org/accessibilityFeature'),
  ('a11yTactileFeatures',oils_i18n_gettext('a11yTactileFeatures', 'Tactile assistive features', 'crad', 'label'),FALSE,TRUE,'341','e',TRUE,'https://schema.org/accessibilityFeature')
 ;
-
--- XXX COMMITER!!! Make sure 1753 is the next id stock id to be supplied in 950.data.seed-values.sql!
 
 INSERT INTO config.coded_value_map (id, opac_visible, ctype, code, value, search_label) VALUES
  (1753,true,'a11yAccessMode','auditory',oils_i18n_gettext('1753','Auditory','ccvm','value'),oils_i18n_gettext('1753','Auditory','ccvm','search_label')),
