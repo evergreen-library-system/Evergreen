@@ -1,6 +1,6 @@
 BEGIN;
 
--- SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1496', :eg_version);
 
 ALTER TABLE actor.org_unit
 	ADD COLUMN staff_catalog_visible BOOLEAN NOT NULL DEFAULT TRUE;
