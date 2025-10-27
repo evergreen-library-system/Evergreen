@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version); -- berick/csharp/Dyrcona/phasefx
+SELECT evergreen.upgrade_deps_block_check('1497', :eg_version); -- berick/csharp/Dyrcona/phasefx
 
 -- Thank you, berick :-)
 -- Start at 100 to avoid barcodes with long stretches of zeros early on.

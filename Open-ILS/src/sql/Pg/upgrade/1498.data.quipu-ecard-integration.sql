@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('YYYY', :eg_version); -- berick/csharp/Dyrcona/phasefx
+SELECT evergreen.upgrade_deps_block_check('1498', :eg_version); -- berick/csharp/Dyrcona/phasefx
 
 INSERT INTO actor.passwd_type
     (code, name, login, crypt_algo, iter_count)
