@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1499', :eg_version);
 
 CREATE OR REPLACE FUNCTION metabib.disable_browse_entry_reification () RETURNS VOID AS $f$
     INSERT INTO config.internal_flag (name,enabled)
