@@ -1,0 +1,285 @@
+= Evergreen 3.16-beta Release Notes =
+:toc:
+:numbered:
+:toclevels: 3
+
+== Upgrade notes ==
+
+== New Features ==
+
+:leveloffset: +2
+
+
+= Administration =
+
+
+== Permissions for Hard Due Dates ==
+
+Hard due date and hard due date values now have their own permission sets. You
+will need to add these new permissions to any of your users/permission groups
+for continuity of user permission on the Hard Due date interface.
+
+The new permissions are:
+
+* CREATE_HARD_DUE_DATE
+* UPDATE_HARD_DUE_DATE
+* DELETE_HARD_DUE_DATE
+* CREATE_HARD_DUE_DATE_VALUE
+* UPDATE_HARD_DUE_DATE_VALUE
+* DELETE_HARD_DUE_DATE_VALUE
+
+
+
+== Quipu eCard Integration ==
+
+The eCARD integration builds on previous work, and adds a generic method of integrating with Quipu’s eCARD service. This feature creates a location for a new Quipu-provided registration form that can be configured to send information to Quipu for address verification, as well as several new library settings related to the integration.
+
+This bypasses the regular Pending Patrons workflow.
+
+Due to the nature of how Quipu configures eCARD on their end, it is strongly recommended that libraries work directly with Quipu to test before implementation.
+
+This work includes methods and other code intended to support future related work for Quipu's eRENEW service.
+
+=== Changes to database, procedures, and library settings === 
+
+* Adds IDL entry for "ILS User Change History".
+* Adds `guardian_email` column to `actor.usr` table.
+* Adds `evergreen.json_delta` stored procedure.
+* Adds `actor.generate_barcode` stored procedure.
+* Adds `actor.usr_delta_history` table.
+* Adds `actor.record_usr_delta` stored procedure.
+* Adds `record_usr_delta trigger` to actor.usr table. 
+** This monitors updates to the user table and records the change in configured columns to the `actor.usr_delta_history`, which is labeled "ILS User Change History" in the reporter. By default, it only records changes in the `last_update_time column`, and the trigger itself is disabled by default. This can be reconfigured by the Database Adminstrator.
+* Adds `erenew` column to `permission.grp_tree`.
+* Adds a "PATRON_TEMP_RENEWAL" penalty to `config.standing_penalty`.
+* Adds an `ecard_vendor` password type. This type of password can only be set by the Database Adminstator.
+* Adds various library settings for Ecards in general, and for Quipu integration specifically.
+* Adds library settings for configuring Guardian Email for patron registration.
+* Adds an A/T hook for `au.create.ecard`, and an A/T template and environment variables for sending email for Ecard verification.
+* Upgrades library settings for early adopters.
+
+=== Note for Early Adopters ===
+
+Evergreen sites that were early adopters for Quipu integration (i.e., already using a Quipu integration prior to this work) may review `Open-ILS/src/sql/Pg/LP1902937-convert-quipu-early-adopt.sql` after building Evergreen.
+
+However, this SQL does not completely isolate changes made to support the new integration. Libraries are strongly advised to coordinate with Quipu before actually upgrading to or past this update to Evergreen. 
+
+
+== Staff-only and Public Catalog Library Groups ==
+
+Before this release, library groups were visible in both the public catalog and
+the staff catalog.  In this release, administrators can choose to display any
+library group in the Public Catalog or not using the "OPAC Visible?" checkbox in
+the Library Group administrative screen.  If it is checked, the library group
+will display in both the staff catalog and the public catalog.  If it is
+unchecked, it will only display in the staff catalog.
+
+Any pre-existing library groups will automatically continue to be visible in the
+public catalog until an dministrator configures them otherwise.
+
+
+
+= Cataloging =
+
+
+== Item status displays title information in the order presented in the MARC record ==
+
+In previous versions of Evergreen, the subfields $n and $p appeared at the end of
+the title in the Item Status screen, regardless of the order they appeared in the
+MARC record's 245 field.
+
+These subfields now appear in the order they were specified in the 245 field.
+
+Note that if you have customized the mods32 XML transform, you will need to make
+the relevant adjustments yourself: in the titleNonfiling section, the list of
+subfields should include include 'n' and 'p', and this section should not call
+the "part" template.
+
+
+== Control visibility of Org Units and Shelving Location Groups in the Angular Staff Catalog ==
+
+Adds functionality both to hide Org Units and include Shelving Location Groups in the Angular Staff Catalog Org Unit Selector
+
+A staff_catalog_visible boolean field is added to actor.org_unit to optionally hide the Org Unit from the selector. The new field is assigned the value from the exising opac_visible field.
+
+A staff.search.shelving_location_groups_with_orgs Global Flag is added to include Shelving Location Groups in the Org Unit Selector
+
+
+
+= Circulation =
+
+
+== Added Shelving Location to Hold Policies ==
+
+A new Shelving Location field has been added to hold policies
+and hold policy weights.  This allows libraries to configure
+hold placement options based on which location the item belongs to.
+
+
+== Nonrefundable Payment Flags == 
+
+This adds a set of Global Flags that define which payment types are refundable.  Refundability is checked when the transaction summary (`mbts`) is updated by a payment of billing being added to the transaction. If the new raw (total billed - total paid) balance is negative, the negative balance is adjusted toward zero by, at most, the sum of all non-refundable, non-voided payments.
+
+While it is expected that refundability settings will not change over time, transactions modified after changes to the refundability flags are recalculated based on the new settings. This allows batch changes to be triggered for all transactions, including historical ones, if desired.
+
+Because Evergreen uses the balance_owed column of `money.materialized_billable_xact_summary` (`mbts`) as the authoritative transaction balance, rather than recalculating the balance on the fly, this is almost entirely free of money-related code changes outside of the balance-maintaining database functions. The exception to this is the addition of UI elements to indicate refundability of specific payments, and a new addition to the "statement" interface to show the total non-refundable payments made to transactions involved in the summary view.
+
+
+= Client =
+
+
+== Org Unit Staff Catalog Visibility ==
+
+You can now set org units as visible or not visible in the
+staff catalog.  By default, all org units are visible in the
+staff catalog.
+
+To change the visibility:
+
+. Go to Administration -> System Administration -> Organizational Units.
+. Choose the org unit you'd like to change.
+. Check or uncheck the Staff Catalog Visible checkbox as needed.
+. Save your changes.
+. Run the autogen.sh script to allow your changes to take effect.
+
+Org units that are not staff catalog visible will not appear in
+the following locations:
+
+* The library selector on the staff catalog search form.
+* In search results in the staff catalog.
+* In item counts in the staff catalog search results and Record Staff View tabs.
+
+All org units will continue to be visible in the Holdings View, other
+admin screens, and reports.
+
+These visibility settings meet a few use cases:
+
+* De-cluttering an org selector with single-branch libraries, for which searching
+  at the system level is exactly the same as searching at the branch level.  This
+  can be achieved by marking the system as not visible, and the branch as visible.
+* Hiding org units that are no longer used.
+* Hiding org units that are used for resource sharing, but which do not need to
+  be searched.
+* Evergreen installations that want the library selector in the staff catalog
+  to match the one in the public catalog.  This can be achieved by making sure
+  that all orgs have matching OPAC visible and Staff Catalog visible settings.
+
+== Shelving Location Groups in Staff Catalog Library Selector ==
+
+Shelving Location Groups are now included in the Library Selector of
+the Staff Catalog search form.  This gives staff a similar experience
+to that of patrons.
+
+To remove shelving location groups from the staff catalog library selector:
+
+. Go to Administration -> Server Administration -> Global Flags.
+. Set the `staff.search.shelving_location_groups_with_orgs` global flag to False.
+. Press your browser's Refresh button.
+
+This does not remove shelving location groups from their current home in the library groups
+selector by default.  However, you can remove them from the library groups selector if desired:
+
+. Go to Administration -> Server Administration -> Global Flags.
+. Set the `staff.search.shelving_location_groups_with_lassos` global flag to False.
+. Press your browser's Refresh button.
+
+By combining these global flags, your Evergreen installation can include shelving location groups
+in either selector, both, or neither, according to your needs.
+
+
+
+= OPAC =
+
+
+== KPAC Redesign in Bootstrap ==
+
+The Bootstrap version of the Kids' Catalog is fully accessible, mobile-friendly, and translateable. In addition,
+the new version eliminates the older version's XML configuration file with a new staff client interface to improve
+the ease of updating highlighted home page topics and links.
+
+This work also fixes several outstanding KPAC bugs including issues with the login template and redirect.
+
+=== Configuration ===
+
+  * The Bootstrap KPAC will be used when the Bootstrap OPAC is used. This is controlled by the eg_vhost.conf file.
+  * New permission group: KPAC_ADMIN - Allows access to the KPAC Topic Configuration interface.
+  * New library setting: Show KPAC Link (opac.show_kpac_link) - Shows the KPAC link in the OPAC. Default is false.
+  * New library setting: KPAC Audience Filter (opac.kpac_audn_filter) - Controls which items to display
+based on MARC Target Audience (Audn) field. Juvenile options are: a,b,c,d,j. Default is: a,b,c,j. Please note
+that the underlying Perl code has been changed to use this library setting instead of the older XML configuration
+file, so libraries using the older KPAC should update this setting if they are using anything other than a,b,c,j.
+
+=== KPAC Topic Configuration ===
+
+The new topic administration interface is reached by going to Administration > Server Administration > KPAC Topic
+Configuation. 
+
+Topic graphics should be a minimum size of 168 x 107 pixels and need to be uploaded into the /images/kpac2/uploads
+folder. Only the file name needs to be entered into the Image File Name field (for example, kpac-dinosaur.png). 
+
+The Parent Category field should be left blank unless it is a sub-topic of another category, in which case it
+should reference the parent topic's name.
+
+The Content Type field determines what type of link a topic will be: Category, Search String, URL, or Book List.
+
+  * Category: Category topics will open to a new page with sub-topics.
+  * Search String: Fill in the Search String field. This functions as a pre-made search query and accepts
+    URL-friendly search strings. Examples:
+    ** alphabet
+    ** su:seasons
+    ** ti:tractor
+    ** nutrition after(2020)
+    ** "telling time"
+  * URL: Fill in the URL field. Either full URLs (https://example.com) or relative URLs (/eg/kpac/dewey) may be used.
+  * Book List: Fill in the Book List ID field. Create a book list in the OPAC and make it shareable. Click "View in
+    Catalog" and then copy the bookbag ID from the URL.
+
+=== Additional Customization ===
+
+By default, the KPAC will use the round Evergreen logo. To replace it with a custom logo, replace the file at
+/images/kpac2/logo-header.png.
+
+The KPAC utilizes its own CSS files: 
+
+  * /templates-bootstrap/kpac/css/style.css.tt2
+  * /templates-bootstrap/kpac/css/colors.tt2
+  * /templates-bootstrap/kpac/css/fonts.tt2
+  
+  
+
+
+
+
+= Miscellaneous =
+
+* In the staff client, the circulation menu's "Pull List for Hold Requests" has been
+  renamed to "Holds Pull List" for consistency.
+* The SlimPAC, which was an early version of the Evergreen catalog without Javascript,
+  has been removed from Evergreen's code.
+
+:leveloffset: 0
+
+
+== Acknowledgments ==
+The Evergreen project would like to acknowledge the following
+organizations that commissioned developments in this release of
+Evergreen:
+
+TODO
+
+We would also like to thank the following individuals who contributed
+code, translations, documentations patches and tests to this release of
+Evergreen:
+
+TODO
+
+
+We also thank the following organizations whose employees contributed
+patches:
+
+TODO
+
+We regret any omissions.  If a contributor has been inadvertently
+missed, please open a bug at http://bugs.launchpad.net/evergreen/
+with a correction.
+
