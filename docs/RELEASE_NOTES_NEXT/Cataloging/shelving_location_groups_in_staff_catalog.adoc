@@ -1,7 +1,0 @@
-== Control visibility of Org Units and Shelving Location Groups in the Angular Staff Catalog ==
-
-Adds functionality both to hide Org Units and include Shelving Location Groups in the Angular Staff Catalog Org Unit Selector
-
-A staff_catalog_visible boolean field is added to actor.org_unit to optionally hide the Org Unit from the selector. The new field is assigned the value from the exising opac_visible field.
-
-A staff.search.shelving_location_groups_with_orgs Global Flag is added to include Shelving Location Groups in the Org Unit Selector

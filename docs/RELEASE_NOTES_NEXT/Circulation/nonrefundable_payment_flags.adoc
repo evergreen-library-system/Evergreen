@@ -1,7 +1,0 @@
-== Nonrefundable Payment Flags == 
-
-This adds a set of Global Flags that define which payment types are refundable.  Refundability is checked when the transaction summary (`mbts`) is updated by a payment of billing being added to the transaction. If the new raw (total billed - total paid) balance is negative, the negative balance is adjusted toward zero by, at most, the sum of all non-refundable, non-voided payments.
-
-While it is expected that refundability settings will not change over time, transactions modified after changes to the refundability flags are recalculated based on the new settings. This allows batch changes to be triggered for all transactions, including historical ones, if desired.
-
-Because Evergreen uses the balance_owed column of `money.materialized_billable_xact_summary` (`mbts`) as the authoritative transaction balance, rather than recalculating the balance on the fly, this is almost entirely free of money-related code changes outside of the balance-maintaining database functions. The exception to this is the addition of UI elements to indicate refundability of specific payments, and a new addition to the "statement" interface to show the total non-refundable payments made to transactions involved in the summary view.
