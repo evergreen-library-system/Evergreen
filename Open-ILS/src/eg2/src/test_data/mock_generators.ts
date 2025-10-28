@@ -11,7 +11,6 @@ import { SerialsService } from '@eg/staff/serials/serials.service';
 import { HoldsService } from '@eg/staff/share/holds/holds.service';
 import { PatronService } from '@eg/staff/share/patron/patron.service';
 import { EMPTY, from, of } from 'rxjs';
-import { from, of } from 'rxjs';
 
 // Convenience functions that generate mock data for use in automated tests
 export class MockGenerators {
@@ -42,21 +41,6 @@ export class MockGenerators {
             result: { success: true, holdId: 303 }
         }));
         service.getHoldTargetMeta.and.returnValue(EMPTY);
-        return service;
-    }
-
-    static globalFlagService(flags: BasicGlobalFlag[]) {
-        const service = jasmine.createSpyObj<GlobalFlagService>(['enabled', 'retrieve']);
-        service.enabled.and.callFake((name) => of(flags.find(flag => flag.name === name).enabled));
-        service.retrieve.and.callFake((name) => {
-            const flagData = flags.find(flag => flag.name === name);
-            return of(this.idlObject({
-                name: flagData.name,
-                enabled: flagData.enabled ? 't' : 'f',
-                label: flagData.label,
-                value: flagData.value
-            }));
-        });
         return service;
     }
 
