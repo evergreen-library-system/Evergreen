@@ -49,10 +49,10 @@ This work includes methods and other code intended to support future related wor
 * Adds `actor.usr_delta_history` table.
 * Adds `actor.record_usr_delta` stored procedure.
 * Adds `record_usr_delta trigger` to actor.usr table. 
-** This monitors updates to the user table and records the change in configured columns to the `actor.usr_delta_history`, which is labeled "ILS User Change History" in the reporter. By default, it only records changes in the `last_update_time column`, and the trigger itself is disabled by default. This can be reconfigured by the Database Adminstrator.
+** This monitors updates to the user table and records the change in configured columns to the `actor.usr_delta_history`, which is labeled "ILS User Change History" in the reporter. By default, it only records changes in the `last_update_time column`, and the trigger itself is disabled by default. This can be reconfigured by the Database Administrator.
 * Adds `erenew` column to `permission.grp_tree`.
 * Adds a "PATRON_TEMP_RENEWAL" penalty to `config.standing_penalty`.
-* Adds an `ecard_vendor` password type. This type of password can only be set by the Database Adminstator.
+* Adds an `ecard_vendor` password type. This type of password can only be set by the Database Administrator.
 * Adds various library settings for Ecards in general, and for Quipu integration specifically.
 * Adds library settings for configuring Guardian Email for patron registration.
 * Adds an A/T hook for `au.create.ecard`, and an A/T template and environment variables for sending email for Ecard verification.
@@ -75,7 +75,7 @@ will display in both the staff catalog and the public catalog.  If it is
 unchecked, it will only display in the staff catalog.
 
 Any pre-existing library groups will automatically continue to be visible in the
-public catalog until an dministrator configures them otherwise.
+public catalog until an administrator configures them otherwise.
 
 
 
@@ -100,7 +100,7 @@ the "part" template.
 
 Adds functionality both to hide Org Units and include Shelving Location Groups in the Angular Staff Catalog Org Unit Selector
 
-A staff_catalog_visible boolean field is added to actor.org_unit to optionally hide the Org Unit from the selector. The new field is assigned the value from the exising opac_visible field.
+A staff_catalog_visible boolean field is added to actor.org_unit to optionally hide the Org Unit from the selector. The new field is assigned the value from the existing opac_visible field.
 
 A staff.search.shelving_location_groups_with_orgs Global Flag is added to include Shelving Location Groups in the Org Unit Selector
 
@@ -212,7 +212,7 @@ file, so libraries using the older KPAC should update this setting if they are u
 === KPAC Topic Configuration ===
 
 The new topic administration interface is reached by going to Administration > Server Administration > KPAC Topic
-Configuation. 
+Configuration.
 
 Topic graphics should be a minimum size of 168 x 107 pixels and need to be uploaded into the /images/kpac2/uploads
 folder. Only the file name needs to be entered into the Image File Name field (for example, kpac-dinosaur.png). 
@@ -265,21 +265,84 @@ The Evergreen project would like to acknowledge the following
 organizations that commissioned developments in this release of
 Evergreen:
 
-TODO
+* BC Libraries Cooperative
+* Carteret Community College for NCCCE and NCCardinal
+* NOBLE
+* PaILS
 
 We would also like to thank the following individuals who contributed
-code, translations, documentations patches and tests to this release of
+code, translations, documentation patches and tests to this release of
 Evergreen:
 
-TODO
+* Andrea Buntz Neiman
+* Bill Erickson
+* Blake Graham-Henderson
+* Brian Kennedy
+* Carol Witt
+* Chris Amorosi
+* Chris Sharp
+* Christine Burns
+* Christine Morgan
+* Dan Briem
+* Dan Guarracino
+* Elizabeth Davis
+* Eva Cerniňáková
+* Galen Charlton
+* Garry Collum
+* Gina Monti
+* Ian Skelskey
+* Jane Sandberg
+* Jason Boyer
+* Jason Etheridge
+* Jason Stephenson
+* Jeff Davis
+* Jeff Godin
+* Jennifer Pringle
+* Jessica Woolford
+* John Amundson
+* Josh Stompro
+* Katie Greenleaf Martin
+* Lindsay Stratton
+* Llewellyn Marshall
+* Martha Driscoll
+* Mary Llewellyn
+* Michele Morgan
+* Mike Rylander
+* Robin Fitch
+* Ruth Frasur Davis
+* Sarah Cruz
+* Scott Angel
+* Shula Link
+* Stephanie Leary
+* Steven Callender
+* Steven Mayo
+* Susan Morrison
+* Susan Morrisoy
+* Tara Kunesh
+* Terran McCanna
+* Tiffany Little
 
 
 We also thank the following organizations whose employees contributed
 patches:
 
-TODO
+* Bibliomation
+* British Columbia Libraries Cooperative
+* C/W MARS
+* Equinox Open Library Initiative
+* Evergreen Collaborative Development Initiative (ECDI)
+* Georgia Public Library Service (GPLS)
+* Greater Clarks Hill Regional Library
+* Kenton County Public Library
+* King County Library System
+* Lake Agassiz Regional Library
+* MOBIUS
+* North of Boston Library Exchange (NOBLE)
+* PaILS
+* Princeton University
+* Traverse Area District Library (TADL)
+* Westchester Library System
 
 We regret any omissions.  If a contributor has been inadvertently
 missed, please open a bug at http://bugs.launchpad.net/evergreen/
 with a correction.
-
