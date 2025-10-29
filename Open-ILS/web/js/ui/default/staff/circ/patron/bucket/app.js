@@ -237,34 +237,180 @@ function($scope,  $routeParams,  bucketSvc , egGridDataProvider,   egCore , ngTo
                 barcodes.push(line);
 
             });
-            egCore.pcrud.search(
-                'ac',
-                {barcode : barcodes},
-                {}
-            ).then(
-                function() {
-                    $scope.gridControls.setQuery({id : bucketSvc.pendingList});
-                },
-                null, 
-                function(card) {
-                    bucketSvc.pendingList.push(card.usr());
-                }
-            );
+
+            var promises = [];
+            angular.forEach(barcodes, function(bc) {
+                promises.push(
+                    $scope.handle_barcode_completion(bc).then(
+                        function(checked_bc) {
+                            if (!checked_bc) return $q.when(); // just skip empty/not-opted-in barcodes
+
+                            return egCore.pcrud.search(
+                                'ac', {barcode : checked_bc}, {}
+                            ).then( null, null, function(card) {
+                                if (!bucketSvc.pendingList.includes(card.usr())) {
+                                    bucketSvc.pendingList.push(card.usr());
+                                }
+                            });
+                        }
+                    )
+                );
+            });
+
+            return $q.all(promises).then(function() {
+                $scope.gridControls.setQuery({id : bucketSvc.pendingList});
+            });
         }
     });
+
+    $scope.handle_barcode_completion = function(barcode) {
+        $scope.optInRestricted = false;
+        return egCore.net.request(
+            'open-ils.actor',
+            'open-ils.actor.get_barcodes',
+            egCore.auth.token(), egCore.auth.user().ws_ou(),
+            'actor', barcode)
+
+        .then(function(resp) {
+            // TODO: handle event during barcode lookup
+            if (evt = egCore.evt.parse(resp)) {
+                console.error(evt.toString());
+                return $q.reject();
+            }
+
+            // no matching barcodes: return the null so we
+            // can detect a bad/missing barcode
+            if (!resp || !resp[0]) {
+                return null;
+            }
+
+            // exactly one matching barcode: return it
+            if (resp.length == 1) {
+                return resp[0].barcode;
+            }
+
+            // multiple matching barcodes: let the user pick one
+            console.debug('multiple matching barcodes');
+            var matches = [];
+            var promises = [];
+            var final_barcode;
+            angular.forEach(resp, function(u) {
+                promises.push(
+                    egCore.pcrud.retrieve('au', u.id)
+                    .then(function(r) {
+                        matches.push({
+                            barcode: resp.barcode,
+                            title: u.usrname(),
+                            org_name: egCore.org.get(u.home_ou()).name(),
+                            org_shortname: egCore.org.get(u.home_ou()).shortname()
+                        });
+                    })
+                );
+            });
+            return $q.all(promises)
+            .then(function() {
+                return $uibModal.open({
+                    templateUrl: './circ/share/t_barcode_choice_dialog',
+                    controller:
+                        ['$scope', '$uibModalInstance',
+                        function($scope, $uibModalInstance) {
+                        $scope.matches = matches;
+                        $scope.ok = function(barcode) {
+                            $uibModalInstance.close();
+                            final_barcode = barcode;
+                        }
+                        $scope.cancel = function() {$uibModalInstance.dismiss()}
+                    }],
+                }).result.then(function() { return final_barcode });
+            })
+        }).then(function(chosen_barcode) {
+
+            var user;
+            // first, grab the user by barcode
+            return egCore.net.request(
+                'open-ils.actor',
+                'open-ils.actor.user.fleshed.retrieve_by_barcode',
+                egCore.auth.token(), chosen_barcode
+            ).then(function(u) {
+                user = u;
+                if (evt = egCore.evt.parse(user)) {
+                    console.error(evt.toString());
+                    return $q.reject();
+                }
+
+                // see if an opt-in request is needed
+                return egCore.net.request(
+                    'open-ils.actor',
+                    'open-ils.actor.user.org_unit_opt_in.check',
+                    egCore.auth.token(), user.id()
+                );
+            }).then(function(optInResp) { // opt_in_check
+
+                if (evt = egCore.evt.parse(optInResp)) {
+                    alert(evt); // FIXME
+                    return null;
+                }
+
+                if (optInResp == 2) {
+                    // opt-in disallowed at this location by patron's home library
+                    $scope.optInRestricted = true;
+                    $scope.selectMe = true;
+                    egCore.audio.play('warning.patron.opt_in_restricted');
+                    return null;
+                }
+
+                if (optInResp == 1) {
+                    // opt-in handled or not needed
+                    return chosen_barcode;
+                }
+
+                var final_barcode = '';
+                var org = egCore.org.get(u.home_ou());
+                return egConfirmDialog.open(
+                    egCore.strings.OPT_IN_DIALOG_TITLE,
+                    egCore.strings.OPT_IN_DIALOG,
+                    {   family_name : u.family_name(),
+                        first_given_name : u.first_given_name(),
+                        org_name : org.name(),
+                        org_shortname : org.shortname(),
+                        ok : function() { createOptIn(u.id()); final_barcode = chosen_barcode },
+                        cancel : function() {}
+                    }
+                ).then(function() { return final_barcode });
+            })
+        });
+    }
+
+    // create an opt-in=yes response for the loaded user
+    function createOptIn(user_id) {
+        egCore.net.request(
+            'open-ils.actor',
+            'open-ils.actor.user.org_unit_opt_in.create',
+            egCore.auth.token(), user_id).then(function(resp) {
+                if (evt = egCore.evt.parse(resp)) return alert(evt);
+            }
+        );
+    }
 
     $scope.search = function() {
         bucketSvc.barcodeRecords = [];
 
-        egCore.pcrud.search(
-            'ac',
-            {barcode : bucketSvc.barcodeString},
-            {}
-        ).then(null, null, function(card) {
-            bucketSvc.pendingList.push(card.usr());
-            $scope.gridControls.setQuery({id : bucketSvc.pendingList});
+        return $scope.handle_barcode_completion(bucketSvc.barcodeString)
+        .then(function(actual_barcode) {
+            if (actual_barcode) {
+                egCore.pcrud.search(
+                    'ac',
+                    {barcode : actual_barcode},
+                    {}
+                ).then(null, null, function(card) {
+                    if (!bucketSvc.pendingList.includes(card.usr())) {
+                        bucketSvc.pendingList.push(card.usr());
+                    }
+                    $scope.gridControls.setQuery({id : bucketSvc.pendingList});
+                });
+            }
+            bucketSvc.barcodeString = '';
         });
-        bucketSvc.barcodeString = '';
     }
 
     $scope.resetPendingList = function() {
@@ -442,8 +588,8 @@ function($scope,  $q , $routeParams , $timeout , $window , $uibModal , bucketSvc
             if (!g.hasOwnProperty('cannot_use')) {
                 if (g.usergroup() == 'f') {
                     g.cannot_use = true;
-                } else if (g.application_perm) {
-                    egPerm.hasPermHere(['EVERYTHING',g.application_perm]).then(
+                } else if (g.application_perm()) {
+                    egPerm.hasPermHere(['EVERYTHING',g.application_perm()]).then(
                         function (hash) {
                             if (Object.keys(hash).length == 0) {
                                 g.cannot_use = true;
