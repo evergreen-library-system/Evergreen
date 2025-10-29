@@ -400,6 +400,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Overlay Match ID" name="internal_id" reporter:datatype="int"/>
 			<field reporter:label="Stat Cat Data" name="stat_cat_data" reporter:datatype="text"/>
 			<field reporter:label="Parts Data" name="parts_data" reporter:datatype="text"/>
+			<field reporter:label="Floating Group" name="floating" reporter:datatype="int"/>
+			<field reporter:label="Loan Duration" name="loan_duration" reporter:datatype="int"/>
+			<field reporter:label="Fine Level" name="fine_level" reporter:datatype="int"/>
+			<field reporter:label="Age Hold Protection" name="age_protect" reporter:datatype="int"/>
+			<field reporter:label="Mint Condition?" name="mint_condition" reporter:datatype="bool"/>
 		</fields>
 		<links>
 			<link field="import_error" reltype="has_a" key="code" map="" class="vie"/>
@@ -453,6 +458,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Overlay Match ID" name="internal_id" reporter:datatype="text"/>
 			<field reporter:label="Stat Cat Data" name="stat_cat_data" reporter:datatype="text"/>
 			<field reporter:label="Parts Data" name="parts_data" reporter:datatype="text"/>
+			<field reporter:label="Floating Group" name="floating" reporter:datatype="text"/>
+			<field reporter:label="Loan Duration" name="loan_duration" reporter:datatype="text"/>
+			<field reporter:label="Fine Level" name="fine_level" reporter:datatype="text"/>
+			<field reporter:label="Age Hold Protection" name="age_protect" reporter:datatype="text"/>
+			<field reporter:label="Mint Condition?" name="mint_condition" reporter:datatype="text"/>
 		</fields>
 		<links>
 			<link field="owner" reltype="has_a" key="id" map="" class="aou"/>

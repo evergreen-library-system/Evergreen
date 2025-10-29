@@ -2163,8 +2163,8 @@ sub import_record_asset_list_impl {
                 # Create the new copy
                 # --------------------------------------------------------------------------------
                 $copy = Fieldmapper::asset::copy->new;
-                $copy->loan_duration(2);
-                $copy->fine_level(2);
+                $copy->loan_duration(defined($item->loan_duration) ? $item->loan_duration : 2);
+                $copy->fine_level(defined($item->fine_level) ? $item->fine_level : 2);
                 $copy->barcode($item->barcode);
                 $copy->location($item->location);
                 $copy->circ_lib($item->circ_lib || $item->owning_lib);
@@ -2179,6 +2179,10 @@ sub import_record_asset_list_impl {
                 $copy->alert_message($item->alert_message);
                 $copy->opac_visible($item->opac_visible);
                 $copy->circ_modifier($item->circ_modifier);
+                $copy->floating($item->floating);
+                $copy->age_protect($item->age_protect);
+                $copy->mint_condition($item->mint_condition);
+
 
                 # --------------------------------------------------------------------------------
                 # Check for dupe barcode

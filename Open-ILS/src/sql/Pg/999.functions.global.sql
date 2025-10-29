@@ -1519,6 +1519,17 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+CREATE OR REPLACE FUNCTION vandelay._ingest_items_xpath_helper (input_text TEXT) RETURNS TEXT AS $$
+BEGIN
+    RETURN CASE
+        WHEN input_text IS NULL THEN 'null()'
+        WHEN LENGTH(input_text) = 1 THEN '//*[@code="' || input_text || '"]'
+        ELSE '//*' || input_text
+    END;
+
+END;
+$$ LANGUAGE plpgsql;
+
 CREATE OR REPLACE FUNCTION vandelay.ingest_items ( import_id BIGINT, attr_def_id BIGINT ) RETURNS SETOF vandelay.import_item AS $$
 DECLARE
 
@@ -1544,6 +1555,11 @@ DECLARE
     internal_id     TEXT;
     stat_cat_data   TEXT;
     parts_data      TEXT;
+    age_protect     TEXT;
+    floating        TEXT;
+    fine_level      TEXT;
+    loan_duration   TEXT;
+    mint_condition  TEXT;
 
     attr_def        RECORD;
     tmp_attr_set    RECORD;
@@ -1562,164 +1578,39 @@ BEGIN
 
         -- Build the combined XPath
 
-        owning_lib :=
-            CASE
-                WHEN attr_def.owning_lib IS NULL THEN 'null()'
-                WHEN LENGTH( attr_def.owning_lib ) = 1 THEN '//*[@code="' || attr_def.owning_lib || '"]'
-                ELSE '//*' || attr_def.owning_lib
-            END;
-
-        circ_lib :=
-            CASE
-                WHEN attr_def.circ_lib IS NULL THEN 'null()'
-                WHEN LENGTH( attr_def.circ_lib ) = 1 THEN '//*[@code="' || attr_def.circ_lib || '"]'
-                ELSE '//*' || attr_def.circ_lib
-            END;
-
-        call_number :=
-            CASE
-                WHEN attr_def.call_number IS NULL THEN 'null()'
-                WHEN LENGTH( attr_def.call_number ) = 1 THEN '//*[@code="' || attr_def.call_number || '"]'
-                ELSE '//*' || attr_def.call_number
-            END;
-
-        copy_number :=
-            CASE
-                WHEN attr_def.copy_number IS NULL THEN 'null()'
-                WHEN LENGTH( attr_def.copy_number ) = 1 THEN '//*[@code="' || attr_def.copy_number || '"]'
-                ELSE '//*' || attr_def.copy_number
-            END;
-
-        status :=
-            CASE
-                WHEN attr_def.status IS NULL THEN 'null()'
-                WHEN LENGTH( attr_def.status ) = 1 THEN '//*[@code="' || attr_def.status || '"]'
-                ELSE '//*' || attr_def.status
-            END;
-
-        location :=
-            CASE
-                WHEN attr_def.location IS NULL THEN 'null()'
-                WHEN LENGTH( attr_def.location ) = 1 THEN '//*[@code="' || attr_def.location || '"]'
-                ELSE '//*' || attr_def.location
-            END;
-
-        circulate :=
-            CASE
-                WHEN attr_def.circulate IS NULL THEN 'null()'
-                WHEN LENGTH( attr_def.circulate ) = 1 THEN '//*[@code="' || attr_def.circulate || '"]'
-                ELSE '//*' || attr_def.circulate
-            END;
-
-        deposit :=
-            CASE
-                WHEN attr_def.deposit IS NULL THEN 'null()'
-                WHEN LENGTH( attr_def.deposit ) = 1 THEN '//*[@code="' || attr_def.deposit || '"]'
-                ELSE '//*' || attr_def.deposit
-            END;
-
-        deposit_amount :=
-            CASE
-                WHEN attr_def.deposit_amount IS NULL THEN 'null()'
-                WHEN LENGTH( attr_def.deposit_amount ) = 1 THEN '//*[@code="' || attr_def.deposit_amount || '"]'
-                ELSE '//*' || attr_def.deposit_amount
-            END;
-
-        ref :=
-            CASE
-                WHEN attr_def.ref IS NULL THEN 'null()'
-                WHEN LENGTH( attr_def.ref ) = 1 THEN '//*[@code="' || attr_def.ref || '"]'
-                ELSE '//*' || attr_def.ref
-            END;
-
-        holdable :=
-            CASE
-                WHEN attr_def.holdable IS NULL THEN 'null()'
-                WHEN LENGTH( attr_def.holdable ) = 1 THEN '//*[@code="' || attr_def.holdable || '"]'
-                ELSE '//*' || attr_def.holdable
-            END;
-
-        price :=
-            CASE
-                WHEN attr_def.price IS NULL THEN 'null()'
-                WHEN LENGTH( attr_def.price ) = 1 THEN '//*[@code="' || attr_def.price || '"]'
-                ELSE '//*' || attr_def.price
-            END;
-
-        barcode :=
-            CASE
-                WHEN attr_def.barcode IS NULL THEN 'null()'
-                WHEN LENGTH( attr_def.barcode ) = 1 THEN '//*[@code="' || attr_def.barcode || '"]'
-                ELSE '//*' || attr_def.barcode
-            END;
-
-        circ_modifier :=
-            CASE
-                WHEN attr_def.circ_modifier IS NULL THEN 'null()'
-                WHEN LENGTH( attr_def.circ_modifier ) = 1 THEN '//*[@code="' || attr_def.circ_modifier || '"]'
-                ELSE '//*' || attr_def.circ_modifier
-            END;
-
-        circ_as_type :=
-            CASE
-                WHEN attr_def.circ_as_type IS NULL THEN 'null()'
-                WHEN LENGTH( attr_def.circ_as_type ) = 1 THEN '//*[@code="' || attr_def.circ_as_type || '"]'
-                ELSE '//*' || attr_def.circ_as_type
-            END;
-
-        alert_message :=
-            CASE
-                WHEN attr_def.alert_message IS NULL THEN 'null()'
-                WHEN LENGTH( attr_def.alert_message ) = 1 THEN '//*[@code="' || attr_def.alert_message || '"]'
-                ELSE '//*' || attr_def.alert_message
-            END;
-
-        opac_visible :=
-            CASE
-                WHEN attr_def.opac_visible IS NULL THEN 'null()'
-                WHEN LENGTH( attr_def.opac_visible ) = 1 THEN '//*[@code="' || attr_def.opac_visible || '"]'
-                ELSE '//*' || attr_def.opac_visible
-            END;
-
-        pub_note :=
-            CASE
-                WHEN attr_def.pub_note IS NULL THEN 'null()'
-                WHEN LENGTH( attr_def.pub_note ) = 1 THEN '//*[@code="' || attr_def.pub_note || '"]'
-                ELSE '//*' || attr_def.pub_note
-            END;
-        priv_note :=
-            CASE
-                WHEN attr_def.priv_note IS NULL THEN 'null()'
-                WHEN LENGTH( attr_def.priv_note ) = 1 THEN '//*[@code="' || attr_def.priv_note || '"]'
-                ELSE '//*' || attr_def.priv_note
-            END;
-
-        internal_id :=
-            CASE
-                WHEN attr_def.internal_id IS NULL THEN 'null()'
-                WHEN LENGTH( attr_def.internal_id ) = 1 THEN '//*[@code="' || attr_def.internal_id || '"]'
-                ELSE '//*' || attr_def.internal_id
-            END;
-
-        stat_cat_data :=
-            CASE
-                WHEN attr_def.stat_cat_data IS NULL THEN 'null()'
-                WHEN LENGTH( attr_def.stat_cat_data ) = 1 THEN '//*[@code="' || attr_def.stat_cat_data || '"]'
-                ELSE '//*' || attr_def.stat_cat_data
-            END;
-
-        parts_data :=
-            CASE
-                WHEN attr_def.parts_data IS NULL THEN 'null()'
-                WHEN LENGTH( attr_def.parts_data ) = 1 THEN '//*[@code="' || attr_def.parts_data || '"]'
-                ELSE '//*' || attr_def.parts_data
-            END;
-
+        owning_lib := vandelay._ingest_items_xpath_helper(attr_def.owning_lib);
+        circ_lib := vandelay._ingest_items_xpath_helper(attr_def.circ_lib);
+        call_number := vandelay._ingest_items_xpath_helper(attr_def.call_number);
+        copy_number := vandelay._ingest_items_xpath_helper(attr_def.copy_number);
+        status := vandelay._ingest_items_xpath_helper(attr_def.status);
+        location := vandelay._ingest_items_xpath_helper(attr_def.location);
+        circulate := vandelay._ingest_items_xpath_helper(attr_def.circulate);
+        deposit := vandelay._ingest_items_xpath_helper(attr_def.deposit);
+        deposit_amount := vandelay._ingest_items_xpath_helper(attr_def.deposit_amount);
+        ref := vandelay._ingest_items_xpath_helper(attr_def.ref);
+        holdable := vandelay._ingest_items_xpath_helper(attr_def.holdable);
+        price := vandelay._ingest_items_xpath_helper(attr_def.price);
+        barcode := vandelay._ingest_items_xpath_helper(attr_def.barcode);
+        circ_modifier := vandelay._ingest_items_xpath_helper(attr_def.circ_modifier);
+        circ_as_type := vandelay._ingest_items_xpath_helper(attr_def.circ_as_type);
+        alert_message := vandelay._ingest_items_xpath_helper(attr_def.alert_message);
+        opac_visible := vandelay._ingest_items_xpath_helper(attr_def.opac_visible);
+        pub_note := vandelay._ingest_items_xpath_helper(attr_def.pub_note);
+        priv_note := vandelay._ingest_items_xpath_helper(attr_def.priv_note);
+        internal_id := vandelay._ingest_items_xpath_helper(attr_def.internal_id);
+        stat_cat_data := vandelay._ingest_items_xpath_helper(attr_def.stat_cat_data);
+        parts_data := vandelay._ingest_items_xpath_helper(attr_def.parts_data);
+        age_protect := vandelay._ingest_items_xpath_helper(attr_def.age_protect);
+        floating := vandelay._ingest_items_xpath_helper(attr_def.floating);
+        fine_level := vandelay._ingest_items_xpath_helper(attr_def.fine_level);
+        loan_duration := vandelay._ingest_items_xpath_helper(attr_def.loan_duration);
+        mint_condition := vandelay._ingest_items_xpath_helper(attr_def.mint_condition);
 
 
         xpaths := ARRAY[owning_lib, circ_lib, call_number, copy_number, status, location, circulate,
                         deposit, deposit_amount, ref, holdable, price, barcode, circ_modifier, circ_as_type,
-                        alert_message, pub_note, priv_note, internal_id, stat_cat_data, parts_data, opac_visible];
+                        alert_message, pub_note, priv_note, internal_id, stat_cat_data, parts_data, opac_visible, 
+                        age_protect, floating, fine_level, loan_duration, mint_condition];
 
         FOR tmp_attr_set IN
                 SELECT  *
@@ -1727,7 +1618,8 @@ BEGIN
                             AS t( ol TEXT, clib TEXT, cn TEXT, cnum TEXT, cs TEXT, cl TEXT, circ TEXT,
                                   dep TEXT, dep_amount TEXT, r TEXT, hold TEXT, pr TEXT, bc TEXT, circ_mod TEXT,
                                   circ_as TEXT, amessage TEXT, note TEXT, pnote TEXT, internal_id TEXT,
-                                  stat_cat_data TEXT, parts_data TEXT, opac_vis TEXT )
+                                  stat_cat_data TEXT, parts_data TEXT, opac_vis TEXT,
+                                  age_protect TEXT, floating TEXT, fine_level TEXT, loan_duration TEXT, mint_condition TEXT )
         LOOP
 
             attr_set.import_error := NULL;
@@ -1794,6 +1686,25 @@ BEGIN
                     attr_set.import_error := 'import.item.invalid.status';
                     attr_set.error_detail := tmp_attr_set.cs;
                     RETURN NEXT attr_set; CONTINUE; 
+                END IF;
+            END IF;
+
+            
+            IF tmp_attr_set.age_protect != '' THEN 
+                SELECT id INTO attr_set.age_protect FROM config.rule_age_hold_protect WHERE LOWER(name) = LOWER(tmp_attr_set.age_protect); -- INT
+                IF NOT FOUND THEN 
+                    attr_set.import_error := 'import.item.invalid.age_protect';
+                    attr_set.error_detail := tmp_attr_set.age_protect;
+                    RETURN NEXT attr_set; CONTINUE;
+                END IF;
+            END IF;
+
+            IF tmp_attr_set.floating != '' THEN 
+                SELECT id INTO attr_set.floating FROM config.floating_group WHERE LOWER(name) = LOWER(tmp_attr_set.floating); -- INT
+                IF NOT FOUND THEN 
+                    attr_set.import_error := 'import.item.invalid.floating';
+                    attr_set.error_detail := tmp_attr_set.floating;
+                    RETURN NEXT attr_set; CONTINUE;
                 END IF;
             END IF;
 
@@ -1902,6 +1813,10 @@ BEGIN
                 LOWER( SUBSTRING( tmp_attr_set.r, 1, 1 ) ) IN ('t','y','1')
                 OR LOWER(tmp_attr_set.r) = 'reference'; -- BOOL
 
+            attr_set.mint_condition :=
+                LOWER( SUBSTRING( tmp_attr_set.mint_condition, 1, 1 ) ) IN ('t','y','1')
+                OR LOWER(tmp_attr_set.mint_condition) = 'mint_condition'; -- BOOL
+
             attr_set.call_number    := tmp_attr_set.cn; -- TEXT
             attr_set.barcode        := tmp_attr_set.bc; -- TEXT,
             attr_set.alert_message  := tmp_attr_set.amessage; -- TEXT,
@@ -1911,6 +1826,9 @@ BEGIN
             attr_set.internal_id    := tmp_attr_set.internal_id::BIGINT;
             attr_set.stat_cat_data  := tmp_attr_set.stat_cat_data; -- TEXT,
             attr_set.parts_data     := tmp_attr_set.parts_data; -- TEXT,
+            attr_set.fine_level     := tmp_attr_set.fine_level::INT;
+            attr_set.loan_duration  := tmp_attr_set.loan_duration::INT;
+
 
             RETURN NEXT attr_set;
 
@@ -1964,7 +1882,13 @@ BEGIN
             stat_cat_data,
             parts_data,
             import_error,
-            error_detail
+            error_detail,
+            age_protect,
+            floating,
+            fine_level,
+            loan_duration,
+            mint_condition
+
         ) VALUES (
             NEW.id,
             item_data.definition,
@@ -1991,13 +1915,20 @@ BEGIN
             item_data.stat_cat_data,
             item_data.parts_data,
             item_data.import_error,
-            item_data.error_detail
+            item_data.error_detail,
+            item_data.age_protect,
+            item_data.floating,
+            item_data.fine_level,
+            item_data.loan_duration,
+            item_data.mint_condition
+
         );
     END LOOP;
 
     RETURN NULL;
 END;
 $func$ LANGUAGE PLPGSQL;
+
 
 CREATE TRIGGER ingest_item_trigger
     AFTER INSERT OR UPDATE ON vandelay.queued_bib_record

@@ -13663,6 +13663,10 @@ INSERT INTO vandelay.import_error ( code, description ) VALUES (
     'import.item.invalid.stat_cat_format', oils_i18n_gettext('import.item.invalid.stat_cat_format', 'Bad format for stat cat data, should be like: CAT 1|VALUE 1', 'vie', 'description') );
 INSERT INTO vandelay.import_error ( code, description ) VALUES (
     'import.item.invalid.stat_cat_data', oils_i18n_gettext('import.item.invalid.stat_cat_data', 'Invalid stat cat data', 'vie', 'description') );
+INSERT INTO vandelay.import_error ( code, description ) VALUES (
+    'import.item.invalid.age_protect', oils_i18n_gettext('import.item.invalid.age_protect', 'Invalid Age Protection Rule', 'vie', 'description') );
+INSERT INTO vandelay.import_error ( code, description ) VALUES (
+    'import.item.invalid.floating', oils_i18n_gettext('import.item.invalid.floating', 'Invalid Floating Group', 'vie', 'description') );
 
 -- Event def for email notice for hold cancelled due to lack of target -----
 

@@ -109,6 +109,11 @@ CREATE TABLE vandelay.import_item_attr_definition (
     internal_id     TEXT,
     stat_cat_data   TEXT,
     parts_data      TEXT,
+    floating        TEXT,
+    loan_duration   TEXT,
+    fine_level      TEXT,
+    age_protect     TEXT,
+    mint_condition  TEXT,
 	CONSTRAINT vand_import_item_attr_def_idx UNIQUE (owner,name)
 );
 
@@ -183,6 +188,11 @@ CREATE TABLE vandelay.import_item (
     stat_cat_data   TEXT,
     parts_data      TEXT,
     opac_visible    BOOL,
+    floating        INT,
+    loan_duration   INT,
+    fine_level      INT,
+    age_protect     INT,
+    mint_condition  BOOL,
     internal_id     BIGINT -- queue_type == 'acq' ? acq.lineitem_detail.id : asset.copy.id
 );
 CREATE INDEX import_item_record_idx ON vandelay.import_item (record);
