@@ -1554,6 +1554,17 @@ sub batch_statcat_apply {
     $meth = 'search_' . $ctypes{$class} . '_item';
     my $contents = $e->$meth({bucket => $c_id});
 
+    if ($class eq 'user'
+        and grep {
+            $_ != 1
+        } map {
+            $self->method_lookup('open-ils.actor.user.org_unit_opt_in.check')->run($ses => $_->target_user)
+        } @$contents
+    ) {
+        $logger->warn("Cannot update contents of $class container $c_id; not allowed due to patron opt-in restrictions.");
+        return OpenILS::Event->new('ACTOR_USR_ORG_UNIT_OPT_IN_NOT_FOUND');
+    }
+
     if ($self->{perms}) {
         $max = scalar(@$contents);
         $client->respond({ ord => $stage, max => $max, count => 0, stage => 'ITEM_PERM_CHECK' });
@@ -1773,6 +1784,17 @@ sub batch_edit {
     $max = 0;
     $max = scalar(@$contents) if ($self->{perms});
     $max += scalar(@$contents) if ($self->{base_perm});
+
+    if ($class eq 'user'
+        and grep {
+            $_ != 1
+        } map {
+            $self->method_lookup('open-ils.actor.user.org_unit_opt_in.check')->run($ses => $_->target_user)
+        } @$contents
+    ) {
+        $logger->warn("Cannot update $class container $c_id; not allowed due to patron opt-in restrictions.");
+        return OpenILS::Event->new('ACTOR_USR_ORG_UNIT_OPT_IN_NOT_FOUND');
+    }
 
     my $obj_cache = {};
     if ($self->{base_perm}) {
