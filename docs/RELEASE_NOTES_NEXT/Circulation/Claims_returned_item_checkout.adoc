@@ -1,0 +1,26 @@
+== Mark Claims Returned Circs Finished Upon Subsequent Checkout ==
+
+Before this change, circulations with a stop fines of
+CLAIMSRETURNED would remain in the "Other/Special Circulations"
+section of Items Out after the claimed-returned item is subsequently
+checked out to another patron.
+
+This approach assumes the item was, in fact, returned and avoids
+charging additional fines to the original patron.  The old circ is
+marked with a stop fines reason of "CHECKIN" at the time of the new
+checkout.
+
+If you want to apply this change retroactively to affected circulations,
+refer your system administrator to the following SQL (edit to suit):
+
+[source,sql]
+----
+UPDATE  action.circulation
+SET     xact_finish = checkin_time,
+        stop_fines_time = checkin_time,
+        stop_fines = 'CHECKIN'
+WHERE   stop_fines = 'CLAIMSRETURNED'
+        AND xact_finish IS NULL
+        AND checkin_time IS NOT NULL
+        AND checkin_scan_time IS NOT NULL;
+----
