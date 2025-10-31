@@ -1591,6 +1591,12 @@ sub handle_claims_returned {
     # - If the caller has set the override flag, we will check the item in
     if($self->override && ($self->override_args->{all} || grep { $_ eq 'CIRC_CLAIMS_RETURNED' } @{$self->override_args->{events}}) ) {
 
+        # setting stop fines and xact finish with the assumption
+        # that we aren't concerned with any fines owed on the circulation
+        # stop fines should take care of that in any case.
+        $CR->stop_fines(OILS_STOP_FINES_CHECKIN);
+        $CR->stop_fines_time('now');
+        $CR->xact_finish('now');
         $CR->checkin_time('now');   
         $CR->checkin_scan_time('now');   
         $CR->checkin_lib($self->circ_lib);
