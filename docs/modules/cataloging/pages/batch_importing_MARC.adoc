@@ -163,16 +163,21 @@ image::batch_importing_MARC/import_item_attribute_definition.png[New Import Item
 [options="header"]
 |=============================
 |Field | Recommended | Description
+|Age Hold Protection|| Name of the rule to apply e.g. '6month'
 |Alert Message| No | This field is deprecated
 |Barcode | Yes | 
 |Call Number | Yes |
 |Circulate ||
 |Circulate As MARC Type ||
-|Copy Number ||
 |Definition ID ||
 |Deposit ||
 |Deposit Amount ||
+|Fine Level|| 1, 2, or 3, corresponding with low, medium, or high fines. Default is 2.
+|Floating Group || Name of the floating group to apply. e.g. 'Everywhere'
 |Holdable ||
+|Item Number ||
+|Loan Duration || 1, 2, or 3, corresponding with short, medium, or long duration. Default is 2.
+|Mint Condition ||
 |Name | Yes | Name you will choose from the MARC Batch Import screen
 |OPAC Visible ||
 |Overlay Match ID || The copy ID of an existing item to overlay
