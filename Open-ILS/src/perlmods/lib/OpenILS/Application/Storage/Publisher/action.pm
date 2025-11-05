@@ -2364,10 +2364,12 @@ SELECT  h.id, h.request_time, h.capture_time, h.fulfillment_time, h.checkin_time
 
         COALESCE(acplo.position, acpl_ordered.fallback_position) AS copy_location_order_position,
 
+        pos.global_queue_position, -- position among same-bib holds globally
+
         ROW_NUMBER() OVER (
             PARTITION BY r.bib_record
-            ORDER BY h.cut_in_line DESC NULLS LAST, h.request_time ASC
-        ) AS relative_queue_position,
+            ORDER BY pos.global_queue_position
+        ) AS relative_queue_position, -- position among same-bib holds that are actually in the result set
 
         EXTRACT(EPOCH FROM COALESCE(
             NULLIF(BTRIM(default_estimated_wait_interval.value,'"'),''),
@@ -2422,6 +2424,13 @@ SELECT  h.id, h.request_time, h.capture_time, h.fulfillment_time, h.checkin_time
         LEFT JOIN actor.org_unit ol ON (cn.owning_lib = ol.id)
         LEFT JOIN LATERAL (SELECT * FROM action.hold_transit_copy WHERE h.id = hold ORDER BY id DESC LIMIT 1) tr ON TRUE
         LEFT JOIN actor.org_unit tl ON (tr.source = tl.id)
+        LEFT JOIN LATERAL ( -- correlated subquery finding the aprox ordering of open peer holds per bib, but ONLY for holds we'll eventually return!
+            SELECT  sr.id,
+                    ROW_NUMBER() OVER (ORDER BY sh.cut_in_line DESC NULLS LAST, sh.request_time) AS global_queue_position
+              FROM  action.hold_request sh
+                    JOIN reporter.hold_request_record sr ON (sh.id = sr.id AND sh.cancel_time IS NULL AND sh.fulfillment_time IS NULL)
+              WHERE sr.bib_record = r.bib_record
+        ) pos ON (pos.id=h.id)
         LEFT JOIN LATERAL (SELECT COUNT(*) FROM action.hold_request_note WHERE h.id = hold AND (pub = TRUE OR staff = $is_staff_request)) notes ON TRUE
         LEFT JOIN LATERAL (SELECT COUNT(*), MAX(notify_time) FROM action.hold_notification WHERE h.id = hold) n ON TRUE
         LEFT JOIN LATERAL (SELECT FIRST(value) AS value FROM metabib.display_entry WHERE source = r.bib_record AND field = t_field.field) t ON TRUE

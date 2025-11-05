@@ -84,7 +84,8 @@
   <eg-grid-field label="[% l('Potential Items') %]" path='hold.potentials' name='potentials'></eg-grid-field>
   <eg-grid-field label="[% l('Status') %]" path='status_string' name='hold_status'></eg-grid-field>
 
-  <eg-grid-field label="[% l('Queue Position') %]" path='hold.relative_queue_position' name='relative_queue_position' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Relative Queue Position') %]" path='hold.relative_queue_position' name='relative_queue_position' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Global Queue Position') %]" path='hold.global_queue_position' name='global_queue_position' hidden></eg-grid-field>
 
     <eg-grid-field path='hold.usr_id' label="[% l('User ID') %]" name='usr_id' hidden></eg-grid-field>
     <eg-grid-field path='hold.usr_usrname' label="[% l('Username') %]" name='usr_usrname' hidden></eg-grid-field>
