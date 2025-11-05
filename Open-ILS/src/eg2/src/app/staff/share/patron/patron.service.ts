@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {tap, Observable} from 'rxjs';
+import {tap, Observable, firstValueFrom} from 'rxjs';
 import {IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {OrgService} from '@eg/core/org.service';
@@ -7,6 +7,16 @@ import {EventService} from '@eg/core/event.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {AuthService} from '@eg/core/auth.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
+
+const COMMON_USER_SETTING_NAMES = [
+    'opac.default_phone',
+    'opac.default_pickup_location',
+    'circ.holds_behind_desk',
+    'circ.collections.exempt',
+    'opac.hold_notify',
+    'opac.default_sms_notify',
+    'opac.default_sms_carrier'
+];
 
 export class PatronStats {
     fines = {
@@ -60,6 +70,7 @@ export class PatronSummary {
     patron: IdlObject;
     stats: PatronStats = new PatronStats();
     alerts: PatronAlerts = new PatronAlerts();
+    settings?: PatronSetting[];
 
     constructor(patron?: IdlObject) {
         if (patron) {
@@ -67,6 +78,11 @@ export class PatronSummary {
             this.patron = patron;
         }
     }
+}
+
+export interface PatronSetting {
+    label: string;
+    value: any;
 }
 
 @Injectable()
@@ -78,6 +94,7 @@ export class PatronService {
     smsCarriers: IdlObject[];
     statCats: IdlObject[];
     surveys: IdlObject[];
+    userSettingTypes: {[settingName: string]: IdlObject};
 
     constructor(
         private net: NetService,
@@ -252,6 +269,115 @@ export class PatronService {
         ).toPromise().then(surveys => {
             return this.surveys =
                 surveys.sort((s1, s2) => s1.name() < s2.name() ? -1 : 1);
+        });
+    }
+
+    // fetch and cache common and workstation relevant user setting types
+    getUserSettingTypes(): Promise<{[settingName: string]: IdlObject}> {
+        // try cache first
+        if (this.userSettingTypes) {
+            return Promise.resolve(this.userSettingTypes);
+        }
+
+        // get common and workstation relevant user setting types
+        const orgIds = this.org.ancestors(this.auth.user().ws_ou(), true);
+        return firstValueFrom(this.pcrud.search('cust', {
+            '-or' : [
+                { name : COMMON_USER_SETTING_NAMES },
+                { name : {
+                    'in': {
+                        select : { atevdef : ['opt_in_setting'] },
+                        from : 'atevdef',
+                        where : { '+atevdef' : { owner : orgIds } }
+                    }
+                } }
+            ]
+        }, {} , { atomic: true }
+        )).then(types => {
+            this.userSettingTypes = (types as IdlObject[]).reduce(
+                (map, idl) => {
+                    map[idl.name()] = idl;
+                    return map;
+                }, {}
+            );
+            return this.userSettingTypes;
+        });
+    }
+
+    // format common user settings for display (patron summary)
+    formatSupportedSettings(settings: IdlObject[]): Promise<PatronSetting[]> {
+        // ensure setting types are loaded
+        return this.getUserSettingTypes().then(() =>
+
+            // get cached org unit settings for supported features
+            this.store.getItemBatch([
+                'circ.holds.behind_desk_pickup_supported',
+                'sms.enable'
+            ])
+
+        ).then(aous => {
+            // ensure carriers are loaded if SMS is enabled
+            if (aous['sms.enable']) {
+                return this.getSmsCarriers().then(() => aous);
+            }
+            return aous;
+
+        }).then(aous => {
+            // map settings by name for easy lookup
+            const settingMap = settings.reduce((map, idl) => {
+                map[idl.name()] = idl;
+                return map;
+            }, {});
+
+            // format each setting
+            const formatted: PatronSetting[] = [];
+            COMMON_USER_SETTING_NAMES.forEach(name => {
+                const type = this.userSettingTypes[name];
+                if (!type) { return; }
+
+                // check if patron has a setting value
+                let value = settingMap?.[name]?.value() ?? null;
+                try {
+                    value = JSON.parse(value);
+                } catch (e) {
+                    value = null;
+                    console.error(`Error parsing user setting: ${name}`);
+                }
+
+                // skip unsupported settings
+                if (name.match(/_sms/) && !aous['sms.enable']) {
+                    return;
+                }
+                if (name === 'circ.holds_behind_desk' &&
+                    !aous['circ.holds.behind_desk_pickup_supported']) {
+                    return;
+                }
+
+                // format specific settings
+                if (name === 'opac.default_sms_carrier') {
+                    value = this.smsCarriers?.find(carrier =>
+                        carrier.id() === Number(value)
+                    )?.name() ?? null;
+
+                } else if (name === 'opac.default_pickup_location') {
+                    value = this.org.get(value)?.shortname() || value;
+
+                } else if (name === 'opac.hold_notify') {
+                    const notify = [];
+                    value = value+'';
+                    if (value.match(/phone/)) { notify.push('Phone'); }
+                    if (value.match(/email/)) { notify.push('Email'); }
+                    if (value.match(/sms/))   { notify.push('SMS'); }
+                    value = notify.join(', ');
+
+                } else if (type.datatype() === 'bool') {
+                    value = (value+'').match(/^t/i) ? 'Yes' : 'No';
+                }
+
+                formatted.push({ label: type.label(), value });
+            });
+
+            return formatted;
         });
     }
 

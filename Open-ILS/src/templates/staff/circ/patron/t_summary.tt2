@@ -185,6 +185,10 @@
 	  <!-- Bound href="mailto: patron().email()" to an anchor tag to allow the patron's email address to be clicked directly from the summary. -->
       <div class="col-md-7"><a ng-href="mailto:{{patron().email()}}">{{patron().email()}}</a></div>
     </div>
+    <div class="row" ng-repeat="setting in user_settings()">
+      <div class="col-md-5">{{setting.label}}</div>
+      <div class="col-md-7">{{setting.value}}</div>
+    </div>
     <div class="row" ng-repeat="map in summary_stat_cats()">
       <div class="col-md-5">{{map.stat_cat().name()}}</div>
       <div class="col-md-7">{{map.stat_cat_entry()}}</div>

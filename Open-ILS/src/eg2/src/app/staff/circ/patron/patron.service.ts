@@ -100,6 +100,7 @@ export class PatronContextService {
         return this.patrons.getFleshedById(id, PATRON_FLESH_FIELDS)
             .then(p => this.summary = new PatronSummary(p))
             .then(_ => this.getPatronStats(id))
+            .then(_ => this.formatSummaryUserSettings())
             .then(_ => this.compileAlerts())
             .then(_ => this.addRecentPatron());
     }
@@ -134,6 +135,17 @@ export class PatronContextService {
         return this.patrons.getVitalStats(this.summary.patron)
             .then(stats => this.summary.stats = stats);
     }
+
+    formatSummaryUserSettings(): Promise<void> {
+        if (!this.summary) { return Promise.resolve(); }
+
+        return this.patrons.formatSupportedSettings(
+            this.summary.patron?.settings() || []
+        ).then(settings => {
+            this.summary.settings = settings;
+        });
+    }
+
 
     patronAlertsShown(): boolean {
         if (!this.summary) { return false; }

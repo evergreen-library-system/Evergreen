@@ -599,7 +599,9 @@ angular.module('egCoreMod')
             'opac.default_sms_carrier', 
             'opac.default_sms_notify'];
 
-        return egCore.pcrud.search('cust', {
+        return (egCore.env.cust
+            ? $q.when(egCore.env.cust.list)
+            : egCore.pcrud.search('cust', {
             '-or' : [
                 {name : static_types}, // common user settings
                 {name : { // opt-in notification user settings
@@ -612,7 +614,7 @@ angular.module('egCoreMod')
                     }
                 }}
             ]
-        }, {}, {atomic : true}).then(function(setting_types) {
+        }, {}, {atomic : true})).then(function(setting_types) {
 
             egCore.env.absorbList(setting_types, 'cust'); // why not...
 

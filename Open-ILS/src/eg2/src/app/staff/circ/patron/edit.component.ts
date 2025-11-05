@@ -673,27 +673,10 @@ export class EditComponent implements OnInit {
     }
 
     setOptInSettings(): Promise<any> {
-        const orgIds = this.org.ancestors(this.auth.user().ws_ou(), true);
-
-        const query = {
-            '-or' : [
-                {name : COMMON_USER_SETTING_TYPES},
-                {name : { // opt-in notification user settings
-                    'in': {
-                        select : {atevdef : ['opt_in_setting']},
-                        from : 'atevdef',
-                        // we only care about opt-in settings for
-                        // event_defs our users encounter
-                        where : {'+atevdef' : {owner : orgIds}}
-                    }
-                }}
-            ]
-        };
-
-        return this.pcrud.search('cust', query, {}, {atomic : true})
-            .toPromise().then(types => {
-
-                types.forEach(stype => {
+        return this.patronService.getUserSettingTypes()
+            .then(types => {
+                Object.keys(types).forEach(name => {
+                    const stype = types[name];
                     this.userSettingTypes[stype.name()] = stype;
                     if (!COMMON_USER_SETTING_TYPES.includes(stype.name())) {
                         this.optInSettingTypes[stype.name()] = stype;

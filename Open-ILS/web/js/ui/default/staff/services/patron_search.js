@@ -9,8 +9,10 @@ angular.module('egPatronSearchMod', ['ngRoute', 'ui.bootstrap',
  * Patron service
  */
 .factory('patronSvc',
-       ['$q','$timeout','$location','egCore','egUser','egConfirmDialog','$locale',
-function($q , $timeout , $location , egCore,  egUser , egConfirmDialog , $locale) {
+       ['$q','$timeout','$location','egCore','egUser','egConfirmDialog',
+        '$locale','egUserSummarySettings',
+function($q , $timeout , $location , egCore,  egUser , egConfirmDialog ,
+         $locale , egUserSummarySettings) {
 
     var service = {
         // cached patron search results
@@ -28,6 +30,8 @@ function($q , $timeout , $location , egCore,  egUser , egConfirmDialog , $locale
         checkout_overrides : {},        
         //holds the searched barcode
         search_barcode : null,      
+        // user settings formatted for display (patron summary)
+        user_settings : []
     };
 
     // when we change the default patron, we need to clear out any
@@ -40,6 +44,7 @@ function($q , $timeout , $location , egCore,  egUser , egConfirmDialog , $locale
         service.hold_ids = [];
         service.checkout_overrides = {};
         service.patron_stats = null;
+        service.user_settings = [];
         service.noncat_ids = [];
         service.hasAlerts = false;
         service.patronExpired = false;
@@ -441,10 +446,19 @@ function($q , $timeout , $location , egCore,  egUser , egConfirmDialog , $locale
                 }
             );
 
-            // run these two in parallel
+            // run these in parallel
             var p1 = service.getUserNonCats(service.current.id());
             var p2 = service.fetchGroupFines();
-            return $q.all([p1, p2]);
+            var p3 = service.formatSummaryUserSettings();
+            return $q.all([p1, p2, p3]);
+        });
+    }
+
+    service.formatSummaryUserSettings = function() {
+        return egUserSummarySettings.formatSupportedSettings(
+            service.current.settings()
+        ).then(function(settings) {
+            service.user_settings = settings;
         });
     }
 

@@ -255,6 +255,12 @@
             </ng-container>
         </div>
         <div class="account-col account-address">
+          <dl>
+            <div *ngFor="let setting of summary.settings">
+              <dt>{{setting.label}}</dt>
+              <dd>{{setting.value}}</dd>
+            </div>
+          </dl>
             <h3 class="visually-hidden" i18n>Addresses</h3>
             <div *ngFor="let addr of p().addresses()">
 

@@ -42,7 +42,9 @@ angular.module('egPatronApp', ['ngRoute', 'ui.bootstrap', 'egUserBucketMod',
                 'circ.patron_expires_soon_warning',
                 'ui.circ.items_out.lost',
                 'ui.circ.items_out.longoverdue',
-                'ui.circ.items_out.claimsreturned'
+                'ui.circ.items_out.claimsreturned',
+                'circ.holds.behind_desk_pickup_supported',
+                'sms.enable'
             ]).then(function(settings) { 
                 // local settings are cached within egOrg.  Caching them
                 // again in egEnv just simplifies the syntax for access.
@@ -361,6 +363,7 @@ function($scope,  $q , $location , $filter , egCore , egNet , egUser , egAlertDi
         return [];
     }
     $scope.patron_stats = function() { return patronSvc.patron_stats }
+    $scope.user_settings = function() { return patronSvc.user_settings }
     $scope.summary_stat_cats = function() { return patronSvc.summary_stat_cats }
     $scope.hasAlerts = function() { return patronSvc.hasAlerts }
     $scope.isPatronExpired = function() { return patronSvc.patronExpired }
