@@ -105,6 +105,7 @@ function($scope , $q , $routeParams , $window , $location , egCore , egHolds , e
             // A list of fields we can't sort on the server side.  That's ok, because
             // the grid is marked clientsort, so it always re-sorts in the browser.
             var cannot_sort = [
+                'global_queue_position',
                 'relative_queue_position',
                 'default_estimated_wait',
                 'min_estimated_wait',
