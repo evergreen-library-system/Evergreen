@@ -286,8 +286,10 @@
       <eg-grid-column i18n-label label="Hold Status" [cellTemplate]="statusTemplate" name="status_string"
         [sortable]="false" [multiSortable]="false">
       </eg-grid-column>
-      <eg-grid-column i18n-label label="Queue Position"
+      <eg-grid-column i18n-label label="Relative Queue Position"
           path='relative_queue_position' [hidden]="true" datatype="int"></eg-grid-column>
+      <eg-grid-column i18n-label label="Global Queue Position"
+          path='global_queue_position' [hidden]="true" datatype="int"></eg-grid-column>
       <eg-grid-column path='usr_id' i18n-label label="User ID" [hidden]="true"></eg-grid-column>
       <eg-grid-column path='usr_usrname' i18n-label label="Username" [hidden]="true"></eg-grid-column>
 

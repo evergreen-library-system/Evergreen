@@ -73,7 +73,8 @@
   <eg-grid-field label="[% l('Potential Items') %]" path='hold.potentials'></eg-grid-field>
   <eg-grid-field label="[% l('Status') %]" path='status_string'></eg-grid-field>
 
-  <eg-grid-field label="[% l('Queue Position') %]" path='hold.relative_queue_position' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Relative Queue Position') %]" path='hold.relative_queue_position' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Global Queue Position') %]" path='hold.global_queue_position' hidden></eg-grid-field>
   <eg-grid-field label="[% l('Item Status') %]" path="hold.cs_name" hidden></eg-grid-field>
 
   <eg-grid-field label="[% l('Fulfillment Date/Time') %]" path='hold.fulfillment_time' datatype="timestamp" hidden></eg-grid-field>
