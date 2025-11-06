@@ -1,4 +1,4 @@
-= Evergreen 3.16-beta Release Notes =
+= Evergreen 3.16-rc Release Notes =
 :toc:
 :numbered:
 :toclevels: 3
@@ -259,6 +259,8 @@ The KPAC utilizes its own CSS files:
 
 ==== Miscellaneous Release Notes (auto-generated) ====
 
+* Improve pcrud performance, and add permission delegation. (https://bugs.launchpad.net/evergreen/+bug/1847805[Bug 1847805])
+* Various performance improvements to Angular Record Buckets.  (https://bugs.launchpad.net/evergreen/+bug/2098043[Bug 2098043], https://bugs.launchpad.net/evergreen/+bug/2098407[Bug 2098407], and https://bugs.launchpad.net/evergreen/+bug/2098117[Bug 2098117])
 * Fixes a bug where re-applying a shelving location group filter to the pull list fails. (https://bugs.launchpad.net/evergreen/+bug/2098011[Bug 2098011])
 * Sets focus on the first interactive element in dialog body (https://bugs.launchpad.net/evergreen/+bug/1947868[Bug 1947868])
 * Updates MARC Import/Export tab styles to match other tabs (https://bugs.launchpad.net/evergreen/+bug/2102735[Bug 2102735])
