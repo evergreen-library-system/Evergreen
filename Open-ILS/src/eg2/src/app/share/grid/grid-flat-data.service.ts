@@ -42,7 +42,7 @@ export class GridFlatDataService {
 
         if (query && query['-and']) {
             query['-and'].forEach(col => {
-                Object.keys(col).forEach(k => fields[k].filter = true)
+                Object.keys(col).forEach(k => fields[k].filter = true);
             });
         }
 
