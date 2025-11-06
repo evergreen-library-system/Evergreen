@@ -133,7 +133,7 @@ export class RecordBucketComponent implements OnInit, OnDestroy {
 
     search_or_count(justCount, hint, query, pcrudOps, pcrudReqOps): Observable<number | any[]>  {
         if (!justCount) {
-            let query_filters = this.extractGridFitlers();
+            const query_filters = this.extractGridFitlers();
 
             if (query_filters.length > 0) {
                 query['-and'] = query_filters;
@@ -295,8 +295,8 @@ export class RecordBucketComponent implements OnInit, OnDestroy {
                             { owner: { '=' : this.userId || this.auth.user().id() }, '-or': [
                                 {'-exists':{from:'cbrebs',where:{bucket:{'=':{'+cbreb':'id'}}}}},
                                 {'-exists':{from:'puopm',where:{
-                                    object_type:"cbreb",
-                                    "+cbreb":{id:{"=":{transform:"text",value:{"+puopm":"object_id"}}}}}}
+                                    object_type:'cbreb',
+                                    '+cbreb':{id:{'=':{transform:'text',value:{'+puopm':'object_id'}}}}}}
                                 }
                             ]},
                             {
@@ -496,7 +496,7 @@ export class RecordBucketComponent implements OnInit, OnDestroy {
         // query something even if no ids to avoid exception
         query['id'] = bucketIds.length === 0 ? [-1] : bucketIds.map( b => this.idl.pkeyValue(b) );
 
-        let query_filters = this.extractGridFitlers();
+        const query_filters = this.extractGridFitlers();
 
         if (query_filters.length > 0) {
             query['-and'] = query_filters;
