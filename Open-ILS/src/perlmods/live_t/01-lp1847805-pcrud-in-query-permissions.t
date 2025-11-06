@@ -4,7 +4,7 @@
 # integration test here than with libcheck :-D
 
 use strict; use warnings;
-use Test::More tests => 9;
+use Test::More tests => 11;
 use OpenILS::Utils::TestUtils;
 use OpenILS::Const qw(:const);
 
