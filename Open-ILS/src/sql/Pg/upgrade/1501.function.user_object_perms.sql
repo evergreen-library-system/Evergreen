@@ -1,5 +1,7 @@
 BEGIN;
 
+SELECT evergreen.upgrade_deps_block_check('1501', :eg_version);
+
 ALTER FUNCTION permission.usr_has_home_perm STABLE;
 ALTER FUNCTION permission.usr_has_work_perm STABLE;
 ALTER FUNCTION permission.usr_has_object_perm ( INT, TEXT, TEXT, TEXT ) STABLE;
