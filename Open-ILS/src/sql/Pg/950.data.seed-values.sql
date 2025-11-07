@@ -26495,3 +26495,7 @@ INSERT INTO action_trigger.environment (event_def, path)
 VALUES (currval('action_trigger.event_definition_id_seq'), 'home_ou'),
        (currval('action_trigger.event_definition_id_seq'), 'home_ou.mailing_address'),
        (currval('action_trigger.event_definition_id_seq'), 'home_ou.billing_address');
+
+INSERT into action_trigger.hook (key, core_type, description) VALUES
+( 'au.erenewal', 'au', 'A patron has been renewed via Erenewal');
+

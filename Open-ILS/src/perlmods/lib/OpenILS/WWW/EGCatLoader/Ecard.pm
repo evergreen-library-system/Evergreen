@@ -492,6 +492,10 @@ sub load_ecard_submit {
         return $self->compile_response unless $self->add_usr_settings;
         $logger->debug( "ECARD: response->status = $ctx->{response}->{status}" );
         return $self->compile_response if $ctx->{response}->{status};
+
+        $logger->debug( "ECARD: ERENEW - au.erenewal" );
+        $U->create_events_for_hook(
+            'au.erenewal', $ctx->{user}, $ctx->{user}->home_ou);
     }
 
     # Add extra info to response message
