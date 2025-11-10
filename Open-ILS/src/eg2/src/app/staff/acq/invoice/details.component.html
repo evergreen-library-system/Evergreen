@@ -45,8 +45,7 @@
            idlClass="acqinv" displayMode="inline" mode="create" hideBanner="true" hideSave="true"
            [fieldOptions]="{inv_ident:{customTemplate:{template:invIdentTemplate}},provider:{customTemplate:{template:providerTemplate}}}"
            fieldOrder="inv_ident,provider,shipper,recv_method,receiver,inv_type,payment_method,payment_auth,note,recv_date,close_date,closed_by"
-            hiddenFields="id" readonlyFields="close_date,closed_by" [record]="defleshedInvoice()"
-            orgDefaultAllowed="receiver">
+            hiddenFields="id" readonlyFields="close_date,closed_by" [record]="defleshedInvoice()">
         </eg-fm-record-editor>
       </div>
       <div class="col-lg-4 d-flex flex-column align-items-start">
