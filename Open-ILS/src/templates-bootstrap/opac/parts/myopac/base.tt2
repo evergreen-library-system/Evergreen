@@ -23,7 +23,7 @@
         {children => 4, parent => "parent", url => "prefs", text => l("<i class='fas fa-cog' aria-hidden='true'></i> Preferences"),name => l("Preferences")},
         {children => 0, parent => "prefs", url => "prefs", text => l("<i class='fas fa-user-cog' aria-hidden='true'></i> Personal Information"), name => l("Preferences")},
         {children => 0, parent => "prefs", url => "prefs_notify", text => l("<i class='fas fa-exclamation-circle' aria-hidden='true'></i> Notifications"), name => l("Notifications")},
-        {children => 0, parent => "prefs", url => "prefs_settings", text => l("<i class='fas fa-search' aria-hidden='true'></i> Search & History"), name => l("Search & History")},
+        {children => 0, parent => "prefs", url => "prefs_settings", text => l("<i class='fas fa-search' aria-hidden='true'></i> Other Settings"), name => l("Other Settings")},
         {children => 0, parent => "prefs", url => "prefs_my_lists", text => l("<i class='fas fa-list' aria-hidden='true'></i> Lists"), name => l("Lists")},
 
 
