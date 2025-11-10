@@ -17,6 +17,7 @@
       <ng-container *ngIf="!hideBarcode && !batchAdd">Barcode</ng-container>
     </div>
     <div class="flex-1 p-1" *ngIf="!hasEditableCopies()" i18n>Receiver</div>
+    <div class="flex-1 p-1" *ngIf="!hasEditableCopies()" i18n>Received On</div>
     <div class="flex-1 p-1"></div>
     <div class="flex-1 p-1"></div>
   </div>
@@ -51,6 +52,7 @@
       (deleteRequested)="deleteCopy($event)" 
       (cancelRequested)="cancelCopy($event)"
       [showReceiver]="!hasEditableCopies()"
+      [showReceivedTime]="!hasEditableCopies()"
       (becameDirty)="becameDirty.emit(true)"
       [rowIndex]="idx + 1" [lineitem]="lineitem" [copy]="copy">
     </eg-lineitem-copy-attrs>
