@@ -942,6 +942,11 @@
 [% END -%]
 [% END -%]
 
+# Displays a cover image with a link to the bib record. Parameters are
+#
+# * row_isbnissn (ISBN/ISSN; needed only if using Obalkyknih)
+# * row_rec_id (bib ID of the title; mandatory)
+#
 [%- BLOCK show_cover -%]
     <td role="cell">
     [% IF obalkyknih_cz.enabled == 'true' %]
@@ -950,8 +955,7 @@
         END %]
         <a href='http://obalkyknih.cz/view?isbn=[% row_isbnissn %]'>
     [% ELSE %]
-    <a href="[% mkurl(ctx.opac_root _ '/record/' _
-        circ.circ.target_copy.call_number.record.id, {}, 1) %]">
+    <a href="[% mkurl(ctx.opac_root _ '/record/' _ row_rec_id, {}, 1) %]">
     [% END %]
     <img alt="" class='my-2' style="max-width:70px;"
             src='[% ctx.media_prefix %]/opac/extras/ac/jacket/medium/r/[% row_rec_id | uri %]'/>
