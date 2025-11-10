@@ -228,10 +228,26 @@
         <div>
         [% IF bbag.items.size %]
             <div class="my-2 col-9">
-                <button name="action" class="btn btn-action btn-sm my-2" type="submit" value="place_hold" id="place_hold">[% l('Place hold ([_1])', bbag.items.size) %]</button>
-                <button name="action" class="btn btn-action btn-sm my-2" type="submit" value="print">[% l('Print title details ([_1])', bbag.items.size) %]</button>
-                <button name="action" class="btn btn-action btn-sm my-2" type="submit" value="email">[% l('Email title details ([_1])', bbag.items.size) %]</button>
-                <button name="action" class="btn btn-action btn-sm my-2" type="submit" value="del_item">[% l('Remove from list ([_1])', bbag.items.size) %]</button>
+                <button name="action" class="btn btn-action btn-sm my-2" type="submit" value="place_hold" id="place_hold">[% l('Place hold') %]
+                    <span class="result_count hidden">
+                        [%- l('([_1])', 0); -%]
+                    </span>
+                </button>
+                <button name="action" class="btn btn-action btn-sm my-2" type="submit" value="print">[% l('Print title details') %]
+                    <span class="result_count hidden">
+                        [%- l('([_1])', 0); -%]
+                    </span>
+                </button>
+                <button name="action" class="btn btn-action btn-sm my-2" type="submit" value="email">[% l('Email title details') %]
+                    <span class="result_count hidden">
+                        [%- l('([_1])', 0); -%]
+                    </span>
+                </button>
+                <button name="action" class="btn btn-action btn-sm my-2" type="submit" value="del_item">[% l('Remove from list') %]
+                    <span class="result_count hidden">
+                        [%- l('([_1])', 0); -%]
+                    </span>
+                </button>
             </div>
         [% END %]
 
@@ -242,7 +258,7 @@
             <input id="check_all_list_items" checked="checked" type="checkbox" onclick="var inputs=document.getElementsByTagName('input');
                         for (i = 0; i < inputs.length; i++) {
                             if (inputs[i].name == 'selected_item' &amp;&amp; !inputs[i].disabled &amp;&amp; inputs[i].getAttribute('bbag') == [% bbag.id %])
-                                inputs[i].checked = this.checked;}"/>
+                                inputs[i].checked = this.checked;} handleSelectionUpdate();"/>
 
             <label for="check_all_list_items">[% l('Check/Uncheck All') %]</label>
         </div>
@@ -255,7 +271,7 @@
                       onclick="var inputs=document.getElementsByTagName('input');
                         for (i = 0; i < inputs.length; i++) {
                             if (inputs[i].name == 'selected_item' &amp;&amp; !inputs[i].disabled &amp;&amp; inputs[i].getAttribute('bbag') == [% bbag.id %])
-                                inputs[i].checked = this.checked;}"/>
+                                inputs[i].checked = this.checked;} handleSelectionUpdate();"/>
 
                     </th>
                     <th scope="col" role="columnheader"  class="list_entry">
@@ -303,6 +319,7 @@
                 <tr role="row" mobile-count="#[% loop.count %]" class="bookbag-item-row" id="bookbag-item-[% item.id %]">
                     <td role="cell" class="list_checkbox"></th>
                         <input type="checkbox" name="selected_item" value="[% item.id %]" bbag='[% bbag.id %]'
+                        onclick="handleSelectionUpdate()"
                         [% html_text_attr('aria-label', l('Select [_1]', row_title)) %]/>
                     </td>
                     [%  IF attrs.issns.0; 
@@ -485,5 +502,22 @@
     </details>
 </div>
 
+<script>
+
+function handleSelectionUpdate() {
+    var select_item_inputs = document.querySelectorAll('input[name="selected_item"]:checked');
+    var num_selected = select_item_inputs.length;
+    var batch_button_counts = document.querySelectorAll('span.result_count');
+    Array.from(batch_button_counts).forEach((el) => {
+        if (num_selected > 0) {
+            el.classList.remove('hidden');
+        } else {
+            el.classList.add('hidden');
+        }
+        el.innerHTML = '(' + num_selected + ')';
+    });
+}
+
+</script>
 [% END %]
 
