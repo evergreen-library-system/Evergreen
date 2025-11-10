@@ -84,7 +84,7 @@ image::permission_groups/permission_groups_confirm_delete.png[Confirm deletion o
 * DELETE_PERM
 * UPDATE_PERM
 
-== Group Permissions==
+== Group Permissions ==
 
 The *Group Permissions* tab shows the list of permissions assigned to each group. Along with the permission code/name (ex: COPY_CHECKIN), you will see the following columns:
 
@@ -100,6 +100,8 @@ image::permission_groups/permission_groups_perm_list_editable.png[Locally assign
 If a permission is inherited through a parent group, the permissions table will look like the below:
 
 image::permission_groups/inherited permissions.png[Inherited permissions]
+
+More information about depth and grantability is included in the last section of this page.
 
 === Filtering the Group Permissions List ===
 
@@ -189,3 +191,74 @@ You can edit and delete multiple permissions at a time. For example, you can sel
 * UPDATE_GROUP_PERM
 * REMOVE_GROUP_PERM
 * VIEW_PERMISSION
+
+== Depth and Grantability ==
+
+=== Depth ===
+
+Evergreen permissions are set to a certain depth, or scoped, meaning that boundaries are set to limit staff actions to the existing organizational unit types, such as consortium, system, and branch. 
+
+In stock Evergreen, there are four depths:
+
+. Consortium (0): the permission applies to the staff member at any location in the consortium.
+. System (1): the permission applies to any location within the library system at which the staff member works.
+. Branch (2): the permission applies to the individual library at which the staff member works.
+. Sub-library or Bookmobile (3): the permission applies to the individual sub-library or bookmobile at which the staff member works.
+
+Where the staff member works is primarily determined by which working location(s) are assigned to their account and the location of the workstation they use to log in to the staff client.
+
+If a user has a permission at more than one depth (because they have per-user permissions or are assigned a secondary permission group), the depth that gives them the broadest access wins. For example, if the Staff profile has CREATE_BILL assigned at the branch depth (2), and the Circulation Administrator group has CREATE_BILL assigned at the System depth (1), the System depth will win. Users assigned to the Circulation Administrator group will be able to create bills at the system level. If a group has the same permission inherited by a parent group and specifically assigned to the child group, the permission parameters that override are designated by an enclosed exclamation mark symbol in the Permissions Group interface. 
+
+image::permission_groups/permission_groups_override.png[Permission override symbol]
+
+Some functions are set to only work at the consortium level. This is generally noted in the fieldmapper within the permacrud section using the global_required=“true” tag next to each permission listed. For example, many of the permissions used to manage the Server Administration interfaces, such as ADMIN_ORG_UNIT_SETTING_TYPE and ADMIN_SMS_CARRIER, are global_required=“true”, so those permissions only function if the depth is set to 0. Here is how this looks in the fieldmapper:
+
+image::permission_groups/permission_groups_global_required.png[Global required permission in fieldmapper]
+
+=== Grantability ===
+
+If a permission assigned to a user is marked “Grantable,” this means that the user can grant another user that permission at the depth indicated. For example, a Local Administrator has the RUN_REPORTS permission assigned at the system depth (1) and the _Grantable?_ checkbox is selected. This means the Local Administrator can assign other staff the RUN_REPORTS permission at a depth of system (1) or narrower (2,3). They would not be able to assign the permission to another staff user at the consortium (0) level. In addition, the user can only grant that permission to accounts that they have the ability to edit. Grantable permissions can be assigned individually through the User Permission Editor.
+
+There is no way to override a permissions grant; i.e., if a permission is assigned via the user's group profile, it cannot be revoked or restricted at the per-user level or via a secondary permission group. In other words, the permissions users inherit from their assigned permission group cannot be edited or removed.
+
+
+=== Conflicting Depth and Grantability ===
+
+Staff users may be assigned the same permission at different levels, whether through their inherited group and main group or through their main group and secondary group(s). Having permissions at different depths and grantability may cause conflicts when performing functions in Evergreen, so it is important to know which permission assignment will override the other, and assign group permissions accordingly.
+
+When checking a user’s permission, the system looks at the following:
+* Does this user have the permission?
+* At what depth does the user have the permission?
+** The depth is looked in ascending order (from 0 to 3), so the broadest depth wins.
+* Is this permission grantable for the user?
+** Grantability is either a true (1) or false (0) value and is checked in descending order, so true (1) overrides false.
+
+NOTE: Because depth is looked at first, the permission with the broadest depth and its associated grantability overrides the other permission. Therefore, if a permission is assigned at a depth of 0 and grantable=false and then again at a depth of 1 and grantable=true, the permission at 0 depth/grantable=false wins and the user will not be able to grant that permission. If the permissions are assigned at the same depth, one with grantability and one without, the grantable=true wins and the user will be able to grant that permission.
+
+The permission attributes that “win” will be reflected in that user’s permission list under the User Permission Editor.
+
+Here are a couple examples:
+
+*Example 1*
+A staff member assigned to the Global Administrator group has the VIEW_ORG_SETTINGS permission assigned locally. The permission is also inherited through the Staff parent permission group.
+
+* Staff: Depth = 1 (System), Grantable = false
+* Global Administrator: Depth = 0 (Consortium), Grantable = true
+
+Outcome: Because the Global Administrator permission is set at 0 depth, this permission overrides the other. The staff member will be able to see all org settings for the consortium, and will also be able to grant that permission to another user (if they don’t already have it assigned to them, and if their account can be edited).
+
+*Example 2* 
+A staff member has Cataloger as their main permission group and Local Administrator as their secondary group. They have two instances of the CREATE_COPY_NOTE permission at the following levels:
+
+* Cataloger: Depth=1 (System), Grantable = false
+* Local Administrator: Depth=1 (System), Grantable = true
+
+Outcome: The permissions are assigned at the same depth, so the system will look at the grantability next. True overrides false, so the staff member will be able to create item notes for items owned by their system, and will be able to grant that permission to another user (if they don’t already have it assigned to them, and if their account can be edited).
+
+*Example 3*
+A staff member has Local Administrator as their main permission group and Acquisitions as their secondary group. This means that the staff member has the DELETE_COPY permission from both groups, at the following levels.
+
+* Local Administrator: Depth=1 (System), Grantable = true
+* Acquisitions: Depth=0 (Consortium), Grantable = false
+
+Outcome: Because the Aquisitions permission is assigned at 0 depth, this permission overrides the other. The staff member will be able to delete items owned by any library in the consortium, but they will not be able to grant this permission to other staff members.
