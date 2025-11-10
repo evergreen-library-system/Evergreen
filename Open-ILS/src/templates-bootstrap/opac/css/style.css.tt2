@@ -4480,6 +4480,9 @@ padding: 15px;
     display: grid;
     grid-template-columns: subgrid;
     grid-column: -1 / 1;
+    margin: .5rem;
+    padding: .5rem;
+    border: 1px solid [% css_colors.border_table %];
 }
 
 .pointer {
