@@ -7,7 +7,7 @@
 
 <ng-template #copyAttrsHeader let-hideBarcode="hideBarcode" let-moreCss="moreCss">
   <div class="div d-flex fw-bold {{moreCss}}">
-    <div class="flex-1 p-1" i18n>Owning Branch</div>  
+    <div class="flex-1 p-1 ps-4" i18n>Owning Branch</div>  
     <div class="flex-1 p-1" i18n>Shelving Location</div>
     <div class="flex-1 p-1" i18n>Collection Code</div>
     <div class="flex-1 p-1" i18n>Fund</div>
@@ -16,6 +16,7 @@
     <div class="flex-1 p-1" i18n>
       <ng-container *ngIf="!hideBarcode && !batchAdd">Barcode</ng-container>
     </div>
+    <div class="flex-2 p-1" i18n>Note</div>
     <div class="flex-1 p-1" *ngIf="!hasEditableCopies()" i18n>Receiver</div>
     <div class="flex-1 p-1" *ngIf="!hasEditableCopies()" i18n>Received On</div>
     <div class="flex-1 p-1"></div>
@@ -31,7 +32,7 @@
     }">
   </ng-container>
   
-  <div class="pt-2 bg-light border border-secondary border-top-0 rounded-bottom">
+  <div class="pt-2 pb-2 bg-light border border-secondary border-top-0 rounded-bottom">
     <eg-lineitem-copy-attrs (batchApplyRequested)="batchApplyAttrs($event)"
       [batchAdd]="batchAdd"
       [batchMode]="true"> </eg-lineitem-copy-attrs>

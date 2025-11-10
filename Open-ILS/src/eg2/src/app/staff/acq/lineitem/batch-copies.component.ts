@@ -13,7 +13,8 @@ const BATCH_FIELDS = [
     'collection_code',
     'fund',
     'circ_modifier',
-    'cn_label'
+    'cn_label',
+    'note'
 ];
 
 @Component({
