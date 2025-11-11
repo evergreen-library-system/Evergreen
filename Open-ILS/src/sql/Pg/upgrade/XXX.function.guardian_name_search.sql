@@ -30,7 +30,19 @@ BEGIN
 END;
 $func$ LANGUAGE PLPGSQL;
 
--- to trigger user_ingest_name_keywords_tgr
-UPDATE actor.usr SET id = id WHERE NOT DELETED;
-
 COMMIT;
+
+-- to trigger user_ingest_name_keywords_tgr
+-- UPDATE actor.usr SET id = id WHERE NOT DELETED;
+
+\qecho ''
+\qecho '-----'
+\qecho 'To update the patron search keyword index to include patron/guardian '
+\qecho 'data for existing patrons, update all non-deleted actor.usr rows'
+\qecho 'similar to the follow, with the caveat that updating larger data'
+\qecho 'sets should probably be performed in batches.'
+\qecho ''
+\qecho 'UPDATE actor.usr SET id = id WHERE NOT deleted;'
+\qecho '-----'
+\qecho ''
+
