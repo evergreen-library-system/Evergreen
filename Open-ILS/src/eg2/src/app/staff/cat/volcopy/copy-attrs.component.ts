@@ -818,10 +818,16 @@ export class CopyAttrsComponent implements OnInit, OnDestroy, AfterViewInit {
                     }
                     // console.debug('vol ' + copy.call_number().id(), copy.call_number());
                 } else {
-                    const copyValue = this.idl.pkeyValue(copy[fieldName]());
-                    const origCopyValue = this.idl.pkeyValue(originalCopy[fieldName]());
-                    // Restore copy field from the original
-                    copy[fieldName](origCopyValue);
+                    if (this.templateOnlyMode) {
+                        // all we do in this mode is clear the value
+                        this.applyCopyValue(fieldName, null);
+                    } else {
+                        // Restore copy field from the original
+                        // When not in template editing mode we need to deal with objects
+                        // (like acpl) when present rather than only IDs.
+                        const origCopyValue = originalCopy[fieldName]();
+                        copy[fieldName](origCopyValue);
+                    }
                 }
 
                 this.idl.classes['acp'].fields.forEach(idlField => {
