@@ -29,6 +29,13 @@
   color: var(--bs-green-600);
 }
 
+.patron-summary-waiver {
+  background-color: var(--badge-info-bg);
+  color: var(--badge-info-color);
+  font-weight: bold;
+  padding: 3px;
+}
+
 [data-bs-theme="dark"] .patron-summary-pref-name {
   color: var(--bs-green-400);
 }
