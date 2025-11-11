@@ -15,16 +15,16 @@ The xref:appendix:permissions_list.adoc[Permissions List] in the appendix provid
 
 To create a new permission:
 
-. Click on the permission entry, click the Actions menu, and then click Edit Selected.
+. Click the *New Permission List* button.
 +
 image::permissions/permissions_new_list.png[New permission list entry]
 +
-. Input the code and description for the permission and click Save.
+. Input the code and description for the permission and click *Save*.
 +
-image::permissions/permissions_record_editor.png[Permission entry record editor]
+image::permissions/permissions_record editor.png[Permission entry record editor]
 +
 
-Once the permission is created, it will show up in the Add Mapping options in the Permissions Group interface as well as the permissions list in the User Permission Editor.
+Once the permission is created, it will show up in the _Add Mapping_ options in the xref:admin:permission_groups.adoc[Permissions Group] interface, as well as the permissions list in the User Permission Editor.
 
 
 == Editing a Permission ==
