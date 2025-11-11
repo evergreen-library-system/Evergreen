@@ -86,8 +86,18 @@ export class PartsComponent implements OnInit {
                 }
             };
 
+            const search: any = new Array();
+
+            Object.keys(this.gridDataSource.filters).forEach(key => {
+                Object.keys(this.gridDataSource.filters[key]).forEach(key2 => {
+                    search.push(this.gridDataSource.filters[key][key2]);
+                });
+            });
+
+            search.push({record: this.recId});
+
             return this.pcrud.search('bmp',
-                {record: this.recId, deleted: 'f'}, searchOps);
+                search,searchOps);
         };
 
         this.partsGrid.onRowActivate.subscribe(
