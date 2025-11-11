@@ -16,6 +16,7 @@ import {LineitemCopyAttrsComponent} from './copy-attrs.component';
 export class BatchUpdateCopiesDialogComponent extends DialogComponent {
 
     @Input() ids: number[];
+    @Input() activated_po: boolean;
 
     copyCount = '';
     selectedFormula: ComboboxEntry;
@@ -60,6 +61,7 @@ export class BatchUpdateCopiesDialogComponent extends DialogComponent {
             return false;
         }
     }
+
 
     compileBatchChange(): any {
         const changes = {

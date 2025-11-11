@@ -28,7 +28,7 @@
           <label class="form-label ms-3" for='copy-count-input' i18n>Item Count: </label>
           <input class="form-control-sm ms-3 small"
             id='copy-count-input'
-            [(ngModel)]="copyCount" [ngModelOptions]="{standalone: true}" type="text"/>
+            [(ngModel)]="copyCount" [ngModelOptions]="{standalone: true}" [disabled]="activated_po" type="text"/>
 
           <span class="ms-3" i18n> | </span>
           <label class="form-label ms-3" for='distrib-formula-cbox' i18n>Distribution Formulas</label>
@@ -37,7 +37,8 @@
               [asyncSupportsEmptyTermClick]="true" [startsWith]="true"
               [idlQuerySort]="{acqdf: 'name'}"
               #distribFormCbox domId="distrib-formula-cbox"
-              [(ngModel)]="selectedFormula" [ngModelOptions]="{standalone: true}">
+              [(ngModel)]="selectedFormula" [ngModelOptions]="{standalone: true}"
+              [disabled]="activated_po">
             </eg-combobox>
           </span>
         </div>
