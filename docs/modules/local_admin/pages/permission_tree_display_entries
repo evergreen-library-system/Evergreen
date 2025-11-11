@@ -1,10 +1,11 @@
 = Permission Tree Display Entries =
+:toc:
 
 The *Permission Tree Display Entries* interface controls how permission groups display in the profile group dropdowns in the patron search, or in a user’s account. If you have added or deleted a permission group that you will be assigning users to, you will want to make sure the corresponding updates are made in the permission tree display.
 
-To edit the permission group display entries, go to *Administration* > *Local Administration* > *Permission Tree Display Entries*. To view all current display entries, choose the consortium level organizational unit under *Permission Group Entries in Library* to view the current display entries. If the location selector is not a the consortium level, no display entries will display.
+To edit the permission group display entries, go to *Administration* > *Local Administration* > *Permission Tree Display Entries*. To view all current display entries, choose the consortium level organizational unit under *Permission Group Entries in Library* to view the current display entries. If the location selector is not set to the consortium level, no entries will display.
 
-==  Adding a Display Entry ==
+== Adding a Display Entry ==
 
 To add a permission group to the tree display:
 
@@ -13,7 +14,7 @@ To add a permission group to the tree display:
 +
 image::permission_tree_display_entries/perm_group_display_add.png[Add permission group to display tree]
 +
-. In the popup window, choose the permission group you would like to add from the *Available Entries* dropdown. Note that only permission groups not currently in the display tree will appear.
+. In the popup window, choose the permission group you would like to add from the *Available Entries* dropdown. Note that only permission groups not currently in the display tree will appear as options.
 +
 image::permission_tree_display_entries/perm_tree_display_available_entries.png[Available entries]
 +
