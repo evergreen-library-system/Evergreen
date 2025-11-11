@@ -1,84 +1,185 @@
-= Describing your people =
+= Describing Your People =
 :toc:
 
-Many different members of your staff will use your Evergreen system to perform
-the wide variety of tasks required of the library.
+Staff and patrons use the Evergreen system to perform the wide variety of tasks involved in the library. What functions any user can perform is determined by what permissions and permission groups are assigned to their account. It is essential to understand how permissions can be used to ensure users only have access to the appropriate level. For example, patrons need permissions to be able to log in to the public catalog and place holds; however, they should not have the permission to log in to the staff client.
 
-When the Evergreen installation was completed, a number of permission groups
-should have been automatically created. These permission groups are:
+== Permissions and Permission Groups == 
+
+A *permission* is a rule that controls what a user can see and do within Evergreen. For example, the COPY_CHECKIN permission allows staff to check in materials. The xref:appendix:permissions_list.adoc[Permissions List] in the appendix provides a full list of available default permissions with their descriptions.
+
+When a user performs an action, the system looks at the following:
+
+* Is the user active?
+* Does the user have the permission to perform the action?
+* Where can the user exercise this permission?* (i.e., xref::admin:permission_groups.adoc#depth_and_grantability[depth])
+** For patrons, the system looks at the home library.
+** For staff, the system looks at the home library, workstation, and/or working location(s)._(How to set a staff member’s working location is covered later in this section.)_
+
+A *permission group* is a set of permissions that can be assigned to a user simultaneously. The permission group indicates which role the user has in the library, for example, Patron or Cataloger. Upon first installing Evergreen, the following default permission groups are automatically created:
 
 * Users
-* Patrons
-* Staff
-* Catalogers
-* Circulators
-* Acquisitions
-* Acquisitions Administrator
-* Cataloging Administrator
-* Circulation Administrator
-* Local Administrator
-* Serials
-* System Administrator
-* Global Administrator
-* Data Review
-* Volunteers
+** Patrons
+** Staff
+*** Acquisitions
+*** Acquisitions Administrator
+*** Catalogers
+*** Cataloging Administrator
+*** Circulators
+*** Circulation Administrator
+*** Data Review
+*** Global Administrator
+*** Local Administrator
+*** Serials
+*** System Administrator
+*** Volunteers
 
-Each of these permission groups has a different set of permissions connected to
-them that allow them to do different things with the Evergreen system. Some of
-the permissions are the same between groups; some are different. These
-permissions are typically tied to one or more working location (sometimes
-referred to as a working organizational unit or work OU) which affects where a
-particular user can exercise the permissions they have been granted.
+== Comparing Approaches for Managing Permissions ==
 
-== Setting the staff user's working location ==
-To grant a working location to a staff user in the staff client:
+Permissions and permission groups are not carved in stone. You may set and alter the permissions for each permission group in line with what your library, or possibly your consortium, defines as the appropriate needs for each function in the library. The Evergreen community uses two different approaches to manage permissions and groups: 1) staff client and 2) database access.
 
-. Search for the patron. Select *Search > Search for Patrons* from the top menu.
-. When you retrieve the correct patron record, select *Other > User Permission
-  Editor* from the upper right corner. The permissions associated with this
-  account appear in the right side of the client, with the *Working Location*
-  list at the top of the screen.
-. The *Working Location* list displays the Organizational Units in your
-  consortium. Select the check box for each Organization Unit where this user
-  needs working permissions. Clear any other check boxes for Organization Units
-  where the user no longer requires working permissions.
-. Scroll all the way to the bottom of the page and click *Save*. This user
-  account is now ready to be used at your library.
+=== Managing Permissions in the Staff Client ===
 
-As you scroll down the page you will come to the *Permissions* list. These are
-the permissions that are given through the *Permission Group* that you assigned
-to this user. Depending on your own permissions, you may also have the ability
-to grant individual permissions directly to this user.
+Evergreen libraries that are most comfortable using the staff client tend to manage permissions within its various administrative interfaces. Below, each interface name is linked to its specific page in the documentation.
 
-== Comparing approaches for managing permissions ==
-The Evergreen community uses two different approaches to deal with managing
-permissions for users:
+Under Administration > Server Administration:
 
-* *Staff Client*
+* xref:admin:permissions.adoc[Permissions]
+* xref:admin:permission_groups.adoc[Permission Groups]
+
+Under Administration > Local Administration:
+
+* xref:local_admin:permission_tree_display_entries.adoc[Permission Tree Display Entries]
+
+==== Assigning Permission Groups in the Staff Client ====
+
+Whether for patron or staff, permission groups are assigned the same way, in the *Main (Profile) Permission Group* field of the account. 
+
+To assign or edit a permission group:
+
+. Open the account and click the *Edit* tab.
+. Click the *Profile Group* dropdown and select the group name from the menu. (Note that groups that were marked not to have users will be greyed out in the menu.)
 +
-Evergreen libraries that are most comfortable using the staff client tend to
-manage permissions by creating different profiles for each type of user. When
-you create a new user, the profile you assign to the user determines their
-basic set of permissions. This approach requires many permission groups that
-contain overlapping sets of permissions: for example, you might need to create
-a _Student Circulator_ group and a _Student Cataloger_ group. Then if a new
-employee needs to perform both of these roles, you need to create a third
-_Student Cataloger / Circulator_ group representing the set of all of the
-permissions of the first two groups.
+image::describing_your_people/main permission group.png[Main (Profile) Permission Group dropdown menu with list of permission groups] 
 +
-The advantage to this approach is that you can maintain the permissions
-entirely within the staff client; a drawback to this approach is that it can be
-challenging to remember to add a new permission to all of the groups. Another
-drawback of this approach is that the user profile is also used to determine
-circulation and hold rules, so the complexity of your circulation and hold
-rules might increase significantly.
+. Click *Save* at the top of the account edit screen.
+
+
+==== Assigning Secondary Permission Groups ====
+
+The *Secondary Groups* button functionality enables supplemental permission
+groups to be added to staff accounts. The *CREATE_USER_GROUP_LINK* and
+*REMOVE_USER_GROUP_LINK* permissions are required to display and use this
+feature.
+
+In general when creating a secondary permission group, do not grant the
+permission to login to Evergreen.
+
+. Open the account of the user you wish to grant a secondary permission group to.
+. Click *Edit*.
+. Click *Secondary Groups*, located to the right of the *Main (Profile) Permission Group*.
 +
-* *Database Access*
+image::describing_your_people/sup-permissions-1_web_client.png[Secondary Permissions Group]
 +
-Evergreen libraries that are comfortable manipulating the database directly
-tend to manage permissions by creating permission groups that reflect discrete
-roles within a library. At the database level, you can make a user belong to
-many different permission groups, and that can simplify your permission
+. From the dropdown menu, select one of the secondary permission groups.
++
+image::describing_your_people/sup-permissions-2_web_client.png[Secondary Permission Group List]
++
+. Click *Add*.
+. Click *Apply Changes*.
+. Click *Save* in the top right hand corner of the edit screen to save the user's account.
+
+===== Removing Secondary Group Permissions =====
+
+. Open the account of the user you wish to remove the secondary permission group from.
+. Click *Edit*.
+. Click *Secondary Groups*, located to the right of the *Main (Profile) Permission Group*.
++
+image::describing_your_people/sup-permissions-1_web_client.png[Secondary Permissions Group]
++
+. Click *Delete* beside the permission group you would like to remove.
++
+image::describing_your_people/sup-permissions-4_web_client.png[Secondary Permissions Group Delete]
++
+. Click *Apply Changes*.
++
+image::describing_your_people/sup-permissions-5_web_client.png[Secondary Permissions Group Save]
++
+. Click *Save* in the top right hand corner of the edit screen to save the user's account.
+
+
+==== Granting Additional Permissions ====
+
+Evergreen provides group application permissions in order to restrict which 
+staff members have the ability to assign elevated permissions to a user, and 
+which staff members have the ability to edit users in particular groups. 
+
+If a permission is designated as _Grantable_ for a staff permission group, that permission can be assigned individually to another staff member’s account through the User Permission Editor. (See xref::admin:permission_groups.adoc#depth_and_grantability[Depth and Grantability])
+
+The User Permission Editor displays the full list of permissions available in Evergreen and shows which permissions are assigned to a specific account.
+
+To access the User Permission Editor:
+
+. Go to *Administration > *User Permission Editor* and enter the staff account 
+barcode.
++
+OR
++
+Retrieve the staff account first through the patron search, then go to *Other*  > *User Permission Editor*.
++
+image::permissions/permissions_1.png[Click User Permission Editor in the Patron's Other menu]
++
+. The User Permission Editor will load (this may take a few seconds). Greyed-out
+permissions cannot be edited because they are either a) already granted to the 
+account, or b) not grantable, i.e., available for the staff member to assign.
++
+image::permissions/profile-5.png[profile-5]
++
+
+This interface shows:
+
+* List of permission names.
+* Whether or not the permission is applied, or assigned. If checked, the permission is assigned.
+* The depth at which the permission is assigned.
+* Whether the permission is grantable. If checked, this staff account will be able to grant the new privilege to 
+other accounts (not recommended).
+
+To assign a permission:
+
+. Check the *Applied* column next to the permission name, for example, OFFLINE_EXECUTE.
++
+image::permissions/profile-6.png[profile-6]
++
+. Scroll down and click *Save* to apply the changes.
++
+image::permissions/profile-7.png[profile-7]
+
+
+=== Assigning Working Locations ===
+
+The difference between patron and staff accounts is that every staff member needs a working location assigned. This determines where they can perform functions (based on their permissions) within the staff client.
+
+To assign a working location:
+
+. Go to *Administration > *User Permission Editor* and enter the staff account 
+barcode.
++
+OR
++
+Retrieve the staff account first through the patron search, then go to *Other*  > *User Permission Editor*.
++
+image::permissions/permissions_1.png[Click User Permission Editor in the Patron's Other menu]
++
+. Place a check in the box next to the desired working location, then scroll to
+the bottom of the display and click _Save_.
++
+NOTE: In multi-branch libraries, it is possible to assign more than one working 
+location.
+
+
+
+== Managing Permissions in the Database ==
+
+Evergreen libraries that are comfortable manipulating the database directly may choose to manage permissions at the database level. At the database level, you can make a user belong to many different permission groups, and that can simplify your permission
 management efforts. For example, if you create a _Student Circulator_ group and
 a _Student Cataloger_ group, and a new employee needs to perform both of these
 roles, you can simply assign them to both of the groups; you do not need to
@@ -92,129 +193,6 @@ you can change them as needed. You may set and alter the permissions for each
 permission group in line with what your library, or possibly your consortium,
 defines as the appropriate needs for each function in the library.
 
-== Managing permissions in the staff client ==
-In this section, we'll show you in the staff client:
-
-* where to find the available permissions
-* where to find the existing permission groups
-* how to see the permissions associated with each group
-* how to add or remove permissions from a group
-
-The xref:appendix:permissions_list.adoc[Permissions List] in the appendix provides a list of available permissions with their descriptions.
-
-=== Where to find existing permissions and what they mean ===
-In the staff client, in the upper right corner of the screen, click on
-*Administration > Server Administration > Permissions*.
-
-The list of available permissions will appear on screen and you can scroll down
-through them to see permissions that are already available in your default
-installation of Evergreen.
-
-There are over 500 permissions in the permission list. They appear in two
-columns: *Code* and *Description*. Code is the name of the permission as it
-appear in the Evergreen database. Description is a brief note on what the
-permission allows. All of the most common permissions have easily
-understandable descriptions.
-
-=== Where to find existing Permission Groups ===
-In the staff client, in the upper right corner of the screen, navigate to
-*Administration > Server Administration > Permission Groups*.
-
-Two panes will open on your screen. The left pane provides a tree view of
-existing Permission Groups. The right pane contains two tabs: Group
-Configuration and Group Permissions.
-
-In the left pane, you will find a listing of the existing Permission Groups
-which were installed by default. Click on the + sign next to any folder to
-expand the tree and see the groups underneath it. You should see the Permission
-Groups that were listed at the beginning of this chapter. If you do not and you
-need them, you will have to create them.
-
-=== Adding or removing permissions from a Permission Group ===
-First, we will remove a permission from the Staff group.
-
-. From the list of Permission Groups, click on *Staff*.
-. In the right pane, click on the *Group Permissions* tab. You will now see a
-  list of permissions that this group has.
-. From the list, choose *CREATE_CONTAINER*. This will now be highlighted.
-. Click the *Delete Selected* button. CREATE_CONTAINER will be deleted from the
-  list. The system will not ask for a confirmation. If you delete something by
-  accident, you will have to add it back.
-. Click the *Save Changes* button.
-
-You can select a group of individual items by holding down the _Ctrl_ key and
-clicking on them. You can select a list of items by clicking on the first item,
-holding down the _Shift_ key, and clicking on the last item in the list that
-you want to select.
-
-Now, we will add the permission we just removed back to the Staff group.
-
-. From the list of Permission Groups, click on *Staff*.
-. In the right pane, click on the *Group Permissions* tab.
-. Click on the *New Mapping* button. The permission mapping dialog box will
-  appear.
-. From the Permission drop down list, choose *CREATE_CONTAINER*.
-. From the Depth drop down list, choose *Consortium*.
-. Click the checkbox for *Grantable*.
-. Click the *Add Mapping* button. The new permission will now appear in the
-  Group Permissions window.
-. Click the *Save Changes* button.
-
-If you have saved your changes and you don't see them, you may have to click
-the Reload button in the upper left side of the staff client screen.
-
-== Managing role-based permission groups in the staff client ==
-
-Main permission groups are granted in the staff client through Edit in the patron record using the Main (Profile) Permission Group field.  Additional permission
-groups can be granted using secondary permission groups.
-
-[[secondaryperms]]
-=== Secondary Group Permissions ===
-
-The _Secondary Groups_ button functionality enables supplemental permission
-groups to be added to staff accounts. The *CREATE_USER_GROUP_LINK* and
-*REMOVE_USER_GROUP_LINK* permissions are required to display and use this
-feature.
-
-In general when creating a secondary permission group do not grant the
-permission to login to Evergreen.
-
-==== Granting Secondary Permissions Groups ====
-
-
-. Open the account of the user you wish to grant secondary permission group to.
-. Click _Edit_.
-. Click _Secondary Groups_, located to the right of the _Main (Profile) Permission Group_.
-+
-image::describing_your_people/sup-permissions-1_web_client.png[Secondary Permissions Group]
-+
-. From the dropdown menu select one of the secondary permission groups.
-+
-image::describing_your_people/sup-permissions-2_web_client.png[Secondary Permission Group List]
-+
-. Click _Add_.
-. Click _Apply Changes_.
-. Click _Save_ in the top right hand corner of the _Edit Screen_ to save the user's account.
-
-
-==== Removing Secondary Group Permissions ====
-. Open the account of the user you wish to remove the secondary permission group from.
-. Click _Edit_.
-. Click _Secondary Groups_, located to the right of the _Main (Profile) Permission Group_.
-+
-image::describing_your_people/sup-permissions-1_web_client.png[Secondary Permissions Group]
-+
-. Click _Delete_ beside the permission group you would like to remove.
-+
-image::describing_your_people/sup-permissions-4_web_client.png[Secondary Permissions Group Delete]
-+
-. Click _Apply Changes_.
-+
-image::describing_your_people/sup-permissions-5_web_client.png[Secondary Permissions Group Save]
-+
-. Click _Save_ in the top right hand corner of the _Edit Screen_ to save the user's account.
-
-== Managing role-based permission groups in the database ==
 While the ability to assign a user to multiple permission groups has existed in
 Evergreen for years, a staff client interface is not currently available to
 facilitate the work of the Evergreen administrator. However, if you or members
@@ -361,3 +339,4 @@ applied to a handful of students in this example, over time it can help keep
 the permission profiles of your system relatively simple in comparison to the
 alternative approach of rapidly reproducing permission groups, overlapping
 permissions, and permissions granted on a one-by-one basis to individual users.
+
