@@ -95,6 +95,8 @@ postgres-server-debian-trixie-16:
 	@make -f $(DIR)/Makefile.debian-trixie install_postgres_server_16
 postgres-server-debian-trixie-17:
 	@make -f $(DIR)/Makefile.debian-trixie install_postgres_server_17
+postgres-server-debian-trixie-18:
+	@make -f $(DIR)/Makefile.debian-trixie install_postgres_server_18
 postgres-server-debian-bookworm-13:
 	@make -f $(DIR)/Makefile.debian-bookworm install_postgres_server_13
 postgres-server-debian-bookworm-14:
@@ -105,6 +107,8 @@ postgres-server-debian-bookworm-16:
 	@make -f $(DIR)/Makefile.debian-bookworm install_postgres_server_16
 postgres-server-debian-bookworm-17:
 	@make -f $(DIR)/Makefile.debian-bookworm install_postgres_server_17
+postgres-server-debian-bookworm-18:
+	@make -f $(DIR)/Makefile.debian-bookworm install_postgres_server_18
 postgres-server-debian-bullseye-13:
 	@make -f $(DIR)/Makefile.debian-bullseye install_postgres_server_13
 postgres-server-debian-bullseye-14:
@@ -115,6 +119,8 @@ postgres-server-debian-bullseye-16:
 	@make -f $(DIR)/Makefile.debian-bullseye install_postgres_server_16
 postgres-server-debian-bullseye-17:
 	@make -f $(DIR)/Makefile.debian-bullseye install_postgres_server_17
+postgres-server-debian-bullseye-18:
+	@make -f $(DIR)/Makefile.debian-bullseye install_postgres_server_18
 postgres-server-debian-buster-13:
 	@make -f $(DIR)/Makefile.debian-buster install_postgres_server_13
 postgres-server-debian-buster-14:
@@ -135,6 +141,8 @@ postgres-server-ubuntu-noble-16:
 	@make -f $(DIR)/Makefile.ubuntu-noble install_postgres_server_16
 postgres-server-ubuntu-noble-17:
 	@make -f $(DIR)/Makefile.ubuntu-noble install_postgres_server_17
+postgres-server-ubuntu-noble-18:
+	@make -f $(DIR)/Makefile.ubuntu-noble install_postgres_server_18
 postgres-server-ubuntu-jammy-13:
 	@make -f $(DIR)/Makefile.ubuntu-jammy install_postgres_server_13
 postgres-server-ubuntu-jammy-14:
@@ -145,6 +153,8 @@ postgres-server-ubuntu-jammy-16:
 	@make -f $(DIR)/Makefile.ubuntu-jammy install_postgres_server_16
 postgres-server-ubuntu-jammy-17:
 	@make -f $(DIR)/Makefile.ubuntu-jammy install_postgres_server_17
+postgres-server-ubuntu-jammy-18:
+	@make -f $(DIR)/Makefile.ubuntu-jammy install_postgres_server_18
 
 ubuntu-noble-developer:
 	@make -f $(DIR)/Makefile.ubuntu-noble install_developer

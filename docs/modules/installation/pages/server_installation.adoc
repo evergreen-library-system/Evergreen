@@ -49,7 +49,7 @@ autoreconf -i
 
 == Installing prerequisites ==
 
-  * **PostgreSQL**: The minimum supported version is 13.
+  * **PostgreSQL**: The minimum supported version is 14.
   * **Linux**: Evergreen has been tested on
     Debian Trixie (13),
     Debian Bookworm (12),
@@ -496,29 +496,6 @@ server packages, use the make target
 appropriate command below based on your operating system and desired
 PostgreSQL Version.
 
-To install PostgreSQL version 13, use the following command for your operating
-system:
-
-[WARNING]
-=========
-PostgreSQL 12+ includes a feature called "JIT" (Just-in-Time compilation).
-Do not turn on Postgres' JIT capabilities. Evergreen's queries, especially complex
-ones used for search, are intentionally tuned for non-JIT execution and JIT has
-been shown to be harmful in some circumstances.
-Recommended minimum tweak to postgresql.conf:
-jit_above_cost = -1
-=========
-
-[source, bash]
-------------------------------------------------------------------------------
-make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-trixie-13
-make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-bookworm-13
-make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-bullseye-13
-make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-buster-13
-make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-jammy-13
-make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-noble-13
-------------------------------------------------------------------------------
-
 To install PostgreSQL version 14, use the following command for your operating
 system:
 
@@ -609,6 +586,29 @@ make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-bullseye-17
 make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-buster-17
 make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-jammy-17
 make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-noble-17
+------------------------------------------------------------------------------
+
+To install PostgreSQL version 18, use the following command for your operating
+system:
+
+[WARNING]
+=========
+PostgreSQL 12+ includes a feature called "JIT" (Just-in-Time compilation).
+Do not turn on Postgres' JIT capabilities. Evergreen's queries, especially complex
+ones used for search, are intentionally tuned for non-JIT execution and JIT has
+been shown to be harmful in some circumstances.
+Recommended minimum tweak to postgresql.conf:
+jit_above_cost = -1
+=========
+
+[source, bash]
+------------------------------------------------------------------------------
+make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-trixie-18
+make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-bookworm-18
+make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-bullseye-18
+make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-buster-18
+make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-jammy-18
+make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-noble-18
 ------------------------------------------------------------------------------
 
 .Create the Evergreen PostgreSQL user
