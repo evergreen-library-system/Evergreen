@@ -69,7 +69,7 @@
         <button type="button" ngbDropdownItem (click)="addCopiesToLineitems()" 
           [disabled]="isActivatedPo() || !selectedIds().length" i18n>Add Items to Selected Line Items</button>
         <button type="button" ngbDropdownItem (click)="batchUpdateCopiesOnLineitems()" 
-          [disabled]="isActivatedPo() || !selectedIds().length" i18n>Batch Update Items on Selected Line Items</button>
+          [disabled]="!selectedIds().length" i18n>Batch Update Items on Selected Line Items</button>
         </ng-container>
         <button type="button" ngbDropdownItem (click)="exportSingleAttributeList()" 
           [disabled]="!selectedIds().length" i18n>Export Single Attribute List for Selected Line Items</button>
