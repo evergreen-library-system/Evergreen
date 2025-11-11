@@ -2,8 +2,8 @@
 :toc:
 
 A permission group is a set of permissions that is assigned to each user's account. With the number of permissions that are available in Evergreen, it would be very difficult to manage them individually; permission groups provide a more efficient and consistent way to organize and assign permissions.
-The permission group assigned to a user determines what specific functions they can perform in the public catalog and in the staff client. For example, patrons have a small set of permissions that allow them to log in to the public catalog, place holds, and update their account preferences. 
-Staff permission groups are generally more extensive and complex, as they determine each specific function staff can perform their work in the staff client. 
+
+The permission group assigned to a user determines what specific functions they can perform in the public catalog and in the staff client. For example, patrons have a small set of permissions that allow them to log in to the public catalog, place holds, and update their account preferences. Staff permission groups are generally more extensive and complex, as they determine each specific function staff can perform their work in the staff client. 
 
 Every user must be assigned at least one main permission group, or profile, in their account. Users can have multiple, or secondary, permission groups assigned to their account. The process of assigning a secondary permission group is covered in xref:admin_initial_setup/describing_your_people.html#secondaryperms[Secondary Permission Groups].
 
@@ -16,7 +16,6 @@ image:://permission_groups/default permission group tree.png[Permission groups t
 The tree can be collapsed or expanded using the arrows next to each parent permission group. Any group that is nested under another group is called a child group; each child group will inherit any permissions from their parent group(s). For example, in the list of default permission groups shown in the screenshot above, the Staff group inherits all permissions assigned to the Users group. The Catalogers group inherits permissions from the Users group _and_ Staff group.
 
 To view the attributes and permissions of a group, click on the name of the group. To the right of the tree, two tabs will display: *Group Details* and *Group Permissions*. 
-
 
 == Group Details == 
 
@@ -50,6 +49,7 @@ image::permission_groups/permission_groups_add_child.png[Add child permission gr
 image::permission_groups/permission_groups_add_child_save.png[Save permission group details]
 +
 
+
 === Editing Permission Group Details ===
 
 To edit the details of a permission group:
@@ -63,6 +63,7 @@ image::permission_groups/permission_groups_edit.png[Edit permission group detail
 +
 image::permission_groups/permission_groups_add_child_save.png[Save edits to permission group details]
 +
+
 
 === Deleting a Permission Group === 
 
@@ -78,11 +79,13 @@ image::permission_groups/permission_groups_delete.png[Delete permission group]
 image::permission_groups/permission_groups_confirm_delete.png[Confirm deletion of permission group]
 +
 
+
 === Permissions ===
 
 * CREATE_PERM
 * DELETE_PERM
 * UPDATE_PERM
+
 
 == Group Permissions ==
 
@@ -120,29 +123,27 @@ image::permission_groups/permission_groups_clear_filter.png[Clear Group Permissi
 To add a permission to a permission group:
 
 . Select the name of the permission group in the tree.
-+
-image::permission_groups/Image: permission_groups_tree.png[Permission groups tree]
-+
 . In the right pane, click on the *Group Permissions* tab.
 +
-image::permission_groups/Image: permission_groups_tab.png[Group Permissions tab]
+image::permission_groups/permission_groups_tab.png[Group Permissions tab]
 +
 . Click on the *Add Mapping* button. The permission mapping dialog box will appear.
 +
-image::permission_groups/Image: permission_groups_add_mapping.png[Add Mapping]
+image::permission_groups/permission_groups_add_mapping.png[Add Mapping]
 +
 . In the *New Permission* field, start typing the name (code) of the permission you want to add and choose the permission from the dropdown list. If the permission is already assigned to the group, it will not show up in the dropdown menu.
 +
-image::permission_groups/Image: permission_groups_new_permission.png[New permission field]
+image::permission_groups/permission_groups_new_permission.png[New permission field]
 +
 . Choose the *Depth* from the dropdown list, and click the checkbox for *Grantable* if you would like to grant users in the permission group the ability to assign this permission to other permission groups.
 +
-image::permission_groups/Image:permission_groups_new_depth_grantability.png[New permission field]
+image::permission_groups/permission_groups_new_depth_grantability.png[New permission field]
 +
 . Click *Create*. The new permission will now appear in the permissions list.
 +
 image::permission_groups/permission_groups_create.png[Create new permission group mapping]
 +
+
 
 As of 3.11, you can add more than one permission at the same time. To add multiple permissions, complete steps 4 and 5 above to add additional permissions. If you would like to remove any permission from the mapping list, click *Remove*.
 
@@ -151,6 +152,7 @@ image::permission_groups/permission_groups_new_remove.png[Remove new permission]
 Once all the permissions you would like to add are shown in the mapping window, click *Create*.
 
 image::permission_groups/permission_groups_create_multiple.png[Create multiple new permission group mappings]
+
 
 === Removing Permissions from a Permission Group ===
 
@@ -168,6 +170,7 @@ image::permission_groups/permission_groups_apply_changes.png[Apply changes to pe
 image::permission_groups/permission_groups_apply_changes_bottom.png[Apply changes button at bottom of screen]
 +
 
+
 === Editing a Permission within a Permission Group ===
 
 To edit the depth and grantability of a permission:
@@ -184,13 +187,13 @@ image::permission_groups/permission_groups_apply_changes.png[Apply changes to pe
 
 You can edit and delete multiple permissions at a time. For example, you can select the *Delete?* checkbox on multiple rows and change the depth and grantability for multiple permissions. Once you select *Apply Changes*, all updates will be made.
 
-
 === Permissions === 
 
 * ASSIGN_GROUP_PERM
 * UPDATE_GROUP_PERM
 * REMOVE_GROUP_PERM
 * VIEW_PERMISSION
+
 
 == Depth and Grantability ==
 
@@ -200,20 +203,21 @@ Evergreen permissions are set to a certain depth, or scoped, meaning that bounda
 
 In stock Evergreen, there are four depths:
 
-. Consortium (0): the permission applies to the staff member at any location in the consortium.
-. System (1): the permission applies to any location within the library system at which the staff member works.
-. Branch (2): the permission applies to the individual library at which the staff member works.
-. Sub-library or Bookmobile (3): the permission applies to the individual sub-library or bookmobile at which the staff member works.
+. _Consortium (0)_: the permission applies to the staff member at any location in the consortium.
+. _System (1)_: the permission applies to any location within the library system at which the staff member works.
+. _Branch (2)_: the permission applies to the individual library at which the staff member works.
+. _Sub-library or Bookmobile (3)_: the permission applies to the individual sub-library or bookmobile at which the staff member works.
 
 Where the staff member works is primarily determined by which working location(s) are assigned to their account and the location of the workstation they use to log in to the staff client.
 
 If a user has a permission at more than one depth (because they have per-user permissions or are assigned a secondary permission group), the depth that gives them the broadest access wins. For example, if the Staff profile has CREATE_BILL assigned at the branch depth (2), and the Circulation Administrator group has CREATE_BILL assigned at the System depth (1), the System depth will win. Users assigned to the Circulation Administrator group will be able to create bills at the system level. If a group has the same permission inherited by a parent group and specifically assigned to the child group, the permission parameters that override are designated by an enclosed exclamation mark symbol in the Permissions Group interface. 
 
+
 image::permission_groups/permission_groups_override.png[Permission override symbol]
 
-Some functions are set to only work at the consortium level. This is generally noted in the fieldmapper within the permacrud section using the global_required=“true” tag next to each permission listed. For example, many of the permissions used to manage the Server Administration interfaces, such as ADMIN_ORG_UNIT_SETTING_TYPE and ADMIN_SMS_CARRIER, are global_required=“true”, so those permissions only function if the depth is set to 0. Here is how this looks in the fieldmapper:
 
-image::permission_groups/permission_groups_global_required.png[Global required permission in fieldmapper]
+Some functions are set to only work at the consortium level. This is generally noted in the fieldmapper within the permacrud section using the global_required=“true” tag next to each permission listed. For example, many of the permissions used to manage the Server Administration interfaces, such as ADMIN_ORG_UNIT_SETTING_TYPE and ADMIN_SMS_CARRIER, are global_required=“true”, so those permissions only function if the depth is set to 0.
+
 
 === Grantability ===
 
@@ -227,6 +231,7 @@ There is no way to override a permissions grant; i.e., if a permission is assign
 Staff users may be assigned the same permission at different levels, whether through their inherited group and main group or through their main group and secondary group(s). Having permissions at different depths and grantability may cause conflicts when performing functions in Evergreen, so it is important to know which permission assignment will override the other, and assign group permissions accordingly.
 
 When checking a user’s permission, the system looks at the following:
+
 * Does this user have the permission?
 * At what depth does the user have the permission?
 ** The depth is looked in ascending order (from 0 to 3), so the broadest depth wins.
@@ -240,25 +245,28 @@ The permission attributes that “win” will be reflected in that user’s perm
 Here are a couple examples:
 
 *Example 1*
+
 A staff member assigned to the Global Administrator group has the VIEW_ORG_SETTINGS permission assigned locally. The permission is also inherited through the Staff parent permission group.
 
 * Staff: Depth = 1 (System), Grantable = false
 * Global Administrator: Depth = 0 (Consortium), Grantable = true
 
-Outcome: Because the Global Administrator permission is set at 0 depth, this permission overrides the other. The staff member will be able to see all org settings for the consortium, and will also be able to grant that permission to another user (if they don’t already have it assigned to them, and if their account can be edited).
+*Outcome*: Because the Global Administrator permission is set at 0 depth, this permission overrides the other. The staff member will be able to see all org settings for the consortium, and will also be able to grant that permission to another user (if they don’t already have it assigned to them, and if their account can be edited).
 
 *Example 2* 
+
 A staff member has Cataloger as their main permission group and Local Administrator as their secondary group. They have two instances of the CREATE_COPY_NOTE permission at the following levels:
 
 * Cataloger: Depth=1 (System), Grantable = false
 * Local Administrator: Depth=1 (System), Grantable = true
 
-Outcome: The permissions are assigned at the same depth, so the system will look at the grantability next. True overrides false, so the staff member will be able to create item notes for items owned by their system, and will be able to grant that permission to another user (if they don’t already have it assigned to them, and if their account can be edited).
+*Outcome*: The permissions are assigned at the same depth, so the system will look at the grantability next. True overrides false, so the staff member will be able to create item notes for items owned by their system, and will be able to grant that permission to another user (if they don’t already have it assigned to them, and if their account can be edited).
 
 *Example 3*
+
 A staff member has Local Administrator as their main permission group and Acquisitions as their secondary group. This means that the staff member has the DELETE_COPY permission from both groups, at the following levels.
 
 * Local Administrator: Depth=1 (System), Grantable = true
 * Acquisitions: Depth=0 (Consortium), Grantable = false
 
-Outcome: Because the Aquisitions permission is assigned at 0 depth, this permission overrides the other. The staff member will be able to delete items owned by any library in the consortium, but they will not be able to grant this permission to other staff members.
+*Outcome*: Because the Aquisitions permission is assigned at 0 depth, this permission overrides the other. The staff member will be able to delete items owned by any library in the consortium, but they will not be able to grant this permission to other staff members.
