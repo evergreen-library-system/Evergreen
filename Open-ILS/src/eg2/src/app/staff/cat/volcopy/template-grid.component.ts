@@ -153,6 +153,9 @@ export class VolCopyTemplateGridComponent implements OnInit, OnDestroy {
                 statcat_filter: templateConfig.statcat_filter?.toString() || '',
                 owning_lib: this.org.get( templateConfig.owning_lib )?.shortname() || '',
                 copy_number: templateConfig.copy_number?.toString() || '',
+                label_class: templateConfig.label_class?.toString() || '',
+                prefix: templateConfig.prefix?.toString() || '',
+                suffix: templateConfig.suffix?.toString() || '',
                 debug: JSON.stringify(templateConfig)
             };
 
@@ -180,6 +183,24 @@ export class VolCopyTemplateGridComponent implements OnInit, OnDestroy {
                 const group = this.volcopy.commonData.acp_floating_group
                     .find(g => g.id() === Number(row.floating));
                 row.floating = group ? group.name() : row.floating;
+            }
+
+            if (row.label_class) {
+                const label_class = this.volcopy.commonData.acn_class
+                    .find(p => p.id() === Number(row.label_class));
+                row.label_class = label_class ? label_class.name() : row.label_class;
+            }
+
+            if (row.prefix) {
+                const prefix = this.volcopy.commonData.acn_prefix
+                    .find(p => p.id() === Number(row.prefix));
+                row.prefix = prefix ? prefix.label() : row.prefix;
+            }
+
+            if (row.suffix) {
+                const suffix = this.volcopy.commonData.acn_suffix
+                    .find(p => p.id() === Number(row.suffix));
+                row.suffix = suffix ? suffix.label() : row.suffix;
             }
 
             if (row.loan_duration) {
