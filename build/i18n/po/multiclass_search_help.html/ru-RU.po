@@ -9,8 +9,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2023-05-05 04:45+0000\n"
-"X-Generator: Launchpad (build 90e2150bef31b411d7bae5c4032c7e320fcaaec8)\n"
+"X-Launchpad-Export-Date: 2025-03-26 05:08+0000\n"
+"X-Generator: Launchpad (build d61bb8eb9830eb975fb0e8573deec46f2e0bb15b)\n"
 
 #: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:5(title) ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:7(h1)
 msgid "Multiclass Search Help"

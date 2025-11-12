@@ -10,8 +10,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2023-05-05 04:46+0000\n"
-"X-Generator: Launchpad (build 90e2150bef31b411d7bae5c4032c7e320fcaaec8)\n"
+"X-Launchpad-Export-Date: 2025-08-10 07:40+0000\n"
+"X-Generator: Launchpad (build 9769096648e0e86ff5d62b3856875b99ffd28a78)\n"
 "X-Accelerator-Marker: &\n"
 "X-Project-Style: mozilla\n"
 "Language: fi\n"
@@ -429,6 +429,28 @@ msgstr "Asenna nyt!"
 #: common.googlechromeframe.dontask
 msgid "Don't ask me again"
 msgstr "Älä kysy uudelleen"
+
+#: home.js.disabled
+msgid ""
+"JavaScript must be enabled in order for you to use the regular Evergreen "
+"Catalog. \n"
+"However, it seems JavaScript is either disabled or not supported by your "
+"browser. \n"
+"To use the regular Evergreen Catalog, enable JavaScript by changing your "
+"browser options, then \n"
+"<a style='color: blue; text-decoration: underline;' href='/'>try again</a>. "
+"\n"
+"<br/><br/>Alternatively, you can use the basic HTML-only catalog: "
+msgstr ""
+"JavaScriptin on oltava käytössä, jotta voit käyttää tavallista Evergreen-"
+"tietokantaa. \n"
+"Näyttää kuitenkin siltä, että selaimesi ei joko tue JavaScriptiä tai se on "
+"pois käytöstä. Ota JavaScript käyttöön muokkaamalla selaimesi asetuksia ja \n"
+"<a style='color: blue; text-decoration: underline;' href='/'>yritä "
+"uudelleen</a>. \n"
+"<br/><br/>Vaihtoehtoisesti voit käyttää perus-HTML-tietokantaa \n"
+"<a style='color: blue; text-decoration: underline;' "
+"href='/opac/extras/slimpac/start.html'>täällä</a>. "
 
 #. =================================================================
 #. MyOPAC bookbag page
@@ -2663,3 +2685,33 @@ msgstr "Nidettä ei voida kuljettaa näin kauas"
 #~ "Sisäänkirjautuminen epäonnistui. Käyttäjänimi tai salasana ei kelpaa. \n"
 #~ "Varmista, että Caps-Lock-näppäimesi on pois käytöstä ja yritä uudelleen tai "
 #~ "ota yhteyttä kirjastoosi."
+
+#~ msgid "Select language"
+#~ msgstr "Valitse kieli"
+
+#~ msgid "Simple Search"
+#~ msgstr "Yksinkertainen haku"
+
+#~ msgid "Now searching: "
+#~ msgstr "Etsitään nyt: "
+
+#~ msgid "Dynamic Catalog"
+#~ msgstr "Dynaaminen tietokanta"
+
+#~ msgid "Item Language"
+#~ msgstr "Aineiston kieli"
+
+#~ msgid "Record Creation Date"
+#~ msgstr "Tietueen luomispäivä"
+
+#~ msgid "Record Edit Date"
+#~ msgstr "Tietueen muokkauspäivä"
+
+#~ msgid "Image provided by"
+#~ msgstr "Kuvan toimittaja:"
+
+#~ msgid "Amazon"
+#~ msgstr "Amazon"
+
+#~ msgid "http://amazon.com/dp/"
+#~ msgstr "http://amazon.com/dp/"
