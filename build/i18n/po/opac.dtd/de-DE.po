@@ -14,8 +14,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2023-05-05 04:46+0000\n"
-"X-Generator: Launchpad (build 90e2150bef31b411d7bae5c4032c7e320fcaaec8)\n"
+"X-Launchpad-Export-Date: 2025-08-10 07:40+0000\n"
+"X-Generator: Launchpad (build 9769096648e0e86ff5d62b3856875b99ffd28a78)\n"
 
 #. =================================================================
 #. Some generic stuff
@@ -2711,6 +2711,31 @@ msgid "The item cannot transit this far"
 msgstr "Dieser Gegenstand kann nicht so weit reisen"
 
 #~ msgid ""
+#~ "JavaScript must be enabled in order for you to use the regular Evergreen "
+#~ "Catalog. \n"
+#~ "However, it seems JavaScript is either disabled or not supported by your "
+#~ "browser. \n"
+#~ "To use the regular Evergreen Catalog, enable JavaScript by changing your "
+#~ "browser options, then \n"
+#~ "<a style='color: blue; text-decoration: underline;' href='/'>try again</a>. "
+#~ "\n"
+#~ "<br/><br/>Alternatively, you can use the basic HTML-only catalog \n"
+#~ "<a style='color: blue; text-decoration: underline;' "
+#~ "href='/opac/extras/slimpac/start.html'>here</a>."
+#~ msgstr ""
+#~ "JavaScript muss aktiviert sein, damit Sie den normalen Evergreen Katalog "
+#~ "benutzen können. \n"
+#~ "Es scheint, als ob JavaScript entweder deaktiviert ist oder nicht von Ihrem "
+#~ "Browser unterstützt wird. \n"
+#~ "Aktivieren Sie JavaScript, um den normalen Evergreen Katalog zu benutzen, "
+#~ "indem Sie Ihre Browsereinstellungen verändern, dann \n"
+#~ "<a style='color: blue; text-decoration: underline;' href='/'>versuchen Sie "
+#~ "es erneut</a>. \n"
+#~ "<br/><br/>Alternativ können Sie unseren HTML-Katalog \n"
+#~ "<a style='color: blue; text-decoration: underline;' "
+#~ "href='/opac/extras/slimpac/start.html'>hier</a> benutzen."
+
+#~ msgid ""
 #~ "Login failed. The username or password provided was not valid. \n"
 #~ "Ensure Caps-Lock is off and try again or contact your local library."
 #~ msgstr ""
@@ -2718,6 +2743,27 @@ msgstr "Dieser Gegenstand kann nicht so weit reisen"
 #~ "Passwort waren ungültig. \n"
 #~ "Stellen Sie sicher, dass Caps-Lock deaktiviert ist und versuchen Sie es noch "
 #~ "einmal, oder wenden Sie sich an ihre örtliche Bibiothek."
+
+#~ msgid "Simple Search"
+#~ msgstr "Einfache Suche"
+
+#~ msgid "Select language"
+#~ msgstr "Sprache wählen"
+
+#~ msgid "Now searching: "
+#~ msgstr "Sucht gerade: "
+
+#~ msgid "http://amazon.com/dp/"
+#~ msgstr "http://amazon.com/dp/"
+
+#~ msgid "Amazon"
+#~ msgstr "Amazon"
+
+#~ msgid "Record Edit Date"
+#~ msgstr "Eintragsbearbeitungsdatum"
+
+#~ msgid "Record Creation Date"
+#~ msgstr "Eintragserstellungsdatum"
 
 #~ msgid "Username cannot contain spaces or have the same format as a barcode"
 #~ msgstr ""
@@ -2727,3 +2773,12 @@ msgstr "Dieser Gegenstand kann nicht so weit reisen"
 #~ msgid "Copyright &#xA9; 2006-2010 Georgia Public Library Service, and others"
 #~ msgstr ""
 #~ "Copyright &#xA9; 2006-2010 Georgia Public Library Service, und andere"
+
+#~ msgid "Dynamic Catalog"
+#~ msgstr "Dynamischer Katalog"
+
+#~ msgid "Item Language"
+#~ msgstr "Sprache des Gegenstands"
+
+#~ msgid "Image provided by"
+#~ msgstr "Bild bereitstellt von"

@@ -14,8 +14,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2023-05-05 04:46+0000\n"
-"X-Generator: Launchpad (build 90e2150bef31b411d7bae5c4032c7e320fcaaec8)\n"
+"X-Launchpad-Export-Date: 2025-08-10 07:41+0000\n"
+"X-Generator: Launchpad (build 9769096648e0e86ff5d62b3856875b99ffd28a78)\n"
 
 #. =================================================================
 #. Some generic stuff
@@ -2722,6 +2722,32 @@ msgstr "El elemento no puede transitar hasta aqui."
 #~ "código de barras"
 
 #~ msgid ""
+#~ "JavaScript must be enabled in order for you to use the regular Evergreen "
+#~ "Catalog. \n"
+#~ "However, it seems JavaScript is either disabled or not supported by your "
+#~ "browser. \n"
+#~ "To use the regular Evergreen Catalog, enable JavaScript by changing your "
+#~ "browser options, then \n"
+#~ "<a style='color: blue; text-decoration: underline;' href='/'>try again</a>. "
+#~ "\n"
+#~ "<br/><br/>Alternatively, you can use the basic HTML-only catalog \n"
+#~ "<a style='color: blue; text-decoration: underline;' "
+#~ "href='/opac/extras/slimpac/start.html'>here</a>."
+#~ msgstr ""
+#~ "El javascript debe ser permitido en la orden para usted utilizar el Catálogo "
+#~ "De hoja perenne regular. \n"
+#~ "Sin embargo, parece Javascript o es incapacitado o no es apoyado por su "
+#~ "navegador. \n"
+#~ "Para utilizar el Catálogo De hoja perenne regular, permita Javascript "
+#~ "cambiando sus opciones de navegador, entonces \n"
+#~ "<a style='color: blue; text-decoration: underline;' href='/'>trate otra "
+#~ "vez</a>. \n"
+#~ "<br/><br/>Alternativamente, puede utilizar el protocolo de transferencia de "
+#~ "hipertexto-UNICO catálogo básico \n"
+#~ "<a style='color: blue; text-decoration: underline;' "
+#~ "href='/opac/extras/slimpac/start.html'>aquí</a>."
+
+#~ msgid ""
 #~ "Login failed. The username or password provided was not valid. \n"
 #~ "Ensure Caps-Lock is off and try again or contact your local library."
 #~ msgstr ""
@@ -2729,6 +2755,36 @@ msgstr "El elemento no puede transitar hasta aqui."
 #~ "fueron válidos. \n"
 #~ "Asegure que Tapas-Cierra esté apagado y trate otra vez o contacte su "
 #~ "biblioteca local."
+
+#~ msgid "Simple Search"
+#~ msgstr "Búsqueda sencilla"
+
+#~ msgid "Now searching: "
+#~ msgstr "Ahora buscar: "
+
+#~ msgid "Dynamic Catalog"
+#~ msgstr "Catálogo dinámico"
+
+#~ msgid "Item Language"
+#~ msgstr "Idioma de artículo"
+
+#~ msgid "Record Creation Date"
+#~ msgstr "Fecha sin precedentes de Creación"
+
+#~ msgid "Record Edit Date"
+#~ msgstr "El registro Redacta la Fecha"
+
+#~ msgid "Image provided by"
+#~ msgstr "La imagen proporcionado por"
+
+#~ msgid "Amazon"
+#~ msgstr "Amazon"
+
+#~ msgid "http://amazon.com/dp/"
+#~ msgstr "http://amazon.com/dp/"
+
+#~ msgid "Select language"
+#~ msgstr "Seleccionar el idioma."
 
 #~ msgid "Copyright &#xA9; 2006-2010 Georgia Public Library Service, and others"
 #~ msgstr ""
