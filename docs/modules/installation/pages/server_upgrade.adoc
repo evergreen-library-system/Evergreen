@@ -47,7 +47,7 @@ the https://evergreen-ils.org/opensrf-downloads/[OpenSRF download page].
 +
 [source, bash]
 -----------------------------------------------
-wget https://evergreen-ils.org/downloads/previews/Evergreen-ILS-3.16.0.tar.gz
+wget https://evergreen-ils.org/downloads/Evergreen-ILS-3.16.0.tar.gz
 tar xzf Evergreen-ILS-3.16.0.tar.gz
 -----------------------------------------------
 +
