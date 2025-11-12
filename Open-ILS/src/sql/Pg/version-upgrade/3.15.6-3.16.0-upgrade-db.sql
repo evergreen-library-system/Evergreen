@@ -1,7 +1,7 @@
---Upgrade Script for 3.15.6 to 3.16-rc
-\set eg_version '''3.16-rc'''
+--Upgrade Script for 3.15.6 to 3.16.0
+\set eg_version '''3.16.0'''
 BEGIN;
-INSERT INTO config.upgrade_log (version, applied_to) VALUES ('3.16-beta', :eg_version);
+INSERT INTO config.upgrade_log (version, applied_to) VALUES ('3.16.0', :eg_version);
 
 SELECT evergreen.upgrade_deps_block_check('1469', :eg_version);
 
