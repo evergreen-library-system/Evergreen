@@ -14,10 +14,14 @@ Evergreen has different levels of holds. Library staff can place holds at all le
 
 |==============================
 |*Hold level* |*Abbreviation* |*When to use*        |*How to use*   |*Who can use*    |*Hold tied to*
-|Title        |T              |Patron wants first available copy of a title  | Staff or patron click on _Place Hold_ next to title. | Patron or staff | Holdings attached to a single MARC (title) record
-|Parts        |P              |Patron wants a particular part of title (e.g. volume or disk number)    | Staff or patron selects part on the create/edit hold screen when setting holds notification options.   |Patron or staff  |Holdings with identical parts attached to a single MARC (title) record.
-|Volume       |V              |Patron or staff want any title associated with a particular call number | In the staff client, click on _Volume Hold_ under _Holdable?_ |Staff only |Holdings attached to a single call number (volume)
-|Copy         |C              |Patron or staff want a specific copy of an item |In the staff client, click on _Copy Hold_ under _Holdable?_ |Staff only |A specific copy (barcode)
+|Metarecord        |M             |Patron or staff want first available format of a title  | Patron selects _Combine Same Title_ in public catalog search, then chooses format options under _Select desired format(s)_ from the _Place Hold_ screen. Staff selects _Group Formats/Editions in the staff catalog search, then selects format options on the _Place Hold_ screen. | Patron or staff | Holdings beloging to multiple bibliographic (title) records sharing a metarecord
+|Title        |T              |Patron or staff want first available copy of a title  | Staff or patron clicks on _Place Hold_ next to title. | Patron or staff | Holdings attached to a single MARC (title) record
+|Part        |P              |Patron or staff a particular part of title (e.g. volume or disk number)    | Staff or patron selects part on the create/edit hold screen when setting holds notification options.   |Patron or staff  |Holdings with identical parts attached to a single MARC (title) record.
+|Volume       |V              |Patron or staff want any title associated with a particular call number | In the staff client, click on _Call Number Hold_ under _Holdable?_ |Staff only |Holdings attached to a single call number (volume)
+|Item/Copy         |C              |Patron or staff want a specific item |In the staff client, click on _Item Hold_ under _Holdable?_ |Staff only |A specific item (barcode)
+|Issuance        |I              |Patron or staff want a specific serials issue |Staff or patron clicks on _Place Hold_ next to title. |Patron or staff |A single serials issue
+|Force         |F              |Staff want priority on a specific item for a staff member (forces Top-of-Queue)|In the staff client, click on _Item Hold_ under _Holdable?_; then click on the _Force Item Hold_ button on the _Place Hold_ screen. |Staff only |A specific item (barcode)
+|Recall         |R              |Staff want priority on a specific item to route to Cataloging (forces Top-of-Queue)|In the staff client, click on _Item Hold_ under _Holdable?_; then click on the _Recall Hold_ button on the _Place Hold_ screen.|Staff only |A specific item (barcode)
 |==============================
 
 
