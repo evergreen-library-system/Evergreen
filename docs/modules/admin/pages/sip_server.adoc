@@ -719,3 +719,64 @@ if [ $instances -eq 0 ]; then
 fi
 ----
 
+== SIP Filters ==
+
+When sending SIP messages from Evergreen to a third party, an Evergreen administrator may wish to remove or overwrite certain kinds of sensitive information. The SIP Filters tool allows an administrator to choose to redact and / or overwrite the values in any SIP field with a field identifier.
+
+For the purposes of the SIP Filter tool:
+
+* Redaction means that the field is not included in the outgoing SIP message.
+* Overwriting means that the contents of the field in the outgoing message will be a string specified by the Evergreen administrator.
+* Redaction or overwriting will apply to a given field regardless of which message it appears in. 
+* Please refer to the SIP Specification for a full list of SIP codes.
+* This tool does not address fixed-length fields without field identifiers, which are position sensitive and follow the SIP command identifier.
+
+NOTE: This tool does not try to interpret SIP semantics. Administrators should exercise caution when configuring SIP filters to ensure they do not accidentally strip required SIP fields or pass invalid values in outgoing SIP messages.
+
+This feature is governed by the SIP_ADMIN permission. 
+
+=== SIP Server ===
+
+For SIP Server, this configuration can be found in the `oils_sip.xml` file.  Here is an example:
+
+[source, xml]
+----
+	<filters>
+		<!--
+			Filters allow SIPServer to strip or modify specified fields inline from outgoing SIP messages.  Currently, these
+            rules apply to all message types and only work for variable-length fields, but the config layout leaves room for
+            future enhancement.
+
+			Examples:
+			
+			<field identifier="AE" replace_with="John Doe" />
+            <field identifier="BE" remove="true" />
+        -->
+            <field identifier="AE" remove="true" />
+    </filters>
+----
+
+=== SIP2 Mediator ===
+
+For SIP2 Mediator, there is a new administrative interface available under *Administration → Server Administration → SIP Filters*. This is a grid which will show existing redactions & overwrites as well as allow the administrative user to create new ones as needed.
+
+To create a new SIP2Mediator Filter:
+
+* Select _New SIP Filter_.
++
+image::sip_server/sipfilter_grid.png[SIP Filter Grid]
++
+* Use the _Enabled_ checkbox to specify whether the redaction or overwrite is actively in use.
+* Specify the SIP field using _Field Identifier_. This field is required.
+* If you wish to specify an overwrite value for the field, enter that in _Replacement Field Value_.
++
+image::sip_server/sipfilter_ae.png[Example of field replacement]
++
+* Identify the _Settings Group_ for the SIP field (this is analogous to the SIPServer concept of Institutions). This field is required.
+* If you wish to strip the values of this field from a SIP message, select the _Strip Field_ checkbox.
++
+image::sip_server/sipfilter_be.png[Example of field redaction]
++
+* Select _Save_ to save your SIP filter, or select _Cancel_ to discard changes and close the modal.
+
+To edit an existing SIP filter, double click on the row you wish to edit (or use the actions menu, accessible at the top right of the grid as well as via right-click in the row). Make your changes and select _Save_ to save your filter, or select _Cancel_ to discard changes and close the modal.
