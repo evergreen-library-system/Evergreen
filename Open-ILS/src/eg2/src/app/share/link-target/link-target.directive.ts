@@ -1,6 +1,6 @@
 import { Directive, ElementRef, HostBinding } from '@angular/core';
 import { LinkTargetService } from './link-target.service';
-import { take } from 'rxjs/operators';
+import { take } from 'rxjs';
 
 /**
  * <a target="_blank">...</a>

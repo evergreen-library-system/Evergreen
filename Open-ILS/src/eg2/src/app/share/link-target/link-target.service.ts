@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ServerStoreService } from '@eg/core/server-store.service';
-import { concat, EMPTY, from, Observable, of, Subject } from 'rxjs';
-import { catchError, concatMap, distinctUntilChanged, map, shareReplay } from 'rxjs/operators';
+import { concat, EMPTY, from, Observable, of, Subject, catchError, concatMap, distinctUntilChanged, map, shareReplay } from 'rxjs';
 
 /**
  * Manages the workstation setting ui.staff.disable_links_newtabs.
