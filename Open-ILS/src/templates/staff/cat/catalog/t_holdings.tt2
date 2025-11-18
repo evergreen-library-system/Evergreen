@@ -49,7 +49,7 @@
       disabled="need_one_selected"
       label="[% l('Manage Reservations') %]"></eg-grid-action>
     <eg-grid-action handler="requestItems"
-      label="[% l('Place Item Holds') %]"></eg-grid-action>
+      label="[% l('Place Hold') %]"></eg-grid-action>
     <eg-grid-action handler="attach_to_peer_bib"
       label="[% l('Link as Conjoined to Previously Marked Bib Record') %]"></eg-grid-action>
     <eg-grid-action handler="selectedHoldingsItemStatus" group="[% l('Show') %]"

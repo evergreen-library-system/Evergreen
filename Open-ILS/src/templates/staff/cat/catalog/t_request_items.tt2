@@ -2,7 +2,7 @@
   <div class="modal-header">
     <button type="button" class="close" ng-click="cancel()" 
       aria-hidden="true">&times;</button>
-    <h4 class="modal-title">[% l('Place Item Holds') %]</h4>
+    <h4 class="modal-title">[% l('Place Hold') %]</h4>
   </div>
   <div class="modal-body">
     <div class="row">
@@ -29,7 +29,7 @@
         <div class="input-group">
           <span class="input-group-addon">[% l('Hold Type') %]</span>
           <select class="form-control" required ng-model="hold_data.hold_type">
-            <option value="C">[% l('Copy Hold') %]</option>
+            <option value="C">[% l('Item Hold') %]</option>
             <option value="R" selected>[% l('Recall Hold') %]</option>
             <option value="F">[% l('Force Hold') %]</option>
             <option ng-show="hold_data.record_list" value="T">[% l('Title Hold') %]</option>
