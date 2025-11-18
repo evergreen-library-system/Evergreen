@@ -245,6 +245,12 @@ export class LineitemCopyAttrsComponent implements OnInit {
         if (this.batchMode) { return false; }
         if (this.gatherParamsOnly) { return false; }
 
+        // Ignore disposition for notes - can be edited even after ordering or receiving.
+        // Notes still can't be edited while component is embedded because we don't have a save button
+        if (field === 'note' && !this.embedded && !this.copy.isdeleted()) {
+                return false;
+        }
+
         if (this.embedded || // inline expandy view
             this.copy.isdeleted() ||
             this.disposition() !== 'pre-order') {
