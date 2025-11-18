@@ -211,7 +211,9 @@ function($scope,  $location,  $q,  $timeout,  $uibModal,
 
 .controller('PendingCtrl',
        ['$scope','$routeParams','bucketSvc','egGridDataProvider', 'egCore','ngToast','$q',
-function($scope,  $routeParams,  bucketSvc , egGridDataProvider,   egCore , ngToast , $q) {
+        '$uibModal','egConfirmDialog',
+function($scope,  $routeParams,  bucketSvc , egGridDataProvider,   egCore , ngToast , $q,
+         $uibModal,  egConfirmDialog) {
     $scope.setTab('add');
 
     var query;
@@ -299,10 +301,10 @@ function($scope,  $routeParams,  bucketSvc , egGridDataProvider,   egCore , ngTo
                     egCore.pcrud.retrieve('au', u.id)
                     .then(function(r) {
                         matches.push({
-                            barcode: resp.barcode,
-                            title: u.usrname(),
-                            org_name: egCore.org.get(u.home_ou()).name(),
-                            org_shortname: egCore.org.get(u.home_ou()).shortname()
+                            barcode: u.barcode,
+                            title: r.usrname(),
+                            org_name: egCore.org.get(r.home_ou()).name(),
+                            org_shortname: egCore.org.get(r.home_ou()).shortname()
                         });
                     })
                 );
@@ -365,18 +367,18 @@ function($scope,  $routeParams,  bucketSvc , egGridDataProvider,   egCore , ngTo
                 }
 
                 var final_barcode = '';
-                var org = egCore.org.get(u.home_ou());
+                var org = egCore.org.get(user.home_ou());
                 return egConfirmDialog.open(
                     egCore.strings.OPT_IN_DIALOG_TITLE,
                     egCore.strings.OPT_IN_DIALOG,
-                    {   family_name : u.family_name(),
-                        first_given_name : u.first_given_name(),
+                    {   family_name : user.family_name(),
+                        first_given_name : user.first_given_name(),
                         org_name : org.name(),
                         org_shortname : org.shortname(),
-                        ok : function() { createOptIn(u.id()); final_barcode = chosen_barcode },
+                        ok : function() { createOptIn(user.id()); final_barcode = chosen_barcode },
                         cancel : function() {}
                     }
-                ).then(function() { return final_barcode });
+                ).result.then(function() { return final_barcode });
             })
         });
     }
