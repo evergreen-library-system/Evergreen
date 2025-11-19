@@ -1044,10 +1044,24 @@ sub handle_no_copies {
 # Force and recall holds bypass validity tests.  Returns the first
 # (and presumably only) copy in our list of valid copies when a
 # F or R hold is encountered.  Returns undef otherwise.
+sub is_force_hold {
+    my $self = shift;
+    return $self->hold->hold_type eq 'F';
+}
+
+sub is_recall_hold {
+    my $self = shift;
+    return $self->hold->hold_type eq 'R';
+}
+
+sub is_force_recall_hold {
+    my $self = shift;
+    return $self->is_force_hold || $self->is_recall_hold;
+}
+
 sub attempt_force_recall_target {
     my $self = shift;
-    return $self->copies->[0] if
-        $self->hold->hold_type eq 'R' || $self->hold->hold_type eq 'F';
+    return $self->copies->[0] if $self->is_force_recall_hold;
     return undef;
 }
 
@@ -1264,7 +1278,8 @@ sub find_nearest_copy {
         if ($have_local_copies and $self->inside_hard_stall_interval) {
             # Unset valid_previous_copy if it's not local and we have local copies now
             $self->{valid_previous_copy} = undef if (
-                $self->{valid_previous_copy}
+                !$self->is_force_hold
+                and $self->{valid_previous_copy}
                 and $self->{valid_previous_copy}->{proximity} > 0
             );
             last if ($prox > 0); # No point in looking further "out".
@@ -1286,7 +1301,8 @@ sub find_nearest_copy {
     if ($no_copies and $have_local_copies and $self->inside_hard_stall_interval) {
         # Unset valid_previous_copy if it's not local and we have local copies now
         $self->{valid_previous_copy} = undef if (
-            $self->{valid_previous_copy}
+            !$self->is_force_hold
+            and $self->{valid_previous_copy}
             and $self->{valid_previous_copy}->{proximity} > 0
         );
     }
@@ -1300,6 +1316,7 @@ sub find_nearest_copy {
 sub copy_is_permitted {
     my ($self, $copy) = @_;
     return 0 unless $copy;
+    return 1 if $self->is_force_hold;
 
     my $resp = $self->editor->json_query({
         from => [
