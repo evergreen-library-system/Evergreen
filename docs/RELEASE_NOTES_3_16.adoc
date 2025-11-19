@@ -1,17 +1,120 @@
-= Evergreen 3.16.0 Release Notes =
+= Evergreen 3.16 Release Notes =
 :toc:
 :numbered:
 :toclevels: 3
 
-== Upgrade notes ==
+
+== Evergreen 3.16.1 ==
+
+This release contains bug fixes and documentation fixes improving on Evergreen 3.16.0.
+
+=== Upgrade Notes ===
+
+The following bugs require a database update script:
+
+* Improve performance of query used to determine if a record has a holdable item (https://bugs.launchpad.net/evergreen/+bug/2129571[Bug 2129571])
+* Adds an Action Trigger hook for e-renewal named "au.erenewal" (https://bugs.launchpad.net/evergreen/+bug/2130911[Bug 2130911])
+
+
+=== Accessibility ===
+
+* Improves Lists page headings and landmarks; moves New List form; clarifies ARIA in item tables and list action buttons (https://bugs.launchpad.net/evergreen/+bug/2115521[Bug 2115521])
+* Updates landmarks, headings, and ARIA labels for the browse catalog page (https://bugs.launchpad.net/evergreen/+bug/2115689[Bug 2115689])
+* Encloses facet title and count into a single link for a less verbose screen reader experience. (https://bugs.launchpad.net/evergreen/+bug/2115456[Bug 2115456])
+* Avoid loss of focus between grid toolbar and first column (https://bugs.launchpad.net/evergreen/+bug/2063455[Bug 2063455])
+* Changes "Hold Canceling Staff" label to "Hold Canceling
+User" (https://bugs.launchpad.net/evergreen/+bug/2101912[Bug 2101912])
+
+=== Acquisitions ===
+
+* Adds the received timestamp to line item detail rows on line item lists and in the batch line items details interface (https://bugs.launchpad.net/evergreen/+bug/1821622[Bug 1821622])
+
+=== Administration ===
+
+* Improve performance of query used to determine if a record has a holdable item (https://bugs.launchpad.net/evergreen/+bug/2129571[Bug 2129571])
+* Adds an Action Trigger hook for e-renewal named "au.erenewal" (https://bugs.launchpad.net/evergreen/+bug/2130911[Bug 2130911])
+
+
+=== Cataloging ===
+
+* Fix clearing of numeric fields on copies. (https://bugs.launchpad.net/evergreen/+bug/2122539[Bug 2122539])
+* Adds call number fields to Holdings Template Editor grid. (https://bugs.launchpad.net/evergreen/+bug/2131031[Bug 2131031])
+
+=== Circulation ===
+
+* Provide both global and result-set-relative hold queue position information, allowing staff to choose which is best for their purposes in each hold-listing interface. (https://bugs.launchpad.net/evergreen/+bug/1954937[Bug 1954937])
+* Staff Catalog: Retarget the hold when pickup library is changed. (https://bugs.launchpad.net/evergreen/+bug/2107404[Bug 2107404])
+* Teach user buckets to respect barcode completion and patron opt-in settings. (https://bugs.launchpad.net/evergreen/+bug/1847682[Bug 1847682])
+
+=== Documentation ===
+
+* Adds a section to the SIP documentation to introduce the SIP Filters feature available in 3.13+
+
+
+=== Public Catalog ===
+
+* Makes the basic search form available on all OPAC pages via show/hide toggle, initially visible only on home page and search results. (https://bugs.launchpad.net/evergreen/+bug/2115692[Bug 2115692])
+* Changes OPAC item cover images' links to Record Detail instead of larger image file (https://bugs.launchpad.net/evergreen/+bug/2107599[Bug 2107599])
+
+=== Reports ===
+
+* Fix Simple Report cloning and editing when using a filter on an organizational unit (https://bugs.launchpad.net/evergreen/+bug/2110908[Bug 2110908])
+
+=== Staff Client ===
+
+* Disables the Download Full CSV and Print Full Grid options for empty grids. (https://bugs.launchpad.net/evergreen/+bug/2045073[Bug 2045073])
+* Remove trailing space from modals and strange background artifacts near corners and edges (https://bugs.launchpad.net/evergreen/+bug/2131151[Bug 2131151])
+* Fixes an issue where staff portal links opened in new tabs unexpectedly and the setting ui.staff.disable_links_newtabs was being ignored. (https://bugs.launchpad.net/evergreen/+bug/2110907[Bug 2110907])
+
+=== Acknowledgements ===
+
+We would like to thank the following individuals who contributed code, testing, documentation, and patches to the 3.16.1 point release of Evergreen:
+
+* Andrea Buntz Neiman
+* Blake Graham-Henderson
+* Chris Sharp
+* Christine Burns
+* Dan Briem
+* Devon Bates
+* Galen Charlton
+* Gina Monti
+* Ian Skelskey
+* Jane Sandberg
+* Jason Boyer
+* Jason Etheridge
+* Jason Stephenson
+* Llewellyn Marshall
+* Martha Driscoll
+* Michele Morgan
+* Mike Rylander
+* Sarah Cruz
+* Scott Angel
+* Stephanie Leary
+* Steven Mayo
+* Terran McCanna
+* Tiffany Little
+
+
+=== Sponsors ===
+
+The following organizations sponsored development in the 3.15.7 release of Evergreen:
+
+* BC Libraries Cooperative
+
+
+
+== Evergreen 3.16.0 ==
+
+
+=== Upgrade notes ===
 
 This release includes no unusual upgrade steps that apply to all users,
 but sites that use earlier version of the Quipu integration should
 consult the Quipu section.
 
-== New Features ==
+=== New Features ===
 
-:leveloffset: +2
+:leveloffset: +3
 
 
 = Administration =
