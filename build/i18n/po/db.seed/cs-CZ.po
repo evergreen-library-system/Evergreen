@@ -3,13 +3,13 @@ msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
 "POT-Creation-Date: 2025-10-29 12:29-0400\n"
-"PO-Revision-Date: 2025-10-30 14:06+0000\n"
+"PO-Revision-Date: 2025-11-18 22:01+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: UISK <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2025-10-31 07:40+0000\n"
+"X-Launchpad-Export-Date: 2025-11-19 08:10+0000\n"
 "X-Generator: Launchpad (build 1d08ffb47b836b8a4c9a0f11318dfdea7420ab6d)\n"
 "X-Poedit-Language: Czech\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
@@ -7873,23 +7873,23 @@ msgstr "Typ nosiče"
 
 #: 950.data.seed-values.sql:7490
 msgid "Content access mode"
-msgstr ""
+msgstr "Režim přístupu k obshu"
 
 #: 950.data.seed-values.sql:7491
 msgid "Textual assistive features"
-msgstr ""
+msgstr "Textové asistenční funkce"
 
 #: 950.data.seed-values.sql:7492
 msgid "Visual assistive features"
-msgstr ""
+msgstr "Vizuální asistenční funkce"
 
 #: 950.data.seed-values.sql:7493
 msgid "Auditory assistive features"
-msgstr ""
+msgstr "Sluchové asistenční funkce"
 
 #: 950.data.seed-values.sql:7494
 msgid "Tactile assistive features"
-msgstr ""
+msgstr "Hmatové aisisteční funkce"
 
 #: 950.data.seed-values.sql:7500
 msgid "Afar"
@@ -13383,195 +13383,195 @@ msgstr "Kooperativní katalogizační program"
 
 #: 950.data.seed-values.sql:9735 950.data.seed-values.sql:9735
 msgid "Auditory"
-msgstr ""
+msgstr "Posluchači"
 
 #: 950.data.seed-values.sql:9736 950.data.seed-values.sql:9736
 msgid "Textual"
-msgstr ""
+msgstr "Textový"
 
 #: 950.data.seed-values.sql:9737 950.data.seed-values.sql:9737
 msgid "Visual"
-msgstr ""
+msgstr "Vizuální"
 
 #: 950.data.seed-values.sql:9738 950.data.seed-values.sql:9738
 msgid "Tactile"
-msgstr ""
+msgstr "Hmatový"
 
 #: 950.data.seed-values.sql:9739
 msgid "annotations"
-msgstr ""
+msgstr "anotace"
 
 #: 950.data.seed-values.sql:9739
 msgid "Annotations"
-msgstr ""
+msgstr "Anotace"
 
 #: 950.data.seed-values.sql:9740 950.data.seed-values.sql:9740
 msgid "ARIA"
-msgstr ""
+msgstr "ARIA"
 
 #: 950.data.seed-values.sql:9741
 msgid "bookmarks"
-msgstr ""
+msgstr "záložky"
 
 #: 950.data.seed-values.sql:9741
 msgid "Bookmarks"
-msgstr ""
+msgstr "Záložky"
 
 #: 950.data.seed-values.sql:9742
 msgid "index"
-msgstr ""
+msgstr "rejstřík"
 
 #: 950.data.seed-values.sql:9742
 msgid "Index"
-msgstr ""
+msgstr "Rejstřík"
 
 #: 950.data.seed-values.sql:9743
 msgid "pageBreakMarkers"
-msgstr ""
+msgstr "ZnakyKonceStránky"
 
 #: 950.data.seed-values.sql:9743
 msgid "Page break markers"
-msgstr ""
+msgstr "Znaky zalomení stránky"
 
 #: 950.data.seed-values.sql:9744
 msgid "pageNavigation"
-msgstr ""
+msgstr "NavigaceNaStránce"
 
 #: 950.data.seed-values.sql:9744
 msgid "Page navigation"
-msgstr ""
+msgstr "Navigace na stránce"
 
 #: 950.data.seed-values.sql:9745
 msgid "readingOrder"
-msgstr ""
+msgstr "pořadíČtení"
 
 #: 950.data.seed-values.sql:9745
 msgid "Reading order"
-msgstr ""
+msgstr "Pořadí čtení"
 
 #: 950.data.seed-values.sql:9746
 msgid "structuralNavigation"
-msgstr ""
+msgstr "strukturálníNavigace"
 
 #: 950.data.seed-values.sql:9746
 msgid "Structural navigation"
-msgstr ""
+msgstr "Strukturální navigace"
 
 #: 950.data.seed-values.sql:9747
 msgid "tableOfContents"
-msgstr ""
+msgstr "Obsah"
 
 #: 950.data.seed-values.sql:9747
 msgid "Table of contents"
-msgstr ""
+msgstr "Obsah"
 
 #: 950.data.seed-values.sql:9748
 msgid "taggedPDF"
-msgstr ""
+msgstr "TagovanéPDF"
 
 #: 950.data.seed-values.sql:9748
 msgid "Tagged PDF"
-msgstr ""
+msgstr "Tagované PDF"
 
 #: 950.data.seed-values.sql:9749
 msgid "alternativeText"
-msgstr ""
+msgstr "alternativníText"
 
 #: 950.data.seed-values.sql:9749
 msgid "Alternative text"
-msgstr ""
+msgstr "Alternativní text"
 
 #: 950.data.seed-values.sql:9750
 msgid "captions"
-msgstr ""
+msgstr "titulky"
 
 #: 950.data.seed-values.sql:9750
 msgid "Captions"
-msgstr ""
+msgstr "Titulky"
 
 #: 950.data.seed-values.sql:9751
 msgid "closedCaptions"
-msgstr ""
+msgstr "skrytéTitulky"
 
 #: 950.data.seed-values.sql:9751
 msgid "Closed captions"
-msgstr ""
+msgstr "Skryté titulky"
 
 #: 950.data.seed-values.sql:9752
 msgid "describedMath"
-msgstr ""
+msgstr "popsanýMatematickýVýraz"
 
 #: 950.data.seed-values.sql:9752
 msgid "Described math"
-msgstr ""
+msgstr "Popsaný matematický výraz"
 
 #: 950.data.seed-values.sql:9753
 msgid "longDescription"
-msgstr ""
+msgstr "dlouhýPopis"
 
 #: 950.data.seed-values.sql:9753
 msgid "Long description"
-msgstr ""
+msgstr "Dlouhý popis"
 
 #: 950.data.seed-values.sql:9754
 msgid "openCaptions"
-msgstr ""
+msgstr "otevřenéTitulky"
 
 #: 950.data.seed-values.sql:9754
 msgid "Open captions"
-msgstr ""
+msgstr "Otevřené titulky"
 
 #: 950.data.seed-values.sql:9755 950.data.seed-values.sql:9755
 msgid "transcript"
-msgstr ""
+msgstr "transckript"
 
 #: 950.data.seed-values.sql:9756
 msgid "displayTransformability"
-msgstr ""
+msgstr "transformovatelnostZobrazení"
 
 #: 950.data.seed-values.sql:9756
 msgid "Display transformability"
-msgstr ""
+msgstr "Transformovatelnost zobrazení"
 
 #: 950.data.seed-values.sql:9757 950.data.seed-values.sql:9757
 msgid "ChemML"
-msgstr ""
+msgstr "ChemML"
 
 #: 950.data.seed-values.sql:9758
 msgid "latex"
-msgstr ""
+msgstr "latex"
 
 #: 950.data.seed-values.sql:9758
 msgid "LaTeX"
-msgstr ""
+msgstr "LaTeX"
 
 #: 950.data.seed-values.sql:9759
 msgid "latex-chemistry"
-msgstr ""
+msgstr "latexProChemii"
 
 #: 950.data.seed-values.sql:9759
 msgid "LaTeX-chemistry"
-msgstr ""
+msgstr "LaTeX pro  Chemii"
 
 #: 950.data.seed-values.sql:9760 950.data.seed-values.sql:9760
 msgid "MathML"
-msgstr ""
+msgstr "MathML"
 
 #: 950.data.seed-values.sql:9761 950.data.seed-values.sql:9761
 msgid "MathML-chemistry"
-msgstr ""
+msgstr "MathML pro chemii"
 
 #: 950.data.seed-values.sql:9762
 msgid "ttsMarkup"
-msgstr ""
+msgstr "ttsMarkup"
 
 #: 950.data.seed-values.sql:9762
 msgid "TTS markup"
-msgstr ""
+msgstr "TTS markup"
 
 #: 950.data.seed-values.sql:9763
 msgid "largePrint"
-msgstr ""
+msgstr "tiskVelkýmPísmem"
 
 #: 950.data.seed-values.sql:9764
 msgid "horizontalWriting"
@@ -13607,71 +13607,71 @@ msgstr ""
 
 #: 950.data.seed-values.sql:9768
 msgid "highContrastDisplay"
-msgstr ""
+msgstr "displaySVysokýmKontrastem"
 
 #: 950.data.seed-values.sql:9768
 msgid "High contrast display"
-msgstr ""
+msgstr "Display s vysokým kontrastem"
 
 #: 950.data.seed-values.sql:9769
 msgid "signLanguage"
-msgstr ""
+msgstr "znakovýJazyk"
 
 #: 950.data.seed-values.sql:9769
 msgid "Sign language"
-msgstr ""
+msgstr "Znakový jazyk"
 
 #: 950.data.seed-values.sql:9770
 msgid "audioDescription"
-msgstr ""
+msgstr "zvukovýPopis"
 
 #: 950.data.seed-values.sql:9770
 msgid "Audio description"
-msgstr ""
+msgstr "Zvukový popis"
 
 #: 950.data.seed-values.sql:9771
 msgid "highContrastAudio"
-msgstr ""
+msgstr "vysoký KontrastZvuku"
 
 #: 950.data.seed-values.sql:9771
 msgid "High contrast audio"
-msgstr ""
+msgstr "Vysoký kontrast zvuku"
 
 #: 950.data.seed-values.sql:9772
 msgid "timingControl"
-msgstr ""
+msgstr "kontrolaČasování"
 
 #: 950.data.seed-values.sql:9772
 msgid "Timing control"
-msgstr ""
+msgstr "Kontrola časování"
 
 #: 950.data.seed-values.sql:9773
 msgid "synchronizedAudioText"
-msgstr ""
+msgstr "synchronizovanýAudioText"
 
 #: 950.data.seed-values.sql:9773
 msgid "Synchronized audio text"
-msgstr ""
+msgstr "Synchronizovaný audio text"
 
 #: 950.data.seed-values.sql:9774
 msgid "braille"
-msgstr ""
+msgstr "braillovoPísmo"
 
 #: 950.data.seed-values.sql:9775
 msgid "tactileGraphic"
-msgstr ""
+msgstr "hmatová Grafika"
 
 #: 950.data.seed-values.sql:9775
 msgid "Tactile graphic"
-msgstr ""
+msgstr "Hmatová grafika"
 
 #: 950.data.seed-values.sql:9776
 msgid "tactileObject"
-msgstr ""
+msgstr "hmatovýObjekt"
 
 #: 950.data.seed-values.sql:9776
 msgid "Tactile object"
-msgstr ""
+msgstr "Hmatový objekt"
 
 #: 950.data.seed-values.sql:10282
 msgid "Creates a hold_notification record for each notified hold"
@@ -13977,41 +13977,43 @@ msgstr "Položka zrušena dodavatelem"
 #: 950.data.seed-values.sql:12857
 msgid ""
 "Money: Enable to allow account adjustments to be refundable to patrons"
-msgstr ""
+msgstr "Peníze: Povolit refundaci čtenářům u korekce účtu"
 
 #: 950.data.seed-values.sql:12860
 msgid "Money: Enable to allow forgive payments to be refundable to patrons"
-msgstr ""
+msgstr "Peníze: Povolit refundaci čtenářům u plateb prominutím"
 
 #: 950.data.seed-values.sql:12863
 msgid "Money: Enable to allow work payments to be refundable to patrons"
-msgstr ""
+msgstr "Peníze: Povolit refundaci čtenářům u plateb prací"
 
 #: 950.data.seed-values.sql:12866
 msgid "Money: Enable to allow credit payments to be refundable to patrons"
-msgstr ""
+msgstr "Peníze: Povolit refundaci čtenářům u plateb ze zálohy"
 
 #: 950.data.seed-values.sql:12869
 msgid "Money: Enable to allow goods payments to be refundable to patrons"
-msgstr ""
+msgstr "Povolit refundaci čtenářům u platby věcnou náhradou"
 
 #: 950.data.seed-values.sql:12872
 msgid ""
 "Money: Enable to allow credit card payments to be refundable to patrons"
-msgstr ""
+msgstr "Peníze: Povolit refundaci čtenářům u plateb kreditní kartou"
 
 #: 950.data.seed-values.sql:12875
 msgid "Money: Enable to allow cash payments to be refundable to patrons"
-msgstr ""
+msgstr "Peníze: Povolit refundaci čtenářům u plateb v hotovosti"
 
 #: 950.data.seed-values.sql:12878
 msgid "Money: Enable to allow check payments to be refundable to patrons"
 msgstr ""
+"Peníze: Povolit refundaci čtenářům u plateb šekem nebo bezhotovostním "
+"převodem"
 
 #: 950.data.seed-values.sql:12881
 msgid ""
 "Money: Enable to allow debit card payments to be refundable to patrons"
-msgstr ""
+msgstr "Peníze: Povolit refundaci čtenářům u plateb debetní kartou"
 
 #: 950.data.seed-values.sql:12888
 msgid ""
@@ -19063,11 +19065,11 @@ msgstr ""
 
 #: 950.data.seed-values.sql:26312
 msgid "Staff Client patron search: home organization unit"
-msgstr ""
+msgstr "Vyhedávání čtenáře ve služebním klientovi: Domovská knihovna"
 
 #: 950.data.seed-values.sql:26316
 msgid "Specifies the home organization unit for patron search"
-msgstr ""
+msgstr "Určuje domovskou knihovnu pro vyhledávání čtenáře"
 
 #: 950.data.seed-values.sql:26327
 msgid "EDI Attribute Sets Grid Settings"
@@ -19087,11 +19089,12 @@ msgstr ""
 
 #: 950.data.seed-values.sql:26363
 msgid "Hide the Clear These Holds button"
-msgstr ""
+msgstr "Skrýt tlačítko Vyčistit tyto rezervace"
 
 #: 950.data.seed-values.sql:26369
 msgid "Hide the Clear These Holds button from the Holds Shelf interface."
 msgstr ""
+"Skrýt tlačítko Vyčistit tyto rezervace v rozhraní pro regál s rezervacemi"
 
 #: 950.data.seed-values.sql:26384
 msgid "Grid Config: KPAC topics"
@@ -19099,45 +19102,53 @@ msgstr ""
 
 #: 950.data.seed-values.sql:26394
 msgid "Show KPAC Link"
-msgstr ""
+msgstr "Zobrazit odkaz Dětský katalog"
 
 #: 950.data.seed-values.sql:26397
 msgid "Show the KPAC link in the OPAC. Default is false."
 msgstr ""
+"Zobrazit odkaz Dětský katalog v OPACu. Výchozí nastaveí je nezobrazovat."
 
 #: 950.data.seed-values.sql:26407
 msgid "KPAC Audience Filter"
-msgstr ""
+msgstr "Filtr Dětského katalogu pro Určení"
 
 #: 950.data.seed-values.sql:26410
 msgid ""
 "Controls which items to display based on MARC Target Audience (Audn) field. "
 "Options are: a,b,c,d,j. Default is: a,b,c,j"
 msgstr ""
+"Určuje, které jednotky zobrazovat  v závislosti na hodnotě pole MARC Cílová "
+"skupina (Audn). Možnosti jsou: a, b, c, d, j. Výchozí nastavení je a, b, c, "
+"j."
 
 #: 950.data.seed-values.sql:26422 950.data.seed-values.sql:26423
 msgid "Enable Shibboleth SSO for the Staff Client"
 msgstr ""
+"Aktivovat jednotné přihlašování (SSO) přes Shibboleth pro služebního klienta"
 
 #: 950.data.seed-values.sql:26427
 msgid "Shibboleth Staff SSO Entity ID"
-msgstr ""
+msgstr "ID entity jednotného přihlašování personálu přes Shibollet"
 
 #: 950.data.seed-values.sql:26432
 msgid "Log out of the Staff Shibboleth IdP"
 msgstr ""
+"Odhlásit se od  poskytovatele identity Shibollet ve služebním klientu"
 
 #: 950.data.seed-values.sql:26437
 msgid "Allow both Shibboleth and native Staff Client authentication"
 msgstr ""
+"Povolit autentizaci přes  Shibolleth i přes původní ověřování Služebního "
+"klienta"
 
 #: 950.data.seed-values.sql:26442
 msgid "Evergreen Staff SSO matchpoint"
-msgstr ""
+msgstr "Bod shody pro SSO služebního klienta Evergreenu"
 
 #: 950.data.seed-values.sql:26449
 msgid "Shibboleth Staff SSO matchpoint"
-msgstr ""
+msgstr "Bod shody pro SSO Shibolethu  Služebního klienta"
 
 # id::clm.value''in__gwi
 #~ msgid "Gwich"
