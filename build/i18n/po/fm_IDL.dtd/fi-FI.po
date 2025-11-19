@@ -3,15 +3,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2025-08-19 16:44-0400\n"
+"POT-Creation-Date: 2025-10-22 13:25-0400\n"
 "PO-Revision-Date: 2025-03-25 15:00+0000\n"
 "Last-Translator: Finnish <Unknown>\n"
 "Language-Team: Finnish <evergreen@jns.fi>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2025-08-20 09:39+0000\n"
-"X-Generator: Launchpad (build eba5590f12b81acee387956af292c18f73e89913)\n"
+"X-Launchpad-Export-Date: 2025-10-23 09:59+0000\n"
+"X-Generator: Launchpad (build 304f53b38e34baf532daa616a9e3cb2ee8d98eb2)\n"
 "Language: fi\n"
 
 #: class.oaib.label:87 class.oaia.label:95
@@ -84,7 +84,7 @@ msgid "Start Time"
 msgstr "Aloitusaika"
 
 #: field.accs.checkout_workstation.label:200
-#: field.srcirc.checkout_workstation.label:15048
+#: field.srcirc.checkout_workstation.label:15056
 msgid "Checkout Workstation"
 msgstr "Lainaustyöasema"
 
@@ -141,7 +141,7 @@ msgstr "Kenttätunnus"
 #: field.cctt.owner.label:14083 field.acpt.owner.label:14105
 #: field.cpt.owner.label:14221 field.cc.owner.label:14264
 #: field.cgs.owner.label:14356 field.cusppe.owner.label:14397
-#: field.coai.org_unit.label:16337
+#: field.coai.org_unit.label:16375
 msgid "Owner"
 msgstr "Omistaja"
 
@@ -185,8 +185,8 @@ msgstr "Omistaja"
 #: field.cgs.name.label:14357 field.ojsd.name.label:14416
 #: field.ojsf.name.label:14432 field.orld.name.label:14467
 #: field.oepparam.name.label:14607 field.ops.name.label:14664
-#: field.sipset.name.label:16192 field.ahrrr.name.label:16272
-#: field.coauf.name.label:16313 field.coanf.name.label:16325
+#: field.sipset.name.label:16230 field.ahrrr.name.label:16310
+#: field.coauf.name.label:16351 field.coanf.name.label:16363
 msgid "Name"
 msgstr "Nimi"
 
@@ -287,13 +287,13 @@ msgstr ""
 #: field.cfgm.id.label:14059 field.acpt.id.label:14099
 #: field.acptcm.id.label:14123 field.ccou.id.label:14297
 #: field.cgs.id.label:14354 field.cusppe.id.label:14388
-#: field.orld.id.label:14466 field.sipsetg.id.label:16166
-#: field.sipset.id.label:16190 field.sipacc.id.label:16213
-#: field.ahrrr.id.label:16271 field.ahrrre.id.label:16284
-#: field.ahrrre.hold.label:16285 field.ahrrre.reset_reason.label:16286
-#: field.coauf.id.label:16312 field.coanf.id.label:16324
-#: field.coai.id.label:16336 field.aelc.id.label:16376
-#: field.aelcc.id.label:16394 field.sipfilter.id.label:16504
+#: field.orld.id.label:14466 field.sipsetg.id.label:16204
+#: field.sipset.id.label:16228 field.sipacc.id.label:16251
+#: field.ahrrr.id.label:16309 field.ahrrre.id.label:16322
+#: field.ahrrre.hold.label:16323 field.ahrrre.reset_reason.label:16324
+#: field.coauf.id.label:16350 field.coanf.id.label:16362
+#: field.coai.id.label:16374 field.aelc.id.label:16414
+#: field.aelcc.id.label:16432 field.sipfilter.id.label:16542
 msgid "ID"
 msgstr "ID"
 
@@ -304,7 +304,7 @@ msgstr ""
 #: field.rrbs.record.label:276 field.vqbra.record.label:607
 #: field.vqara.record.label:724 field.acmcm.record.label:3390
 #: field.ssr.record.label:6693 field.bmpc.record.label:12514
-#: field.aelc.record.label:16379
+#: field.aelc.record.label:16417
 msgid "Record"
 msgstr "Tietue"
 
@@ -341,7 +341,7 @@ msgstr ""
 #: field.acqclet.description.label:11672 field.acqclp.description.label:11749
 #: field.qbv.description.label:12153 field.cfdi.description.label:12871
 #: field.cra.description.label:14328 field.ojsd.description.label:14418
-#: field.ojsf.description.label:14434 field.sipset.description.label:16193
+#: field.ojsf.description.label:14434 field.sipset.description.label:16231
 msgid "Description"
 msgstr "Kuvaus"
 
@@ -448,7 +448,7 @@ msgstr "Tuo/korvaa kentät poistoa varten"
 #: field.aeas.label.label:10992 field.qbv.label.label:12151
 #: field.cmpctm.label.label:12545 field.cmpcsm.label.label:12562
 #: field.cmpcvm.label.label:12579 field.ojsd.label.label:14417
-#: field.ojsf.label.label:14433 field.sipsetg.label.label:16167
+#: field.ojsf.label.label:14433 field.sipsetg.label.label:16205
 msgid "Label"
 msgstr "Nimi"
 
@@ -518,8 +518,8 @@ msgstr "Tuontiaika"
 #: field.rmocbbcol.owning_lib.label:13813
 #: field.rmobbcol.owning_lib.label:13827
 #: field.rmocbbhol.owning_lib.label:13841
-#: field.rmobbhol.owning_lib.label:13855 field.srcp.owning_lib_id.label:15514
-#: field.srwd.owning_lib_id.label:15808
+#: field.rmobbhol.owning_lib.label:13855 field.srcp.owning_lib_id.label:15538
+#: field.srwd.owning_lib_id.label:15839
 msgid "Owning Library"
 msgstr "Omistajakirjasto"
 
@@ -527,20 +527,20 @@ msgstr "Omistajakirjasto"
 #: field.sunit.circ_lib.label:6273 field.acp.circ_lib.label:8191
 #: field.ancc.circ_lib.label:8607 field.aoncc.circ_lib.label:8629
 #: field.aufhl.circ_lib.label:12004 field.aufhil.circ_lib.label:12026
-#: field.aufhol.circ_lib.label:12056 field.srcp.circ_lib_id.label:15509
-#: field.srwd.circ_lib_id.label:15803
+#: field.aufhol.circ_lib.label:12056 field.srcp.circ_lib_id.label:15533
+#: field.srwd.circ_lib_id.label:15834
 msgid "Circulating Library"
 msgstr "Lainaava kirjasto"
 
 #: field.vii.call_number.label:383 field.viiad.call_number.label:436
 #: field.racnd.call_number.label:3586 field.auricnm.call_number.label:3621
 #: field.combcirc.copy_call_number.label:5305
-#: field.acirc.copy_call_number.label:5395 field.srcp.acn_id.label:15508
+#: field.acirc.copy_call_number.label:5395 field.srcp.acn_id.label:15532
 msgid "Call Number"
 msgstr "Hyllypaikka"
 
 #: field.vii.copy_number.label:384 field.viiad.copy_number.label:452
-#: field.srcp.copy_number.label:15565 field.srwd.copy_number.label:15885
+#: field.srcp.copy_number.label:15589 field.srwd.copy_number.label:15916
 msgid "Item Number"
 msgstr ""
 
@@ -564,9 +564,9 @@ msgstr "Tila"
 #: field.acplgm.location.label:5894 field.sunit.location.label:6291
 #: field.aoupa.copy_location.label:6654 field.acp.location.label:8210
 #: field.acqlid.location.label:10777 field.rccc.shelving_location.label:13400
-#: field.srcirc.location_id.label:15080 field.srcirc.location_name.label:15081
-#: field.srcp.location_id.label:15511 field.srcp.location_name.label:15547
-#: field.srwd.location_id.label:15805 field.srwd.location_name.label:15867
+#: field.srcirc.location_id.label:15088 field.srcirc.location_name.label:15089
+#: field.srcp.location_id.label:15535 field.srcp.location_name.label:15571
+#: field.srwd.location_id.label:15836 field.srwd.location_name.label:15898
 msgid "Shelving Location"
 msgstr "Hyllysijainti"
 
@@ -582,7 +582,7 @@ msgstr "Talletus"
 #: field.brsrc.deposit_amount.label:5491 field.sunit.deposit_amount.label:6283
 #: field.acp.deposit_amount.label:8201 field.act.deposit_amount.label:8463
 #: field.rocit.deposit_amount.label:13764
-#: field.srcp.deposit_amount.label:15558 field.srwd.deposit_amount.label:15878
+#: field.srcp.deposit_amount.label:15582 field.srwd.deposit_amount.label:15909
 msgid "Deposit Amount"
 msgstr "Talletusmäärä"
 
@@ -599,7 +599,7 @@ msgstr "Varattavissa"
 #: field.vii.price.label:392 field.viiad.price.label:444
 #: field.sunit.price.label:6293 field.acp.price.label:8212
 #: field.act.price.label:8464 field.rocit.price.label:13742
-#: field.srcp.price.label:15550 field.srwd.price.label:15870
+#: field.srcp.price.label:15574 field.srwd.price.label:15901
 msgid "Price"
 msgstr "Hinta"
 
@@ -607,8 +607,8 @@ msgstr "Hinta"
 #: field.brsrc.barcode.label:5489 field.sunit.barcode.label:6270
 #: field.ac.barcode.label:7531 field.acp.barcode.label:8188
 #: field.acqlid.barcode.label:10770 field.stgc.barcode.label:11854
-#: field.rocit.barcode.label:13743 field.srcp.barcode.label:15545
-#: field.srwd.barcode.label:15865
+#: field.rocit.barcode.label:13743 field.srcp.barcode.label:15569
+#: field.srwd.barcode.label:15896
 msgid "Barcode"
 msgstr "Tunnus"
 
@@ -628,7 +628,7 @@ msgstr "Lainaa MARC-tyyppinä"
 #: field.vii.alert_message.label:396 field.viiad.alert_message.label:448
 #: field.aal.alert_message.label:4896 field.sunit.alert_message.label:6269
 #: field.acp.alert_message.label:8187 field.act.alert_message.label:8467
-#: field.srcp.alert_message.label:15559
+#: field.srcp.alert_message.label:15583
 msgid "Alert Message"
 msgstr "Huomautusviesti"
 
@@ -691,7 +691,7 @@ msgstr ""
 #: field.aihu.workstation.label:2665 field.ancihu.workstation.label:2686
 #: field.circ.workstation.label:5120 field.aacs.workstation.label:5221
 #: field.combcirc.workstation.label:5298 field.acirc.workstation.label:5382
-#: field.awss.workstation.label:14200 field.sipacc.workstation.label:16218
+#: field.awss.workstation.label:14200 field.sipacc.workstation.label:16256
 msgid "Workstation"
 msgstr "Työasema"
 
@@ -790,7 +790,7 @@ msgstr "Tietueen tunnus"
 #: field.acqpoh.create_time.label:10509 field.acqlih.create_time.label:10675
 #: field.acqdfa.create_time.label:11606 field.uvsa.create_time.label:12625
 #: field.uvs.create_time.label:12656 field.cfdfs.create_time.label:12890
-#: field.cc.create_time.label:14269 field.sipses.create_time.label:16245
+#: field.cc.create_time.label:14269 field.sipses.create_time.label:16283
 msgid "Create Time"
 msgstr "Luomisaika"
 
@@ -887,7 +887,7 @@ msgstr "Määritetunnus"
 #: field.smhc.value.label:6433 field.asce.value.label:9018
 #: field.acqlia.attr_value.label:10755 field.bmpc.value.label:12513
 #: field.cmpcvm.value.label:12577 field.awss.value.label:14199
-#: field.sipset.value.label:16194
+#: field.sipset.value.label:16232
 msgid "Value"
 msgstr "Arvo"
 
@@ -1074,7 +1074,7 @@ msgstr "Yleiset merkinnät ja asetukset"
 #: field.cgf.enabled.label:913 field.atevdef.active.label:1473
 #: field.atevalt.active.label:1526 field.atevdefg.active.label:1559
 #: field.cuat.enabled.label:4222 field.cra.enabled.label:14330
-#: field.sipacc.enabled.label:16214 field.sipfilter.enabled.label:16505
+#: field.sipacc.enabled.label:16252 field.sipfilter.enabled.label:16543
 msgid "Enabled"
 msgstr "Otettu käyttöön"
 
@@ -1228,7 +1228,7 @@ msgstr "Alue"
 #: field.acqf.active.label:10083 field.acqfsum.active.label:10325
 #: field.cbc.active.label:13977 field.cpt.active.label:14222
 #: field.cgs.active.label:14355 field.oep.active.label:14578
-#: field.oes.active.label:14704 field.coai.active.label:16338
+#: field.oes.active.label:14704 field.coai.active.label:16376
 msgid "Active"
 msgstr "Aktiivinen"
 
@@ -1793,16 +1793,16 @@ msgstr ""
 #: field.sdistn.title.label:6141 field.sin.title.label:6389
 #: field.ahrn.title.label:7138 field.aur.title.label:9362
 #: field.aurs.title.label:9436 field.acqpoi.title.label:10574
-#: field.rocit.title.label:13738 field.srcirc.title.label:15110
-#: field.srcp.title.label:15581 field.srwd.title.label:15904
+#: field.rocit.title.label:13738 field.srcirc.title.label:15118
+#: field.srcp.title.label:15605 field.srwd.title.label:15935
 msgid "Title"
 msgstr "Nimeke"
 
 #: field.atoul.author.label:1818 field.mwde.author.label:4531
 #: field.aur.author.label:9364 field.aurs.author.label:9438
 #: field.acqii.author.label:9685 field.acqpoi.author.label:10575
-#: field.rocit.author.label:13739 field.srcirc.author.label:15111
-#: field.srcp.author.label:15582 field.srwd.author.label:15905
+#: field.rocit.author.label:13739 field.srcirc.author.label:15119
+#: field.srcp.author.label:15606 field.srwd.author.label:15936
 msgid "Author"
 msgstr "Tekijä"
 
@@ -1955,14 +1955,14 @@ msgid "MARC Bib Level"
 msgstr "Bibliografinen MARC-taso"
 
 #: field.chmw.juvenile_flag.label:2053 field.ccmw.juvenile_flag.label:2085
-#: field.ccmm.juvenile_flag.label:2195 field.srusr.juvenile.label:15283
+#: field.ccmm.juvenile_flag.label:2195 field.srusr.juvenile.label:15299
 msgid "Juvenile?"
 msgstr "Nuoriso?"
 
 #: field.chmw.ref_flag.label:2054 field.ccmw.ref_flag.label:2084
 #: field.chmm.ref_flag.label:2141 field.ccmm.ref_flag.label:2194
-#: field.act.ref.label:8461 field.srcp.reference.label:15553
-#: field.srwd.reference.label:15873
+#: field.act.ref.label:8461 field.srcp.reference.label:15577
+#: field.srwd.reference.label:15904
 msgid "Reference?"
 msgstr "Viite?"
 
@@ -1989,8 +1989,8 @@ msgstr "Uusinta?"
 #: field.aouctn.org_unit.label:7366 field.acas.org.label:8355
 #: field.pgtde.org.label:8560 field.cbt.owner.label:9313
 #: field.acqpl.org_unit.label:10409 field.cfgm.org_unit.label:14061
-#: field.cplhm.org_unit.label:16527 field.cplvm.org_unit.label:16538
-#: field.apll.org_unit.label:16550
+#: field.cplhm.org_unit.label:16565 field.cplvm.org_unit.label:16576
+#: field.apll.org_unit.label:16588
 msgid "Org Unit"
 msgstr "Organisaatioyksikkö"
 
@@ -1998,7 +1998,7 @@ msgstr "Organisaatioyksikkö"
 #: field.combcirc.copy_owning_lib.label:5307
 #: field.acirc.copy_owning_lib.label:5397
 #: field.aoupa.item_owning_lib.label:6651
-#: field.srcirc.copy_owning_lib_id.label:15090
+#: field.srcirc.copy_owning_lib_id.label:15098
 msgid "Item Owning Library"
 msgstr ""
 
@@ -2027,7 +2027,7 @@ msgstr "Assosiaatiotunnus"
 #: field.cwa.active.label:2104 field.chmm.active.label:2127
 #: field.ccmm.active.label:2182 field.scap.active.label:5993
 #: field.cmcts.active.label:13338 field.cmfts.active.label:13363
-#: field.srusr.active.label:15280
+#: field.srusr.active.label:15296
 msgid "Active?"
 msgstr "Aktiivinen?"
 
@@ -2048,7 +2048,7 @@ msgid "Strict OU matches?"
 msgstr "Tiukat OU-osuvuudet?"
 
 #: field.chmm.holdable.label:2143 field.act.holdable.label:8462
-#: field.srcp.holdable.label:15564 field.srwd.holdable.label:15884
+#: field.srcp.holdable.label:15588 field.srwd.holdable.label:15915
 msgid "Holdable?"
 msgstr "Varattavissa?"
 
@@ -2080,12 +2080,12 @@ msgstr ""
 msgid "Circulation Matrix Matchpoint"
 msgstr "Lainausmatriisin osuvuuspiste"
 
-#: field.ccmm.org_unit.label:2183 field.srcirc.circ_lib_id.label:15041
+#: field.ccmm.org_unit.label:2183 field.srcirc.circ_lib_id.label:15049
 msgid "Checkout Library"
 msgstr ""
 
 #: field.ccmm.circulate.label:2199 field.act.circulate.label:8459
-#: field.srcp.circulate.label:15555 field.srwd.circulate.label:15875
+#: field.srcp.circulate.label:15579 field.srwd.circulate.label:15906
 msgid "Circulate?"
 msgstr "Lainattavissa?"
 
@@ -2099,7 +2099,7 @@ msgstr "Kestosääntö"
 #: field.combcirc.recurring_fine_rule.label:5281
 #: field.acirc.recurring_fine_rule.label:5372 class.crrf.label:8109
 #: field.rodcirc.recurring_fine_rule.label:13700
-#: field.srcirc.recurring_fine_rule.label:15074
+#: field.srcirc.recurring_fine_rule.label:15082
 msgid "Recurring Fine Rule"
 msgstr "Toistuvien maksujen sääntö"
 
@@ -2107,7 +2107,7 @@ msgstr "Toistuvien maksujen sääntö"
 #: field.aacs.max_fine_rule.label:5201 field.combcirc.max_fine_rule.label:5277
 #: field.acirc.max_fine_rule.label:5368 class.crmf.label:8511
 #: field.rodcirc.max_fine_rule.label:13696
-#: field.srcirc.max_fine_rule.label:15075
+#: field.srcirc.max_fine_rule.label:15083
 msgid "Max Fine Rule"
 msgstr "Enimmäismaksusääntö"
 
@@ -2252,7 +2252,7 @@ msgstr "Maksuja maksamatta"
 #: field.bresv.id.label:5598 field.mg.id.label:7778 field.mbt.id.label:7824
 #: field.mwp.xact.label:8011 field.mgp.xact.label:8036
 #: field.rxbt.xact.label:11443 field.rxpt.xact.label:11454
-#: field.rccbs.id.label:13457 field.srbps.xact_id.label:16097
+#: field.rccbs.id.label:13457 field.srbps.xact_id.label:16135
 msgid "Transaction ID"
 msgstr "Maksutapahtuman tunnus"
 
@@ -2296,7 +2296,7 @@ msgstr "Maksuja yhteensä"
 
 #: field.mbts.total_paid.label:2441 field.mbtslv.total_paid.label:2469
 #: field.rccbs.total_paid.label:13474
-#: field.acqr_inv_totals.total_amount_paid.label:16438
+#: field.acqr_inv_totals.total_amount_paid.label:16476
 msgid "Total Paid"
 msgstr "Maskettu yhteensä"
 
@@ -2313,7 +2313,7 @@ msgid "Transaction Start Time"
 msgstr "Maksutapahtuman aloitusaika"
 
 #: field.mbts.xact_type.label:2445 field.mbtslv.xact_type.label:2473
-#: field.rccbs.xact_type.label:13472 field.srbps.xact_type.label:16157
+#: field.rccbs.xact_type.label:13472 field.srbps.xact_type.label:16195
 msgid "Transaction Type"
 msgstr "Maksutapahtuman tyyppi"
 
@@ -2351,12 +2351,12 @@ msgid "Message ID"
 msgstr ""
 
 #: field.aum.deleted.label:2487 field.auml.deleted.label:2515
-#: field.aump.deleted.label:2548 field.srusr.deleted.label:15282
+#: field.aump.deleted.label:2548 field.srusr.deleted.label:15298
 msgid "Deleted?"
 msgstr ""
 
 #: field.aum.message.label:2490 field.auml.message.label:2518
-#: field.aump.message.label:2553 field.sipsm.message.label:16257
+#: field.aump.message.label:2553 field.sipsm.message.label:16295
 msgid "Message"
 msgstr ""
 
@@ -3090,7 +3090,7 @@ msgstr "Nidelomake"
 
 #: class.acmc.label:3331 field.acmcu.course.label:3361
 #: field.acmcm.course.label:3388 field.acmtcm.course.label:3452
-#: field.aelcc.course.label:16396
+#: field.aelcc.course.label:16434
 msgid "Course"
 msgstr ""
 
@@ -3176,7 +3176,7 @@ msgstr "Aloituspäivä"
 msgid "End Date"
 msgstr "Päättymispäivä"
 
-#: field.acmt.courses.label:3431 field.aelc.courses.label:16380
+#: field.acmt.courses.label:3431 field.aelc.courses.label:16418
 msgid "Courses"
 msgstr ""
 
@@ -3244,7 +3244,7 @@ msgstr "Niteet"
 
 #: field.acn.creator.label:3544 field.sunit.creator.label:6279
 #: field.acp.creator.label:8197 field.cc.creator.label:14267
-#: field.srcp.creating_user.label:15571
+#: field.srcp.creating_user.label:15595
 msgid "Creating User"
 msgstr "Luodaan käyttäjää"
 
@@ -3270,9 +3270,9 @@ msgstr "Hyllypaikka/signum ID"
 
 #: field.acn.label.label:3549 field.ahopl.call_number_label.label:7035
 #: field.acqlid.cn_label.label:10771 field.rccc.call_number_label.label:13404
-#: field.srcirc.copy_call_number_label.label:15095
-#: field.srcp.copy_call_number_label.label:15575
-#: field.srwd.copy_call_number_label.label:15893
+#: field.srcirc.copy_call_number_label.label:15103
+#: field.srcp.copy_call_number_label.label:15599
+#: field.srwd.copy_call_number_label.label:15924
 msgid "Call Number Label"
 msgstr "Hyllypaikkanimeke"
 
@@ -3309,12 +3309,12 @@ msgid "Classification Scheme"
 msgstr "Luokitteluskeema"
 
 #: field.acn.prefix.label:3557 field.cbc.prefix.label:13979
-#: field.srusr.prefix.label:15258
+#: field.srusr.prefix.label:15274
 msgid "Prefix"
 msgstr "Etuliite"
 
 #: field.acn.suffix.label:3558 field.au.suffix.label:4143
-#: field.cbc.suffix.label:13980 field.srusr.suffix.label:15262
+#: field.cbc.suffix.label:13980 field.srusr.suffix.label:15278
 msgid "Suffix"
 msgstr "Takaliite"
 
@@ -3397,7 +3397,7 @@ msgstr "Aktiivinen?"
 #: field.bre.create_date.label:3697 field.au.create_date.label:4117
 #: field.circ.create_time.label:5119 field.aacs.create_time.label:5213
 #: field.combcirc.create_time.label:5290 field.acirc.create_time.label:5381
-#: field.srusr.create_date.label:15286
+#: field.srusr.create_date.label:15302
 msgid "Record Creation Date/Time"
 msgstr "Tietueen luomispäivä/-aika"
 
@@ -3558,7 +3558,7 @@ msgstr ""
 msgid "Closed Dates"
 msgstr "Suljetut päivät"
 
-#: class.crcd.label:3994 field.srcirc.duration_rule.label:15073
+#: class.crcd.label:3994 field.srcirc.duration_rule.label:15081
 msgid "Circulation Duration Rule"
 msgstr "Lainauskestosääntö"
 
@@ -3582,7 +3582,7 @@ msgstr "Kiinteät eräpäiväarvot"
 msgid "Ceiling Date"
 msgstr "Kattopäiväys"
 
-#: field.chddv.active_date.label:4044 field.srwd.active_date_date.label:15846
+#: field.chddv.active_date.label:4044 field.srwd.active_date_date.label:15877
 msgid "Active Date"
 msgstr "Aktiivinen"
 
@@ -3590,7 +3590,7 @@ msgstr "Aktiivinen"
 msgid "Open Billable Transaction Summary"
 msgstr "Avointen laskutettavien maksutapahtumien yhteenveto"
 
-#: class.au.label:4097 field.sipacc.usr.label:16217
+#: class.au.label:4097 field.sipacc.usr.label:16255
 msgid "ILS User"
 msgstr "ILS-käyttäjä"
 
@@ -3653,27 +3653,27 @@ msgid "Current Library Card"
 msgstr "Nykyinen kirjastokortti"
 
 #: field.au.claims_returned_count.label:4115
-#: field.srusr.claims_returned_count.label:15284
+#: field.srusr.claims_returned_count.label:15300
 msgid "Claims-returned Count"
 msgstr "Palautetuksi ilmoitettujen lukumäärä"
 
 #: field.au.claims_never_checked_out_count.label:4116
-#: field.srusr.claims_never_checked_out_count.label:15294
+#: field.srusr.claims_never_checked_out_count.label:15310
 msgid "Claims Never Checked Out Count"
 msgstr "Lainaamattomiksi ilmoitettujen lukumäärä"
 
 #: field.au.credit_forward_balance.label:4118
-#: field.srusr.credit_forward_balance.label:15285
+#: field.srusr.credit_forward_balance.label:15301
 msgid "User Credit Balance"
 msgstr "Käyttäjän varojen saldo"
 
 #: field.au.day_phone.label:4119 field.stgu.day_phone.label:11833
-#: field.srusr.day_phone.label:15273
+#: field.srusr.day_phone.label:15289
 msgid "Daytime Phone"
 msgstr "Puhelin päivällä"
 
 #: field.au.dob.label:4120 field.rud.dob.label:11405
-#: field.stgu.dob.label:11836 field.srusr.dob.label:15276
+#: field.stgu.dob.label:11836 field.srusr.dob.label:15292
 msgid "Date of Birth"
 msgstr "Syntymäaika"
 
@@ -3683,33 +3683,33 @@ msgid "Email Address"
 msgstr "Sähköpostiosoite"
 
 #: field.au.evening_phone.label:4122 field.stgu.evening_phone.label:11834
-#: field.srusr.evening_phone.label:15274
+#: field.srusr.evening_phone.label:15290
 msgid "Evening Phone"
 msgstr "Puhelin iltaisin"
 
-#: field.au.expire_date.label:4123 field.srusr.expire_date_date.label:15293
+#: field.au.expire_date.label:4123 field.srusr.expire_date_date.label:15309
 msgid "Privilege Expiration Date"
 msgstr "Käyttöoikeus päättyy"
 
 #: field.au.family_name.label:4124 field.stgu.family_name.label:11832
-#: field.srusr.family_name.label:15261
+#: field.srusr.family_name.label:15277
 msgid "Last Name"
 msgstr "Sukunimi"
 
 #: field.au.first_given_name.label:4125
 #: field.stgu.first_given_name.label:11830
-#: field.srusr.first_given_name.label:15259
+#: field.srusr.first_given_name.label:15275
 msgid "First Name"
 msgstr "Etunimi"
 
 #: field.au.home_ou.label:4126 field.aurs.home_ou.label:9449
-#: field.stgu.home_ou.label:11835 field.srusr.home_ou_id.label:15296
+#: field.stgu.home_ou.label:11835 field.srusr.home_ou_id.label:15312
 msgid "Home Library"
 msgstr "Kotikirjasto"
 
 #: field.au.id.label:4127 field.ocirccount.usr.label:5019
 #: field.ocirclist.usr.label:5061 field.rud.id.label:11404
-#: field.srusr.user_id.label:15253
+#: field.srusr.user_id.label:15269
 msgid "User ID"
 msgstr "Käyttäjätunnus"
 
@@ -3742,7 +3742,7 @@ msgstr "Ryhmän päätili"
 msgid "Internet Access Level"
 msgstr "Internet-yhteyden taso"
 
-#: field.au.other_phone.label:4136 field.srusr.other_phone.label:15275
+#: field.au.other_phone.label:4136 field.srusr.other_phone.label:15291
 msgid "Other Phone"
 msgstr "Muu puhelin"
 
@@ -3755,13 +3755,13 @@ msgid "Prefix/Title"
 msgstr "Etuliite/Titteli"
 
 #: field.au.profile.label:4140 field.stgu.profile.label:11826
-#: field.srusr.profile_id.label:15269 field.srusr.profile.label:15270
+#: field.srusr.profile_id.label:15285 field.srusr.profile.label:15286
 msgid "Main (Profile) Permission Group"
 msgstr "Pääoikeusryhmä (profiili)"
 
 #: field.au.second_given_name.label:4141
 #: field.stgu.second_given_name.label:11831
-#: field.srusr.second_given_name.label:15260
+#: field.srusr.second_given_name.label:15276
 msgid "Middle Name"
 msgstr "Toinen nimi"
 
@@ -3777,11 +3777,11 @@ msgstr "Pääkäyttäjä"
 msgid "Family Linkage or other Group"
 msgstr "Perheyhteys tai muu ryhmä"
 
-#: field.au.usrname.label:4146 field.srusr.usrname.label:15255
+#: field.au.usrname.label:4146 field.srusr.usrname.label:15271
 msgid "OPAC/Staff Client Username"
 msgstr ""
 
-#: field.au.alias.label:4147 field.srusr.alias.label:15271
+#: field.au.alias.label:4147 field.srusr.alias.label:15287
 msgid "OPAC/Staff Client Holds Alias"
 msgstr "Varausalias"
 
@@ -3790,33 +3790,33 @@ msgid "Juvenile"
 msgstr "Nuoriso"
 
 #: field.au.last_update_time.label:4149
-#: field.srusr.last_update_time.label:15295
+#: field.srusr.last_update_time.label:15311
 msgid "Record Last Update Time"
 msgstr "Tietueen viimeisin päivitysaika"
 
-#: field.au.pref_prefix.label:4150 field.srusr.pref_prefix.label:15264
+#: field.au.pref_prefix.label:4150 field.srusr.pref_prefix.label:15280
 msgid "Preferred Prefix"
 msgstr ""
 
 #: field.au.pref_first_given_name.label:4151
 #: field.stgu.pref_first_given_name.label:11839
-#: field.srusr.pref_first_given_name.label:15265
+#: field.srusr.pref_first_given_name.label:15281
 msgid "Preferred First Name"
 msgstr ""
 
 #: field.au.pref_second_given_name.label:4152
 #: field.stgu.pref_second_given_name.label:11840
-#: field.srusr.pref_second_given_name.label:15266
+#: field.srusr.pref_second_given_name.label:15282
 msgid "Preferred Middle Name"
 msgstr ""
 
 #: field.au.pref_family_name.label:4153
 #: field.stgu.pref_family_name.label:11841
-#: field.srusr.pref_family_name.label:15267
+#: field.srusr.pref_family_name.label:15283
 msgid "Preferred Last Name"
 msgstr ""
 
-#: field.au.pref_suffix.label:4154 field.srusr.pref_suffix.label:15268
+#: field.au.pref_suffix.label:4154 field.srusr.pref_suffix.label:15284
 msgid "Preferred Suffix"
 msgstr ""
 
@@ -3905,7 +3905,7 @@ msgstr "Tapahtumamekanismi"
 msgid "Activity Group"
 msgstr "Toimintaryhmä"
 
-#: field.cuat.transient.label:4223 field.sipacc.transient.label:16219
+#: field.cuat.transient.label:4223 field.sipacc.transient.label:16257
 msgid "Transient"
 msgstr "Väliaikainen"
 
@@ -3947,9 +3947,9 @@ msgid "Layout"
 msgstr "Asettelu"
 
 #: class.csg.label:4280 field.cust.grp.label:4302
-#: field.sipset.setting_group.label:16191
-#: field.sipacc.setting_group.label:16215
-#: field.sipfilter.setting_group.label:16506
+#: field.sipset.setting_group.label:16229
+#: field.sipacc.setting_group.label:16253
+#: field.sipfilter.setting_group.label:16544
 msgid "Settings Group"
 msgstr "Asetusryhmä"
 
@@ -4065,15 +4065,15 @@ msgstr ""
 
 #: field.mwde.isbn.label:4533 field.rmsr.isbn.label:11339
 #: field.rssr.isbn.label:11363 field.rsr.isbn.label:11387
-#: field.srcirc.isbn.label:15114 field.srcp.isbn.label:15585
-#: field.srwd.isbn.label:15908
+#: field.srcirc.isbn.label:15122 field.srcp.isbn.label:15609
+#: field.srwd.isbn.label:15939
 msgid "ISBN"
 msgstr "ISBN"
 
 #: field.mwde.issn.label:4534 field.rmsr.issn.label:11340
 #: field.rssr.issn.label:11364 field.rsr.issn.label:11388
-#: field.srcirc.issn.label:15115 field.srcp.issn.label:15586
-#: field.srwd.issn.label:15909
+#: field.srcirc.issn.label:15123 field.srcp.issn.label:15610
+#: field.srwd.issn.label:15940
 msgid "ISSN"
 msgstr "ISSN"
 
@@ -4083,8 +4083,8 @@ msgid "UPC"
 msgstr ""
 
 #: field.mwde.tcn.label:4536 field.rocit.tcn_value.label:13766
-#: field.srcirc.tcn_value.label:15109 field.srcp.tcn_value.label:15590
-#: field.srwd.tcn_value.label:15913
+#: field.srcirc.tcn_value.label:15117 field.srcp.tcn_value.label:15614
+#: field.srwd.tcn_value.label:15944
 msgid "TCN"
 msgstr "Tietuenro"
 
@@ -4097,8 +4097,8 @@ msgid "Physical Description"
 msgstr ""
 
 #: field.mwde.publisher.label:4539 field.aur.publisher.label:9367
-#: field.aurs.publisher.label:9441 field.srcirc.publisher.label:15112
-#: field.srcp.publisher.label:15583 field.srwd.publisher.label:15906
+#: field.aurs.publisher.label:9441 field.srcirc.publisher.label:15120
+#: field.srcp.publisher.label:15607 field.srwd.publisher.label:15937
 msgid "Publisher"
 msgstr "Julkaisija"
 
@@ -4131,7 +4131,7 @@ msgid "Table of Contents"
 msgstr ""
 
 #: field.mwde.pubdate.label:4547 field.aur.pubdate.label:9369
-#: field.aurs.pubdate.label:9443 field.srcirc.pubdate.label:15113
+#: field.aurs.pubdate.label:9443 field.srcirc.pubdate.label:15121
 msgid "Publication Date"
 msgstr "Julkaisupäivä"
 
@@ -4272,9 +4272,9 @@ msgid "Threshold"
 msgstr "Raja-arvo"
 
 #: class.ccs.label:4812 field.sunit.status.label:6295
-#: field.acp.status.label:8214 field.srcp.status_id.label:15510
-#: field.srcp.status.label:15546 field.srwd.status_id.label:15804
-#: field.srwd.status.label:15866
+#: field.acp.status.label:8214 field.srcp.status_id.label:15534
+#: field.srcp.status.label:15570 field.srwd.status_id.label:15835
+#: field.srwd.status.label:15897
 msgid "Item Status"
 msgstr ""
 
@@ -4396,7 +4396,7 @@ msgstr "Käyttäjän tallennettu haku"
 #: field.asfg.create_date.label:6779 field.act.create_date.label:8450
 #: field.mb.create_date.label:9148 field.mab.create_date.label:9179
 #: field.mallb.create_date.label:9208 field.stgu.row_date.label:11824
-#: field.rocit.create_date.label:13755 field.srwd.create_date_date.label:15839
+#: field.rocit.create_date.label:13755 field.srwd.create_date_date.label:15870
 msgid "Create Date"
 msgstr "Luomispäivä"
 
@@ -4535,14 +4535,14 @@ msgstr "Tiskiuusinta"
 
 #: field.circ.due_date.label:5100 field.aacs.due_date.label:5195
 #: field.combcirc.due_date.label:5271 field.acirc.due_date.label:5362
-#: field.rodcirc.due_date.label:13690 field.srcirc.due_date.label:15049
+#: field.rodcirc.due_date.label:13690 field.srcirc.due_date.label:15057
 msgid "Due Date/Time"
 msgstr "Eräpäivä/-aika"
 
 #: field.circ.duration.label:5101 field.aacs.duration.label:5196
 #: field.combcirc.duration.label:5272 field.acirc.duration.label:5363
 #: field.cnct.circ_duration.label:7694 field.rodcirc.duration.label:13691
-#: field.srcirc.duration.label:15069
+#: field.srcirc.duration.label:15077
 msgid "Circulation Duration"
 msgstr "Lainan kesto"
 
@@ -4558,7 +4558,7 @@ msgstr "Laina-aikasääntö"
 #: field.acirc.fine_interval.label:5365 field.brt.fine_interval.label:5454
 #: field.bresv.fine_interval.label:5616
 #: field.rodcirc.fine_interval.label:13693
-#: field.srcirc.fine_interval.label:15070
+#: field.srcirc.fine_interval.label:15078
 msgid "Fine Interval"
 msgstr "Maksujen aikaväli"
 
@@ -4572,7 +4572,7 @@ msgstr "Lainaustunnus"
 #: field.combcirc.max_fine.label:5276 field.acirc.max_fine.label:5367
 #: field.brt.max_fine.label:5456 field.bresv.max_fine.label:5618
 #: field.crmf.amount.label:8513 field.rodcirc.max_fine.label:13695
-#: field.srcirc.max_fine.label:15072
+#: field.srcirc.max_fine.label:15080
 msgid "Max Fine Amount"
 msgstr "Maksun enimmäisraja"
 
@@ -4593,7 +4593,7 @@ msgstr "Puhelinuusinta"
 #: field.combcirc.recurring_fine.label:5280
 #: field.acirc.recurring_fine.label:5371
 #: field.rodcirc.recurring_fine.label:13699
-#: field.srcirc.recurring_fine.label:15071
+#: field.srcirc.recurring_fine.label:15079
 msgid "Recurring Fine Amount"
 msgstr "Toistuvan maksun summa"
 
@@ -4602,13 +4602,13 @@ msgstr "Toistuvan maksun summa"
 #: field.combcirc.renewal_remaining.label:5282
 #: field.acirc.renewal_remaining.label:5373
 #: field.rodcirc.renewal_remaining.label:13701
-#: field.srcirc.renewal_remaining.label:15064
+#: field.srcirc.renewal_remaining.label:15072
 msgid "Remaining Renewals"
 msgstr "Uusintoja jäljellä"
 
 #: field.circ.grace_period.label:5112 field.aacs.grace_period.label:5207
 #: field.combcirc.grace_period.label:5283 field.acirc.grace_period.label:5374
-#: field.srcirc.grace_period.label:15066
+#: field.srcirc.grace_period.label:15074
 msgid "Grace Period"
 msgstr "Armoaika"
 
@@ -4648,7 +4648,7 @@ msgstr ""
 #: field.aacs.checkin_workstation.label:5216
 #: field.combcirc.checkin_workstation.label:5293
 #: field.acirc.checkin_workstation.label:5383
-#: field.srcirc.checkin_workstation.label:15060
+#: field.srcirc.checkin_workstation.label:15068
 msgid "Checkin Workstation"
 msgstr "Palautustyöasema"
 
@@ -4770,28 +4770,28 @@ msgstr "Asiakkaan postinumero"
 
 #: field.combcirc.usr_home_ou.label:5302 field.acirc.usr_home_ou.label:5392
 #: field.combahr.usr_home_ou.label:7176 field.aahr.usr_home_ou.label:7235
-#: field.srcirc.usr_home_ou_id.label:15031
+#: field.srcirc.usr_home_ou_id.label:15039
 msgid "Patron Home Library"
 msgstr "Asiakkaan kotikirjasto"
 
 #: field.combcirc.usr_profile.label:5303 field.acirc.usr_profile.label:5393
 #: field.combahr.usr_profile.label:7177 field.aahr.usr_profile.label:7236
 #: field.rccc.profile_group.label:13401
-#: field.srcirc.usr_profile_id.label:15029
-#: field.srcirc.usr_profile.label:15030
+#: field.srcirc.usr_profile_id.label:15037
+#: field.srcirc.usr_profile.label:15038
 msgid "Patron Profile Group"
 msgstr "Asiakkaan profiiliryhmä"
 
 #: field.combcirc.usr_birth_year.label:5304
 #: field.acirc.usr_birth_year.label:5394
 #: field.combahr.usr_birth_year.label:7178
-#: field.aahr.usr_birth_year.label:7237 field.srcirc.usr_bith_year.label:15028
+#: field.aahr.usr_birth_year.label:7237 field.srcirc.usr_bith_year.label:15036
 msgid "Patron Birth Year"
 msgstr "Asiakkaan syntymävuosi"
 
 #: field.combcirc.copy_circ_lib.label:5308
 #: field.acirc.copy_circ_lib.label:5398
-#: field.srcirc.copy_circ_lib_id.label:15084
+#: field.srcirc.copy_circ_lib_id.label:15092
 msgid "Item Circulating Library"
 msgstr ""
 
@@ -4808,7 +4808,7 @@ msgid "Checkin Time"
 msgstr ""
 
 #: field.auch.due_date.label:5440 field.rocit.due_date.label:13769
-#: field.srcirc.due_date_date.label:15052
+#: field.srcirc.due_date_date.label:15060
 msgid "Due Date"
 msgstr "Eräpäivä"
 
@@ -5027,7 +5027,7 @@ msgstr "Ilmoitus sähköpostilla?"
 #: field.acqfa.note.label:10353 field.acqfap.note.label:10387
 #: field.acqpoi.note.label:10576 field.acqlid.note.label:10779
 #: field.acqcle.note.label:11707 field.acqscle.note.label:11735
-#: field.ahrrre.note.label:16288
+#: field.ahrrre.note.label:16326
 msgid "Note"
 msgstr "Ilmoitus"
 
@@ -5154,7 +5154,7 @@ msgstr "Palautushuomautus"
 
 #: field.acpl.url.label:5850 field.acqpro.url.label:9533
 #: field.uvu.full_url.label:12757 field.uvuv.url.label:12834
-#: field.acpt.url.label:14106 field.aelc.url.label:16378
+#: field.acpt.url.label:14106 field.aelc.url.label:16416
 msgid "URL"
 msgstr "URL-osoite"
 
@@ -5467,8 +5467,8 @@ msgid "Precat Dummy Title"
 msgstr "Ennakkoluetteloitu valeotsikko"
 
 #: field.sunit.fine_level.label:6288 field.acp.fine_level.label:8206
-#: field.act.fine_level.label:8457 field.srcp.fine_level.label:15570
-#: field.srwd.fine_level.label:15890
+#: field.act.fine_level.label:8457 field.srcp.fine_level.label:15594
+#: field.srwd.fine_level.label:15921
 msgid "Fine Level"
 msgstr "Maksutaso"
 
@@ -5477,8 +5477,8 @@ msgid "Is Holdable"
 msgstr "Varattavissa"
 
 #: field.sunit.loan_duration.label:6290 field.acp.loan_duration.label:8209
-#: field.act.loan_duration.label:8456 field.srcp.loan_duration.label:15568
-#: field.srwd.loan_duration.label:15888
+#: field.act.loan_duration.label:8456 field.srcp.loan_duration.label:15592
+#: field.srwd.loan_duration.label:15919
 msgid "Loan Duration"
 msgstr "Laina-aika"
 
@@ -5500,7 +5500,7 @@ msgstr "Hyväkuntoinen"
 
 #: field.sunit.floating.label:6298 field.acp.floating.label:8217
 #: field.act.floating.label:8469 class.cfg.label:14038
-#: field.cfgm.floating_group.label:14060 field.srcp.floating_id.label:15507
+#: field.cfgm.floating_group.label:14060 field.srcp.floating_id.label:15531
 msgid "Floating Group"
 msgstr "Kelluva ryhmä"
 
@@ -5530,7 +5530,7 @@ msgid "Stat-Cat entry maps"
 msgstr "Tilastollisten kategorioiden kirjauskartat"
 
 #: field.sunit.total_circ_count.label:6306
-#: field.acp.total_circ_count.label:8224 field.srcp.circ_total.label:15598
+#: field.acp.total_circ_count.label:8224 field.srcp.circ_total.label:15622
 msgid "Total Circulations"
 msgstr "Lainoja yhteensä"
 
@@ -6197,7 +6197,7 @@ msgstr "Tilivuosikalenteri"
 msgid "Users"
 msgstr "Käyttäjät"
 
-#: field.aou.settings.label:7296 field.sipsetg.settings.label:16169
+#: field.aou.settings.label:7296 field.sipsetg.settings.label:16207
 msgid "Settings"
 msgstr "Asetukset"
 
@@ -6347,7 +6347,7 @@ msgid "SIP Statistical Category Field Identifier"
 msgstr "Tilastollisen SIP-kategorian kenttätunniste"
 
 #: field.actscsf.field.label:7548 field.ascsf.field.label:9041
-#: field.sipfilter.identifier.label:16507
+#: field.sipfilter.identifier.label:16545
 msgid "Field Identifier"
 msgstr "Kenttätunniste"
 
@@ -6528,7 +6528,7 @@ msgid "Creation Date"
 msgstr ""
 
 #: field.bren.edit_date.label:7743 field.erccpo.last_edit_time.label:11494
-#: field.srwd.edit_date_date.label:15853
+#: field.srwd.edit_date_date.label:15884
 msgid "Last Edit Date"
 msgstr ""
 
@@ -6581,8 +6581,8 @@ msgstr "Käyttäjän tilastollinen kategoriakirjaus"
 #: field.actsce.id.label:7857 field.pgtde.id.label:8557
 #: field.actscecm.id.label:8700 field.asce.id.label:9015
 #: field.acqdfe.id.label:11567 field.rsce1.id.label:13435
-#: field.rsce2.id.label:13446 field.cplhm.id.label:16526
-#: field.cplvm.id.label:16537 field.apll.id.label:16549
+#: field.rsce2.id.label:13446 field.cplhm.id.label:16564
+#: field.cplvm.id.label:16575 field.apll.id.label:16587
 msgid "Entry ID"
 msgstr "Kirjaustunnus"
 
@@ -6689,8 +6689,8 @@ msgstr ""
 #: field.acp.id.label:8208 field.erfcc.id.label:11475
 #: field.rcsv.copy_id.label:11508 field.rlc.id.label:13307
 #: field.circbyyr.copy.label:13667 field.rocit.id.label:13741
-#: field.hasholdscount.id.label:14160 field.srcp.copy_id.label:15506
-#: field.srwd.copy_id.label:15801
+#: field.hasholdscount.id.label:14160 field.srcp.copy_id.label:15530
+#: field.srwd.copy_id.label:15832
 msgid "Item ID"
 msgstr ""
 
@@ -6755,8 +6755,8 @@ msgid "Latest Inventory Date"
 msgstr ""
 
 #: field.alci.inventory_workstation.label:8311
-#: field.srcp.inventory_workstation.label:15596
-#: field.srwd.inventory_workstation.label:15919
+#: field.srcp.inventory_workstation.label:15620
+#: field.srwd.inventory_workstation.label:15950
 msgid "Latest Inventory Workstation"
 msgstr ""
 
@@ -6773,7 +6773,7 @@ msgstr ""
 msgid "Scope Org Unit"
 msgstr ""
 
-#: field.ccat.event.label:8332 field.apll.event.label:16552
+#: field.ccat.event.label:8332 field.apll.event.label:16590
 msgid "Event"
 msgstr ""
 
@@ -6842,8 +6842,8 @@ msgstr "Sijainti"
 msgid "Age Protect"
 msgstr "Aikarajoite"
 
-#: field.act.deposit.label:8460 field.srcp.deposit.label:15557
-#: field.srwd.deposit.label:15877
+#: field.act.deposit.label:8460 field.srcp.deposit.label:15581
+#: field.srwd.deposit.label:15908
 msgid "Deposit?"
 msgstr "Talletus?"
 
@@ -6851,8 +6851,8 @@ msgstr "Talletus?"
 msgid "Circ As Type"
 msgstr "Lainaa tyyppinä"
 
-#: field.act.opac_visible.label:8468 field.srcp.opac_visible.label:15561
-#: field.srwd.opac_visible.label:15881
+#: field.act.opac_visible.label:8468 field.srcp.opac_visible.label:15585
+#: field.srwd.opac_visible.label:15912
 msgid "OPAC Visible?"
 msgstr "Näkyy verkkokirjastossa?"
 
@@ -7132,8 +7132,8 @@ msgid "Bucket Entry ID"
 msgstr ""
 
 #: field.cbrebi.target_biblio_record_entry.label:8987
-#: field.srcirc.bib_id.label:15108 field.srcp.bib_id.label:15589
-#: field.srwd.bib_id.label:15912
+#: field.srcirc.bib_id.label:15116 field.srcp.bib_id.label:15613
+#: field.srwd.bib_id.label:15943
 msgid "Bibliographic Record ID"
 msgstr ""
 
@@ -7462,7 +7462,7 @@ msgid "Prepayment Required"
 msgstr "Ennakkomaksu vaaditaan"
 
 #: field.acqpro.email.label:9534 field.acqpc.email.label:9820
-#: field.rs.email.label:11254 field.srusr.email.label:15256
+#: field.rs.email.label:11254 field.srusr.email.label:15272
 msgid "Email"
 msgstr "Sähköposti"
 
@@ -7539,9 +7539,9 @@ msgid "Invoice Payment Method"
 msgstr "Laskun maksutapa"
 
 #: class.acqinv.label:9602 field.acqie.invoice.label:9643
-#: field.acqii.invoice.label:9680 field.acqr_inv_totals.id.label:16432
-#: field.acqr_debit_by_fund.invoice.label:16461
-#: field.acqr_debit_by_fund_tag.invoice.label:16489
+#: field.acqii.invoice.label:9680 field.acqr_inv_totals.id.label:16470
+#: field.acqr_debit_by_fund.invoice.label:16499
+#: field.acqr_debit_by_fund_tag.invoice.label:16527
 msgid "Invoice"
 msgstr "Lasku"
 
@@ -7655,7 +7655,7 @@ msgstr "Nimekkeen tai niteen nimi"
 #: field.acqii.fund.label:9689 field.acqfdeb.fund.label:10035
 #: class.acqf.label:10073 field.acqfa.fund.label:10349
 #: field.acqpoi.fund.label:10578 field.acqlid.fund.label:10774
-#: field.acqdfe.fund.label:11573 field.acqr_debit_by_fund.fund.label:16462
+#: field.acqdfe.fund.label:11573 field.acqr_debit_by_fund.fund.label:16500
 msgid "Fund"
 msgstr "Tili"
 
@@ -8662,7 +8662,7 @@ msgstr ""
 
 #: field.rcirct.id.label:11415 field.rmocbbol.id.label:13787
 #: field.rmocbbcol.id.label:13811 field.rmocbbhol.id.label:13839
-#: field.srcirc.circ_id.label:15026
+#: field.srcirc.circ_id.label:15034
 msgid "Circulation ID"
 msgstr "Lainaustunnus"
 
@@ -9706,7 +9706,7 @@ msgstr "Linkkien tarkistus"
 msgid "Attempt ID"
 msgstr "Yrityksen ID"
 
-#: field.uvuv.attempt.label:12835 field.apll.session.label:16551
+#: field.uvuv.attempt.label:12835 field.apll.session.label:16589
 msgid "Batch"
 msgstr ""
 
@@ -9742,7 +9742,7 @@ msgstr ""
 msgid "Interface"
 msgstr "Käyttöliittymä"
 
-#: field.cfdfs.filters.label:12891 field.sipsetg.filters.label:16170
+#: field.cfdfs.filters.label:12891 field.sipsetg.filters.label:16208
 msgid "Filters"
 msgstr "Suodattimet"
 
@@ -9922,8 +9922,8 @@ msgid "Item Link"
 msgstr ""
 
 #: field.rccc.owning_lib_name.label:13395
-#: field.srcp.owning_lib_shortname.label:15521
-#: field.srwd.owning_lib_shortname.label:15815
+#: field.srcp.owning_lib_shortname.label:15545
+#: field.srwd.owning_lib_shortname.label:15846
 msgid "Owning Library Short (Policy) Name"
 msgstr "Omistajakirjaston lyhyt (sääntömääräinen) nimi"
 
@@ -9952,7 +9952,7 @@ msgid "Patron Home Library Link"
 msgstr "Asiakkaan kotikirjaston linkki"
 
 #: field.rccc.patron_home_lib_shortname.label:13408
-#: field.srcirc.usr_home_ou_shortname.label:15032
+#: field.srcirc.usr_home_ou_shortname.label:15040
 msgid "Patron Home Library Short (Policy) Name"
 msgstr "Asiakkaan kotikirjaston lyhyt (sääntömääräinen) nimi"
 
@@ -10034,7 +10034,7 @@ msgstr "Maksutapahtuman päätöspäivä/-aika"
 
 #: field.rccbs.total_owed.label:13475 field.rmocbbol.billed.label:13790
 #: field.rmocbbcol.billed.label:13815 field.rmocbbhol.billed.label:13843
-#: field.acqr_inv_totals.total_cost_billed.label:16437
+#: field.acqr_inv_totals.total_cost_billed.label:16475
 msgid "Total Billed"
 msgstr "Laskutettu yhteensä"
 
@@ -10158,11 +10158,11 @@ msgstr "Dewey-alaluokat"
 msgid "Shelving Location Name"
 msgstr "Hyllytyssijainnin nimi"
 
-#: field.rocit.stat_cat_1.label:13750 field.srusr.legacy_stat_cat1.label:15331
+#: field.rocit.stat_cat_1.label:13750 field.srusr.legacy_stat_cat1.label:15347
 msgid "Legacy Stat Cat 1"
 msgstr "Vanha tilastollinen kategoria 1"
 
-#: field.rocit.stat_cat_2.label:13751 field.srusr.legacy_stat_cat2.label:15332
+#: field.rocit.stat_cat_2.label:13751 field.srusr.legacy_stat_cat2.label:15348
 msgid "Legacy Stat Cat 2"
 msgstr "Vanha tilastollinen kategoria 2"
 
@@ -10182,12 +10182,12 @@ msgstr "Omistajakirjaston nimi"
 msgid "Circ Lib Name"
 msgstr "Lainauskirjaston nimi"
 
-#: field.rocit.age_protect.label:13761 field.srcp.age_protect_id.label:15512
-#: field.srcp.age_protect.label:15562 field.srwd.age_protect_id.label:15806
+#: field.rocit.age_protect.label:13761 field.srcp.age_protect_id.label:15536
+#: field.srcp.age_protect.label:15586 field.srwd.age_protect_id.label:15837
 msgid "Age Protection"
 msgstr "Aikarajoite"
 
-#: field.rocit.stop_fines.label:13768 field.srcirc.stop_fines.label:15067
+#: field.rocit.stop_fines.label:13768 field.srcirc.stop_fines.label:15075
 msgid "Stop Fines Reason"
 msgstr "Maksujen kertymisen loppumisen syy"
 
@@ -10210,7 +10210,7 @@ msgstr "Avoimet maksut omistajakirjaston mukaan"
 #: field.rmobbol.billing_types.label:13801
 #: field.rmobbcol.billing_types.label:13828
 #: field.rmobbhol.billing_types.label:13856
-#: field.srbps.billing_types.label:16108
+#: field.srbps.billing_types.label:16146
 msgid "Billing Types"
 msgstr "Laskutustyypit"
 
@@ -10237,7 +10237,7 @@ msgid "Open Circulation Balance by User Home Library and Owning Library"
 msgstr ""
 "Avoimet maksut käyttäjän kotikirjaston ja niteen omistajakirjaston mukaan"
 
-#: class.acqft.label:13864 field.acqr_debit_by_fund_tag.tag.label:16490
+#: class.acqft.label:13864 field.acqr_debit_by_fund_tag.tag.label:16528
 msgid "Fund Tag"
 msgstr "Tilin avainsana"
 
@@ -10321,7 +10321,7 @@ msgstr "Laina"
 msgid "Circ-Archived Item Statistical Category Entries"
 msgstr ""
 
-#: field.cfg.manual.label:14042 field.ahrrr.manual.label:16273
+#: field.cfg.manual.label:14042 field.ahrrr.manual.label:16311
 msgid "Manual"
 msgstr ""
 
@@ -10429,7 +10429,7 @@ msgstr ""
 msgid "Bucket"
 msgstr ""
 
-#: field.cc.editor.label:14268 field.srcp.editing_user.label:15572
+#: field.cc.editor.label:14268 field.srcp.editing_user.label:15596
 msgid "Editing User"
 msgstr ""
 
@@ -10887,1455 +10887,1455 @@ msgstr ""
 msgid "Simple Reporter Circulation"
 msgstr ""
 
-#: group.srcirc.common.label:15019 group.srusr.common.label:15245
-#: group.srcp.common.label:15500 group.srwd.common.label:15794
-#: group.srbps.common.label:16090
+#: group.srcirc.common.label:15027 group.srusr.common.label:15261
+#: group.srcp.common.label:15524 group.srwd.common.label:15825
+#: group.srbps.common.label:16128
 msgid "Common Fields"
 msgstr ""
 
-#: group.srcirc.item.label:15020
+#: group.srcirc.item.label:15028
 msgid "Item Fields"
 msgstr ""
 
-#: group.srcirc.user.label:15021
+#: group.srcirc.user.label:15029
 msgid "Patron Fields"
 msgstr ""
 
-#: group.srcirc.title.label:15022 group.srcp.title.label:15502
-#: group.srwd.title.label:15797
+#: group.srcirc.title.label:15030 group.srcp.title.label:15526
+#: group.srwd.title.label:15828
 msgid "Call Number and Title Fields"
 msgstr ""
 
-#: group.srcirc.org.label:15023 group.srusr.org.label:15249
-#: group.srcp.org.label:15503 group.srwd.org.label:15798
-#: group.srbps.org.label:16094
+#: group.srcirc.org.label:15031 group.srusr.org.label:15265
+#: group.srcp.org.label:15527 group.srwd.org.label:15829
+#: group.srbps.org.label:16132
 msgid "Libraries"
 msgstr ""
 
-#: field.srcirc.usr_post_code.label:15027
+#: field.srcirc.usr_post_code.label:15035
 msgid "Patron Post Code"
 msgstr ""
 
-#: field.srcirc.usr_home_ou_name.label:15033
+#: field.srcirc.usr_home_ou_name.label:15041
 msgid "Patron Home Library Name"
 msgstr ""
 
-#: field.srcirc.usr_sys_id.label:15034
+#: field.srcirc.usr_sys_id.label:15042
 msgid "Patron System Library"
 msgstr ""
 
-#: field.srcirc.usr_sys_shortname.label:15035
+#: field.srcirc.usr_sys_shortname.label:15043
 msgid "Patron System Library Short (Policy) Name"
 msgstr ""
 
-#: field.srcirc.usr_sys_name.label:15036
+#: field.srcirc.usr_sys_name.label:15044
 msgid "Patron System Library Name"
 msgstr ""
 
-#: field.srcirc.xact_start.label:15037
+#: field.srcirc.xact_start.label:15045
 msgid "Circulation Start Date/Time"
 msgstr ""
 
-#: field.srcirc.xact_start_year.label:15038
+#: field.srcirc.xact_start_year.label:15046
 msgid "Circulation Start Year"
 msgstr ""
 
-#: field.srcirc.xact_start_year_mon.label:15039
+#: field.srcirc.xact_start_year_mon.label:15047
 msgid "Circulation Start Year and Month"
 msgstr ""
 
-#: field.srcirc.xact_start_date.label:15040
+#: field.srcirc.xact_start_date.label:15048
 msgid "Circulation Start Date"
 msgstr ""
 
-#: field.srcirc.circ_lib_shortname.label:15042
+#: field.srcirc.circ_lib_shortname.label:15050
 msgid "Checkout Library Short (Policy) Name"
 msgstr ""
 
-#: field.srcirc.circ_lib_name.label:15043
+#: field.srcirc.circ_lib_name.label:15051
 msgid "Checkout Library Name"
 msgstr ""
 
-#: field.srcirc.circ_sys_id.label:15044
+#: field.srcirc.circ_sys_id.label:15052
 msgid "Checkout System"
 msgstr ""
 
-#: field.srcirc.circ_sys_shortname.label:15045
+#: field.srcirc.circ_sys_shortname.label:15053
 msgid "Checkout System Short (Policy) Name"
 msgstr ""
 
-#: field.srcirc.circ_sys_name.label:15046
+#: field.srcirc.circ_sys_name.label:15054
 msgid "Checkout System Name"
 msgstr ""
 
-#: field.srcirc.circ_staff.label:15047
+#: field.srcirc.circ_staff.label:15055
 msgid "Checkout Staff"
 msgstr ""
 
-#: field.srcirc.due_date_year.label:15050
+#: field.srcirc.due_date_year.label:15058
 msgid "Due Date Year"
 msgstr ""
 
-#: field.srcirc.due_date_year_mon.label:15051
+#: field.srcirc.due_date_year_mon.label:15059
 msgid "Due Date Year and Month"
 msgstr ""
 
-#: field.srcirc.xact_finish.label:15053
+#: field.srcirc.xact_finish.label:15061
 msgid "Circulation Finish Date/Time"
 msgstr ""
 
-#: field.srcirc.xact_finish_year.label:15054
+#: field.srcirc.xact_finish_year.label:15062
 msgid "Circulation Finish Year"
 msgstr ""
 
-#: field.srcirc.xact_finish_year_mon.label:15055
+#: field.srcirc.xact_finish_year_mon.label:15063
 msgid "Circulation Finish Year and Month"
 msgstr ""
 
-#: field.srcirc.xact_finish_date.label:15056
+#: field.srcirc.xact_finish_date.label:15064
 msgid "Circulation Finish Date"
 msgstr ""
 
-#: field.srcirc.checkin_lib_shortname.label:15057
+#: field.srcirc.checkin_lib_shortname.label:15065
 msgid "Checkin Library Short (Policy) Name"
 msgstr ""
 
-#: field.srcirc.checkin_lib_name.label:15058
+#: field.srcirc.checkin_lib_name.label:15066
 msgid "Checkin Library Name"
 msgstr ""
 
-#: field.srcirc.checkin_staff.label:15059
+#: field.srcirc.checkin_staff.label:15067
 msgid "Checkin Staff"
 msgstr ""
 
-#: field.srcirc.checkin_sys_shortname.label:15061
+#: field.srcirc.checkin_sys_shortname.label:15069
 msgid "Checkin System Short (Policy) Name"
 msgstr ""
 
-#: field.srcirc.checkin_sys_name.label:15062
+#: field.srcirc.checkin_sys_name.label:15070
 msgid "Checkin System Name"
 msgstr ""
 
-#: field.srcirc.checkin_time.label:15063
+#: field.srcirc.checkin_time.label:15071
 msgid "Checkin Date/Time"
 msgstr ""
 
-#: field.srcirc.auto_renewal_remaining.label:15065
+#: field.srcirc.auto_renewal_remaining.label:15073
 msgid "Remaining Autorenewals"
 msgstr ""
 
-#: field.srcirc.stop_fines_time.label:15068
+#: field.srcirc.stop_fines_time.label:15076
 msgid "Stop Fines Date/Time"
 msgstr ""
 
-#: field.srcirc.circ_renew.label:15076
+#: field.srcirc.circ_renew.label:15084
 msgid "Circulation or Renewal"
 msgstr ""
 
-#: field.srcirc.renewal_type.label:15077
+#: field.srcirc.renewal_type.label:15085
 msgid "Renewal Type"
 msgstr ""
 
-#: field.srcirc.is_overdue.label:15078
+#: field.srcirc.is_overdue.label:15086
 msgid "Overdue?"
 msgstr ""
 
-#: field.srcirc.copy_barcode.label:15079
+#: field.srcirc.copy_barcode.label:15087
 msgid "Item Barcode"
 msgstr ""
 
-#: field.srcirc.copy_circ_modifier_code.label:15082
+#: field.srcirc.copy_circ_modifier_code.label:15090
 msgid "Item Circulation Modifier Code"
 msgstr ""
 
-#: field.srcirc.copy_circ_modifier_name.label:15083
+#: field.srcirc.copy_circ_modifier_name.label:15091
 msgid "Item Circulation Modifier Name"
 msgstr ""
 
-#: field.srcirc.copy_circ_lib_shortname.label:15085
+#: field.srcirc.copy_circ_lib_shortname.label:15093
 msgid "Item Circulating Library Short (Policy) Name"
 msgstr ""
 
-#: field.srcirc.copy_circ_lib_name.label:15086
+#: field.srcirc.copy_circ_lib_name.label:15094
 msgid "Item Circulation Library Name"
 msgstr ""
 
-#: field.srcirc.copy_sys_id.label:15087
+#: field.srcirc.copy_sys_id.label:15095
 msgid "Item System Library"
 msgstr ""
 
-#: field.srcirc.copy_sys_shortname.label:15088
+#: field.srcirc.copy_sys_shortname.label:15096
 msgid "Item System Short (Policy) Name"
 msgstr ""
 
-#: field.srcirc.copy_sys_name.label:15089
+#: field.srcirc.copy_sys_name.label:15097
 msgid "Item System Name"
 msgstr ""
 
-#: field.srcirc.copy_owning_lib_shortname.label:15091
+#: field.srcirc.copy_owning_lib_shortname.label:15099
 msgid "Item Owning Library Short (Policy) Name"
 msgstr ""
 
-#: field.srcirc.copy_owning_lib_name.label:15092
+#: field.srcirc.copy_owning_lib_name.label:15100
 msgid "Item Owning Library Name"
 msgstr ""
 
-#: field.srcirc.copy_call_number_full.label:15093
-#: field.srcp.copy_call_number_full.label:15573
-#: field.srwd.copy_call_number_full.label:15891
+#: field.srcirc.copy_call_number_full.label:15101
+#: field.srcp.copy_call_number_full.label:15597
+#: field.srwd.copy_call_number_full.label:15922
 msgid "Full Call Number"
 msgstr ""
 
-#: field.srcirc.copy_call_number_prefix.label:15094
-#: field.srcp.copy_call_number_prefix.label:15574
-#: field.srwd.copy_call_number_prefix.label:15892
+#: field.srcirc.copy_call_number_prefix.label:15102
+#: field.srcp.copy_call_number_prefix.label:15598
+#: field.srwd.copy_call_number_prefix.label:15923
 msgid "Call Number Prefix"
 msgstr ""
 
-#: field.srcirc.copy_call_number_suffix.label:15096
-#: field.srcp.copy_call_number_suffix.label:15576
-#: field.srwd.copy_call_number_suffix.label:15894
+#: field.srcirc.copy_call_number_suffix.label:15104
+#: field.srcp.copy_call_number_suffix.label:15600
+#: field.srwd.copy_call_number_suffix.label:15925
 msgid "Call Number Suffix"
 msgstr ""
 
-#: field.srcirc.copy_call_number_sortkey_full.label:15097
-#: field.srcp.copy_call_number_sortkey_full.label:15577
-#: field.srwd.copy_call_number_sortkey_full.label:15896
+#: field.srcirc.copy_call_number_sortkey_full.label:15105
+#: field.srcp.copy_call_number_sortkey_full.label:15601
+#: field.srwd.copy_call_number_sortkey_full.label:15927
 msgid "Full Call Number Sortkey"
 msgstr ""
 
-#: field.srcirc.copy_call_number_prefix_sortkey.label:15098
-#: field.srcp.copy_call_number_prefix_sortkey.label:15578
-#: field.srwd.copy_call_number_prefix_sortkey.label:15897
+#: field.srcirc.copy_call_number_prefix_sortkey.label:15106
+#: field.srcp.copy_call_number_prefix_sortkey.label:15602
+#: field.srwd.copy_call_number_prefix_sortkey.label:15928
 msgid "Call Number Prefix Sortkey"
 msgstr ""
 
-#: field.srcirc.copy_call_number_label_sortkey.label:15099
-#: field.srcp.copy_call_number_label_sortkey.label:15579
-#: field.srwd.copy_call_number_label_sortkey.label:15898
+#: field.srcirc.copy_call_number_label_sortkey.label:15107
+#: field.srcp.copy_call_number_label_sortkey.label:15603
+#: field.srwd.copy_call_number_label_sortkey.label:15929
 msgid "Call Number Label Sortkey"
 msgstr ""
 
-#: field.srcirc.copy_call_number_suffix_sortkey.label:15100
-#: field.srcp.copy_call_number_suffix_sortkey.label:15580
-#: field.srwd.copy_call_number_suffix_sortkey.label:15899
+#: field.srcirc.copy_call_number_suffix_sortkey.label:15108
+#: field.srcp.copy_call_number_suffix_sortkey.label:15604
+#: field.srwd.copy_call_number_suffix_sortkey.label:15930
 msgid "Call Number Suffix Sortkey"
 msgstr ""
 
-#: field.srcirc.copy_call_number_dewey.label:15101
-#: field.srwd.call_number_dewey.label:15895
+#: field.srcirc.copy_call_number_dewey.label:15109
+#: field.srwd.call_number_dewey.label:15926
 msgid "Call Number Dewey"
 msgstr ""
 
-#: field.srcirc.copy_call_number_dewey_block_tens.label:15102
-#: field.srwd.call_number_dewey_block_tens.label:15900
+#: field.srcirc.copy_call_number_dewey_block_tens.label:15110
+#: field.srwd.call_number_dewey_block_tens.label:15931
 msgid "Call Number Dewey Block Tens"
 msgstr ""
 
-#: field.srcirc.copy_call_number_dewey_block_hundreds.label:15103
-#: field.srwd.call_number_dewey_block_hundreds.label:15901
+#: field.srcirc.copy_call_number_dewey_block_hundreds.label:15111
+#: field.srwd.call_number_dewey_block_hundreds.label:15932
 msgid "Call Number Dewey Block Hundreds"
 msgstr ""
 
-#: field.srcirc.copy_call_number_dewey_range_tens.label:15104
-#: field.srwd.call_number_dewey_range_tens.label:15902
+#: field.srcirc.copy_call_number_dewey_range_tens.label:15112
+#: field.srwd.call_number_dewey_range_tens.label:15933
 msgid "Call Number Dewey Range Tens"
 msgstr ""
 
-#: field.srcirc.copy_call_number_dewey_range_hundreds.label:15105
-#: field.srwd.call_number_dewey_range_hundreds.label:15903
+#: field.srcirc.copy_call_number_dewey_range_hundreds.label:15113
+#: field.srwd.call_number_dewey_range_hundreds.label:15934
 msgid "Call Number Dewey Range Hundreds"
 msgstr ""
 
-#: field.srcirc.part_label.label:15106 field.srcp.part_label.label:15587
-#: field.srwd.part_label.label:15910
+#: field.srcirc.part_label.label:15114 field.srcp.part_label.label:15611
+#: field.srwd.part_label.label:15941
 msgid "Monographic Part"
 msgstr ""
 
-#: field.srcirc.part_label_sortkey.label:15107
-#: field.srcp.part_label_sortkey.label:15588
-#: field.srwd.part_label_sortkey.label:15911
+#: field.srcirc.part_label_sortkey.label:15115
+#: field.srcp.part_label_sortkey.label:15612
+#: field.srwd.part_label_sortkey.label:15942
 msgid "Monographic Part Sortkey"
 msgstr ""
 
-#: class.srusr.label:15124
+#: class.srusr.label:15132
 msgid "Simple Reporter Patrons"
 msgstr ""
 
-#: group.srusr.name.label:15246
+#: group.srusr.name.label:15262
 msgid "Name Fields"
 msgstr ""
 
-#: group.srusr.contact.label:15247
+#: group.srusr.contact.label:15263
 msgid "Contact Fields"
 msgstr ""
 
-#: group.srusr.address.label:15248
+#: group.srusr.address.label:15264
 msgid "Address Related Fields"
 msgstr ""
 
-#: field.srusr.home_ou_filter.label:15252
+#: field.srusr.home_ou_filter.label:15268
 msgid "VIEW_USER Permission Verification"
 msgstr ""
 
-#: field.srusr.barcode_primary.label:15254
+#: field.srusr.barcode_primary.label:15270
 msgid "Primary Barcode"
 msgstr ""
 
-#: field.srusr.full_name.label:15257
+#: field.srusr.full_name.label:15273
 msgid "Full Name"
 msgstr ""
 
-#: field.srusr.pref_full_name.label:15263
+#: field.srusr.pref_full_name.label:15279
 msgid "Full Preferred Name"
 msgstr ""
 
-#: field.srusr.all_phone.label:15272
+#: field.srusr.all_phone.label:15288
 msgid "All Phone Numbers"
 msgstr ""
 
-#: field.srusr.dob_year.label:15277
+#: field.srusr.dob_year.label:15293
 msgid "Birth Year"
 msgstr ""
 
-#: field.srusr.dob_year_month.label:15278
+#: field.srusr.dob_year_month.label:15294
 msgid "Birth Year and Month"
 msgstr ""
 
-#: field.srusr.dob_age_years.label:15279
+#: field.srusr.dob_age_years.label:15295
 msgid "Age"
 msgstr ""
 
-#: field.srusr.barred.label:15281
+#: field.srusr.barred.label:15297
 msgid "Barred?"
 msgstr ""
 
-#: field.srusr.create_date_year.label:15287
+#: field.srusr.create_date_year.label:15303
 msgid "Record Creation Year"
 msgstr ""
 
-#: field.srusr.create_date_year_mon.label:15288
+#: field.srusr.create_date_year_mon.label:15304
 msgid "Record Creation Year and Month"
 msgstr ""
 
-#: field.srusr.create_date_date.label:15289
+#: field.srusr.create_date_date.label:15305
 msgid "Record Creation Date"
 msgstr ""
 
-#: field.srusr.expire_date.label:15290
+#: field.srusr.expire_date.label:15306
 msgid "Privilege Expiration Date/Time"
 msgstr ""
 
-#: field.srusr.expire_date_year.label:15291
+#: field.srusr.expire_date_year.label:15307
 msgid "Privilege Expiration Year"
 msgstr ""
 
-#: field.srusr.expire_date_year_mon.label:15292
+#: field.srusr.expire_date_year_mon.label:15308
 msgid "Privilege Expiration Year and Month"
 msgstr ""
 
-#: field.srusr.home_ou_shortname.label:15297
+#: field.srusr.home_ou_shortname.label:15313
 msgid "Home Library Short (Policy) Name"
 msgstr ""
 
-#: field.srusr.home_ou_name.label:15298
+#: field.srusr.home_ou_name.label:15314
 msgid "Home Library Name"
 msgstr ""
 
-#: field.srusr.home_sys_id.label:15299
+#: field.srusr.home_sys_id.label:15315
 msgid "Home System"
 msgstr ""
 
-#: field.srusr.home_sys_shortname.label:15300
+#: field.srusr.home_sys_shortname.label:15316
 msgid "Home System Short (Policy) Name"
 msgstr ""
 
-#: field.srusr.home_sys_name.label:15301
+#: field.srusr.home_sys_name.label:15317
 msgid "Home System Name"
 msgstr ""
 
-#: field.srusr.mailing_valid.label:15302
+#: field.srusr.mailing_valid.label:15318
 msgid "Mailing Address Valid?"
 msgstr ""
 
-#: field.srusr.mailing_address_type.label:15303
+#: field.srusr.mailing_address_type.label:15319
 msgid "Mailing Address Type"
 msgstr ""
 
-#: field.srusr.mailing_street1.label:15304
+#: field.srusr.mailing_street1.label:15320
 msgid "Mailing Address Street1"
 msgstr ""
 
-#: field.srusr.mailing_street2.label:15305
+#: field.srusr.mailing_street2.label:15321
 msgid "Mailing Address Street2"
 msgstr ""
 
-#: field.srusr.mailing_city.label:15306
+#: field.srusr.mailing_city.label:15322
 msgid "Mailing Address City"
 msgstr ""
 
-#: field.srusr.mailing_state.label:15307
+#: field.srusr.mailing_state.label:15323
 msgid "Mailing Address State"
 msgstr ""
 
-#: field.srusr.mailing_country.label:15308
+#: field.srusr.mailing_country.label:15324
 msgid "Mailing Address Country"
 msgstr ""
 
-#: field.srusr.mailing_post_code.label:15309
+#: field.srusr.mailing_post_code.label:15325
 msgid "Mailing Address Postal Code"
 msgstr ""
 
-#: field.srusr.mailing_county.label:15310
+#: field.srusr.mailing_county.label:15326
 msgid "Mailing Address County"
 msgstr ""
 
-#: field.srusr.mailing_within_city_limits.label:15311
+#: field.srusr.mailing_within_city_limits.label:15327
 msgid "Mailing Address Within City Limits?"
 msgstr ""
 
-#: field.srusr.mailing_pending.label:15312
+#: field.srusr.mailing_pending.label:15328
 msgid "Mailing Address Pending?"
 msgstr ""
 
-#: field.srusr.mailing_full.label:15313
+#: field.srusr.mailing_full.label:15329
 msgid "Full Mailing Address"
 msgstr ""
 
-#: field.srusr.physical_valid.label:15314
+#: field.srusr.physical_valid.label:15330
 msgid "Physical Address Valid?"
 msgstr ""
 
-#: field.srusr.physical_address_type.label:15315
+#: field.srusr.physical_address_type.label:15331
 msgid "Physical Address Type"
 msgstr ""
 
-#: field.srusr.physical_street1.label:15316
+#: field.srusr.physical_street1.label:15332
 msgid "Physical Address Street1"
 msgstr ""
 
-#: field.srusr.physical_street2.label:15317
+#: field.srusr.physical_street2.label:15333
 msgid "Physical Address Street2"
 msgstr ""
 
-#: field.srusr.physical_city.label:15318
+#: field.srusr.physical_city.label:15334
 msgid "Physical Address City"
 msgstr ""
 
-#: field.srusr.physical_state.label:15319
+#: field.srusr.physical_state.label:15335
 msgid "Physical Address State"
 msgstr ""
 
-#: field.srusr.physical_country.label:15320
-#: field.srusr.physical_county.label:15322
+#: field.srusr.physical_country.label:15336
+#: field.srusr.physical_county.label:15338
 msgid "Physical Address Country"
 msgstr ""
 
-#: field.srusr.physical_post_code.label:15321
+#: field.srusr.physical_post_code.label:15337
 msgid "Physical Address Postal Code"
 msgstr ""
 
-#: field.srusr.physical_within_city_limits.label:15323
+#: field.srusr.physical_within_city_limits.label:15339
 msgid "Physical Address Within City Limits?"
 msgstr ""
 
-#: field.srusr.physical_pending.label:15324
+#: field.srusr.physical_pending.label:15340
 msgid "Physical Address Pending?"
 msgstr ""
 
-#: field.srusr.physical_full.label:15325
+#: field.srusr.physical_full.label:15341
 msgid "Full Physical Address"
 msgstr ""
 
-#: field.srusr.phone_notify.label:15326
+#: field.srusr.phone_notify.label:15342
 msgid "Hold Notifications: Phone?"
 msgstr ""
 
-#: field.srusr.sms_notify.label:15327
+#: field.srusr.sms_notify.label:15343
 msgid "Hold Notifications: SMS?"
 msgstr ""
 
-#: field.srusr.email_notify.label:15328
+#: field.srusr.email_notify.label:15344
 msgid "Hold Notifications: Email?"
 msgstr ""
 
-#: field.srusr.collections_exempt.label:15329
+#: field.srusr.collections_exempt.label:15345
 msgid "Collections Exempt?"
 msgstr ""
 
-#: field.srusr.notice_optin.label:15330
+#: field.srusr.notice_optin.label:15346
 msgid "Email Notice Opt-in?"
 msgstr ""
 
-#: field.srusr.barcode_active.label:15333
+#: field.srusr.barcode_active.label:15349
 msgid "All Active Barcodes"
 msgstr ""
 
-#: field.srusr.barcode_all.label:15334
+#: field.srusr.barcode_all.label:15350
 msgid "All Barcodes"
 msgstr ""
 
-#: field.srusr.secondary_groups.label:15335
+#: field.srusr.secondary_groups.label:15351
 msgid "Secondary Permission Groups"
 msgstr ""
 
-#: field.srusr.circs_overdue.label:15336
+#: field.srusr.circs_overdue.label:15352
 msgid "Overdue Circulations"
 msgstr ""
 
-#: field.srusr.circs_open.label:15337
+#: field.srusr.circs_open.label:15353
 msgid "Open Circulations"
 msgstr ""
 
-#: class.srcp.label:15344
+#: class.srcp.label:15360
 msgid "Simple Reporter Collections"
 msgstr ""
 
-#: group.srcp.dates.label:15501 group.srwd.dates.label:15795
-#: group.srbps.dates.label:16093
+#: group.srcp.dates.label:15525 group.srwd.dates.label:15826
+#: group.srbps.dates.label:16131
 msgid "Date Fields"
 msgstr ""
 
-#: field.srcp.circ_sys_id.label:15513 field.srwd.circ_sys_id.label:15807
+#: field.srcp.circ_sys_id.label:15537 field.srwd.circ_sys_id.label:15838
 msgid "Circulating System"
 msgstr ""
 
-#: field.srcp.owning_sys_id.label:15515 field.srwd.owning_sys_id.label:15809
+#: field.srcp.owning_sys_id.label:15539 field.srwd.owning_sys_id.label:15840
 msgid "Owning System"
 msgstr ""
 
-#: field.srcp.inv_workstation_id.label:15516
+#: field.srcp.inv_workstation_id.label:15540
 msgid "Inventory Workstation"
 msgstr ""
 
-#: field.srcp.circ_lib_shortname.label:15517
-#: field.srwd.circ_lib_shortname.label:15811
+#: field.srcp.circ_lib_shortname.label:15541
+#: field.srwd.circ_lib_shortname.label:15842
 msgid "Circulating Library Short (Policy) Name"
 msgstr ""
 
-#: field.srcp.circ_lib_name.label:15518 field.srwd.circ_lib_name.label:15812
+#: field.srcp.circ_lib_name.label:15542 field.srwd.circ_lib_name.label:15843
 msgid "Circulating Library Name"
 msgstr ""
 
-#: field.srcp.circ_sys_shortname.label:15519
-#: field.srwd.circ_sys_shortname.label:15813
+#: field.srcp.circ_sys_shortname.label:15543
+#: field.srwd.circ_sys_shortname.label:15844
 msgid "Circulating System Short (Policy) Name"
 msgstr ""
 
-#: field.srcp.circ_sys_name.label:15520 field.srwd.circ_sys_name.label:15814
+#: field.srcp.circ_sys_name.label:15544 field.srwd.circ_sys_name.label:15845
 msgid "Circulating System Name"
 msgstr ""
 
-#: field.srcp.owning_lib_name.label:15522
-#: field.srwd.owning_lib_name.label:15816
+#: field.srcp.owning_lib_name.label:15546
+#: field.srwd.owning_lib_name.label:15847
 msgid "Owning Library Name"
 msgstr ""
 
-#: field.srcp.owning_sys_shortname.label:15523
-#: field.srwd.owning_sys_shortname.label:15817
+#: field.srcp.owning_sys_shortname.label:15547
+#: field.srwd.owning_sys_shortname.label:15848
 msgid "Owning System Short (Policy) Name"
 msgstr ""
 
-#: field.srcp.owning_sys_name.label:15524
-#: field.srwd.owning_sys_name.label:15818
+#: field.srcp.owning_sys_name.label:15548
+#: field.srwd.owning_sys_name.label:15849
 msgid "Owning System Name"
 msgstr ""
 
-#: field.srcp.create_date_time.label:15525
+#: field.srcp.create_date_time.label:15549
 msgid "Item Create Date/Time"
 msgstr ""
 
-#: field.srcp.create_date_year.label:15526
+#: field.srcp.create_date_year.label:15550
 msgid "Item Create Year"
 msgstr ""
 
-#: field.srcp.create_date_year_mon.label:15527
+#: field.srcp.create_date_year_mon.label:15551
 msgid "Item Create Year and Month"
 msgstr ""
 
-#: field.srcp.create_date_date.label:15528
+#: field.srcp.create_date_date.label:15552
 msgid "Item Create Date"
 msgstr ""
 
-#: field.srcp.active_date_time.label:15529
+#: field.srcp.active_date_time.label:15553
 msgid "Item Active Date/Time"
 msgstr ""
 
-#: field.srcp.active_date_year.label:15530
+#: field.srcp.active_date_year.label:15554
 msgid "Item Active Year"
 msgstr ""
 
-#: field.srcp.active_date_year_mon.label:15531
+#: field.srcp.active_date_year_mon.label:15555
 msgid "Item Active Year and Month"
 msgstr ""
 
-#: field.srcp.active_date_date.label:15532
+#: field.srcp.active_date_date.label:15556
 msgid "Item Active Date"
 msgstr ""
 
-#: field.srcp.edit_date_time.label:15533
+#: field.srcp.edit_date_time.label:15557
 msgid "Item Edit Date/Time"
 msgstr ""
 
-#: field.srcp.edit_date_year.label:15534
+#: field.srcp.edit_date_year.label:15558
 msgid "Item Edit Year"
 msgstr ""
 
-#: field.srcp.edit_date_year_mon.label:15535
+#: field.srcp.edit_date_year_mon.label:15559
 msgid "Item Edit Year and Month"
 msgstr ""
 
-#: field.srcp.edit_date_date.label:15536
+#: field.srcp.edit_date_date.label:15560
 msgid "Item Edit Date"
 msgstr ""
 
-#: field.srcp.status_changed_time_time.label:15537
+#: field.srcp.status_changed_time_time.label:15561
 msgid "Item Status Changed Date/Time"
 msgstr ""
 
-#: field.srcp.status_changed_year.label:15538
-#: field.srwd.status_changed_year.label:15855
+#: field.srcp.status_changed_year.label:15562
+#: field.srwd.status_changed_year.label:15886
 msgid "Item Status Changed Year"
 msgstr ""
 
-#: field.srcp.status_changed_year_mon.label:15539
-#: field.srwd.status_changed_year_mon.label:15856
+#: field.srcp.status_changed_year_mon.label:15563
+#: field.srwd.status_changed_year_mon.label:15887
 msgid "Item Status Changed Year and Month"
 msgstr ""
 
-#: field.srcp.status_changed_date.label:15540
-#: field.srwd.status_changed_date.label:15857
+#: field.srcp.status_changed_date.label:15564
+#: field.srwd.status_changed_date.label:15888
 msgid "Item Status Changed Date"
 msgstr ""
 
-#: field.srcp.latest_inv_date.label:15541
+#: field.srcp.latest_inv_date.label:15565
 msgid "Item Latest Inventory Date/Time"
 msgstr ""
 
-#: field.srcp.latest_inv_date_year.label:15542
+#: field.srcp.latest_inv_date_year.label:15566
 msgid "Item Latest Inventory Year"
 msgstr ""
 
-#: field.srcp.latest_inv_date_year_mon.label:15543
+#: field.srcp.latest_inv_date_year_mon.label:15567
 msgid "Item Latest Inventory Year and Month"
 msgstr ""
 
-#: field.srcp.latest_inv_date_date.label:15544
+#: field.srcp.latest_inv_date_date.label:15568
 msgid "Item Latest Inventory Date"
 msgstr ""
 
-#: field.srcp.copy_circ_modifier_code.label:15548
-#: field.srwd.circ_modifier_code.label:15868
+#: field.srcp.copy_circ_modifier_code.label:15572
+#: field.srwd.circ_modifier_code.label:15899
 msgid "Circulation Modifier Code"
 msgstr ""
 
-#: field.srcp.copy_circ_modifier_name.label:15549
-#: field.srwd.circ_modifier_name.label:15869
+#: field.srcp.copy_circ_modifier_name.label:15573
+#: field.srwd.circ_modifier_name.label:15900
 msgid "Circulation Modifier Name"
 msgstr ""
 
-#: field.srcp.acq_price.label:15551 field.srwd.acq_price.label:15871
+#: field.srcp.acq_price.label:15575 field.srwd.acq_price.label:15902
 msgid "Acquisition Cost"
 msgstr ""
 
-#: field.srcp.copy_deleted.label:15552 field.srwd.copy_deleted.label:15872
+#: field.srcp.copy_deleted.label:15576 field.srwd.copy_deleted.label:15903
 msgid "Item Deleted?"
 msgstr ""
 
-#: field.srcp.copy_circulate.label:15554 field.srwd.copy_circulate.label:15874
+#: field.srcp.copy_circulate.label:15578 field.srwd.copy_circulate.label:15905
 msgid "Item Circulate?"
 msgstr ""
 
-#: field.srcp.copy_holdable.label:15556 field.srwd.copy_holdable.label:15876
+#: field.srcp.copy_holdable.label:15580 field.srwd.copy_holdable.label:15907
 msgid "Item Holdable?"
 msgstr ""
 
-#: field.srcp.copy_opac_visible.label:15560
-#: field.srwd.copy_opac_visible.label:15880
+#: field.srcp.copy_opac_visible.label:15584
+#: field.srwd.copy_opac_visible.label:15911
 msgid "Item OPAC Visible?"
 msgstr ""
 
-#: field.srcp.under_age_protection.label:15563
+#: field.srcp.under_age_protection.label:15587
 msgid "Currently Age Protected?"
 msgstr ""
 
-#: field.srcp.circ_as_type.label:15566
+#: field.srcp.circ_as_type.label:15590
 msgid "Circ as Type"
 msgstr ""
 
-#: field.srcp.loan_duration_int.label:15567
+#: field.srcp.loan_duration_int.label:15591
 msgid "Loan Duration Value"
 msgstr ""
 
-#: field.srcp.fine_level_int.label:15569
+#: field.srcp.fine_level_int.label:15593
 msgid "Fine Level Value"
 msgstr ""
 
-#: field.srcp.pubdate.label:15584 field.srwd.pubdate.label:15907
+#: field.srcp.pubdate.label:15608 field.srwd.pubdate.label:15938
 msgid "Publication Year"
 msgstr ""
 
-#: field.srcp.call_deleted.label:15591 field.srwd.call_deleted.label:15914
+#: field.srcp.call_deleted.label:15615 field.srwd.call_deleted.label:15945
 msgid "Call Number Deleted?"
 msgstr ""
 
-#: field.srcp.bib_deleted.label:15592 field.srwd.bib_deleted.label:15915
+#: field.srcp.bib_deleted.label:15616 field.srwd.bib_deleted.label:15946
 msgid "Bibliographic Record Deleted?"
 msgstr ""
 
-#: field.srcp.status_holdable.label:15593
-#: field.srwd.status_holdable.label:15916
+#: field.srcp.status_holdable.label:15617
+#: field.srwd.status_holdable.label:15947
 msgid "Item Status Holdable?"
 msgstr ""
 
-#: field.srcp.location_holdable.label:15594
-#: field.srwd.location_holdable.label:15917
+#: field.srcp.location_holdable.label:15618
+#: field.srwd.location_holdable.label:15948
 msgid "Shelving Location Holdable?"
 msgstr ""
 
-#: field.srcp.location_circulate.label:15595
-#: field.srwd.location_circulate.label:15918
+#: field.srcp.location_circulate.label:15619
+#: field.srwd.location_circulate.label:15949
 msgid "Shelving Location Circulate?"
 msgstr ""
 
-#: field.srcp.est_price.label:15597 field.srwd.est_price.label:15920
+#: field.srcp.est_price.label:15621 field.srwd.est_price.label:15951
 msgid "Estimated Price"
 msgstr ""
 
-#: field.srcp.bib_subjects.label:15599
+#: field.srcp.bib_subjects.label:15623
 msgid "All Bibliographic Record Subjects"
 msgstr ""
 
-#: class.srwd.label:15611
+#: class.srwd.label:15635
 msgid "Simple Reporter Weeding"
 msgstr ""
 
-#: group.srwd.inv.label:15796
+#: group.srwd.inv.label:15827
 msgid "Inventory Fields"
 msgstr ""
 
-#: field.srwd.acn_id.label:15802
+#: field.srwd.acn_id.label:15833
 msgid "Call Number ID"
 msgstr ""
 
-#: field.srwd.inv_workstation_id.label:15810
+#: field.srwd.inv_workstation_id.label:15841
 msgid "Last Inventory Workstation"
 msgstr ""
 
-#: field.srwd.last_circ_datetime.label:15819
+#: field.srwd.last_circ_datetime.label:15850
 msgid "Last Circulated Date / Time"
 msgstr ""
 
-#: field.srwd.last_circ_age_days.label:15820
+#: field.srwd.last_circ_age_days.label:15851
 msgid "Last Circulated Days Ago"
 msgstr ""
 
-#: field.srwd.last_circ_age_months.label:15821
+#: field.srwd.last_circ_age_months.label:15852
 msgid "Last Circluated Months Ago"
 msgstr ""
 
-#: field.srwd.last_circ_age_years.label:15822
+#: field.srwd.last_circ_age_years.label:15853
 msgid "Last Circulated Years Ago"
 msgstr ""
 
-#: field.srwd.last_circ_year.label:15823
+#: field.srwd.last_circ_year.label:15854
 msgid "Last Circulated Year"
 msgstr ""
 
-#: field.srwd.last_circ_year_mon.label:15824
+#: field.srwd.last_circ_year_mon.label:15855
 msgid "Last Circulated Year and Month"
 msgstr ""
 
-#: field.srwd.last_circ_date.label:15825
+#: field.srwd.last_circ_date.label:15856
 msgid "Last Circulated Date"
 msgstr ""
 
-#: field.srwd.last_circ_create_datetime.label:15826
+#: field.srwd.last_circ_create_datetime.label:15857
 msgid "Last Circulated or Item Created Date / Time"
 msgstr ""
 
-#: field.srwd.last_circ_create_age_days.label:15827
+#: field.srwd.last_circ_create_age_days.label:15858
 msgid "Last Circulated or Item Created Days Ago"
 msgstr ""
 
-#: field.srwd.last_circ_create_age_months.label:15828
+#: field.srwd.last_circ_create_age_months.label:15859
 msgid "Last Circulated or Item Created Months Ago"
 msgstr ""
 
-#: field.srwd.last_circ_create_age_years.label:15829
+#: field.srwd.last_circ_create_age_years.label:15860
 msgid "Last Circulated or Item Created Years Ago"
 msgstr ""
 
-#: field.srwd.last_circ_create_year.label:15830
+#: field.srwd.last_circ_create_year.label:15861
 msgid "Last Circulated or Item Created Year"
 msgstr ""
 
-#: field.srwd.last_circ_create_year_mon.label:15831
+#: field.srwd.last_circ_create_year_mon.label:15862
 msgid "Last Circulated or Item Created Year and Month"
 msgstr ""
 
-#: field.srwd.last_circ_create_date.label:15832
+#: field.srwd.last_circ_create_date.label:15863
 msgid "Last Circulated or Item Created Date"
 msgstr ""
 
-#: field.srwd.create_date_time.label:15833
+#: field.srwd.create_date_time.label:15864
 msgid "Create Date / Time"
 msgstr ""
 
-#: field.srwd.item_age_days.label:15834
+#: field.srwd.item_age_days.label:15865
 msgid "Item Age (Days)"
 msgstr ""
 
-#: field.srwd.item_age_months.label:15835
+#: field.srwd.item_age_months.label:15866
 msgid "Item Age (Months)"
 msgstr ""
 
-#: field.srwd.item_age_years.label:15836
+#: field.srwd.item_age_years.label:15867
 msgid "Item Age (Years)"
 msgstr ""
 
-#: field.srwd.create_date_year.label:15837
+#: field.srwd.create_date_year.label:15868
 msgid "Create Date Year"
 msgstr ""
 
-#: field.srwd.create_date_year_mon.label:15838
+#: field.srwd.create_date_year_mon.label:15869
 msgid "Create Date Year and Month"
 msgstr ""
 
-#: field.srwd.active_date_time.label:15840
+#: field.srwd.active_date_time.label:15871
 msgid "Active Date / Time"
 msgstr ""
 
-#: field.srwd.item_active_days.label:15841
+#: field.srwd.item_active_days.label:15872
 msgid "Active For (Days)"
 msgstr ""
 
-#: field.srwd.item_active_months.label:15842
+#: field.srwd.item_active_months.label:15873
 msgid "Active For (Months)"
 msgstr ""
 
-#: field.srwd.item_active_years.label:15843
+#: field.srwd.item_active_years.label:15874
 msgid "Active For (Years)"
 msgstr ""
 
-#: field.srwd.active_date_year.label:15844
+#: field.srwd.active_date_year.label:15875
 msgid "Active Date Year"
 msgstr ""
 
-#: field.srwd.active_date_year_mon.label:15845
+#: field.srwd.active_date_year_mon.label:15876
 msgid "Active Date Year and Month"
 msgstr ""
 
-#: field.srwd.edit_date_time.label:15847
+#: field.srwd.edit_date_time.label:15878
 msgid "Last Edit Date / Time"
 msgstr ""
 
-#: field.srwd.item_edit_age_days.label:15848
+#: field.srwd.item_edit_age_days.label:15879
 msgid "Last Edited Days Ago"
 msgstr ""
 
-#: field.srwd.item_edit_age_months.label:15849
+#: field.srwd.item_edit_age_months.label:15880
 msgid "Last Edited Months Ago"
 msgstr ""
 
-#: field.srwd.item_edit_age_years.label:15850
+#: field.srwd.item_edit_age_years.label:15881
 msgid "Last Edited Years Ago"
 msgstr ""
 
-#: field.srwd.edit_date_year.label:15851
+#: field.srwd.edit_date_year.label:15882
 msgid "Last Edit Date Year"
 msgstr ""
 
-#: field.srwd.edit_date_year_mon.label:15852
+#: field.srwd.edit_date_year_mon.label:15883
 msgid "Last Edit Date Year and Month"
 msgstr ""
 
-#: field.srwd.status_changed_time_time.label:15854
+#: field.srwd.status_changed_time_time.label:15885
 msgid "Item Status Changed Date / Time"
 msgstr ""
 
-#: field.srwd.latest_inv_date.label:15858
+#: field.srwd.latest_inv_date.label:15889
 msgid "Last Inventoried Date / Time"
 msgstr ""
 
-#: field.srwd.inventory_age_days.label:15859
+#: field.srwd.inventory_age_days.label:15890
 msgid "Last Inventoried Days Ago"
 msgstr ""
 
-#: field.srwd.inventory_age_months.label:15860
+#: field.srwd.inventory_age_months.label:15891
 msgid "Last Inventoried Months Ago"
 msgstr ""
 
-#: field.srwd.inventory_age_years.label:15861
+#: field.srwd.inventory_age_years.label:15892
 msgid "Last Inventoried Years Ago"
 msgstr ""
 
-#: field.srwd.inv_date_year.label:15862
+#: field.srwd.inv_date_year.label:15893
 msgid "Last Inventoried Year"
 msgstr ""
 
-#: field.srwd.inv_date_year_mon.label:15863
+#: field.srwd.inv_date_year_mon.label:15894
 msgid "Last Inventoried Year and Month"
 msgstr ""
 
-#: field.srwd.inv_date_date.label:15864
+#: field.srwd.inv_date_date.label:15895
 msgid "Last Inventoried Date"
 msgstr ""
 
-#: field.srwd.alert_message.label:15879
+#: field.srwd.alert_message.label:15910
 msgid "Alert Messge"
 msgstr ""
 
-#: field.srwd.age_protect.label:15882
+#: field.srwd.age_protect.label:15913
 msgid "Age Protection Rule"
 msgstr ""
 
-#: field.srwd.under_age_protection.label:15883
+#: field.srwd.under_age_protection.label:15914
 msgid "Under Age Protection?"
 msgstr ""
 
-#: field.srwd.circ_as_type.label:15886
+#: field.srwd.circ_as_type.label:15917
 msgid "Item Circ As Type"
 msgstr ""
 
-#: field.srwd.loan_duration_int.label:15887
+#: field.srwd.loan_duration_int.label:15918
 msgid "Loan Duration (Int)"
 msgstr ""
 
-#: field.srwd.fine_level_int.label:15889
+#: field.srwd.fine_level_int.label:15920
 msgid "Fine Level (Int)"
 msgstr ""
 
-#: field.srwd.bib_subjects.label:15921
+#: field.srwd.bib_subjects.label:15952
 msgid "All Subjects"
 msgstr ""
 
-#: field.srwd.circ_total.label:15922
+#: field.srwd.circ_total.label:15953
 msgid "Circulation Total"
 msgstr ""
 
-#: field.srwd.circ_ytd.label:15923
+#: field.srwd.circ_ytd.label:15954
 msgid "Circulation Year To Date"
 msgstr ""
 
-#: field.srwd.circ_last_year.label:15924
+#: field.srwd.circ_last_year.label:15955
 msgid "Circulation Last Year"
 msgstr ""
 
-#: field.srwd.circ_two_years_ago.label:15925
+#: field.srwd.circ_two_years_ago.label:15956
 msgid "Circulation Two Years Ago"
 msgstr ""
 
-#: field.srwd.circ_three_years_ago.label:15926
+#: field.srwd.circ_three_years_ago.label:15957
 msgid "Circulation Three Years Ago"
 msgstr ""
 
-#: field.srwd.circ_last_five_years.label:15927
+#: field.srwd.circ_last_five_years.label:15958
 msgid "Circulation Total Last Five Years"
 msgstr ""
 
-#: class.srbps.label:15938
+#: class.srbps.label:15969
 msgid "Simple Reporter Billing and Payments Transaction Summary"
 msgstr ""
 
-#: group.srbps.bill.label:16091
+#: group.srbps.bill.label:16129
 msgid "Billing Fields"
 msgstr ""
 
-#: group.srbps.pay.label:16092
+#: group.srbps.pay.label:16130
 msgid "Payment Fields"
 msgstr ""
 
-#: field.srbps.billing_lib_id.label:16098
+#: field.srbps.billing_lib_id.label:16136
 msgid "Billing Library"
 msgstr ""
 
-#: field.srbps.billing_sys_id.label:16099
+#: field.srbps.billing_sys_id.label:16137
 msgid "Billing System"
 msgstr ""
 
-#: field.srbps.billing_lib_shortname.label:16100
+#: field.srbps.billing_lib_shortname.label:16138
 msgid "Billing Library Short (Policy) Name"
 msgstr ""
 
-#: field.srbps.billing_lib_name.label:16101
+#: field.srbps.billing_lib_name.label:16139
 msgid "Billing Library Name"
 msgstr ""
 
-#: field.srbps.billing_sys_shortname.label:16102
+#: field.srbps.billing_sys_shortname.label:16140
 msgid "Billing System Short (Policy) Name"
 msgstr ""
 
-#: field.srbps.billing_sys_name.label:16103
+#: field.srbps.billing_sys_name.label:16141
 msgid "Billing System Name"
 msgstr ""
 
-#: field.srbps.billing_grand_total.label:16104
+#: field.srbps.billing_grand_total.label:16142
 msgid "Billing Grand Total (Includes Voids)"
 msgstr ""
 
-#: field.srbps.billing_total.label:16105
+#: field.srbps.billing_total.label:16143
 msgid "Billing Total"
 msgstr ""
 
-#: field.srbps.billing_voided_count.label:16106
+#: field.srbps.billing_voided_count.label:16144
 msgid "Voided Billings"
 msgstr ""
 
-#: field.srbps.all_billing_types.label:16107
+#: field.srbps.all_billing_types.label:16145
 msgid "Billing Types (Include Voids)"
 msgstr ""
 
-#: field.srbps.billing_total_voided.label:16109
+#: field.srbps.billing_total_voided.label:16147
 msgid "Billing Amount Voided"
 msgstr ""
 
-#: field.srbps.billing_overdue_amount.label:16110
+#: field.srbps.billing_overdue_amount.label:16148
 msgid "Billing Total (Overdue)"
 msgstr ""
 
-#: field.srbps.billing_lost_amount.label:16111
+#: field.srbps.billing_lost_amount.label:16149
 msgid "Billing Total (Lost)"
 msgstr ""
 
-#: field.srbps.billing_long_od_amount.label:16112
+#: field.srbps.billing_long_od_amount.label:16150
 msgid "Billing Total (Long Overdue)"
 msgstr ""
 
-#: field.srbps.billing_damaged_amount.label:16113
+#: field.srbps.billing_damaged_amount.label:16151
 msgid "Billing Total (Damaged)"
 msgstr ""
 
-#: field.srbps.billing_deposit_amount.label:16114
+#: field.srbps.billing_deposit_amount.label:16152
 msgid "Billing Total (Deposit)"
 msgstr ""
 
-#: field.srbps.billing_rental_amount.label:16115
+#: field.srbps.billing_rental_amount.label:16153
 msgid "Billing Total (Rental)"
 msgstr ""
 
-#: field.srbps.payment_grand_total.label:16116
+#: field.srbps.payment_grand_total.label:16154
 msgid "Payment Grand Total (Includes Voids)"
 msgstr ""
 
-#: field.srbps.payment_total.label:16117
+#: field.srbps.payment_total.label:16155
 msgid "Payment Total"
 msgstr ""
 
-#: field.srbps.payment_voided_count.label:16118
+#: field.srbps.payment_voided_count.label:16156
 msgid "Voided Payments"
 msgstr ""
 
-#: field.srbps.all_payment_types.label:16119
+#: field.srbps.all_payment_types.label:16157
 msgid "All Payment Types (Includes Voids)"
 msgstr ""
 
-#: field.srbps.payment_types.label:16120
+#: field.srbps.payment_types.label:16158
 msgid "Payment Types"
 msgstr ""
 
-#: field.srbps.payment_total_voided.label:16121
+#: field.srbps.payment_total_voided.label:16159
 msgid "Payment Amount Voided"
 msgstr ""
 
-#: field.srbps.payment_account_adjustment_amount.label:16122
+#: field.srbps.payment_account_adjustment_amount.label:16160
 msgid "Payment Total (Account Adjustment)"
 msgstr ""
 
-#: field.srbps.payment_cash_amount.label:16123
+#: field.srbps.payment_cash_amount.label:16161
 msgid "Payment Total (Cash)"
 msgstr ""
 
-#: field.srbps.payment_check_amount.label:16124
+#: field.srbps.payment_check_amount.label:16162
 msgid "Payment Total (Check)"
 msgstr ""
 
-#: field.srbps.payment_credit_card_amount.label:16125
+#: field.srbps.payment_credit_card_amount.label:16163
 msgid "Payment Total (Credit Card)"
 msgstr ""
 
-#: field.srbps.payment_debit_card_amount.label:16126
+#: field.srbps.payment_debit_card_amount.label:16164
 msgid "Payment Total (Debit Card)"
 msgstr ""
 
-#: field.srbps.payment_credit_amount.label:16127
+#: field.srbps.payment_credit_amount.label:16165
 msgid "Payment Total (Patron Credit)"
 msgstr ""
 
-#: field.srbps.payment_forgive_amount.label:16128
+#: field.srbps.payment_forgive_amount.label:16166
 msgid "Payment Total (Forgiven)"
 msgstr ""
 
-#: field.srbps.payment_work_amount.label:16129
+#: field.srbps.payment_work_amount.label:16167
 msgid "Payment Total (Work)"
 msgstr ""
 
-#: field.srbps.payment_goods_amount.label:16130
+#: field.srbps.payment_goods_amount.label:16168
 msgid "Payment Total (Goods)"
 msgstr ""
 
-#: field.srbps.payment_currency_amount.label:16131
+#: field.srbps.payment_currency_amount.label:16169
 msgid "Payment Total (Currency)"
 msgstr ""
 
-#: field.srbps.payment_non_currency_amount.label:16132
+#: field.srbps.payment_non_currency_amount.label:16170
 msgid "Paymnt Total (Non-Currency)"
 msgstr ""
 
-#: field.srbps.xact_start.label:16133
+#: field.srbps.xact_start.label:16171
 msgid "Transaction Start Date / Time"
 msgstr ""
 
-#: field.srbps.xact_start_year.label:16134
+#: field.srbps.xact_start_year.label:16172
 msgid "Transaction Start Year"
 msgstr ""
 
-#: field.srbps.xact_start_year_mon.label:16135
+#: field.srbps.xact_start_year_mon.label:16173
 msgid "Transaction Start Year and Month"
 msgstr ""
 
-#: field.srbps.xact_start_date.label:16136
+#: field.srbps.xact_start_date.label:16174
 msgid "Transaction Start Date"
 msgstr ""
 
-#: field.srbps.xact_finish.label:16137
+#: field.srbps.xact_finish.label:16175
 msgid "Transaction Finish Date / Time"
 msgstr ""
 
-#: field.srbps.xact_finish_year.label:16138
+#: field.srbps.xact_finish_year.label:16176
 msgid "Transaction Finish Year"
 msgstr ""
 
-#: field.srbps.xact_finish_year_mon.label:16139
+#: field.srbps.xact_finish_year_mon.label:16177
 msgid "Transaction Finish Year and Month"
 msgstr ""
 
-#: field.srbps.xact_finish_date.label:16140
+#: field.srbps.xact_finish_date.label:16178
 msgid "Transaction Finish Date"
 msgstr ""
 
-#: field.srbps.earliest_billing_ts.label:16141
+#: field.srbps.earliest_billing_ts.label:16179
 msgid "First Billing Date / Time"
 msgstr ""
 
-#: field.srbps.earliest_billing_year.label:16142
+#: field.srbps.earliest_billing_year.label:16180
 msgid "First Billing Year"
 msgstr ""
 
-#: field.srbps.earliest_billing_year_mon.label:16143
+#: field.srbps.earliest_billing_year_mon.label:16181
 msgid "First Billing Year and Month"
 msgstr ""
 
-#: field.srbps.earliest_billing_date.label:16144
+#: field.srbps.earliest_billing_date.label:16182
 msgid "First Billing Date"
 msgstr ""
 
-#: field.srbps.latest_billing_ts.label:16145
+#: field.srbps.latest_billing_ts.label:16183
 msgid "Last Billing Date / Time"
 msgstr ""
 
-#: field.srbps.latest_billing_year.label:16146
+#: field.srbps.latest_billing_year.label:16184
 msgid "Last Billing Year"
 msgstr ""
 
-#: field.srbps.latest_billing_year_mon.label:16147
+#: field.srbps.latest_billing_year_mon.label:16185
 msgid "Last Billing Year and Month"
 msgstr ""
 
-#: field.srbps.latest_billing_date.label:16148
+#: field.srbps.latest_billing_date.label:16186
 msgid "Last Billing Date"
 msgstr ""
 
-#: field.srbps.earliest_payment_ts.label:16149
+#: field.srbps.earliest_payment_ts.label:16187
 msgid "First Payment Date / Time"
 msgstr ""
 
-#: field.srbps.earliest_payment_year.label:16150
+#: field.srbps.earliest_payment_year.label:16188
 msgid "First Payment Year"
 msgstr ""
 
-#: field.srbps.earliest_payment_year_mon.label:16151
+#: field.srbps.earliest_payment_year_mon.label:16189
 msgid "First Payment Year and Month"
 msgstr ""
 
-#: field.srbps.earliest_payment_date.label:16152
+#: field.srbps.earliest_payment_date.label:16190
 msgid "First Payment Date"
 msgstr ""
 
-#: field.srbps.latest_payment_ts.label:16153
+#: field.srbps.latest_payment_ts.label:16191
 msgid "Last Payment Date / Time"
 msgstr ""
 
-#: field.srbps.latest_payment_year.label:16154
+#: field.srbps.latest_payment_year.label:16192
 msgid "Last Payment Year"
 msgstr ""
 
-#: field.srbps.latest_payment_year_mon.label:16155
+#: field.srbps.latest_payment_year_mon.label:16193
 msgid "Last Payment Year and Month"
 msgstr ""
 
-#: field.srbps.latest_payment_date.label:16156
+#: field.srbps.latest_payment_date.label:16194
 msgid "Last Payment Date"
 msgstr ""
 
-#: field.srbps.xact_closed.label:16158
+#: field.srbps.xact_closed.label:16196
 msgid "Transaction Closed?"
 msgstr ""
 
-#: class.sipsetg.label:16161
+#: class.sipsetg.label:16199
 msgid "SIP Settings Group"
 msgstr ""
 
-#: field.sipsetg.institution.label:16168
+#: field.sipsetg.institution.label:16206
 msgid "SIP Institution"
 msgstr ""
 
-#: class.sipset.label:16185
+#: class.sipset.label:16223
 msgid "SIP Settings"
 msgstr ""
 
-#: class.sipacc.label:16208 field.sipses.account.label:16244
+#: class.sipacc.label:16246 field.sipses.account.label:16282
 msgid "SIP Account"
 msgstr ""
 
-#: field.sipacc.sip_username.label:16216
+#: field.sipacc.sip_username.label:16254
 msgid "SIP Username"
 msgstr ""
 
-#: field.sipacc.activity_who.label:16220
+#: field.sipacc.activity_who.label:16258
 msgid "Activity Who"
 msgstr ""
 
-#: field.sipacc.sip_password.label:16221
+#: field.sipacc.sip_password.label:16259
 msgid "SIP Password"
 msgstr ""
 
-#: class.sipses.label:16237
+#: class.sipses.label:16275
 msgid "SIP Session"
 msgstr ""
 
-#: field.sipses.key.label:16242
+#: field.sipses.key.label:16280
 msgid "SIP Session Key"
 msgstr ""
 
-#: field.sipses.ils_token.label:16243
+#: field.sipses.ils_token.label:16281
 msgid "ILS Auth Token"
 msgstr ""
 
-#: class.sipsm.label:16251
+#: class.sipsm.label:16289
 msgid "SIP Screen Message"
 msgstr ""
 
-#: field.sipsm.key.label:16256
+#: field.sipsm.key.label:16294
 msgid "Message Key"
 msgstr ""
 
-#: class.ahrrr.label:16269
+#: class.ahrrr.label:16307
 msgid "Hold Request Reset Reason"
 msgstr ""
 
-#: class.ahrrre.label:16282
+#: class.ahrrre.label:16320
 msgid "Hold Request Reset Reason Entry"
 msgstr ""
 
-#: field.ahrrre.reset_time.label:16287
+#: field.ahrrre.reset_time.label:16325
 msgid "Reset Date/Time"
 msgstr ""
 
-#: field.ahrrre.requestor.label:16289
+#: field.ahrrre.requestor.label:16327
 msgid "Resetting User"
 msgstr ""
 
-#: field.ahrrre.requestor_workstation.label:16290
+#: field.ahrrre.requestor_workstation.label:16328
 msgid "Resetting User Workstation"
 msgstr ""
 
-#: field.ahrrre.previous_copy.label:16291
+#: field.ahrrre.previous_copy.label:16329
 msgid "Previous Copy"
 msgstr ""
 
-#: class.coauf.label:16310
+#: class.coauf.label:16348
 msgid "OpenAthens unique identifiers"
 msgstr ""
 
-#: class.coanf.label:16322
+#: class.coanf.label:16360
 msgid "OpenAthens name fields"
 msgstr ""
 
-#: class.coai.label:16334
+#: class.coai.label:16372
 msgid "Sign-on to OpenAthens"
 msgstr ""
 
-#: field.coai.api_key.label:16339
+#: field.coai.api_key.label:16377
 msgid "API key"
 msgstr ""
 
-#: field.coai.connection_id.label:16340
+#: field.coai.connection_id.label:16378
 msgid "Connection ID"
 msgstr ""
 
-#: field.coai.connection_uri.label:16341
+#: field.coai.connection_uri.label:16379
 msgid "Connection URI"
 msgstr ""
 
-#: field.coai.auto_signon_enabled.label:16342
+#: field.coai.auto_signon_enabled.label:16380
 msgid "Auto sign-on"
 msgstr ""
 
-#: field.coai.auto_signout_enabled.label:16343
+#: field.coai.auto_signout_enabled.label:16381
 msgid "Auto sign-out"
 msgstr ""
 
-#: field.coai.unique_identifier.label:16344
+#: field.coai.unique_identifier.label:16382
 msgid "Unique identifier field"
 msgstr ""
 
-#: field.coai.display_name.label:16345
+#: field.coai.display_name.label:16383
 msgid "Display name field"
 msgstr ""
 
-#: field.coai.release_prefix.label:16346
+#: field.coai.release_prefix.label:16384
 msgid "Release prefix"
 msgstr ""
 
-#: field.coai.release_first_given_name.label:16347
+#: field.coai.release_first_given_name.label:16385
 msgid "Release first name"
 msgstr ""
 
-#: field.coai.release_second_given_name.label:16348
+#: field.coai.release_second_given_name.label:16386
 msgid "Release middle name"
 msgstr ""
 
-#: field.coai.release_family_name.label:16349
+#: field.coai.release_family_name.label:16387
 msgid "Release surname"
 msgstr ""
 
-#: field.coai.release_suffix.label:16350
+#: field.coai.release_suffix.label:16388
 msgid "Release suffix"
 msgstr ""
 
-#: field.coai.release_email.label:16351
+#: field.coai.release_email.label:16389
 msgid "Release email"
 msgstr ""
 
-#: field.coai.release_home_ou.label:16352
+#: field.coai.release_home_ou.label:16390
 msgid "Release home library"
 msgstr ""
 
-#: field.coai.release_barcode.label:16353
+#: field.coai.release_barcode.label:16391
 msgid "Release barcode"
 msgstr ""
 
-#: class.aelc.label:16370
+#: class.aelc.label:16408
 msgid "Eresource link clicks"
 msgstr ""
 
-#: field.aelc.clicked_at.label:16377
+#: field.aelc.clicked_at.label:16415
 msgid "Date/time of click"
 msgstr ""
 
-#: class.aelcc.label:16388
+#: class.aelcc.label:16426
 msgid "Eresource link click-course mapping"
 msgstr ""
 
-#: field.aelcc.click.label:16395
+#: field.aelcc.click.label:16433
 msgid "Click"
 msgstr ""
 
-#: field.aelcc.course_name.label:16397
+#: field.aelcc.course_name.label:16435
 msgid "Course name"
 msgstr ""
 
-#: field.aelcc.course_number.label:16398
+#: field.aelcc.course_number.label:16436
 msgid "Course number"
 msgstr ""
 
-#: class.acqr_inv_totals.label:16406
+#: class.acqr_inv_totals.label:16444
 msgid "Invoice Totals"
 msgstr ""
 
-#: field.acqr_inv_totals.total_invoice_entry_cost_billed.label:16433
+#: field.acqr_inv_totals.total_invoice_entry_cost_billed.label:16471
 msgid "Total Billed for Line Items"
 msgstr ""
 
-#: field.acqr_inv_totals.total_invoice_entry_amount_paid.label:16434
+#: field.acqr_inv_totals.total_invoice_entry_amount_paid.label:16472
 msgid "Total Paid for Line Items"
 msgstr ""
 
-#: field.acqr_inv_totals.total_invoice_item_cost_billed.label:16435
+#: field.acqr_inv_totals.total_invoice_item_cost_billed.label:16473
 msgid "Total Billed for Direct Charges"
 msgstr ""
 
-#: field.acqr_inv_totals.total_invoice_item_amount_paid.label:16436
+#: field.acqr_inv_totals.total_invoice_item_amount_paid.label:16474
 msgid "Total Paid for Direct Charges"
 msgstr ""
 
-#: class.acqr_debit_by_fund.label:16445
+#: class.acqr_debit_by_fund.label:16483
 msgid "Invoice Debits by Fund"
 msgstr ""
 
-#: field.acqr_debit_by_fund.encumbrance.label:16463
-#: field.acqr_debit_by_fund_tag.encumbrance.label:16491
+#: field.acqr_debit_by_fund.encumbrance.label:16501
+#: field.acqr_debit_by_fund_tag.encumbrance.label:16529
 msgid "Encumbrance?"
 msgstr ""
 
-#: field.acqr_debit_by_fund.total_amount.label:16464
-#: field.acqr_debit_by_fund_tag.total_amount.label:16492
+#: field.acqr_debit_by_fund.total_amount.label:16502
+#: field.acqr_debit_by_fund_tag.total_amount.label:16530
 msgid "Total Amount"
 msgstr ""
 
-#: class.acqr_debit_by_fund_tag.label:16472
+#: class.acqr_debit_by_fund_tag.label:16510
 msgid "Invoice Debits by Fund Tag"
 msgstr ""
 
-#: class.sipfilter.label:16499
+#: class.sipfilter.label:16537
 msgid "SIP Filter"
 msgstr ""
 
-#: field.sipfilter.strip.label:16508
+#: field.sipfilter.strip.label:16546
 msgid "Strip Field"
 msgstr ""
 
-#: field.sipfilter.replace_with.label:16509
+#: field.sipfilter.replace_with.label:16547
 msgid "Replacement Field Value"
 msgstr ""
 
-#: class.cplhm.label:16524
+#: class.cplhm.label:16562
 msgid "Patron Loader Header Mappings"
 msgstr ""
 
-#: field.cplhm.import_header.label:16528
+#: field.cplhm.import_header.label:16566
 msgid "Import Header"
 msgstr ""
 
-#: field.cplhm.default_header.label:16529
+#: field.cplhm.default_header.label:16567
 msgid "Default Header"
 msgstr ""
 
-#: class.cplvm.label:16535
+#: class.cplvm.label:16573
 msgid "Patron Loader Value Mappings"
 msgstr ""
 
-#: field.cplvm.mapping_type.label:16539
+#: field.cplvm.mapping_type.label:16577
 msgid "Type of Mapped Value"
 msgstr ""
 
-#: field.cplvm.import_value.label:16540
+#: field.cplvm.import_value.label:16578
 msgid "Imported Value"
 msgstr ""
 
-#: field.cplvm.native_value.label:16541
+#: field.cplvm.native_value.label:16579
 msgid "Native Value"
 msgstr ""
 
-#: class.apll.label:16547
+#: class.apll.label:16585
 msgid "Patron Loader Log"
 msgstr ""
 
-#: field.apll.record_count.label:16553
+#: field.apll.record_count.label:16591
 msgid "Event Record Count"
 msgstr ""
 
-#: field.apll.logtime.label:16554
+#: field.apll.logtime.label:16592
 msgid "Event Timestamp"
 msgstr ""

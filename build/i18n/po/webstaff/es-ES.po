@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2025-09-17 00:57+0000\n"
+"POT-Creation-Date: 2025-10-22 19:21+0000\n"
 "PO-Revision-Date: 2025-03-25 15:00+0000\n"
 "Last-Translator: Noemí Jiménez <Unknown>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2025-09-17 08:52+0000\n"
-"X-Generator: Launchpad (build 299e6cec2b88528c8351aab8852cf896cddc6846)\n"
+"X-Launchpad-Export-Date: 2025-10-23 10:10+0000\n"
+"X-Generator: Launchpad (build 304f53b38e34baf532daa616a9e3cb2ee8d98eb2)\n"
 
 #. ("{{pendingXacts | date:\"short\"}}")
 #: ../../Open-ILS/src/templates/staff/t_login.tt2:62
@@ -671,6 +671,10 @@ msgstr ""
 #: ../../Open-ILS/src/templates/staff/cat/bucket/record/t_search.tt2:40
 msgid "Add To Pending"
 msgstr "Añadir a la espera"
+
+#: ../../Open-ILS/src/templates/staff/cat/bucket/batch_hold/t_list.tt2:16
+msgid "Add User"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/cat/bucket/batch_hold/index.tt2:51
 msgid "Add Users"
@@ -2725,7 +2729,7 @@ msgstr ""
 msgid "Cont"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/cat/bucket/batch_hold/t_list.tt2:19
+#: ../../Open-ILS/src/templates/staff/cat/bucket/batch_hold/t_list.tt2:28
 msgid "Container Type"
 msgstr ""
 
@@ -3028,7 +3032,7 @@ msgstr ""
 msgid "Create Template"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/cat/bucket/batch_hold/t_list.tt2:20
+#: ../../Open-ILS/src/templates/staff/cat/bucket/batch_hold/t_list.tt2:29
 msgid "Create Time"
 msgstr ""
 
@@ -3182,7 +3186,7 @@ msgstr ""
 msgid "Current Shelving Location"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/cat/bucket/batch_hold/index.tt2:45
+#: ../../Open-ILS/src/templates/staff/cat/bucket/batch_hold/index.tt2:45 ../../Open-ILS/src/templates/staff/cat/bucket/batch_hold/t_list.tt2:13
 msgid "Current Users"
 msgstr ""
 
@@ -3606,7 +3610,7 @@ msgstr ""
 msgid "Desc"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/admin/server/config/marc_field.tt2:49 ../../Open-ILS/src/templates/staff/cat/bucket/batch_hold/t_list.tt2:15 ../../Open-ILS/src/templates/staff/cat/bucket/share/t_bucket_create.tt2:18 ../../Open-ILS/src/templates/staff/cat/bucket/share/t_bucket_edit.tt2:16 ../../Open-ILS/src/templates/staff/circ/patron/bucket/t_bucket_create.tt2:18 ../../Open-ILS/src/templates/staff/circ/patron/bucket/t_bucket_edit.tt2:16 ../../Open-ILS/src/templates/staff/circ/patron/t_hold_subscriptions.tt2:17 ../../Open-ILS/src/templates/staff/circ/patron/t_xact_details_statement.tt2:8 ../../Open-ILS/src/templates/staff/offline-interface.tt2:151
+#: ../../Open-ILS/src/templates/staff/admin/server/config/marc_field.tt2:49 ../../Open-ILS/src/templates/staff/cat/bucket/batch_hold/t_list.tt2:24 ../../Open-ILS/src/templates/staff/cat/bucket/share/t_bucket_create.tt2:18 ../../Open-ILS/src/templates/staff/cat/bucket/share/t_bucket_edit.tt2:16 ../../Open-ILS/src/templates/staff/circ/patron/bucket/t_bucket_create.tt2:18 ../../Open-ILS/src/templates/staff/circ/patron/bucket/t_bucket_edit.tt2:16 ../../Open-ILS/src/templates/staff/circ/patron/t_hold_subscriptions.tt2:17 ../../Open-ILS/src/templates/staff/circ/patron/t_xact_details_statement.tt2:8 ../../Open-ILS/src/templates/staff/offline-interface.tt2:151
 msgid "Description"
 msgstr "Descripción"
 
@@ -6365,6 +6369,10 @@ msgstr ""
 msgid "Manage Columns"
 msgstr ""
 
+#: ../../Open-ILS/src/templates/staff/cat/bucket/batch_hold/t_list.tt2:19
+msgid "Manage Hold Group Events"
+msgstr ""
+
 #: ../../Open-ILS/src/templates/staff/serials/t_manage.tt2:20
 msgid "Manage Issues"
 msgstr ""
@@ -6858,7 +6866,7 @@ msgstr ""
 "NOTA: La nueva unidad organizativa no existirá en la base de datos hasta que "
 "se aplique la actualización Org."
 
-#: ../../Open-ILS/src/templates/staff/admin/actor/org_unit/t_main_tab.tt2:6 ../../Open-ILS/src/templates/staff/admin/serials/pattern_template.tt2:36 ../../Open-ILS/src/templates/staff/admin/server/config/marc_field.tt2:48 ../../Open-ILS/src/templates/staff/cat/bucket/batch_hold/t_list.tt2:14 ../../Open-ILS/src/templates/staff/cat/bucket/record/t_create_carousel.tt2:13 ../../Open-ILS/src/templates/staff/cat/bucket/share/t_bucket_create.tt2:13 ../../Open-ILS/src/templates/staff/cat/bucket/share/t_bucket_edit.tt2:11 ../../Open-ILS/src/templates/staff/cat/share/t_marcedit.tt2:145 ../../Open-ILS/src/templates/staff/circ/patron/bucket/t_bucket_create.tt2:13 ../../Open-ILS/src/templates/staff/circ/patron/bucket/t_bucket_edit.tt2:11 ../../Open-ILS/src/templates/staff/circ/patron/bucket/t_changesets.tt2:12 ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:904 ../../Open-ILS/src/templates/staff/circ/patron/t_hold_subscriptions.tt2:16 ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:32 ../../Open-ILS/src/templates/staff/reporter/t_edit_template.tt2:222
+#: ../../Open-ILS/src/templates/staff/admin/actor/org_unit/t_main_tab.tt2:6 ../../Open-ILS/src/templates/staff/admin/serials/pattern_template.tt2:36 ../../Open-ILS/src/templates/staff/admin/server/config/marc_field.tt2:48 ../../Open-ILS/src/templates/staff/cat/bucket/batch_hold/t_list.tt2:23 ../../Open-ILS/src/templates/staff/cat/bucket/record/t_create_carousel.tt2:13 ../../Open-ILS/src/templates/staff/cat/bucket/share/t_bucket_create.tt2:13 ../../Open-ILS/src/templates/staff/cat/bucket/share/t_bucket_edit.tt2:11 ../../Open-ILS/src/templates/staff/cat/share/t_marcedit.tt2:145 ../../Open-ILS/src/templates/staff/circ/patron/bucket/t_bucket_create.tt2:13 ../../Open-ILS/src/templates/staff/circ/patron/bucket/t_bucket_edit.tt2:11 ../../Open-ILS/src/templates/staff/circ/patron/bucket/t_changesets.tt2:12 ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:904 ../../Open-ILS/src/templates/staff/circ/patron/t_hold_subscriptions.tt2:16 ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:32 ../../Open-ILS/src/templates/staff/reporter/t_edit_template.tt2:222
 msgid "Name"
 msgstr "Nombre"
 
@@ -7613,11 +7621,11 @@ msgstr ""
 msgid "Owned by %1"
 msgstr "Propiedad de %1"
 
-#: ../../Open-ILS/src/templates/staff/admin/server/config/copy_tag_type.tt2:35 ../../Open-ILS/src/templates/staff/cat/bucket/batch_hold/t_list.tt2:18
+#: ../../Open-ILS/src/templates/staff/admin/server/config/copy_tag_type.tt2:35 ../../Open-ILS/src/templates/staff/cat/bucket/batch_hold/t_list.tt2:27
 msgid "Owner"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/admin/serials/pattern_template.tt2:38 ../../Open-ILS/src/templates/staff/admin/serials/t_template_list.tt2:34 ../../Open-ILS/src/templates/staff/admin/serials/t_templates.tt2:10 ../../Open-ILS/src/templates/staff/cat/bucket/batch_hold/t_list.tt2:16 ../../Open-ILS/src/templates/staff/cat/bucket/share/t_bucket_create.tt2:23 ../../Open-ILS/src/templates/staff/cat/bucket/share/t_bucket_edit.tt2:21 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:108 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:157 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:38 ../../Open-ILS/src/templates/staff/cat/share/t_volume_list.tt2:11 ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:41 ../../Open-ILS/src/templates/staff/circ/holds/t_shelf_list.tt2:138 ../../Open-ILS/src/templates/staff/circ/patron/t_bills_list.tt2:67 ../../Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2:155 ../../Open-ILS/src/templates/staff/circ/patron/t_holds_list.tt2:136 ../../Open-ILS/src/templates/staff/circ/patron/t_items_out.tt2:94 ../../Open-ILS/src/templates/staff/circ/patron/t_xact_details.tt2:110 ../../Open-ILS/src/templates/staff/serials/t_mfhd_manager.tt2:19 ../../Open-ILS/src/templates/staff/serials/t_subscription_manager.tt2:136
+#: ../../Open-ILS/src/templates/staff/admin/serials/pattern_template.tt2:38 ../../Open-ILS/src/templates/staff/admin/serials/t_template_list.tt2:34 ../../Open-ILS/src/templates/staff/admin/serials/t_templates.tt2:10 ../../Open-ILS/src/templates/staff/cat/bucket/batch_hold/t_list.tt2:25 ../../Open-ILS/src/templates/staff/cat/bucket/share/t_bucket_create.tt2:23 ../../Open-ILS/src/templates/staff/cat/bucket/share/t_bucket_edit.tt2:21 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:108 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:157 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:38 ../../Open-ILS/src/templates/staff/cat/share/t_volume_list.tt2:11 ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:41 ../../Open-ILS/src/templates/staff/circ/holds/t_shelf_list.tt2:138 ../../Open-ILS/src/templates/staff/circ/patron/t_bills_list.tt2:67 ../../Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2:155 ../../Open-ILS/src/templates/staff/circ/patron/t_holds_list.tt2:136 ../../Open-ILS/src/templates/staff/circ/patron/t_items_out.tt2:94 ../../Open-ILS/src/templates/staff/circ/patron/t_xact_details.tt2:110 ../../Open-ILS/src/templates/staff/serials/t_mfhd_manager.tt2:19 ../../Open-ILS/src/templates/staff/serials/t_subscription_manager.tt2:136
 msgid "Owning Library"
 msgstr "Biblioteca Dueña"
 
@@ -7808,7 +7816,7 @@ msgstr "Patrón de búsqueda"
 msgid "Patron Search Results"
 msgstr "Patrono Resultados de búsqueda"
 
-#: ../../Open-ILS/src/templates/staff/cat/bucket/batch_hold/t_list.tt2:17 ../../Open-ILS/src/templates/staff/circ/patron/t_stat_cats.tt2:11 ../../Open-ILS/src/templates/staff/circ/share/t_hold_details.tt2:97 ../../Open-ILS/src/templates/staff/circ/share/t_new_message_dialog.tt2:58
+#: ../../Open-ILS/src/templates/staff/cat/bucket/batch_hold/t_list.tt2:26 ../../Open-ILS/src/templates/staff/circ/patron/t_stat_cats.tt2:11 ../../Open-ILS/src/templates/staff/circ/share/t_hold_details.tt2:97 ../../Open-ILS/src/templates/staff/circ/share/t_new_message_dialog.tt2:58
 msgid "Patron Visible"
 msgstr "Patron Visible"
 
