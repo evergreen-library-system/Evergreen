@@ -942,11 +942,13 @@
 [% END -%]
 [% END -%]
 
+[%-
 # Displays a cover image with a link to the bib record. Parameters are
 #
 # * row_isbnissn (ISBN/ISSN; needed only if using Obalkyknih)
 # * row_rec_id (bib ID of the title; mandatory)
 #
+-%]
 [%- BLOCK show_cover -%]
     <td role="cell">
     [% IF obalkyknih_cz.enabled == 'true' %]
