@@ -6430,45 +6430,73 @@ Zkopírováno <ph name="INTERPOLATION"/></translation>
   <translation id="375162872941638932"><ph name="START_TAG_SPAN"/>odhlásit<ph name="CLOSE_TAG_SPAN"/> Odhlásit</translation>
   <translation id="425596632725634098">Typ potvrzení:</translation>
   <translation id="8075796456109676934">Editovat podpole (pokud je seskupeno): Levá nebo pravá šipka</translation>
-  <translation id="5959131859017841195">Launch Self-Check</translation>
+  <translation id="5959131859017841195">Spustit samoobslužnou výpůjčku</translation>
   <translation id="1074038423230804155">ID:</translation>
-  <translation id="8162787379579842000">Searching...</translation>
-  <translation id="8684646320844580912"> Record not found: <ph name="INTERPOLATION"/> </translation>
-  <translation id="7333108368858028030"> More than one Bib Record found with TCN: <ph name="INTERPOLATION"/> </translation>
-  <translation id="1720909217045418517"> The server encountered an error. Please try a different search. </translation>
-  <translation id="8388582053032794203"> Calculated fine amount is <ph name="START_TAG_SPAN"/> <ph name="INTERPOLATION"/> <ph name="CLOSE_TAG_SPAN"/></translation>
-  <translation id="7190467351988659949">Serial Records</translation>
-  <translation id="1554318653244181133">Unsaved changes will be lost.  Continue navigation?</translation>
-  <translation id="3660069197046561180">Item Notes</translation>
+  <translation id="8162787379579842000">Vyhledávání...</translation>
+  <translation id="8684646320844580912"> Záznam nebyl nalezen: <ph name="INTERPOLATION"/> </translation>
+  <translation id="7333108368858028030"> Byl nalezen více než jeden záznam s TCN: <ph name="INTERPOLATION"/> </translation>
+  <translation id="1720909217045418517"> Na serveru došlo k chybě. Zkuste jiné vyhledávání. </translation>
+  <translation id="8388582053032794203"> Vypočtená výše pokuty činí <ph name="START_TAG_SPAN"/> <ph name="INTERPOLATION"/> <ph name="CLOSE_TAG_SPAN"/> </translation>
+  <translation id="7190467351988659949">Záznamy seriálů</translation>
+  <translation id="1554318653244181133">Neuložené změny budou ztraceny. Pokračovat v navigaci?</translation>
+  <translation id="3660069197046561180">Poznámky k jednotce</translation>
   <translation id="968227549005903387"><ph name="INTERPOLATION"/> position <ph name="INTERPOLATION_1"/></translation>
-  <translation id="2829821215468862587">Queue ID</translation>
-  <translation id="6294834501708273193">Match Set</translation>
-  <translation id="3509905366499209695">Item Import Attribute Definition</translation>
-  <translation id="2878678133044560152">Match Bucket</translation>
-  <translation id="291439248872552145">Create Time</translation>
-  <translation id="4088163825706718567"><ph name="INTERPOLATION"/> Administration</translation>
+  <translation id="2829821215468862587">ID fronty</translation>
+  <translation id="6294834501708273193">Sada shody</translation>
+  <translation id="3509905366499209695">Definice atributů pro import jednotek</translation>
+  <translation id="2878678133044560152">Odpovídá skupině</translation>
+  <translation id="291439248872552145">Datum vytvoření</translation>
+  <translation id="4088163825706718567"><ph name="INTERPOLATION"/> Administrace</translation>
   <translation id="1037841298560617020">
     <ph name="INTERPOLATION"/>
   </translation>
-  <translation id="1158949423398728289">Add This Record</translation>
-  <translation id="9137945136009837308">Remove This Record</translation>
-  <translation id="408791913458411716">Add To Basket</translation>
-  <translation id="214018288629758478">Remove From Basket</translation>
-  <translation id="1578741046646291108">Issuer:</translation>
-  <translation id="7962116630388168390">Account:</translation>
-  <translation id="2826556801109615631">Secret:</translation>
-  <translation id="5178303084083924779">Digits:</translation>
-  <translation id="5807319866572147637">Period:</translation>
-  <translation id="6700375366570151446"><ph name="INTERPOLATION"/> seconds</translation>
-  <translation id="7446818179582534212">Algorithm:</translation>
+  <translation id="1158949423398728289">Přidat tento záznam</translation>
+  <translation id="9137945136009837308">Odebrat tento záznam</translation>
+  <translation id="408791913458411716">Přidat do košíku</translation>
+  <translation id="214018288629758478">Odebrat z košíku</translation>
+  <translation id="1578741046646291108">Vydavatel:</translation>
+  <translation id="7962116630388168390">Učet:</translation>
+  <translation id="2826556801109615631">Tajný klíč:</translation>
+  <translation id="5178303084083924779">Číslice:</translation>
+  <translation id="5807319866572147637">Interval:</translation>
+  <translation id="6700375366570151446"><ph name="INTERPOLATION"/> sekundy</translation>
+  <translation id="7446818179582534212">Algoritmus:</translation>
   <translation id="6931104340356742775">
     <ph name="INTERPOLATION"/>
   </translation>
-  <translation id="8535693426088333574"> Scan this QR Code in your authentication app, or click the QR Code to proceed on this device, then provide the current <ph name="INTERPOLATION"/> digit one-time code from <ph name="INTERPOLATION_1"/> in order to confirm this secondary authentication factor. If your authentication application does not open when clicking the QR Code above, you can copy the Secret above directly. </translation>
-  <translation id="6105572993146771396">Right Join</translation>
-  <translation id="6010836800105764474"> -&gt; [Both Required] </translation>
-  <translation id="7821951224618627984"> -&gt; [Right Required] </translation>
-  <translation id="5037165785819501241"> -&gt; [Left Required] </translation>
-  <translation id="3090621596232753763"> Note for patron <ph name="START_BOLD_TEXT"/> <ph name="INTERPOLATION"/>, <ph name="INTERPOLATION_1"/> <ph name="CLOSE_BOLD_TEXT"/></translation>
-  <translation id="4620307130066356153">Staff Initials</translation>
+  <translation id="8535693426088333574"> Načtěte tento QR kód v autentizační aplikaci nebo na něj klikněte, pokud chcete pokračovat na tomto zařízení, a následně zadejte aktuální  <ph name="INTERPOLATION"/> jednorázový číselný kód z  <ph name="INTERPOLATION_1"/> pro potvrzení sekundárního autentizačního faktoru. Pokud se autentizační aplikace po kliknutí na QR kód neotevře, můžete přímo zkopírovat tajný klíč výše. </translation>
+  <translation id="6105572993146771396">Pravý JOIN</translation>
+  <translation id="6010836800105764474"> -&gt; [Požadováno obojí] </translation>
+  <translation id="7821951224618627984"> -&gt; [Požadován pravý] </translation>
+  <translation id="5037165785819501241"> -&gt; [Požadován levý] </translation>
+  <translation id="3090621596232753763"> Poznámka pro čtenáře <ph name="START_BOLD_TEXT"/> <ph name="INTERPOLATION"/>, <ph name="INTERPOLATION_1"/> <ph name="CLOSE_BOLD_TEXT"/></translation>
+  <translation id="4620307130066356153">Iniciály personálu</translation>
+  <translation id="3429232767760651025">Nebyla nastavena hodnota pro <ph name="INTERPOLATION"/></translation>
+  <translation id="4866902980317299562">Historie změn uživatele</translation>
+  <translation id="6590683197755474032">Správa typů upozornění k jednotkám</translation>
+  <translation id="864873885354894742">Jakákoliv událost</translation>
+  <translation id="4597114698359189924">k dispozici pouze pro události vrácení</translation>
+  <translation id="7996429338693343213">Typy upozornění k jednotce</translation>
+  <translation id="4301463093657844544">Nastavení témat dětského OPACu</translation>
+  <translation id="9206137533408106108">Dočasný interval vypršení registrace uživatele: </translation>
+  <translation id="3164987926442912790">Je povoleno online prodloužení platnosti registrace?: </translation>
+  <translation id="7219214441284377758">1 položka vyžaduje část.</translation>
+  <translation id="185020344895019182"><ph name="INTERPOLATION"/> položka vyžaduje část.</translation>
+  <translation id="6115678333313902026"> Zadat rezervaci pro tuto rezervační skupinu: </translation>
+  <translation id="3440558483332337347">Překonat pokud možno všechny podmínky, které blokují rezervaci?</translation>
+  <translation id="7569325454023772679">(<ph name="INTERPOLATION"/> dostupné)</translation>
+  <translation id="8298575750030110834"><ph name="INTERPOLATION"/> z <ph name="INTERPOLATION_1"/> zadaných rezervací</translation>
+  <translation id="2863575589938968540">Přidat <ph name="INTERPOLATION"/></translation>
+  <translation id="1006791918114566987">Zcela nerefundovatelné</translation>
+  <translation id="3512693837864117308">Refundovatelné</translation>
+  <translation id="7947393881942840046">Přihlaste se znovu</translation>
+  <translation id="6912605882053304525"><ph name="START_HEADING_LEVEL1"/>Přihlásit<ph name="CLOSE_HEADING_LEVEL1"/></translation>
+  <translation id="2336550011721758066">Přihlásit</translation>
+  <translation id="7137797864787327759">Přihlásit se pomocí Evergreenu</translation>
+  <translation id="1323385474079117517">Přihlásit se pomocí jednotného přihlašování</translation>
+  <translation id="6360866402485758559">Aktivuj rozbalení kombinovaných polí</translation>
+  <translation id="1056725106110906396">E-mail zákonného zástupce</translation>
+  <translation id="5640217348405780223">Call Number Classification</translation>
+  <translation id="561998273195635812">Relative Queue Position</translation>
+  <translation id="3949492330113173426">Global Queue Position</translation>
 </translationbundle>
