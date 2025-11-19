@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2025-10-22 13:25:17-0400\n"
+"POT-Creation-Date: 2025-11-19 13:47:23-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -5954,7 +5954,7 @@ msgid "Hold Cancel Date/Time"
 msgstr ""
 
 #: field.ahr.canceled_by.label:6851
-msgid "Hold Canceling Staff"
+msgid "Hold Canceling User"
 msgstr ""
 
 #: field.ahr.canceling_ws.label:6852
