@@ -224,13 +224,20 @@ sub get_li_price_from_attr {
             lineitem_marc_attr_definition/) {
 
         my ($attr) = grep {
-            $_->attr_name eq 'estimated_price' and 
+            $_->attr_name eq 'price' and
             $_->attr_type eq $attr_type } @$attrs;
 
-        return $attr->attr_value if $attr;
+        if ($attr) {
+            # LP#2078503: Normalize MARC 020$c style price values (may include
+            # currency symbols / text) before applying to lineitem.
+            my $raw = $attr->attr_value;
+            my $parsed = OpenILS::Application::AppUtils->extract_marc_price($raw);
+            return $parsed if defined $parsed; # only return numeric value
+            return undef; # fall through -> no price found
+        }
     }
 
-    return undef;
+    return undef; # no usable numeric price
 }
 
 
