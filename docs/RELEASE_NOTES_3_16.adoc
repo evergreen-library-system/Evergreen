@@ -97,7 +97,7 @@ We would like to thank the following individuals who contributed code, testing, 
 
 === Sponsors ===
 
-The following organizations sponsored development in the 3.15.7 release of Evergreen:
+The following organizations sponsored development in the 3.16.1 release of Evergreen:
 
 * BC Libraries Cooperative
 
@@ -109,7 +109,7 @@ The following organizations sponsored development in the 3.15.7 release of Everg
 === Upgrade notes ===
 
 This release includes no unusual upgrade steps that apply to all users,
-but sites that use earlier version of the Quipu integration should
+but sites that use earlier versions of the Quipu integration should
 consult the Quipu section.
 
 === New Features ===
@@ -219,7 +219,7 @@ These subfields now appear in the order they were specified in the 245 field.
 
 Note that if you have customized the mods32 XML transform, you will need to make
 the relevant adjustments yourself: in the titleNonfiling section, the list of
-subfields should include include 'n' and 'p', and this section should not call
+subfields should include 'n' and 'p', and this section should not call
 the "part" template.
 
 == Support for Search and Display of Accessibility Metadata ==
@@ -236,7 +236,7 @@ Adds an advanced search filter group for accessibility terms based on
 Also adds seed data for accessibility-related record attribute definitions
 and coded value map entries for use in search filters for MARC 341.
     
-Terms are taken from from the https://schema.org/accessMode and
+Terms are taken from the https://schema.org/accessMode and
 https://schema.org/accessibilityFeature vocabularies. OPAC visibility is
 based on mapping of accessibilityFeature terms to MARC as described in
 https://w3c.github.io/a11y-discov-vocab/crosswalk/#accessibilityfeature.
@@ -407,7 +407,7 @@ The KPAC utilizes its own CSS files:
 * The SlimPAC, which was an early version of the Evergreen catalog without Javascript,
   has been removed from Evergreen's code. (https://bugs.launchpad.net/evergreen/+bug/2051382[Bug 2051382])
 * Fixes a bug where using the "Clear" button on the shelving location field in the Holdings Editor would not work (https://bugs.launchpad.net/evergreen/+bug/2122448[Bug 2122448]
-* Improve pcrud performance, and add permission delegation. (https://bugs.launchpad.net/evergreen/+bug/1847805[Bug 1847805])
+* Improve PCRUD performance, and add permission delegation. (https://bugs.launchpad.net/evergreen/+bug/1847805[Bug 1847805])
 * Various performance improvements to Angular Record Buckets.  (https://bugs.launchpad.net/evergreen/+bug/2098043[Bug 2098043], https://bugs.launchpad.net/evergreen/+bug/2098407[Bug 2098407], and https://bugs.launchpad.net/evergreen/+bug/2098117[Bug 2098117])
 * Add an automated accessibility check for Evergreen's documentation. (https://bugs.launchpad.net/evergreen/+bug/2076555[Bug 2076555])
 * Delete docs/modules/local_admin/assets/images/emergency_closing_handler directory
@@ -422,7 +422,7 @@ The KPAC utilizes its own CSS files:
 * Removes submit_on_change behavior from OPAC results sort dropdown and adds a separate button to update results (https://bugs.launchpad.net/evergreen/+bug/2048671[Bug 2048671])
 * Move fieldmapper editor's Unset link to end; use X icon; hide Unset for readonly fields. (https://bugs.launchpad.net/evergreen/+bug/2105680[Bug 2105680])
 * Sets the default owning library to the workstation in New Shelving Location dialog. (https://bugs.launchpad.net/evergreen/+bug/1922390[Bug 1922390])
-* Adding IDL conneciton Item->In House Use (https://bugs.launchpad.net/evergreen/+bug/2095540[Bug 2095540])
+* Adding IDL connection Item->In House Use (https://bugs.launchpad.net/evergreen/+bug/2095540[Bug 2095540])
 * Adds Library setting to hide Clear These Holds. (https://bugs.launchpad.net/evergreen/+bug/1961534[Bug 1961534])
 * Adds number of available copies per part to the hold placement screen. (https://bugs.launchpad.net/evergreen/+bug/1868097[Bug 1868097])
 * Adds Queued Ingest documentation.
@@ -430,7 +430,7 @@ The KPAC utilizes its own CSS files:
 * Add configurable non-refundable payment types. (https://bugs.launchpad.net/evergreen/+bug/2002166[Bug 2002166])
 * Updates screenshot & verbiage in the Shelving Location Admin docs.
 * Adding information to the OPAC MyAccount docs about SmartPay.
-* Adds page-{ctx.page} or page-myopac-{myopac_page} to OPAC <body> tag for use in custom CSS (https://bugs.launchpad.net/evergreen/+bug/2115739[Bug 2115739])
+* Adds `page-{ctx.page}` or `page-myopac-{myopac_page}` to OPAC `<body>` tag for use in custom CSS (https://bugs.launchpad.net/evergreen/+bug/2115739[Bug 2115739])
 * Fixes borders of staff login form button, password toggle (https://bugs.launchpad.net/evergreen/+bug/2089597[Bug 2089597])
 * Fixed input labels, IDs in Merge Monograph Parts dialog. (https://bugs.launchpad.net/evergreen/+bug/2063455[Bug 2063455])
 * Ensures all grid table captions have unique IDs (https://bugs.launchpad.net/evergreen/+bug/2102046[Bug 2102046])
