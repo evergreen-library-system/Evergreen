@@ -107,7 +107,11 @@ sub set_li_price_from_attr {
 
     return unless defined $val; # '0' is valid
 
-    $li->estimated_unit_price($val);
+    # LP#2078503: MARC 020$c terms of availability may include currency symbols
+    # or non-price text. Extract first numeric price only.
+    my $parsed = OpenILS::Application::AppUtils->extract_marc_price($val);
+    return unless defined $parsed; # skip if no usable numeric value
+    $li->estimated_unit_price($parsed);
 
     if (!$e->update_acq_lineitem($li)) {
         $e->rollback;

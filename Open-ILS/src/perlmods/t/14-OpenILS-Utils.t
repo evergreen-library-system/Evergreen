@@ -14,7 +14,7 @@
 # truckload to verify that everything would continue to work if
 # we turn it on across the board.
 
-use Test::More tests => 47;
+use Test::More tests => 68;
 use Test::Warn;
 use DateTime::TimeZone;
 use DateTime::Format::ISO8601;
@@ -161,3 +161,58 @@ is (OpenILS::Utils::DateTime::clean_ISO8601('20180917 08:31:15'), "2018-09-17T08
 # pass if this test happens to be run in UTC
 $ENV{TZ} = 'EST';
 is (OpenILS::Utils::DateTime::clean_ISO8601('2018-09-17T17:31:15Z'), "2018-09-17T17:31:15+00:00", 'interpret Z in timestamp correctly');
+
+# LP#2078503 - Test extract_marc_price for handling currency symbols and non-numeric text
+# Basic currency symbol extraction
+is(OpenILS::Application::AppUtils->extract_marc_price('$19.95'), '19.95',
+   'extract_marc_price: simple dollar amount');
+is(OpenILS::Application::AppUtils->extract_marc_price('£25.50'), '25.50',
+   'extract_marc_price: UK pound symbol');
+is(OpenILS::Application::AppUtils->extract_marc_price('€12.99'), '12.99',
+   'extract_marc_price: Euro symbol');
+is(OpenILS::Application::AppUtils->extract_marc_price('¥1200'), '1200',
+   'extract_marc_price: Japanese Yen');
+
+# Currency codes
+is(OpenILS::Application::AppUtils->extract_marc_price('Rs15.76'), '15.76',
+   'extract_marc_price: currency code Rs');
+is(OpenILS::Application::AppUtils->extract_marc_price('CAD 45.00'), '45.00',
+   'extract_marc_price: currency code CAD with space');
+is(OpenILS::Application::AppUtils->extract_marc_price('USD 99.99'), '99.99',
+   'extract_marc_price: currency code USD with space');
+
+# Multiple prices - should return first one
+is(OpenILS::Application::AppUtils->extract_marc_price('Rs15.76 ($5.60 U.S.)'), '15.76',
+   'extract_marc_price: multiple prices, returns first');
+is(OpenILS::Application::AppUtils->extract_marc_price('For sale ($450.00) or rent ($45.00)'), '450.00',
+   'extract_marc_price: complex multiple price statement');
+is(OpenILS::Application::AppUtils->extract_marc_price('$8.95 ($5.00 U.S.)'), '8.95',
+   'extract_marc_price: price with parenthetical qualifier');
+
+# Thousands separators
+is(OpenILS::Application::AppUtils->extract_marc_price('$1,234.56'), '1234.56',
+   'extract_marc_price: thousands separator removed');
+is(OpenILS::Application::AppUtils->extract_marc_price('€10,000.00'), '10000.00',
+   'extract_marc_price: multiple thousands separators');
+
+# Edge cases and special values
+is(OpenILS::Application::AppUtils->extract_marc_price('$0.00'), '0.00',
+   'extract_marc_price: zero value with decimals');
+is(OpenILS::Application::AppUtils->extract_marc_price('$0'), '0',
+   'extract_marc_price: zero value without decimals');
+is(OpenILS::Application::AppUtils->extract_marc_price('0.99'), '0.99',
+   'extract_marc_price: price without currency symbol');
+is(OpenILS::Application::AppUtils->extract_marc_price('123'), '123',
+   'extract_marc_price: whole number without symbol');
+
+# Non-price text - should return undef
+is(OpenILS::Application::AppUtils->extract_marc_price('Rental material'), undef,
+   'extract_marc_price: non-price text returns undef');
+is(OpenILS::Application::AppUtils->extract_marc_price('Free'), undef,
+   'extract_marc_price: "Free" returns undef');
+is(OpenILS::Application::AppUtils->extract_marc_price('Not for sale'), undef,
+   'extract_marc_price: "Not for sale" returns undef');
+is(OpenILS::Application::AppUtils->extract_marc_price(''), undef,
+   'extract_marc_price: empty string returns undef');
+is(OpenILS::Application::AppUtils->extract_marc_price(undef), undef,
+   'extract_marc_price: undef input returns undef');

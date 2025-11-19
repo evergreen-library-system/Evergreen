@@ -1298,8 +1298,52 @@ sub make_mbts {
     return () if (!@xacts);
     return @{$e->search_money_billable_transaction_summary({id => [ map { $_->id } @xacts ]})};
 }
-        
-        
+###############################################################################
+# Price Parsing Utilities
+#
+# MARC 020 $c (Terms of availability) may contain a price, currency symbol,
+# currency code, parenthetical qualifiers, multiple prices, or non-price
+# statements (e.g. "Rental material", "For sale ($450.00) or rent ($45.00)").
+# The acquisition workflows want an estimated_unit_price when a numeric value
+# can be reliably extracted.  Historically, the raw $c value was stored as a
+# lineitem attribute string and applying it directly caused BAD_PARAMS errors
+# when currency symbols or other text were present (LP#2078503).
+#
+# extract_marc_price($raw)
+#   Returns the first numeric price found in the string as a normalized
+#   decimal (thousands separators removed). Returns undef when no numeric
+#   value is present. Accepts leading currency symbols (Unicode Sc) or simple
+#   alphabetic currency codes (e.g. Rs, CAD) immediately preceding the number.
+#   Examples:
+#     "$19.95"            -> 19.95
+#     "Rs15.76 ($5.60 U.S.)" -> 15.76 (first price wins)
+#     "For sale ($450.00) or rent ($45.00)" -> 450.00
+#     "Rental material"    -> undef
+#     "Free"               -> undef
+###############################################################################
+sub extract_marc_price {
+    my ($class, $raw) = @_;
+    return undef unless defined $raw;
+
+    # Trim whitespace
+    $raw =~ s/^\s+|\s+$//g;
+
+    # Remove trailing punctuation that may follow the price
+    # but avoid stripping decimals (e.g. '19.95.')
+    $raw =~ s/[\.;:,]+$//;
+
+    # Find first occurrence of a number (with optional currency symbol/code)
+    # Number pattern: digits with optional thousands separators and optional decimal part.
+    # Match either: number with thousands separators OR plain number (any length)
+    if ($raw =~ /(?:[A-Z]{1,3}|\p{Sc})?\s*([0-9]{1,3}(?:,[0-9]{3})+(?:\.[0-9]+)?|[0-9]+(?:\.[0-9]+)?)/) {
+        my $num = $1;
+        $num =~ s/,//g; # remove thousands separators
+        return $num; # return as numeric string; caller may numify
+    }
+
+    return undef;
+}
+
 sub ou_ancestor_setting_value {
     my($self, $org_id, $name, $e) = @_;
     $e = $e || OpenILS::Utils::CStoreEditor->new;
