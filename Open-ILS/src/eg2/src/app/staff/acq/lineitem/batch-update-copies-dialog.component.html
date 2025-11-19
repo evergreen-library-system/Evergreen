@@ -5,7 +5,7 @@
     <div class="flex-1 p-1" i18n>Collection Code</div>
     <div class="flex-1 p-1" i18n>Fund</div>
     <div class="flex-1 p-1" i18n>Circ Modifier</div>
-    <div class="flex-1 p-1"></div>
+    <div class="flex-2 p-1" i18n>Note</div>
   </div>
 </ng-template>
 
@@ -52,7 +52,7 @@
         }">
         </ng-container>
         <div class="pt-2 bg-light border border-secondary border-top-0 rounded-bottom">
-          <eg-lineitem-copy-attrs #copyAttributes [gatherParamsOnly]="true"
+          <eg-lineitem-copy-attrs #copyAttributes [gatherParamsOnly]="true" [hideBarcode]="true"
             (templateCopy)="templateCopy = $event" ></eg-lineitem-copy-attrs>
         </div>
       </ng-container>
