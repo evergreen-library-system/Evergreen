@@ -53,7 +53,8 @@ export class BatchUpdateCopiesDialogComponent extends DialogComponent {
             this.templateCopy.location() ||
             this.templateCopy.collection_code() ||
             this.templateCopy.fund() ||
-            this.templateCopy.circ_modifier()) {
+            this.templateCopy.circ_modifier() ||
+            this.templateCopy.note()) {
             return true;
         } else {
             return false;
@@ -82,6 +83,9 @@ export class BatchUpdateCopiesDialogComponent extends DialogComponent {
         }
         if (this.templateCopy.circ_modifier()) {
             changes['circ_modifier'] = this.templateCopy.circ_modifier();
+        }
+        if (this.templateCopy.note()) {
+            changes['note'] = this.templateCopy.note();
         }
         return changes;
     }

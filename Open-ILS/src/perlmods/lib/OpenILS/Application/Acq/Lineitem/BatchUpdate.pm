@@ -283,7 +283,7 @@ sub lineitem_batch_update_impl {
     # called for in $changes, other than the 'item_count' field (handled above).
 
     my %fund_cache;
-    my @fields = qw/owning_lib fund location collection_code circ_modifier/;
+    my @fields = qw/owning_lib fund location collection_code circ_modifier note/;
     foreach my $jub (@$lineitems) {
         # We use the counting style of loop below because we need to know our
         # position for dist_formula application.

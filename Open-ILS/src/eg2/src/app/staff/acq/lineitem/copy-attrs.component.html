@@ -74,7 +74,7 @@
         (ngModelChange)="valueChange('cn_label', $event)">
     </ng-container>
   </div>
-  <div class="flex-1 p-1">
+  <div class="flex-1 p-1" *ngIf="!hideBarcode">
     <ng-container *ngIf="!batchMode && !batchAdd && !gatherParamsOnly">
       <ng-container *ngIf="fieldIsDisabled('barcode')">
         <span>{{copy.barcode()}}</span>

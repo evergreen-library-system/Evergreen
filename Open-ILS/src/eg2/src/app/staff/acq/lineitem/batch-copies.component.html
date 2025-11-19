@@ -5,7 +5,7 @@
 <!-- Note the flex values are set so they also match the layout
      of the list of copies in the copies component. -->
 
-<ng-template #copyAttrsHeader let-hideBarcode="hideBarcode" let-moreCss="moreCss">
+<ng-template #copyAttrsHeader let-moreCss="moreCss" let-batchMode="batchMode">
   <div class="div d-flex fw-bold {{moreCss}}">
     <div class="flex-1 p-1 ps-4" i18n>Owning Branch</div>  
     <div class="flex-1 p-1" i18n>Shelving Location</div>
@@ -13,8 +13,8 @@
     <div class="flex-1 p-1" i18n>Fund</div>
     <div class="flex-1 p-1" i18n>Circ Modifier</div>
     <div class="flex-1 p-1" *ngIf="!batchAdd" i18n>Callnumber</div>
-    <div class="flex-1 p-1" i18n>
-      <ng-container *ngIf="!hideBarcode && !batchAdd">Barcode</ng-container>
+    <div class="flex-1 p-1" i18n *ngIf="!hideBarcode">
+      <ng-container *ngIf="!batchMode">Barcode</ng-container>
     </div>
     <div class="flex-2 p-1" i18n>Note</div>
     <div class="flex-1 p-1" *ngIf="!hasEditableCopies()" i18n>Receiver</div>
@@ -27,14 +27,15 @@
   <ng-container
     *ngTemplateOutlet="copyAttrsHeader;context:{
       moreCss:'mt-3 bg-light border border-secondary',
-      hideBarcode: true
+      batchMode: true
     }">
   </ng-container>
   
   <div class="pt-2 pb-2 bg-light border border-secondary border-top-0 rounded-bottom">
     <eg-lineitem-copy-attrs (batchApplyRequested)="batchApplyAttrs($event)"
       [batchAdd]="batchAdd"
-      [batchMode]="true"> </eg-lineitem-copy-attrs>
+      [batchMode]="true" 
+      [hideBarcode]="hideBarcode"> </eg-lineitem-copy-attrs>
   </div>
 </ng-container>
 
@@ -53,6 +54,7 @@
       (cancelRequested)="cancelCopy($event)"
       [showReceiver]="!hasEditableCopies()"
       (becameDirty)="becameDirty.emit(true)"
+      [hideBarcode]="hideBarcode"
       [rowIndex]="idx + 1" [lineitem]="lineitem" [copy]="copy">
     </eg-lineitem-copy-attrs>
   </div>

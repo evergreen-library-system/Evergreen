@@ -22,6 +22,7 @@ export class LineitemCopyAttrsComponent implements OnInit {
     @Input() rowIndex: number;
     @Input() batchAdd = false;
     @Input() gatherParamsOnly = false;
+    @Input() hideBarcode: boolean = false;
 
     @Output() becameDirty = new EventEmitter<Boolean>();
     @Output() templateCopy = new EventEmitter<IdlObject>();

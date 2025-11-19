@@ -69,7 +69,7 @@
 
   <eg-lineitem-batch-copies
     [lineitem]="lineitem" [batchAdd]="mode === 'multiAdd'"
-    (becameDirty)="dirty = true"
+    (becameDirty)="dirty = true" [hideBarcode]="mode === 'multiAdd'">
   ></eg-lineitem-batch-copies>
 </ng-container>
 
