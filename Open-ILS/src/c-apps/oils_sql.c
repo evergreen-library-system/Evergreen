@@ -7641,21 +7641,11 @@ int doDelete( osrfMethodContext* ctx ) {
 
 	char* pcrud_pred = osrf_buffer_release(pcrud_pred_buf);
 
-	dbi_result result = dbi_conn_queryf( writehandle, "DELETE FROM %s AS %s WHERE %s.%s = %s%s RETURNING *;",
+	dbi_result result = dbi_conn_queryf( writehandle, "DELETE FROM %s AS %s WHERE %s.%s = %s%s;",
 		osrfHashGet( meta, "tablename" ), classname, classname, pkey, id, pcrud_pred );
 
-	free( pcrud_pred );
-
 	int rc = 0;
-	if( dbi_result_get_numrows( result ) == 0 ) {
-		osrfAppSessionStatus(ctx->session, OSRF_STATUS_BADREQUEST,
-			"osrfMethodException", ctx->request,
-			"Invalid object or insufficient permissions"
-		);
-		rc = -1;
-		jsonObjectFree( obj );
-		obj = jsonNewObject( NULL );
-	} else if( !result ) {
+	if (!result) {
 		rc = -1;
 		jsonObjectFree( obj );
 		obj = jsonNewObject( NULL );
@@ -7680,10 +7670,39 @@ int doDelete( osrfMethodContext* ctx ) {
 		);
 		if( !oilsIsDBConnected( writehandle ))
 			osrfAppSessionPanic( ctx->session );
+	} else if( dbi_result_get_numrows_affected( result ) == 0 ) { // returns 0 for RULE-protected tables, must recheck
+		int delete_failed = 1;
+
+		// If we are using in-db permission checking (!local_enforce_pcrud),
+		// and there is a "deleted" field on the class,
+		// we need to recheck deletion success.
+		if ( !local_enforce_pcrud && osrfHashGet( osrfHashGet(meta, "fields"), "deleted" ) ) {
+			dbi_result_free( result );
+
+			result = dbi_conn_queryf(
+				writehandle,
+				"SELECT %s FROM %s AS %s WHERE deleted AND %s.%s = %s%s;",
+				pkey, osrfHashGet( meta, "tablename" ), classname, classname, pkey, id, pcrud_pred // id is already appropriately quoted, above
+			);
+
+			if (dbi_result_get_numrows( result ) == 1) // there is a "deleted" row with the target pkey
+				delete_failed = 0;
+		}
+
+		if (delete_failed) {
+			osrfAppSessionStatus(ctx->session, OSRF_STATUS_BADREQUEST,
+				"osrfMethodException", ctx->request,
+				"Invalid object or insufficient permissions"
+			);
+			rc = -1;
+			jsonObjectFree( obj );
+			obj = jsonNewObject( NULL );
+		}
 	}
 
 	if (result) dbi_result_free( result );
 
+	free( pcrud_pred );
 	free( id );
 
 	osrfAppRespondComplete( ctx, obj );

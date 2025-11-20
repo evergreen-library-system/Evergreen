@@ -111,7 +111,7 @@ CREATE INDEX cp_creator_idx  ON asset.copy ( creator );
 CREATE INDEX cp_editor_idx   ON asset.copy ( editor );
 CREATE INDEX cp_create_date  ON asset.copy (create_date);
 CREATE INDEX cp_extant_by_circ_lib_idx ON asset.copy(circ_lib) WHERE deleted = FALSE OR deleted IS FALSE;
-CREATE RULE protect_copy_delete AS ON DELETE TO asset.copy DO INSTEAD UPDATE asset.copy SET deleted = TRUE WHERE OLD.id = asset.copy.id RETURNING *;
+SELECT evergreen.setup_delete_protect_rule('asset','copy');
 
 CREATE TABLE asset.copy_part_map (
     id          SERIAL  PRIMARY KEY,
@@ -500,7 +500,7 @@ CREATE INDEX asset_call_number_upper_label_id_owning_lib_idx ON asset.call_numbe
 CREATE INDEX asset_call_number_label_sortkey ON asset.call_number(oils_text_as_bytea(label_sortkey));
 CREATE UNIQUE INDEX asset_call_number_label_once_per_lib ON asset.call_number (record, owning_lib, label, prefix, suffix) WHERE deleted = FALSE OR deleted IS FALSE;
 CREATE INDEX asset_call_number_label_sortkey_browse ON asset.call_number(oils_text_as_bytea(label_sortkey), oils_text_as_bytea(label), id, owning_lib) WHERE deleted IS FALSE OR deleted = FALSE;
-CREATE RULE protect_cn_delete AS ON DELETE TO asset.call_number DO INSTEAD UPDATE asset.call_number SET deleted = TRUE WHERE OLD.id = asset.call_number.id RETURNING *;
+SELECT evergreen.setup_delete_protect_rule('asset','call_number');
 CREATE TRIGGER protect_acn_id_neg1
   BEFORE UPDATE ON asset.call_number
   FOR EACH ROW WHEN (OLD.id = -1)
