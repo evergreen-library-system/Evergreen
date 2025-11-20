@@ -132,4 +132,32 @@ CREATE OR REPLACE FUNCTION evergreen.uri_unescape (TEXT) RETURNS TEXT AS $f$
   return $input;
 $f$ STRICT IMMUTABLE LANGUAGE PLPERLU;
 
+CREATE OR REPLACE FUNCTION evergreen.setup_delete_protect_rule (
+    t_schema TEXT,
+    t_table TEXT,
+    t_additional TEXT DEFAULT '',
+    t_pkey TEXT DEFAULT 'id',
+    t_deleted TEXT DEFAULT 'deleted'
+) RETURNS VOID AS $$
+DECLARE
+    rule_name   TEXT;
+    table_name  TEXT;
+    fq_pkey     TEXT;
+BEGIN
+
+    rule_name := 'protect_' || t_schema || '_' || t_table || '_delete';
+    table_name := t_schema || '.' || t_table;
+    fq_pkey := table_name || '.' || t_pkey;
+
+    EXECUTE 'DROP RULE IF EXISTS ' || rule_name || ' ON ' || table_name;
+    EXECUTE 'CREATE RULE ' || rule_name
+            || ' AS ON DELETE TO ' || table_name
+            || ' DO INSTEAD (UPDATE ' || table_name
+            || '   SET ' || t_deleted || ' = TRUE '
+            || '   WHERE OLD.' || t_pkey || ' = ' || fq_pkey
+            || '   ; ' || t_additional || ')';
+
+END;
+$$ STRICT LANGUAGE PLPGSQL;
+
 COMMIT;
