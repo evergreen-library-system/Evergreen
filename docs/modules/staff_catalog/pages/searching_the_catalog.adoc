@@ -45,9 +45,9 @@ image::searching_the_catalog/exclude_electronic_resources.png[Staff Catalog Keyw
 [[library_selector]]
 === Library Selector (Search Library) ===
 
-The _Library Selector_ is located in the top-right corner of the search form on the Staff Catalog page. This selector allows you to change your search library to the consortium, system, branch, or other organization of your choice.
+The _Library Selector_ is located in the top-right corner of the search form on the Staff Catalog page. This selector allows you to change your search library to the consortium, system, branch, or other organization of your choice. If configured, it will also allow you to select Library Groups and Shelving Location Groups.
 
-image::searching_the_catalog/library_selector.png[The Staff Catalog page with the Library Selector highlighted.]
+image::searching_the_catalog/lassos_and_slg.png[The Staff Catalog page showing the Library Group dropdown.]
 
 TIP: The default search library for your workstation can be set in xref:staff_catalog:searching_the_catalog.adoc#search_preferences[Search Preferences]. 
 
