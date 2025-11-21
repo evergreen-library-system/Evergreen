@@ -133,7 +133,9 @@
 
     <li *ngIf="!templateOnlyMode && displayAttr('barcode')">
       <eg-batch-item-attr label="Barcode" i18n-label
-        [readOnly]="true" [labelCounts]="itemAttrCounts('barcode')">
+        [selectOnly]="true" (filterApplied)="applyCopyFilter($event)"
+        [readOnly]="true" [labelCounts]="unfilteredItemAttrCounts('barcode')"
+        [filteredLabelCounts]="itemAttrCounts('barcode')">
       </eg-batch-item-attr>
     </li>
 
@@ -527,19 +529,19 @@
           <!-- Existing alerts -->
         
           <ng-container *ngIf="!templateOnlyMode">
-            <li *ngIf="context.copyList().length === 1">
+            <li *ngIf="local_copyList.length === 1">
               <div role="text">
-                <span i18n>{context.copyList()[0].copy_alerts().length, plural,
+                <span i18n>{local_copyList[0].copy_alerts().length, plural,
                   =0 {No alerts}
                   =1 {1 alert}
-                  other {{{context.copyList()[0].copy_alerts().length}} alerts}}
+                  other {{{local_copyList[0].copy_alerts().length}} alerts}}
                 </span>
-                <span *ngIf="hasDisabledAlerts(context.copyList()[0].copy_alerts())" class="badge badge-danger ms-1" i18n>
+                <span *ngIf="hasDisabledAlerts(local_copyList[0].copy_alerts())" class="badge badge-danger ms-1" i18n>
                   (Warning: inactive alert types present)
                 </span>
               </div>
             </li>
-            <li *ngIf="context.copyList().length > 1">
+            <li *ngIf="local_copyList.length > 1">
               <div role="text">
                 <span i18n>{copyAlertsDialog.alertsInCommon.length, plural,
                   =0 {No matching alerts}
@@ -625,13 +627,13 @@
           <!-- Existing tags -->
           
           <ng-container *ngIf="!templateOnlyMode">
-            <li *ngIf="context.copyList().length === 1" i18n>
-              {context.copyList()[0].tags().length, plural,
+            <li *ngIf="local_copyList.length === 1" i18n>
+              {local_copyList[0].tags().length, plural,
                 =0 {No tags}
                 =1 {1 tag}
-                other {{{context.copyList()[0].tags().length}} tags}}
+                other {{{local_copyList[0].tags().length}} tags}}
             </li>
-            <li *ngIf="context.copyList().length > 1" i18n>
+            <li *ngIf="local_copyList.length > 1" i18n>
               {countTotalTags(), plural,
                 =0 {No matching tags}
                 =1 {1 matching tag}
@@ -692,13 +694,13 @@
           <!-- Existing notes -->
         
           <ng-container *ngIf="!templateOnlyMode">
-            <li *ngIf="context.copyList().length === 1" i18n>
-              {context.copyList()[0].notes().length, plural,
+            <li *ngIf="local_copyList.length === 1" i18n>
+              {local_copyList[0].notes().length, plural,
                 =0 {No notes}
                 =1 {1 note}
-                other {{{context.copyList()[0].notes().length}} notes}}
+                other {{{local_copyList[0].notes().length}} notes}}
             </li>
-            <li *ngIf="context.copyList().length > 1" i18n>
+            <li *ngIf="local_copyList.length > 1" i18n>
               {copyNotesDialog.notesInCommon.length, plural,
                 =0 {No matching notes}
                 =1 {1 matching notes}

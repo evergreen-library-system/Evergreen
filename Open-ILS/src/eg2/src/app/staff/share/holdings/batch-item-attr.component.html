@@ -36,8 +36,11 @@
     'unset': !!aValueIsUnset
 }" (click)="(readOnly || editing) ? null : enterEditMode()">
   <div class="card-header">
-    <h5 id="label-{{editInputDomId}}" *ngIf="readOnly || editing" class="readonly field-heading" i18n>
-      {{label}}
+    <h5 id="label-{{editInputDomId}}" *ngIf="readOnly || editing" class="readonly field-heading">
+      <span i18n>{{label}}</span><br/>
+      <button *ngIf="selectOnly && !editing" type="button" class="btn-link edit-toggle" (click)="enterFilterMode()" i18n>
+        Filter
+      </button>
     </h5>
     <h5 id="label-{{editInputDomId}}" class="field-heading" *ngIf="!readOnly && !editing">
       <button type="button" class="btn-link edit-toggle" (click)="enterEditMode()" i18n>
@@ -64,15 +67,45 @@
 
     <ng-container *ngTemplateOutlet="editTemplate"></ng-container>
     
-    <div class="edit-buttons">
+    <div *ngIf="!readOnly" class="edit-buttons">
       <button type="submit" class="btn btn-sm btn-primary" (click)="save($event)" i18n>Apply</button>
       <button type="button" class="btn btn-sm btn-normal ms-1" (click)="cancel($event)" i18n>Cancel</button>
       <button type="button" class="btn btn-sm btn-destroy ms-auto" (click)="clear($event)" i18n>Clear</button>
     </div>
+
+    <div *ngIf="selectOnly" class="edit-buttons">
+      <button type="submit" class="btn btn-sm btn-primary" (click)="applyFilter($event)" i18n>Apply Filter</button>
+      <button type="button" class="btn btn-sm btn-normal ms-1" (click)="cancelFilter($event)" i18n>Remove Filter</button>
+    </div>
+
   </div>
-  <div class="card-body" *ngIf="!editing">
+  <div class="card-body" *ngIf="!editing && !selectOnly">
     <div class="dl-grid">
     <ng-container *ngFor="let count of labelCounts | keyvalue; let idx = index">
+      <ng-container *ngIf="expanded || idx < defaultDisplayCount">
+        
+        
+          <ng-container *ngTemplateOutlet="showValues; context: {key: count.key, displayAs: displayAs}">
+          </ng-container>
+          <div *ngIf="!templateOnlyMode && multiValue()" class="def numeric">
+            {{count.value}}
+          </div>
+        
+      </ng-container>
+    </ng-container>
+    </div>
+    <div class="ms-auto text-end" *ngIf="bulky()">
+      <button (click)="expanded = true" *ngIf="!expanded" type="button" class="btn-link" i18n>
+        Show all
+      </button>
+      <button (click)="expanded = false" *ngIf="expanded" type="button" class="btn-link" i18n>
+        Show less
+      </button>
+    </div>
+  </div>
+  <div class="card-body" *ngIf="!editing && selectOnly">
+    <div class="dl-grid">
+    <ng-container *ngFor="let count of filteredLabelCounts | keyvalue; let idx = index">
       <ng-container *ngIf="expanded || idx < defaultDisplayCount">
         
         

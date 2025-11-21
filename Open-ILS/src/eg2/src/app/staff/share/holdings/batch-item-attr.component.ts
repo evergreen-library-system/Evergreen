@@ -32,6 +32,7 @@ export class BatchItemAttrComponent implements OnInit {
     // Maps display labels to the number of items that have the label.
     // e.g. {"Stacks": 4, "Display": 12}
     @Input() labelCounts: {[label: string]: number} = {};
+    @Input() filteredLabelCounts: {[label: string]: number} = {};
 
     // Ref to some type of edit widget for modifying the value.
     // Note this component simply displays the template, it does not
@@ -46,6 +47,9 @@ export class BatchItemAttrComponent implements OnInit {
 
     // Display only
     @Input() readOnly = false;
+
+    // Maybe display only, but items are selectable
+    @Input() selectOnly = false;
 
     // when used in a template admin context; expect to use for styling
     @Input() templateOnlyMode = false;
@@ -62,6 +66,9 @@ export class BatchItemAttrComponent implements OnInit {
     // Lists larger than this will be partially hidden behind
     // and expandy.
     @Input() defaultDisplayCount = 7;
+
+    @Output() filterApplied: EventEmitter<BatchChangeSelection> =
+        new EventEmitter<BatchChangeSelection>();
 
     @Output() changesSaved: EventEmitter<BatchChangeSelection> =
         new EventEmitter<BatchChangeSelection>();
@@ -98,6 +105,17 @@ export class BatchItemAttrComponent implements OnInit {
         this.focusLabel();
     }
 
+    applyFilter($event?: Event) {
+        if ($event) {
+            $event.preventDefault();
+            $event.stopPropagation();
+        }
+        this.editing = false;
+        this.checkValuesForCSS();
+        this.filterApplied.emit(this.editValues);
+        this.focusLabel();
+    }
+
     cancel($event?: Event) {
         if ($event) {
             $event.preventDefault();
@@ -106,6 +124,18 @@ export class BatchItemAttrComponent implements OnInit {
         this.editing = false;
         this.checkValuesForCSS();
         this.changesCanceled.emit();
+        this.focusLabel();
+    }
+
+    cancelFilter($event?: Event) {
+        if ($event) {
+            $event.preventDefault();
+            $event.stopPropagation();
+        }
+        Object.keys(this.labelCounts).forEach(key => this.editValues[key] = true);
+        this.editing = false;
+        this.checkValuesForCSS();
+        this.filterApplied.emit(this.editValues);
         this.focusLabel();
     }
 
@@ -131,6 +161,9 @@ export class BatchItemAttrComponent implements OnInit {
     }
 
     bulky(): boolean {
+        if (this.selectOnly && !this.editing) {
+            return Object.keys(this.filteredLabelCounts).length > this.defaultDisplayCount;
+        }
         return Object.keys(this.labelCounts).length > this.defaultDisplayCount;
     }
 
@@ -177,6 +210,24 @@ export class BatchItemAttrComponent implements OnInit {
         // Assume all values should be edited by default
         Object.keys(this.labelCounts).forEach(
             key => this.editValues[key] = true);
+
+        if (this.editInputDomId) {
+            setTimeout(() => {
+                // Avoid using selectRootElement to focus.
+                // https://stackoverflow.com/a/36059595
+                const node = document.getElementById(this.editInputDomId);
+                if (node) { node.focus(); }
+            });
+        }
+    }
+
+    enterFilterMode() {
+        if (!this.selectOnly && (this.readOnly || this.editing)) { return; }
+        this.editing = true;
+
+        // Assume untouched values should be selected by default
+        Object.keys(this.labelCounts).forEach(
+            key => this.editValues[key] = this.editValues[key] === false ? false : true );
 
         if (this.editInputDomId) {
             setTimeout(() => {

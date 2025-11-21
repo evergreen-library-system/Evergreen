@@ -49,6 +49,7 @@ export class CopyAttrsComponent implements OnInit, OnDestroy, AfterViewInit {
     private destroy$ = new Subject<void>();
     private originalCopies: {[id: number]: IdlObject} = {};
     private originalVols: {[id: number]: IdlObject} = {};
+    private local_copyList = [];
 
     // Batch values applied from the form.
     // Some values are scalar, some IdlObjects depending on copy fleshyness.
@@ -161,7 +162,7 @@ export class CopyAttrsComponent implements OnInit, OnDestroy, AfterViewInit {
 
     public presetWidgets() {
         if (this.templateOnlyMode) {
-            this.values = this.context.copyList().length ? this.idl.toHash( this.context.copyList()[0] ) : {};
+            this.values = this.local_copyList.length ? this.idl.toHash( this.local_copyList[0] ) : {};
             // console.debug('CopyAttrsComponent, leaving presetWidgets as template with values:', this.values);
             return;
         }
@@ -179,9 +180,9 @@ export class CopyAttrsComponent implements OnInit, OnDestroy, AfterViewInit {
 
         // console.debug('CopyAttrsComponent, entering presetWidgets, template only mode?', this.templateOnlyMode);
         const multiValueFields = Array();
-        const copies = this.context.copyList();
+        const copies = this.local_copyList;
         copies.forEach(copy => {
-            if (copy.ischanged() && copy.ischanged !== 'f') {
+            if (copy.ischanged() && copy.ischanged !== 'f') { // XXX uh... "if a function returns a value, and THE FUNCTION IS LITERALLY "f" ??? missing ()s, methinks
                 // console.debug('CopyAttrsComponent, presetWidgets, copy marked as changed, aborting', copy);
                 return;
             }
@@ -246,9 +247,9 @@ export class CopyAttrsComponent implements OnInit, OnDestroy, AfterViewInit {
 
     public presetWidgetsInNonBatchMode() {
         // console.debug('CopyAttrsComponent, entering presetWidgetsInNonBatchMode');
-        const copies = this.context.copyList();
+        const copies = this.local_copyList;
         if (copies.length === 1) {
-            const copy = this.context.copyList()[0];
+            const copy = this.local_copyList[0];
             // console.debug('CopyAttrsComponent, presetWidgetsInNonBatchMode, found single copy:', copy);
             if (copy.ischanged() && copy.ischanged !== 'f') {
                 // console.debug('CopyAttrsComponent, presetWidgetsInNonBatchMode, copy marked as changed, aborting', copy);
@@ -277,8 +278,10 @@ export class CopyAttrsComponent implements OnInit, OnDestroy, AfterViewInit {
     private backupOriginalState() {
         if (!this.context) {return;}
 
+        this.local_copyList = this.context.copyList();
+
         // Backup copies
-        this.context.copyList().forEach(copy => {
+        this.local_copyList.forEach(copy => {
             const copyClone = this.idl.clone(copy);
             const copyId = copy.id();
             this.originalCopies[copyId] = copyClone;
@@ -396,7 +399,7 @@ export class CopyAttrsComponent implements OnInit, OnDestroy, AfterViewInit {
         catId = Number(catId);
         const counts = {};
 
-        this.context.copyList().forEach(copy => {
+        this.local_copyList.forEach(copy => {
             const entry = (copy.stat_cat_entries() || [])
                 .filter(e => e.stat_cat() === catId)[0];
 
@@ -422,6 +425,21 @@ export class CopyAttrsComponent implements OnInit, OnDestroy, AfterViewInit {
     itemAttrCounts(field: string): {[value: string]: number} {
 
         const counts = {};
+        this.local_copyList.forEach(copy => {
+            const value = this.getFieldDisplayValue(field, copy);
+
+            if (counts[value] === undefined) {
+                counts[value] = 0;
+            }
+            counts[value]++;
+        });
+
+        return counts;
+    }
+
+    unfilteredItemAttrCounts(field: string): {[value: string]: number} {
+
+        const counts = {};
         this.context.copyList().forEach(copy => {
             const value = this.getFieldDisplayValue(field, copy);
 
@@ -436,6 +454,10 @@ export class CopyAttrsComponent implements OnInit, OnDestroy, AfterViewInit {
 
     multiValue(field: string): boolean {
         return Object.keys(this.itemAttrCounts(field)).length > 1;
+    }
+
+    unfilteredMultiValue(field: string): boolean {
+        return Object.keys(this.unfilteredItemAttrCounts(field)).length > 1;
     }
 
     // sometimes we get the whole location object from the template. This is bad.
@@ -588,6 +610,11 @@ export class CopyAttrsComponent implements OnInit, OnDestroy, AfterViewInit {
         return changeSelection[disValue] === true;
     }
 
+    applyCopyFilter(changeSelection: BatchChangeSelection) {
+        const changeThese = Object.keys(changeSelection).filter(k => changeSelection[k]);
+        this.local_copyList = this.context.copyList().filter(cp => changeThese.includes(cp.barcode()));
+    }
+
     applyCopyValue(field: string, value?: any, changeSelection?: BatchChangeSelection) {
         if (value === undefined) {
             value = this.values[field];
@@ -607,7 +634,7 @@ export class CopyAttrsComponent implements OnInit, OnDestroy, AfterViewInit {
 
         } else {
 
-            this.context.copyList().forEach(copy => {
+            this.local_copyList.forEach(copy => {
                 if (!copy[field] || copy[field]() === value) { return; }
                 // Don't overwrite magic statuses
                 if (field === 'status' && this.volcopy.copyStatIsMagic(copy[field]()) ) { return; }
@@ -636,7 +663,7 @@ export class CopyAttrsComponent implements OnInit, OnDestroy, AfterViewInit {
         // Map existing vol IDs to their replacments.
         const newVols: any = {};
 
-        this.context.copyList().forEach(copy => {
+        this.local_copyList.forEach(copy => {
 
             if (changeSelection &&
                 !this.copyWantsChange(copy, field, changeSelection)) {
@@ -726,7 +753,7 @@ export class CopyAttrsComponent implements OnInit, OnDestroy, AfterViewInit {
             return;
         }
 
-        this.context.copyList().forEach(copy => {
+        this.local_copyList.forEach(copy => {
 
             let entry = (copy.stat_cat_entries() || [])
                 .filter(e => e.stat_cat() === catId)[0];
@@ -778,7 +805,7 @@ export class CopyAttrsComponent implements OnInit, OnDestroy, AfterViewInit {
         // console.debug('attr ' + attr.name, attr);
         if (this.context) {
             // Restore copies from backup
-            this.context.copyList().forEach(copy => {
+            this.local_copyList.forEach(copy => {
                 const originalCopy = this.originalCopies[copy.id()];
                 if (!originalCopy) {
                     console.error(`valueCleared, No original state found for copy ${copy.id()}`);
@@ -860,7 +887,7 @@ export class CopyAttrsComponent implements OnInit, OnDestroy, AfterViewInit {
         // console.debug('valueClearedForStatCat, catId, this.statCatValues', catId, this.statCatValues);
         if (this.context) {
             // Restore copies from backup
-            this.context.copyList().forEach(copy => {
+            this.local_copyList.forEach(copy => {
                 // console.debug('valueClearedForStatCat, considering copy.id, copy', copy.id(), copy);
                 const originalCopy = this.originalCopies[copy.id()];
                 const entries = copy.stat_cat_entries();
@@ -942,7 +969,7 @@ export class CopyAttrsComponent implements OnInit, OnDestroy, AfterViewInit {
         if (!this.copyAlertsDialog) {return;}
 
         // The dialog is already persistent on the template
-        this.copyAlertsDialog.copies = this.context.copyList();
+        this.copyAlertsDialog.copies = this.local_copyList;
         this.copyAlertsDialog.copyIds = [];
         this.copyAlertsDialog.inPlaceCreateMode = true;
         this.copyAlertsDialog.templateOnlyMode = this.templateOnlyMode;
@@ -970,9 +997,9 @@ export class CopyAttrsComponent implements OnInit, OnDestroy, AfterViewInit {
             this.context.changedAlerts = changedThings;
             this.context.deletedAlerts = deletedThings;
 
-            // console.debug('CopyAlertsDialog, openCopyAlerts(), copy before updateInMemory', this.idl.clone(this.context.copyList()[0]));
+            // console.debug('CopyAlertsDialog, openCopyAlerts(), copy before updateInMemory', this.idl.clone(this.local_copyList[0]));
             this.context.updateInMemoryCopiesWithAlerts();
-            // console.debug('CopyAlertsDialog, openCopyAlerts(), copy after updateInMemory', this.idl.clone(this.context.copyList()[0]));
+            // console.debug('CopyAlertsDialog, openCopyAlerts(), copy after updateInMemory', this.idl.clone(this.local_copyList[0]));
             this.emitSaveChange();
 
         });
@@ -983,7 +1010,7 @@ export class CopyAttrsComponent implements OnInit, OnDestroy, AfterViewInit {
         if (!this.copyTagsDialog) {return;}
 
         // The dialog is already persistent on the template
-        this.copyTagsDialog.copies = this.context.copyList();
+        this.copyTagsDialog.copies = this.local_copyList;
         this.copyTagsDialog.copyIds = [];
         this.copyTagsDialog.inPlaceCreateMode = true;
         this.copyTagsDialog.templateOnlyMode = this.templateOnlyMode;
@@ -1021,7 +1048,7 @@ export class CopyAttrsComponent implements OnInit, OnDestroy, AfterViewInit {
         if (!this.copyNotesDialog) {return;}
 
         // The dialog is already persistent on the template
-        this.copyNotesDialog.copies = this.context.copyList();
+        this.copyNotesDialog.copies = this.local_copyList;
         this.copyNotesDialog.copyIds = [];
         this.copyNotesDialog.inPlaceCreateMode = true;
         this.copyNotesDialog.templateOnlyMode = this.templateOnlyMode;
@@ -1491,7 +1518,7 @@ export class CopyAttrsComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // Returns false if any items are in magic statuses
     statusEditable(): boolean {
-        const copies = this.context.copyList();
+        const copies = this.local_copyList;
         for (let idx = 0; idx < copies.length; idx++) {
             if (this.volcopy.copyStatIsMagic(copies[idx].status())) {
                 return false;
@@ -1617,7 +1644,7 @@ export class CopyAttrsComponent implements OnInit, OnDestroy, AfterViewInit {
 
         if (this.context) {
             // Restore copies from backup
-            this.context.copyList().forEach(copy => {
+            this.local_copyList.forEach(copy => {
                 const originalCopy = this.originalCopies[copy.id()];
                 if (!originalCopy) {
                     // console.debug(`No original state found for copy ${copy.id()}`);
@@ -1668,10 +1695,10 @@ export class CopyAttrsComponent implements OnInit, OnDestroy, AfterViewInit {
         if (!this.copyTagsDialog) {return 0;}
         let existing = [];
 
-        if (this.context.copyList().length > 1 ) {
+        if (this.local_copyList.length > 1 ) {
             existing = this.copyTagsDialog.allTagsInCommon;
         } else {
-            existing = this.context.copyList()[0].tags();
+            existing = this.local_copyList[0].tags();
         }
 
         // console.debug('countTotalTags: ', existing.length, this.context.newTagMaps.length, this.context.deletedTagMaps.length);
