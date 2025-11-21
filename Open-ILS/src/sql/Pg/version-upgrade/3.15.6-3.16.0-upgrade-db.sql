@@ -1421,7 +1421,6 @@ INSERT INTO config.coded_value_map (id, opac_visible, ctype, code, value, search
 -- in-record value, we have to make our CCVM value lowercase, as that's how MFR stores the data.
 UPDATE config.coded_value_map SET code = LOWER(code) WHERE code <> LOWER(code) AND ctype LIKE 'a11y%';
 
-
 SELECT evergreen.upgrade_deps_block_check('1501', :eg_version);
 
 ALTER FUNCTION permission.usr_has_home_perm STABLE;
@@ -1432,6 +1431,34 @@ ALTER FUNCTION permission.usr_has_perm_at_nd STABLE;
 ALTER FUNCTION permission.usr_has_perm_at_all_nd STABLE;
 ALTER FUNCTION permission.usr_has_perm_at STABLE;
 ALTER FUNCTION permission.usr_has_perm_at_all STABLE;
+
+CREATE OR REPLACE FUNCTION evergreen.setup_delete_protect_rule (
+    t_schema TEXT,
+    t_table TEXT,
+    t_additional TEXT DEFAULT '',
+    t_pkey TEXT DEFAULT 'id',
+    t_deleted TEXT DEFAULT 'deleted'
+) RETURNS VOID AS $$
+DECLARE
+    rule_name   TEXT;
+    table_name  TEXT;
+    fq_pkey     TEXT;
+BEGIN
+
+    rule_name := 'protect_' || t_schema || '_' || t_table || '_delete';
+    table_name := t_schema || '.' || t_table;
+    fq_pkey := table_name || '.' || t_pkey;
+
+    EXECUTE 'DROP RULE IF EXISTS ' || rule_name || ' ON ' || table_name;
+    EXECUTE 'CREATE RULE ' || rule_name
+            || ' AS ON DELETE TO ' || table_name
+            || ' DO INSTEAD (UPDATE ' || table_name
+            || '   SET ' || t_deleted || ' = TRUE '
+            || '   WHERE OLD.' || t_pkey || ' = ' || fq_pkey
+            || '   ; ' || t_additional || ')';
+
+END;
+$$ STRICT LANGUAGE PLPGSQL;
 
 CREATE OR REPLACE FUNCTION permission.usr_has_object_perm ( iuser INT, tperm TEXT, obj_type TEXT, obj_id TEXT, target_ou INT ) RETURNS BOOL AS $$
 DECLARE
@@ -1486,33 +1513,46 @@ CREATE TRIGGER protect_acn_id_neg1
   EXECUTE PROCEDURE evergreen.raise_protected_row_exception();
 
 -- Open-ILS/src/sql/Pg/005.schema.actors.sql
-CREATE OR REPLACE RULE protect_user_delete AS ON DELETE TO actor.usr DO INSTEAD UPDATE actor.usr SET deleted = TRUE WHERE OLD.id = actor.usr.id RETURNING *;
-CREATE OR REPLACE RULE protect_usr_message_delete AS ON DELETE TO actor.usr_message DO INSTEAD UPDATE actor.usr_message SET deleted = TRUE WHERE OLD.id = actor.usr_message.id RETURNING *;
+DROP RULE IF EXISTS protect_user_delete ON actor.usr;
+SELECT evergreen.setup_delete_protect_rule('actor','usr');
+
+DROP RULE IF EXISTS protect_usr_message_delete ON actor.usr_message;
+SELECT evergreen.setup_delete_protect_rule('actor','usr_message');
 
 -- Open-ILS/src/sql/Pg/011.schema.authority.sql
-CREATE OR REPLACE RULE protect_authority_rec_delete AS ON DELETE TO authority.record_entry DO INSTEAD (UPDATE authority.record_entry SET deleted = TRUE WHERE OLD.id = authority.record_entry.id RETURNING *; DELETE FROM authority.full_rec WHERE record = OLD.id);
+DROP RULE IF EXISTS protect_authority_rec_delete ON authority.record_entry;
+SELECT evergreen.setup_delete_protect_rule('authority','record_entry','DELETE FROM authority.full_rec WHERE record = OLD.id');
 
 -- Open-ILS/src/sql/Pg/040.schema.asset.sql
-CREATE OR REPLACE RULE protect_copy_delete AS ON DELETE TO asset.copy DO INSTEAD UPDATE asset.copy SET deleted = TRUE WHERE OLD.id = asset.copy.id RETURNING *;
-CREATE OR REPLACE RULE protect_cn_delete AS ON DELETE TO asset.call_number DO INSTEAD UPDATE asset.call_number SET deleted = TRUE WHERE OLD.id = asset.call_number.id RETURNING *;
+DROP RULE IF EXISTS protect_copy_delete ON asset.copy;
+SELECT evergreen.setup_delete_protect_rule('asset','copy');
+
+DROP RULE IF EXISTS protect_cn_delete ON asset.call_number;
+SELECT evergreen.setup_delete_protect_rule('asset','call_number');
 
 -- Open-ILS/src/sql/Pg/210.schema.serials.sql
-CREATE OR REPLACE RULE protect_mfhd_delete AS ON DELETE TO serial.record_entry DO INSTEAD UPDATE serial.record_entry SET deleted = true WHERE old.id = serial.record_entry.id RETURNING *;
-CREATE OR REPLACE RULE protect_serial_unit_delete AS ON DELETE TO serial.unit DO INSTEAD UPDATE serial.unit SET deleted = TRUE WHERE OLD.id = serial.unit.id RETURNING *;
+DROP RULE IF EXISTS protect_mfhd_delete ON serial.record_entry;
+SELECT evergreen.setup_delete_protect_rule('serial','record_entry');
+
+DROP RULE IF EXISTS protect_serial_unit_delete ON serial.unit;
+SELECT evergreen.setup_delete_protect_rule('serial','unit');
 
 -- Open-ILS/src/sql/Pg/800.fkeys.sql
-CREATE OR REPLACE RULE protect_bib_rec_delete AS ON DELETE TO biblio.record_entry DO INSTEAD UPDATE biblio.record_entry SET deleted = TRUE WHERE OLD.id = biblio.record_entry.id RETURNING *;
-CREATE OR REPLACE RULE protect_mono_part_delete AS ON DELETE TO biblio.monograph_part DO INSTEAD (UPDATE biblio.monograph_part SET deleted = TRUE WHERE OLD.id = biblio.monograph_part.id RETURNING *; DELETE FROM asset.copy_part_map WHERE part = OLD.id);
-CREATE OR REPLACE RULE protect_cn_delete AS ON DELETE TO asset.call_number DO INSTEAD UPDATE asset.call_number SET deleted = TRUE WHERE OLD.id = asset.call_number.id RETURNING *;
-CREATE OR REPLACE RULE protect_copy_location_delete AS
-    ON DELETE TO asset.copy_location DO INSTEAD (
-        SELECT asset.check_delete_copy_location(OLD.id); -- exception on error
-        UPDATE asset.copy_location SET deleted = TRUE WHERE OLD.id = asset.copy_location.id RETURNING *;
-        UPDATE acq.lineitem_detail SET location = NULL WHERE location = OLD.id;
-        DELETE FROM asset.copy_location_order WHERE location = OLD.id;
-        DELETE FROM asset.copy_location_group_map WHERE location = OLD.id;
-        DELETE FROM config.circ_limit_set_copy_loc_map WHERE copy_loc = OLD.id;
-    );
+DROP RULE IF EXISTS protect_bib_rec_delete ON biblio.record_entry;
+SELECT evergreen.setup_delete_protect_rule('biblio','record_entry');
+
+DROP RULE IF EXISTS protect_mono_part_delete ON biblio.record_entry;
+SELECT evergreen.setup_delete_protect_rule('biblio','monograph_part','DELETE FROM asset.copy_part_map WHERE part = OLD.id');
+
+DROP RULE IF EXISTS protect_copy_location_delete ON asset.copy_location;
+SELECT evergreen.setup_delete_protect_rule(
+    'asset', 'copy_location',
+    'SELECT asset.check_delete_copy_location(OLD.id);'
+      || ' UPDATE acq.lineitem_detail SET location = NULL WHERE location = OLD.id;'
+      || ' DELETE FROM asset.copy_location_order WHERE location = OLD.id;'
+      || ' DELETE FROM asset.copy_location_group_map WHERE location = OLD.id;'
+      || ' DELETE FROM config.circ_limit_set_copy_loc_map WHERE copy_loc = OLD.id;'
+);
 
 SELECT evergreen.upgrade_deps_block_check('1502', :eg_version);
 
