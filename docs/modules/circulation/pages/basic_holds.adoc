@@ -6,22 +6,25 @@ For an understanding of holds and how they work within Evergreen, please visit t
 
 == Placing Holds ==
 
-Holds can be placed by staff in the _Staff Client_ and by patrons in the OPAC. In this chapter we demonstrate placing holds in the _Staff Client_.
+Holds can be placed by staff in the _Staff Client_ and by patrons in the public catalog (OPAC). In this chapter we demonstrate placing holds in the _Staff Client_.
 
 == Holds Levels ==
 
-Evergreen has different levels of holds. Library staff can place holds at all levels, while patrons can only place title-level holds, and parts-level holds. The chart below summarizes the levels of holds.
+Evergreen has different levels of holds. Library staff can place holds at all levels, while patrons can only place title-level holds, parts-level holds, and metarecord holds. The chart below summarizes the levels of holds.
 
 |==============================
 |*Hold level* |*Abbreviation* |*When to use*        |*How to use*   |*Who can use*    |*Hold tied to*
-|Title        |T              |Patron wants first available copy of a title  | Staff or patron click on _Place Hold_ next to title. | Patron or staff | Holdings attached to a single MARC (title) record
-|Parts        |P              |Patron wants a particular part of title (e.g. volume or disk number)    | Staff or patron selects part on the create/edit hold screen when setting holds notification options.   |Patron or staff  |Holdings with identical parts attached to a single MARC (title) record.
-|Volume       |V              |Patron or staff want any title associated with a particular call number | In the staff client, click on _Volume Hold_ under _Holdable?_ |Staff only |Holdings attached to a single call number (volume)
-|Copy         |C              |Patron or staff want a specific copy of an item |In the staff client, click on _Copy Hold_ under _Holdable?_ |Staff only |A specific copy (barcode)
+|Metarecord        |M             |Patron or staff want first available format of a title  | Patron selects _Combine Same Title_ in public catalog search, then chooses format options under _Select desired format(s)_ from the _Place Hold_ screen. Staff selects _Group Formats/Editions_ in the staff catalog search, then selects format options on the _Place Hold_ screen. | Patron or staff | Holdings beloging to multiple bibliographic (title) records sharing a metarecord
+|Title        |T              |Patron or staff want first available copy of a title  | Staff or patron clicks on _Place Hold_ next to title. | Patron or staff | Holdings attached to a single MARC (title) record
+|Part        |P              |Patron or staff a particular part of title (e.g. volume or disk number)    | Staff or patron selects part on the create/edit hold screen when setting holds notification options.   |Patron or staff  |Holdings with identical parts attached to a single MARC (title) record.
+|Volume       |V              |Patron or staff want any title associated with a particular call number | In the staff client, click on _Call Number Hold_ under _Holdable?_ |Staff only |Holdings attached to a single call number (volume)
+|Item/Copy         |C              |Patron or staff want a specific item |In the staff client, click on _Item Hold_ under _Holdable?_ |Staff only |A specific item (barcode)
+|Force         |F              |Staff want priority on a specific item for a staff member (forces Top-of-Queue)|In the staff client, click on _Item Hold_ under _Holdable?_; then click on the _Force Item Hold_ button on the _Place Hold_ screen. |Staff only |A specific item (barcode)
+|Recall         |R              |Staff want priority on a specific item to route to Cataloging (forces Top-of-Queue)|In the staff client, click on _Item Hold_ under _Holdable?_; then click on the _Recall Hold_ button on the _Place Hold_ screen.|Staff only |A specific item (barcode)
 |==============================
 
 
-== Title Level Hold ==
+== Title-Level Hold ==
 
 [TIP]
 ====================
@@ -30,14 +33,14 @@ A default hold expiration date will be displayed if the library has set up a def
 If you select the _Suspend this Hold_ checkbox, the hold will be suspended and not be captured until you activate it.
 ====================
 
-. To place a title level hold, retrieve the title record on the catalog and click the _Place Hold_ link beside the title on the search results list, or click the _Place Hold_ link on the title summary screen.
+. To place a title-level hold, retrieve the title record on the catalog and click the _Place Hold_ link beside the title on the search results list, or click the _Place Hold_ link on the title summary screen.
 +
 image::hold_management/holds_search_results.jpg[Search Results with Place Hold link]
 +
-. Scan or type patron's barcode into the _Place hold for patron by
+. Scan or type the patron's barcode into the _Place hold for patron by
 barcode_ box, or choose _Place this hold for me_.
 . If this title contains multiple parts, you can specify which part to
-request. If you do not select a part, the hold will target any of the
+request. Some libraries enable settings to require the choosing of a part when a record as parts. If a part is not required and you do not select a part, the hold will target any of the
 other copies on this record, that is, those with no parts attached.
 Those copies are usually the complete set, containing all the parts.
 . Edit patron hold notification and expiration date fields as required.
@@ -60,7 +63,7 @@ Selecting multiple formats will not place all of these formats on hold.
 For example, selecting CD Audiobook and Book implies that either the CD
 format or the book format is the acceptable format to fill the hold. If
 no format is selected, then any of the available formats may be used to
-fill the hold. The same holds true for selecting multiple languages.
+fill the hold. The same applies to selecting multiple languages.
 
 image::hold_management/advanced_hold.jpg[Place Hold screen with Advanced Options]
 
@@ -69,13 +72,13 @@ image::hold_management/advanced_hold.jpg[Place Hold screen with Advanced Options
 Patron Search from Place Hold allows staff members, when placing a hold on behalf of a patron in the web staff client, to search for patrons by names and other searchable patron information, rather than relying on barcode alone.
 
 
-=== To use Patron Search From Place Holds: ===
+=== To Use Patron Search From Place Holds: ===
 1. After performing a search in the catalog, staff will retrieve a bibliographic record.
-2. Click *Place Hold* either in the search results or within the detailed bibliographic record. The Place Hold Screen will appear. Note: this feature also appears when placing volume level holds and copy level holds.
+2. Click *Place Hold* either in the search results or within the detailed bibliographic record. The Place Hold screen will appear. Note: this feature also appears when placing volume-level holds and item-level holds.
 +
 image::hold_management/hold_details.jpg[Placing hold from the details page]
 +
-3. Next to _Place Hold for patron by barcode_, click on *Patron Search*. Please note that Patron Search will only appear in this interface when using the web-based staff client.  It will not appear in the patron-facing OPAC.
+3. Next to _Place Hold for patron by barcode_, click on *Patron Search*. Please note that Patron Search will only appear in this interface when using the web-based staff client. It will not appear in the patron-facing OPAC.
 +
 image::hold_management/patron_search_button.jpg[Patron Search]
 +
@@ -95,12 +98,12 @@ image::basic_holds/PlaceHold-4.JPG[Select Patron dialog box with search results 
 +
 image::basic_holds/PlaceHold-5.JPG[Select Patron dialog box with patron account selected]
 +
-7. The dialog box will close and the selected patron's barcode will appear next to _Place Hold for patron by barcode_. This will cause the patron's hold notification preferences to appear in the relevant fields in the bottom half of the screen. Changes to the Hold Notification preferences can be made before clicking *Submit* to finish placing a hold for the patron.
+7. The dialog box will close and the selected patron's barcode will appear next to _Place hold for patron by barcode_. This will cause the patron's hold notification preferences to appear in the relevant fields in the bottom half of the screen. Changes to the Hold Notification preferences can be made before clicking *Submit* to finish placing a hold for the patron.
 
 
-== Parts Level Hold ==
+== Part-Level Hold ==
 
-. To place a parts level hold, retrieve a record with parts-level items
+. To place a part-level hold, retrieve a record with part-level items
 attached to the title, such as a multi-disc DVD, an annual travel guide,
 or a multi-volume book set.
 . Place the hold as you would for a title-level hold, including patron
@@ -117,7 +120,9 @@ Requested formats are listed in the _Holdable Part_ column in hold records. Use 
 
 == Placing Holds in Patron Records ==
 
-. Holds can be placed from patron records too. In the patron record on the _Holds_ screen, click the _Place Hold_ button on the left top corner.
+Holds can be placed from patron records too. 
+
+. In the patron record on the _Holds_ screen, click the _Place Hold_ button on the left top corner.
 
 . The catalog is displayed in the _Holds_ screen to search for the title on which you want to place a hold.
 
@@ -129,7 +134,7 @@ Requested formats are listed in the _Holdable Part_ column in hold records. Use 
 
 === Placing Multiple Holds on Same Title ===
 
-After a successful hold placement, staff have the option to place another hold on the same title by clicking the link _Place another hold for this title_.  This returns to the hold screen, where a different patron's information can be entered.
+After a successful hold placement, staff have the option to place another hold on the same title by clicking the link _Place another hold for this title_. This returns to the hold screen, where a different patron's information can be entered.
 
 image::hold_management/hold_confirmation.jpg[Place another hold link]
 
@@ -138,16 +143,15 @@ This feature can be useful for book groups or new items where a list of waiting 
 
 == Managing Holds ==
 
-Holds can be cancelled at any time by staff or patrons. Before holds are captured, staff or patrons can suspend them or set them as inactive for a period of time without losing the hold queue position, activate suspended holds, phone number, pick-up location (for multi-branch libraries only), expiration date, activation date for inactive holds, etc. Once a hold is captured, staff can change the pickup location and extend the hold shelf time if required.
+Holds can be cancelled at any time by staff or patrons. Before holds are captured, staff or patrons can suspend them or set them as inactive for a period of time without losing the hold queue position, activate suspended holds, and edit the phone number, pick-up location (for multi-branch libraries only), expiration date, activation date for inactive holds, etc. Once a hold is captured, staff can change the pickup location and extend the hold shelf time if required.
 
 As of 3.6, staff and patrons can update hold notification preferences on unfulfilled holds. For more information see xref:circulation:circulation_patron_records_web_client.adoc#update_hold_notifications[Update Notification Preferences].
 
-Staff can edit holds in either patron’s records or the title records. Patrons can edit their holds in their account on the OPAC.
+Staff can edit holds in either patron’s records or the title records. Patrons can edit their holds in their account in the public catalog.
 
 [TIP]
 ==============
-If you use the column picker to change the holds display from one area of the staff client (e.g. the patron record), it will change the display for all parts of the staff client that deal with holds, including the title record holds
-display, the holds shelf display, and the pull list display.
+If you use the column picker to change the holds display from one area of the staff client (e.g., the patron record), it will change the display for all parts of the staff client that deal with holds, including the title record holds display, the holds shelf display, and the pull list display.
 ==============
 
 
@@ -182,7 +186,7 @@ image::basic_holds/holds-managing-4.JPG[holds-managing-4]
 
 .. Hold shelf expire time is automatically recorded in the hold record when a hold is filled. You may edit this time by using the _Edit Shelf Expire Time_ on the _Actions_ dropdown menu. You will be prompted to enter the new date. Use the calendar widget to choose a date, then click _Apply_.
 
-.. If you want to enable or disable phone notification or change the phone number, click _Edit Notification Settings_. You will be prompted to enter the new phone number. Make sure you enter a valid and complete phone number. The phone number is used for this hold only and can be different from the one in the patron account. It has no impact on the patron account. If you leave it blank, no phone number will be printed on the hold slip. If you want to enable or disable email notification for the hold, check _Send Emails_ on the prompt screen.
+.. If you want to enable or disable phone notifications or change the phone number, click _Edit Notification Settings_. You will be prompted to enter the new phone number. Make sure you enter a valid and complete phone number. The phone number is used for this hold only and can be different from the one in the patron account. It has no impact on the patron account. If you leave it blank, no phone number will be printed on the hold slip. If you want to enable or disable email notification for the hold, check _Send Emails_ on the prompt screen.
 +
 image::basic_holds/holds-managing-5_and_6.JPG[holds-managing-5_and_6]
 +
@@ -196,7 +200,7 @@ image::basic_holds/holds-managing-7.JPG[holds-managing-7]
 Staff can change the pickup location for holds with in-transit status. Item will be sent in transit to the new destination. Staff cannot change the pickup location once an item is on the holds shelf.
 ==============
 
-.. The item’s physical condition is recorded in the copy record as _Good_ or _Mediocre_ in the _Quality_ field. You may request that your holds be filled with copies of good quality only. Click _Set Desired Copy Quality_ on the
+.. The item’s physical condition is recorded in the item record as _Good_ or _Damaged_ in the _Is Mint Condition?_ field. You may request that your holds be filled with copies of good quality only. Click _Set Desired Item Quality_ on the
 _Actions_ list. Make your choice in the pop-up window.
 +
 image::basic_holds/holds-managing-8.JPG[holds-managing-8]
@@ -216,15 +220,15 @@ image::basic_holds/holds-managing-10.JPG[holds-managing-10]
 
 === Cancelled Holds ===
 
-. Cancelled holds can be displayed. Click the _Recently Cancelled Holds_ button on the _Holds_ screen.
+. Cancelled holds can be displayed. Click the _Recently Canceled Holds_ button on the _Holds_ screen.
 +
 image::basic_holds/holds-managing-11.JPG[holds-managing-11]
 +
-. You can un-cancel holds.
+. You can uncancel holds.
 +
 image::basic_holds/holds-managing-12.JPG[holds-managing-12]
 +
-Based on your library’s setting, hold request time can be reset when a hold is un-cancelled.
+Based on your library’s setting, hold request time can be reset when a hold is uncanceled.
 
 
 === Viewing Details & Adding Notes to Holds ===
@@ -276,7 +280,7 @@ Holds need to be retargeted whenever a new item is added to a record, or after s
 
 . View the holds for the item.
 
-. Highlight all the holds for the record, which have a status of _Waiting for Copy_. If there are a lot of holds, it may be helpful to sort the holds by _Status_.
+. Highlight all the holds for the record, which have a status of _Waiting for Item_. If there are a lot of holds, it may be helpful to sort the holds by _Status_.
 
 . Click on the head of the status column.
 
@@ -293,16 +297,16 @@ Holds need to be retargeted whenever a new item is added to a record, or after s
 
 ==== Holds Pull List ====
 
-There are usually four statuses a hold may have: _Waiting for Copy_, _Waiting for Capture_, _In Transit_ and _Ready for Pickup_.
+There are usually four statuses a hold may have: _Waiting for Item_, _Waiting for Capture_, _In Transit_ and _Ready for Pickup_.
 
-. *Waiting-for-copy*: all holdable copies are checked out or not available.
+. *Waiting for Item*: all holdable items are checked out or not available.
 
-. *Waiting-for-capture*: an available copy is assigned to the hold. The item shows up on the _Holds Pull List_ waiting for staff to search the shelf and capture the hold.
+. *Waiting for Capture*: an available item is assigned to the hold. The item shows up on the _Holds Pull List_ waiting for staff to search the shelf and capture the hold.
 
 . *In Transit*: holds are captured at a non-pickup branch and on the way to the pick-up location.
 
-. *Ready-for-pick-up*: holds are captured and items are on the _Hold Shelf_ waiting for patrons to pick up. Besides capturing holds when checking in items, Evergreen matches holds with available items in your library at regular
-intervals. Once a matching copy is found, the item’s barcode number is assigned to the hold and the item is put on the _Holds Pull List_. Staff can print the _Holds Pull List_ and search for the items on shelves.
+. *Ready for Pickup*: holds are captured and items are on the _Hold Shelf_ waiting for patrons to pick up. Besides capturing holds when checking in items, Evergreen matches holds with available items in your library at regular
+intervals. Once a matching item is found, the item’s barcode number is assigned to the hold and the item is put on the _Holds Pull List_. Staff can print the _Holds Pull List_ and search for the items on shelves.
 
 The _Holds Pull List_ is updated constantly. Once an item on the list is no longer available or a hold on the list is captured, the items will disappear from the list. The _Holds Pull List_ should be printed at least once a day. 
 
