@@ -22,6 +22,7 @@
         type="radio"
         class="form-check-input"
         id="{{field}}-input-{{option.value}}"
+        [name]="field"
         [attr.name]="field"
         [value]="option.value"
         [(ngModel)]="values[field]"
