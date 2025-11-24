@@ -15,7 +15,7 @@ The following bugs require a database update script:
 
 === Accessibility ===
 
-* Fixed input labels, IDs in Merge Monograph Parts dialog. (https://bugs.launchpad.net/evergreen/+bug/2063455[Bug 2063455])
+* Fixed input labels, IDs in Merge Monograph Parts dialog. (https://bugs.launchpad.net/evergreen/+bug/2077982[Bug 2077982])
 * Ensures all grid table captions have unique IDs (https://bugs.launchpad.net/evergreen/+bug/2102046[Bug 2102046])
 * Fixes ARIA labels for OPAC advanced search query type input and boolean operator select (https://bugs.launchpad.net/evergreen/+bug/2115685[Bug 2115685])
 * Fixes to Dark Mode styling (https://bugs.launchpad.net/evergreen/+bug/2121912[Bug 2121912
