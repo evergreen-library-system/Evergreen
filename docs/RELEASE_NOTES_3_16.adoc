@@ -432,7 +432,7 @@ The KPAC utilizes its own CSS files:
 * Adding information to the OPAC MyAccount docs about SmartPay.
 * Adds `page-{ctx.page}` or `page-myopac-{myopac_page}` to OPAC `<body>` tag for use in custom CSS (https://bugs.launchpad.net/evergreen/+bug/2115739[Bug 2115739])
 * Fixes borders of staff login form button, password toggle (https://bugs.launchpad.net/evergreen/+bug/2089597[Bug 2089597])
-* Fixed input labels, IDs in Merge Monograph Parts dialog. (https://bugs.launchpad.net/evergreen/+bug/2063455[Bug 2063455])
+* Fixed input labels, IDs in Merge Monograph Parts dialog. (https://bugs.launchpad.net/evergreen/+bug/2077982[Bug 2077982])
 * Ensures all grid table captions have unique IDs (https://bugs.launchpad.net/evergreen/+bug/2102046[Bug 2102046])
 * Fixes ARIA labels for OPAC advanced search query type input and boolean operator select (https://bugs.launchpad.net/evergreen/+bug/2115685[Bug 2115685])
 * Resolve an error with Github Actions continuous integration (automated testing) builds. (https://bugs.launchpad.net/evergreen/+bug/2129807[Bug 2129807])
