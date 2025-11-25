@@ -269,6 +269,13 @@ vim:et:ts=4:sw=4:
             <!-- load the OpenLibrary added content module -->
             <module>OpenILS::WWW::AddedContent::OpenLibrary</module>
 
+            <!-- Other available added content modules are:
+                 OpenILS::WWW::AddedContent::Amazon
+                 OpenILS::WWW::AddedContent::Chilifresh
+                 OpenILS::WWW::AddedContent::ObalkyKnih
+                 OpenILS::WWW::AddedContent::Syndetic
+            -->
+
             <!--
             Max number of seconds to wait for an added content request to 
             return data.  Data not returned within the timeout is considered
@@ -344,6 +351,12 @@ vim:et:ts=4:sw=4:
                 <reviews>true</reviews>
 
             </ObalkyKnih>
+
+            <!--
+            Optional code supplied by ChiliFresh to specify a fallback image and/or
+            to identify the site to ChiliFresh for other purposes.
+            -->
+            <chilifresh_generic></chilifresh_generic>
 
             <!--
  

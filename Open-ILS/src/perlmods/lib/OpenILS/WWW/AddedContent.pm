@@ -155,6 +155,7 @@ sub handler {
         my @isbns = grep {$_->{tag} eq '020'} @$key_data;
         my @issns = grep {$_->{tag} eq '022'} @$key_data;
         my @upcs  = grep {$_->{tag} eq '024'} @$key_data;
+        my @oclcs = grep {$_->{tag} eq '035'} @$key_data;
 
         map {
             # Attempt to validate the ISBN.
@@ -181,19 +182,34 @@ sub handler {
             undef $_ if !defined($_->{value});
         } @issns;
 
-        #Remove undef values from @isbns and @issns.
-        #Prevents empty requests to providers
+        # filter 035 fields for the values that look like OCLC numbers
+        map {
+            my $looks_like_oclc = $_->{value} =~ /(ocolc|ocm|ocl7|ocn)/i &&
+                                  $_->{value} =~ /\d+/;
+            if ($looks_like_oclc) {
+                $_->{value} =~ s/\D+//g; # keep the number only;
+                                         # the added content provider will be
+                                         # responsible for any normalization it needs
+            } else {
+                undef $_;
+            }
+        } @oclcs;
+
+        # Remove undef values from @isbns, @issns, and @oclcs.
+        # Prevents empty requests to providers
         @isbns = grep {defined} @isbns;
         @issns = grep {defined} @issns;
+        @oclcs = grep {defined} @oclcs;
 
         $keyhash = {
             isbn => [map {$_->{value}} @isbns],
             issn => [map {$_->{value}} @issns],
-            upc  => [map {$_->{value}} @upcs]
+            upc  => [map {$_->{value}} @upcs],
+            oclc => [map {$_->{value}} @oclcs]
         };
     }
 
-    return Apache2::Const::NOT_FOUND unless @{$keyhash->{isbn}} || @{$keyhash->{issn}} || @{$keyhash->{upc}};
+    return Apache2::Const::NOT_FOUND unless @{$keyhash->{isbn}} || @{$keyhash->{issn}} || @{$keyhash->{upc}} || @{$keyhash->{oclc}};
 
     try {
         if ($handler->can('expects_keyhash') && $handler->expects_keyhash() eq 1) {
@@ -249,6 +265,11 @@ sub get_rec_keys {
                         {tag => '024'},
                         {subfield => 'a'},
                         {ind1 => 1}
+                    ]
+                }, {
+                    '-and' => [
+                        {tag => '035'},
+                        {subfield => 'a'}
                     ]
                 }
             ]

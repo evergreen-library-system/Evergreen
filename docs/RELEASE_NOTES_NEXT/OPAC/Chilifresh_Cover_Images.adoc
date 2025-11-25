@@ -1,0 +1,12 @@
+== ChiliFresh Cover Images ==
+
+ChiliFresh is now avaialble as an added content source for cover
+images. To enable (after getting a subscription), edit `opensrf.xml`
+and set the `added_content/module` value to `OpenILS::WWW::AddedContent::Chilifresh`.
+
+The `added_content/base_url` value will also need to be set, typically to
+"https://content.chilifresh.com/".
+
+If you are supplied a "generic" code by ChiliFresh, that goes in the
+`added_content/generic` element in `opensrf.xml`.
+
