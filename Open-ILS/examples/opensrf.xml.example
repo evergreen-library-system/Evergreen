@@ -266,15 +266,29 @@ vim:et:ts=4:sw=4:
         </http_client>
 
         <added_content>
+            <!--
+                Load the module for your added content provider.
+                OpenLibrary is enabled by default.  It is free.  If
+                your site uses a different provider, then put comment
+                tags around the OpenLibrary entry and remove the
+                comment tags from the line or lines corresponding to
+                your provider.  NOTE: The base_url entries go with the
+                module specified on the previous line.
+            -->
             <!-- load the OpenLibrary added content module -->
             <module>OpenILS::WWW::AddedContent::OpenLibrary</module>
-
-            <!-- Other available added content modules are:
-                 OpenILS::WWW::AddedContent::Amazon
-                 OpenILS::WWW::AddedContent::Chilifresh
-                 OpenILS::WWW::AddedContent::ObalkyKnih
-                 OpenILS::WWW::AddedContent::Syndetic
-            -->
+            <!-- load the Syndetics added content module -->
+            <!-- <module>OpenILS::WWW::AddedContent::Syndetic</module> -->
+            <!-- <base_url>http://syndetics.com/index.aspx</base_url> -->
+            <!-- load the ContentCafe added content module -->
+            <!-- <module>OpenILS::WWW::AddedContent::ContentCafe</module> -->
+            <!-- load the Chilifresh added content module -->
+            <!-- <module>OpenILS::WWW::AddedContent::Chilifresh</module> -->
+            <!-- <base_url>https://content.chilifresh.com/</base_url> -->
+            <!-- load the Amazon added content module -->
+            <!-- <module>OpenILS::WWW::AddedContent::Amazon</module> -->
+            <!-- load the Obalkyknih added content module -->
+            <!-- <module>OpenILS::WWW::AddedContent::ObalkyKnih</module> -->
 
             <!--
             Max number of seconds to wait for an added content request to 
