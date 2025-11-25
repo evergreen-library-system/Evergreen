@@ -277,16 +277,22 @@ vim:et:ts=4:sw=4:
             -->
             <!-- load the OpenLibrary added content module -->
             <module>OpenILS::WWW::AddedContent::OpenLibrary</module>
+
             <!-- load the Syndetics added content module -->
             <!-- <module>OpenILS::WWW::AddedContent::Syndetic</module> -->
             <!-- <base_url>http://syndetics.com/index.aspx</base_url> -->
+
             <!-- load the ContentCafe added content module -->
             <!-- <module>OpenILS::WWW::AddedContent::ContentCafe</module> -->
+
             <!-- load the Chilifresh added content module -->
             <!-- <module>OpenILS::WWW::AddedContent::Chilifresh</module> -->
             <!-- <base_url>https://content.chilifresh.com/</base_url> -->
+
             <!-- load the Amazon added content module -->
             <!-- <module>OpenILS::WWW::AddedContent::Amazon</module> -->
+            <!-- <base_url>http://images.amazon.com/images/P/</base_url> -->
+
             <!-- load the Obalkyknih added content module -->
             <!-- <module>OpenILS::WWW::AddedContent::ObalkyKnih</module> -->
 
@@ -325,11 +331,6 @@ vim:et:ts=4:sw=4:
 
             <!-- If a userid is required to access the added content.. -->
             <userid>MY_USER_ID</userid>
-
-            <!--
-            Base URL for Amazon added content fetching. Not needed by OpenLibrary
-            <base_url>http://images.amazon.com/images/P/</base_url>
-            -->
 
             <!--
             Segregating the details for ContentCafe out for easier use.  At some point, we
