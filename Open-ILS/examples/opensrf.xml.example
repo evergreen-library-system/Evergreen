@@ -368,8 +368,10 @@ vim:et:ts=4:sw=4:
             </ObalkyKnih>
 
             <!--
-            Optional code supplied by ChiliFresh to specify a fallback image and/or
-            to identify the site to ChiliFresh for other purposes.
+            Optional code supplied by ChiliFresh to specify a fallback image.
+            Referred by them as a "generic placeholder" code. Without this code,
+            ChiliFresh returns a 1x1 image, which is normally what you want in order
+            to configure Apache to supply your own placeholder image.
             -->
             <chilifresh_generic></chilifresh_generic>
 
