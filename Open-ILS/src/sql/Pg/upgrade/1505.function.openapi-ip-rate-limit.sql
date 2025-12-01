@@ -1,6 +1,6 @@
 BEGIN;
 
--- SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1505', :eg_version);
 
 CREATE OR REPLACE FUNCTION openapi.check_generic_endpoint_rate_limit (target_endpoint TEXT, accessing_usr INT DEFAULT NULL, from_ip_addr INET DEFAULT NULL) RETURNS INT AS $f$
 DECLARE
