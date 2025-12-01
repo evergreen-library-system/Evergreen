@@ -202,8 +202,6 @@ sub run_method {
                         { barcode => $bc, deleted => 'f' }, $MK_ENV_FLESH
                     ])->[0]) { # got a copy
                         $copy->status( $transit->copy_status );
-                        $copy->editor($circulator->editor->requestor->id);
-                        $copy->edit_date('now');
                         $circulator->editor->update_asset_copy($copy);
                         $success_event->{"payload"}->{"record"} =
                             $U->record_to_mvr($copy->call_number->record);
@@ -1768,12 +1766,12 @@ sub update_copy {
     my $stat = $copy->status if ref $copy->status;
     my $loc = $copy->location if ref $copy->location;
     my $circ_lib = $copy->circ_lib if ref $copy->circ_lib;
+    my $copy_editor = $copy->editor if ref $copy->editor;
 
     $copy->status($stat->id) if $stat;
     $copy->location($loc->id) if $loc;
     $copy->circ_lib($circ_lib->id) if $circ_lib;
-    $copy->editor($self->editor->requestor->id);
-    $copy->edit_date('now');
+    $copy->editor($copy_editor->id) if $copy_editor;
     $copy->age_protect($copy->age_protect->id) if ref $copy->age_protect;
 
     return $self->bail_on_events($self->editor->event)
@@ -1782,6 +1780,7 @@ sub update_copy {
     $copy->status($U->copy_status($copy->status));
     $copy->location($loc) if $loc;
     $copy->circ_lib($circ_lib) if $circ_lib;
+    $copy->editor($copy_editor) if $copy_editor;
 }
 
 sub update_reservation {
@@ -3067,6 +3066,9 @@ sub do_checkin {
                 if ($can_float && ($self->manual_float || !$U->is_true($self->copy->floating->manual)) && !$self->remote_hold) { # Yep, floating, stick here
                     $self->checkin_changed(1);
                     $self->copy->circ_lib( $self->circ_lib );
+                    # update editor and edit_date because we changed the circ_lib.
+                    $self->copy->editor($self->editor->requestor->id);
+                    $self->copy->edit_date('now');
                     $self->update_copy;
                 } else {
                     my $bc = $self->copy->barcode;
@@ -3079,9 +3081,13 @@ sub do_checkin {
         }
     } else { # no-op checkin
         # XXX floating items still stick where they are even with no-op checkin?
-        if ($self->copy->floating && $can_float) {
+        my $clib = ref($self->copy->circ_lib) ? $self->copy->circ_lib->id : $self->copy->circ_lib;
+        if ($self->copy->floating && $can_float && $clib != $self->circ_lib) {
             $self->checkin_changed(1);
             $self->copy->circ_lib( $self->circ_lib );
+            # update editor and edit_date because we changed the circ_lib.
+            $self->copy->editor($self->editor->requestor->id);
+            $self->copy->edit_date('now');
             $self->update_copy;
         }
     }
