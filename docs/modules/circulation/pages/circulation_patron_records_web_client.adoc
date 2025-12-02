@@ -308,7 +308,7 @@ Open the patron record in edit mode as described in the section
  
 Next to the _Barcode_ field, select the _Replace Barcode_ button.
 
-image::circulation_patron_records_web_client/circulation_patron_records_13.JPG[A screenshot of the top of the patron record screen. The Replace Barcode button next to the barcode field is highlighted.]
+image::circulation_patron_records_web_client/replace_barcode_button.png[A screenshot of the top of the patron record screen. The Replace Barcode button next to the barcode field is highlighted., width=650]
 
 This will clear the barcode field. Enter a new barcode and _Save_ the record.
 The screen will refresh and the new barcode will display in the patron summary
@@ -322,7 +322,7 @@ edit mode as described in the section <<updating_patron_information,Updating Pat
 Select the _See All_ button next to the _Replace Barcode_ button. This will
 display the current and past barcodes associated with this account. 
 
-image::circulation_patron_records_web_client/circulation_patron_records_14.JPG[A screenshot of the Patron Barcodes modal. Two barcodes are shown. Under the Active heading, only the lower checkbox is selected. Under the Primary column the radio button for the second barcode is selected.]
+image::circulation_patron_records_web_client/barcode_dialog.png[A screenshot of the Patron Barcodes modal. Two barcodes are shown. Under the Active heading, only the lower checkbox is selected. Under the Primary column the radio button for the second barcode is selected., width=650]
 
 Check the box(es) for all barcodes that should be active for the patron. An
 active barcode may be used for circulation transactions. A patron may have
@@ -333,6 +333,57 @@ information in the _Library Card_ field.
 Once you have modified the patron barcode(s), _Save_ the patron record. If you
 modified the ``primary'' barcode, the new primary barcode will display in the
 patron summary screen. 
+
+=== Deleting Patron Barcodes ===
+
+indexterm:[library cards, deleting]
+
+Patrons may accumulate multiple barcodes over time. Inactive barcodes can be deleted to keep the patron record clean and organized. Only inactive, non-primary barcodes can be deleted.
+
+To delete a patron barcode:
+
+. Retrieve the patron record as described in the section
+<<searching_patrons,Searching Patrons>>.
+
+. Open the patron record in edit mode as described in the section
+<<updating_patron_information,Updating Patron Information>>.
+
+. Select the _See All_ button next to the _Barcode_ field to open the Patron Barcodes dialog.
+
+image::circulation_patron_records_web_client/barcode_deletion_dialog.png[Patron Barcodes dialog showing a table with barcode entries. The Delete column is visible with buttons for each barcode., width=650]
+
+. Locate the barcode you wish to delete in the list.
+
+. *Important:* Before deletion, the barcode must be:
+   * Deactivated (uncheck the _Active_ checkbox)
+   * The patron record must be saved and closed
+   * The Patron Barcodes dialog must be reopened
+
+. Once the barcode is confirmed as inactive and you have saved and reopened the dialog, the _Delete_ button for that barcode will become available (it appears grayed out for active barcodes).
+
+. Click the _Delete_ button for the barcode to be removed.
+
+image::circulation_patron_records_web_client/barcode_deletion_confirm.png[Patron Barcodes dialog showing a barcode marked for deletion with a "Pending Deletion" badge and grayed out in the list., width=650]
+
+. A yellow alert banner labeled "Note:" will display indicating that "Barcode deletions will take effect when you save the patron record."
+
+. Click _Apply Changes_ and then _Save_ the patron record. The barcode will be permanently deleted.
+
+==== Deletion Requirements ====
+
+[NOTE]
+============================================================================
+* The primary barcode cannot be deleted. You must change the primary barcode 
+  to a different card before the current primary can be deleted.
+* Active barcodes cannot be deleted. The barcode must first be deactivated 
+  (uncheck _Active_) and the patron record must be saved before deletion is 
+  permitted.
+* Both the `UPDATE_PATRON_ACTIVE_CARD` and `UPDATE_PATRON_PRIMARY_CARD` 
+  permissions are required to delete barcodes.
+* Barcode deletions are not immediately applied. They take effect when you 
+  save the patron record after clicking _Apply Changes_ in the Patron Barcodes 
+  dialog.
+============================================================================
 
 == Resetting Patron's Password ==
 
