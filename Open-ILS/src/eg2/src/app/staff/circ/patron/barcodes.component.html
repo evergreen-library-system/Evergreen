@@ -1,39 +1,86 @@
-<eg-string #successMsg text="Successfully Added Group" i18n-text></eg-string>
-<eg-string #errorMsg text="Failed To Add Group" i18n-text></eg-string>
-
 <ng-template #dialogContent>
   <div class="modal-header">
     <h4 class="modal-title" i18n>Patron Barcodes</h4>
     <button type="button" class="btn-close btn-close-white"
-      i18n-aria-label aria-label="Close dialog" (click)="close()"></button>
+      i18n-aria-label [attr.aria-label]="'Close dialog'" (click)="close()"></button>
   </div>
   <div class="modal-body">
-    <div class="row">
-      <div class="col-lg-4 fw-bold" i18n>Barcode</div>
-      <div class="col-lg-4 fw-bold" i18n>Active</div>
-      <div class="col-lg-4 fw-bold" i18n>Primary</div>
+    <div class="alert alert-warning" *ngIf="hasPendingDeletes()" role="alert">
+      <strong i18n>Note: </strong>
+      <span i18n>Barcode deletions will take effect when you save the patron record.</span>
     </div>
-    <div class="row mt-2 pt-2" *ngFor="let card of patron.cards()">
-      <label class="col-lg-4 col-form-label" for="card-{{card.id()}}" i18n>
-        {{card.barcode()}}
-      </label>
-      <div class="col-lg-4" i18n>
-        <input type="checkbox" [disabled]="!myPerms.UPDATE_PATRON_ACTIVE_CARD"
-          (ngModelChange)="activeChange(card, $event)" id="card-{{card.id()}}"
-          class="form-check-input ms-0" [ngModel]="card.active() === 't'">
+    <ng-container *ngIf="patron">
+      <div class="table-responsive">
+        <table class="table align-middle patron-barcodes-table">
+          <thead class="fw-bold">
+            <tr>
+              <th i18n>Barcode</th>
+              <th class="text-nowrap" i18n>Active</th>
+              <th class="text-nowrap" i18n>Primary</th>
+              <th class="text-nowrap">
+                <span i18n>Delete</span>
+                <button type="button" class="btn btn-sm btn-link p-0 ms-1"
+                  [ngbPopover]="deleteHelpContent"
+                  [popoverTitle]="deletionRequirementsTitle"
+                  triggers="click"
+                  [attr.aria-label]="deletionHelpLabel">
+                  <span class="material-icons" style="font-size: 1rem; vertical-align: text-bottom;">info</span>
+                </button>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let card of patron.cards()" [class.opacity-50]="card.isdeleted()">
+              <td>
+                <label [attr.for]="'card-' + card.id()">
+                  <span [class.text-decoration-line-through]="card.isdeleted()">{{card.barcode()}}</span>
+                  <span class="badge bg-warning text-black ms-2" *ngIf="card.isdeleted()" i18n>Pending Deletion</span>
+                </label>
+              </td>
+              <td>
+                <input type="checkbox" [disabled]="!myPerms.UPDATE_PATRON_ACTIVE_CARD"
+                  (ngModelChange)="activeChange(card, $event)" [id]="'card-' + card.id()"
+                  class="form-check-input" [ngModel]="card.active() === 't'">
+              </td>
+              <td>
+                <input type="radio" name="primary-card" [value]="card.id()"
+                  [disabled]="!myPerms.UPDATE_PATRON_PRIMARY_CARD"
+                  [attr.aria-label]="'Use ' + card.barcode() + ' as primary card'"
+                  class="form-check-input" [(ngModel)]="primaryCard">
+              </td>
+              <td>
+                <button type="button" class="btn btn-sm"
+                  [class.btn-danger]="!card.isdeleted()"
+                  [class.btn-secondary]="card.isdeleted()"
+                  [disabled]="!(myPerms.UPDATE_PATRON_ACTIVE_CARD && myPerms.UPDATE_PATRON_PRIMARY_CARD) || card.id() === primaryCard || card.isdeleted() || card.active() === 't' || hasUnsavedActiveChanges(card)"
+                  [attr.title]="getDeleteTitle(card)"
+                  (click)="deleteCard(card)"
+                  [attr.aria-label]="'Delete barcode ' + card.barcode()"
+                  i18n>Delete</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
-      <div class="col-lg-4" i18n>
-        <input type="radio" name="primary-card" [value]="card.id()"
-          [disabled]="!myPerms.UPDATE_PATRON_PRIMARY_CARD"
-          aria-label="Use {{card.barcode()}} as primary card" i18n-aria-label
-          class="form-check-input ms-0" [(ngModel)]="primaryCard">
-      </div>
-    </div>
+    </ng-container>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-success"
       (click)="applyChanges()" i18n>Apply Changes</button>
     <button type="button" class="btn btn-normal"
       (click)="close()" i18n>Cancel</button>
+  </div>
+</ng-template>
+
+<ng-template #deleteHelpContent>
+  <div class="small p-3">
+    <p class="mb-2" i18n>To delete a barcode, you must:</p>
+    <ol class="mb-3 ps-3">
+      <li i18n>Deactivate it (uncheck Active)</li>
+      <li i18n>Apply Changes and Save the patron record</li>
+      <li i18n>Reopen this dialog</li>
+      <li i18n>Then click Delete</li>
+    </ol>
+    <p class="mb-0 text-muted" i18n>Note: Primary cards cannot be deleted.</p>
   </div>
 </ng-template>

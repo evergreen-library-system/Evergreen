@@ -102,6 +102,13 @@
 	<event code='1216' textcode='PATRON_CARD_INACTIVE'>
 		<desc xml:lang="en-US">The patron's card is not active</desc>
 	</event>
+
+	<event code='1990' textcode='CANNOT_DELETE_PRIMARY_CARD'>
+		<desc xml:lang="en-US">Cannot delete the primary barcode</desc>
+	</event>
+	<event code='1991' textcode='CANNOT_DELETE_ACTIVE_CARD'>
+		<desc xml:lang="en-US">Cannot delete an active barcode</desc>
+	</event>
 	<event code='1217' textcode='PATRON_INACTIVE'>
 		<desc xml:lang="en-US">This account is marked as inactive</desc>
 	</event>

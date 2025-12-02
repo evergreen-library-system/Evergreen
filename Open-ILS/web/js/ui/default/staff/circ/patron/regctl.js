@@ -1,4 +1,3 @@
-
 angular.module('egCoreMod')
 // toss tihs onto egCoreMod since the page app may vary
 
@@ -1176,9 +1175,19 @@ angular.module('egCoreMod')
         var card_hashes = patron.cards();
         patron.cards([]);
         angular.forEach(card_hashes, function(chash) {
-            var card = egCore.idl.fromHash('ac', chash)
+
+            // For existing, non-deleted cards, mark as changed
+            if (!chash.isnew && !chash.isdeleted) chash.ischanged = true;
+
+            var card = egCore.idl.fromHash('ac', chash);
             card.usr(patron.id());
             card.active(chash.active ? 't' : 'f');
+            
+            // Set IDL state flags - these are virtual fields that must be set via methods
+            if (chash.isnew) card.isnew(true);
+            if (chash.isdeleted) card.isdeleted(true);
+            if (chash.ischanged) card.ischanged(true);
+
             patron.cards().push(card);
             if (chash._primary) {
                 patron.card(card);
@@ -1922,10 +1931,20 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
             templateUrl: './circ/patron/t_patron_cards_dialog',
             backdrop: 'static',
             controller: 
-                   ['$scope','$uibModalInstance','cards','perms','patron',
-            function($scope , $uibModalInstance , cards , perms , patron) {
+                   ['$scope','$uibModalInstance','cards','perms','patron','ngToast',
+            function($scope , $uibModalInstance , cards , perms , patron, ngToast) {
                 // scope here is the modal-level scope
                 $scope.args = {cards : cards, primary_barcode : null};
+
+                // Initialize backend state tracking only on first dialog open for each card.
+                // _backend_active tracks the active state as last known by the server
+                // (updated when the patron record is saved).
+                angular.forEach(cards, function(card) {
+                    if (typeof card._backend_active === 'undefined') {
+                        card._backend_active = Boolean(card.active);
+                    }
+                });
+
                 angular.forEach(cards, function(card) {
                     if (card.id == patron.card.id) {
                         $scope.args.primary_barcode = card.id;
@@ -1934,6 +1953,43 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
                 $scope.perms = perms;
                 $scope.ok = function() { $uibModalInstance.close($scope.args) }
                 $scope.cancel = function () { $uibModalInstance.dismiss() }
+
+                $scope.hasUnsavedActiveChanges = function(card) {
+                    if (!card) return false;
+                    if (typeof card._backend_active === 'undefined') return false;
+                    return Boolean(card._backend_active) !== Boolean(card.active);
+                };
+
+                $scope.deleteCard = function(card) {
+                    // Require both permissions
+                    if (!$scope.perms.UPDATE_PATRON_ACTIVE_CARD || !$scope.perms.UPDATE_PATRON_PRIMARY_CARD) {
+                        ngToast.danger(egCore.strings.PERMISSION_DENIED_DELETE_BARCODES || 'Permission denied for deleting barcodes');
+                        return;
+                    }
+
+                    // Cannot delete primary card
+                    if (card.id == $scope.args.primary_barcode) {
+                        ngToast.danger(egCore.strings.CANNOT_DELETE_PRIMARY_CARD || 'Cannot delete the primary barcode');
+                        return;
+                    }
+
+                    // Cannot delete active barcodes
+                    if (Boolean(card.active)) {
+                        ngToast.danger(egCore.strings.CANNOT_DELETE_ACTIVE_CARD || 'Active barcodes cannot be deleted. Deactivate the barcode first, save the patron record, then delete it.');
+                        return;
+                    }
+
+                    // Cannot delete if deactivation has not been saved yet
+                    if ($scope.hasUnsavedActiveChanges(card)) {
+                        ngToast.warning(egCore.strings.SAVE_AFTER_DEACTIVATE_BEFORE_DELETE || 'Please save the patron record after deactivating the barcode before deleting it.');
+                        return;
+                    }
+
+                    card.isdeleted = true;
+                }
+                $scope.hasPendingDeletes = function() {
+                    return $scope.args.cards.some(function(card) { return card.isdeleted; });
+                }
             }],
             resolve : {
                 cards : function() {
@@ -1950,7 +2006,10 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
         }).result.then(
             function(args) {
                 angular.forEach(args.cards, function(card) {
-                    card.ischanged = true; // assume cards need updating, OK?
+                    // Don't mark deleted cards as changed - they should only be marked as deleted
+                    if (!card.isdeleted) {
+                        card.ischanged = true;
+                    }
                     if (card.id == args.primary_barcode) {
                         $scope.patron.card = card;
                         card._primary = true;
@@ -1958,8 +2017,21 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
                         card._primary = false;
                     }
                 });
+                // Persist any deletion or primary changes back to patron cards
+                $scope.patron.cards = args.cards;
             }
-        );
+        ).catch(function() {
+            // Modal dismissed/cancelled - revert any unsaved active state, primary state, and pending deletes
+            angular.forEach($scope.patron.cards, function(card) {
+                if (typeof card._backend_active !== 'undefined') {
+                    card.active = card._backend_active;
+                }
+                card._primary = (card.id == $scope.patron.card.id);
+                if (card.isdeleted) {
+                    delete card.isdeleted;
+                }
+            });
+        });
     }
 
     $scope.set_addr_type = function(addr, type) {
