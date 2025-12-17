@@ -3,9 +3,69 @@
 :numbered:
 :toclevels: 3
 
-== Evergreen 3.15.7 ==
+
+== Evergreen 3.15.8 ==
 
 This release contains bug fixes and documentation fixes improving on Evergreen 3.15.7.
+
+=== Upgrade Notes ===
+
+The following bugs require a database update script:
+
+* Fix speed and correctness of OpenAPI restrictions. (https://bugs.launchpad.net/evergreen/+bug/2110638[Bug 2110638])
+
+=== Accessibility ===
+
+* Add configurable autofocus functionality to angular patron search forms/dialogs (https://bugs.launchpad.net/evergreen/+bug/2101913[Bug 2101913])
+
+=== Administration ===
+
+* Fix speed and correctness of OpenAPI restrictions. (https://bugs.launchpad.net/evergreen/+bug/2110638[Bug 2110638])
+* Fix title styling, skip link destination in link checker (https://bugs.launchpad.net/evergreen/+bug/2102739[Bug 2102739])
+* Fixes an issue introduced in commit 5c51f8e8bd3 that resulted in some comments in an OPAC template showing up in the output.
+
+=== Cataloging ===
+
+*  Adds [name] to the radio button inputs so they bind to the expected input on RadioControlValueAccessor and group correctly. (https://bugs.launchpad.net/evergreen/+bug/2131687[Bug 2131687])
+
+=== Documentation ===
+
+* Updates to staff catalog search imageto show Library Groups and Shelving Location Groups
+
+=== Public Catalog ===
+
+* Improved usability of OPAC settings page. (https://bugs.launchpad.net/evergreen/+bug/1835765[Bug 1835765])
+* Fixes issue that caused the public catalog patron self-registration form to not honor library settings used to control the visibility of some fields such as the second given name (https://bugs.launchpad.net/evergreen/+bug/2071656[Bug 2071656])
+
+
+
+=== Acknowledgements ===
+
+We would like to thank the following individuals who contributed code, testing, documentation, and patches to the 3.15.8 point release of Evergreen:
+
+* Andrea Buntz Neiman
+* Dan Briem
+* Galen Charlton
+* Gina Monti
+* Ian Skelskey
+* Jane Sandberg
+* Jason Stephenson
+* Llewellyn Marshall
+* Martha Driscoll
+* Michele Morgan
+* Mike Rylander
+* Shula Link
+* Stephanie Leary
+* Terran McCanna
+* Tiffany Little
+
+
+
+
+
+== Evergreen 3.15.7 ==
+
+This release contains bug fixes and documentation fixes improving on Evergreen 3.15.6.
 
 === Upgrade Notes ===
 
