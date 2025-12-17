@@ -333,7 +333,7 @@ msgid "<i class='fas fa-road' aria-hidden='true'></i> Curbside Pickup"
 msgstr ""
 
 #: ../../Open-ILS/src/templates-bootstrap/opac/parts/myopac/base.tt2:3
-msgid "<i class='fas fa-search' aria-hidden='true'></i> Search & History"
+msgid "<i class='fas fa-search' aria-hidden='true'></i> Other Settings"
 msgstr ""
 
 #: ../../Open-ILS/src/templates-bootstrap/opac/parts/myopac/base.tt2:3
@@ -583,8 +583,8 @@ msgstr ""
 msgid "All available copies are temporarily unavailable at your pickup library. Placing this hold could result in longer wait times."
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_settings.tt2:123
-msgid "Allow others to use my account"
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_settings.tt2:112
+msgid "Allow others to use your account. To remove an authorized user, delete their name or uncheck all of their permissions."
 msgstr ""
 
 #: ../../Open-ILS/src/templates-bootstrap/opac/myopac/lists.tt2:487
@@ -785,6 +785,10 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates-bootstrap/opac/parts/filtersort.tt2:11
 msgid "Author: Z to A"
+msgstr ""
+
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_settings.tt2:111
+msgid "Authorized Users"
 msgstr ""
 
 #: ../../Open-ILS/src/templates-bootstrap/opac/parts/qtype_selector.tt2:1
@@ -1154,7 +1158,7 @@ msgstr ""
 msgid "Change the number of lists shown in 'My Lists'."
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_settings.tt2:44
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_settings.tt2:56
 msgid "Change the number of results shown in a search while signed in."
 msgstr ""
 
@@ -1178,7 +1182,7 @@ msgstr ""
 msgid "Check Out History"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_settings.tt2:143 ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_settings.tt2:169
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_settings.tt2:136 ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_settings.tt2:160
 msgid "Check Out Items"
 msgstr ""
 
@@ -2449,7 +2453,7 @@ msgstr ""
 msgid "Hide items in list"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_settings.tt2:71
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_settings.tt2:62
 msgid "Highlight search terms?"
 msgstr ""
 
@@ -2479,6 +2483,10 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates-bootstrap/opac/place_hold.tt2:9
 msgid "Hold Placement"
+msgstr ""
+
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_settings.tt2:75
+msgid "Hold Settings"
 msgstr ""
 
 #: ../../Open-ILS/src/templates-bootstrap/opac/myopac/ebook_holds.tt2:15
@@ -2777,11 +2785,11 @@ msgstr ""
 msgid "Jurisdiction governed"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_settings.tt2:84
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_settings.tt2:176
 msgid "Keep history of checked out items?"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_settings.tt2:94
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_settings.tt2:90
 msgid "Keep history of holds?"
 msgstr ""
 
@@ -3271,7 +3279,7 @@ msgstr ""
 msgid "NO"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/lists.tt2:204 ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_settings.tt2:127 ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_settings.tt2:156
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/lists.tt2:204 ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_settings.tt2:118 ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_settings.tt2:147
 msgid "Name:"
 msgstr ""
 
@@ -3499,7 +3507,7 @@ msgstr ""
 msgid "OR"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_settings.tt2:149 ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_settings.tt2:173
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_settings.tt2:142 ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_settings.tt2:164
 msgid "Obtain Circulation Information"
 msgstr ""
 
@@ -3547,7 +3555,7 @@ msgstr ""
 msgid "Originator"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/relators.tt2:2
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_settings.tt2:172 ../../Open-ILS/src/templates-bootstrap/opac/parts/relators.tt2:2
 msgid "Other"
 msgstr ""
 
@@ -3561,6 +3569,10 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs.tt2:55
 msgid "Other Phone"
+msgstr ""
+
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_settings.tt2:8 ../../Open-ILS/src/templates-bootstrap/opac/parts/myopac/base.tt2:3
+msgid "Other Settings"
 msgstr ""
 
 #: ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:219
@@ -3775,7 +3787,7 @@ msgstr ""
 msgid "Physical Description:"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_settings.tt2:137 ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_settings.tt2:165
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_settings.tt2:130 ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_settings.tt2:156
 msgid "Pick Up Holds"
 msgstr ""
 
@@ -3783,7 +3795,7 @@ msgstr ""
 msgid "Pickup Location"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_settings.tt2:113
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_settings.tt2:100
 msgid "Pickup holds from behind the desk when possible?"
 msgstr ""
 
@@ -3807,7 +3819,7 @@ msgstr ""
 msgid "Place Hold on E-Item"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_settings.tt2:131 ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_settings.tt2:161 ../../Open-ILS/src/templates-bootstrap/opac/parts/cart.tt2:6 ../../Open-ILS/src/templates-bootstrap/opac/parts/cart_nav.tt2:13
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_settings.tt2:124 ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_settings.tt2:152 ../../Open-ILS/src/templates-bootstrap/opac/parts/cart.tt2:6 ../../Open-ILS/src/templates-bootstrap/opac/parts/cart_nav.tt2:13
 msgid "Place Holds"
 msgstr ""
 
@@ -3985,11 +3997,11 @@ msgstr ""
 msgid "Preferred library: %1"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_settings.tt2:59
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_settings.tt2:78
 msgid "Preferred pickup location"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_settings.tt2:49
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_settings.tt2:32
 msgid "Preferred search location"
 msgstr ""
 
@@ -4511,7 +4523,7 @@ msgstr ""
 msgid "Saturday"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/lists.tt2:216 ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_my_lists.tt2:53 ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_notify.tt2:140 ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_settings.tt2:181
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/lists.tt2:216 ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_my_lists.tt2:53 ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_notify.tt2:140 ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_settings.tt2:198
 msgid "Save"
 msgstr ""
 
@@ -4563,10 +4575,6 @@ msgstr ""
 msgid "Search"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/myopac/base.tt2:3
-msgid "Search & History"
-msgstr ""
-
 #: ../../Open-ILS/src/templates-bootstrap/opac/course_search.tt2:20 ../../Open-ILS/src/templates-bootstrap/opac/parts/topnav_subnav.tt2:21 ../../Open-ILS/src/templates-bootstrap/opac/parts/topnav_subnav.tt2:23
 msgid "Search Courses"
 msgstr ""
@@ -4611,12 +4619,12 @@ msgstr ""
 msgid "Search Scope"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:12
-msgid "Search Terms"
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_settings.tt2:29
+msgid "Search Settings"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_settings.tt2:8
-msgid "Search and History Preferences"
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:12
+msgid "Search Terms"
 msgstr ""
 
 #: ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/numeric.tt2:3
@@ -4635,7 +4643,7 @@ msgstr ""
 msgid "Search for related items by subject"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_settings.tt2:30
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_settings.tt2:42
 msgid "Search hits per page"
 msgstr ""
 
@@ -4966,7 +4974,7 @@ msgstr ""
 msgid "Skip to main content"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_settings.tt2:104
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_settings.tt2:186
 msgid "Skip warning when adding to temporary book list?"
 msgstr ""
 
