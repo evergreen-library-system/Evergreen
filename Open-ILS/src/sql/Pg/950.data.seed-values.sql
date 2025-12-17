@@ -26764,3 +26764,32 @@ VALUES (currval('action_trigger.event_definition_id_seq'), 'home_ou'),
 INSERT into action_trigger.hook (key, core_type, description) VALUES
 ( 'au.erenewal', 'au', 'A patron has been renewed via Erenewal');
 
+------- STACKMAP ADDED CONTENT ------
+
+INSERT into config.org_unit_setting_type
+    (name, grp, label, description, datatype)
+VALUES (
+    'opac.stackmap_enable',
+    'opac',
+    oils_i18n_gettext('opac.stackmap_enable',
+    'Stackmap: Enable',
+    'coust', 'label'),
+    oils_i18n_gettext('opac.stackmap_enable',
+    'Enable Stackmap in the OPAC. Default is false.',
+    'coust', 'description'),
+    'bool'
+);
+
+INSERT into config.org_unit_setting_type
+    (name, grp, label, description, datatype)
+VALUES (
+    'opac.stackmap_identifier',
+    'opac',
+    oils_i18n_gettext('opac.stackmap_identifier',
+    'Stackmap: Identifier',
+    'coust', 'label'),
+    oils_i18n_gettext('opac.stackmap_identifier',
+    'Account code provided by Stackmap. (Example: pines-evergreen)',
+    'coust', 'description'),
+    'string'
+);

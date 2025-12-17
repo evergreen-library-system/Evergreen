@@ -344,3 +344,13 @@ var aou_hash = {
   });
 }());
 </script>
+
+[% IF ctx.get_org_setting(ctx.physical_loc || ctx.aou_tree.id, 'opac.stackmap_enable');
+    mystackmapcode = ctx.get_org_setting(ctx.physical_loc || ctx.aou_tree.id, 'opac.stackmap_identifier'); %]
+
+<!-- STACKMAP CHANGES BEGIN HERE -->
+<script src="https://www.stackmapintegration.com/[% mystackmapcode %]/StackMap.min.js" type="text/javascript"></script>
+<link rel="stylesheet" media="all" type="text/css" href="https://www.stackmapintegration.com/[% mystackmapcode %]/StackMap.min.css" />
+<!-- STACKMAP CHANGES END HERE -->
+
+[% END %]
