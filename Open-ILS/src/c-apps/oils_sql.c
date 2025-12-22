@@ -1790,7 +1790,7 @@ osrfStringArray* generatePcrudVisibilityConditions ( osrfMethodContext* ctx, osr
             if (!ignore_object_permissions) {
                 osrf_buffer_fadd(
                     context_org_test_buf,
-                    "permission.usr_has_object_perm(%d, '%s', '%s', %s.%s::TEXT, %s)",
+                    "permission.usr_has_object_perm(%d, '%s', '%s', \"%s\".\"%s\"::TEXT, %s)",
                     userid, permission, classname, classname, primary_key, context_org
                 );
             } else {
@@ -1944,7 +1944,7 @@ osrfStringArray* generatePcrudVisibilityConditions ( osrfMethodContext* ctx, osr
                     if (!ignore_object_permissions) {
                         osrf_buffer_fadd(
                             context_org_function_buf,
-                            "permission.usr_has_object_perm(%d, '%s', '%s', %s%s.%s::TEXT, sub_%s.%s)",
+                            "permission.usr_has_object_perm(%d, '%s', '%s', \"%s%s\".\"%s\"::TEXT, sub_%s.%s)",
                             userid,
                             permission,
                             classname_for_object_perms,
