@@ -123,16 +123,16 @@ sub load_myopac_prefs {
     $self->prepare_extended_user_info;
     my $user = $self->ctx->{user};
 
-    # PINES - check whether or not to provide account renewal link
+    # Check whether or not to provide account renewal link
     if ($user->billing_address and $user->billing_address->valid and $user->billing_address->valid eq 't') {
-        $self->ctx->{valid_billing_address} = 't';
+        $self->ctx->{valid_billing_address} = 1;
     } else {
-        $self->ctx->{valid_billing_address} = 'f';
+        $self->ctx->{valid_billing_address} = 0;
     }
     if ($user->mailing_address and $user->mailing_address->valid and $user->mailing_address->valid eq 't') {
-        $self->ctx->{valid_mailing_address} = 't';
+        $self->ctx->{valid_mailing_address} = 1;
     } else {
-        $self->ctx->{valid_mailing_address} = 'f';
+        $self->ctx->{valid_mailing_address} = 0;
     }
 
     $self->check_account_exp();
@@ -2834,14 +2834,25 @@ sub load_myopac_main {
     # PINES - need to make sure we're retrieving current info
 # NEEDS WORK - NOT SURE WHY THIS LINE IS BREAKING ACCOUNTS THAT HAVE CHARGES
 #    $self->prepare_extended_user_info;
-    # PINES - check whether or not to provide account renewal link
-    if ($self->ctx->{user}->billing_address) {
-        $self->ctx->{valid_billing_address} = $self->editor->retrieve_actor_user_address($self->ctx->{user}->billing_address)->valid;
+
+    # Check whether or not to provide account renewal link, fetching
+    # patron record from database to be sure that we have the most recent
+    # data
+    my $user = $self->editor->retrieve_actor_user([$self->ctx->{user}->id,
+        {
+            flesh => 1,
+            flesh_fields => {
+                au => ['billing_address', 'mailing_address']
+            }
+        }
+    ]);
+    if ($user->billing_address and $user->billing_address->valid and $user->billing_address->valid eq 't') {
+        $self->ctx->{valid_billing_address} = 1;
     } else {
         $self->ctx->{valid_billing_address} = 0;
     }
-    if ($self->ctx->{user}->mailing_address) {
-        $self->ctx->{valid_mailing_address} = $self->editor->retrieve_actor_user_address($self->ctx->{user}->mailing_address)->valid;
+    if ($user->mailing_address and $user->mailing_address->valid and $user->mailing_address->valid eq 't') {
+        $self->ctx->{valid_mailing_address} = 1;
     } else {
         $self->ctx->{valid_mailing_address} = 0;
     }
@@ -3851,6 +3862,9 @@ sub check_account_exp {
     #check for various standing penalties that would block an online renewal
     $self->has_penalties();
 
+    my $home_ou = $ctx->{user}->home_ou;
+    $home_ou = ref($home_ou) ? $home_ou->id : $home_ou; # this is not consistently fleshed
+
     #check for other problems that would block an online renewal
     if ($ctx->{user}->active ne 't') { #user is no longer active
         $ctx->{hasproblem} = 1;
@@ -3858,16 +3872,31 @@ sub check_account_exp {
         $ctx->{hasproblem} = 1;
     } elsif ($ctx->{user}->barred eq 't') { #user is barred
         $ctx->{hasproblem} = 1;
-    } elsif ($ctx->{valid_billing_address} ne 't') { #user has invalid billing address
-        $ctx->{hasproblem} = 1;
-    } elsif ($ctx->{valid_mailing_address} ne 't') { #user has invalid mailing address
-        $ctx->{hasproblem} = 1;
     } else {
-        $ctx->{hasproblem} = 0;
+        # check whether the patron has enough current, valid addresses to
+        # offer e-renewal
+        my $num_addresses_to_check = $self->ctx->{get_org_setting}->(
+            $home_ou, 'vendor.quipu.erenew.num_addresses_required'
+        ) // 2;
+        if ($num_addresses_to_check >= 2) {
+            if ($ctx->{valid_billing_address} &&
+                $ctx->{valid_mailing_address}) {
+                $ctx->{hasproblem} = 0;
+            } else {
+                $ctx->{hasproblem} = 1;
+            }
+        } elsif ($num_addresses_to_check == 1) {
+            if ($ctx->{valid_billing_address} ||
+                $ctx->{valid_mailing_address}) {
+                $ctx->{hasproblem} = 0;
+            } else {
+                $ctx->{hasproblem} = 1;
+            }
+        } else {
+            $ctx->{hasproblem} = 0;
+        }
     }
 
-    my $home_ou = $ctx->{user}->home_ou;
-    $home_ou = ref($home_ou) ? $home_ou->id : $home_ou; # this is not consistently fleshed
     my $erenewal_offer_window = $self->ctx->{get_org_setting}->(
         $home_ou, "opac.ecard_renewal_offer_interval"
     ) || 29;
