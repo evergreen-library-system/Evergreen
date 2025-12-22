@@ -21,7 +21,7 @@
                         <button type="submit" class="btn btn-confirm"><i class="fas fa-check"></i> [% l('Confirm') %]</button>
                     </p>
                 [% ELSIF ctx.updated_user_settings OR ctx.updated_waiver_entries %]
-                    <p class='renew-summary w-100' role="status">
+                    <p class='alert alert-success w-100' role="status">
                         [% l('Account Successfully Updated') %]
                     </p>
                 [% END %]
@@ -108,62 +108,69 @@
             <hr class="w-100" />
 
             [%- IF ctx.get_org_setting(ctx.user.home_ou.id, 'circ.privacy_waiver'); %]
-                <h3 class="w-100">[% l('Authorized Users') %]</h3>
+                <h3 id="privacy_waiver_heading" class="w-100">[% l('Authorized Users') %]</h3>
                 <p class="w-100">[% l('Allow others to use your account. To remove an authorized user, delete their name or uncheck all of their permissions.') %]</p>
 
                 <fieldset class="row">
                     [% FOR waiver IN ctx.user.waiver_entries %]
+                    <fieldset id="fieldset-[% waiver.id %]" aria-labelledby="privacy_waiver_heading">
                         <div id="waiver_[% waiver.id %]" class="subgrid">
                             <input type="hidden" name="waiver_id" value="[% waiver.id %]"/>
                             <label class="form-label" for="waiver_name_[% waiver.id %]">[% l('Name:') %]</label>
                             <input class="form-control" type="textbox" id="waiver_name_[% waiver.id %]" name="waiver_name_[% waiver.id %]" value="[% waiver.name | html %]"/>
 
-                            <div class="form-check w-100">
-                                <input type="checkbox" id="waiver_place_holds[% waiver.id %]" name="waiver_place_holds" class="form-check-input"
-                                    value="[% waiver.id %]" [% waiver.place_holds == 't' ? 'checked="checked"' : '' %]/>
-                                <label class="form-check-label" for="waiver_place_holds[% waiver.id %]">[% l('Place Holds') %]</label>
-                            </div>
+                            <div class="privacy_waiver_checkbox_group">
+                                <div class="form-check w-100">
+                                    <input type="checkbox" id="waiver_place_holds[% waiver.id %]" name="waiver_place_holds" class="form-check-input"
+                                        value="[% waiver.id %]" [% waiver.place_holds == 't' ? 'checked="checked"' : '' %]/>
+                                    <label class="form-check-label" for="waiver_place_holds[% waiver.id %]">[% l('Place Holds') %]</label>
+                                </div>
 
-                            <div class="form-check w-100">
-                                <input type="checkbox" id="waiver_pickup_holds[% waiver.id %]" name="waiver_pickup_holds" class="form-check-input"
-                                    value="[% waiver.id %]" [% waiver.pickup_holds == 't' ? 'checked="checked"' : '' %]/>
-                                <label class="form-check-label" for="waiver_pickup_holds[% waiver.id %]">[% l('Pick Up Holds') %]</label>
-                            </div>
+                                <div class="form-check w-100">
+                                    <input type="checkbox" id="waiver_pickup_holds[% waiver.id %]" name="waiver_pickup_holds" class="form-check-input"
+                                        value="[% waiver.id %]" [% waiver.pickup_holds == 't' ? 'checked="checked"' : '' %]/>
+                                    <label class="form-check-label" for="waiver_pickup_holds[% waiver.id %]">[% l('Pick Up Holds') %]</label>
+                                </div>
 
-                            <div class="form-check w-100">
-                                <input type="checkbox" id="waiver_checkout_items[% waiver.id %]" name="waiver_checkout_items" class="form-check-input"
-                                    value="[% waiver.id %]" [% waiver.checkout_items == 't' ? 'checked="checked"' : '' %]/>
-                                <label class="form-check-label" for="waiver_checkout_items[% waiver.id %]">[% l('Check Out Items') %]</label>
-                            </div>
+                                <div class="form-check w-100">
+                                    <input type="checkbox" id="waiver_checkout_items[% waiver.id %]" name="waiver_checkout_items" class="form-check-input"
+                                        value="[% waiver.id %]" [% waiver.checkout_items == 't' ? 'checked="checked"' : '' %]/>
+                                    <label class="form-check-label" for="waiver_checkout_items[% waiver.id %]">[% l('Check Out Items') %]</label>
+                                </div>
 
-                            <div class="form-check w-100">
-                                <input type="checkbox" id="waiver_view_history[% waiver.id %]" name="waiver_view_history" class="form-check-input"
-                                    value="[% waiver.id %]" [% waiver.view_history == 't' ? 'checked="checked"' : '' %]/>
-                                <label class="form-check-label">[% l('Obtain Circulation Information') %]</label>
+                                <div class="form-check w-100">
+                                    <input type="checkbox" id="waiver_view_history[% waiver.id %]" name="waiver_view_history" class="form-check-input"
+                                        value="[% waiver.id %]" [% waiver.view_history == 't' ? 'checked="checked"' : '' %]/>
+                                    <label class="form-check-label">[% l('Obtain Circulation Information') %]</label>
+                                </div>
                             </div>
                         </div>
+                    </fieldset>
                     [% END %]
-                    <div class="subgrid">
+
+                    <fieldset class="subgrid" id="fieldset-new" aria-labelledby="privacy_waiver_heading">
                         <label class="form-label" for="waiver_name_new">[% l('Name:') %]</label>
                         <input type="textbox" class="form-control" name="waiver_name_new" id="waiver_name_new"/>
 
-                        <div class="form-check w-100">
-                            <input for="waiver_place_holds" type="checkbox" class="form-check-input" name="waiver_place_holds" id="waiver_place_holds" value="new"/>
-                            <label class="form-check-label">[% l('Place Holds') %]</label>
+                        <div class="privacy_waiver_checkbox_group">
+                            <div class="form-check w-100">
+                                <input type="checkbox" class="form-check-input" name="waiver_place_holds" id="waiver_place_holds" value="new"/>
+                                <label for="waiver_place_holds" class="form-check-label">[% l('Place Holds') %]</label>
+                            </div>
+                            <div class="form-check w-100">
+                                <input type="checkbox" class="form-check-input" name="waiver_pickup_holds" id="waiver_pickup_holds" value="new"/>
+                                <label for="waiver_pickup_holds" class="form-check-label">[% l('Pick Up Holds') %]</label>
+                            </div>
+                            <div class="form-check w-100">
+                                <input type="checkbox" class="form-check-input" name="waiver_checkout_items" id="waiver_checkout_items" value="new"/>
+                                <label for="waiver_checkout_items" class="form-check-label">[% l('Check Out Items') %]</label>
+                            </div>
+                            <div class="form-check w-100">
+                                <input type="checkbox" class="form-check-input" name="waiver_view_history" id="waiver_view_history" value="new"/>
+                                <label for="waiver_view_history" class="form-check-label">[% l('Obtain Circulation Information') %]</label>
+                            </div>
                         </div>
-                        <div class="form-check w-100">
-                            <input type="checkbox" class="form-check-input" name="waiver_pickup_holds" id="waiver_pickup_holds" value="new"/>
-                            <label for="waiver_pickup_holds" class="form-check-label">[% l('Pick Up Holds') %]</label>
-                        </div>
-                        <div class="form-check w-100">
-                            <input type="checkbox" class="form-check-input" name="waiver_checkout_items" id="waiver_checkout_items" value="new"/>
-                            <label for="waiver_checkout_items" class="form-check-label">[% l('Check Out Items') %]</label>
-                        </div>
-                        <div class="form-check w-100">
-                            <input type="checkbox" class="form-check-input" name="waiver_view_history" id="waiver_view_history" value="new"/>
-                            <label for="waiver_view_history" class="form-check-label">[% l('Obtain Circulation Information') %]</label>
-                        </div>
-                    </div>
+                    </fieldset>
                 </fieldset>
 
                 <hr class="w-100" />
