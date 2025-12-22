@@ -316,10 +316,12 @@ document.addEventListener("DOMContentLoaded", () => {
         </p>
         <fieldset>
             <legend class="text-reset">[% l('Notify when hold is ready for pickup?') %]</legend>
-             <div class="form-check m-2">
+            <div class="form-check m-2">
                 <input class="form-check-input hold-alert-method" type="checkbox" value="t" id="email_notify" name="email_notify" aria-describedby="email_address no-email-warning" [% IF !ctx.user.email %]disabled="true"[% ELSIF ctx.default_email_notify %]checked="checked"[% END %]>
                 <label class="form-check-label" for="email_notify">
                    [% l('Notify by email:') %]</label>
+            </div>
+            <div class="ml-4">
                 [% IF !ctx.user.email; %]
                     <span class="alert alert-warning" id="no-email-warning">
                         [% l('No configured email address.'); %]
@@ -339,7 +341,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         </label>
                     </div>
 
-                    <p id="notify-phone-number">
+                    <p id="notify-phone-number" class="ml-4">
                         <label class="form-label" for="phone_notify">[% l('Phone Number:') %]</label>
                         <input type="tel" class="form-control w-auto" name="phone_notify" id="phone_notify" [% setting = 'opac.default_phone';
                         IF ctx.user_setting_map.$setting; %] value='[% ctx.user_setting_map.$setting | html %]'
@@ -352,7 +354,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 <input class="hold-alert-method" type="checkbox" id="sms_notify_checkbox" name="sms_notify_checkbox"
                     [% IF ctx.default_sms_notify %]checked="checked"[% END %]/>
                     <label for="sms_notify_checkbox">[% l('Notify by text message') %]</label><br/>
-                <p>
+                <p class="ml-4">
                     [% INCLUDE "opac/parts/sms_carrier_selector.tt2" %]<br/>
                     [% INCLUDE "opac/parts/sms_number_textbox.tt2" %]<br/>
                 </p>
