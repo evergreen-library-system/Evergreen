@@ -298,9 +298,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
         [% IF some_holds_allowed %]
 
-        <p class="w-50">
+        <div class="w-75">
             [%- org_select_id = 'pickup_lib'; -%]
-            <label for="[% org_select_id %]" class="form-label">[%l('Pickup location:') %]</label>
+            <h3><label for="[% org_select_id %]" class="form-label">[%l('Pickup location') %]</label></h3>
             [% PROCESS "opac/parts/org_selector.tt2";
                 INCLUDE build_org_selector name='pickup_lib'
                     value=ctx.default_pickup_lib id=org_select_id
@@ -312,14 +312,14 @@ document.addEventListener("DOMContentLoaded", () => {
             </span>
             <!-- <label id="choose-pickup-lib-warning" for ="[% org_select_id %]" class="font-weight-light" aria-live="polite" hidden>[% l('* Please choose a pickup location') %]</label>             
             -->
-            
-        </p>
+        </div>
+        <h3 class="mt-3">Notification options</h3>
         <fieldset>
-            <legend class="text-reset">[% l('Notify when hold is ready for pickup?') %]</legend>
+            <legend class="text-reset">[% l('How do you wish to be notified when your hold is ready for pickup?') %]</legend>
             <div class="form-check m-2">
                 <input class="form-check-input hold-alert-method" type="checkbox" value="t" id="email_notify" name="email_notify" aria-describedby="email_address no-email-warning" [% IF !ctx.user.email %]disabled="true"[% ELSIF ctx.default_email_notify %]checked="checked"[% END %]>
                 <label class="form-check-label" for="email_notify">
-                   [% l('Notify by email:') %]</label>
+                   [% l('Notify by email') %]</label>
             </div>
             <div class="ml-4">
                 [% IF !ctx.user.email; %]
@@ -351,9 +351,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 </div>
                 [%- END -%]
                 [% IF ctx.get_org_setting(ctx.search_ou, 'sms.enable') == 1 %]
-                <input class="hold-alert-method" type="checkbox" id="sms_notify_checkbox" name="sms_notify_checkbox"
+                <div class="m-2">
+                    <input class="hold-alert-method" type="checkbox" id="sms_notify_checkbox" name="sms_notify_checkbox"
                     [% IF ctx.default_sms_notify %]checked="checked"[% END %]/>
-                    <label for="sms_notify_checkbox">[% l('Notify by text message') %]</label><br/>
+                    <label for="sms_notify_checkbox">[% l('Notify by text message') %]</label>
+                </div>
                 <p class="ml-4">
                     [% INCLUDE "opac/parts/sms_carrier_selector.tt2" %]<br/>
                     [% INCLUDE "opac/parts/sms_number_textbox.tt2" %]<br/>
@@ -361,33 +363,43 @@ document.addEventListener("DOMContentLoaded", () => {
                 [% END %]
             </p>
         </fieldset>
-            <div>
 
-             [% IF ctx.hold_data.size > 0; %]
-            <div class="form-check m-2">
-                <input class="form-check-input" type="checkbox" value="t" id="hold_suspend" name="hold_suspend">
-                <label class="form-check-label" for="hold_suspend">
-                [% IF ctx.hold_data.size == 1;
-                    l('Suspend this hold?');
-                ELSE;
-                    l('Suspend these holds?');
-                END %]
-                  <a href="#" aria-label="[% l('What is a suspended hold?') %]" title="[% l('A suspended hold will retain its place in the queue, but will not be fulfilled until it has been activated.') %]" data-toggletip>
-                    <i class="fas fa-question-circle" aria-hidden="true"></i>
-                </a>
-                </label>
-            </div>
-                [% END %]
+        <h3>Additional options</h3>
 
+<!-- Suspend hold -->
+            [% IF ctx.hold_data.size > 0; %]
+                <div class="form-check m-2">
+                    <input class="form-check-input" type="checkbox" value="t" id="hold_suspend" name="hold_suspend">
+                    <label class="form-check-label" for="hold_suspend">
+                    [% IF ctx.hold_data.size == 1;
+                        l('Suspend this hold?');
+                    ELSE;
+                        l('Suspend these holds?');
+                    END %]
+                    <a href="#" aria-label="[% l('What is a suspended hold?') %]" title="[% l('A suspended hold will retain its place in the queue, but will not be fulfilled until it has been activated.') %]" data-toggletip>
+                        <i class="fas fa-question-circle" aria-hidden="true"></i>
+                    </a>
+                    </label>
+                </div>
+            [% END %]
 
+            <a class="btn btn-sm btn-action my-2" id="actDateToggle" href="#toggled-block-suspend" onclick="return toggleActivationDate();"><i class="fas fa-calendar" aria-hidden="true"></i> [% l('Set activation date') %]</a>
 
-
-                <a class="btn btn-sm btn-action my-2" id="actDateToggle" href="#toggled-block-suspend" onclick="return toggleActivationDate();"><i class="fas fa-calendar" aria-hidden="true"></i> [% l('Set activation date') %]</a>
-            </div>
-            <blockquote id="toggled-block-suspend">
-            <label for="thaw_date">[% l('Activate on') %]
-            <duet-date-picker identifier="thaw_date" name="thaw_date"></duet-date-picker>
+            <blockquote id="toggled-block-suspend" class="ml-4 w-25">
+                <label for="thaw_date">[% l('Activate on') %]</label>
+                <duet-date-picker identifier="thaw_date" name="thaw_date"></duet-date-picker>
             </blockquote>
+
+<!-- Cancel if not filled by -->
+            <div class="form-check m-2">
+                [% l("If you will you no longer need this hold after a certain date, set a hold cancellation date below.") %]
+            </div>
+
+            <blockquote class="ml-4 w-25">
+                <label for="expire_time">[% l('Cancel unless filled by') %]</label>
+                <duet-date-picker identifier="expire_time" name="expire_time"></duet-date-picker>
+            </blockquote>
+
 
          [% IF CGI.param('from_basket') %]
 

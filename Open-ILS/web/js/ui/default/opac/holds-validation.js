@@ -127,6 +127,15 @@ function validateHoldForm() {
        }
     }
 
+    if (document.getElementById('expire_time').value.length > 0){
+       //check that the date is not in the past
+       if(!isValidDate(document.getElementById('expire_time').value)) {
+          alert(eg_opac_i18n.EG_INVALID_DATE);
+          document.getElementById('expire_time').style.backgroundColor  = "yellow";
+          return false;
+       }
+    }
+
 
     if (res.isValid) {
         var result = confirmMultipleHolds();

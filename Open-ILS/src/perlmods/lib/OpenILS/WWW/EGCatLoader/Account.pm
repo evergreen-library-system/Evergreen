@@ -1600,6 +1600,22 @@ sub load_place_hold {
         }
     }
 
+    # If expire date exists, ensure that it's in a usable format
+    if ($cgi->param('expire_time')) {
+        if ($cgi->param('expire_time') =~ m:^(\d{2})/(\d{2})/(\d{4})$:){
+            eval {
+                my $dt = DateTime::Format::ISO8601->parse_datetime("$3-$1-$2");
+                $ctx->{expire_time} = $dt->ymd;
+            };
+        } elsif ($cgi->param('expire_time') =~ m:^(\d{4})-(\d{2})-(\d{2})$:){
+            eval {
+                my $dt = DateTime::Format::ISO8601->parse_datetime("$1-$2-$3");
+                $ctx->{expire_time} = $dt->ymd;
+            };
+        } else {
+            $logger->warn("ignoring invalid expire_time when placing hold request");
+        }
+    }
 
     # If we have a default pickup location, grab it
     if ($$user_setting_map{'opac.default_pickup_location'}) {
@@ -1618,6 +1634,7 @@ sub load_place_hold {
         if ($ctx->{sms_carrier}) { $hdata->{sms_carrier} = $ctx->{sms_carrier}; }
         if ($ctx->{frozen}) { $hdata->{frozen} = 1; }
         if ($ctx->{thaw_date}) { $hdata->{thaw_date} = $ctx->{thaw_date}; }
+        if ($ctx->{expire_time}) { $hdata->{expire_time} = $ctx->{expire_time}; }
         return $hdata;
     };
 
