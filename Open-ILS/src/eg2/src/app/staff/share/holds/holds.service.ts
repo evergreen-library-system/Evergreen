@@ -31,6 +31,7 @@ export interface HoldRequest {
     smsCarrier?: string;
     thawDate?: string; // ISO date
     frozen?: boolean;
+    expireDate?: string;
     holdableFormats?: {[target: number]: string};
     holdGroup?: boolean;
     holdGroupId?: number;
@@ -144,6 +145,7 @@ export class HoldsService {
             phone_notify:   request.notifyPhone,
             thaw_date:      request.thawDate,
             frozen:         request.frozen,
+            expire_time:    request.expireDate,
             sms_notify:     request.notifySms,
             sms_carrier:    request.smsCarrier,
             holdable_formats_map: request.holdableFormats

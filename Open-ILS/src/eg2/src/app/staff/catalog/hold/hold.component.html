@@ -139,6 +139,20 @@
           </div>
         </div>
       </div>
+      <div class="row mt-2">
+        <div class="col-lg-6">
+          <label class="form-label form-check-label" for="expire-date" i18n>Cancel if not filled by:</label>
+        </div>
+        <div class="col-lg-6">
+          <div [ngClass]="{'border border-danger rounded': expireDateInvalid}">
+            <eg-date-select [(ngModel)]="expireDate" name='expire-date'
+              (onChangeAsYmd)="expireDateYmd = $event"
+              (onChangeAsDate)="setExpireDate($event)"
+              (onChangeAsIso)="expireDateSelected($event)">
+            </eg-date-select>
+          </div>
+        </div>
+      </div>
       <div class="row mt-2" *ngIf="multiHoldsActive">
         <div class="col-lg-6">
           <label class="form-label" for='multi-hold-count' i18n>Number of copies:</label>

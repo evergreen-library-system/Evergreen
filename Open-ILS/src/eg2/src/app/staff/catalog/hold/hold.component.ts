@@ -127,6 +127,10 @@ export class HoldComponent implements OnInit, OnDestroy {
     activeDateYmd: string;
     activeDate: Date;
     activeDateInvalid = false;
+    expireDateStr: string;
+    expireDateYmd: string;
+    expireDate: Date;
+    expireDateInvalid = false;
     anyPartLabel = $localize`All Parts`;
 
     holdContexts: HoldContext[];
@@ -170,6 +174,7 @@ export class HoldComponent implements OnInit, OnDestroy {
     @ViewChild('barcodeSelect') private barcodeSelect: BarcodeSelectComponent;
 
     @ViewChild('activeDateAlert') private activeDateAlert: AlertDialogComponent;
+    @ViewChild('expireDateAlert') private expireDateAlert: AlertDialogComponent;
 
     constructor(
         private route: ActivatedRoute,
@@ -433,6 +438,20 @@ export class HoldComponent implements OnInit, OnDestroy {
         }
     }
 
+    expireDateSelected(dateStr: string) {
+        this.expireDateStr = dateStr;
+    }
+
+    setExpireDate(date: Date) {
+        this.expireDate = date;
+        if (date && date < new Date()) {
+            this.expireDateInvalid = true;
+            this.expireDateAlert.open();
+        } else {
+            this.expireDateInvalid = false;
+        }
+    }
+
     // Note this is called before this.userBarcode has its latest value.
     debounceUserBarcodeLookup(barcode: string | ClipboardEvent) {
         clearTimeout(this.userBarcodeTimeout);
@@ -518,6 +537,8 @@ export class HoldComponent implements OnInit, OnDestroy {
         this.smsValue = '';
         this.activeDate = null;
         this.activeDateStr = null;
+        this.expireDate = null;
+        this.expireDateStr = null;
         this.suspend = false;
         if (this.smsCbox) { this.smsCbox.selectedId = null; }
 
@@ -621,6 +642,9 @@ export class HoldComponent implements OnInit, OnDestroy {
 
     readyToPlaceHolds(): boolean {
         if (this.placeHoldsClicked || this.activeDateInvalid) {
+            return false;
+        }
+        if (this.placeHoldsClicked || this.expireDateInvalid) {
             return false;
         }
         if (!this.pickupLib || this.disableOrgs.includes(this.pickupLib)) {
@@ -739,6 +763,7 @@ export class HoldComponent implements OnInit, OnDestroy {
             notifySms: this.smsEnabled && this.notifySms ? this.smsValue : null,
             smsCarrier: this.smsCbox ? this.smsCbox.selectedId : null,
             thawDate: this.suspend ? this.activeDateStr : null,
+            expireDate: this.expireDateStr,
             holdGroup: Boolean(this.holdFor === 'group' && this.selectedHoldGroup),
             holdGroupId: (this.holdFor === 'group' && this.selectedHoldGroup) ? this.selectedHoldGroup.id : null,
             frozen: this.suspend,
