@@ -3,8 +3,8 @@ $ZZZZ$
 DECLARE
 BEGIN
 
-IF NOT EXISTS (SELECT 1 FROM config.upgrade_log WHERE version = 'quipu-early-adopter') THEN
-   PERFORM evergreen.upgrade_deps_block_check('quipu-early-adopter', '@PACKAGE_VERSION@'); -- berick/csharp/Dyrcona/phasefx
+IF NOT EXISTS (SELECT 1 FROM config.upgrade_log WHERE version = '1497') THEN
+   PERFORM evergreen.upgrade_deps_block_check('1497', '@PACKAGE_VERSION@'); -- berick/csharp/Dyrcona/phasefx
 END IF;
 
 -- Thank you, berick :-)
@@ -217,6 +217,10 @@ END;
 $$ LANGUAGE plpgsql;
 
 ---
+
+IF NOT EXISTS(SELECT 1 FROM config.upgrade_log WHERE version = '1498') THEN
+   PERFORM evergreen.upgrade_deps_block_check('1498', '@PACKAGE_VERSION@'); -- berick/csharp/Dyrcona/phasefx
+END IF;
 
 INSERT INTO actor.passwd_type
     (code, name, login, crypt_algo, iter_count)
