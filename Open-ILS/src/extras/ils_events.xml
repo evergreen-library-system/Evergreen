@@ -775,6 +775,14 @@
 		<desc xml:lang='en-US'>The requested money_debit_card_payment was not found</desc>
 	</event>
 
+	<event code='1718' textcode='ASSET_CALL_NUMBER_PREFIX_IN_USE'>
+		<desc xml:lang='en-US'>The requested call number prefix is in use.</desc>
+	</event>
+
+	<event code='1719' textcode='ASSET_CALL_NUMBER_SUFFIX_IN_USE'>
+		<desc xml:lang='en-US'>The requested call number suffix is in use.</desc>
+	</event>
+
 	<event code='1900' textcode='URL_VERIFY_NOT_SESSION_CREATOR'>
 		<desc xml:lang="en-US">You did not create this URL Verify session, so you cannot change it.  You may be able to clone it.</desc>
 	</event>

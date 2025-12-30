@@ -55,9 +55,11 @@
           <eg-combobox [smallFormControl]="true" [(ngModel)]="batchVolPrefix">
             <eg-combobox-entry [entryId]="-1" entryLabel="<None>" i18n-entryLabel></eg-combobox-entry>
             @for (pfx of volcopy.commonData.acn_prefix; track pfx) {
-              <eg-combobox-entry
-                [entryId]="pfx.id()" [entryLabel]="pfx.label()">
-              </eg-combobox-entry>
+              @if (pfx.deleted() !== 't') {
+                <eg-combobox-entry
+                  [entryId]="pfx.id()" [entryLabel]="pfx.label()">
+                </eg-combobox-entry>
+              }
             }
           </eg-combobox>
         </div>
@@ -87,9 +89,11 @@
           <eg-combobox [smallFormControl]="true" [(ngModel)]="batchVolSuffix">
             <eg-combobox-entry [entryId]="-1" entryLabel="<None>" i18n-entryLabel></eg-combobox-entry>
             @for (sfx of volcopy.commonData.acn_suffix; track sfx) {
-              <eg-combobox-entry
-                [entryId]="sfx.id()" [entryLabel]="sfx.label()">
-              </eg-combobox-entry>
+              @if (sfx.deleted() !== 't') {
+                <eg-combobox-entry
+                  [entryId]="sfx.id()" [entryLabel]="sfx.label()">
+                </eg-combobox-entry>
+              }
             }
           </eg-combobox>
         </div>
@@ -388,9 +392,11 @@
                         [entryId]="-1" entryLabel="<None>" i18n-entryLabel>
                       </eg-combobox-entry>
                       @for (pfx of volcopy.commonData.acn_prefix; track pfx) {
-                        <eg-combobox-entry
-                          [entryId]="pfx.id()" [entryLabel]="pfx.label()">
-                        </eg-combobox-entry>
+                        @if (pfx.deleted() !== 't') {
+                          <eg-combobox-entry
+                            [entryId]="pfx.id()" [entryLabel]="pfx.label()">
+                          </eg-combobox-entry>
+                        }
                       }
                     </eg-combobox>
                   }
@@ -418,9 +424,11 @@
                         [entryId]="-1" entryLabel="<None>" i18n-entryLabel>
                       </eg-combobox-entry>
                       @for (sfx of volcopy.commonData.acn_suffix; track sfx) {
-                        <eg-combobox-entry
-                          [entryId]="sfx.id()" [entryLabel]="sfx.label()">
-                        </eg-combobox-entry>
+                        @if (sfx.deleted() !== 't') {
+                          <eg-combobox-entry
+                            [entryId]="sfx.id()" [entryLabel]="sfx.label()">
+                          </eg-combobox-entry>
+                        }
                       }
                     </eg-combobox>
                   }

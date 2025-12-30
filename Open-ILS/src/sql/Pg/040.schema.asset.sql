@@ -462,24 +462,72 @@ CREATE TABLE asset.call_number_prefix (
 	owning_lib	    INT			NOT NULL REFERENCES actor.org_unit (id),
 	label		    TEXT		NOT NULL, -- i18n
 	label_sortkey	TEXT,
-	deleted         BOOLEAN DEFAULT FALSE 
+	deleted         BOOLEAN DEFAULT FALSE
 );
 CREATE TRIGGER prefix_normalize_tgr BEFORE INSERT OR UPDATE ON asset.call_number_prefix FOR EACH ROW EXECUTE PROCEDURE asset.normalize_affix_sortkey();
-CREATE RULE protect_acn_prefix_delete AS ON DELETE TO asset.call_number_prefix DO INSTEAD UPDATE asset.call_number_prefix SET deleted = TRUE WHERE OLD.id = asset.call_number_prefix.id;
 CREATE UNIQUE INDEX asset_call_number_prefix_once_per_lib ON asset.call_number_prefix (label, owning_lib);
 CREATE INDEX asset_call_number_prefix_sortkey_idx ON asset.call_number_prefix (label_sortkey);
+
+CREATE OR REPLACE FUNCTION asset.check_delete_call_number_prefix(acnp_id integer)
+  RETURNS void
+  LANGUAGE plpgsql
+  AS $function$
+
+BEGIN
+    PERFORM TRUE FROM asset.call_number WHERE prefix = acnp_id AND NOT deleted LIMIT 1;
+
+    IF FOUND THEN
+        RAISE EXCEPTION
+            'Call Number Prefix % is used in active call numbers and cannot be deleted', acnp_id;
+    END IF;
+
+    IF acnp_id = -1 THEN
+        RAISE EXCEPTION
+            'Call number prefix -1 cannot be deleted';
+    END IF;
+END;
+$function$;
+CREATE OR REPLACE RULE protect_acn_prefix_delete AS
+   ON DELETE TO asset.call_number_prefix DO INSTEAD (
+       UPDATE asset.call_number_prefix SET deleted = TRUE WHERE OLD.id = asset.call_number_prefix.id;
+       SELECT asset.check_delete_call_number_prefix(OLD.id) AS check_delete_call_number_prefix;
+   );
 
 CREATE TABLE asset.call_number_suffix (
 	id		        SERIAL   PRIMARY KEY,
 	owning_lib	    INT			NOT NULL REFERENCES actor.org_unit (id),
 	label		    TEXT		NOT NULL, -- i18n
 	label_sortkey	TEXT,
-	deleted         BOOLEAN DEFAULT FALSE 
+	deleted         BOOLEAN DEFAULT FALSE
 );
 CREATE TRIGGER suffix_normalize_tgr BEFORE INSERT OR UPDATE ON asset.call_number_suffix FOR EACH ROW EXECUTE PROCEDURE asset.normalize_affix_sortkey();
-CREATE RULE protect_acn_suffix_delete AS ON DELETE TO asset.call_number_suffix DO INSTEAD UPDATE asset.call_number_suffix SET deleted = TRUE WHERE OLD.id = asset.call_number_suffix.id;
 CREATE UNIQUE INDEX asset_call_number_suffix_once_per_lib ON asset.call_number_suffix (label, owning_lib);
 CREATE INDEX asset_call_number_suffix_sortkey_idx ON asset.call_number_suffix (label_sortkey);
+
+CREATE OR REPLACE FUNCTION asset.check_delete_call_number_suffix(acns_id integer)
+  RETURNS void
+  LANGUAGE plpgsql
+  AS $function$
+
+BEGIN
+    PERFORM TRUE FROM asset.call_number WHERE suffix = acns_id AND NOT deleted LIMIT 1;
+
+    IF FOUND THEN
+        RAISE EXCEPTION
+            'Call Number Suffix % is used in active call numbers and cannot be deleted', acns_id;
+    END IF;
+
+    IF acns_id = -1 THEN
+        RAISE EXCEPTION
+            'Call number suffix -1 cannot be deleted';
+    END IF;
+END;
+$function$;
+CREATE OR REPLACE RULE protect_acn_suffix_delete AS
+   ON DELETE TO asset.call_number_suffix DO INSTEAD (
+       UPDATE asset.call_number_suffix SET deleted = TRUE WHERE OLD.id = asset.call_number_suffix.id;
+       SELECT asset.check_delete_call_number_suffix(OLD.id) AS check_delete_call_number_suffix;
+   );
 
 CREATE TABLE asset.call_number (
 	id		bigserial PRIMARY KEY,

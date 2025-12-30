@@ -120,9 +120,7 @@ function(egCore , $q) {
     var _acnp_cache = {};
     service.get_prefixes = function(org) {
         return egCore.pcrud.search('acnp',
-            {owning_lib : egCore.org.fullPath(org, true),
-	 	deleted : 'f'
-	    },
+            {owning_lib : egCore.org.fullPath(org, true), deleted : 'f'},
             {order_by : { acnp : 'label_sortkey' }}, {atomic : true}
         );
 
@@ -205,9 +203,7 @@ function(egCore , $q) {
     var _acns_cache = {};
     service.get_suffixes = function(org) {
         return egCore.pcrud.search('acns',
-            {owning_lib : egCore.org.fullPath(org, true),
-	    	deleted : 'f' 
-	    },
+            {owning_lib : egCore.org.fullPath(org, true), deleted : 'f'},
             {order_by : { acns : 'label_sortkey' }}, {atomic : true}
         );
 

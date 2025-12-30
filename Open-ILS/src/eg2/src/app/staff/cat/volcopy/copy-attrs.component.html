@@ -287,9 +287,11 @@
               (ngModelChange)="values['prefix'] = $event ? $event.id : null"
               [ngModel]="values['prefix']" (keydown)="onKeydown('prefix', $event)">
               @for (acnp of volcopy.commonData.acn_prefix; track acnp) {
-                <eg-combobox-entry
-                  [entryId]="acnp.id()" [entryLabel]="acnp.label()" [selected]="values['prefix'] === acnp.id()">
-                </eg-combobox-entry>
+                @if (acnp.deleted() !== 't') {
+                  <eg-combobox-entry
+                    [entryId]="acnp.id()" [entryLabel]="acnp.label()" [selected]="values['prefix'] === acnp.id()">
+                  </eg-combobox-entry>
+                }
               }
             </eg-combobox>
           </ng-template>
@@ -306,9 +308,11 @@
               (ngModelChange)="values['suffix'] = $event ? $event.id : null"
               [ngModel]="values['suffix']" (keydown)="onKeydown('suffix', $event)">
               @for (acns of volcopy.commonData.acn_suffix; track acns) {
-                <eg-combobox-entry
-                  [entryId]="acns.id()" [entryLabel]="acns.label()" [selected]="values['suffix'] === acns.id()">
-                </eg-combobox-entry>
+                @if (acns.deleted() !== 't') {
+                  <eg-combobox-entry
+                    [entryId]="acns.id()" [entryLabel]="acns.label()" [selected]="values['suffix'] === acns.id()">
+                  </eg-combobox-entry>
+                }
               }
             </eg-combobox>
           </ng-template>

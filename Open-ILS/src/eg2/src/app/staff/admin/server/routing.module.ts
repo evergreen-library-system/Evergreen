@@ -117,16 +117,30 @@ const routes: Routes = [{
 }, {
     path: 'asset/call_number_prefix',
     component: BasicAdminPageComponent,
-    data: [{schema: 'asset',
-        table: 'call_number_prefix', readonlyFields: 'label_sortkey'}]
+    data: [{
+        schema: 'asset',
+        table: 'call_number_prefix',
+        readonlyFields: 'label_sortkey,deleted',
+        enableUndelete: true,
+        initialFilterValues: {deleted: 'f'},
+        orgFieldsDefaultingToContextOrg: 'owning_lib',
+        fieldOptions: { owning_lib:{isRequired:true} }
+    }]
 }, {
     path: 'asset/call_number_class',
     component: CallNumberClassComponent
 }, {
     path: 'asset/call_number_suffix',
     component: BasicAdminPageComponent,
-    data: [{schema: 'asset',
-        table: 'call_number_suffix', readonlyFields: 'label_sortkey'}]
+    data: [{
+        schema: 'asset',
+        table: 'call_number_suffix',
+        readonlyFields: 'label_sortkey,deleted',
+        enableUndelete: true,
+        initialFilterValues: {deleted: 'f'},
+        orgFieldsDefaultingToContextOrg: 'owning_lib',
+        fieldOptions: { owning_lib:{isRequired:true} }
+    }]
 }, {
     path: 'sip/account',
     loadChildren: () =>
