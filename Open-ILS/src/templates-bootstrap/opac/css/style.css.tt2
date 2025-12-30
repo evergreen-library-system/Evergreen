@@ -384,7 +384,7 @@ Novelist Styling
     color: [% css_colors.action_button_text %];
     display: flex;
     gap: 0.5rem;
-    justify-content: space-between;
+    justify-content: start;
     padding: .75rem 1rem;
     text-align: start;
     text-decoration: none;
