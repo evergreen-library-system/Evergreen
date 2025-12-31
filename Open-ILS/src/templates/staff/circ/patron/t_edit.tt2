@@ -1241,7 +1241,7 @@ within the "form" by name for validation.
       <select id="survey_responses-{{question.id()}}" class="form-control form-select" 
         ng-model="survey_responses[question.id()]"
         ng-options="answer.answer() for answer in question.answers() track by answer.id()" 
-        ng-change="field_modified();survey_responses[question.id()] = answer"></select>
+        ng-change="field_modified()"></select>
       </div>
     </div>
   </div>
