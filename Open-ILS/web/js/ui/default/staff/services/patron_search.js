@@ -777,26 +777,22 @@ function($scope,  $q,  $routeParams,  $timeout,  $window,  $location,  egCore,
                 });
 
     egCore.hatch.getItem('eg.circ.patron.search.ou').then(function(cachedHomeOu) {
-        $scope.searchArgs.home_ou = cachedHomeOu || egCore.org.tree();
-        // Once done, mark ourselves as ready
-        $scope.initialized = true;
+        if (cachedHomeOu) {
+            $scope.searchArgs.home_ou = egCore.org.get(cachedHomeOu);
+        }
+        // watch for home_ou changes and update the setting value ID
+        $scope.$watch('searchArgs.home_ou', function(newVal, oldVal) {
+            var newId = angular.isObject(newVal) ? newVal.id() : newVal;
+            var oldId = angular.isObject(oldVal) ? oldVal.id() : oldVal;
+            if (newId !== oldId) {
+                egCore.hatch.setItem('eg.circ.patron.search.ou', newId);
+            }
         });
+    });
 
      $scope.onSearchInactiveChanged = function() {
         egCore.hatch.setItem('eg.circ.patron.search.include_inactive', $scope.searchArgs.inactive);
     }
-
-    // Then watch the home_ou for actual user changes
-    $scope.$watch('searchArgs.home_ou', function(newVal, oldVal) {
-        // If not initialized, ignore. The first assignment is from the cached value.
-        if (!$scope.initialized) return;
-        if (newVal !== oldVal) {
-        egCore.hatch.setItem(
-            'eg.circ.patron.search.ou',
-            $scope.searchArgs.home_ou
-        );
-        }
-    });
 
     // map form arguments into search params
     function compileSearch(args) {
