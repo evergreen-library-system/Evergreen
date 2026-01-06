@@ -47,7 +47,7 @@
       </div>
     </div>
 
-    <div ngbAccordionItem *ngIf="allFields.length > 0" id="all">
+    <div ngbAccordionItem *ngIf="allFields.length > 0" id="all" [collapsed]="false">
       <h3 ngbAccordionHeader>
         <button ngbAccordionButton i18n>All Fields</button>
       </h3>
@@ -74,7 +74,7 @@
 
 
 <div ngbAccordion class="col-md-9">
-  <div ngbAccordionItem id="display-field-list" *ngIf="fieldType === 'filter' && listFields.length > 0">
+  <div ngbAccordionItem id="display-field-list" *ngIf="fieldType === 'filter' && listFields.length > 0" [collapsed]="false">
     <h3 ngbAccordionHeader>
       <button ngbAccordionButton i18n>Fields Selected for Display</button>
     </h3>
@@ -89,7 +89,7 @@
     </div>
   </div>
 
-  <div ngbAccordionItem id="sort-field-list">
+  <div ngbAccordionItem id="sort-field-list" [collapsed]="false">
     <h3 ngbAccordionHeader>
       <button ngbAccordionButton>
         <span *ngIf="fieldType === 'display'" i18n>Field Display Order</span>
