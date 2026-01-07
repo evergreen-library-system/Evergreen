@@ -195,117 +195,6 @@
               </div>
           </div>
 
-          <div class="row" [hidden]="!showSearchFilters">
-            <div class="col mt-3" *ngIf="searchFilters().includes('item_type')">
-              <label i18n class="form-label select-label" for="context-termSearch-ccvmFilters-item_type">Item Type</label>
-              <select class="form-select"  multiple="true" id="context-termSearch-ccvmFilters-item_type"
-                (change)="updateFilters('item_type', $event.target)">
-                <option value='' i18n>All Item Types</option>
-                <ng-container
-                  *ngTemplateOutlet="ccvmOption;context:{list:ccvmMap.item_type, ctype:'item_type'}">
-                </ng-container>
-              </select>
-            </div>
-            <div class="col mt-3" *ngIf="searchFilters().includes('item_form')">
-              <label i18n class="form-label select-label" for="context-termSearch-ccvmFilters-item_form">Form</label>
-              <select class="form-select" multiple="true" id="context-termSearch-ccvmFilters-item_form"
-                (change)="updateFilters('item_form', $event.target)">
-                <option value='' i18n>All Item Forms</option>
-                <ng-container
-                  *ngTemplateOutlet="ccvmOption;context:{list:ccvmMap.item_form, ctype:'item_form'}">
-                </ng-container>
-              </select>
-            </div>
-            <div class="col mt-3" *ngIf="searchFilters().includes('item_lang')">
-              <label i18n class="form-label select-label" for="context-termSearch-ccvmFilters-item_lang">Language</label>
-              <select class="form-select" id="context-termSearch-ccvmFilters-item_lang"
-                multiple="true" (change)="updateFilters('item_lang', $event.target)">
-                <option value='' i18n>All Languages</option>
-                <ng-container
-                  *ngTemplateOutlet="ccvmOption;context:{list:ccvmMap.item_lang, ctype:'item_lang'}">
-                </ng-container>
-              </select>
-            </div>
-            <div class="col mt-3" *ngIf="searchFilters().includes('audience')">
-              <label i18n class="form-label select-label" for="context-termSearch-ccvmFilters-audience">Audience</label>
-              <select class="form-select" id="context-termSearch-ccvmFilters-audience"
-                multiple="true" (change)="updateFilters('audience', $event.target)">
-                <option value='' i18n>All Audiences</option>
-                <ng-container
-                  *ngTemplateOutlet="ccvmOption;context:{list:ccvmMap.audience, ctype:'audience'}">
-                </ng-container>
-              </select>
-            </div>
-          </div>
-          <div class="row" [hidden]="!showSearchFilters">
-            <div class="col mt-3" *ngIf="searchFilters().includes('vr_format')">
-              <label i18n class="form-label select-label" for="context-termSearch-ccvmFilters-vr_format">Video Format</label>
-              <select class="form-select" id="context-termSearch-ccvmFilters-vr_format"
-                multiple="true" (change)="updateFilters('vr_format', $event.target)">
-                <option value='' i18n>All Video Formats</option>
-                <ng-container
-                  *ngTemplateOutlet="ccvmOption;context:{list:ccvmMap.vr_format, ctype:'vr_format'}">
-                </ng-container>
-              </select>
-            </div>
-            <div class="col mt-3" *ngIf="searchFilters().includes('bib_level')">
-              <label i18n class="form-label select-label" for="context-termSearch-ccvmFilters-bib_level">Bibliographic Level</label>
-              <select class="form-select" id="context-termSearch-ccvmFilters-bib_level"
-                multiple="true" (change)="updateFilters('bib_level', $event.target)">
-                <option value='' i18n>All Bib Levels</option>
-                <ng-container
-                  *ngTemplateOutlet="ccvmOption;context:{list:ccvmMap.bib_level, ctype:'bib_level'}">
-                </ng-container>
-              </select>
-            </div>
-            <div class="col mt-3" *ngIf="searchFilters().includes('lit_form')">
-              <label i18n class="form-label select-label" for="context-termSearch-ccvmFilters-lit_form">Literary Form</label>
-              <select class="form-select" id="context-termSearch-ccvmFilters-lit_form"
-                multiple="true" (change)="updateFilters('lit_form', $event.target)">
-                <option value='' i18n>All Literary Forms</option>
-                <ng-container
-                  *ngTemplateOutlet="ccvmOption;context:{list:ccvmMap.lit_form, ctype:'lit_form'}">
-                </ng-container>
-              </select>
-            </div>
-            <div class="col mt-3">
-              <label i18n class="form-label select-label" for="context-termSearch-copyLocations">Shelving Location</label>
-              <select class="form-select" id="context-termSearch-copyLocations" [disabled]="context.termSearch.locationGroupOrLasso !== ''"
-                [(ngModel)]="context.termSearch.copyLocations" multiple="true" (change)="filtersActive()">
-                <option value='' i18n>All Shelving Locations</option>
-                <option *ngFor="let loc of copyLocations" value="{{loc.id()}}" class="filter-option" i18n>
-                  {{loc.name()}} ({{orgName(loc.owning_lib())}})
-                </option>
-              </select>
-            </div>
-          </div>
-          <div *ngIf="context.termSearch.locationGroupOrLasso !== ''" [hidden]="!showSearchFilters" class="row row-cols-auto mt-1">
-            <p class="form-text mx-1 my-0">
-              <i i18n>Clear the Library Group or Shelving Location Group selection to choose individual Shelving Locations</i>
-            </p>
-          </div>
-          <fieldset class="row row-cols-auto mt-3" [hidden]="!showSearchFilters">
-            <legend class="form-label col-form-label" i18n>Publication Year</legend>
-            <div class="col">
-              <label class="visually-hidden" for="pub-date-operator-select" i18n>compare publication dates using...</label>
-              <select id="pub-date-operator-select" class="form-select ms-2" [(ngModel)]="context.termSearch.dateOp">
-                <option value='is' i18n>Is</option>
-                <option value='before' i18n>Before</option>
-                <option value='after' i18n>After</option>
-                <option value='between' i18n>Between</option>
-              </select>
-            </div>
-            <div class="col">
-              <label i18n class="visually-hidden" for="context-termSearch-date1">Year, or beginning of year range</label>
-              <input class="form-control ms-2" type="number" id="context-termSearch-date1"
-                [(ngModel)]="context.termSearch.date1"  (change)="filtersActive()"/>
-            </div>
-            <div class="col" *ngIf="context.termSearch.dateOp === 'between'">
-              <label i18n class="visually-hidden" for="context-termSearch-date2">End of year range</label>
-              <input class="form-control ms-2" type="number" id="context-termSearch-date2"
-                [(ngModel)]="context.termSearch.date2"/>
-            </div>
-          </fieldset>
         </ng-template>
       </li>
       <li role="presentation" [ngbNavItem]="'ident'">
@@ -497,6 +386,122 @@
     </div>
   </div>
   </div>
+    <!-- advanced search options -->
+	<ng-container *ngIf="!hideForm()">
+		<div class="row px-3 pt-3 pb-1 mb-1" [hidden]="!showSearchFilters || searchTab != 'term'">
+			<div class="col-lg-6 mt-3">
+			  <label i18n class="form-label select-label" for="context-termSearch-copyLocations">Shelving Location</label>
+			  <select class="form-select" id="context-termSearch-copyLocations" [disabled]="context.termSearch.locationGroupOrLasso !== ''"
+				[(ngModel)]="context.termSearch.copyLocations" multiple="true" (change)="filtersActive()">
+				<option value='' i18n>All Shelving Locations</option>
+				<option *ngFor="let loc of copyLocations" value="{{loc.id()}}" class="filter-option" i18n>
+				  {{loc.name()}} ({{orgName(loc.owning_lib())}})
+				</option>
+			  </select>
+			</div>
+			<div class="col-lg-6 mt-3" *ngIf="searchFilters().includes('item_type')">
+			  <label i18n class="form-label select-label" for="context-termSearch-ccvmFilters-item_type">Item Type</label>
+			  <select class="form-select"  multiple="true" id="context-termSearch-ccvmFilters-item_type"
+				(change)="updateFilters('item_type', $event.target)">
+				<option value='' i18n>All Item Types</option>
+				<ng-container
+				  *ngTemplateOutlet="ccvmOption;context:{list:ccvmMap.item_type, ctype:'item_type'}">
+				</ng-container>
+			  </select>
+			</div>
+		</div>
+		<div class="row px-3 pt-3 pb-1 mb-1" [hidden]="!showSearchFilters || searchTab != 'term'">
+			<div class="col-lg-4 mt-3" *ngIf="searchFilters().includes('item_form')">
+			  <label i18n class="form-label select-label" for="context-termSearch-ccvmFilters-item_form">Form</label>
+			  <select class="form-select" multiple="true" id="context-termSearch-ccvmFilters-item_form"
+				(change)="updateFilters('item_form', $event.target)">
+				<option value='' i18n>All Item Forms</option>
+				<ng-container
+				  *ngTemplateOutlet="ccvmOption;context:{list:ccvmMap.item_form, ctype:'item_form'}">
+				</ng-container>
+			  </select>
+			</div>
+			<div class="col-lg-4 mt-3" *ngIf="searchFilters().includes('item_lang')">
+			  <label i18n class="form-label select-label" for="context-termSearch-ccvmFilters-item_lang">Language</label>
+			  <select class="form-select" id="context-termSearch-ccvmFilters-item_lang"
+				multiple="true" (change)="updateFilters('item_lang', $event.target)">
+				<option value='' i18n>All Languages</option>
+				<ng-container
+				  *ngTemplateOutlet="ccvmOption;context:{list:ccvmMap.item_lang, ctype:'item_lang'}">
+				</ng-container>
+			  </select>
+			</div>
+			<div class="col-lg-4 mt-3" *ngIf="searchFilters().includes('audience')">
+			  <label i18n class="form-label select-label" for="context-termSearch-ccvmFilters-audience">Audience</label>
+			  <select class="form-select" id="context-termSearch-ccvmFilters-audience"
+				multiple="true" (change)="updateFilters('audience', $event.target)">
+				<option value='' i18n>All Audiences</option>
+				<ng-container
+				  *ngTemplateOutlet="ccvmOption;context:{list:ccvmMap.audience, ctype:'audience'}">
+				</ng-container>
+			  </select>
+			</div>
+		</div>
+		<div class="row px-3 pt-3 pb-1 mb-1" [hidden]="!showSearchFilters || searchTab != 'term'">
+			<div class="col-lg-4 mt-3" *ngIf="searchFilters().includes('vr_format')">
+			  <label i18n class="form-label select-label" for="context-termSearch-ccvmFilters-vr_format">Video Format</label>
+			  <select class="form-select" id="context-termSearch-ccvmFilters-vr_format"
+				multiple="true" (change)="updateFilters('vr_format', $event.target)">
+				<option value='' i18n>All Video Formats</option>
+				<ng-container
+				  *ngTemplateOutlet="ccvmOption;context:{list:ccvmMap.vr_format, ctype:'vr_format'}">
+				</ng-container>
+			  </select>
+			</div>
+			<div class="col-lg-4 mt-3" *ngIf="searchFilters().includes('bib_level')">
+			  <label i18n class="form-label select-label" for="context-termSearch-ccvmFilters-bib_level">Bibliographic Level</label>
+			  <select class="form-select" id="context-termSearch-ccvmFilters-bib_level"
+				multiple="true" (change)="updateFilters('bib_level', $event.target)">
+				<option value='' i18n>All Bib Levels</option>
+				<ng-container
+				  *ngTemplateOutlet="ccvmOption;context:{list:ccvmMap.bib_level, ctype:'bib_level'}">
+				</ng-container>
+			  </select>
+			</div>
+			<div class="col-lg-4 mt-3" *ngIf="searchFilters().includes('lit_form')">
+			  <label i18n class="form-label select-label" for="context-termSearch-ccvmFilters-lit_form">Literary Form</label>
+			  <select class="form-select" id="context-termSearch-ccvmFilters-lit_form"
+				multiple="true" (change)="updateFilters('lit_form', $event.target)">
+				<option value='' i18n>All Literary Forms</option>
+				<ng-container
+				  *ngTemplateOutlet="ccvmOption;context:{list:ccvmMap.lit_form, ctype:'lit_form'}">
+				</ng-container>
+			  </select>
+			</div>
+		</div>
+		<div *ngIf="context.termSearch.locationGroupOrLasso !== ''" class="row px-3 pt-3 pb-1 mb-1" [hidden]="!showSearchFilters || searchTab != 'term'">
+			<p class="form-text mx-1 my-0">
+			  <i i18n>Clear the Library Group or Shelving Location Group selection to choose individual Shelving Locations</i>
+			</p>
+		</div>
+		<fieldset class="row row-cols-auto mt-3" [hidden]="!showSearchFilters">
+			<legend class="form-label col-form-label" i18n>Publication Year</legend>
+			<div class="col-6 col-md-3">
+			  <label class="visually-hidden" for="pub-date-operator-select" i18n>compare publication dates using...</label>
+			  <select id="pub-date-operator-select" class="form-select ms-2" [(ngModel)]="context.termSearch.dateOp">
+				<option value='is' i18n>Is</option>
+				<option value='before' i18n>Before</option>
+				<option value='after' i18n>After</option>
+				<option value='between' i18n>Between</option>
+			  </select>
+			</div>
+			<div class="col">
+			  <label i18n class="visually-hidden" for="context-termSearch-date1">Year, or beginning of year range</label>
+			  <input class="form-control ms-2" type="number" id="context-termSearch-date1"
+				[(ngModel)]="context.termSearch.date1"  (change)="filtersActive()"/>
+			</div>
+			<div class="col" *ngIf="context.termSearch.dateOp === 'between'">
+			  <label i18n class="visually-hidden" for="context-termSearch-date2">End of year range</label>
+			  <input class="form-control ms-2" type="number" id="context-termSearch-date2"
+				[(ngModel)]="context.termSearch.date2"/>
+			</div>
+		</fieldset>
+	</ng-container>
   <div class="row mb-3 pb-3">
     <ng-container *ngIf="context.result.global_summary as gs">
       <ng-container *ngIf="gs.suggestions as sugg">
