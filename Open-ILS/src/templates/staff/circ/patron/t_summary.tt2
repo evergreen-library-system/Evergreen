@@ -13,8 +13,8 @@
         {{penalty.set_date() | date:$root.egDateFormat}}
       </div>
     </div>
-    <div class="row" ng-class="{'patron-summary-alert' : doesPatronExpireSoon()}">
-      <div ng-if="doesPatronExpireSoon()" class="col-md-12">[% l('Patron account will expire soon.  Please renew.') %]</div>
+    <div class="row patron-summary-alert" ng-if="doesPatronExpireSoon()">
+      <div class="col-md-12">[% l('Patron account will expire soon.  Please renew.') %]</div>
     </div>
     <div ng-if="patron().photo_url()" class="row">
          <div class="col-md-8 patron_photo_wrap"><img class="img-responsive img-rounded" src="{{patron().photo_url()}}" alt=""></div>
@@ -80,7 +80,7 @@
       </div>
     </div>
     <div class="row"
-      ng-show="patron_stats().fines.group_balance_owed > patron_stats().fines.balance_owed"
+      ng-if="patron_stats().fines.group_balance_owed > patron_stats().fines.balance_owed"
       ng-class="{'patron-summary-alert' : patron_stats().fines.group_balance_owed}">
       <div class="col-md-5">[% l('Group Fines') %]</div>
       <div class="col-md-7">
