@@ -8,14 +8,14 @@
 /** style to make a grid look like a striped table */
 #patron-summary-grid div.row {
   padding: 3px; 
-  border-right: 2px solid var(--common-form-border);
+  border-right: 2px solid var(--border);
 }
 #patron-summary-grid div.row:nth-child(odd) {
-  background-color: var(--common-form-bg);
+  background-color: var(--bs-body-bg-alt);
 }
 
-.patron-summary-alert:not(.active .patron-summary-alert), 
-.patron-summary-alert-small:not(.active .patron-summary-alert-small) {
+#patron-summary-grid .patron-summary-alert:not(.active .patron-summary-alert),
+#patron-summary-grid .patron-summary-alert-small:not(.active .patron-summary-alert-small) {
   background-color: var(--badge-danger-bg);
   color: var(--badge-danger-color);
   font-weight:bold;
