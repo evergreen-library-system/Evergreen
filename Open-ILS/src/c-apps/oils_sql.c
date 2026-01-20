@@ -7329,7 +7329,7 @@ int doUpdate( osrfMethodContext* ctx ) {
 
 	dbhandle = writehandle;
 	growing_buffer* sql = osrf_buffer_init( 128 );
-	osrf_buffer_fadd( sql,"UPDATE %s AS %s SET", osrfHashGet( meta, "tablename" ), classname);
+	osrf_buffer_fadd( sql,"UPDATE %s AS \"%s\" SET", osrfHashGet( meta, "tablename" ), classname);
 
 	int first = 1;
 	osrfHash* field_def = NULL;
@@ -7471,7 +7471,7 @@ int doUpdate( osrfMethodContext* ctx ) {
 
 	char* pcrud_pred = osrf_buffer_release(pcrud_pred_buf);
 
-	osrf_buffer_fadd( sql, " WHERE %s.%s = %s%s RETURNING *;", classname, pkey, id, pcrud_pred );
+	osrf_buffer_fadd( sql, " WHERE \"%s\".%s = %s%s RETURNING *;", classname, pkey, id, pcrud_pred );
 
 	free( pcrud_pred );
 
@@ -7641,7 +7641,7 @@ int doDelete( osrfMethodContext* ctx ) {
 
 	char* pcrud_pred = osrf_buffer_release(pcrud_pred_buf);
 
-	dbi_result result = dbi_conn_queryf( writehandle, "DELETE FROM %s AS %s WHERE %s.%s = %s%s;",
+	dbi_result result = dbi_conn_queryf( writehandle, "DELETE FROM %s AS \"%s\" WHERE \"%s\".%s = %s%s;",
 		osrfHashGet( meta, "tablename" ), classname, classname, pkey, id, pcrud_pred );
 
 	int rc = 0;
@@ -7681,7 +7681,7 @@ int doDelete( osrfMethodContext* ctx ) {
 
 			result = dbi_conn_queryf(
 				writehandle,
-				"SELECT %s FROM %s AS %s WHERE deleted AND %s.%s = %s%s;",
+				"SELECT %s FROM %s AS \"%s\" WHERE deleted AND \"%s\".%s = %s%s;",
 				pkey, osrfHashGet( meta, "tablename" ), classname, classname, pkey, id, pcrud_pred // id is already appropriately quoted, above
 			);
 
