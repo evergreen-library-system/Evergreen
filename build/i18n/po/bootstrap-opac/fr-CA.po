@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2025-11-12 19:23+0000\n"
-"PO-Revision-Date: 2025-12-11 02:18+0000\n"
+"PO-Revision-Date: 2026-01-09 20:47+0000\n"
 "Last-Translator: Jennifer Pringle <Unknown>\n"
 "Language-Team: French <fr@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2025-12-11 08:41+0000\n"
-"X-Generator: Launchpad (build 379e22b8475e3402088a4cdb4a6e7936a4d28414)\n"
+"X-Launchpad-Export-Date: 2026-01-10 08:04+0000\n"
+"X-Generator: Launchpad (build 99c00f518760bdd50fc6e353e7736d2fff8fba4a)\n"
 
 #: ../../Open-ILS/src/templates-bootstrap/opac/register.tt2:62
 msgid ""
@@ -2772,7 +2772,7 @@ msgstr "Information concernant le statut du droit d'auteur : "
 
 #: ../../Open-ILS/src/templates-bootstrap/opac/parts/relators.tt2:2
 msgid "Inker"
-msgstr ""
+msgstr "Encreur"
 
 #: ../../Open-ILS/src/templates-bootstrap/opac/parts/relators.tt2:2
 msgid "Inscriber"
@@ -3882,7 +3882,7 @@ msgstr "Paiements"
 
 #: ../../Open-ILS/src/templates-bootstrap/opac/parts/relators.tt2:2
 msgid "Penciller"
-msgstr ""
+msgstr "Crayonneur"
 
 #: ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs.tt2:235
 msgid "Pending Address Change"
@@ -5440,7 +5440,7 @@ msgstr "Professeur"
 
 #: ../../Open-ILS/src/templates-bootstrap/opac/parts/relators.tt2:2
 msgid "Technical advisor"
-msgstr ""
+msgstr "Conseiller technique"
 
 #: ../../Open-ILS/src/templates-bootstrap/opac/parts/relators.tt2:2
 msgid "Technical director"
@@ -5985,7 +5985,7 @@ msgstr "Auteur de texte additionnel"
 
 #: ../../Open-ILS/src/templates-bootstrap/opac/parts/relators.tt2:2
 msgid "Writer of afterword"
-msgstr ""
+msgstr "Auteur de postface"
 
 #: ../../Open-ILS/src/templates-bootstrap/opac/parts/relators.tt2:2
 msgid "Writer of film story"
@@ -5993,7 +5993,7 @@ msgstr "Auteur de récit cinématographique"
 
 #: ../../Open-ILS/src/templates-bootstrap/opac/parts/relators.tt2:2
 msgid "Writer of foreword"
-msgstr ""
+msgstr "Auteur d’avant-propos"
 
 #: ../../Open-ILS/src/templates-bootstrap/opac/parts/relators.tt2:2
 msgid "Writer of intertitles"
