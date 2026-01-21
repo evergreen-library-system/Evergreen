@@ -4,6 +4,65 @@
 :toclevels: 3
 
 
+== Evergreen 3.15.9 ==
+
+This release contains bug fixes and documentation fixes improving on Evergreen 3.15.8.
+
+This release contains a critical fix related to patron surveys:
+
+* Fixes an issue that prevented patron saves when updating survey answers. (https://bugs.launchpad.net/evergreen/+bug/2137226[Bug 2137226])
+
+
+=== Accessibility ===
+
+* Adds icons as well as color to OPAC hold pickup library selector validation styles; adds ARIA announcement of invalid pickup location message. (https://bugs.launchpad.net/evergreen/+bug/2115659[Bug 2115659])
+* Adds ARIA to warning when user has no email address to use for hold notifications; adds direct link to the Change Email form (https://bugs.launchpad.net/evergreen/+bug/2115655[Bug 2115655])
+* Changes "Yes, by..." to "Notify by..." in OPAC hold notification options for clarity and accessibility (https://bugs.launchpad.net/evergreen/+bug/2115656[Bug 2115656])
+* Makes the option to make whether to open Staff Portal page links in a new tab behave more consistently (https://bugs.launchpad.net/evergreen/+bug/2137056[Bug 2137056])
+* Correct AngularJS input, button gray background color (https://bugs.launchpad.net/evergreen/+bug/2110569[Bug 2110569])
+* Return alternating row colors to patron summary bar. (https://bugs.launchpad.net/evergreen/+bug/2137275[Bug 2137275])
+
+
+=== Acquisitions ===
+
+* Fixes price parsing issue with MARC 020$c importing: Acq orders, federated search. (https://bugs.launchpad.net/evergreen/+bug/2078503[Bug 2078503])
+
+=== Cataloging ===
+
+* Removes duplicate arrow on Record Bucket editor dialog. (https://bugs.launchpad.net/evergreen/+bug/2137230[Bug 2137230])
+
+=== Circulation ===
+
+* Fixes an issue that prevented patron saves when updating survey answers. (https://bugs.launchpad.net/evergreen/+bug/2137226[Bug 2137226])
+* Fixed an issue where Behind Desk, Force Item Quality, and Email Notify always displayed as false in Angular hold details. (https://bugs.launchpad.net/evergreen/+bug/2133888[Bug 2133888])
+
+
+=== Acknowledgements ===
+
+We would like to thank the following individuals who contributed code, testing, documentation, and patches to the 3.15.9 point release of Evergreen:
+
+* Andrea Buntz Neiman
+* Blake Graham-Henderson
+* Chris Sharp
+* Christine Burns
+* Dan Briem
+* Galen Charlton
+* Gina Monti
+* Ian Skelskey
+* Jane Sandberg
+* Jason Etheridge
+* Martha Driscoll
+* Michele Morgan
+* Ranelle Irwin
+* Stephanie Leary
+* Steven Mayo
+* Susan Morrison
+* Terran McCanna
+
+
+
+
+
 == Evergreen 3.15.8 ==
 
 This release contains bug fixes and documentation fixes improving on Evergreen 3.15.7.
