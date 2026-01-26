@@ -1,6 +1,6 @@
 BEGIN;
 
--- SELECT evergreen.upgrade_deps_block_check('TODO', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1507', :eg_version);
 
 INSERT INTO config.settings_group (name, label) VALUES
     ('notify.sms',   oils_i18n_gettext('notify.sms',   'Text Notices',  'csg', 'label')),
