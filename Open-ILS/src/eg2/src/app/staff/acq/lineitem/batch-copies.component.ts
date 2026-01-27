@@ -26,7 +26,7 @@ export class LineitemBatchCopiesComponent implements OnInit {
 
     @Input() lineitem: IdlObject;
     @Input() batchAdd = false;
-    @Input() hideBarcode: boolean = false;
+    @Input() hideBarcode = false;
 
     @Output() becameDirty = new EventEmitter<Boolean>();
 
