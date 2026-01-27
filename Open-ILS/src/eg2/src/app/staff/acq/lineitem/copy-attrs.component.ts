@@ -22,7 +22,7 @@ export class LineitemCopyAttrsComponent implements OnInit {
     @Input() rowIndex: number;
     @Input() batchAdd = false;
     @Input() gatherParamsOnly = false;
-    @Input() hideBarcode: boolean = false;
+    @Input() hideBarcode = false;
 
     @Output() becameDirty = new EventEmitter<Boolean>();
     @Output() templateCopy = new EventEmitter<IdlObject>();
@@ -248,7 +248,7 @@ export class LineitemCopyAttrsComponent implements OnInit {
         // Ignore disposition for notes - can be edited even after ordering or receiving.
         // Notes still can't be edited while component is embedded because we don't have a save button
         if (field === 'note' && !this.embedded && !this.copy.isdeleted()) {
-                return false;
+            return false;
         }
 
         if (this.embedded || // inline expandy view
