@@ -391,9 +391,6 @@
                                                 <span class="place_hold">
                                                     [% l('Place Hold') %]
                                                 </span>
-                                                <span class="result_count hidden">
-                                                    [%- l('([_1])', ctx.mylist.size); -%]
-                                                </span>
                                             </span>
                                         </a>
                                     </li>
