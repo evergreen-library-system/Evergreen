@@ -42,9 +42,6 @@
         <span role="text">
             <i class="fas fa-list" aria-hidden="true"></i>
             <span>[% l("Add to my list") %]</span>
-            <span class="result_count hidden">
-                [%- l('([_1])', ctx.mylist.size); -%]
-            </span>
         </span>
     </a>
     <!--Removal-->
