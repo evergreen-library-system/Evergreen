@@ -101,6 +101,8 @@ export class HoldsService {
             const target: HoldRequestTarget = meta;
             target.bibId = target.bibrecord.id();
             target.callNum = meta.volume; // map to client terminology
+            target.parts = meta.parts.sort((p1, p2) =>
+                p1.label_sortkey() < p2.label_sortkey() ? 1 : -1);
 
             return this.bib.getBibSummary(target.bibId)
                 .pipe(map(sum => {
