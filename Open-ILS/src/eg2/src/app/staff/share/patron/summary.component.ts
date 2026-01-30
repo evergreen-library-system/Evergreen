@@ -1,9 +1,6 @@
 import {Component, OnInit, Input} from '@angular/core';
-import {Router, ActivatedRoute, ParamMap} from '@angular/router';
-import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import {OrgService} from '@eg/core/org.service';
 import {IdlObject} from '@eg/core/idl.service';
-import {NetService} from '@eg/core/net.service';
 import {PrintService} from '@eg/share/print/print.service';
 import {PatronService, PatronSummary} from './patron.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
@@ -35,7 +32,6 @@ export class PatronSummaryComponent implements OnInit {
 
     constructor(
         private org: OrgService,
-        private net: NetService,
         private printer: PrintService,
         private serverStore: ServerStoreService,
         public patronService: PatronService
@@ -140,7 +136,6 @@ export class PatronSummaryComponent implements OnInit {
             codes.push('PATRON_HAS_LOST');
         }
 
-        let penalty: string;
         let penaltyCount = 0;
 
         patron.standing_penalties().some(p => {
@@ -156,7 +151,6 @@ export class PatronSummaryComponent implements OnInit {
                 case 'PATRON_EXCEEDS_CHECKOUT_COUNT':
                 case 'PATRON_EXCEEDS_OVERDUE_COUNT':
                 case 'PATRON_EXCEEDS_FINES':
-                    penalty = name;
                     codes.push(name);
             }
         });

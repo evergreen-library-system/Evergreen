@@ -163,6 +163,12 @@
               <dd class="numeric">{{summary.stats.checkouts.overdue}}</dd>
             </div>
             <div
+              *ngIf="summary.stats.checkouts.group.overdue > summary.stats.checkouts.overdue"
+              [ngClass]="{'alert PATRON_HAS_OVERDUES': summary.stats.checkouts.group.overdue > 0}">
+              <dt i18n>Group Overdue</dt>
+              <dd class="numeric">{{summary.stats.checkouts.group.overdue}}</dd>
+            </div>
+            <div
               [ngClass]="{'alert PATRON_HAS_OVERDUES': summary.stats.checkouts.long_overdue > 0}">
               <dt i18n>Long Overdue</dt>
               <dd class="numeric">{{summary.stats.checkouts.long_overdue}}</dd>

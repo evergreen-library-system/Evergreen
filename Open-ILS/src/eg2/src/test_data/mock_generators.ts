@@ -107,9 +107,42 @@ export class MockGenerators {
         return net;
     }
 
+    // Create a mock patron
+    static patron(properties={}) {
+        const defaults = {
+            active: true,
+            addresses: [],
+            barred: false,
+            card: {barcode: () => '12345'},
+            create_date: new Date(),
+            day_phone: '111-555-2222',
+            email: 'me@example.com',
+            evening_phone: '111-555-2222',
+            expire_date: new Date(),
+            guardian: 'My guardian',
+            guardian_email: 'my@guardian.org',
+            home_ou: 'My Library',
+            ident_value: null,
+            ident_value2: null,
+            juvenile: false,
+            last_update_time: new Date(),
+            net_access_level: {name: () => 'Unfiltered'},
+            name_keywords: [],
+            notes: [],
+            other_phone: '111-555-2222',
+            profile: {name: () => 'Patrons'},
+            standing_penalties: [],
+            usr_activity: [MockGenerators.idlObject({event_time: new Date()})],
+            usrname: 'hello123',
+            waiver_entries: [],
+        };
+        return this.idlObject({...defaults, ...properties});
+    }
+
     static patronService() {
-        const patron = jasmine.createSpyObj<PatronService>(['getById']);
+        const patron = jasmine.createSpyObj<PatronService>(['getById', 'namePart']);
         patron.getById.and.resolveTo(this.idlObject({id: 1, day_phone: '555-1234', settings: [], email: null, home_ou: 1}));
+        patron.namePart.and.returnValue('Your Best Friend');
         return patron;
     }
 
@@ -165,6 +198,7 @@ export class MockGenerators {
     static orgService() {
         return {
             ancestors: () => [],
+            get: (nodeOrOrgId: any) => this.idlObject({shortname: 'MYLIB'}),
             list: () => of([]),
             settings: () => Promise.resolve(null),
         };

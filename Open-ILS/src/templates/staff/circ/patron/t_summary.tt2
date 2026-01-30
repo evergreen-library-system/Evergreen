@@ -112,6 +112,14 @@
       <div class="col-md-5">[% l('Overdue') %]</div>
       <div class="col-md-7">{{patron_stats().checkouts.overdue}}</div>
     </div>
+    <div class="row"
+      ng-if="patron_stats().checkouts.group.overdue > patron_stats().checkouts.overdue"
+      ng-class="{'patron-summary-alert' : patron_stats().checkouts.group.overdue}">
+      <div class="col-md-5">[% l('Group Overdue') %]</div>
+      <div class="col-md-7">
+        {{patron_stats().checkouts.group.overdue}}
+      </div>
+    </div>
     <div class="row" 
       ng-class="{'patron-summary-alert' : patron_stats().checkouts.long_overdue}">
       <div class="col-md-5">[% l('Long Overdue') %]</div>

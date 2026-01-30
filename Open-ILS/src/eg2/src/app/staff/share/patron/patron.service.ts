@@ -31,7 +31,10 @@ export class PatronStats {
         out: 0,
         total_out: 0,
         long_overdue: 0,
-        noncat: 0
+        noncat: 0,
+        group: {
+            overdue: 0
+        },
     };
 
     holds = {
@@ -407,8 +410,15 @@ export class PatronService {
             // force numeric values
             stats.fines.balance_owed = Number(stats.fines.balance_owed);
 
-            Object.keys(stats.checkouts).forEach(key =>
-                stats.checkouts[key] = Number(stats.checkouts[key]));
+            Object.keys(stats.checkouts).forEach(key => {
+                if (key === 'group') {
+                    Object.keys(stats.checkouts.group).forEach(groupKey => {
+                        stats.checkouts.group[groupKey] = Number(stats.checkouts.group[groupKey]);
+                    });
+                } else {
+                    stats.checkouts[key] = Number(stats.checkouts[key]);
+                }
+            });
 
             stats.checkouts.total_out = stats.checkouts.out +
                 stats.checkouts.overdue + stats.checkouts.long_overdue;
@@ -508,7 +518,7 @@ export class PatronService {
         let penalty: string;
         let penaltyCount = 0;
 
-        patron.standing_penalties().some(p => {
+        patron.standing_penalties().some((p: IdlObject) => {
 
             if (p.standing_penalty().staff_alert() === 't' ||
                 p.standing_penalty().block_list()) {

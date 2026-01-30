@@ -2068,7 +2068,7 @@ __PACKAGE__->register_method(
             {desc => 'Optional User ID, for use in the staff client', type => 'number'}  # number?
         ],
         return => {
-            desc => "An object with four properties: user, fines, checkouts and holds."
+            desc => "An object with several properties: user, fines, checkouts, holds, and messages."
         }
     }
 );
@@ -2107,6 +2107,11 @@ sub user_opac_vitals {
     return $out if (defined($U->event_code($out)));
 
     $out->{"total_out"} = reduce { $a + $out->{$b} } 0, qw/out overdue/;
+
+    my ($group_overdue_count) = $self
+        ->method_lookup('open-ils.actor.usergroup.members.overdue_count')
+        ->run($auth, $user->usrgroup);
+    $out->{group} = {overdue => $group_overdue_count};
 
     my $unread_msgs = $e->search_actor_usr_message([
         {usr => $user_id, read_date => undef, deleted => 'f',
