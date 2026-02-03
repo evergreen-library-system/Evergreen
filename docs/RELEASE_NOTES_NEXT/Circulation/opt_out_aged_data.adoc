@@ -1,22 +1,36 @@
 == Opt Out of Year and Postal Code in Aged Transactions  ==
+
 Evergreen now supports additional org unit settings to control what information is included when you age holds and circulations.  Now the year of the patron's birth date and postal code can be set to null rather than populate the aged transaction tables when a transaction is aged.  The following settings control this behavior for holds and circulations respectively:  
 
+----
 circ.do_not_retain_year_of_birth_on_aged
 circ.do_not_retain_post_code_on_aged
 holds.do_not_retain_year_of_birth_on_aged
 holds.do_not_retain_post_code_on_aged
+----
 
 If you wish to not retain any of these fields on existing aged holds and circulations you should run the following SQL on the database.  
 
 to remove postal codes on aged holds:
+
+----
 UPDATE action.aged_hold_request SET usr_post_code = NULL WHERE usr_post_code IS NOT NULL;
+----
 
 to remove birth years on aged holds:
+
+----
 UPDATE action.aged_hold_request SET usr_birth_year = NULL WHERE usr_birth_year IS NOT NULL;
+----
 
 to remove postal codes on aged circulations:
+
+----
 UPDATE action.aged_circulation SET usr_post_code = NULL WHERE usr_post_code IS NOT NULL;
+----
 
 to remove birth years on aged circulations:
-UPDATE action.aged_circulation SET usr_birth_year = NULL WHERE usr_birth_year IS NOT NULL;
 
+----
+UPDATE action.aged_circulation SET usr_birth_year = NULL WHERE usr_birth_year IS NOT NULL;
+----
