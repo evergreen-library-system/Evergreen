@@ -87,7 +87,7 @@
         [% END %]
     </div>
 
-    <div id='acct_lists_prime' class="[% IF ctx.add_rec %]d-none[% END %]">
+    <div id='acct_lists_prime'>
         [% FOR bbag IN ctx.bookbags %]
         <div class="container border-bottom pb-2">
             <div class="row mt-2">
