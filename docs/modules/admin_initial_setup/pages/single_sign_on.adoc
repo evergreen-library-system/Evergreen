@@ -3,7 +3,9 @@
 
 indexterm:[Authentication,Single Sign On,Identity Provider]
 
-== Introduction
+== Patron OPAC SSO
+
+=== Introduction
 
 The Single Sign On mechanism for the Evergreen OPAC adds the ability for
 Evergreen to authenticate users against a configurable authoritative
@@ -27,37 +29,21 @@ VirtualHost configuration which is described in detail below.
 This feature does not offer external authentication for the Evergreen
 staff client.
 
-== Public Catalog Display
+=== Public Catalog Display
 
-If a location has Single Sign On activated, by default a patron will be
-required to authenticate the Single Sign On service. In most cases the
-patron will be transparently redirected to the Single Sign On login.
-However, if a patron navigates directly to the URL
-`+https://<your.evergreen.domain>/eg/opac/login+`, they will be presented
-with a prompt redirecting them to the Single Sign On service:
+If a location has Single Sign On activated, by default a patron will be required to authenticate the Single Sign On service. In most cases the patron will be transparently redirected to the Single Sign On login. However, if a patron navigates directly to the URL `+https://<your.evergreen.domain>/eg/opac/login+`, they will be presented with a prompt redirecting them to the Single Sign On service:
 
-image::sso/sso_only.png[Redirect to Single Sign On]
+image::sso/patron_sso_only.png[Redirect to Single Sign On]
 
-If a location wishes to permit Evergreen-native authentication as well
-as Single Sign On authentication, the Library Setting _Allow both
-Shibboleth and native OPAC authentication_ should be set to TRUE. In
-that case, a patron who navigates to the login page, or to a page
-requiring authentication, will see this:
+If a location wishes to permit Evergreen-native authentication as well as Single Sign On authentication, the Library Setting *_Allow both Shibboleth and native OPAC authentication_* should be set to TRUE. In that case, a patron who navigates to the login page, or to a page requiring authentication, will see this:
 
-image:sso/sso_and_native.png[Single Sign on and native authentication permitted]
+image:sso/patron_sso_and_native.png[Single Sign on and native authentication permitted]
 
-== Administration
+=== Permission and Library Settings
 
-Single Sign On is controlled by several Evergreen Library Settings, and
-an Apache setting. There is one new permission.
-
-=== Permissions
-
-Users must have the new SSO_ADMIN permission assigned at the appropriate
+Users must have SSO_ADMIN permission assigned at the appropriate
 working locations and depths in order to set or change any of the below
 Library Settings.
-
-=== Library Settings
 
 Library settings are inheritable, unless there is an organizationally
 closer setting.
@@ -360,6 +346,7 @@ and UNIX LDAP IdPs that can be added to attribute-map.xml are:
 
 `+<Attribute name="urn:mace:dir:attribute-def:mail" id="mail"/>+`
 
+
 For some IdPs, such as SimpleSAMLphp, it can be necessary to add a
 special security policy to security-policy.xml:
 
@@ -370,11 +357,287 @@ special security policy to security-policy.xml:
 </Policy>
 ....
 
-==== Testing your configuration
+=== Testing your configuration
 
 To test if there is a current active Shibboleth session, go here:
 `+https://<your-eg-hostname>/Shibboleth.sso/Session+`
 
-For testing purposes, if you need to reset the browser so it’s as if a
-user has never logged in before, this can be done by clearing all
-cookies associated with the Evergreen OPAC.
+For testing purposes, if you need to reset the browser so it’s as if a user has never logged in before, this can be done by clearing all cookies associated with the Evergreen OPAC. Using browser "incognito" or "private browsing" modes are recommended.
+
+== Staff-Side Single Sign On
+
+=== Introduction
+
+Similar to the patron OPAC SSO, the staff single sign on is also available. The staff side and patron side SSO are not mutually exclusive. You can configure Evergreen to use one or the other or both. The staff side single sign on has a separate set of library settings as well as Apache/Shibboleth configuration. Special Apache/Shibboleth configuration blocks are required if you want Evergreen to handle both simultaneously.
+
+=== Staff login experience
+
+Evergreen staff single sign on uses the registered workstation (browser cookie) to determine whether or not the login page should offer single sign on. Staff will be required to login to the Evergreen staff client using their native Evergreen credentials at least once. This is required in order to register a workstation. If the computer/browser that you are using has already registered a workstation, then you will not be required to login with native Evergreen credentials. It's a good idea to remember your native Evergreen credentials in order to register a workstation in the future. If your computer is replaced, or you delete your browser cache, or you use a different browser, you will be required to register a workstation.
+
+NOTE: It is possible to offer both native and single sign on the login page. This is governed by the library setting "*_Allow both Shibboleth and native Staff Client authentication_*"
+
+[cols="2",options=noheader]
+|====
+|*Staff native login*
+a|image::sso/staff_sso_native.png[Staff native,300,200]
+|*Staff SSO Only*
+a|image::sso/staff_sso_only.png[Staff SSO Only,300,200]
+|*Staff SSO and Native Hybrid*
+a|image::sso/staff_sso_hybrid.png[Staff SSO and Nativen,300,200]
+
+|====
+
+=== Permission and Library Settings
+
+Staff Single Sign On is controlled by several Evergreen Library Settings, and an Apache setting. Library settings are inheritable, unless there is an organizationally closer setting.
+
+Users must have *_SSO_ADMIN_* permission assigned at the appropriate working locations and depths in order to set or change any of the below Library Settings.
+
+* *Enable Shibboleth SSO for the Staff Client*
+** TRUE / FALSE
+** Controls whether Shibboleth is being used for staff.
+* *Allow both Shibboleth and native Staff Client authentication*
+** TRUE / FALSE
+** Default is true. If true, the staff login portal will offer Evergreen native username/password boxes.
+* *Log out of the Staff Shibboleth IdP*
+** TRUE / FALSE
+** Default is false, which will leave a user logged into Shibboleth but
+will forget their Evergreen authoken and set a cookie so they are logged
+out of Evergreen until they choose to log back in.
+** If set to true, the user will be logged out of Shibboleth when they log
+out of Evergreen. Additionally, if the IdP implements the
+SingleLogoutService option, the user will be logged out of the IdP as
+well.
+** This setting works on an intentional logout; a timeout behaves
+differently (see below).
+* *Shibboleth Staff SSO Entity ID*
+** Text
+** Records which configured Entity ID to use for Single Sign On, if there
+are multiple Identity Providers in use by a single Evergreen instance.
+* *Evergreen Staff SSO matchpoint*
+** Text
+** Indicates which field carries the ID that Shibboleth is looking for.
+Default is *usrname*, but also accepts *barcode* and *email* (note the
+last is not a unique value in Evergreen).
+* *Shibboleth Staff SSO matchpoint*
+** Text
+** Indicates which value is coming from Shibboleth that Evergreen will need
+to look up a user. This is defined in the Shibboleth configuration and
+defaults to *uid*.
+* *Specific Shibboleth Application path. Default /Shibboleth.sso*
+** Text
+** A Shibboleth technicality. If you are also configuring Patron SSO, you will want to edit this setting to match your staff Shibboleth Application path setting. (AKA "/sys1/staff/Shibboleth.sso")
+
+
+=== Apache Settings
+
+We need to teach Shibboleth about the specific application context using *_ShibRequestSetting_*. Here's an example Apache configuration for a system that has both Patron and Staff SSO configured:
+
+....
+<VirtualHost *:443>
+  ...
+############################
+# Patron SSO portion BEGIN #
+############################
+SetEnv sso_loc 101
+<Location />
+	ShibRequestSetting applicationId sys1_patron
+</Location>
+##########################
+# Patron SSO portion END #
+##########################
+
+###########################
+# Staff SSO portion BEGIN #
+###########################
+<Location /eg2/en-US/staff>
+        ShibRequestSetting applicationId sys1_staff
+</Location>
+
+<Location /eg/opac/staff/sso/login>
+        ShibRequestSetting applicationId sys1_staff
+</Location>
+
+<Location /staff>
+        ShibRequestSetting applicationId sys1_staff
+</Location>
+
+<Location /eg/staff>
+        ShibRequestSetting applicationId sys1_staff
+</Location>
+
+<Location /eg2/en-US/staff/login>
+        ShibRequestSetting applicationId sys1_staff
+</Location>
+
+<Location /sys1/staff>
+        ShibRequestSetting applicationId sys1_staff
+</Location>
+#########################
+# Staff SSO portion END #
+#########################
+  ...
+</VirtualHost>
+....
+
+=== Shibboleth configuration
+
+Configuring Shibboleth is particular to each institution's needs, and depends on the IdP or IdPs that will be used.
+
+==== Example supporting multiple IdPs with Patron and Staff SSO
+
+.example configuration
+[source,xml]
+....
+<SPConfig xmlns="urn:mace:shibboleth:3.0:native:sp:config"
+    xmlns:conf="urn:mace:shibboleth:3.0:native:sp:config"
+    clockSkew="180">
+
+<RequestMapper type="Native">
+
+
+        <RequestMap>
+
+<!-- SYS1  -->
+      <Host name="SYS1.example.org" applicationId="sys1_patron">
+            <Path name="sys1" authType="shibboleth" requireSession="true" >
+                <Path name="staff" applicationId="sys1_staff" />
+            </Path>
+      </Host>
+<!-- SYS1 -->
+
+<!-- SYS2  -->
+      <Host name="SYS2.example.org" applicationId="sys2_patron">
+            <Path name="sys2" authType="shibboleth" requireSession="true" >
+                <Path name="staff" applicationId="sys2_staff" />
+            </Path>
+      </Host>
+<!-- SYS2 -->
+
+
+        </RequestMap>
+</RequestMapper>
+
+    <!-- The ApplicationDefaults element is where most of Shibboleth's SAML bits are defined. -->
+    <ApplicationDefaults entityID="https://<your.evergreen.domain>/eg/opac/"
+        REMOTE_USER="eppn subject-id pairwise-id persistent-id"
+        cipherSuites="DEFAULT:!EXP:!LOW:!aNULL:!eNULL:!DES:!IDEA:!SEED:!RC4:!3DES:!kRSA:!SSLv2:!SSLv3:!TLSv1:!TLSv1.1">
+
+
+        <!--
+        Controls session lifetimes, address checks, cookie handling, and the protocol handlers.
+        You MUST supply an effectively unique handlerURL value for each of your applications.
+        The value defaults to /Shibboleth.sso, and should be a relative path, with the SP computing
+        a relative value based on the virtual host. Using handlerSSL="true", the default, will force
+        the protocol to be https. You should also set cookieProps to "https" for SSL-only sites.
+        Note that while we default checkAddress to "false", this has a negative impact on the
+        security of your site. Stealing sessions via cookie theft is much easier with this disabled.
+        -->
+       <Sessions lifetime="28800" timeout="3600" relayState="ss:mem"
+                  checkAddress="false" handlerSSL="true" cookieProps="https"
+                  redirectLimit="exact">
+
+
+            <!--
+            By not supplying an entity here, Evergreen is required to specify the entity.
+            This is controlled by the opac.login.shib_sso.entityId YAOUS.
+            -->
+            <SSO>
+              SAML2 SAML1
+            </SSO>
+
+            <!-- SAML and local-only logout. -->
+            <Logout>SAML2 Local</Logout>
+
+            <!-- Extension service that generates "approximate" metadata based on SP configuration. -->
+            <Handler type="MetadataGenerator" Location="/Metadata" signing="false"/>
+
+            <!-- Status reporting service. -->
+            <Handler type="Status" Location="/Status" acl="127.0.0.1 ::1"/>
+
+            <!-- Session diagnostic service. -->
+            <Handler type="Session" Location="/Session" showAttributeValues="false"/>
+
+            <!-- JSON feed of discovery information. -->
+            <Handler type="DiscoveryFeed" Location="/DiscoFeed"/>
+
+            <md:SingleLogoutService Location="/SLO/Redirect" conf:template="bindingTemplate.html"
+                    conf:policyId="unsigned-slo" Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect"/>
+
+        </Sessions>
+
+        <!--
+        Allows overriding of error template information/filenames. You can
+        also add attributes with values that can be plugged into the templates.
+        -->
+        <Errors supportContact="root@localhost"
+            helpLocation="/about.html"
+            styleSheet="/shibboleth-sp/main.css"/>
+
+        <!-- Example of locally maintained metadata. -->
+        <MetadataProvider type="XML" validate="true" file="/etc/shibboleth/simplesaml-idp-metadata.xml"/>
+        <MetadataProvider type="XML" validate="true" file="/etc/shibboleth/other-external-idp-metadata.xml"/>
+
+        <!-- Map to extract attributes from SAML assertions. -->
+        <AttributeExtractor type="XML" validate="true" reloadChanges="false" path="attribute-map.xml"/>
+
+        <!-- Use a SAML query if no attributes are supplied during SSO. -->
+        <AttributeResolver type="Query" subjectMatch="true"/>
+
+        <!-- Default filtering policy for recognized attributes, lets other data pass. -->
+        <AttributeFilter type="XML" validate="true" path="attribute-policy.xml"/>
+
+        <!-- Simple file-based resolver for using a single keypair. -->
+        <CredentialResolver type="File" key="sp-key.pem" certificate="sp-cert.pem"/>
+
+
+<!-- SYS1 -->
+      <ApplicationOverride id="sys1_patron" entityID="https://SYS1.example.org/eg/opac/">
+            <MetadataProvider type="XML" validate="false" url="https://login.microsoftonline.com/yyyyy/federationmetadata/2007-06/federationmetadata.xml?appid=yyyyy" backingFilePath="SYS1-metadata.xml" maxRefreshDelay="7200" />
+        </ApplicationOverride>
+        <ApplicationOverride id="sys1_staff" entityID="https://SYS1.example.org/sys1/staff">
+            <Sessions lifetime="28800" timeout="3600" checkAddress="false" handlerURL="/sys1/staff/Shibboleth.sso" />
+            <MetadataProvider type="XML" validate="false" url="https://login.microsoftonline.com/zzzzz/federationmetadata/2007-06/federationmetadata.xml?appid=zzzzz" backingFilePath="SYS1_staff-metadata.xml" maxRefreshDelay="7200" />
+        </ApplicationOverride>
+<!-- SYS1 -->
+
+<!-- SYS2 -->
+      <ApplicationOverride id="sys2_patron" entityID="https://SYS2.example.org/eg/opac/">
+            <MetadataProvider type="XML" validate="false" url="https://login.microsoftonline.com/aaaaa/federationmetadata/2007-06/federationmetadata.xml?appid=aaaaa" backingFilePath="SYS2-metadata.xml" maxRefreshDelay="7200" />
+        </ApplicationOverride>
+        <ApplicationOverride id="sys2_staff" entityID="https://SYS2.example.org/sys2/staff">
+            <Sessions lifetime="28800" timeout="3600" checkAddress="false" handlerURL="/sys2/staff/Shibboleth.sso" />
+            <MetadataProvider type="XML" validate="false" url="https://login.microsoftonline.com/bbbbb/federationmetadata/2007-06/federationmetadata.xml?appid=bbbbb" backingFilePath="SYS2_staff-metadata.xml" maxRefreshDelay="7200" />
+        </ApplicationOverride>
+<!-- SYS2 -->
+
+
+    </ApplicationDefaults>
+
+    <!-- Policies that determine how to process and authenticate runtime messages. -->
+    <SecurityPolicyProvider type="XML" validate="true" path="security-policy.xml"/>
+
+    <!-- Low-level configuration about protocols and bindings available for use. -->
+    <ProtocolProvider type="XML" validate="true" reloadChanges="false" path="protocols.xml"/>
+
+</SPConfig>
+....
+
+=== Other configuration information
+
+Some common attribute maps that are useful for some IdPs and can be added to attribute-map.xml are:
+
+`+<Attribute name="uid" id="uid" nameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic"/>`
+
+`+<Attribute name="uid" id="uid" nameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:unspecified"/>`
+
+=== Troubleshooting
+
+It's common to see an "infinite loop" where the browser bounces to the IdP and back to Evergreen and back again. This is almost always due to the claim. The IdP needs to double check the claim settings. Make sure that the claim name is "uid" (or whatever you configured Evergreen to expect). You can check to see what claim you are receiving by navigating your browser to this URL manually:
+
+`+https://sys1.example.org/sys1/staff/Shibboleth.sso/Session+`
+
+Additionally, you can convey your Metadata to the IdP with this URL:
+
+`+https://sys1.example.org/sys1/staff/Shibboleth.sso/Metadata+`
+
