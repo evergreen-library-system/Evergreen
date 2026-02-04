@@ -6147,7 +6147,7 @@ INSERT into config.org_unit_setting_type
     oils_i18n_gettext('circ.hold_reset_reason_entry_age_threshold',
         'Hold reset reason entries will be removed if older than this interval. Default 1 year if no value provided.',
         'coust', 'description'),
-    'interval', null),
+    'interval', null)
 ,( 'circ.do_not_retain_year_of_birth_on_aged', 'circ',
     oils_i18n_gettext('circ.do_not_retain_year_of_birth_on_aged',
         'When aging circulations do not retain the year from patron date of birth',
