@@ -40,9 +40,19 @@ export class GridFlatDataService {
             return obj;
         });
 
-        if (query && query['-and']) {
-            query['-and'].forEach(col => {
-                Object.keys(col).forEach(k => fields[k].filter = true);
+        // mark any fields used in the query (either directly in the base
+        // query or via a user-supplied grid filter) as a filter field for
+        // fielder's purposes; doing so will ensure that any joins
+        // needed for the query are made
+        if (query) {
+            Object.keys(query).forEach(fld => {
+                if (fld in fields) {
+                    fields[fld].filter = true;
+                } else if (fld === '-and' || fld === '-or') {
+                    query[fld].forEach(col => {
+                        Object.keys(col).forEach(k => fields[k].filter = true);
+                    });
+                }
             });
         }
 
