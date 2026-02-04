@@ -23,7 +23,7 @@
                  </button>
 
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                    [% FOR bbag IN ctx.bookbags %]
+                    [% FOR bbag IN ctx.bookbags_complete %]
                          <button name="action" class="dropdown-item" href="#" type="submit" value="[% bbag.id %]"> [% bbag.name | html %]</button>
                     [% END %]
                 [% END %]

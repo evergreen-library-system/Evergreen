@@ -740,6 +740,16 @@ sub _load_lists_and_settings {
                 }
             ]
         );
+
+        # We need a separate bookbag object that contains the full list for use in the basket selection dropdowns
+        $self->ctx->{bookbags_complete} = $e->search_container_biblio_record_entry_bucket(
+            [
+                {owner => $self->ctx->{user}->id, btype => 'bookbag'}, {
+                    order_by => {cbreb => 'name'}
+                }
+            ]
+        );
+
         # We also want a total count of the user's bookbags.
         my $q = {
             'select' => { 'cbreb' => [ { 'column' => 'id', 'transform' => 'count', 'aggregate' => 'true', 'alias' => 'count' } ] },
