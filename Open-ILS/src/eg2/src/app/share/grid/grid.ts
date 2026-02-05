@@ -1,7 +1,7 @@
 /**
  * Collection of grid related classses and interfaces.
  */
-import {TemplateRef, EventEmitter, ChangeDetectorRef, AfterViewInit, QueryList} from '@angular/core';
+import {TemplateRef, EventEmitter, ChangeDetectorRef, QueryList} from '@angular/core';
 import {Observable, Subscription} from 'rxjs';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
@@ -10,6 +10,7 @@ import {FormatService} from '@eg/core/format.service';
 import {ButtonStyle} from '@eg/share/util/button-style.directive';
 import {Pager} from '@eg/share/util/pager';
 import {GridFilterControlComponent} from './grid-filter-control.component';
+import { Cardinality, cardinalityGuess } from '../util/cardinality';
 
 const MAX_ALL_ROW_COUNT = 10000;
 
@@ -384,7 +385,7 @@ export class GridColumnSet {
         if (!col.label) { col.label = col.name; }
         if (!col.datatype) { col.datatype = 'text'; }
         if (!col.isAuto) { col.headerLabel = col.label; }
-        if (!col.allowFilterILike) { col.allowFilterILike = this.allowCaseInsensitiveSearch(col) }
+        if (!col.allowFilterILike) { col.allowFilterILike = this.allowCaseInsensitiveSearch(col); }
 
         col.visible = !col.hidden;
     }
@@ -395,20 +396,9 @@ export class GridColumnSet {
             return false;
         }
 
-        // if cardinality is set in the IDL, respect it
-        const cardinality = this.idl.classes[col.idlClass].cardinality;
-        if (cardinality === 'high' || cardinality === 'unbounded') {
-            return false; 
-        }
-
-        // if cardinality wasn't set at all, let's make extra sure this isn't a log or history table
-        const table = this.idl.classes[col.idlClass].table;
-        if (cardinality === '' && (table.substring(table.length - 4) === '_log' || table.substring(table.length - 8) === '_history')) {
-            return false;
-        }
-
-        // ... all right, we'll allow 'ilike'
-        return true;
+        const cardinality = cardinalityGuess(this.idl.classes[col.idlClass]);
+        // Allow ilike if we are sure that the cardinality is neither high nor unbounded
+        return cardinality === Cardinality.Low || cardinality === Cardinality.Unknown;
     }
 
     applyColumnSortability(col: GridColumn) {
