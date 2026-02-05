@@ -71,13 +71,13 @@
            i = i + 1;
            IF i == ctx.bookbags.size;
     %]
-    <li class="dropdown-divider"></li>
         [%- END -%]
     <li class="dropdown-item"><a href="[% href %]" data-recid="[% ctx.bre_id %]" data-action="add">[% bag.name %]</a></li>
     [%
        END;
        END
     %]
+    <li class="dropdown-divider"></li>
     <li class="dropdown-item"><a href="[% opac_wrap(mkurl(ctx.opac_root _ '/myopac/lists', {
             limit => ctx.bookbag_count, add_rec => ctx.bre_id,
             anchor => rec_anchor })) %]"
