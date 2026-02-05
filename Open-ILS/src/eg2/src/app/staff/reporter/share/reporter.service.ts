@@ -70,6 +70,12 @@ const transforms = [
         datatypes: ['text']
     },
     {
+        name: 'first_word',
+        simple: false,
+        aggregate: false,
+        datatypes: ['text']
+    },
+    {
         name: 'lower',
         simple: true,
         aggregate: false,
