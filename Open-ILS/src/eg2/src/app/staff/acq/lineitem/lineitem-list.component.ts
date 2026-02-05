@@ -1278,7 +1278,7 @@ export class LineitemListComponent implements OnInit, OnDestroy, OnChanges {
         const ids = Object.keys(this.selected).filter(id => this.selected[id]);
 
         this.batchUpdateCopiesDialog.ids = ids.map(i => Number(i));
-        this.batchUpdateCopiesDialog.activated_po = this.isActivatedPo();
+        this.batchUpdateCopiesDialog.activatedPo = this.isActivatedPo();
         
         this.batchUpdateCopiesDialog.open({size: 'xl'}).subscribe(batchChanges => {
             if (!batchChanges) { return; }
