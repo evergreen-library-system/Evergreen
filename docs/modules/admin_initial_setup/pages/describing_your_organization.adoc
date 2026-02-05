@@ -30,7 +30,7 @@ terms of "depth" in various configuration interfaces. In a typical hierarchy,
 the consortium has a depth of 0, the system is 1, the branch is 2, and any
 bookmobiles or sub-branches is 3.
 
-=== Create and edit Organization Unit Types ===
+=== Create and Edit Organization Unit Types ===
 
 To create or add an organization unit type, go to *Administration* > *Server Administration* > *Organization Types*. 
 
@@ -67,11 +67,11 @@ The following permissions are needed to manage Organization Unit Types:
 
 *Organizational Units* are the specific instances of the organization unit types that make up your library’s hierarchy. These will have distinctive proper names such as Main Street Branch or Townsville Campus.
 
-=== Remove or edit default Organizational Units ===
+=== Remove or Edit Default Organizational Units ===
 
 After installing the Evergreen software, the default CONS, SYS1, BR1, etc., organizational units remain. These must be removed or edited to reflect actual library entities.
 
-=== Create and edit Organizational Units ===
+=== Create and Edit Organizational Units ===
 
 Organizational units are created and edited through *Administration* > *Server Administration* > *Organizational Units*.
 
@@ -87,11 +87,32 @@ image:describing_your_organization/org-unit-add-child.png[Organizational unit ad
 
 This will open up a blank form. Input the library information for all three tabs, clicking Save after completing each tab. The same process is followed when editing any organizational unit data. 	
 
-==== Organizational Unit data ====
+==== Organizational Unit Data ====
 
-The *Main Settings* tab is where you input the organization unit type, name(s), and contact information. The phone number and email address are used in patron email notifications, hold slips, and transit slips. This is also where you can control whether the organizational unit is visible in the OPAC. Note that all required fields must be filled out and saved before you can access the *Hours of Operation* and *Addresses* tabs.
+=== Main Settings ===
 
-image::describing_your_organization/org-unit-main-settings.png[Organizational unit main settings]
+The *Main Settings* tab is where you input the organization unit type, name(s), and contact information. The phone number and email address are used in patron email notifications, hold slips, and transit slips. Note that all required fields must be filled out and saved before you can access the *Hours of Operation* and *Addresses* tabs.
+
+image::describing_your_organization/org-unit-main-settings_3.16.png[Organizational unit main settings]
+
+
+The Main Settings tab is also where you can control whether the organizational unit is visible in the public catalog (_OPAC Visible_) or staff catalog (_Staff Catalog Visible_).
+
+Organizational units that are marked not to be visible in the public catalog will not appear for patrons on the public catalog side. Organizationl units that are not staff catalog visible will not appear in the following locations:
+* The library selector on the staff catalog search form.
+* In search results in the staff catalog.
+* In item counts in the staff catalog search results and Record Staff View tabs.
+
+All organizational units will continue to be visible in the Holdings View, other administration screens, and reports.
+
+These visibility settings meet a few use cases:
+
+* De-cluttering an organizational unit selector with single-branch libraries, for which searching at the system level is exactly the same as searching at the branch level. This can be achieved by marking the system as not visible, and the branch as visible.
+* Hiding organizational units that are no longer used.
+* Hiding organizational units that are used for resource sharing, but which do not need to be searched.
+* Evergreen installations that want the library selector in the staff catalog to match the one in the public catalog. This can be achieved by making sure that all orgs have matching OPAC visible and Staff Catalog visible settings. 
+
+=== Hours of Operation ===
 
 The *Hours of Operation* tab is where you enter regular, weekly hours. Holiday and other closures are set in the *Closed Dates Editor*. Hours of operation and closed dates impact due dates and fine accrual. When an organizational unit is first created, the hours default to 9 AM to 5 PM each day.
 
@@ -117,6 +138,8 @@ image::describing_your_organization/hours-of-operation-notes.png[Organizational 
 To delete (clear) hours, click *Clear Hours of Operation*. The hours will revert to the default times, and an alert will appear stating the hours have not been saved.
 
 image::describing_your_organization/clear-hours-of-operation.png[clear hours of operation]
+
+=== Addresses ===
 
 The *Addresses* tab is broken out into four address types: *Physical Address*, *Holds Address*, *Mailing Address*, *ILL Address*. Click *Save* in each address tab after adding or editing addresses.
 
