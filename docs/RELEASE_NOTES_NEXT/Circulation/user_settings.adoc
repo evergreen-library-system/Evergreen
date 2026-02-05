@@ -1,0 +1,7 @@
+== User settings in patron summary ==
+
+User settings, such as default phone number, default hold
+pickup library, and hold notification format, are now
+displayed as part of the patron summary pane when searching
+patrons or retrieving a patron record.
+
