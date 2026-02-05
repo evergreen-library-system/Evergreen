@@ -6,7 +6,6 @@ import {IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
 import {AuthService} from '@eg/core/auth.service';
 import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
-import {LineitemCopyAttrsComponent} from './copy-attrs.component';
 
 @Component({
     selector: 'eg-acq-batch-update-copies-dialog',
@@ -16,7 +15,7 @@ import {LineitemCopyAttrsComponent} from './copy-attrs.component';
 export class BatchUpdateCopiesDialogComponent extends DialogComponent {
 
     @Input() ids: number[];
-    @Input() activated_po: boolean;
+    @Input() activatedPo: boolean;
 
     copyCount = '';
     selectedFormula: ComboboxEntry;
