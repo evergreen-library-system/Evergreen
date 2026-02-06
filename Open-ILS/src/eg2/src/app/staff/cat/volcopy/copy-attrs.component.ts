@@ -998,7 +998,7 @@ export class CopyAttrsComponent implements OnInit, OnDestroy, AfterViewInit {
             this.context.deletedAlerts = deletedThings;
 
             // console.debug('CopyAlertsDialog, openCopyAlerts(), copy before updateInMemory', this.idl.clone(this.local_copyList[0]));
-            this.context.updateInMemoryCopiesWithAlerts();
+            this.context.updateInMemoryCopiesWithAlerts(this.local_copyList);
             // console.debug('CopyAlertsDialog, openCopyAlerts(), copy after updateInMemory', this.idl.clone(this.local_copyList[0]));
             this.emitSaveChange();
 
@@ -1037,7 +1037,7 @@ export class CopyAttrsComponent implements OnInit, OnDestroy, AfterViewInit {
             this.context.changedTagMaps = changedThings;
             this.context.deletedTagMaps = deletedThings;
 
-            this.context.updateInMemoryCopiesWithTags();
+            this.context.updateInMemoryCopiesWithTags(this.local_copyList);
             this.emitSaveChange();
 
         });
@@ -1075,7 +1075,7 @@ export class CopyAttrsComponent implements OnInit, OnDestroy, AfterViewInit {
             this.context.deletedNotes = deletedThings;
             this.context.changedNotes = changedThings;
 
-            this.context.updateInMemoryCopiesWithNotes();
+            this.context.updateInMemoryCopiesWithNotes(this.local_copyList);
             this.emitSaveChange();
 
         });
@@ -1197,7 +1197,7 @@ export class CopyAttrsComponent implements OnInit, OnDestroy, AfterViewInit {
 
                     this.context.newAlerts.push(newAlert); // for our pending display
                 });
-                this.context.updateInMemoryCopiesWithAlerts();
+                this.context.updateInMemoryCopiesWithAlerts(this.local_copyList);
 
                 return;
             }
@@ -1283,7 +1283,7 @@ export class CopyAttrsComponent implements OnInit, OnDestroy, AfterViewInit {
                 });
                 // wait for the async tag calls to finish
                 setTimeout(() => {
-                    this.context.updateInMemoryCopiesWithTags();
+                    this.context.updateInMemoryCopiesWithTags(this.local_copyList);
                 }, 100);
 
                 return;
@@ -1316,7 +1316,7 @@ export class CopyAttrsComponent implements OnInit, OnDestroy, AfterViewInit {
 
                     this.context.newNotes.push( newNote ); // for our pending display
                 });
-                this.context.updateInMemoryCopiesWithNotes();
+                this.context.updateInMemoryCopiesWithNotes(this.local_copyList);
 
                 return;
             }

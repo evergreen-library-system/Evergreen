@@ -246,9 +246,10 @@ export class VolCopyContext {
         this.updateInMemoryCopiesWithTags();
     }
 
-    updateInMemoryCopiesWithAlerts() {
+    updateInMemoryCopiesWithAlerts(local_copyList?: IdlObject[]) {
         console.debug('updateInMemoryCopiesWithAlerts', this);
-        this.copyList().forEach(copy => {
+        const copyList = typeof local_copyList !== 'undefined' ? local_copyList : this.copyList();
+        copyList.forEach(copy => {
             this.updateInMemoryCopyWithAlerts(copy);
         });
     }
@@ -354,9 +355,10 @@ export class VolCopyContext {
         console.debug('breakdown: ', { new: counts.new, changed: counts.changed, deleted: counts.deleted });
     }
 
-    updateInMemoryCopiesWithNotes() {
+    updateInMemoryCopiesWithNotes(local_copyList?: IdlObject[]) {
         console.debug('updateInMemoryCopiesWithNotes', this);
-        this.copyList().forEach(copy => {
+        const copyList = typeof local_copyList !== 'undefined' ? local_copyList : this.copyList();
+        copyList.forEach(copy => {
             this.updateInMemoryCopyWithNotes(copy);
         });
     }
@@ -460,9 +462,10 @@ export class VolCopyContext {
         console.debug('breakdown: ', { new: counts.new, changed: counts.changed, deleted: counts.deleted });
     }
 
-    updateInMemoryCopiesWithTags() {
+    updateInMemoryCopiesWithTags(local_copyList?: IdlObject[]) {
         console.debug('updateInMemoryCopiesWithTags', this);
-        this.copyList().forEach(copy => {
+        const copyList = typeof local_copyList !== 'undefined' ? local_copyList : this.copyList();
+        copyList.forEach(copy => {
             this.updateInMemoryCopyWithTags(copy);
         });
     }
