@@ -516,8 +516,6 @@ export class VolCopyComponent implements OnInit {
             this.copyAttrs.applyPendingChanges();
         }
 
-        // this.context.updateInMemoryCopies();
-
         // Volume update API wants volumes fleshed with copies, instead
         // of the other way around, which is what we have here.
         const volumes: IdlObject[] = [];
