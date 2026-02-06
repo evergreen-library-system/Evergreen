@@ -1,14 +1,10 @@
-import {Component, OnInit} from '@angular/core';
-import {Router, ActivatedRoute, ParamMap} from '@angular/router';
-import {IdlObject} from '@eg/core/idl.service';
+import {Component} from '@angular/core';
+import { StaffBannerComponent } from '@eg/staff/share/staff-banner.component';
 
 @Component({
-    templateUrl: 'asn.component.html'
+    templateUrl: 'asn.component.html',
+    imports: [StaffBannerComponent]
 })
 export class AsnComponent {
-
-    constructor(
-        private route: ActivatedRoute,
-    ) {}
 }
 

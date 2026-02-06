@@ -11,7 +11,6 @@ import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
     templateUrl: './survey-edit.component.html',
-    standalone: true,
     imports: [
         FmRecordEditorModule,
         NgbNavModule,

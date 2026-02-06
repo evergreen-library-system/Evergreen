@@ -7,7 +7,7 @@ import {StoreService} from '@eg/core/store.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {StringComponent} from '@eg/share/string/string.component';
-import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
+import {ComboboxComponent, ComboboxEntry} from '@eg/share/combobox/combobox.component';
 
 
 /**
@@ -16,7 +16,11 @@ import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 
 @Component({
     selector: 'eg-conjoined-items-dialog',
-    templateUrl: 'conjoined-items-dialog.component.html'
+    templateUrl: 'conjoined-items-dialog.component.html',
+    imports: [
+        ComboboxComponent,
+        StringComponent
+    ]
 })
 
 export class ConjoinedItemsDialogComponent

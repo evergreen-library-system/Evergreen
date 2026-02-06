@@ -12,10 +12,18 @@ import {PcrudService} from '@eg/core/pcrud.service';
 import {StringComponent} from '@eg/share/string/string.component';
 import {ReporterService, SRTemplate} from '../share/reporter.service';
 import {Tree, TreeNode} from '@eg/share/tree/tree';
+import { StaffCommonModule } from '@eg/staff/common.module';
+import { TreeComponent } from '@eg/share/tree/tree.component';
+import { ReporterFieldChooserComponent } from './reporter-field-chooser.component';
 
 @Component({
     templateUrl: './editor.component.html',
     styleUrls: ['./editor.component.css'],
+    imports: [
+        ReporterFieldChooserComponent,
+        StaffCommonModule,
+        TreeComponent
+    ]
 })
 
 export class FullReporterEditorComponent implements OnInit {

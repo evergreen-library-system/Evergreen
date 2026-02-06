@@ -8,8 +8,10 @@ import {AuthService} from '@eg/core/auth.service';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 import {StringComponent} from '@eg/share/string/string.component';
-import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
+import {ComboboxComponent, ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {WorkLogService, WorkLogEntry} from '@eg/staff/share/worklog/worklog.service';
+import { WorkLogStringsComponent } from '../worklog/strings.component';
+import { CommonModule } from '@angular/common';
 
 /**
  * Dialog for canceling hold requests.
@@ -17,7 +19,13 @@ import {WorkLogService, WorkLogEntry} from '@eg/staff/share/worklog/worklog.serv
 
 @Component({
     selector: 'eg-hold-cancel-dialog',
-    templateUrl: 'cancel-dialog.component.html'
+    templateUrl: 'cancel-dialog.component.html',
+    imports: [
+        ComboboxComponent,
+        CommonModule,
+        StringComponent,
+        WorkLogStringsComponent
+    ]
 })
 
 export class HoldCancelDialogComponent

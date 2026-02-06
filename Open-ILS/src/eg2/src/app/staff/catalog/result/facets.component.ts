@@ -1,6 +1,5 @@
-import {Component, OnInit, NgModule, ViewChild} from '@angular/core';
-import {BehaviorSubject, Subscription} from 'rxjs';
-import {CatalogService} from '@eg/share/catalog/catalog.service';
+import {Component, OnInit} from '@angular/core';
+import {BehaviorSubject} from 'rxjs';
 import {CatalogUrlService} from '@eg/share/catalog/catalog-url.service';
 import {CatalogSearchContext, FacetFilter} from '@eg/share/catalog/search-context';
 import {StaffCatalogService} from '../catalog.service';
@@ -11,6 +10,7 @@ import {ToastService} from '@eg/share/toast/toast.service';
 import {BasketService} from '@eg/share/catalog/basket.service';
 import {EventService} from '@eg/core/event.service';
 import {NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 export const FACET_CONFIG = {
     display: [
@@ -25,7 +25,8 @@ export const FACET_CONFIG = {
 @Component({
     selector: 'eg-catalog-result-facets',
     templateUrl: 'facets.component.html',
-    styleUrls: ['./facets.component.css']
+    styleUrls: ['./facets.component.css'],
+    imports: [StaffCommonModule]
 })
 export class ResultFacetsComponent implements OnInit {
 
@@ -43,7 +44,6 @@ export class ResultFacetsComponent implements OnInit {
 
     constructor(
         private evt: EventService,
-        private cat: CatalogService,
         private catUrl: CatalogUrlService,
         private staffCat: StaffCatalogService,
         private bucketService: BucketService,

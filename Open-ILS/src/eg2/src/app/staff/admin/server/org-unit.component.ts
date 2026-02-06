@@ -2,7 +2,7 @@
 import {Component, ViewChild, OnInit} from '@angular/core';
 import {Tree, TreeNode} from '@eg/share/tree/tree';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
-import {NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
+import {NgbNavChangeEvent, NgbNavModule} from '@ng-bootstrap/ng-bootstrap';
 import {OrgService} from '@eg/core/org.service';
 import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';
@@ -12,10 +12,19 @@ import {StringService} from '@eg/share/string/string.service';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {PermService} from '@eg/core/perm.service';
+import { StaffCommonModule } from '@eg/staff/common.module';
+import { TreeComponent } from '@eg/share/tree/tree.component';
+import { FmRecordEditorModule } from '@eg/share/fm-editor/fm-editor.module';
 
 @Component({
     templateUrl: './org-unit.component.html',
-    styleUrls: [ './org-unit.component.css' ],
+    styleUrls: ['./org-unit.component.css'],
+    imports: [
+        FmRecordEditorModule,
+        NgbNavModule,
+        StaffCommonModule,
+        TreeComponent
+    ]
 })
 export class OrgUnitComponent implements OnInit {
 

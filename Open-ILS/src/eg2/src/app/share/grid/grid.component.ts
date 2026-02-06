@@ -7,6 +7,12 @@ import {FormatService} from '@eg/core/format.service';
 import {GridContext, GridColumn, GridDataSource,
     GridCellTextGenerator, GridRowFlairEntry} from './grid';
 import {GridToolbarComponent} from './grid-toolbar.component';
+import { NgClass, NgFor, NgIf } from '@angular/common';
+import { GridPrintComponent } from './grid-print.component';
+import { GridToolbarActionsMenuComponent } from './grid-toolbar-actions-menu.component';
+import { ProgressInlineComponent } from '../dialog/progress-inline.component';
+import { GridBodyComponent } from './grid-body.component';
+import { GridHeaderComponent } from './grid-header.component';
 
 /**
  * Main grid entry point.
@@ -19,7 +25,18 @@ import {GridToolbarComponent} from './grid-toolbar.component';
     // share grid css globally once imported so all grid component CSS
     // can live in grid.component.css and to avoid multiple copies of
     // the CSS when multiple grids are displayed.
-    encapsulation: ViewEncapsulation.None
+    encapsulation: ViewEncapsulation.None,
+    imports: [
+        GridBodyComponent,
+        GridHeaderComponent,
+        GridPrintComponent,
+        GridToolbarActionsMenuComponent,
+        GridToolbarComponent,
+        NgClass,
+        NgFor,
+        NgIf,
+        ProgressInlineComponent,
+    ]
 })
 
 export class GridComponent implements OnInit, AfterViewInit, OnDestroy {

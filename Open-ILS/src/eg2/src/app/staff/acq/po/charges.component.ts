@@ -1,21 +1,28 @@
-import {Component, OnInit, OnDestroy, Input, ViewChild} from '@angular/core';
+import {Component, OnInit, OnDestroy, ViewChild} from '@angular/core';
 import {Subscription} from 'rxjs';
-import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
 import {AuthService} from '@eg/core/auth.service';
 import {NetService} from '@eg/core/net.service';
 import {EventService} from '@eg/core/event.service';
 import {PcrudService} from '@eg/core/pcrud.service';
-import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {PoService} from './po.service';
 import {DisencumberChargeDialogComponent} from './disencumber-charge-dialog.component';
 import {PermService} from '@eg/core/perm.service';
+import { ComboboxComponent } from '@eg/share/combobox/combobox.component';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 
 @Component({
     templateUrl: 'charges.component.html',
-    selector: 'eg-acq-po-charges'
+    selector: 'eg-acq-po-charges',
+    imports: [
+        ComboboxComponent,
+        CommonModule,
+        DisencumberChargeDialogComponent,
+        FormsModule
+    ]
 })
 export class PoChargesComponent implements OnInit, OnDestroy {
 

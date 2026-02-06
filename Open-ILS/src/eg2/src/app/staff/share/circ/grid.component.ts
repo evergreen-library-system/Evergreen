@@ -28,6 +28,9 @@ import {MarkDamagedDialogComponent
 import {ClaimsReturnedDialogComponent} from './claims-returned-dialog.component';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {AddBillingDialogComponent} from '@eg/staff/share/billing/billing-dialog.component';
+import { GridModule } from '@eg/share/grid/grid.module';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 
 export interface CircGridEntry extends CircDisplayInfo {
     index: string; // class + id -- row index
@@ -63,7 +66,20 @@ const CIRC_FLESH_FIELDS = {
 
 @Component({
     templateUrl: 'grid.component.html',
-    selector: 'eg-circ-grid'
+    selector: 'eg-circ-grid',
+    imports: [
+        AddBillingDialogComponent,
+        ClaimsReturnedDialogComponent,
+        CommonModule,
+        ConfirmDialogComponent,
+        CopyAlertsDialogComponent,
+        DueDateDialogComponent,
+        GridModule,
+        MarkDamagedDialogComponent,
+        ProgressDialogComponent,
+        RouterModule,
+        StringComponent
+    ]
 })
 export class CircGridComponent implements OnInit {
 

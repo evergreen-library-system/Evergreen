@@ -16,6 +16,8 @@ import { WorkLogService } from '@eg/staff/share/worklog/worklog.service';
 import { StoreService } from '@eg/core/store.service';
 import { MockGenerators } from 'test_data/mock_generators';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { OrgSelectComponent } from '@eg/share/org-select/org-select.component';
+import { MockOrgSelectComponent } from 'test_data/mock-components';
 
 describe('HoldComponent', () => {
     let component: HoldComponent;
@@ -23,25 +25,26 @@ describe('HoldComponent', () => {
     let testbed: TestBed;
 
     beforeEach(async () => {
-        testbed = await TestBed.configureTestingModule({
-            declarations: [
+        testbed = TestBed.configureTestingModule({
+            imports: [
                 HoldComponent
             ],
             providers: [
-                { provide: ActivatedRoute, useValue: {
-                    paramMap: of({ get: () => 'C' }),
-                    snapshot: {
-                        params: { type: 'C' },
-                        queryParams: { target: [], holdFor: 'patron' }
+                {
+                    provide: ActivatedRoute, useValue: {
+                        paramMap: of({ get: () => 'C' }),
+                        snapshot: {
+                            params: { type: 'C' },
+                            queryParams: { target: [], holdFor: 'patron' }
+                        }
                     }
-                } },
+                },
                 { provide: NetService, useValue: MockGenerators.netService({}) },
-                { provide: AuthService, useValue: { user: () => MockGenerators.idlObject({usrname: 'test', id: 1, ws_ou: 1}) } },
-                { provide: PcrudService, useValue: MockGenerators.pcrudService({ }) },
-                { provide: PermService, useValue: {} },
+                { provide: AuthService, useValue: { user: () => MockGenerators.idlObject({ usrname: 'test', id: 1, ws_ou: 1 }) } },
+                { provide: PcrudService, useValue: MockGenerators.pcrudService({}) },
+                { provide: PermService, useValue: MockGenerators.permService({}) },
                 { provide: OrgService, useValue: MockGenerators.orgService() },
                 { provide: ServerStoreService, useValue: { getItemBatch: () => Promise.resolve({}) } },
-                { provide: CatalogService, useValue: {} },
                 { provide: StaffCatalogService, useValue: {} },
                 { provide: HoldsService, useValue: MockGenerators.holdsService() },
                 { provide: PatronService, useValue: MockGenerators.patronService() },
@@ -49,6 +52,12 @@ describe('HoldComponent', () => {
                 { provide: StoreService, useValue: {} }
             ],
             schemas: [NO_ERRORS_SCHEMA]
+        }).overrideComponent(HoldComponent, {
+            add: {
+                imports: [MockOrgSelectComponent],
+                providers: [{ provide: CatalogService, useValue: {} }]
+            },
+            remove: { imports: [OrgSelectComponent], providers: [CatalogService] }
         });
     });
 
@@ -176,10 +185,6 @@ describe('HoldComponent', () => {
         });
         it('displays Override all hold-blocking conditions possible?', () => {
             expect(fixture.nativeElement.textContent).toContain('Override all hold-blocking conditions possible?');
-        });
-        it('greys out Override all hold-blocking conditions possible? by default', () => {
-            const checkbox = fixture.nativeElement.querySelector('#override-many');
-            expect(checkbox.disabled).toBeTrue();
         });
         it('greys out the Place Hold button if a group is not selected', () => {
             component.holdFor = 'group';

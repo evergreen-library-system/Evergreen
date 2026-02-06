@@ -1,12 +1,13 @@
 import {Component, OnInit, Input} from '@angular/core';
-import {CatalogService} from '@eg/share/catalog/catalog.service';
 import {CatalogSearchContext} from '@eg/share/catalog/search-context';
 import {StaffCatalogService} from '../catalog.service';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
     selector: 'eg-catalog-result-pagination',
     styleUrls: ['pagination.component.css'],
-    templateUrl: 'pagination.component.html'
+    templateUrl: 'pagination.component.html',
+    imports: [StaffCommonModule]
 })
 export class ResultPaginationComponent implements OnInit {
 
@@ -16,7 +17,6 @@ export class ResultPaginationComponent implements OnInit {
     @Input() numPages: number;
 
     constructor(
-        private cat: CatalogService,
         private staffCat: StaffCatalogService
     ) {
         this.numPages = 10;

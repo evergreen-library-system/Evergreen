@@ -88,7 +88,7 @@ export class BibRecordSummary {
     }
 }
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class BibRecordService {
 
     // Cache of bib editor / creator objects

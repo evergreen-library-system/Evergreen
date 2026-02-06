@@ -7,7 +7,6 @@ import {HoldsModule} from '@eg/staff/share/holds/holds.module';
 import {BillingModule} from '@eg/staff/share/billing/billing.module';
 import {CircModule} from '@eg/staff/share/circ/circ.module';
 import {HoldingsModule} from '@eg/staff/share/holdings/holdings.module';
-import {BookingModule} from '@eg/staff/share/booking/booking.module';
 import {PatronModule} from '@eg/staff/share/patron/patron.module';
 import {PatronContextService} from './patron.service';
 import {PatronComponent} from './patron.component';
@@ -34,9 +33,10 @@ import {PatronPermsComponent} from './perms.component';
 import {BillingHistoryComponent} from './billing-history.component';
 import {WorkLogModule} from '@eg/staff/share/worklog/worklog.module';
 import {LastPatronComponent} from './last.component';
+import { MakeBookableDialogComponent } from '@eg/staff/share/booking/make-bookable-dialog.component';
 
 @NgModule({
-    declarations: [
+    imports: [
         PatronComponent,
         PatronAlertsComponent,
         CheckoutComponent,
@@ -58,16 +58,14 @@ import {LastPatronComponent} from './last.component';
         LastPatronComponent,
         PatronBarcodesDialogComponent,
         SecondaryGroupsDialogComponent,
-        HoldNotifyUpdateDialogComponent
-    ],
-    imports: [
+        HoldNotifyUpdateDialogComponent,
         StaffCommonModule,
         FmRecordEditorModule,
         BillingModule,
         CircModule,
         HoldsModule,
         HoldingsModule,
-        BookingModule,
+        MakeBookableDialogComponent,
         PatronModule,
         PatronRoutingModule,
         BarcodesModule,

@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { AuthService } from '@eg/core/auth.service';
 import { PcrudService } from '@eg/core/pcrud.service';
 import { ScheduleGridService, ScheduleRow } from './schedule-grid.service';
-import * as moment from 'moment-timezone';
+import moment from 'moment-timezone';
 
 describe('ScheduleGridService', () => {
     let service: ScheduleGridService;

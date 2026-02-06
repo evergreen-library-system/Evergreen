@@ -1,5 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, ParamMap} from '@angular/router';
+import {ActivatedRoute, ParamMap, RouterModule} from '@angular/router';
+import { StaffBannerComponent } from '@eg/staff/share/staff-banner.component';
+import { PicklistSummaryComponent } from './summary.component';
 
 /**
  * Parent component for all Selection List sub-displays.
@@ -7,7 +9,12 @@ import {ActivatedRoute, ParamMap} from '@angular/router';
 
 
 @Component({
-    templateUrl: 'picklist.component.html'
+    templateUrl: 'picklist.component.html',
+    imports: [
+        PicklistSummaryComponent,
+        RouterModule,
+        StaffBannerComponent,
+    ]
 })
 export class PicklistComponent implements OnInit {
 

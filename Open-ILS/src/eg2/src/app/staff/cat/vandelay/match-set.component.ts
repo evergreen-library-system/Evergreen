@@ -1,12 +1,14 @@
 import {Component, OnInit} from '@angular/core';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
-import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
+import {NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import {IdlObject} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {OrgService} from '@eg/core/org.service';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
-    templateUrl: 'match-set.component.html'
+    templateUrl: 'match-set.component.html',
+    imports: [StaffCommonModule]
 })
 export class MatchSetComponent implements OnInit {
 

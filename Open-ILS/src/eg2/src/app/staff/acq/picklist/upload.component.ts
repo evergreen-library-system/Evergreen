@@ -21,6 +21,9 @@ import {ProgressInlineComponent} from '@eg/share/dialog/progress-inline.componen
 import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
 import {ServerStoreService} from '@eg/core/server-store.service';
 import {PicklistUploadService} from './upload.service';
+import { StaffBannerComponent } from '@eg/staff/share/staff-banner.component';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 
 const TEMPLATE_SETTING_NAME = 'eg.acq.picklist.upload.templates';
@@ -61,7 +64,16 @@ const ORG_SETTINGS = [
 
 @Component({
     selector: 'eg-acq-upload',
-    templateUrl: './upload.component.html'
+    templateUrl: './upload.component.html',
+    imports: [
+        AlertDialogComponent,
+        ComboboxComponent,
+        CommonModule,
+        FormsModule,
+        ProgressInlineComponent,
+        StaffBannerComponent,
+        StringComponent
+    ]
 })
 export class UploadComponent implements AfterViewInit, OnDestroy {
 

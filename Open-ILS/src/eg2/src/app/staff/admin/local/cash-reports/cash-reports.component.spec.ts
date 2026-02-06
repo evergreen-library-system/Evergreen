@@ -5,13 +5,13 @@ import { IdlService } from '@eg/core/idl.service';
 import { NetService } from '@eg/core/net.service';
 import { OrgService } from '@eg/core/org.service';
 import { CashReportsComponent } from './cash-reports.component';
-import { DateSelectComponent } from '@eg/share/date-select/date-select.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { NgbDatepickerModule, NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 import { of } from 'rxjs';
-import { FormsModule } from '@angular/forms';
-import { DatesInOrderValidatorDirective } from '@eg/share/validators/dates_in_order_validator.directive';
 import { PrintService } from '@eg/share/print/print.service';
+import { DateSelectComponent } from '@eg/share/date-select/date-select.component';
+import { NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
+import { OrgSelectComponent } from '@eg/share/org-select/org-select.component';
+import { StaffBannerComponent } from '@eg/staff/share/staff-banner.component';
 
 const mockIdlObject = {a: null,
     classname: null,
@@ -27,11 +27,6 @@ mockAuth.user.and.returnValue(mockIdlObject);
 describe('CashReportsComponent', () => {
     it('alerts the user if end date is before start date', async () => {
         await TestBed.configureTestingModule({
-            declarations: [
-                CashReportsComponent,
-                DateSelectComponent,
-                DatesInOrderValidatorDirective
-            ],
             providers: [
                 {provide: IdlService, useValue: {}},
                 {provide: NetService, useValue: mockNet},
@@ -40,11 +35,12 @@ describe('CashReportsComponent', () => {
                 {provide: PrintService, useValue: null}
             ],
             imports: [
-                NgbNavModule,
-                NgbDatepickerModule,
-                FormsModule
+                CashReportsComponent,
             ],
-            schemas: [CUSTOM_ELEMENTS_SCHEMA]
+
+        }).overrideComponent(CashReportsComponent, {
+            add: {schemas: [CUSTOM_ELEMENTS_SCHEMA]},
+            remove: {imports: [OrgSelectComponent, StaffBannerComponent]}
         }).compileComponents();
 
         const fixture = TestBed.createComponent(CashReportsComponent);

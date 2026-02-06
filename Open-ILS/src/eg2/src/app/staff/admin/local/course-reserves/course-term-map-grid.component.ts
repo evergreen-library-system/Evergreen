@@ -8,10 +8,12 @@ import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
 import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
     selector: 'eg-course-term-map-grid',
     templateUrl: './course-term-map-grid.component.html',
+    imports: [FmRecordEditorComponent, StaffCommonModule]
 })
 export class CourseTermMapGridComponent implements OnInit {
     @Input() courseId: number;

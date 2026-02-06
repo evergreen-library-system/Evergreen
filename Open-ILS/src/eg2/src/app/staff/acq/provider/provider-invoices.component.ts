@@ -1,6 +1,5 @@
 import {Component, OnInit, AfterViewInit, OnDestroy, Input, ViewChild} from '@angular/core';
 import {Subscription} from 'rxjs';
-import {Router, ActivatedRoute} from '@angular/router';
 import {IdlObject} from '@eg/core/idl.service';
 import {EventService} from '@eg/core/event.service';
 import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
@@ -12,11 +11,18 @@ import {GridDataSource, GridCellTextGenerator} from '@eg/share/grid/grid';
 import {AcqSearchService, AcqSearchTerm} from '../search/acq-search.service';
 import {AttrDefsService} from '../search/attr-defs.service';
 import {ProviderRecordService} from './provider-record.service';
+import { RouterModule } from '@angular/router';
+import { GridModule } from '@eg/share/grid/grid.module';
 
 @Component({
     selector: 'eg-provider-invoices',
     templateUrl: 'provider-invoices.component.html',
-    providers: [AcqSearchService, AttrDefsService]
+    providers: [AcqSearchService, AttrDefsService],
+    imports: [
+        AlertDialogComponent,
+        GridModule,
+        RouterModule,
+    ]
 })
 export class ProviderInvoicesComponent implements OnInit, AfterViewInit, OnDestroy {
 
@@ -33,8 +39,6 @@ export class ProviderInvoicesComponent implements OnInit, AfterViewInit, OnDestr
     subscription: Subscription;
 
     constructor(
-        private router: Router,
-        private route: ActivatedRoute,
         private printer: PrintService,
         private evt: EventService,
         private net: NetService,

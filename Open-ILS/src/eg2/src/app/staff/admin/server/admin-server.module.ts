@@ -17,18 +17,16 @@ cause the module to baloon in size.  Consider moving non-auto-
 generated UI's into lazy-loadable sub-mobules. */
 
 @NgModule({
-    declarations: [
-        AdminServerSplashComponent,
-        OrgUnitTypeComponent,
-        CustomOrgUnitTreesComponent,
-        CustomOrgUnitTreesDialogComponent,
-        PrintTemplateComponent,
-        PermGroupTreeComponent,
-        PermGroupMapDialogComponent
-    ],
     imports: [
         AdminCommonModule,
         AdminServerRoutingModule,
+        AdminServerSplashComponent,
+        CustomOrgUnitTreesComponent,
+        CustomOrgUnitTreesDialogComponent,
+        OrgUnitTypeComponent,
+        PermGroupMapDialogComponent,
+        PermGroupTreeComponent,
+        PrintTemplateComponent,
         TreeModule
     ],
     exports: [

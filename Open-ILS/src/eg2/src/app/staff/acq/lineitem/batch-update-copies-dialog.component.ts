@@ -5,11 +5,20 @@ import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
 import {AuthService} from '@eg/core/auth.service';
-import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
+import {ComboboxComponent, ComboboxEntry} from '@eg/share/combobox/combobox.component';
+import { CommonModule } from '@angular/common';
+import { LineitemCopyAttrsComponent } from './copy-attrs.component';
+import { FormsModule } from '@angular/forms';
 
 @Component({
     selector: 'eg-acq-batch-update-copies-dialog',
-    templateUrl: './batch-update-copies-dialog.component.html'
+    templateUrl: './batch-update-copies-dialog.component.html',
+    imports: [
+        ComboboxComponent,
+        CommonModule,
+        FormsModule,
+        LineitemCopyAttrsComponent
+    ]
 })
 
 export class BatchUpdateCopiesDialogComponent extends DialogComponent {

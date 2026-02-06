@@ -1,3 +1,4 @@
+import { NgIf } from '@angular/common';
 import {Component, Input} from '@angular/core';
 
 /* Simple component to render a boolean value as human-friendly text */
@@ -11,7 +12,8 @@ import {Component, Input} from '@angular/core';
         <ng-container *ngIf="value === null">
           <span *ngIf="ternary" class="badge badge-light p-1" i18n>Unset</span>
           <span *ngIf="!ternary"> </span>
-      </ng-container>`
+      </ng-container>`,
+    imports: [NgIf]
 })
 export class BoolDisplayComponent {
 

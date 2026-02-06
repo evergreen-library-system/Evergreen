@@ -8,10 +8,21 @@ import {ToastService} from '@eg/share/toast/toast.service';
 import {StringComponent} from '@eg/share/string/string.component';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
+import { StaffBannerComponent } from '@eg/staff/share/staff-banner.component';
+import { CommonModule } from '@angular/common';
+import { TreeComponent } from '@eg/share/tree/tree.component';
 
 @Component({
     templateUrl: './org-unit-type.component.html',
-    styleUrls: [ './org-unit.component.css' ],
+    styleUrls: ['./org-unit.component.css'],
+    imports: [
+        CommonModule,
+        ConfirmDialogComponent,
+        FmRecordEditorComponent,
+        StaffBannerComponent,
+        StringComponent,
+        TreeComponent
+    ]
 })
 
 export class OrgUnitTypeComponent implements OnInit {

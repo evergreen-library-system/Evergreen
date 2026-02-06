@@ -10,10 +10,8 @@ import {ClaimEligibleListComponent} from './list.component';
 
 
 @NgModule({
-    declarations: [
-        ClaimEligibleListComponent,
-    ],
     imports: [
+        ClaimEligibleListComponent,
         StaffCommonModule,
         CatalogCommonModule,
         AcqCommonModule,

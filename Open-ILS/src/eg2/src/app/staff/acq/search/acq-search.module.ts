@@ -2,7 +2,6 @@ import {NgModule} from '@angular/core';
 import {StaffCommonModule} from '@eg/staff/common.module';
 import {AcqSearchRoutingModule} from './routing.module';
 import {AcqSearchComponent} from './acq-search.component';
-import {LineitemResultsComponent} from './lineitem-results.component';
 import {PurchaseOrderResultsComponent} from './purchase-order-results.component';
 import {InvoiceResultsComponent} from './invoice-results.component';
 import {PicklistResultsComponent} from './picklist-results.component';
@@ -16,22 +15,20 @@ import {AcqCommonModule} from '../acq-common.module';
 import {AcqSearchCommonModule} from './acq-search-common.module';
 
 @NgModule({
-    declarations: [
-        AcqSearchComponent,
-        PurchaseOrderResultsComponent,
-        InvoiceResultsComponent,
-        PicklistResultsComponent,
-        PicklistCreateDialogComponent,
-        PicklistCloneDialogComponent,
-        PicklistDeleteDialogComponent,
-        PicklistMergeDialogComponent
-    ],
     imports: [
         StaffCommonModule,
         AcqCommonModule,
+        AcqSearchComponent,
         AcqSearchRoutingModule,
         AcqSearchCommonModule,
-        LineitemModule
+        InvoiceResultsComponent,
+        LineitemModule,
+        PicklistCloneDialogComponent,
+        PicklistCreateDialogComponent,
+        PicklistDeleteDialogComponent,
+        PicklistMergeDialogComponent,
+        PicklistResultsComponent,
+        PurchaseOrderResultsComponent,
     ],
     providers: [AcqSearchService],
     exports: [

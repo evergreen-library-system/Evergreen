@@ -26,6 +26,7 @@
     </div>
     <div class="row mt-2">
         <div class="col-md-6">
+          HELLO MY INPUT TYPE IS {{ inputType() | json }}
             <ng-container [ngSwitch]="inputType()">
 
               <ng-container *ngSwitchCase="'integer'">

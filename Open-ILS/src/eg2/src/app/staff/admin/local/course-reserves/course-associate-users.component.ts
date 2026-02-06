@@ -14,10 +14,16 @@ import {PatronSearchDialogComponent} from '@eg/staff/share/patron/search-dialog.
 import {ToastService} from '@eg/share/toast/toast.service';
 import {CourseService} from '@eg/staff/share/course.service';
 import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
     selector: 'eg-course-associate-users-dialog',
-    templateUrl: './course-associate-users.component.html'
+    templateUrl: './course-associate-users.component.html',
+    imports: [
+        FmRecordEditorComponent,
+        PatronSearchDialogComponent,
+        StaffCommonModule
+    ]
 })
 
 export class CourseAssociateUsersComponent extends DialogComponent implements OnInit {

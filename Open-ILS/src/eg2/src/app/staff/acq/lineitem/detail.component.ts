@@ -1,15 +1,21 @@
-import {Component, OnInit, AfterViewInit, Input, Output, EventEmitter} from '@angular/core';
-import {Router, ActivatedRoute, ParamMap} from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, ParamMap} from '@angular/router';
 import {tap} from 'rxjs';
-import {Pager} from '@eg/share/util/pager';
 import {IdlObject} from '@eg/core/idl.service';
-import {NetService} from '@eg/core/net.service';
-import {AuthService} from '@eg/core/auth.service';
-import {LineitemService, BatchLineitemStruct} from './lineitem.service';
-import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
+import {LineitemService} from './lineitem.service';
+import { CommonModule } from '@angular/common';
+import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
+import { MarcHtmlComponent } from '@eg/share/catalog/marc-html.component';
+import { MarcEditorComponent } from '@eg/staff/share/marc-edit/editor.component';
 
 @Component({
-    templateUrl: 'detail.component.html'
+    templateUrl: 'detail.component.html',
+    imports: [
+        CommonModule,
+        MarcEditorComponent,
+        MarcHtmlComponent,
+        NgbNavModule,
+    ]
 })
 export class LineitemDetailComponent implements OnInit {
 
@@ -19,8 +25,6 @@ export class LineitemDetailComponent implements OnInit {
 
     constructor(
         private route: ActivatedRoute,
-        private net: NetService,
-        private auth: AuthService,
         private liService: LineitemService
     ) {}
 

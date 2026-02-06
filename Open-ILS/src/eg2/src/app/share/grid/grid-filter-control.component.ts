@@ -6,12 +6,28 @@ import {ComboboxComponent, ComboboxEntry} from '@eg/share/combobox/combobox.comp
 import {DateSelectComponent} from '@eg/share/date-select/date-select.component';
 import {OrgSelectComponent} from '@eg/share/org-select/org-select.component';
 import {OrgService} from '@eg/core/org.service';
-import {NgbDropdown} from '@ng-bootstrap/ng-bootstrap';
+import {NgbDropdown, NgbDropdownMenu, NgbDropdownToggle} from '@ng-bootstrap/ng-bootstrap';
+import { FormsModule } from '@angular/forms';
+import { NgClass, NgIf, NgSwitch, NgSwitchCase, NgTemplateOutlet } from '@angular/common';
 
 @Component({
     selector: 'eg-grid-filter-control',
     templateUrl: './grid-filter-control.component.html',
-    styleUrls: ['grid-filter-control.component.css']
+    styleUrls: ['grid-filter-control.component.css'],
+    imports: [
+        ComboboxComponent,
+        DateSelectComponent,
+        FormsModule,
+        NgbDropdown,
+        NgbDropdownMenu,
+        NgbDropdownToggle,
+        NgClass,
+        NgIf,
+        NgSwitch,
+        NgSwitchCase,
+        NgTemplateOutlet,
+        OrgSelectComponent
+    ]
 })
 
 export class GridFilterControlComponent implements OnInit {

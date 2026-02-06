@@ -9,12 +9,17 @@ import {GridComponent} from '@eg/share/grid/grid.component';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 import {ConjoinedItemsDialogComponent
 } from '@eg/staff/share/holdings/conjoined-items-dialog.component';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 /** Conjoined items per record grid */
 
 @Component({
     selector: 'eg-catalog-record-conjoined',
-    templateUrl: 'conjoined.component.html'
+    templateUrl: 'conjoined.component.html',
+    imports: [
+        ConjoinedItemsDialogComponent,
+        StaffCommonModule
+    ]
 })
 export class ConjoinedComponent implements OnInit {
 

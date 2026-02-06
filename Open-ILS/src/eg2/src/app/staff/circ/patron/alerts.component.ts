@@ -1,15 +1,15 @@
-import {Component, OnInit, Input} from '@angular/core';
-import {Router, ActivatedRoute, ParamMap} from '@angular/router';
-import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
+import {Component} from '@angular/core';
 import {OrgService} from '@eg/core/org.service';
 import {NetService} from '@eg/core/net.service';
 import {PatronService, PatronAlerts} from '@eg/staff/share/patron/patron.service';
 import {PatronContextService} from './patron.service';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
     templateUrl: 'alerts.component.html',
     selector: 'eg-patron-alerts',
-    styleUrls: ['./alerts.component.css']
+    styleUrls: ['./alerts.component.css'],
+    imports: [StaffCommonModule]
 })
 export class PatronAlertsComponent {
 

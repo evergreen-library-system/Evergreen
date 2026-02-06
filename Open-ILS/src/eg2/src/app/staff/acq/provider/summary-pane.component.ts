@@ -6,13 +6,20 @@ import {PcrudService} from '@eg/core/pcrud.service';
 import {StringComponent} from '@eg/share/string/string.component';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
-import {AuthService} from '@eg/core/auth.service';
 import {ProviderRecord, ProviderRecordService} from './provider-record.service';
+import { CommonModule } from '@angular/common';
+import { BoolDisplayComponent } from '@eg/share/util/bool.component';
 
 @Component({
     selector: 'eg-acq-provider-summary-pane',
     styleUrls: ['summary-pane.component.css'],
-    templateUrl: './summary-pane.component.html'
+    templateUrl: './summary-pane.component.html',
+    imports: [
+        BoolDisplayComponent,
+        CommonModule,
+        ConfirmDialogComponent,
+        StringComponent
+    ]
 })
 
 export class AcqProviderSummaryPaneComponent implements OnInit, AfterViewInit {
@@ -75,7 +82,6 @@ export class AcqProviderSummaryPaneComponent implements OnInit, AfterViewInit {
         private idl: IdlService,
         private org: OrgService,
         private toast: ToastService,
-        private auth: AuthService,
         private prov: ProviderRecordService,
     ) {}
 

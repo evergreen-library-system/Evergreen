@@ -1,12 +1,13 @@
 
 import {Component, Input, OnInit, ViewChild} from '@angular/core';
-import {GridContext, GridDataSource, GridCellTextGenerator} from '@eg/share/grid/grid';
+import {GridDataSource, GridCellTextGenerator} from '@eg/share/grid/grid';
 import {GridComponent} from '@eg/share/grid/grid.component';
-import {IdlObject} from '@eg/core/idl.service';
+import { GridModule } from '@eg/share/grid/grid.module';
 
 @Component({
     selector: 'eg-bucket-user-share',
-    templateUrl: './bucket-user-share.component.html'
+    templateUrl: './bucket-user-share.component.html',
+    imports: [GridModule]
 })
 
 export class BucketUserShareComponent

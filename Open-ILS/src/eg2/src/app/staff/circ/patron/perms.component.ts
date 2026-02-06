@@ -7,10 +7,12 @@ import {OrgService} from '@eg/core/org.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {PermService} from '@eg/core/perm.service';
 import {ProgressInlineComponent} from '@eg/share/dialog/progress-inline.component';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
     templateUrl: 'perms.component.html',
-    selector: 'eg-patron-perms'
+    selector: 'eg-patron-perms',
+    imports: [StaffCommonModule]
 })
 export class PatronPermsComponent implements OnInit, AfterViewInit {
 

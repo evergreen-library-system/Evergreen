@@ -1,9 +1,7 @@
 import {Component, OnInit, AfterViewInit, OnDestroy, Input, Output, EventEmitter, ViewChild, ChangeDetectorRef} from '@angular/core';
 import {EMPTY, from, Subscription} from 'rxjs';
-import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {Pager} from '@eg/share/util/pager';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
-import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {GridDataSource, GridCellTextGenerator} from '@eg/share/grid/grid';
@@ -13,10 +11,24 @@ import {StringComponent} from '@eg/share/string/string.component';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 import {PcrudService} from '@eg/core/pcrud.service';
+import { GridColumnComponent } from '@eg/share/grid/grid-column.component';
+import { NgIf } from '@angular/common';
+import { GridToolbarButtonComponent } from '@eg/share/grid/grid-toolbar-button.component';
+import { GridToolbarActionComponent } from '@eg/share/grid/grid-toolbar-action.component';
 
 @Component({
     selector: 'eg-provider-edi-accounts',
     templateUrl: 'provider-edi-accounts.component.html',
+    imports: [
+        ConfirmDialogComponent,
+        FmRecordEditorComponent,
+        GridColumnComponent,
+        GridComponent,
+        GridToolbarButtonComponent,
+        GridToolbarActionComponent,
+        NgIf,
+        StringComponent,
+    ]
 })
 export class ProviderEdiAccountsComponent implements OnInit, AfterViewInit, OnDestroy {
 
@@ -59,10 +71,7 @@ export class ProviderEdiAccountsComponent implements OnInit, AfterViewInit, OnDe
     @Output() desireSummarize: EventEmitter<number> = new EventEmitter<number>();
 
     constructor(
-        private router: Router,
-        private route: ActivatedRoute,
         private changeDetector: ChangeDetectorRef,
-        private net: NetService,
         private idl: IdlService,
         private auth: AuthService,
         private pcrud: PcrudService,

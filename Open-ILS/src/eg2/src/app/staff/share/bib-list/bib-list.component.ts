@@ -6,13 +6,15 @@ import {PcrudService} from '@eg/core/pcrud.service';
 import {OrgService} from '@eg/core/org.service';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {GridDataSource, GridCellTextGenerator} from '@eg/share/grid/grid';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 
 /* Grid of bib records and associated actions. */
 
 @Component({
     templateUrl: 'bib-list.component.html',
-    selector: 'eg-bib-list'
+    selector: 'eg-bib-list',
+    imports: [StaffCommonModule]
 })
 export class BibListComponent implements OnInit {
 

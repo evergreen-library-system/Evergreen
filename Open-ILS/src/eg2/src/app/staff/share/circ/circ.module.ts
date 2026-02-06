@@ -19,7 +19,7 @@ import {BadBarcodeDialogComponent} from './bad-barcode-dialog.component';
 import {CircEmailReceiptDialogComponent} from './circ-email-receipt-dialog.component';
 
 @NgModule({
-    declarations: [
+    imports: [
         CircGridComponent,
         CircComponentsComponent,
         DueDateDialogComponent,
@@ -33,8 +33,6 @@ import {CircEmailReceiptDialogComponent} from './circ-email-receipt-dialog.compo
         BadBarcodeDialogComponent,
         OpenCircDialogComponent,
         CircEmailReceiptDialogComponent
-    ],
-    imports: [
         StaffCommonModule,
         HoldingsModule,
         BillingModule,

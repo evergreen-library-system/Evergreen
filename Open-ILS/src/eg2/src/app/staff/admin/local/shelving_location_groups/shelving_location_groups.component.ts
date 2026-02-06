@@ -7,10 +7,12 @@ import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
 import {StringComponent} from '@eg/share/string/string.component';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {PermService} from '@eg/core/perm.service';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
     templateUrl: './shelving_location_groups.component.html',
-    styleUrls: ['./shelving_location_groups.component.css']
+    styleUrls: ['./shelving_location_groups.component.css'],
+    imports: [StaffCommonModule, FmRecordEditorComponent]
 })
 
 export class ShelvingLocationGroupsComponent implements OnInit {

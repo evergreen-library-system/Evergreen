@@ -1,5 +1,5 @@
 /* eslint-disable */
-import {Component, Input, Output, ViewChild, QueryList, EventEmitter, TemplateRef, OnInit} from '@angular/core';
+import {Component, Input, Output, ViewChild, EventEmitter, TemplateRef, OnInit} from '@angular/core';
 import {map} from 'rxjs/operators';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {IdlService} from '@eg/core/idl.service';
@@ -32,7 +32,8 @@ import {TreeComponent} from './tree.component';
   overflow-y: auto;   /* Adds scrollbar only when needed. 'scroll' would show the scroll gutter at all times. */
   overflow-x: clip;   /* Avoid scrollbar */
 }
-    `]
+    `],
+    imports: [TreeComponent]
 })
 export class TreeMultiselectComponent implements OnInit {
 

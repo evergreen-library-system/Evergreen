@@ -26,40 +26,38 @@ import {BroadcastService} from '@eg/share/util/broadcast.service';
 import {CourseService} from './share/course.service';
 import {FileExportService} from '@eg/share/util/file-export.service';
 import {OfflineService} from '@eg/staff/share/offline.service';
-import {ItemLocationSelectModule} from '@eg/share/item-location-select/item-location-select.module';
 import { ScriptService } from '@eg/share/util/script.service';
 import {LinkTargetDirective} from '@eg/share/link-target/link-target.directive';
+import { ItemLocationSelectComponent } from '@eg/share/item-location-select/item-location-select.component';
 
 /**
  * Imports the EG common modules and adds modules common to all staff UI's.
  */
 
 @NgModule({
-    declarations: [
-        StaffBannerComponent,
+    imports: [
         AccessKeyDirective,
         AccessKeyInfoComponent,
-        TitleComponent,
-        OpChangeComponent,
-        BucketDialogComponent,
-        BibSummaryComponent,
-        BibStaffViewComponent,
-        EgHelpPopoverComponent,
-        DatetimeValidatorDirective,
-        MultiSelectComponent,
-        TextMultiSelectComponent,
-        NotBeforeMomentValidatorDirective,
-        DatesInOrderValidatorDirective,
-        PatronBarcodeValidatorDirective,
         AddedContentComponent,
-        LinkTargetDirective
-    ],
-    imports: [
+        BibStaffViewComponent,
+        BibSummaryComponent,
+        BucketDialogComponent,
+        DatesInOrderValidatorDirective,
+        DatetimeValidatorDirective,
         EgCommonModule,
+        EgHelpPopoverComponent,
         CommonWidgetsModule,
         GridModule,
         CatalogCommonModule,
-        ItemLocationSelectModule
+        ItemLocationSelectComponent,
+        LinkTargetDirective,
+        MultiSelectComponent,
+        NotBeforeMomentValidatorDirective,
+        OpChangeComponent,
+        PatronBarcodeValidatorDirective,
+        StaffBannerComponent,
+        TextMultiSelectComponent,
+        TitleComponent,
     ],
     exports: [
         EgCommonModule,

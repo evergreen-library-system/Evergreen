@@ -5,16 +5,24 @@ import {
     Renderer2,
     ViewChild
 } from '@angular/core';
-import {Location} from '@angular/common';
+import {Location, NgClass, NgIf} from '@angular/common';
 import {Router, ActivatedRoute} from '@angular/router';
 import {AuthService, AuthWsState} from '@eg/core/auth.service';
 import {StoreService} from '@eg/core/store.service';
 import {OrgService} from '@eg/core/org.service';
 import {OfflineService} from '@eg/staff/share/offline.service';
+import { CredentialInputComponent } from '@eg/share/util/credential-input.component';
+import { FormsModule } from '@angular/forms';
 
 @Component({
     styleUrls: ['./login.component.css'],
-    templateUrl : './login.component.html'
+    templateUrl: './login.component.html',
+    imports: [
+        CredentialInputComponent,
+        FormsModule,
+        NgClass,
+        NgIf,
+    ]
 })
 export class StaffLoginComponent implements OnInit {
 

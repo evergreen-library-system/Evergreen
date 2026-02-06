@@ -12,16 +12,14 @@ import {IdlService} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 
 @NgModule({
-    declarations: [
-        UploadComponent,
-        PoLabelComponent,
-    ],
     exports: [
         UploadComponent,
         PoLabelComponent,
     ],
     imports: [
+        PoLabelComponent,
         StaffCommonModule,
+        UploadComponent,
     ],
     providers: [
         LineitemService,

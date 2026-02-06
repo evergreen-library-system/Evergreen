@@ -8,10 +8,12 @@ import {PcrudService} from '@eg/core/pcrud.service';
 import {AuthService} from '@eg/core/auth.service';
 import {PatronService} from '@eg/staff/share/patron/patron.service';
 import {PatronContextService} from './patron.service';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
     templateUrl: 'statcats.component.html',
-    selector: 'eg-patron-statcats'
+    selector: 'eg-patron-statcats',
+    imports: [StaffCommonModule]
 })
 export class PatronStatCatsComponent implements OnInit {
 

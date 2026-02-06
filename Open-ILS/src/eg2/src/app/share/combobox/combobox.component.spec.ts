@@ -16,8 +16,7 @@ describe('ComboboxComponent', () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            imports: [FormsModule, NgbTypeaheadModule],
-            declarations: [ ComboboxComponent ],
+            imports: [ComboboxComponent, FormsModule, NgbTypeaheadModule],
             providers: [
                 { provide: IdlService, useValue: MockGenerators.idlService({ ccm: { pkey: 'code' } }) },
                 { provide: PcrudService, useValue: pcrudMock },

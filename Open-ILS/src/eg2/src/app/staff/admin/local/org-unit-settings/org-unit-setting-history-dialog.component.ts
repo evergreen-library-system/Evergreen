@@ -3,13 +3,15 @@ import {Observable} from 'rxjs';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {OrgService} from '@eg/core/org.service';
 import {Pager} from '@eg/share/util/pager';
-import {NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {GridDataSource} from '@eg/share/grid/grid';
 import {GridComponent} from '@eg/share/grid/grid.component';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
     selector: 'eg-admin-ou-setting-history-dialog',
-    templateUrl: './org-unit-setting-history-dialog.component.html'
+    templateUrl: './org-unit-setting-history-dialog.component.html',
+    imports: [StaffCommonModule]
 })
 
 export class OuSettingHistoryDialogComponent extends DialogComponent implements OnInit {

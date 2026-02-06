@@ -1,5 +1,5 @@
 import {Component, Input, Output, OnInit, Host, TemplateRef, EventEmitter} from '@angular/core';
-import {ButtonStyle} from '@eg/share/util/button-style.directive';
+import {ButtonStyle, ButtonStyleDirective} from '@eg/share/util/button-style.directive';
 import {GridToolbarButton} from './grid';
 import {GridComponent} from './grid.component';
 

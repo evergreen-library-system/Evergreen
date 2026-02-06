@@ -8,10 +8,12 @@ import {ToastService} from '@eg/share/toast/toast.service';
 import {ProgressInlineComponent} from '@eg/share/dialog/progress-inline.component';
 import {VANDELAY_EXPORT_PATH} from './vandelay.service';
 import {BasketService} from '@eg/share/catalog/basket.service';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 
 @Component({
-    templateUrl: 'export.component.html'
+    templateUrl: 'export.component.html',
+    imports: [StaffCommonModule]
 })
 export class ExportComponent implements AfterViewInit, OnInit {
 

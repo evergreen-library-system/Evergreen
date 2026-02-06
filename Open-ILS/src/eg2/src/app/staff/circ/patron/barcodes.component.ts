@@ -5,6 +5,7 @@ import {ToastService} from '@eg/share/toast/toast.service';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 import {PermService} from '@eg/core/perm.service';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 const PERMS = ['UPDATE_PATRON_ACTIVE_CARD', 'UPDATE_PATRON_PRIMARY_CARD'];
 
@@ -13,7 +14,8 @@ const PERMS = ['UPDATE_PATRON_ACTIVE_CARD', 'UPDATE_PATRON_PRIMARY_CARD'];
 @Component({
     selector: 'eg-patron-barcodes',
     templateUrl: 'barcodes.component.html',
-    styleUrls: ['barcodes.component.css']
+    styleUrls: ['barcodes.component.css'],
+    imports: [StaffCommonModule]
 })
 
 export class PatronBarcodesDialogComponent extends DialogComponent {

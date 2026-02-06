@@ -8,9 +8,11 @@ import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {StringComponent} from '@eg/share/string/string.component';
 import {ToastService} from '@eg/share/toast/toast.service';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
-    templateUrl: './field-documentation.component.html'
+    templateUrl: './field-documentation.component.html',
+    imports: [StaffCommonModule, FmRecordEditorComponent]
 })
 
 export class FieldDocumentationComponent implements OnInit {

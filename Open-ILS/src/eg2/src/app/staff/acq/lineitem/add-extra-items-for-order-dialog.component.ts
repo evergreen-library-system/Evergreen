@@ -1,12 +1,19 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
-import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
+import {ComboboxComponent, ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {InvoiceService} from '../invoice/invoice.service';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
     selector: 'eg-acq-add-extra-items-for-order-dialog',
-    templateUrl: './add-extra-items-for-order-dialog.component.html'
+    templateUrl: './add-extra-items-for-order-dialog.component.html',
+    imports: [
+        ComboboxComponent,
+        CommonModule,
+        FormsModule
+    ]
 })
 
 export class AddExtraItemsForOrderDialogComponent extends DialogComponent implements OnInit {

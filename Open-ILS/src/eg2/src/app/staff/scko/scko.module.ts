@@ -17,19 +17,17 @@ import {SckoFinesComponent} from './fines.component';
 import {ForceReloadService} from '@eg/share/util/force-reload.service';
 
 @NgModule({
-    declarations: [
+    imports: [
+        EgCommonModule,
+        CommonWidgetsModule,
+        PatronModule,
         SckoComponent,
         SckoBannerComponent,
         SckoSummaryComponent,
         SckoCheckoutComponent,
         SckoItemsComponent,
         SckoHoldsComponent,
-        SckoFinesComponent
-    ],
-    imports: [
-        EgCommonModule,
-        CommonWidgetsModule,
-        PatronModule,
+        SckoFinesComponent,
         SckoRoutingModule
     ],
     providers: [

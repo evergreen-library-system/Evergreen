@@ -52,7 +52,9 @@ describe('FmRecordEditorComponent', () => {
             providers: [
                 {provide: AuthService, useValue: {}},
                 {provide: NgbModal, useValue: mockModal},
+                {provide: AuthService, useValue: {}},
                 {provide: IdlService, useValue: mockIdl},
+                {provide: LocaleService, useValue: {}},
                 {provide: ToastService, useValue: mockToast},
                 {provide: FormatService, useValue: mockFormat},
                 {provide: LocaleService, useValue: MockGenerators.localeService()},

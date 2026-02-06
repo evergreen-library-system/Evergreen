@@ -6,8 +6,14 @@ import {IdlService} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
 import {OrgService} from '@eg/core/org.service';
-import { NgForm } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import {PrintService} from '@eg/share/print/print.service';
+import { DateSelectComponent } from '@eg/share/date-select/date-select.component';
+import { DatesInOrderValidatorDirective } from '@eg/share/validators/dates_in_order_validator.directive';
+import { NgbDatepickerModule, NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
+import { StaffBannerComponent } from '@eg/staff/share/staff-banner.component';
+import { OrgSelectComponent } from '@eg/share/org-select/org-select.component';
+import { CommonModule } from '@angular/common';
 
 class DeskTotals {
     cash_payment = 0;
@@ -24,7 +30,17 @@ class UserTotals {
 }
 
 @Component({
-    templateUrl: './cash-reports.component.html'
+    templateUrl: './cash-reports.component.html',
+    imports: [
+        CommonModule,
+        DateSelectComponent,
+        DatesInOrderValidatorDirective,
+        FormsModule,
+        NgbDatepickerModule,
+        NgbNavModule,
+        OrgSelectComponent,
+        StaffBannerComponent,
+    ]
 })
 export class CashReportsComponent implements OnInit {
     initDone = false;

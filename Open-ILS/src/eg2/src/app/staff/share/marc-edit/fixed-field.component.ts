@@ -3,6 +3,8 @@ import {IdlObject} from '@eg/core/idl.service';
 import {MarcRecord} from './marcrecord';
 import {MarcEditContext} from './editor-context';
 import {Subject, takeUntil} from 'rxjs';
+import { CommonModule } from '@angular/common';
+import { EditableContentComponent } from './editable-content.component';
 
 /**
  * MARC Fixed Field Editing Component
@@ -10,7 +12,11 @@ import {Subject, takeUntil} from 'rxjs';
 
 @Component({
     selector: 'eg-fixed-field',
-    templateUrl: './fixed-field.component.html'
+    templateUrl: './fixed-field.component.html',
+    imports: [
+        CommonModule,
+        EditableContentComponent
+    ]
 })
 
 export class FixedFieldComponent implements OnInit, OnDestroy {

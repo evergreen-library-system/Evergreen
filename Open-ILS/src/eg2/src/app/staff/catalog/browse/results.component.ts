@@ -5,10 +5,12 @@ import {CatalogService} from '@eg/share/catalog/catalog.service';
 import {CatalogUrlService} from '@eg/share/catalog/catalog-url.service';
 import {CatalogSearchContext, CatalogSearchState} from '@eg/share/catalog/search-context';
 import {StaffCatalogService} from '../catalog.service';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
     selector: 'eg-catalog-browse-results',
-    templateUrl: 'results.component.html'
+    templateUrl: 'results.component.html',
+    imports: [StaffCommonModule]
 })
 export class BrowseResultsComponent implements OnInit, OnDestroy {
 

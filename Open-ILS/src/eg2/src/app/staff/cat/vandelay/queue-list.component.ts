@@ -9,8 +9,10 @@ import {GridComponent} from '@eg/share/grid/grid.component';
 import {GridDataSource, GridCellTextGenerator} from '@eg/share/grid/grid';
 import {VandelayService} from './vandelay.service';
 import { PcrudService } from '@eg/core/pcrud.service';
+import { StaffCommonModule } from '@eg/staff/common.module';
 @Component({
-    templateUrl: 'queue-list.component.html'
+    templateUrl: 'queue-list.component.html',
+    imports: [StaffCommonModule]
 })
 export class QueueListComponent {
 

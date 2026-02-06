@@ -8,9 +8,14 @@ import {PrintService} from '@eg/share/print/print.service';
 import {HoldingsService} from '@eg/staff/share/holdings/holdings.service';
 import {EventService} from '@eg/core/event.service';
 import {PatronNoteDialogComponent} from '@eg/staff/share/patron/note-dialog.component';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
-    templateUrl: 'missing-pieces.component.html'
+    templateUrl: 'missing-pieces.component.html',
+    imports: [
+        PatronNoteDialogComponent,
+        StaffCommonModule
+    ]
 })
 export class MarkItemMissingPiecesComponent implements AfterViewInit {
 

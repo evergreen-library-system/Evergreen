@@ -17,8 +17,7 @@ describe('ItemLocationSelectComponent', () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            imports: [CommonWidgetsModule],
-            declarations: [ ItemLocationSelectComponent ],
+            imports: [CommonWidgetsModule, ItemLocationSelectComponent],
             providers: [
                 ItemLocationService,
                 { provide: IdlService, useValue: {} },

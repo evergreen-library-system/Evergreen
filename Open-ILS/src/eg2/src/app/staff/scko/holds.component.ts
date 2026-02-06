@@ -1,16 +1,16 @@
-import {Component, OnInit, ViewEncapsulation} from '@angular/core';
-import {Router, ActivatedRoute, NavigationEnd} from '@angular/router';
-import {tap} from 'rxjs';
+import {Component, OnInit} from '@angular/core';
+import {Router, ActivatedRoute} from '@angular/router';
 import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {NetService} from '@eg/core/net.service';
 import {IdlObject} from '@eg/core/idl.service';
 import {SckoService} from './scko.service';
-import {ServerStoreService} from '@eg/core/server-store.service';
 import {PrintService} from '@eg/share/print/print.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
-    templateUrl: 'holds.component.html'
+    templateUrl: 'holds.component.html',
+    imports: [CommonModule]
 })
 
 export class SckoHoldsComponent implements OnInit {

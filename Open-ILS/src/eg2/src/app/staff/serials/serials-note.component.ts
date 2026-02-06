@@ -5,7 +5,6 @@ import { IdlObject } from '@eg/core/idl.service';
 @Component({
     selector: 'eg-serials-note',
     templateUrl: './serials-note.component.html',
-    standalone: true,
     imports: [CommonModule]
 })
 export class SerialsNoteComponent {

@@ -1,4 +1,6 @@
+import { CommonModule } from '@angular/common';
 import {Component, Input, OnInit, Host} from '@angular/core';
+import { RouterModule } from '@angular/router';
 
 interface LinkTableLink {
     label: string;
@@ -16,6 +18,10 @@ interface LinkTableLink {
         column-count: var(--columnCount);
       }
     `
+    ],
+    imports: [
+        CommonModule,
+        RouterModule
     ]
 })
 

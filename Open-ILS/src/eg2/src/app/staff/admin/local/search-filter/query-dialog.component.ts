@@ -5,11 +5,12 @@ import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {AuthService} from '@eg/core/auth.service';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {NgForm} from '@angular/forms';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
     selector: 'eg-query-dialog',
-    templateUrl: './query-dialog.component.html'
+    templateUrl: './query-dialog.component.html',
+    imports: [StaffCommonModule]
 })
 
 export class QueryDialogComponent extends DialogComponent implements OnInit {

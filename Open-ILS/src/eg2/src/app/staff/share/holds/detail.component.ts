@@ -7,12 +7,24 @@ import {OrgService} from '@eg/core/org.service';
 import {AuthService} from '@eg/core/auth.service';
 import {HoldNoteDialogComponent} from './note-dialog.component';
 import {HoldNotifyDialogComponent} from './notify-dialog.component';
+import { BibSummaryComponent } from '../bib-summary/bib-summary.component';
+import { CommonModule } from '@angular/common';
+import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
+import { FormatValuePipe } from '@eg/core/format.service';
 
 /** Hold details read-only view */
 
 @Component({
     selector: 'eg-hold-detail',
-    templateUrl: 'detail.component.html'
+    templateUrl: 'detail.component.html',
+    imports: [
+        BibSummaryComponent,
+        CommonModule,
+        FormatValuePipe,
+        HoldNoteDialogComponent,
+        HoldNotifyDialogComponent,
+        NgbNavModule
+    ]
 })
 export class HoldDetailComponent implements OnInit {
     detailTab = 'notes';

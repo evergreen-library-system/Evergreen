@@ -18,7 +18,7 @@ describe('EditToolbarComponent', () => {
                 {provide: ServerStoreService, useValue: MockGenerators.serverStoreService(false)},
                 {provide: AuthService, useValue: MockGenerators.authService}
             ],
-            declarations: [
+            imports: [
                 EditToolbarComponent
             ]
         });

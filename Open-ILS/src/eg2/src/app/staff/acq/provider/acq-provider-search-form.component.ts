@@ -2,12 +2,21 @@ import {Component, OnInit, Output, EventEmitter} from '@angular/core';
 import {AuthService} from '@eg/core/auth.service';
 import {AcqProviderSearchTerm, AcqProviderSearch} from './acq-provider-search.service';
 import {StoreService} from '@eg/core/store.service';
-import {OrgFamily} from '@eg/share/org-family-select/org-family-select.component';
+import {OrgFamily, OrgFamilySelectComponent} from '@eg/share/org-family-select/org-family-select.component';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { ComboboxComponent } from '@eg/share/combobox/combobox.component';
 
 @Component({
     selector: 'eg-acq-provider-search-form',
     styleUrls: ['acq-provider-search-form.component.css'],
-    templateUrl: './acq-provider-search-form.component.html'
+    templateUrl: './acq-provider-search-form.component.html',
+    imports: [
+        ComboboxComponent,
+        CommonModule,
+        FormsModule,
+        OrgFamilySelectComponent,
+    ]
 })
 
 export class AcqProviderSearchFormComponent implements OnInit {

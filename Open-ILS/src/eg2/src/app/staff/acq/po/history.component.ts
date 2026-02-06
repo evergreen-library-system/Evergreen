@@ -1,12 +1,15 @@
-import {Component, OnInit, Input, Output} from '@angular/core';
-import {Router, ActivatedRoute, ParamMap} from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, ParamMap} from '@angular/router';
 import {empty} from 'rxjs';
 import {Pager} from '@eg/share/util/pager';
-import {IdlObject} from '@eg/core/idl.service';
 import {GridDataSource} from '@eg/share/grid/grid';
 import {PcrudService} from '@eg/core/pcrud.service';
+import { GridModule } from '@eg/share/grid/grid.module';
 
-@Component({templateUrl: 'history.component.html'})
+@Component({
+    templateUrl: 'history.component.html',
+    imports: [GridModule]
+})
 export class PoHistoryComponent implements OnInit {
 
     poId: number;

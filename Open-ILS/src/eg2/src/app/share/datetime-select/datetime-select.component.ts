@@ -1,14 +1,22 @@
 // eslint-disable @angular-eslint/no-output-on-prefix
 import {Component, EventEmitter, Input, Output, ViewChild, OnInit, Optional, Self} from '@angular/core';
 import {FormatService} from '@eg/core/format.service';
-import {AbstractControl, ControlValueAccessor, FormControl, FormGroup, NgControl} from '@angular/forms';
+import {AbstractControl, ControlValueAccessor, FormControl, FormGroup, FormsModule, NgControl, ReactiveFormsModule} from '@angular/forms';
 import {DatetimeValidator} from '@eg/share/validators/datetime_validator.directive';
-import * as moment from 'moment-timezone';
+import moment from 'moment-timezone';
 import {DateUtil} from '@eg/share/util/date';
+import { NgbDatepicker, NgbDropdown, NgbTimepicker } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'eg-datetime-select',
     templateUrl: './datetime-select.component.html',
+    imports: [
+        FormsModule,
+        NgbDatepicker,
+        NgbDropdown,
+        NgbTimepicker,
+        ReactiveFormsModule
+    ]
 })
 export class DateTimeSelectComponent implements OnInit, ControlValueAccessor {
     @Input() domId = '';

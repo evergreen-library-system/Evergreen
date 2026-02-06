@@ -19,10 +19,15 @@ import {PrintService} from '@eg/share/print/print.service';
 import {BillingService} from '@eg/staff/share/billing/billing.service';
 import {AddBillingDialogComponent} from '@eg/staff/share/billing/billing-dialog.component';
 import {DateUtil} from '@eg/share/util/date';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
     templateUrl: 'billing-history.component.html',
-    selector: 'eg-patron-billing-history'
+    selector: 'eg-patron-billing-history',
+    imports: [
+        AddBillingDialogComponent,
+        StaffCommonModule
+    ]
 })
 export class BillingHistoryComponent implements OnInit {
 

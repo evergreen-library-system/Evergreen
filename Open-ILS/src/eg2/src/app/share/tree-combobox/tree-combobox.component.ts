@@ -9,7 +9,6 @@ const PAD_SPACE = ' '; // U+2007
 
 @Component({
     selector: 'eg-tree-combobox',
-    standalone: true,
     imports: [NgbTypeaheadModule, FormsModule],
     templateUrl: './tree-combobox.component.html'
 })

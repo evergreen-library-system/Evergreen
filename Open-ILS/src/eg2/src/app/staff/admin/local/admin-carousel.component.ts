@@ -14,9 +14,17 @@ import {NetService} from '@eg/core/net.service';
 import {GridCellTextGenerator} from '@eg/share/grid/grid';
 import {StringComponent} from '@eg/share/string/string.component';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
+import { StaffCommonModule } from '@eg/staff/common.module';
+import { FmRecordEditorComponent } from '@eg/share/fm-editor/fm-editor.component';
+import { TranslateComponent } from '@eg/share/translate/translate.component';
 
 @Component({
-    templateUrl: './admin-carousel.component.html'
+    templateUrl: './admin-carousel.component.html',
+    imports: [
+        FmRecordEditorComponent,
+        StaffCommonModule,
+        TranslateComponent,
+    ]
 })
 
 export class AdminCarouselComponent extends AdminPageComponent implements OnInit {

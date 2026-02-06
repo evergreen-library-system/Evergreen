@@ -3,6 +3,7 @@ import {tap} from 'rxjs';
 import {CatalogService} from '@eg/share/catalog/catalog.service';
 import {CatalogSearchContext} from '@eg/share/catalog/search-context';
 import {StaffCatalogService} from '../catalog.service';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 interface BrowsePage {
     leftPivot: number;
@@ -12,7 +13,8 @@ interface BrowsePage {
 
 @Component({
     selector: 'eg-catalog-browse-pager',
-    templateUrl: 'browse-pager.component.html'
+    templateUrl: 'browse-pager.component.html',
+    imports: [StaffCommonModule]
 })
 export class BrowsePagerComponent implements OnInit {
 

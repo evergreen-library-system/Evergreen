@@ -4,18 +4,14 @@ import {TreeComponent} from './tree.component';
 import {TreeMultiselectComponent} from './tree-multiselect.component';
 
 @NgModule({
-    declarations: [
+    imports: [
+        EgCommonModule,
         TreeComponent,
         TreeMultiselectComponent
-    ],
-    imports: [
-        EgCommonModule
     ],
     exports: [
         TreeComponent,
         TreeMultiselectComponent
-    ],
-    providers: [
     ]
 })
 

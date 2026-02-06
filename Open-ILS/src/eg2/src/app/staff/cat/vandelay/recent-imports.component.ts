@@ -4,9 +4,11 @@ import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {VandelayService} from './vandelay.service';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
-    templateUrl: 'recent-imports.component.html'
+    templateUrl: 'recent-imports.component.html',
+    imports: [StaffCommonModule]
 })
 
 export class RecentImportsComponent implements OnInit {

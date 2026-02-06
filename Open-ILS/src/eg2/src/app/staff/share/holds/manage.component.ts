@@ -2,14 +2,25 @@ import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
 import {PcrudService} from '@eg/core/pcrud.service';
-import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
+import {ComboboxComponent, ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {HoldsService} from './holds.service';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { OrgSelectComponent } from '@eg/share/org-select/org-select.component';
+import { DateSelectComponent } from '@eg/share/date-select/date-select.component';
 
 /** Edit holds in single or batch mode. */
 
 @Component({
     selector: 'eg-hold-manage',
-    templateUrl: 'manage.component.html'
+    templateUrl: 'manage.component.html',
+    imports: [
+        ComboboxComponent,
+        CommonModule,
+        DateSelectComponent,
+        FormsModule,
+        OrgSelectComponent
+    ]
 })
 export class HoldManageComponent implements OnInit {
 

@@ -1,7 +1,7 @@
 /* eslint-disable */
 import {Component, OnInit, Input, ViewChild,
     Output, EventEmitter, TemplateRef} from '@angular/core';
-import {NgForm} from '@angular/forms';
+import {FormsModule, NgForm} from '@angular/forms';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {Observable} from 'rxjs';
 import {PcrudService} from '@eg/core/pcrud.service';
@@ -10,14 +10,20 @@ import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {StringComponent} from '@eg/share/string/string.component';
 import {NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
-import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
+import {ComboboxComponent, ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {FormatService} from '@eg/core/format.service';
 import {TranslateComponent} from '@eg/share/translate/translate.component';
 import {FmRecordEditorActionComponent} from './fm-editor-action.component';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
-import {BooleanSelectComponent} from '@eg/share/boolean-select/boolean-select.component';
-import {Directive, HostBinding} from '@angular/core';
-import {AbstractControl, NG_VALIDATORS, ValidationErrors, Validator, Validators} from '@angular/forms';
+import { NgClass, NgFor, NgIf, NgSwitch, NgSwitchCase, NgTemplateOutlet } from '@angular/common';
+import { ProgressInlineComponent } from '../dialog/progress-inline.component';
+import { EgHelpPopoverComponent } from '../eg-help-popover/eg-help-popover.component';
+import { DateSelectComponent } from '../date-select/date-select.component';
+import { DateTimeSelectComponent } from '../datetime-select/datetime-select.component';
+import { OrgSelectComponent } from '../org-select/org-select.component';
+import { MaxValidatorDirective, MinValidatorDirective } from './validators.directive';
+import { DatesInOrderValidatorDirective } from '../validators/dates_in_order_validator.directive';
+import { BooleanSelectComponent } from '../boolean-select/boolean-select.component';
 
 interface CustomFieldTemplate {
     template: TemplateRef<any>;
@@ -101,7 +107,29 @@ export interface FmFieldOptions {
 @Component({
     selector: 'eg-fm-record-editor',
     templateUrl: './fm-editor.component.html',
-    styleUrls: ['fm-editor.component.css']
+    styleUrls: ['fm-editor.component.css'],
+    imports: [
+        BooleanSelectComponent,
+        ComboboxComponent,
+        ConfirmDialogComponent,
+        DateSelectComponent,
+        DatesInOrderValidatorDirective,
+        DateTimeSelectComponent,
+        EgHelpPopoverComponent,
+        MinValidatorDirective,
+        MaxValidatorDirective,
+        FormsModule,
+        NgClass,
+        NgFor,
+        NgIf,
+        NgSwitch,
+        NgSwitchCase,
+        NgTemplateOutlet,
+        OrgSelectComponent,
+        ProgressInlineComponent,
+        StringComponent,
+        TranslateComponent
+    ]
 })
 export class FmRecordEditorComponent
     extends DialogComponent implements OnInit {
@@ -794,35 +822,5 @@ export class FmRecordEditorComponent
 
     setToNull(field) {
         this.record[field.name](null);
-    }
-}
-
-// https://stackoverflow.com/a/57812865
-@Directive({
-    selector: 'input[type=number][egMin][formControlName],input[type=number][egMin][formControl],input[type=number][egMin][ngModel]',
-    providers: [{ provide: NG_VALIDATORS, useExisting: MinValidatorDirective, multi: true }]
-})
-export class MinValidatorDirective implements Validator {
-    @HostBinding('attr.egMin') @Input() egMin: number;
-
-    constructor() { }
-
-    validate(control: AbstractControl): ValidationErrors | null {
-        const validator = Validators.min(this.egMin);
-        return validator(control);
-    }
-}
-@Directive({
-    selector: 'input[type=number][egMax][formControlName],input[type=number][egMax][formControl],input[type=number][egMax][ngModel]',
-    providers: [{ provide: NG_VALIDATORS, useExisting: MaxValidatorDirective, multi: true }]
-})
-export class MaxValidatorDirective implements Validator {
-    @HostBinding('attr.egMax') @Input() egMax: number;
-
-    constructor() { }
-
-    validate(control: AbstractControl): ValidationErrors | null {
-        const validator = Validators.max(this.egMax);
-        return validator(control);
     }
 }

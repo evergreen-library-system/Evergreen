@@ -1,7 +1,11 @@
+import { CommonModule } from '@angular/common';
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, ParamMap} from '@angular/router';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
+import { TitleComponent } from '@eg/share/title/title.component';
 import {Observable, tap, switchMap} from 'rxjs';
+import { StaffBannerComponent } from '../share/staff-banner.component';
+import { AdminPageComponent } from '../share/admin-page/admin-page.component';
 
 /**
  * Generic IDL class editor page.
@@ -32,7 +36,13 @@ import {Observable, tap, switchMap} from 'rxjs';
         [disableEdit]="disableEdit"
         [disableOrgFilter]="disableOrgFilter"></eg-admin-page>
       </ng-container>
-    `
+    `,
+    imports: [
+        AdminPageComponent,
+        CommonModule,
+        StaffBannerComponent,
+        TitleComponent,
+    ]
 })
 
 export class BasicAdminPageComponent implements OnInit {

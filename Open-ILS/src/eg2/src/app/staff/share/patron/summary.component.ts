@@ -4,11 +4,16 @@ import {IdlObject} from '@eg/core/idl.service';
 import {PrintService} from '@eg/share/print/print.service';
 import {PatronService, PatronSummary} from './patron.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
+import { CommonModule, NgClass, NgIf, NgSwitch, NgSwitchCase } from '@angular/common';
+import { RouterModule } from '@angular/router';
 
 @Component({
     templateUrl: 'summary.component.html',
     styleUrls: ['summary.component.css'],
-    selector: 'eg-patron-summary'
+    selector: 'eg-patron-summary',
+    imports: [
+        CommonModule
+    ]
 })
 export class PatronSummaryComponent implements OnInit {
 

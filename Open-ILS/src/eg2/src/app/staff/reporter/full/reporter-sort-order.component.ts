@@ -1,10 +1,12 @@
 import {Component, Input, Output, EventEmitter} from '@angular/core';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
     selector: 'eg-reporter-sort-order',
     styleUrls: ['./reporter-sort-order.component.css'],
-    templateUrl: './reporter-sort-order.component.html'
+    templateUrl: './reporter-sort-order.component.html',
+    imports: [StaffCommonModule]
 })
 
 export class ReporterSortOrderComponent {

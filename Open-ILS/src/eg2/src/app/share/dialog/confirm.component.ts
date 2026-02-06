@@ -1,9 +1,11 @@
-import {Component, Input, ViewChild, TemplateRef} from '@angular/core';
+import { CommonModule } from '@angular/common';
+import {Component, Input, TemplateRef} from '@angular/core';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 
 @Component({
     selector: 'eg-confirm-dialog',
-    templateUrl: './confirm.component.html'
+    templateUrl: './confirm.component.html',
+    imports: [CommonModule]
 })
 
 /**

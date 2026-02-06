@@ -6,9 +6,15 @@ import {PcrudService} from '@eg/core/pcrud.service';
 import {AuthService} from '@eg/core/auth.service';
 import {FormatService} from '@eg/core/format.service';
 import {BibRecordService} from '@eg/share/catalog/bib-record.service';
+import { StaffCommonModule } from '../common.module';
+import { HoldsGridComponent } from '../share/holds/grid.component';
 
 @Component({
-    templateUrl: 'hopeless.component.html'
+    templateUrl: 'hopeless.component.html',
+    imports: [
+        HoldsGridComponent,
+        StaffCommonModule
+    ]
 })
 export class HopelessComponent implements OnInit {
 

@@ -2,17 +2,24 @@ import {Component, Input, ViewChild, TemplateRef} from '@angular/core';
 import {Observable} from 'rxjs';
 import {NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
-import {IdlService, IdlObject} from '@eg/core/idl.service';
+import {IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {AuthService} from '@eg/core/auth.service';
-import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
+import {ComboboxComponent, ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {LineitemService} from '../lineitem/lineitem.service';
 import {PrintService} from '@eg/share/print/print.service';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
     selector: 'eg-acq-manage-claims-dialog',
-    templateUrl: './manage-claims-dialog.component.html'
+    templateUrl: './manage-claims-dialog.component.html',
+    imports: [
+        ComboboxComponent,
+        CommonModule,
+        FormsModule
+    ]
 })
 
 export class ManageClaimsDialogComponent extends DialogComponent {

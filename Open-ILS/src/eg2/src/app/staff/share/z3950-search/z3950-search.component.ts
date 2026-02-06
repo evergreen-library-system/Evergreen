@@ -1,8 +1,8 @@
 /* eslint-disable */
-import {Component, ViewChild, OnInit, Input, TemplateRef, Directive, AfterViewInit, ElementRef} from '@angular/core';
+import {Component, ViewChild, OnInit, Input, TemplateRef, Directive, ElementRef} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {FormBuilder, FormGroup, FormControl, Validators, FormArray} from '@angular/forms';
-import {map, mergeMap, defaultIfEmpty, last} from 'rxjs/operators';
+import {FormsModule} from '@angular/forms';
+import {map, mergeMap} from 'rxjs/operators';
 import {EMPTY, Observable, of, from, finalize} from 'rxjs';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 import {PromptDialogComponent} from '@eg/share/dialog/prompt.component';
@@ -20,11 +20,46 @@ import {EventService} from '@eg/core/event.service';
 import {HoldingsService} from '@eg/staff/share/holdings/holdings.service';
 import {ComboboxEntry, ComboboxComponent} from '@eg/share/combobox/combobox.component';
 import {ProgressInlineComponent} from '@eg/share/dialog/progress-inline.component';
+import { StaffBannerComponent } from '../staff-banner.component';
+import { TitleComponent } from '@eg/share/title/title.component';
+import { MarcEditorComponent } from '../marc-edit/editor.component';
+import { CommonModule } from '@angular/common';
+import { OrgSelectComponent } from '@eg/share/org-select/org-select.component';
+import { GridModule } from '@eg/share/grid/grid.module';
+import { MarcHtmlComponent } from '@eg/share/catalog/marc-html.component';
+
+@Directive({
+    selector: '[egautofocus]'
+})
+export class AutofocusDirective implements OnInit {
+    @Input() egautofocus: boolean;
+
+    constructor(private host: ElementRef) {}
+
+    ngOnInit() {
+        if (this.egautofocus) {this.host.nativeElement.focus();}
+    }
+}
 
 @Component({
     selector: 'eg-z3950-search',
     styleUrls: ['z3950-search.component.css'],
-    templateUrl: 'z3950-search.component.html'
+    templateUrl: 'z3950-search.component.html',
+    imports: [
+        AutofocusDirective,
+        ComboboxComponent,
+        CommonModule,
+        ConfirmDialogComponent,
+        FormsModule,
+        GridModule,
+        MarcEditorComponent,
+        MarcHtmlComponent,
+        OrgSelectComponent,
+        ProgressInlineComponent,
+        PromptDialogComponent,
+        StaffBannerComponent,
+        TitleComponent
+    ]
 })
 
 export class Z3950SearchComponent implements OnInit {
@@ -784,18 +819,5 @@ export class Z3950SearchComponent implements OnInit {
             b = b['labels'][0].toLowerCase();
             return a < b ? -1 : (a > b ? 1 : 0);
         });
-    }
-}
-
-@Directive({
-    selector: '[egautofocus]'
-})
-export class AutofocusDirective implements OnInit {
-    @Input() egautofocus: boolean;
-
-    constructor(private host: ElementRef) {}
-
-    ngOnInit() {
-        if (this.egautofocus) {this.host.nativeElement.focus();}
     }
 }

@@ -11,13 +11,11 @@ import {HttpClientModule} from '@angular/common/http';
 import {OrgFamilySelectModule} from '@eg/share/org-family-select/org-family-select.module';
 
 @NgModule({
-    declarations: [
+    imports: [
         LinkCheckerComponent,
         LinkCheckerUrlsComponent,
         LinkCheckerAttemptsComponent,
-        NewSessionDialogComponent
-    ],
-    imports: [
+        NewSessionDialogComponent,
         StaffCommonModule,
         AdminCommonModule,
         HttpClientModule,

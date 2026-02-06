@@ -4,10 +4,13 @@ import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {OrgService} from '@eg/core/org.service';
 import {AuthService} from '@eg/core/auth.service';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
     templateUrl: 'notes.component.html',
-    selector: 'eg-po-notes'
+    selector: 'eg-po-notes',
+    imports: [CommonModule, FormsModule]
 })
 export class PoNotesComponent implements AfterViewInit {
 

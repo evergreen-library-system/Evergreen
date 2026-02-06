@@ -1,16 +1,16 @@
 import {Component, OnInit, Output, EventEmitter, ViewChild} from '@angular/core';
-import {Router, ActivatedRoute} from '@angular/router';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
-import {NetService} from '@eg/core/net.service';
-import {AuthService} from '@eg/core/auth.service';
 import {ProviderRecordService} from './provider-record.service';
 import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
 import {StringComponent} from '@eg/share/string/string.component';
-import {ToastService} from '@eg/share/toast/toast.service';
 
 @Component({
     selector: 'eg-provider-details',
     templateUrl: 'provider-details.component.html',
+    imports: [
+        FmRecordEditorComponent,
+        StringComponent
+    ]
 })
 export class ProviderDetailsComponent implements OnInit {
 
@@ -27,13 +27,9 @@ export class ProviderDetailsComponent implements OnInit {
     @Output() desireSummarize: EventEmitter<number> = new EventEmitter<number>();
 
     constructor(
-        private router: Router,
-        private route: ActivatedRoute,
-        private net: NetService,
         private idl: IdlService,
-        private auth: AuthService,
         private providerRecord: ProviderRecordService,
-        private toast: ToastService) {
+    ) {
     }
 
     ngOnInit() {

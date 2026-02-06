@@ -1,11 +1,13 @@
 import { Component, OnInit, Input, Output, OnChanges, SimpleChanges, EventEmitter, ViewChild } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import {AuthService} from '@eg/core/auth.service';
 import {OrgService} from '@eg/core/org.service';
 import { ComboboxEntry, ComboboxComponent } from '@eg/share/combobox/combobox.component';
 
 @Component({
     selector: 'eg-org-depth-selector',
-    templateUrl: 'depth-select.component.html'
+    templateUrl: 'depth-select.component.html',
+    imports: [ComboboxComponent, FormsModule]
 })
 export class DepthSelectComponent implements OnInit, OnChanges {
     @Input() contextOrgId: number;

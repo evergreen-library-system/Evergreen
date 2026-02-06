@@ -1,10 +1,20 @@
 import {Component, OnInit} from '@angular/core';
-import {Router, ActivatedRoute, ParamMap} from '@angular/router';
-import {IdlObject} from '@eg/core/idl.service';
+import {ActivatedRoute, ParamMap, RouterModule} from '@angular/router';
 import {PoService} from './po.service';
+import { StaffBannerComponent } from '@eg/staff/share/staff-banner.component';
+import { PoSummaryComponent } from './summary.component';
+import { PoChargesComponent } from './charges.component';
+import { CommonModule } from '@angular/common';
 
 @Component({
-    templateUrl: 'po.component.html'
+    templateUrl: 'po.component.html',
+    imports: [
+        CommonModule,
+        PoChargesComponent,
+        PoSummaryComponent,
+        RouterModule,
+        StaffBannerComponent,
+    ]
 })
 export class PoComponent implements OnInit {
 

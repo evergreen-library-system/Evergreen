@@ -9,6 +9,7 @@ import {OrgService} from '@eg/core/org.service';
 import {EventService} from '@eg/core/event.service';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 import {HatchService} from '@eg/core/hatch.service';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 // Slim version of the WS that's stored in the cache.
 interface Workstation {
@@ -18,7 +19,8 @@ interface Workstation {
 }
 
 @Component({
-    templateUrl: 'workstations.component.html'
+    templateUrl: 'workstations.component.html',
+    imports: [StaffCommonModule]
 })
 export class WorkstationsComponent implements OnInit {
 

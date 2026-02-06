@@ -1,5 +1,6 @@
 import {Component, Input, ViewChild} from '@angular/core';
 import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
     selector: 'eg-bucket-action-summary-dialog',
@@ -14,7 +15,8 @@ import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
       <div class="col">{{containerActionResultMap[container.id]}}</div>
     </div>
   </ng-template>
-  `
+  `,
+    imports: [StaffCommonModule]
 })
 
 export class BucketActionSummaryDialogComponent {

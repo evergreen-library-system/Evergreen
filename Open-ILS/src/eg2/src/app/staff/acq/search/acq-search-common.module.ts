@@ -17,10 +17,8 @@ import {LineitemResultsComponent} from './lineitem-results.component';
     imports: [
         StaffCommonModule,
         AcqCommonModule,
-        LineitemModule
-    ],
-    declarations: [
         AcqSearchFormComponent,
+        LineitemModule,
         LineitemResultsComponent
     ],
     exports: [

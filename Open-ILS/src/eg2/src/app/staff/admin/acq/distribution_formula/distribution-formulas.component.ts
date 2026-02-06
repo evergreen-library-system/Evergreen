@@ -1,5 +1,5 @@
 import {Component, ViewChild, OnInit} from '@angular/core';
-import {Location} from '@angular/common';
+import {CommonModule, Location} from '@angular/common';
 import {FormatService} from '@eg/core/format.service';
 import {GridDataSource, GridCellTextGenerator} from '@eg/share/grid/grid';
 import {GridComponent} from '@eg/share/grid/grid.component';
@@ -13,15 +13,33 @@ import {OrgService} from '@eg/core/org.service';
 import {PermService} from '@eg/core/perm.service';
 import {AuthService} from '@eg/core/auth.service';
 import {BroadcastService} from '@eg/share/util/broadcast.service';
-import {NetService} from '@eg/core/net.service';
 import {StringComponent} from '@eg/share/string/string.component';
 import {DistributionFormulaEditDialogComponent} from './distribution-formula-edit-dialog.component';
 import {Observable, forkJoin, of, mergeMap} from 'rxjs';
 import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
+import { StaffBannerComponent } from '@eg/staff/share/staff-banner.component';
+import { TitleComponent } from '@eg/share/title/title.component';
+import { FormsModule } from '@angular/forms';
+import { TranslateComponent } from '@eg/share/translate/translate.component';
+import { GridModule } from '@eg/share/grid/grid.module';
+import { FmRecordEditorComponent } from '@eg/share/fm-editor/fm-editor.component';
 
 @Component({
-    templateUrl: './distribution-formulas.component.html'
+    templateUrl: './distribution-formulas.component.html',
+    imports: [
+        AlertDialogComponent,
+        CommonModule,
+        ConfirmDialogComponent,
+        DistributionFormulaEditDialogComponent,
+        FmRecordEditorComponent,
+        FormsModule,
+        GridModule,
+        StaffBannerComponent,
+        StringComponent,
+        TitleComponent,
+        TranslateComponent
+    ]
 })
 
 export class DistributionFormulasComponent extends AdminPageComponent implements OnInit {
@@ -46,7 +64,6 @@ export class DistributionFormulasComponent extends AdminPageComponent implements
         pcrud: PcrudService,
         perm: PermService,
         toast: ToastService,
-        private net: NetService,
         broadcaster: BroadcastService
     ) {
         super(route, ngLocation, format, idl, org, auth, pcrud, perm, toast, broadcaster);

@@ -4,7 +4,6 @@ import {StaffCommonModule} from '@eg/staff/common.module';
 import {CatalogRoutingModule} from './routing.module';
 import {HoldsModule} from '@eg/staff/share/holds/holds.module';
 import {HoldingsModule} from '@eg/staff/share/holdings/holdings.module';
-import {BookingModule} from '@eg/staff/share/booking/booking.module';
 import {PatronModule} from '@eg/staff/share/patron/patron.module';
 import {CatalogComponent} from './catalog.component';
 import {SearchFormComponent} from './search-form.component';
@@ -31,7 +30,6 @@ import {ConjoinedComponent} from './record/conjoined.component';
 import {CnBrowseComponent} from './cnbrowse.component';
 import {CnBrowseResultsComponent} from './cnbrowse/results.component';
 import {SearchTemplatesComponent} from './search-templates.component';
-import {MarcEditModule} from '@eg/staff/share/marc-edit/marc-edit.module';
 import {PreferencesComponent} from './prefs.component';
 import {BrowsePagerComponent} from './result/browse-pager.component';
 import {HttpClientModule} from '@angular/common/http';
@@ -41,9 +39,10 @@ import {VolCopyModule} from '@eg/staff/cat/volcopy/volcopy.module';
 import { SortOrderSelectComponent } from './sort-order-select/sort-order-select.component';
 import { CatalogOrgSelectComponent } from './catalog-org-select/catalog-org-select.component';
 import { FastAddSelectorComponent } from '../share/marc-edit/fast-add-selector-component';
+import { MakeBookableDialogComponent } from '../share/booking/make-bookable-dialog.component';
 
 @NgModule({
-    declarations: [
+    imports: [
         CatalogComponent,
         ResultsComponent,
         RecordComponent,
@@ -70,18 +69,15 @@ import { FastAddSelectorComponent } from '../share/marc-edit/fast-add-selector-c
         PreferencesComponent,
         CnBrowseResultsComponent,
         BrowsePagerComponent,
-        SortOrderSelectComponent
-    ],
-    imports: [
+        SortOrderSelectComponent,
         StaffCommonModule,
         FastAddSelectorComponent,
         FmRecordEditorModule,
         CatalogRoutingModule,
         HoldsModule,
         HoldingsModule,
-        BookingModule,
+        MakeBookableDialogComponent,
         PatronModule,
-        MarcEditModule,
         HttpClientModule,
         BarcodesModule,
         WorkLogModule,

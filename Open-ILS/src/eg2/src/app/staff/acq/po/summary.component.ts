@@ -1,6 +1,6 @@
 /* eslint-disable no-self-assign, no-magic-numbers */
 import {Component, Input, OnInit, OnDestroy, ViewChild} from '@angular/core';
-import {Router} from '@angular/router';
+import {Router, RouterModule} from '@angular/router';
 import {Subscription, tap} from 'rxjs';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
@@ -15,6 +15,11 @@ import {PoService} from './po.service';
 import {LineitemService} from '../lineitem/lineitem.service';
 import {CancelDialogComponent} from '../lineitem/cancel-dialog.component';
 import {LinkInvoiceDialogComponent} from '../lineitem/link-invoice-dialog.component';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { PoNotesComponent } from './notes.component';
+import { BoolDisplayComponent } from '@eg/share/util/bool.component';
+import { ProgressInlineComponent } from '@eg/share/dialog/progress-inline.component';
 
 const PO_ACTIVATION_WARNINGS = [
     'ACQ_FUND_EXCEEDS_WARN_PERCENT'
@@ -22,8 +27,20 @@ const PO_ACTIVATION_WARNINGS = [
 
 @Component({
     templateUrl: 'summary.component.html',
-    styleUrls: [ './summary.component.css' ],
-    selector: 'eg-acq-po-summary'
+    styleUrls: ['./summary.component.css'],
+    selector: 'eg-acq-po-summary',
+    imports: [
+        BoolDisplayComponent,
+        CancelDialogComponent,
+        CommonModule,
+        ConfirmDialogComponent,
+        FormsModule,
+        LinkInvoiceDialogComponent,
+        PoNotesComponent,
+        ProgressDialogComponent,
+        ProgressInlineComponent,
+        RouterModule,
+    ]
 })
 export class PoSummaryComponent implements OnInit, OnDestroy {
 

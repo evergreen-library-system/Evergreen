@@ -13,12 +13,14 @@ import {ToastService} from '@eg/share/toast/toast.service';
 import {NetService} from '@eg/core/net.service';
 import {OrgService} from '@eg/core/org.service';
 import {BibRecordService} from '@eg/share/catalog/bib-record.service';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 // A filterable grid of A/T events for circ or ahr hook core types
 
 @Component({
     selector: 'eg-event-grid',
-    templateUrl: './event-grid.component.html'
+    templateUrl: './event-grid.component.html',
+    imports: [StaffCommonModule]
 })
 
 export class EventGridComponent implements OnChanges, OnInit {

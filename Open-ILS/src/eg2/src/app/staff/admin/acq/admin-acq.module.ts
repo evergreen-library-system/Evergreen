@@ -7,14 +7,12 @@ import {ClaimingAdminComponent} from './claiming-admin.component';
 import {FiscalYearAdminComponent} from './fiscal-year-admin.component';
 
 @NgModule({
-    declarations: [
+    imports: [
         AdminAcqSplashComponent,
+        AdminCommonModule,
+        AdminAcqRoutingModule,
         ClaimingAdminComponent,
         FiscalYearAdminComponent
-    ],
-    imports: [
-        AdminCommonModule,
-        AdminAcqRoutingModule
     ],
     exports: [
     ],

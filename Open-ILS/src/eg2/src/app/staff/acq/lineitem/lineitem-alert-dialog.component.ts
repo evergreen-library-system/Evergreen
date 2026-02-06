@@ -2,10 +2,15 @@ import {Component, Input, ViewChild} from '@angular/core';
 import {Observable} from 'rxjs';
 import {IdlObject} from '@eg/core/idl.service';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
+import { CommonModule } from '@angular/common';
 
 @Component({
     selector: 'eg-lineitem-alert-dialog',
-    templateUrl: './lineitem-alert-dialog.component.html'
+    templateUrl: './lineitem-alert-dialog.component.html',
+    imports: [
+        CommonModule,
+        ConfirmDialogComponent
+    ]
 })
 
 export class LineitemAlertDialogComponent {

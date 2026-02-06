@@ -10,9 +10,11 @@ import {GridComponent} from '@eg/share/grid/grid.component';
 import {GridDataSource, GridCellTextGenerator} from '@eg/share/grid/grid';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 import {ProgressDialogComponent} from '@eg/share/dialog/progress.component';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
-    templateUrl: 'background-import.component.html'
+    templateUrl: 'background-import.component.html',
+    imports: [StaffCommonModule]
 })
 export class BackgroundImportComponent {
 

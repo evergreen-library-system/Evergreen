@@ -1,9 +1,11 @@
-import {Component, OnInit, Output, Input, ViewChild, EventEmitter} from '@angular/core';
-import {CircService} from './circ.service';
+import {Component, OnInit, Input} from '@angular/core';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
-import {NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {EgEvent} from '@eg/core/event.service';
 import {StringService} from '@eg/share/string/string.service';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { StringComponent } from '@eg/share/string/string.component';
 
 /*
  * Prompt to confirm overriding circulation events.
@@ -11,7 +13,12 @@ import {StringService} from '@eg/share/string/string.service';
 
 @Component({
     templateUrl: 'events-dialog.component.html',
-    selector: 'eg-circ-events-dialog'
+    selector: 'eg-circ-events-dialog',
+    imports: [
+        CommonModule,
+        RouterModule,
+        StringComponent
+    ]
 })
 export class CircEventsComponent extends DialogComponent implements OnInit {
 

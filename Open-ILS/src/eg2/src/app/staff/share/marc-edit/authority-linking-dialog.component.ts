@@ -1,4 +1,4 @@
-import {Component, ViewChild, Input, OnInit} from '@angular/core';
+import {Component, ViewChild, Input, OnInit, forwardRef} from '@angular/core';
 import {NetService} from '@eg/core/net.service';
 import {OrgService} from '@eg/core/org.service';
 import {AuthService} from '@eg/core/auth.service';
@@ -9,6 +9,8 @@ import {MarcField} from './marcrecord';
 import {MarcEditContext} from './editor-context';
 import {Pager} from '@eg/share/util/pager';
 import {MarcEditorDialogComponent} from './editor-dialog.component';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 /**
  * MARC Authority Linking Dialog
@@ -16,7 +18,12 @@ import {MarcEditorDialogComponent} from './editor-dialog.component';
 
 @Component({
     selector: 'eg-authority-linking-dialog',
-    templateUrl: './authority-linking-dialog.component.html'
+    templateUrl: './authority-linking-dialog.component.html',
+    imports: [
+        CommonModule,
+        FormsModule,
+        forwardRef(() => MarcEditorDialogComponent)
+    ]
 })
 
 export class AuthorityLinkingDialogComponent

@@ -11,10 +11,12 @@ import {NgForm} from '@angular/forms';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {ProgressDialogComponent} from '@eg/share/dialog/progress.component';
 import {Subject, Subscription, Observable, debounceTime, distinctUntilChanged} from 'rxjs';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
     selector: 'eg-new-session-dialog',
-    templateUrl: './new-session-dialog.component.html'
+    templateUrl: './new-session-dialog.component.html',
+    imports: [StaffCommonModule]
 })
 
 export class NewSessionDialogComponent extends DialogComponent implements OnInit, OnDestroy {

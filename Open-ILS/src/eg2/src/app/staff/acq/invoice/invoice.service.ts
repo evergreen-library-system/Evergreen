@@ -8,7 +8,7 @@ import {PcrudService} from '@eg/core/pcrud.service';
 import {LineitemService, FleshCacheParams, BatchLineitemStruct} from '@eg/staff/acq/lineitem/lineitem.service';
 import {PoService} from '@eg/staff/acq/po/po.service';
 import {Subject} from 'rxjs';
-import * as moment from 'moment-timezone';
+import moment from 'moment-timezone';
 import {toArray, throwError, forkJoin, firstValueFrom, lastValueFrom, Observable} from 'rxjs';
 import {map, catchError} from 'rxjs/operators';
 

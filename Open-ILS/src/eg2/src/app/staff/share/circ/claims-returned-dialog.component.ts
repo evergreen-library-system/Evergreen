@@ -5,10 +5,12 @@ import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
 import {EventService} from '@eg/core/event.service';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
     templateUrl: 'claims-returned-dialog.component.html',
-    selector: 'eg-claims-returned-dialog'
+    selector: 'eg-claims-returned-dialog',
+    imports: [StaffCommonModule]
 })
 export class ClaimsReturnedDialogComponent
     extends DialogComponent implements OnInit {

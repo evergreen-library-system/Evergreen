@@ -1,11 +1,20 @@
 import {Component, Input} from '@angular/core';
 import {GridContext, GridColumn} from './grid';
+import { NgIf, NgTemplateOutlet } from '@angular/common';
+import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
+import { BoolDisplayComponent } from '../util/bool.component';
 
 @Component({
     selector: 'eg-grid-body-cell',
     templateUrl: './grid-body-cell.component.html',
     // eslint-disable-next-line max-len
-    styles: ['.eg-grid-body-row.selected .user-favorite { text-shadow: 0 0 1em var(--bs-primary), 0 0 0.2em var(--bs-primary); -webkit-text-stroke: 1px var(--star-stroke); }']
+    styles: ['.eg-grid-body-row.selected .user-favorite { text-shadow: 0 0 1em var(--bs-primary), 0 0 0.2em var(--bs-primary); -webkit-text-stroke: 1px var(--star-stroke); }'],
+    imports: [
+        BoolDisplayComponent,
+        NgIf,
+        NgTemplateOutlet,
+        NgbTooltip,
+    ]
 })
 
 export class GridBodyCellComponent {

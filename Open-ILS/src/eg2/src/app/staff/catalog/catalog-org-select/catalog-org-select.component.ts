@@ -8,7 +8,6 @@ import { ServerStoreService } from '@eg/core/server-store.service';
 
 @Component({
     selector: 'eg-catalog-org-select',
-    standalone: true,
     imports: [CommonModule, TreeComboboxComponent],
     templateUrl: './catalog-org-select.component.html'
 })

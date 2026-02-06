@@ -1,11 +1,12 @@
-import {Component, Input} from '@angular/core';
-import {FormGroup, FormControl, Validators} from '@angular/forms';
+import {Component} from '@angular/core';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
     selector: 'eg-record-bucket-export-dialog',
-    templateUrl: './record-bucket-export-dialog.component.html'
+    templateUrl: './record-bucket-export-dialog.component.html',
+    imports: [StaffCommonModule]
 })
 
 export class RecordBucketExportDialogComponent extends DialogComponent {

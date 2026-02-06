@@ -9,9 +9,11 @@ import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {StringComponent} from '@eg/share/string/string.component';
 import {QueryDialogComponent} from './query-dialog.component';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
-    templateUrl: './search-filter-group-entries.component.html'
+    templateUrl: './search-filter-group-entries.component.html',
+    imports: [StaffCommonModule, FmRecordEditorComponent, QueryDialogComponent]
 })
 
 export class SearchFilterGroupEntriesComponent implements OnInit {

@@ -5,11 +5,9 @@ import {EditFloatingGroupComponent} from './edit-floating-group.component';
 import {FloatingGroupRoutingModule} from './floating-group-routing.module';
 
 @NgModule({
-    declarations: [
-        FloatingGroupComponent,
-        EditFloatingGroupComponent
-    ],
     imports: [
+        FloatingGroupComponent,
+        EditFloatingGroupComponent,
         AdminCommonModule,
         FloatingGroupRoutingModule
     ],

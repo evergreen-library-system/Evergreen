@@ -11,17 +11,42 @@ import {StoreService} from '@eg/core/store.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
 import {PatronService} from '@eg/staff/share/patron/patron.service';
 import {PatronContextService} from './patron.service';
-import {PatronSearch} from '@eg/staff/share/patron/search.component';
+import {PatronSearch, PatronSearchComponent} from '@eg/staff/share/patron/search.component';
 import {EditToolbarComponent} from './edit-toolbar.component';
 import {EditComponent} from './edit.component';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 import {PromptDialogComponent} from '@eg/share/dialog/prompt.component';
 import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
-import {PatronStatCatsComponent} from '@eg/staff/circ/patron/statcats.component';
+import { StaffCommonModule } from '@eg/staff/common.module';
+import { WorkLogStringsComponent } from '@eg/staff/share/worklog/strings.component';
+import { CircComponentsComponent } from '@eg/staff/share/circ/components.component';
+import { CheckoutComponent } from './checkout.component';
+import { HoldsComponent } from './holds.component';
+import { BillsComponent } from './bills.component';
+import { PatronSummaryComponent } from '@eg/staff/share/patron/summary.component';
+import { ItemsComponent } from './items.component';
+import { PatronMessagesComponent } from './messages.component';
+import { PatronSurveyResponsesComponent } from './surveys.component';
+import { PatronStatCatsComponent } from './statcats.component';
 
 @Component({
     templateUrl: 'patron.component.html',
-    styleUrls: ['patron.component.css']
+    styleUrls: ['patron.component.css'],
+    imports: [
+        BillsComponent,
+        CheckoutComponent,
+        CircComponentsComponent,
+        EditComponent,
+        HoldsComponent,
+        ItemsComponent,
+        PatronMessagesComponent,
+        PatronSearchComponent,
+        PatronStatCatsComponent,
+        PatronSummaryComponent,
+        PatronSurveyResponsesComponent,
+        StaffCommonModule,
+        WorkLogStringsComponent
+    ]
 })
 export class PatronComponent implements OnInit {
 

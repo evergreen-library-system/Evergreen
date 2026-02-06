@@ -7,12 +7,14 @@ import {PcrudService} from '@eg/core/pcrud.service';
 import {ReporterService} from '../share/reporter.service';
 import {Tree, TreeNode} from '@eg/share/tree/tree';
 import {Md5} from 'ts-md5';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
     selector: 'eg-reporter-field',
     templateUrl: './reporter-field.component.html',
     styleUrls: ['./reporter-field.component.css'],
-    encapsulation: ViewEncapsulation.None
+    encapsulation: ViewEncapsulation.None,
+    imports: [StaffCommonModule]
 })
 export class ReporterFieldComponent implements OnInit {
 

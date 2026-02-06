@@ -9,12 +9,21 @@ import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
 import {ServerStoreService} from '@eg/core/server-store.service';
 import {EgEvent} from '@eg/core/event.service';
 import {InvoiceService} from './invoice.service';
+import { ConfirmDialogComponent } from '@eg/share/dialog/confirm.component';
+import { CommonModule } from '@angular/common';
+import { ComboboxComponent } from '@eg/share/combobox/combobox.component';
 
 @Component({
     templateUrl: 'details.component.html',
     styleUrls: ['details.component.css'],
     selector: 'eg-acq-invoice-details',
-    encapsulation: ViewEncapsulation.None
+    encapsulation: ViewEncapsulation.None,
+    imports: [
+        ComboboxComponent,
+        CommonModule,
+        ConfirmDialogComponent,
+        FmRecordEditorComponent
+    ]
 })
 export class InvoiceDetailsComponent implements OnInit, OnDestroy {
 

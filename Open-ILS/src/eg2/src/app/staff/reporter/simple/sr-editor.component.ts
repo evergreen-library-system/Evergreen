@@ -10,10 +10,16 @@ import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {StringComponent} from '@eg/share/string/string.component';
 import {ReporterService, SRTemplate} from '../share/reporter.service';
+import { StaffCommonModule } from '@eg/staff/common.module';
+import { SRFieldChooserComponent } from './sr-field-chooser.component';
 
 @Component({
     templateUrl: './sr-editor.component.html',
     styleUrls: ['./sr-editor.component.css'],
+    imports: [
+        SRFieldChooserComponent,
+        StaffCommonModule
+    ]
 })
 
 export class SREditorComponent implements OnInit {

@@ -7,6 +7,7 @@ import {AuthService} from '@eg/core/auth.service';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 import {StringComponent} from '@eg/share/string/string.component';
+import { CommonModule } from '@angular/common';
 
 
 /**
@@ -15,7 +16,11 @@ import {StringComponent} from '@eg/share/string/string.component';
 
 @Component({
     selector: 'eg-hold-retarget-dialog',
-    templateUrl: 'retarget-dialog.component.html'
+    templateUrl: 'retarget-dialog.component.html',
+    imports: [
+        CommonModule,
+        StringComponent,
+    ]
 })
 
 export class HoldRetargetDialogComponent

@@ -1,18 +1,17 @@
 import {Component, ViewChild, OnInit} from '@angular/core';
 import {EMPTY, map} from 'rxjs';
-import {IdlService, IdlObject} from '@eg/core/idl.service';
+import {IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
 import {AuthService} from '@eg/core/auth.service';
 import {NetService} from '@eg/core/net.service';
-import {PcrudService} from '@eg/core/pcrud.service';
-import {ToastService} from '@eg/share/toast/toast.service';
-import {StringService} from '@eg/share/string/string.service';
 import {GridDataSource, GridCellTextGenerator} from '@eg/share/grid/grid';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {Pager} from '@eg/share/util/pager';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
-    templateUrl: './list.component.html'
+    templateUrl: './list.component.html',
+    imports: [StaffCommonModule]
 })
 export class NegativeBalancesComponent implements OnInit {
 
@@ -24,13 +23,9 @@ export class NegativeBalancesComponent implements OnInit {
     @ViewChild('grid') private grid: GridComponent;
 
     constructor(
-        private idl: IdlService,
         private org: OrgService,
         private auth: AuthService,
         private net: NetService,
-        private pcrud: PcrudService,
-        private strings: StringService,
-        private toast: ToastService
     ) {}
 
     ngOnInit() {

@@ -1,5 +1,5 @@
 import {Component, OnInit, OnDestroy, ViewChild} from '@angular/core';
-import {FormGroup, FormControl} from '@angular/forms';
+import {FormGroup, FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {of, Subscription, debounceTime, switchMap} from 'rxjs';
 import {AuthService} from '@eg/core/auth.service';
 import {NetService} from '@eg/core/net.service';
@@ -8,9 +8,18 @@ import {ToastService} from '@eg/share/toast/toast.service';
 import {BookingResourceBarcodeValidator} from './booking_resource_validator.directive';
 import {ReservationActionsService} from './reservation-actions.service';
 import {ReservationsGridComponent} from './reservations-grid.component';
+import { StaffBannerComponent } from '../share/staff-banner.component';
+import { TitleComponent } from '@eg/share/title/title.component';
 
 @Component({
-    templateUrl: './capture.component.html'
+    templateUrl: './capture.component.html',
+    imports: [
+        ReactiveFormsModule,
+        ReservationsGridComponent,
+        StaffBannerComponent,
+        StringComponent,
+        TitleComponent,
+    ]
 })
 
 export class CaptureComponent implements OnInit, OnDestroy {

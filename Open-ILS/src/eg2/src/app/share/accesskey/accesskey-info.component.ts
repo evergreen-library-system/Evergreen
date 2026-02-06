@@ -1,15 +1,17 @@
 /**
  */
-import {Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, ViewEncapsulation} from '@angular/core';
 import {AccessKeyService} from '@eg/share/accesskey/accesskey.service';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import { BoolDisplayComponent } from '../util/bool.component';
 
 @Component({
     selector: 'eg-accesskey-info',
     templateUrl: './accesskey-info.component.html',
-    styleUrls: [ 'accesskey-info.component.css' ],
-    encapsulation: ViewEncapsulation.None
+    styleUrls: ['accesskey-info.component.css'],
+    encapsulation: ViewEncapsulation.None,
+    imports: [BoolDisplayComponent]
 })
 export class AccessKeyInfoComponent extends DialogComponent {
 

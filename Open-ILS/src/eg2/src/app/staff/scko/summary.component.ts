@@ -1,9 +1,17 @@
 import {Component, OnInit} from '@angular/core';
 import {SckoService} from './scko.service';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 
 @Component({
     selector: 'eg-scko-summary',
-    templateUrl: 'summary.component.html'
+    templateUrl: 'summary.component.html',
+    imports: [
+        CommonModule,
+        FormsModule,
+        RouterModule
+    ]
 })
 
 export class SckoSummaryComponent implements OnInit {

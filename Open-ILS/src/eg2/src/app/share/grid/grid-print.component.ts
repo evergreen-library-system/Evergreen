@@ -2,10 +2,15 @@ import {Component, Input, TemplateRef, ViewChild} from '@angular/core';
 import {ProgressDialogComponent} from '@eg/share/dialog/progress.component';
 import {PrintService} from '@eg/share/print/print.service';
 import {GridContext} from '@eg/share/grid/grid';
+import { NgFor } from '@angular/common';
 
 @Component({
     selector: 'eg-grid-print',
-    templateUrl: './grid-print.component.html'
+    templateUrl: './grid-print.component.html',
+    imports: [
+        NgFor,
+        ProgressDialogComponent
+    ]
 })
 
 /**

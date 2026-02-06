@@ -43,6 +43,7 @@ import {TransferHoldingsComponent
 } from '@eg/staff/share/holdings/transfer-holdings.component';
 import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
 import {BroadcastService} from '@eg/share/util/broadcast.service';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 
 // The holdings grid models a single HoldingsTree, composed of HoldingsTreeNodes
@@ -86,7 +87,21 @@ export class HoldingsEntry {
     selector: 'eg-holdings-maintenance',
     templateUrl: 'holdings.component.html',
     styleUrls: ['holdings.component.css'],
-    encapsulation: ViewEncapsulation.None
+    encapsulation: ViewEncapsulation.None,
+    imports: [
+        ConjoinedItemsDialogComponent,
+        CopyAlertsDialogComponent,
+        CopyNotesDialogComponent,
+        CopyTagsDialogComponent,
+        DeleteHoldingDialogComponent,
+        MakeBookableDialogComponent,
+        MarkDamagedDialogComponent,
+        MarkMissingDialogComponent,
+        ReplaceBarcodeDialogComponent,
+        StaffCommonModule,
+        TransferHoldingsComponent,
+        TransferItemsComponent
+    ]
 })
 export class HoldingsMaintenanceComponent implements OnInit {
 

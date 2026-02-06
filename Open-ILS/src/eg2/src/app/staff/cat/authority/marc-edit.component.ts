@@ -1,9 +1,14 @@
-import {Component, OnInit, AfterViewInit, ViewChild, Renderer2} from '@angular/core';
-import {Router, ActivatedRoute, ParamMap} from '@angular/router';
-import {MarcSavedEvent} from '@eg/staff/share/marc-edit/editor.component';
+import {Component, AfterViewInit, Renderer2} from '@angular/core';
+import {Router, ActivatedRoute} from '@angular/router';
+import { MarcEditorComponent } from '@eg/staff/share/marc-edit/editor.component';
+import { StaffBannerComponent } from '@eg/staff/share/staff-banner.component';
 
 @Component({
-    templateUrl: 'marc-edit.component.html'
+    templateUrl: 'marc-edit.component.html',
+    imports: [
+        MarcEditorComponent,
+        StaffBannerComponent,
+    ]
 })
 export class AuthorityMarcEditComponent implements AfterViewInit {
 

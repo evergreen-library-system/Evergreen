@@ -18,6 +18,7 @@ import {OuSettingHistoryDialogComponent
 } from '@eg/staff/admin/local/org-unit-settings/org-unit-setting-history-dialog.component';
 import {OuSettingJsonDialogComponent
 } from '@eg/staff/admin/local/org-unit-settings/org-unit-setting-json-dialog.component';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 export class OrgUnitSetting {
     name: string;
@@ -36,7 +37,13 @@ export class OrgUnitSetting {
 }
 
 @Component({
-    templateUrl: './org-unit-settings.component.html'
+    templateUrl: './org-unit-settings.component.html',
+    imports: [
+        StaffCommonModule,
+        EditOuSettingDialogComponent,
+        OuSettingHistoryDialogComponent,
+        OuSettingJsonDialogComponent
+    ]
 })
 
 export class OrgUnitSettingsComponent implements OnInit {

@@ -1,5 +1,5 @@
 import {Component, ViewChild, OnInit} from '@angular/core';
-import {Router, ActivatedRoute} from '@angular/router';
+import {Router, ActivatedRoute, RouterModule} from '@angular/router';
 import {Observable, of, map, tap} from 'rxjs';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
@@ -11,13 +11,29 @@ import {StringService} from '@eg/share/string/string.service';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {PromptDialogComponent} from '@eg/share/dialog/prompt.component';
 import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
-import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
+import {ComboboxComponent, ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {GridDataSource} from '@eg/share/grid/grid';
 import {Pager} from '@eg/share/util/pager';
+import { StaffBannerComponent } from '@eg/staff/share/staff-banner.component';
+import { StringComponent } from '@eg/share/string/string.component';
+import { DeleteGroupDialogComponent } from './delete-group-dialog.component';
+import { CommonModule } from '@angular/common';
+import { GridModule } from '@eg/share/grid/grid.module';
 
 @Component({
-    templateUrl: './account.component.html'
+    templateUrl: './account.component.html',
+    imports: [
+        ComboboxComponent,
+        CommonModule,
+        DeleteGroupDialogComponent,
+        FmRecordEditorComponent,
+        GridModule,
+        PromptDialogComponent,
+        RouterModule,
+        StaffBannerComponent,
+        StringComponent
+    ]
 })
 export class SipAccountComponent implements OnInit {
 

@@ -1,4 +1,4 @@
-import {Directive, Input, Host, OnInit, Component} from '@angular/core';
+import {Input, Host, OnInit, Component} from '@angular/core';
 import {MarcSimplifiedEditorFieldComponent} from './simplified-editor-field.component';
 
 /**

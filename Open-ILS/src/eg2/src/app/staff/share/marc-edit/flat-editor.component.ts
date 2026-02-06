@@ -4,6 +4,8 @@ import {OrgService} from '@eg/core/org.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
 import {MarcRecord} from './marcrecord';
 import {MarcEditContext} from './editor-context';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 /**
  * MARC Record flat text (marc-breaker) editor.
@@ -12,7 +14,8 @@ import {MarcEditContext} from './editor-context';
 @Component({
     selector: 'eg-marc-flat-editor',
     templateUrl: './flat-editor.component.html',
-    styleUrls: ['flat-editor.component.css']
+    styleUrls: ['flat-editor.component.css'],
+    imports: [CommonModule, FormsModule]
 })
 
 export class MarcFlatEditorComponent implements OnInit {

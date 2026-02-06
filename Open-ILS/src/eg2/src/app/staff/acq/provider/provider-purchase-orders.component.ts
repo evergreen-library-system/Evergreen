@@ -1,22 +1,23 @@
 import {Component, OnInit, AfterViewInit, OnDestroy, Input, ViewChild} from '@angular/core';
 import {Subscription} from 'rxjs';
-import {Router, ActivatedRoute} from '@angular/router';
+import {RouterModule} from '@angular/router';
 import {IdlObject} from '@eg/core/idl.service';
-import {EventService} from '@eg/core/event.service';
 import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
-import {PrintService} from '@eg/share/print/print.service';
-import {NetService} from '@eg/core/net.service';
-import {AuthService} from '@eg/core/auth.service';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {GridDataSource, GridCellTextGenerator} from '@eg/share/grid/grid';
 import {AcqSearchService, AcqSearchTerm} from '../search/acq-search.service';
 import {AttrDefsService} from '../search/attr-defs.service';
 import {ProviderRecordService} from './provider-record.service';
+import { GridModule } from '@eg/share/grid/grid.module';
 
 @Component({
     selector: 'eg-provider-purchase-orders',
     templateUrl: 'provider-purchase-orders.component.html',
-    providers: [AcqSearchService, AttrDefsService]
+    providers: [AcqSearchService, AttrDefsService],
+    imports: [
+        GridModule,
+        RouterModule
+    ]
 })
 export class ProviderPurchaseOrdersComponent implements OnInit, AfterViewInit, OnDestroy {
 
@@ -33,12 +34,6 @@ export class ProviderPurchaseOrdersComponent implements OnInit, AfterViewInit, O
     subscription: Subscription;
 
     constructor(
-        private router: Router,
-        private route: ActivatedRoute,
-        private printer: PrintService,
-        private evt: EventService,
-        private net: NetService,
-        private auth: AuthService,
         private providerRecord: ProviderRecordService,
         private acqSearch: AcqSearchService) {
     }
