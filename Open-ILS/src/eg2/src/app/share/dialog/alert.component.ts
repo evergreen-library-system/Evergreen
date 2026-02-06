@@ -1,10 +1,12 @@
+import { NgIf } from '@angular/common';
 import {Component, Input, ViewChild, TemplateRef} from '@angular/core';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 
 @Component({
     selector: 'eg-alert-dialog',
     templateUrl: './alert.component.html',
-    styles: ['.modal-alert.modal-body:is(:focus, :focus-visible) { outline: 0.25rem solid var(--bs-border-color-translucent); }']
+    styles: ['.modal-alert.modal-body:is(:focus, :focus-visible) { outline: 0.25rem solid var(--bs-border-color-translucent); }'],
+    imports: [NgIf]
 })
 
 /**

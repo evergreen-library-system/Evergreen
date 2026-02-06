@@ -1,5 +1,5 @@
 import {Component, OnInit, Input, Output, EventEmitter, ViewChild} from '@angular/core';
-import {Location} from '@angular/common';
+import {CommonModule, Location} from '@angular/common';
 import {Observable, Observer, of, from, concatMap} from 'rxjs';
 import {IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
@@ -27,13 +27,33 @@ import {HoldingsService} from '@eg/staff/share/holdings/holdings.service';
 import {OrgSelectComponent} from '@eg/share/org-select/org-select.component';
 import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {HoldCopyLocationsDialogComponent} from './copy-locations-dialog.component';
+import { GridModule } from '@eg/share/grid/grid.module';
+import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 
 /** Holds grid with access to detail page and other actions */
 
 @Component({
     selector: 'eg-holds-grid',
     templateUrl: 'grid.component.html',
-    styles: ['.input-group > .form-control { width: auto; flex-grow: 0; }']
+    styles: ['.input-group > .form-control { width: auto; flex-grow: 0; }'],
+    imports: [
+        CommonModule,
+        ConfirmDialogComponent,
+        FormsModule,
+        GridModule,
+        HoldCancelDialogComponent,
+        HoldCopyLocationsDialogComponent,
+        HoldManageDialogComponent,
+        HoldRetargetDialogComponent,
+        HoldTransferDialogComponent,
+        MarkDamagedDialogComponent,
+        MarkDiscardDialogComponent,
+        MarkMissingDialogComponent,
+        OrgSelectComponent,
+        ProgressDialogComponent,
+        RouterModule
+    ]
 })
 export class HoldsGridComponent implements OnInit {
 

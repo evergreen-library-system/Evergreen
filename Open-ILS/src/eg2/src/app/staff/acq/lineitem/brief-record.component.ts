@@ -11,6 +11,9 @@ import {LineitemService} from './lineitem.service';
 import {ComboboxComponent, ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {Subscription} from 'rxjs';
 import {ServerStoreService} from '@eg/core/server-store.service';
+import { CommonModule } from '@angular/common';
+import { StaffBannerComponent } from '@eg/staff/share/staff-banner.component';
+import { FormsModule } from '@angular/forms';
 
 const MARC_NS = 'http://www.loc.gov/MARC21/slim';
 
@@ -23,7 +26,13 @@ const MARC_XML_BASE = `
 
 @Component({
     templateUrl: 'brief-record.component.html',
-    selector: 'eg-lineitem-brief-record'
+    selector: 'eg-lineitem-brief-record',
+    imports: [
+        ComboboxComponent,
+        CommonModule,
+        FormsModule,
+        StaffBannerComponent,
+    ]
 })
 export class BriefRecordComponent implements OnInit, OnDestroy {
 

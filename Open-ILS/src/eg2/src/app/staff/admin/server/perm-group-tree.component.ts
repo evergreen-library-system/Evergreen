@@ -3,7 +3,6 @@ import {map, of, firstValueFrom} from 'rxjs';
 import {Tree, TreeNode} from '@eg/share/tree/tree';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
-import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {NetService} from '@eg/core/net.service';
 import {ToastService} from '@eg/share/toast/toast.service';
@@ -13,12 +12,30 @@ import {FmRecordEditorComponent, FmFieldOptions} from '@eg/share/fm-editor/fm-ed
 import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {PermGroupMapDialogComponent} from './perm-group-map-dialog.component';
 import {ProgressInlineComponent} from '@eg/share/dialog/progress-inline.component';
-import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
+import {NgbNavChangeEvent, NgbNavModule} from '@ng-bootstrap/ng-bootstrap';
+import { StaffBannerComponent } from '@eg/staff/share/staff-banner.component';
+import { TreeComponent } from '@eg/share/tree/tree.component';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { BoolDisplayComponent } from '@eg/share/util/bool.component';
 
 /** Manage permission groups and group permissions */
 
 @Component({
-    templateUrl: './perm-group-tree.component.html'
+    templateUrl: './perm-group-tree.component.html',
+    imports: [
+        BoolDisplayComponent,
+        CommonModule,
+        ConfirmDialogComponent,
+        FmRecordEditorComponent,
+        FormsModule,
+        NgbNavModule,
+        PermGroupMapDialogComponent,
+        ProgressInlineComponent,
+        StaffBannerComponent,
+        StringComponent,
+        TreeComponent
+    ]
 })
 
 export class PermGroupTreeComponent implements OnInit {
@@ -54,7 +71,6 @@ export class PermGroupTreeComponent implements OnInit {
     constructor(
         private idl: IdlService,
         private org: OrgService,
-        private auth: AuthService,
         private pcrud: PcrudService,
         private net: NetService,
         private toast: ToastService

@@ -9,18 +9,35 @@ import {ComboboxComponent, ComboboxEntry
 } from '@eg/share/combobox/combobox.component';
 import {PrintService} from '@eg/share/print/print.service';
 import {LocaleService} from '@eg/core/locale.service';
-import {NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
+import {NgbNavChangeEvent, NgbNavModule} from '@ng-bootstrap/ng-bootstrap';
 import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
 import {SampleDataService} from '@eg/share/util/sample-data.service';
-import {OrgFamily} from '@eg/share/org-family-select/org-family-select.component';
+import {OrgFamily, OrgFamilySelectComponent} from '@eg/share/org-family-select/org-family-select.component';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
+import { TitleComponent } from '@eg/share/title/title.component';
+import { StaffBannerComponent } from '@eg/staff/share/staff-banner.component';
+import { CommonModule } from '@angular/common';
+import { ComboboxEntryComponent } from '@eg/share/combobox/combobox-entry.component';
+import { FormsModule } from '@angular/forms';
 
 /**
  * Print Template Admin Page
  */
 
 @Component({
-    templateUrl: 'print-template.component.html'
+    templateUrl: 'print-template.component.html',
+    imports: [
+        ComboboxComponent,
+        ComboboxEntryComponent,
+        CommonModule,
+        ConfirmDialogComponent,
+        FmRecordEditorComponent,
+        FormsModule,
+        NgbNavModule,
+        OrgFamilySelectComponent,
+        StaffBannerComponent,
+        TitleComponent
+    ]
 })
 
 export class PrintTemplateComponent implements OnInit {

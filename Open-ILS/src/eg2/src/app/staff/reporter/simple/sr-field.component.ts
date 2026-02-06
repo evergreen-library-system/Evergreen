@@ -3,11 +3,13 @@ import {IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
 import {AuthService} from '@eg/core/auth.service';
 import {ReporterService} from '../share/reporter.service';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
     selector: 'eg-sr-field',
     templateUrl: './sr-field.component.html',
     styleUrls: ['./sr-field.component.css'],
+    imports: [StaffCommonModule]
 })
 export class SRFieldComponent implements OnInit {
 

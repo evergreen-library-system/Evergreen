@@ -4,11 +4,18 @@ import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {OrgService} from '@eg/core/org.service';
 import {AuthService} from '@eg/core/auth.service';
-import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
+import {ComboboxComponent, ComboboxEntry} from '@eg/share/combobox/combobox.component';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
     templateUrl: 'notes.component.html',
-    selector: 'eg-lineitem-notes'
+    selector: 'eg-lineitem-notes',
+    imports: [
+        ComboboxComponent,
+        CommonModule,
+        FormsModule,
+    ]
 })
 export class LineitemNotesComponent implements OnInit, AfterViewInit {
 

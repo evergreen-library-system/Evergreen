@@ -1,6 +1,6 @@
 import {Component, Input, Output, OnInit, AfterViewInit,
     EventEmitter, ViewChild} from '@angular/core';
-import {ActivatedRoute, ParamMap} from '@angular/router';
+import {ActivatedRoute, ParamMap, RouterModule} from '@angular/router';
 import {Observable, of, from, map, concatMap} from 'rxjs';
 import {IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
@@ -14,6 +14,11 @@ import {BucketDialogComponent} from '@eg/staff/share/buckets/bucket-dialog.compo
 import {PatronMergeDialogComponent} from './merge-dialog.component';
 import {FormatService} from '@eg/core/format.service';
 import {LocaleService} from '@eg/core/locale.service';
+import { FormsModule } from '@angular/forms';
+import { ProfileSelectComponent } from './profile-select.component';
+import { OrgSelectComponent } from '@eg/share/org-select/org-select.component';
+import { NgClass, NgIf } from '@angular/common';
+import { GridModule } from '@eg/share/grid/grid.module';
 
 const DEFAULT_SORT = [
     'family_name ASC',
@@ -51,7 +56,18 @@ export interface PatronSearch {
 @Component({
     selector: 'eg-patron-search',
     templateUrl: './search.component.html',
-    styleUrls: ['search.component.css']
+    styleUrls: ['search.component.css'],
+    imports: [
+        BucketDialogComponent,
+        FormsModule,
+        GridModule,
+        NgClass,
+        NgIf,
+        OrgSelectComponent,
+        PatronMergeDialogComponent,
+        ProfileSelectComponent,
+        RouterModule
+    ]
 })
 
 export class PatronSearchComponent implements OnInit, AfterViewInit {

@@ -12,7 +12,7 @@ import {BibRecordService, BibRecordSummary} from './bib-record.service';
 import {BasketService} from './basket.service';
 import { ServerStoreService } from '@eg/core/server-store.service';
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class CatalogService {
 
     ccvmMap: {[ccvm: string]: IdlObject[]} = {};

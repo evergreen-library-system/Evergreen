@@ -1,18 +1,18 @@
 import { of } from 'rxjs';
 import { Component, OnInit, Input } from '@angular/core';
-import { OrgService } from '@eg/core/org.service';
 import {
     BibRecordService, BibRecordSummary
 } from '@eg/share/catalog/bib-record.service';
 import { ServerStoreService } from '@eg/core/server-store.service';
-import { CatalogService } from '@eg/share/catalog/catalog.service';
 import { StaffCatalogService } from '@eg/staff/catalog/catalog.service';
 import { ScriptService } from '@eg/share/util/script.service';
+import { NgIf } from '@angular/common';
 
 @Component({
     selector: 'eg-catalog-added-content',
     templateUrl: './added-content.component.html',
-    styleUrls: ['./added-content.component.css']
+    styleUrls: ['./added-content.component.css'],
+    imports: [NgIf]
 })
 export class AddedContentComponent implements OnInit {
 
@@ -35,9 +35,7 @@ export class AddedContentComponent implements OnInit {
 
   constructor(
     private bib: BibRecordService,
-    private org: OrgService,
     private store: ServerStoreService,
-    private cat: CatalogService,
     private staffCat: StaffCatalogService,
     private script: ScriptService
   ) { }

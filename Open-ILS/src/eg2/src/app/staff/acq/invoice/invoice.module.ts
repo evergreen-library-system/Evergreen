@@ -15,19 +15,17 @@ import {DisencumberChargeDialogComponent} from './disencumber-charge-dialog.comp
 import {FmRecordEditorModule} from '@eg/share/fm-editor/fm-editor.module';
 
 @NgModule({
-    declarations: [
+    imports: [
+        DisencumberChargeDialogComponent,
+        InvoiceChargesComponent,
         InvoiceComponent,
         InvoiceDetailsComponent,
-        InvoiceChargesComponent,
-        InvoiceBatchReceiveComponent,
         PrintComponent,
-        DisencumberChargeDialogComponent
-    ],
-    imports: [
         StaffCommonModule,
         CatalogCommonModule,
         AcqCommonModule,
         AcqSearchCommonModule,
+        InvoiceBatchReceiveComponent,
         LineitemModule,
         InvoiceRoutingModule,
         FmRecordEditorModule

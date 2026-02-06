@@ -4,10 +4,12 @@ import {Component, OnInit, Input,
 import {NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 import {Observable} from 'rxjs';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
     selector: 'eg-circ-matrix-matchpoint-dialog',
-    templateUrl: './circ-matrix-matchpoint-dialog.component.html'
+    templateUrl: './circ-matrix-matchpoint-dialog.component.html',
+    imports: [StaffCommonModule]
 })
 export class CircMatrixMatchpointDialogComponent extends DialogComponent implements OnInit {
 

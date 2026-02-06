@@ -7,8 +7,12 @@ import {OrgService} from '@eg/core/org.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {AuthService} from '@eg/core/auth.service';
 import {LineitemService, FleshCacheParams} from './lineitem.service';
-import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
+import {ComboboxComponent, ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
+import { CommonModule } from '@angular/common';
+import { ProgressInlineComponent } from '@eg/share/dialog/progress-inline.component';
+import { LineitemBatchCopiesComponent } from './batch-copies.component';
+import { FormsModule } from '@angular/forms';
 
 const FORMULA_FIELDS = [
     'owning_lib',
@@ -25,7 +29,15 @@ interface FormulaApplication {
 
 @Component({
     selector: 'eg-lineitem-copies',
-    templateUrl: 'copies.component.html'
+    templateUrl: 'copies.component.html',
+    imports: [
+        ComboboxComponent,
+        CommonModule,
+        ConfirmDialogComponent,
+        FormsModule,
+        LineitemBatchCopiesComponent,
+        ProgressInlineComponent,
+    ]
 })
 export class LineitemCopiesComponent implements OnInit, AfterViewInit {
 

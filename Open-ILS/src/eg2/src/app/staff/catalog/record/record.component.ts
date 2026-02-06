@@ -13,11 +13,38 @@ import {MarcEditorComponent} from '@eg/staff/share/marc-edit/editor.component';
 import {HoldingsMaintenanceComponent} from './holdings.component';
 import {HoldingsService} from '@eg/staff/share/holdings/holdings.service';
 import { ServerStoreService } from '@eg/core/server-store.service';
+import { RecordActionsComponent } from './actions.component';
+import { RecordPaginationComponent } from './pagination.component';
+import { BibSummaryComponent } from '@eg/staff/share/bib-summary/bib-summary.component';
+import { CopiesComponent } from './copies.component';
+import { BibStaffViewComponent } from '@eg/staff/share/bib-staff-view/bib-staff-view.component';
+import { StaffCommonModule } from '@eg/staff/common.module';
+import { NotesComponent } from './notes.component';
+import { HoldsGridComponent } from '@eg/staff/share/holds/grid.component';
+import { PartsComponent } from './parts.component';
+import { ConjoinedComponent } from './conjoined.component';
+import { CnBrowseResultsComponent } from '../cnbrowse/results.component';
 
 @Component({
     selector: 'eg-catalog-record',
     templateUrl: 'record.component.html',
-    styleUrls: ['./record.component.css']
+    styleUrls: ['./record.component.css'],
+    imports: [
+        BibStaffViewComponent,
+        BibSummaryComponent,
+        CnBrowseResultsComponent,
+        ConjoinedComponent,
+        CopiesComponent,
+        ConfirmDialogComponent,
+        HoldsGridComponent,
+        HoldingsMaintenanceComponent,
+        MarcEditorComponent,
+        NotesComponent,
+        PartsComponent,
+        RecordActionsComponent,
+        RecordPaginationComponent,
+        StaffCommonModule
+    ]
 })
 export class RecordComponent implements OnInit, OnDestroy {
 

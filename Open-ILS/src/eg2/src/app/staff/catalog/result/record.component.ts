@@ -2,7 +2,6 @@ import {Component, OnInit, OnDestroy, Input, ViewChild} from '@angular/core';
 import {Subject, BehaviorSubject, Subscription, lastValueFrom, EMPTY, Observable,
     catchError, takeUntil} from 'rxjs';
 import {Router} from '@angular/router';
-import {OrgService} from '@eg/core/org.service';
 import {IdlObject} from '@eg/core/idl.service';
 import {CatalogService} from '@eg/share/catalog/catalog.service';
 import {BibRecordSummary, HoldingsSummary} from '@eg/share/catalog/bib-record.service';
@@ -15,12 +14,13 @@ import {CourseService} from '@eg/staff/share/course.service';
 import {AuthService} from '@eg/core/auth.service';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {BucketDialogComponent} from '@eg/staff/share/buckets/bucket-dialog.component';
-import {ResultFacetsComponent} from './facets.component';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
     selector: 'eg-catalog-result-record',
     templateUrl: 'record.component.html',
-    styleUrls: ['record.component.css']
+    styleUrls: ['record.component.css'],
+    imports: [StaffCommonModule]
 })
 export class ResultRecordComponent implements OnInit, OnDestroy {
 
@@ -51,7 +51,6 @@ export class ResultRecordComponent implements OnInit, OnDestroy {
 
     constructor(
         private router: Router,
-        private org: OrgService,
         private cat: CatalogService,
         private catUrl: CatalogUrlService,
         private staffCat: StaffCatalogService,

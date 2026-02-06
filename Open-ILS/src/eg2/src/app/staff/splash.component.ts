@@ -1,14 +1,24 @@
-import {Component, OnInit, AfterViewInit, Directive, ElementRef, Renderer2, ViewChild} from '@angular/core';
+import {Component, OnInit, AfterViewInit, Directive, ElementRef, ViewChild} from '@angular/core';
 import {OrgService} from '@eg/core/org.service';
 import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {StringComponent} from '@eg/share/string/string.component';
 import {Router} from '@angular/router';
+import { TitleComponent } from '@eg/share/title/title.component';
+import { NgFor, NgIf } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
     templateUrl: 'splash.component.html',
-    styleUrls: ['./splash.component.css']
+    styleUrls: ['./splash.component.css'],
+    imports: [
+        FormsModule,
+        NgFor,
+        NgIf,
+        StringComponent,
+        TitleComponent
+    ]
 })
 
 export class StaffSplashComponent implements OnInit {
@@ -19,7 +29,6 @@ export class StaffSplashComponent implements OnInit {
     portalHeaders: any[] = [];
 
     constructor(
-        private renderer: Renderer2,
         private pcrud: PcrudService,
         private auth: AuthService,
         private org: OrgService,

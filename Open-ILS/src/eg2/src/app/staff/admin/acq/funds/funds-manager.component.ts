@@ -13,14 +13,22 @@ import {OrgService} from '@eg/core/org.service';
 import {PermService} from '@eg/core/perm.service';
 import {AuthService} from '@eg/core/auth.service';
 import {BroadcastService} from '@eg/share/util/broadcast.service';
-import {NetService} from '@eg/core/net.service';
-import {StringComponent} from '@eg/share/string/string.component';
 import {FundDetailsDialogComponent} from './fund-details-dialog.component';
 import {FundRolloverDialogComponent} from './fund-rollover-dialog.component';
+import { StaffCommonModule } from '@eg/staff/common.module';
+import { TranslateComponent } from '@eg/share/translate/translate.component';
+import { FmRecordEditorComponent } from '@eg/share/fm-editor/fm-editor.component';
 
 @Component({
     selector: 'eg-funds-manager',
-    templateUrl: './funds-manager.component.html'
+    templateUrl: './funds-manager.component.html',
+    imports: [
+        FmRecordEditorComponent,
+        FundDetailsDialogComponent,
+        FundRolloverDialogComponent,
+        StaffCommonModule,
+        TranslateComponent
+    ]
 })
 
 export class FundsManagerComponent extends AdminPageComponent implements OnInit, AfterViewInit {
@@ -48,7 +56,6 @@ export class FundsManagerComponent extends AdminPageComponent implements OnInit,
         private perm2: PermService, // need copy because perm is private to base
         // component
         toast: ToastService,
-        private net: NetService,
         broadcaster: BroadcastService
     ) {
         super(route, ngLocation, format, idl, org, auth, pcrud, perm, toast, broadcaster);

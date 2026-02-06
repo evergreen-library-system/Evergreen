@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { IdlService, IdlObject } from '@eg/core/idl.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastService } from '@eg/share/toast/toast.service';
@@ -13,7 +13,10 @@ import {
     IThingChanges,
     IThingConfig
 } from './copy-things-dialog.component';
-import {FormsModule, AbstractControl, NG_VALIDATORS, ValidationErrors, Validator, Validators, ValidatorFn} from '@angular/forms';
+import {FormsModule} from '@angular/forms';
+import { StringComponent } from '@eg/share/string/string.component';
+import { CommonModule } from '@angular/common';
+import { CopyThingsDialogWrapperComponent } from './copy-things-dialog-wrapper.component';
 
 export interface ICopyNote extends IThingObject {
     title(val?: string): string;
@@ -36,7 +39,13 @@ export interface ICopyNoteChanges extends IThingChanges<ICopyNote> {
 @Component({
     selector: 'eg-copy-notes-dialog',
     templateUrl: 'copy-notes-dialog.component.html',
-    styleUrls: ['./copy-notes-dialog.component.css']
+    styleUrls: ['./copy-notes-dialog.component.css'],
+    imports: [
+        CommonModule,
+        CopyThingsDialogWrapperComponent,
+        FormsModule,
+        StringComponent
+    ]
 })
 export class CopyNotesDialogComponent extends
     CopyThingsDialogComponent<ICopyNote, ICopyNoteChanges> {

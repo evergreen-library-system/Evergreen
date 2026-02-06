@@ -3,10 +3,10 @@
 /* Light mode: assets/css/light.css; dark mode: assets/css/dark.css */
 /* These have to be imported to preserve the webpack paths: */
 /* bootstrap CSS only -- JS bits come from ng-bootstrap */
-@import '~bootstrap/dist/css/bootstrap.min.css';
+@import 'bootstrap/dist/css/bootstrap.min.css';
 
 /* Locally served material icon fonts  */
-@import '~material-design-icons-iconfont/dist/material-design-icons.css';
+@import 'material-design-icons-iconfont/dist/material-design-icons.css';
 
 :root {
   /* Spacing options, based on bootstrap's spacing utility

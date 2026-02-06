@@ -3,7 +3,7 @@
   in other shared components. Components included here should be
   unlikely to ever need to embed one another.
 */
-import {NgModule, ModuleWithProviders} from '@angular/core';
+import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
@@ -17,37 +17,38 @@ import {OrgSelectComponent} from '@eg/share/org-select/org-select.component';
 import {DepthSelectComponent} from '@eg/share/depth-select/depth-select.component';
 import {DateRangeSelectComponent} from '@eg/share/daterange-select/daterange-select.component';
 import {DateTimeSelectComponent} from '@eg/share/datetime-select/datetime-select.component';
-import {ContextMenuModule} from '@eg/share/context-menu/context-menu.module';
+
 import {FileReaderComponent} from '@eg/share/file-reader/file-reader.component';
 import {IntervalInputComponent} from '@eg/share/interval-input/interval-input.component';
 import {ClipboardDialogComponent} from '@eg/share/clipboard/clipboard-dialog.component';
 import { CredentialInputComponent } from './util/credential-input.component';
+import { ContextMenuDirective } from './context-menu/context-menu.directive';
+import { ContextMenuContainerComponent } from './context-menu/context-menu-container.component';
 
 
 @NgModule({
-    declarations: [
+    imports: [
+        BooleanSelectComponent,
         ButtonStyleDirective,
+        ClipboardDialogComponent,
         ComboboxComponent,
         ComboboxEntryComponent,
-        DateSelectComponent,
-        BooleanSelectComponent,
-        OrgSelectComponent,
-        DepthSelectComponent,
+        CommonModule,
+        ContextMenuContainerComponent,
+        ContextMenuDirective,
+        CredentialInputComponent,
         DateRangeSelectComponent,
+        DateSelectComponent,
         DateTimeSelectComponent,
+        DepthSelectComponent,
         FileReaderComponent,
-        ClipboardDialogComponent,
+        FormsModule,
         IdlClassTemplateDirective,
         IntervalInputComponent,
-        CredentialInputComponent
-    ],
-    imports: [
-        CommonModule,
-        FormsModule,
         ReactiveFormsModule,
         NgbModule,
-        EgCoreModule,
-        ContextMenuModule
+        OrgSelectComponent,
+        EgCoreModule
     ],
     exports: [
         CommonModule,
@@ -57,6 +58,8 @@ import { CredentialInputComponent } from './util/credential-input.component';
         ButtonStyleDirective,
         ComboboxComponent,
         ComboboxEntryComponent,
+        ContextMenuContainerComponent,
+        ContextMenuDirective,
         DateSelectComponent,
         BooleanSelectComponent,
         OrgSelectComponent,
@@ -64,7 +67,6 @@ import { CredentialInputComponent } from './util/credential-input.component';
         DateRangeSelectComponent,
         DateTimeSelectComponent,
         ClipboardDialogComponent,
-        ContextMenuModule,
         FileReaderComponent,
         IntervalInputComponent,
         CredentialInputComponent

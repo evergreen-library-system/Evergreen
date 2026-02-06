@@ -62,7 +62,7 @@ interface LineitemAlertData {
     alertComment: string;
 }
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class LineitemService {
 
     liAttrDefs: IdlObject[];

@@ -9,9 +9,11 @@ import {NetService} from '@eg/core/net.service';
 import {Pager} from '@eg/share/util/pager';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {ProgressDialogComponent} from '@eg/share/dialog/progress.component';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
-    templateUrl: 'urls.component.html'
+    templateUrl: 'urls.component.html',
+    imports: [StaffCommonModule]
 })
 export class LinkCheckerUrlsComponent implements OnInit {
 

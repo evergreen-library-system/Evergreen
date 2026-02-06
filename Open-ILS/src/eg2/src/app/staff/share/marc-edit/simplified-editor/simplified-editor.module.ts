@@ -7,12 +7,10 @@ import {MarcSimplifiedEditorSubfieldComponent} from './simplified-editor-subfiel
 import {TagTableService} from '../tagtable.service';
 
 @NgModule({
-    declarations: [
+    imports: [
         MarcSimplifiedEditorComponent,
         MarcSimplifiedEditorFieldComponent,
         MarcSimplifiedEditorSubfieldComponent,
-    ],
-    imports: [
         StaffCommonModule,
         CommonWidgetsModule
     ],

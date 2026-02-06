@@ -12,10 +12,15 @@ import {StringComponent} from '@eg/share/string/string.component';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {OrgService} from '@eg/core/org.service';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
     selector: 'eg-funding-source-transactions-dialog',
-    templateUrl: './funding-source-transactions-dialog.component.html'
+    templateUrl: './funding-source-transactions-dialog.component.html',
+    imports: [
+        FmRecordEditorComponent,
+        StaffCommonModule
+    ]
 })
 
 export class FundingSourceTransactionsDialogComponent

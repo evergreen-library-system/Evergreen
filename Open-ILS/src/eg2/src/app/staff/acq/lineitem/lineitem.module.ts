@@ -1,8 +1,6 @@
 import {NgModule} from '@angular/core';
 import {StaffCommonModule} from '@eg/staff/common.module';
 import {HttpClientModule} from '@angular/common/http';
-import {ItemLocationSelectModule
-} from '@eg/share/item-location-select/item-location-select.module';
 import {LineitemWorksheetComponent} from './worksheet.component';
 import {LineitemService} from './lineitem.service';
 import {PoService} from '../po/po.service';
@@ -30,40 +28,12 @@ import {ClaimPolicyDialogComponent} from './claim-policy-dialog.component';
 import {ManageClaimsDialogComponent} from './manage-claims-dialog.component';
 import {LineitemAlertDialogComponent} from './lineitem-alert-dialog.component';
 import {AddExtraItemsForOrderDialogComponent} from './add-extra-items-for-order-dialog.component';
-import {MarcEditModule} from '@eg/staff/share/marc-edit/marc-edit.module';
 import {AcqCommonModule} from '../acq-common.module';
 import { BasicItemLocationDisplayComponent } from '@eg/share/item-location-select/basic-item-location-display-component';
+import { ItemLocationSelectComponent } from '@eg/share/item-location-select/item-location-select.component';
 
 @NgModule({
-    declarations: [
-        LineitemComponent,
-        LineitemListComponent,
-        LineitemNotesComponent,
-        LineitemDetailComponent,
-        LineitemCopiesComponent,
-        LineitemOrderSummaryComponent,
-        LineitemBatchCopiesComponent,
-        LineitemCopyAttrsComponent,
-        LineitemHistoryComponent,
-        CancelDialogComponent,
-        AddToPoDialogComponent,
-        DeleteLineitemsDialogComponent,
-        AddCopiesDialogComponent,
-        BibFinderDialogComponent,
-        BatchUpdateCopiesDialogComponent,
-        LinkInvoiceDialogComponent,
-        ExportAttributesDialogComponent,
-        ClaimPolicyDialogComponent,
-        ManageClaimsDialogComponent,
-        LineitemAlertDialogComponent,
-        AddExtraItemsForOrderDialogComponent,
-        LineitemFromBibIdsComponent,
-        BriefRecordComponent,
-        CreateAssetsComponent,
-        LineitemWorksheetComponent
-    ],
     exports: [
-        LineitemListComponent,
         CancelDialogComponent,
         AddToPoDialogComponent,
         DeleteLineitemsDialogComponent,
@@ -76,9 +46,33 @@ import { BasicItemLocationDisplayComponent } from '@eg/share/item-location-selec
         AddExtraItemsForOrderDialogComponent,
     ],
     imports: [
+        AddCopiesDialogComponent,
+        AddExtraItemsForOrderDialogComponent,
+        AddToPoDialogComponent,
+        BatchUpdateCopiesDialogComponent,
+        BibFinderDialogComponent,
+        BriefRecordComponent,
+        CancelDialogComponent,
+        ClaimPolicyDialogComponent,
+        CreateAssetsComponent,
+        DeleteLineitemsDialogComponent,
+        ExportAttributesDialogComponent,
         StaffCommonModule,
-        ItemLocationSelectModule,
-        MarcEditModule,
+        ItemLocationSelectComponent,
+        LineitemAlertDialogComponent,
+        LineitemBatchCopiesComponent,
+        LineitemComponent,
+        LineitemCopiesComponent,
+        LineitemCopyAttrsComponent,
+        LineitemDetailComponent,
+        LineitemFromBibIdsComponent,
+        LineitemHistoryComponent,
+        LineitemListComponent,
+        LineitemNotesComponent,
+        LineitemOrderSummaryComponent,
+        LineitemWorksheetComponent,
+        LinkInvoiceDialogComponent,
+        ManageClaimsDialogComponent,
         HttpClientModule,
         AcqCommonModule,
         BasicItemLocationDisplayComponent

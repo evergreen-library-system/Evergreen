@@ -1,5 +1,5 @@
 import {Component, ViewChild, OnInit} from '@angular/core';
-import {Location} from '@angular/common';
+import {CommonModule, Location} from '@angular/common';
 import {FormatService} from '@eg/core/format.service';
 import {GridDataSource, GridCellTextGenerator} from '@eg/share/grid/grid';
 import {GridComponent} from '@eg/share/grid/grid.component';
@@ -18,9 +18,29 @@ import {ExchangeRatesDialogComponent} from './exchange-rates-dialog.component';
 import {forkJoin} from 'rxjs';
 import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
+import { StaffBannerComponent } from '@eg/staff/share/staff-banner.component';
+import { TitleComponent } from '@eg/share/title/title.component';
+import { StringComponent } from '@eg/share/string/string.component';
+import { OrgFamilySelectComponent } from '@eg/share/org-family-select/org-family-select.component';
+import { TranslateComponent } from '@eg/share/translate/translate.component';
+import { GridModule } from '@eg/share/grid/grid.module';
+import { FmRecordEditorComponent } from '@eg/share/fm-editor/fm-editor.component';
 
 @Component({
-    templateUrl: './currencies.component.html'
+    templateUrl: './currencies.component.html',
+    imports: [
+        AlertDialogComponent,
+        CommonModule,
+        ConfirmDialogComponent,
+        ExchangeRatesDialogComponent,
+        FmRecordEditorComponent,
+        GridModule,
+        OrgFamilySelectComponent,
+        StaffBannerComponent,
+        StringComponent,
+        TitleComponent,
+        TranslateComponent,
+    ]
 })
 
 export class CurrenciesComponent extends AdminPageComponent implements OnInit {

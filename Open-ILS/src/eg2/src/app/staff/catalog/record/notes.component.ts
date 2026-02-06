@@ -9,10 +9,15 @@ import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
 import { tap } from 'rxjs';
 import { NetService } from '@eg/core/net.service';
 import { AuthService } from '@eg/core/auth.service';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
     selector: 'eg-catalog-record-notes',
-    templateUrl: 'notes.component.html'
+    templateUrl: 'notes.component.html',
+    imports: [
+        FmRecordEditorComponent,
+        StaffCommonModule
+    ]
 })
 export class NotesComponent implements OnInit {
 

@@ -3,10 +3,12 @@ import {Router, ActivatedRoute} from '@angular/router';
 import {IdlService} from '@eg/core/idl.service';
 import {VolCopyContext} from './volcopy';
 import {VolCopyService} from './volcopy.service';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
     selector: 'eg-volcopy-config',
-    templateUrl: 'config.component.html'
+    templateUrl: 'config.component.html',
+    imports: [StaffCommonModule]
 })
 export class VolCopyConfigComponent implements OnInit, DoCheck {
 

@@ -1,22 +1,29 @@
 import {Component, OnInit, AfterViewInit, OnDestroy, Input, ViewChild} from '@angular/core';
 import {NgForm} from '@angular/forms';
 import {EMPTY, from, Subscription} from 'rxjs';
-import {Router, ActivatedRoute} from '@angular/router';
 import {Pager} from '@eg/share/util/pager';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
-import {NetService} from '@eg/core/net.service';
-import {AuthService} from '@eg/core/auth.service';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {GridDataSource, GridCellTextGenerator} from '@eg/share/grid/grid';
 import {ProviderRecordService} from './provider-record.service';
 import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
 import {StringComponent} from '@eg/share/string/string.component';
 import {ToastService} from '@eg/share/toast/toast.service';
+import { CommonModule } from '@angular/common';
+import { GridModule } from '@eg/share/grid/grid.module';
+import { ComboboxComponent } from '@eg/share/combobox/combobox.component';
 
 
 @Component({
     selector: 'eg-provider-holdings',
     templateUrl: 'provider-holdings.component.html',
+    imports: [
+        ComboboxComponent,
+        CommonModule,
+        FmRecordEditorComponent,
+        GridModule,
+        StringComponent,
+    ]
 })
 export class ProviderHoldingsComponent implements OnInit, AfterViewInit, OnDestroy {
 
@@ -51,10 +58,6 @@ export class ProviderHoldingsComponent implements OnInit, AfterViewInit, OnDestr
     @Input() dialogSize: 'sm' | 'lg' = 'lg';
 
     constructor(
-        private router: Router,
-        private route: ActivatedRoute,
-        private net: NetService,
-        private auth: AuthService,
         private idl: IdlService,
         private providerRecord: ProviderRecordService,
         private toast: ToastService) {

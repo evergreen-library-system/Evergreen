@@ -1,19 +1,16 @@
-import {Component, OnInit, OnDestroy, ViewEncapsulation} from '@angular/core';
-import {Router, ActivatedRoute, NavigationEnd} from '@angular/router';
-import {AuthService} from '@eg/core/auth.service';
-import {IdlObject} from '@eg/core/idl.service';
+import {Component, OnDestroy} from '@angular/core';
 import {SckoService} from './scko.service';
-import {ServerStoreService} from '@eg/core/server-store.service';
+import { CommonModule } from '@angular/common';
+import { DueDatePipe } from '@eg/core/format.service';
 
 @Component({
-    templateUrl: 'checkout.component.html'
+    templateUrl: 'checkout.component.html',
+    imports: [CommonModule, DueDatePipe]
 })
 
 export class SckoCheckoutComponent implements OnDestroy {
 
     constructor(
-        private router: Router,
-        private route: ActivatedRoute,
         public  scko: SckoService
     ) {}
 

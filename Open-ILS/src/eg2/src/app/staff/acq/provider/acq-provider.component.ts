@@ -1,6 +1,6 @@
 import {Component, OnInit, AfterViewInit, ViewChild, ChangeDetectorRef, OnDestroy} from '@angular/core';
 import {filter, takeUntil, Subject, Observable, of} from 'rxjs';
-import {NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
+import {NgbNavChangeEvent, NgbNavModule} from '@ng-bootstrap/ng-bootstrap';
 import {Router, ActivatedRoute, NavigationEnd} from '@angular/router';
 import {IdlService} from '@eg/core/idl.service';
 import {AcqProviderSummaryPaneComponent} from './summary-pane.component';
@@ -14,9 +14,30 @@ import {ToastService} from '@eg/share/toast/toast.service';
 import {AuthService} from '@eg/core/auth.service';
 import {StoreService} from '@eg/core/store.service';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
+import { StaffBannerComponent } from '@eg/staff/share/staff-banner.component';
+import { CommonModule } from '@angular/common';
+import { ProviderAttributesComponent } from './provider-attributes.component';
+import { ProviderEdiAccountsComponent } from './provider-edi-accounts.component';
+import { ProviderInvoicesComponent } from './provider-invoices.component';
+import { ProviderPurchaseOrdersComponent } from './provider-purchase-orders.component';
 
 @Component({
-    templateUrl: './acq-provider.component.html'
+    templateUrl: './acq-provider.component.html',
+    imports: [
+        AcqProviderSummaryPaneComponent,
+        CommonModule,
+        ConfirmDialogComponent,
+        FmRecordEditorComponent,
+        NgbNavModule,
+        ProviderAttributesComponent,
+        ProviderEdiAccountsComponent,
+        ProviderHoldingsComponent,
+        ProviderInvoicesComponent,
+        ProviderPurchaseOrdersComponent,
+        ProviderResultsComponent,
+        StaffBannerComponent,
+        StringComponent
+    ]
 })
 
 export class AcqProviderComponent implements OnInit, AfterViewInit, OnDestroy {

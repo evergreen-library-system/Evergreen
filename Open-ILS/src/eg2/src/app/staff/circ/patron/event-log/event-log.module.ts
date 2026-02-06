@@ -5,11 +5,9 @@ import {EventGridComponent} from './event-grid.component';
 import {EventLogComponent} from './event-log.component';
 
 @NgModule({
-    declarations: [
-        EventGridComponent,
-        EventLogComponent
-    ],
     imports: [
+        EventGridComponent,
+        EventLogComponent,
         StaffCommonModule,
         EventLogRoutingModule,
     ],

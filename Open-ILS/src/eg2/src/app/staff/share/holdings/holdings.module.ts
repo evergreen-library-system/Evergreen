@@ -22,28 +22,26 @@ import {CopyNotesEditComponent} from './copy-notes-edit/copy-notes-edit.componen
 import { FmRecordEditorModule } from '@eg/share/fm-editor/fm-editor.module';
 
 @NgModule({
-    declarations: [
-        MarkDamagedDialogComponent,
-        MarkMissingDialogComponent,
-        MarkDiscardDialogComponent,
-        CopyThingsDialogWrapperComponent,
+    imports: [
+        AlertTypeValidatorDirective,
+        BatchItemAttrComponent,
+        ConjoinedItemsDialogComponent,
+        CopyAlertManagerDialogComponent,
         CopyAlertsDialogComponent,
-        CopyTagsDialogComponent,
-        TagMapListComponent,
+        CopyAlertsPageComponent,
         CopyNotesDialogComponent,
         CopyNotesEditComponent,
-        ReplaceBarcodeDialogComponent,
+        CopyTagsDialogComponent,
+        CopyThingsDialogWrapperComponent,
         DeleteHoldingDialogComponent,
-        ConjoinedItemsDialogComponent,
-        TransferItemsComponent,
-        TransferHoldingsComponent,
-        BatchItemAttrComponent,
-        CopyAlertManagerDialogComponent,
-        CopyAlertsPageComponent,
-        AlertTypeValidatorDirective
-    ],
-    imports: [
+        MarkDamagedDialogComponent,
+        MarkDiscardDialogComponent,
+        MarkMissingDialogComponent,
+        ReplaceBarcodeDialogComponent,
         StaffCommonModule,
+        TagMapListComponent,
+        TransferHoldingsComponent,
+        TransferItemsComponent,
         BillingModule,
         FmRecordEditorModule
     ],

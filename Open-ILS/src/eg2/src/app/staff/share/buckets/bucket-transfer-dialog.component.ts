@@ -11,10 +11,16 @@ import {PatronSearchDialogComponent} from '@eg/staff/share/patron/search-dialog.
 import {ToastService} from '@eg/share/toast/toast.service';
 import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
 import {BucketActionSummaryDialogComponent} from './bucket-action-summary-dialog.component';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
     selector: 'eg-bucket-transfer-dialog',
-    templateUrl: './bucket-transfer-dialog.component.html'
+    templateUrl: './bucket-transfer-dialog.component.html',
+    imports: [
+        BucketActionSummaryDialogComponent,
+        PatronSearchDialogComponent,
+        StaffCommonModule
+    ]
 })
 
 export class BucketTransferDialogComponent

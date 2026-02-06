@@ -1,9 +1,9 @@
 import {Component, OnInit, Input} from '@angular/core';
-import {Observable} from 'rxjs';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {PermService} from '@eg/core/perm.service';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 /**
  * Precat checkout dialog
@@ -11,7 +11,8 @@ import {PermService} from '@eg/core/perm.service';
 
 @Component({
     selector: 'eg-precat-checkout-dialog',
-    templateUrl: 'precat-dialog.component.html'
+    templateUrl: 'precat-dialog.component.html',
+    imports: [StaffCommonModule]
 })
 
 export class PrecatCheckoutDialogComponent extends DialogComponent implements OnInit {

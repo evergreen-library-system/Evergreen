@@ -1,8 +1,8 @@
 import {Component, OnInit, ViewChild, OnDestroy} from '@angular/core';
-import {FormGroup, FormControl} from '@angular/forms';
+import {FormGroup, FormControl, ReactiveFormsModule} from '@angular/forms';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {Subscription, of, debounceTime, single, tap, switchMap} from 'rxjs';
-import {NgbNav} from '@ng-bootstrap/ng-bootstrap';
+import {NgbNav, NgbNavModule} from '@ng-bootstrap/ng-bootstrap';
 import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {ReservationsGridComponent} from './reservations-grid.component';
@@ -12,10 +12,23 @@ import {NetService} from '@eg/core/net.service';
 import {PatronBarcodeValidator} from '@eg/share/validators/patron_barcode_validator.directive';
 import {BookingResourceBarcodeValidator} from './booking_resource_validator.directive';
 import {OrgFamily} from '@eg/share/org-family-select/org-family-select.component';
+import { StaffBannerComponent } from '../share/staff-banner.component';
+import { TitleComponent } from '@eg/share/title/title.component';
+import { ComboboxComponent } from '@eg/share/combobox/combobox.component';
+import { CommonModule } from '@angular/common';
 
 @Component({
     selector: 'eg-manage-reservations',
     templateUrl: './manage-reservations.component.html',
+    imports: [
+        CommonModule,
+        ComboboxComponent,
+        NgbNavModule,
+        ReactiveFormsModule,
+        ReservationsGridComponent,
+        StaffBannerComponent,
+        TitleComponent,
+    ]
 })
 export class ManageReservationsComponent implements OnInit, OnDestroy {
 

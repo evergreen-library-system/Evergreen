@@ -9,10 +9,16 @@ import {GridDataSource} from '@eg/share/grid/grid';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
 import {PartMergeDialogComponent} from './part-merge-dialog.component';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
     selector: 'eg-catalog-record-parts',
-    templateUrl: 'parts.component.html'
+    templateUrl: 'parts.component.html',
+    imports: [
+        FmRecordEditorComponent,
+        PartMergeDialogComponent,
+        StaffCommonModule
+    ]
 })
 export class PartsComponent implements OnInit {
 

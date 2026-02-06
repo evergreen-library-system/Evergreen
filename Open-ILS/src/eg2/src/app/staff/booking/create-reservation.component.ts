@@ -1,11 +1,11 @@
 import { Component, OnInit, AfterViewInit, QueryList, ViewChildren, ViewChild, OnDestroy } from '@angular/core';
-import {FormGroup, FormControl, ValidationErrors, ValidatorFn, FormArray} from '@angular/forms';
+import {FormGroup, FormControl, ValidationErrors, ValidatorFn, FormArray, ReactiveFormsModule} from '@angular/forms';
 import {Router, ActivatedRoute} from '@angular/router';
 import {iif, Observable, of, throwError, timer, Subscription, catchError, debounceTime,
     takeLast, mapTo, single, switchMap, tap} from 'rxjs';
-import {NgbCalendar, NgbNav} from '@ng-bootstrap/ng-bootstrap';
+import {NgbCalendar, NgbNav, NgbNavModule, NgbTimepicker} from '@ng-bootstrap/ng-bootstrap';
 import {AuthService} from '@eg/core/auth.service';
-import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
+import {ComboboxComponent, ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {FormatService} from '@eg/core/format.service';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {GridDataSource, GridRowFlairEntry, GridCellTextGenerator} from '@eg/share/grid/grid';
@@ -15,12 +15,20 @@ import {PcrudService} from '@eg/core/pcrud.service';
 import {CreateReservationDialogComponent} from './create-reservation-dialog.component';
 import {ServerStoreService} from '@eg/core/server-store.service';
 import {ToastService} from '@eg/share/toast/toast.service';
-import {DateRange} from '@eg/share/daterange-select/daterange-select.component';
+import {DateRange, DateRangeSelectComponent} from '@eg/share/daterange-select/daterange-select.component';
 import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
 import {ScheduleGridService, ScheduleRow} from './schedule-grid.service';
 import {NoTimezoneSetComponent} from './no-timezone-set.component';
 
-import * as moment from 'moment-timezone';
+import moment from 'moment-timezone';
+import { StaffBannerComponent } from '../share/staff-banner.component';
+import { TitleComponent } from '@eg/share/title/title.component';
+import { CommonModule, NgFor, NgIf } from '@angular/common';
+import { DateSelectComponent } from '@eg/share/date-select/date-select.component';
+import { OrgFamilySelectComponent } from '@eg/share/org-family-select/org-family-select.component';
+import { ComboboxEntryComponent } from '@eg/share/combobox/combobox-entry.component';
+import { GridModule } from '@eg/share/grid/grid.module';
+import { StaffCommonModule } from '../common.module';
 
 const startOfDayIsBeforeEndOfDayValidator: ValidatorFn = (fg: FormGroup): ValidationErrors | null => {
     const start = fg.get('startOfDay').value;
@@ -34,7 +42,21 @@ const startOfDayIsBeforeEndOfDayValidator: ValidatorFn = (fg: FormGroup): Valida
 
 @Component({
     templateUrl: './create-reservation.component.html',
-    styles: ['#ideal-resource-barcode {min-width: 300px;}']
+    styles: ['#ideal-resource-barcode {min-width: 300px;}'],
+    imports: [
+        CommonModule,
+        CreateReservationDialogComponent,
+        DateSelectComponent,
+        DateRangeSelectComponent,
+        FmRecordEditorComponent,
+        GridModule,
+        NgbNavModule,
+        NgbTimepicker,
+        NoTimezoneSetComponent,
+        OrgFamilySelectComponent,
+        ReactiveFormsModule,
+        StaffCommonModule,
+    ]
 })
 export class CreateReservationComponent implements OnInit, AfterViewInit, OnDestroy {
 

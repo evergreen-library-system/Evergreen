@@ -9,6 +9,7 @@ import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {MarcRecord} from '@eg/staff/share/marc-edit/marcrecord';
 import {AnonCacheService} from '@eg/share/util/anon-cache.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 const SESSION_POLL_INTERVAL = 2; // seconds
 const MERGE_TEMPLATE_PATH = '/opac/extras/merge_template';
@@ -23,7 +24,8 @@ interface TemplateRule {
 }
 
 @Component({
-    templateUrl: 'marcbatch.component.html'
+    templateUrl: 'marcbatch.component.html',
+    imports: [StaffCommonModule]
 })
 export class MarcBatchComponent implements OnInit {
 

@@ -9,6 +9,7 @@ import { OrgService } from '@eg/core/org.service';
 import { StringComponent } from '@eg/share/string/string.component';
 import { DialogComponent } from '@eg/share/dialog/dialog.component';
 import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 /**
  * Base interface for methods we expect on all thing objects
@@ -50,7 +51,8 @@ export const THINGDATA_CONFIG = new InjectionToken<IThingConfig<any>>('THINGDATA
  * C = The changes tracking type
  */
 @Component({
-    templateUrl: './copy-things-dialog.component.html'
+    templateUrl: './copy-things-dialog.component.html',
+    imports: [StaffCommonModule]
 })
 export abstract class CopyThingsDialogComponent<
     T extends IThingObject,

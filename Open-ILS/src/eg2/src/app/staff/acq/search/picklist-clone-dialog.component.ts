@@ -6,10 +6,15 @@ import {EventService} from '@eg/core/event.service';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import { FormsModule } from '@angular/forms';
 
 @Component({
     selector: 'eg-picklist-clone-dialog',
-    templateUrl: './picklist-clone-dialog.component.html'
+    templateUrl: './picklist-clone-dialog.component.html',
+    imports: [
+        AlertDialogComponent,
+        FormsModule,
+    ]
 })
 
 export class PicklistCloneDialogComponent

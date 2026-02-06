@@ -14,10 +14,12 @@ import {StringComponent} from '@eg/share/string/string.component';
 import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {CourseService} from '@eg/staff/share/course.service';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
     selector: 'eg-course-associate-material-dialog',
-    templateUrl: './course-associate-material.component.html'
+    templateUrl: './course-associate-material.component.html',
+    imports: [FmRecordEditorComponent, StaffCommonModule]
 })
 
 export class CourseAssociateMaterialComponent extends DialogComponent implements OnInit {

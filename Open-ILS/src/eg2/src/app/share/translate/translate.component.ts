@@ -1,15 +1,20 @@
 import {Component, OnInit, Input, Renderer2} from '@angular/core';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
-import {ToastService} from '@eg/share/toast/toast.service';
 import {LocaleService} from '@eg/core/locale.service';
-import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import { NgFor, NgIf } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
     selector: 'eg-translate',
-    templateUrl: 'translate.component.html'
+    templateUrl: 'translate.component.html',
+    imports: [
+        FormsModule,
+        NgFor,
+        NgIf
+    ]
 })
 
 export class TranslateComponent
@@ -46,10 +51,9 @@ export class TranslateComponent
         private modal: NgbModal, // required for passing to parent
         private renderer: Renderer2,
         private idl: IdlService,
-        private toast: ToastService,
         private locale: LocaleService,
         private pcrud: PcrudService,
-        private auth: AuthService) {
+    ) {
         super(modal);
     }
 

@@ -2,10 +2,20 @@ import {Component} from '@angular/core';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {IdlObject} from '@eg/core/idl.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import { TimezoneSelectComponent } from './timezone-select/timezone-select.component';
+import { OrgSelectComponent } from '@eg/share/org-select/org-select.component';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 @Component({
     selector: 'eg-admin-edit-org-unit-setting-dialog',
-    templateUrl: './edit-org-unit-setting-dialog.component.html'
+    templateUrl: './edit-org-unit-setting-dialog.component.html',
+    imports: [
+        CommonModule,
+        FormsModule,
+        OrgSelectComponent,
+        TimezoneSelectComponent
+    ]
 })
 
 export class EditOuSettingDialogComponent extends DialogComponent {

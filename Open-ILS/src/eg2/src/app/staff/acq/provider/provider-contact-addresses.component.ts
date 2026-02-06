@@ -1,11 +1,8 @@
 
 import {Component, OnInit, AfterViewInit, Input, ViewChild} from '@angular/core';
 import {EMPTY, throwError, from, map} from 'rxjs';
-import {Router, ActivatedRoute} from '@angular/router';
 import {Pager} from '@eg/share/util/pager';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
-import {NetService} from '@eg/core/net.service';
-import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {EventService} from '@eg/core/event.service';
 import {GridComponent} from '@eg/share/grid/grid.component';
@@ -14,10 +11,16 @@ import {ProviderRecordService} from './provider-record.service';
 import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
 import {StringComponent} from '@eg/share/string/string.component';
 import {ToastService} from '@eg/share/toast/toast.service';
+import { GridModule } from '@eg/share/grid/grid.module';
 
 @Component({
     selector: 'eg-provider-contact-addresses',
     templateUrl: 'provider-contact-addresses.component.html',
+    imports: [
+        FmRecordEditorComponent,
+        GridModule,
+        StringComponent,
+    ]
 })
 export class ProviderContactAddressesComponent implements OnInit, AfterViewInit {
 
@@ -47,12 +50,8 @@ export class ProviderContactAddressesComponent implements OnInit, AfterViewInit 
     @Input() contactId: any;
 
     constructor(
-        private router: Router,
-        private route: ActivatedRoute,
-        private net: NetService,
         private evt: EventService,
         private idl: IdlService,
-        private auth: AuthService,
         private providerRecord: ProviderRecordService,
         private toast: ToastService,
         private pcrud: PcrudService) {

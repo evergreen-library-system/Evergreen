@@ -21,16 +21,27 @@ import {PatronNoteDialogComponent} from '@eg/staff/share/patron/note-dialog.comp
 import {FormatService} from '@eg/core/format.service';
 import {StringComponent} from '@eg/share/string/string.component';
 import {GridComponent} from '@eg/share/grid/grid.component';
-import * as Moment from 'moment-timezone';
+import moment from 'moment-timezone';
 import {SampleDataService} from '@eg/share/util/sample-data.service';
 import {HtmlToTxtService} from '@eg/share/util/htmltotxt.service';
-import {Z3950SearchComponent} from '@eg/staff/share/z3950-search/z3950-search.component';
+import { StaffCommonModule } from '../common.module';
+import { OrgFamilySelectComponent } from '@eg/share/org-family-select/org-family-select.component';
+import { TranslateComponent } from '@eg/share/translate/translate.component';
+import { Z3950SearchComponent } from '../share/z3950-search/z3950-search.component';
 
 @Component({
     templateUrl: 'sandbox.component.html',
     styles: ['.date-time-input.ng-invalid {border: 5px purple solid;}',
         '.date-time-input.ng-valid {border: 5px green solid; animation: slide 5s linear 1s infinite alternate;}',
-        '@keyframes slide {0% {margin-inline-start:0px;} 50% {margin-inline-start:200px;}}']
+        '@keyframes slide {0% {margin-inline-start:0px;} 50% {margin-inline-start:200px;}}'],
+    imports: [
+        FmRecordEditorComponent,
+        OrgFamilySelectComponent,
+        PatronNoteDialogComponent,
+        StaffCommonModule,
+        TranslateComponent,
+        Z3950SearchComponent
+    ]
 })
 export class SandboxComponent implements OnInit {
 
@@ -321,7 +332,7 @@ export class SandboxComponent implements OnInit {
         this.bresvEditor.record = b;
 
         this.myTimeForm = new FormGroup({
-            'datetime': new FormControl(Moment([]), (c: FormControl) => {
+            'datetime': new FormControl(moment([]), (c: FormControl) => {
                 // An Angular custom validator
                 if (c.value.year() < 2019) {
                     return { tooLongAgo: 'That\'s before 2019' };

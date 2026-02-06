@@ -8,7 +8,7 @@ describe('CredentialInputComponent', () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            declarations: [ CredentialInputComponent ]
+            imports: [ CredentialInputComponent ]
         })
             .compileComponents();
 

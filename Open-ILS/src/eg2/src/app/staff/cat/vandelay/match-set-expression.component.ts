@@ -7,10 +7,15 @@ import {OrgService} from '@eg/core/org.service';
 import {Tree, TreeNode} from '@eg/share/tree/tree';
 import {StringService} from '@eg/share/string/string.service';
 import {MatchSetNewPointComponent} from './match-set-new-point.component';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
     selector: 'eg-match-set-expression',
-    templateUrl: 'match-set-expression.component.html'
+    templateUrl: 'match-set-expression.component.html',
+    imports: [
+        MatchSetNewPointComponent,
+        StaffCommonModule
+    ]
 })
 export class MatchSetExpressionComponent {
 

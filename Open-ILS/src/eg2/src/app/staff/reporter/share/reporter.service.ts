@@ -2,7 +2,7 @@
 import {Injectable} from '@angular/core';
 import {Router, Resolve, RouterStateSnapshot,
     ActivatedRouteSnapshot} from '@angular/router';
-import * as moment from 'moment-timezone';
+import moment from 'moment-timezone';
 import {Md5} from 'ts-md5';
 import {map, switchMap, mergeMap, concatMap, defaultIfEmpty, last} from 'rxjs/operators';
 import {EMPTY, Observable, of, from} from 'rxjs';

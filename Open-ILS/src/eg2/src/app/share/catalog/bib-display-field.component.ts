@@ -1,4 +1,6 @@
+import { NgFor, NgIf } from '@angular/common';
 import {Component, Input, ViewEncapsulation} from '@angular/core';
+import { RouterModule } from '@angular/router';
 import {BibRecordSummary} from '@eg/share/catalog/bib-record.service';
 
 /* Display content from a bib summary display field.  If highlight
@@ -16,6 +18,12 @@ const PAD_SPACE = ' '; // U+2007
     templateUrl: 'bib-display-field.component.html',
     styleUrls: ['bib-display-field.component.css'],
     encapsulation: ViewEncapsulation.None // required for search highlighting
+    ,
+    imports: [
+        NgFor,
+        NgIf,
+        RouterModule
+    ]
 })
 export class BibDisplayFieldComponent {
 

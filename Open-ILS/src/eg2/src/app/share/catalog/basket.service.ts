@@ -14,7 +14,7 @@ import {AnonCacheService} from '@eg/share/util/anon-cache.service';
 const BASKET_CACHE_KEY_COOKIE = 'basket';
 const BASKET_CACHE_ATTR = 'recordIds';
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class BasketService {
 
     idList: number[];

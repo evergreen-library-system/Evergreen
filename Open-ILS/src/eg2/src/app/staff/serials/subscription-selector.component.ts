@@ -14,7 +14,6 @@ interface SsubWhereClause {
 }
 
 @Component({
-    standalone: true,
     imports: [OrgFamilySelectModule, FormsModule, CommonModule],
     selector: 'eg-subscription-selector',
     templateUrl: './subscription-selector.component.html'

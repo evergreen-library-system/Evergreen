@@ -24,12 +24,18 @@ import {ToastService} from '@eg/share/toast/toast.service';
 import {StringComponent} from '@eg/share/string/string.component';
 import {AuthService} from '@eg/core/auth.service';
 import {PrintService} from '@eg/share/print/print.service';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 const SESSION_DUE_DATE = 'eg.circ.checkout.is_until_logout';
 
 @Component({
     templateUrl: 'checkout.component.html',
-    selector: 'eg-patron-checkout'
+    selector: 'eg-patron-checkout',
+    imports: [
+        BarcodeSelectComponent,
+        CopyAlertsDialogComponent,
+        StaffCommonModule
+    ]
 })
 export class CheckoutComponent implements OnInit, AfterViewInit {
     static autoId = 0;

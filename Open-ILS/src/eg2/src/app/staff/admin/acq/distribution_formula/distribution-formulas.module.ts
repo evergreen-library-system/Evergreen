@@ -4,17 +4,15 @@ import {AdminCommonModule} from '@eg/staff/admin/common.module';
 import {DistributionFormulasRoutingModule} from './routing.module';
 import {DistributionFormulasComponent} from './distribution-formulas.component';
 import {DistributionFormulaEditDialogComponent} from './distribution-formula-edit-dialog.component';
-import {ItemLocationSelectModule} from '@eg/share/item-location-select/item-location-select.module';
+import { ItemLocationSelectComponent } from '@eg/share/item-location-select/item-location-select.component';
 
 @NgModule({
-    declarations: [
-        DistributionFormulasComponent,
-        DistributionFormulaEditDialogComponent
-    ],
     imports: [
+        DistributionFormulasComponent,
+        DistributionFormulaEditDialogComponent,
         StaffCommonModule,
         AdminCommonModule,
-        ItemLocationSelectModule,
+        ItemLocationSelectComponent,
         DistributionFormulasRoutingModule
     ],
     exports: [

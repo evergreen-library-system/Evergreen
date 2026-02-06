@@ -12,6 +12,7 @@ import {NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 import {StringComponent} from '@eg/share/string/string.component';
 import {ComboboxEntry, ComboboxComponent} from '@eg/share/combobox/combobox.component';
 import {BillingService} from './billing.service';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 /* Add a billing to a transaction */
 
@@ -19,7 +20,8 @@ const DEFAULT_BILLING_TYPE = 101; // Stock "Misc"
 
 @Component({
     selector: 'eg-add-billing-dialog',
-    templateUrl: 'billing-dialog.component.html'
+    templateUrl: 'billing-dialog.component.html',
+    imports: [StaffCommonModule]
 })
 
 export class AddBillingDialogComponent

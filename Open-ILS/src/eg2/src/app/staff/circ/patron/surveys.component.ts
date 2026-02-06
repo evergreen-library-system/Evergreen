@@ -7,11 +7,13 @@ import {NetService} from '@eg/core/net.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {AuthService} from '@eg/core/auth.service';
 import {PatronService} from '@eg/staff/share/patron/patron.service';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
     templateUrl: 'surveys.component.html',
     selector: 'eg-patron-survey-responses',
-    styles: ['thead th { padding: 0.5rem; }']
+    styles: ['thead th { padding: 0.5rem; }'],
+    imports: [StaffCommonModule]
 })
 export class PatronSurveyResponsesComponent implements OnInit {
 

@@ -2,6 +2,8 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CopyNotesEditComponent } from './copy-notes-edit.component';
+import { ToastService } from '@eg/share/toast/toast.service';
+import { FmRecordEditorComponent } from '@eg/share/fm-editor/fm-editor.component';
 
 describe('CopyNotesEditComponent', () => {
     let component: CopyNotesEditComponent;
@@ -9,9 +11,13 @@ describe('CopyNotesEditComponent', () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            declarations: [ CopyNotesEditComponent ],
-            schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
+            imports: [ CopyNotesEditComponent ],
+            providers: [{ToastService, useValue: {}}]
         })
+            .overrideComponent(CopyNotesEditComponent, {
+                add: {schemas: [CUSTOM_ELEMENTS_SCHEMA]},
+                remove: {imports: [FmRecordEditorComponent]}
+            })
             .compileComponents();
     });
 

@@ -2,11 +2,15 @@
 import {Component, Input} from '@angular/core';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {Tree, TreeNode} from '@eg/share/tree/tree';
+import { TreeComponent } from '@eg/share/tree/tree.component';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'eg-custom-org-unit-trees-dialog',
-    templateUrl: './custom-org-unit-trees-dialog.component.html'
+    templateUrl: './custom-org-unit-trees-dialog.component.html',
+    imports: [
+        TreeComponent
+    ]
 })
 
 export class CustomOrgUnitTreesDialogComponent

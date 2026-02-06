@@ -1,9 +1,11 @@
 import {Component} from '@angular/core';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
-import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
+import { AdminPageComponent } from '@eg/staff/share/admin-page/admin-page.component';
+import {NgbNavChangeEvent, NgbNavModule} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-    templateUrl: 'display-attrs.component.html'
+    templateUrl: 'display-attrs.component.html',
+    imports: [AdminPageComponent, NgbNavModule]
 })
 export class DisplayAttrsComponent {
 

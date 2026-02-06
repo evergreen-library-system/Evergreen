@@ -14,8 +14,10 @@ import {
     IThingChanges,
     IThingConfig
 } from './copy-things-dialog.component';
-import { ComboboxEntry } from '@eg/share/combobox/combobox.component';
+import { ComboboxComponent, ComboboxEntry } from '@eg/share/combobox/combobox.component';
 import { TagMapListComponent } from './tag-map-list.component';
+import { StringComponent } from '@eg/share/string/string.component';
+import { CopyThingsDialogWrapperComponent } from './copy-things-dialog-wrapper.component';
 
 // Interface for tag maps with the composite match functionality
 export interface ICopyTagMap extends IThingObject {
@@ -42,6 +44,12 @@ export interface ICopyTagMapChanges extends IThingChanges<ICopyTagMap> {
         'kbd:first-letter { text-transform: none; }',
         '.new-tag-actions button[disabled] { display: none; }',
         '.dl-grid { grid-template-columns: auto 1fr; }'
+    ],
+    imports: [
+        ComboboxComponent,
+        CopyThingsDialogWrapperComponent,
+        StringComponent,
+        TagMapListComponent,
     ]
 })
 export class CopyTagsDialogComponent extends

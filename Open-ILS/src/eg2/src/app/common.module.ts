@@ -33,26 +33,24 @@ import {StringModule} from '@eg/share/string/string.module';
 
 
 @NgModule({
-    declarations: [
-        PrintComponent,
-        DialogComponent,
-        AlertDialogComponent,
-        ConfirmDialogComponent,
-        PromptDialogComponent,
-        ProgressInlineComponent,
-        ProgressDialogComponent,
-        ToastComponent,
-        BoolDisplayComponent,
-        BackButtonComponent,
-    ],
     imports: [
+        AlertDialogComponent,
+        BackButtonComponent,
+        BoolDisplayComponent,
         CommonModule,
+        ConfirmDialogComponent,
+        DialogComponent,
         FormsModule,
         ReactiveFormsModule,
         RouterModule,
         NgbModule,
         EgCoreModule,
-        StringModule
+        PrintComponent,
+        ProgressDialogComponent,
+        ProgressInlineComponent,
+        PromptDialogComponent,
+        StringModule,
+        ToastComponent,
     ],
     exports: [
         CommonModule,

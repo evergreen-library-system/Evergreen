@@ -1,11 +1,13 @@
 import {Component, Input, Output, EventEmitter, ViewChild} from '@angular/core';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {ReporterService} from '../share/reporter.service';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
     selector: 'eg-sr-field-chooser',
     styleUrls: ['./sr-field-chooser.component.css'],
-    templateUrl: './sr-field-chooser.component.html'
+    templateUrl: './sr-field-chooser.component.html',
+    imports: [StaffCommonModule]
 })
 
 export class SRFieldChooserComponent {

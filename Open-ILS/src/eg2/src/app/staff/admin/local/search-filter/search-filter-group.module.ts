@@ -6,13 +6,11 @@ import {SearchFilterGroupRoutingModule} from './search-filter-group-routing.modu
 import {QueryDialogComponent} from './query-dialog.component';
 
 @NgModule({
-    declarations: [
-        SearchFilterGroupComponent,
-        SearchFilterGroupEntriesComponent,
-        QueryDialogComponent
-    ],
     imports: [
         AdminCommonModule,
+        SearchFilterGroupComponent,
+        SearchFilterGroupEntriesComponent,
+        QueryDialogComponent,
         SearchFilterGroupRoutingModule,
     ],
     exports: [

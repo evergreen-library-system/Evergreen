@@ -6,10 +6,14 @@ import {AuthService} from '@eg/core/auth.service';
 import {OrgService} from '@eg/core/org.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
-import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
+import {ComboboxComponent, ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {EventService} from '@eg/core/event.service';
 import {PoService} from './po.service';
 import {LineitemService} from '../lineitem/lineitem.service';
+import { CommonModule } from '@angular/common';
+import { StaffBannerComponent } from '@eg/staff/share/staff-banner.component';
+import { FormsModule } from '@angular/forms';
+import { OrgSelectComponent } from '@eg/share/org-select/org-select.component';
 
 const VALID_PRE_PO_LI_STATES = [
     'new',
@@ -20,7 +24,14 @@ const VALID_PRE_PO_LI_STATES = [
 
 @Component({
     templateUrl: 'create.component.html',
-    selector: 'eg-acq-po-create'
+    selector: 'eg-acq-po-create',
+    imports: [
+        ComboboxComponent,
+        CommonModule,
+        FormsModule,
+        OrgSelectComponent,
+        StaffBannerComponent,
+    ]
 })
 export class PoCreateComponent implements OnInit {
 

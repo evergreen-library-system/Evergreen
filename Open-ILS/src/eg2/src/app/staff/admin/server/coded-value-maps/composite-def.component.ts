@@ -7,9 +7,14 @@ import {ToastService} from '@eg/share/toast/toast.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {CompositeNewPointComponent} from './composite-new.component';
 import {StringComponent} from '@eg/share/string/string.component';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
-    templateUrl: './composite-def.component.html'
+    templateUrl: './composite-def.component.html',
+    imports: [
+        CompositeNewPointComponent,
+        StaffCommonModule
+    ]
 })
 
 export class CompositeDefComponent implements OnInit {

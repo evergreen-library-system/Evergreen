@@ -6,10 +6,12 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {OrgService} from '@eg/core/org.service';
 import {AuthService} from '@eg/core/auth.service';
 import {ReporterService} from '../share/reporter.service';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
     selector: 'folder-share-org-dialog',
-    templateUrl: './folder-share-org-dialog.component.html'
+    templateUrl: './folder-share-org-dialog.component.html',
+    imports: [StaffCommonModule]
 })
 
 export class FolderShareOrgDialogComponent extends DialogComponent {

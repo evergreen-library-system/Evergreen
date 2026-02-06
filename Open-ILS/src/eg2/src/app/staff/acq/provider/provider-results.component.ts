@@ -1,17 +1,21 @@
 import {Component, OnInit, AfterViewInit, Output, EventEmitter, ViewChild, ElementRef} from '@angular/core';
-import {Router, ActivatedRoute} from '@angular/router';
 import {IdlObject} from '@eg/core/idl.service';
-import {NetService} from '@eg/core/net.service';
-import {AuthService} from '@eg/core/auth.service';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {GridDataSource, GridCellTextGenerator} from '@eg/share/grid/grid';
 import {AcqProviderSearchService, AcqProviderSearch} from './acq-provider-search.service';
 import {AcqProviderSearchFormComponent} from './acq-provider-search-form.component';
+import { GridModule } from '@eg/share/grid/grid.module';
+import { CommonModule } from '@angular/common';
 
 @Component({
     selector: 'eg-provider-results',
     templateUrl: 'provider-results.component.html',
-    providers: [AcqProviderSearchService]
+    providers: [AcqProviderSearchService],
+    imports: [
+        AcqProviderSearchFormComponent,
+        CommonModule,
+        GridModule
+    ]
 })
 export class ProviderResultsComponent implements OnInit, AfterViewInit {
 
@@ -26,10 +30,6 @@ export class ProviderResultsComponent implements OnInit, AfterViewInit {
 
     constructor(
         private elementRef: ElementRef,
-        private router: Router,
-        private route: ActivatedRoute,
-        private net: NetService,
-        private auth: AuthService,
         private providerSearch: AcqProviderSearchService) {
     }
 

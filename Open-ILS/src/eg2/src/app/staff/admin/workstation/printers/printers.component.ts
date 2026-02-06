@@ -9,11 +9,21 @@ import {OrgService} from '@eg/core/org.service';
 import {EventService} from '@eg/core/event.service';
 import {HatchService, PrintContext, PrintConfig, PRINT_CONTEXTS} from '@eg/core/hatch.service';
 import {PrintService, PrintRequest} from '@eg/share/print/print.service';
-import {NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
+import {NgbNavChangeEvent, NgbNavModule} from '@ng-bootstrap/ng-bootstrap';
 import {StringComponent} from '@eg/share/string/string.component';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { StaffBannerComponent } from '@eg/staff/share/staff-banner.component';
 
 @Component({
-    templateUrl: 'printers.component.html'
+    templateUrl: 'printers.component.html',
+    imports: [
+        CommonModule,
+        FormsModule,
+        NgbNavModule,
+        StaffBannerComponent,
+        StringComponent,
+    ]
 })
 export class PrintersComponent implements OnInit {
 

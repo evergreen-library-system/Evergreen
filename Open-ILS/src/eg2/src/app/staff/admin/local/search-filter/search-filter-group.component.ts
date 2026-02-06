@@ -14,9 +14,12 @@ import {AuthService} from '@eg/core/auth.service';
 import {BroadcastService} from '@eg/share/util/broadcast.service';
 import {StringComponent} from '@eg/share/string/string.component';
 import {AdminPageComponent} from '../../../share/admin-page/admin-page.component';
+import { StaffCommonModule } from '@eg/staff/common.module';
+import { FmRecordEditorComponent } from '@eg/share/fm-editor/fm-editor.component';
 
 @Component({
-    templateUrl: './search-filter-group.component.html'
+    templateUrl: './search-filter-group.component.html',
+    imports: [StaffCommonModule, FmRecordEditorComponent]
 })
 
 export class SearchFilterGroupComponent extends AdminPageComponent implements OnInit {

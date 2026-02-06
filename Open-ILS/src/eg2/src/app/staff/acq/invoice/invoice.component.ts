@@ -2,7 +2,7 @@
 import {Component, OnInit, OnDestroy, QueryList, ViewChild, ViewChildren} from '@angular/core';
 import {ActivatedRoute, ParamMap, Router} from '@angular/router';
 import {CanComponentDeactivate} from '@eg/share/util/can-deactivate.guard';
-import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
+import {NgbNav, NgbNavChangeEvent, NgbNavModule} from '@ng-bootstrap/ng-bootstrap';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {EventService} from '@eg/core/event.service';
 import {AuthService} from '@eg/core/auth.service';
@@ -16,10 +16,18 @@ import {PoService} from '../po/po.service';
 import {LineitemResultsComponent} from '@eg/staff/acq/search/lineitem-results.component';
 import {firstValueFrom, Subscription} from 'rxjs';
 import { ServerStoreService } from '@eg/core/server-store.service';
+import { StaffBannerComponent } from '@eg/staff/share/staff-banner.component';
+import { CommonModule } from '@angular/common';
 
 @Component({
     templateUrl: 'invoice.component.html',
-    styleUrls:  ['invoice.component.css']
+    styleUrls: ['invoice.component.css'],
+    imports: [
+        InvoiceDetailsComponent,
+        CommonModule,
+        NgbNavModule,
+        StaffBannerComponent
+    ]
 })
 export class InvoiceComponent implements OnInit, OnDestroy, CanComponentDeactivate {
 

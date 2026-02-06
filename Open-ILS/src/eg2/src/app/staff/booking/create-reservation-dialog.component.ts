@@ -1,5 +1,5 @@
 import {Component, Input, Output, OnInit, ViewChild, EventEmitter} from '@angular/core';
-import {FormGroup, FormControl, Validators} from '@angular/forms';
+import {FormGroup, FormControl, Validators, ReactiveFormsModule} from '@angular/forms';
 import {Router} from '@angular/router';
 import {Observable, of, switchMap, single, startWith, tap} from 'rxjs';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
@@ -15,13 +15,29 @@ import {PatronBarcodeValidator} from '@eg/share/validators/patron_barcode_valida
 import {PatronSearchDialogComponent} from '@eg/staff/share/patron/search-dialog.component';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
-import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
-import * as moment from 'moment-timezone';
+import {ComboboxComponent, ComboboxEntry} from '@eg/share/combobox/combobox.component';
+import moment from 'moment-timezone';
 import { datesInOrderValidator } from '@eg/share/validators/dates_in_order_validator.directive';
+import { DateTimeSelectComponent } from '@eg/share/datetime-select/datetime-select.component';
+import { NgIf } from '@angular/common';
+import { OrgSelectComponent } from '@eg/share/org-select/org-select.component';
+import { EgHelpPopoverComponent } from '@eg/share/eg-help-popover/eg-help-popover.component';
+import { ComboboxEntryComponent } from '@eg/share/combobox/combobox-entry.component';
 
 @Component({
     selector: 'eg-create-reservation-dialog',
-    templateUrl: './create-reservation-dialog.component.html'
+    templateUrl: './create-reservation-dialog.component.html',
+    imports: [
+        AlertDialogComponent,
+        ComboboxComponent,
+        ComboboxEntryComponent,
+        DateTimeSelectComponent,
+        EgHelpPopoverComponent,
+        NgIf,
+        OrgSelectComponent,
+        PatronSearchDialogComponent,
+        ReactiveFormsModule,
+    ]
 })
 
 export class CreateReservationDialogComponent

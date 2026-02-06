@@ -5,7 +5,7 @@ import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {LocaleService} from '@eg/core/locale.service';
-import * as moment from 'moment-timezone';
+import moment from 'moment-timezone';
 import {DateUtil} from '@eg/share/util/date';
 
 /**
@@ -373,7 +373,9 @@ export class FormatService {
 
 
 // Pipe-ify the above formating logic for use in templates
-@Pipe({name: 'formatValue'})
+@Pipe({
+    name: 'formatValue'
+})
 export class FormatValuePipe implements PipeTransform {
     constructor(private formatter: FormatService) {}
     // Add other filter params as needed to fill in the FormatParams
@@ -382,7 +384,9 @@ export class FormatValuePipe implements PipeTransform {
     }
 }
 
-@Pipe({name: 'egOrgDateInContext'})
+@Pipe({
+    name: 'egOrgDateInContext'
+})
 export class OrgDateInContextPipe implements PipeTransform {
     constructor(private formatter: FormatService) {}
 
@@ -396,7 +400,9 @@ export class OrgDateInContextPipe implements PipeTransform {
     }
 }
 
-@Pipe({name: 'egDueDate'})
+@Pipe({
+    name: 'egDueDate'
+})
 export class DueDatePipe implements PipeTransform {
     constructor(private formatter: FormatService) {}
 
@@ -410,7 +416,9 @@ export class DueDatePipe implements PipeTransform {
     }
 }
 
-@Pipe({name: 'egOrUnderscores'})
+@Pipe({
+    name: 'egOrUnderscores'
+})
 export class OrUnderscoresPipe implements PipeTransform {
     constructor() {}
     // Add other filter params as needed to fill in the FormatParams
@@ -419,7 +427,9 @@ export class OrUnderscoresPipe implements PipeTransform {
     }
 }
 
-@Pipe({ name: 'js2json'})
+@Pipe({
+    name: 'js2json'
+})
 export class Js2JsonPipe implements PipeTransform {
     transform(value: any): string {
         return JSON.stringify(value, null, 2); // spacing level = 2
@@ -427,7 +437,9 @@ export class Js2JsonPipe implements PipeTransform {
 }
 
 /* TODO: this should probably be moved elsewhere, within the acq/ hierarchy */
-@Pipe({ name: 'fundLabel', pure: false })
+@Pipe({
+    name: 'fundLabel', pure: false
+})
 export class FundLabelPipe implements PipeTransform {
     private cache = new Map<number, string>();
 
@@ -452,7 +464,9 @@ export class FundLabelPipe implements PipeTransform {
 
 }
 
-@Pipe({ name: 'usrnameOrId' })
+@Pipe({
+    name: 'usrnameOrId'
+})
 export class UsrnameOrIdPipe implements PipeTransform {
     transform(user: IdlObject): any {
         return user && typeof user.usrname === 'function' ? user.usrname() : user;

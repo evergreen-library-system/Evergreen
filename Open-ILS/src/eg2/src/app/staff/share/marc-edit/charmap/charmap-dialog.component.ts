@@ -1,7 +1,11 @@
 import {Component, HostListener, OnInit, ViewChild, TemplateRef} from '@angular/core';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
-import {NgbModal, NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
+import {NgbModal, NgbNav, NgbNavChangeEvent, NgbNavModule} from '@ng-bootstrap/ng-bootstrap';
 import {ServerStoreService} from '@eg/core/server-store.service';
+import { CommonModule } from '@angular/common';
+import { CharsCanadianComponent } from './chars-canadian.component';
+import { CharsLatinComponent } from './chars-latin.component';
+import { CharsPunctuationComponent } from './chars-punctuation.component';
 
 /**
  * Special Characters Map Dialog
@@ -10,7 +14,14 @@ import {ServerStoreService} from '@eg/core/server-store.service';
 @Component({
     selector: 'eg-charmap-dialog',
     templateUrl: './charmap-dialog.component.html',
-    styleUrls: ['charmap-dialog.component.css']
+    styleUrls: ['charmap-dialog.component.css'],
+    imports: [
+        CharsCanadianComponent,
+        CharsLatinComponent,
+        CharsPunctuationComponent,
+        CommonModule,
+        NgbNavModule,
+    ]
 })
 
 export class CharMapDialogComponent extends DialogComponent implements OnInit {

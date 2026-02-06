@@ -1,17 +1,20 @@
-import {Component, Input, ViewChild, TemplateRef, OnInit, Renderer2} from '@angular/core';
-import {Observable, from, throwError} from 'rxjs';
+import {Component, ViewChild, OnInit, Renderer2} from '@angular/core';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
-import {IdlService, IdlObject} from '@eg/core/idl.service';
+import {IdlService} from '@eg/core/idl.service';
 import {EventService} from '@eg/core/event.service';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
+import { FormsModule } from '@angular/forms';
 
 @Component({
     selector: 'eg-picklist-create-dialog',
-    templateUrl: './picklist-create-dialog.component.html'
+    templateUrl: './picklist-create-dialog.component.html',
+    imports: [
+        AlertDialogComponent,
+        FormsModule
+    ]
 })
 
 export class PicklistCreateDialogComponent

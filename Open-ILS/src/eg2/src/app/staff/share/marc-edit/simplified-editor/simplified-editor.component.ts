@@ -1,9 +1,10 @@
 import {AfterViewInit, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {FormGroup, FormControl} from '@angular/forms';
+import {FormGroup, FormControl, FormsModule} from '@angular/forms';
 import {MarcField, MarcRecord} from '../marcrecord';
 import {TagTableService} from '../tagtable.service';
 import {NetService} from '@eg/core/net.service';
-import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
+import {ComboboxComponent, ComboboxEntry} from '@eg/share/combobox/combobox.component';
+import { CommonModule } from '@angular/common';
 
 const DEFAULT_RECORD_TYPE = 'BKS';
 
@@ -14,7 +15,13 @@ const DEFAULT_RECORD_TYPE = 'BKS';
 
 @Component({
     selector: 'eg-marc-simplified-editor',
-    templateUrl: './simplified-editor.component.html'
+    templateUrl: './simplified-editor.component.html',
+    imports: [
+        ComboboxComponent,
+        CommonModule,
+        FormsModule,
+    ],
+    providers: [TagTableService]
 })
 export class MarcSimplifiedEditorComponent implements AfterViewInit, OnInit {
 

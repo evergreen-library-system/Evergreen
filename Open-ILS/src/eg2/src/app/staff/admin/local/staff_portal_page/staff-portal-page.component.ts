@@ -1,4 +1,4 @@
-import {Component, Input, ViewChild, OnInit} from '@angular/core';
+import {Component, ViewChild, OnInit} from '@angular/core';
 import {Location} from '@angular/common';
 import {FormatService} from '@eg/core/format.service';
 import {AdminPageComponent} from '@eg/staff/share/admin-page/admin-page.component';
@@ -13,13 +13,16 @@ import {BroadcastService} from '@eg/share/util/broadcast.service';
 import {NetService} from '@eg/core/net.service';
 import {GridCellTextGenerator} from '@eg/share/grid/grid';
 import {StringComponent} from '@eg/share/string/string.component';
-import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
 import {ClonePortalEntriesDialogComponent} from './clone-portal-entries-dialog.component';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
-import {merge, Observable, EMPTY} from 'rxjs';
+import {merge, EMPTY} from 'rxjs';
+import { StaffCommonModule } from '@eg/staff/common.module';
+import { FmRecordEditorComponent } from '@eg/share/fm-editor/fm-editor.component';
+import { TranslateComponent } from '@eg/share/translate/translate.component';
 
 @Component({
-    templateUrl: './staff-portal-page.component.html'
+    templateUrl: './staff-portal-page.component.html',
+    imports: [StaffCommonModule, ClonePortalEntriesDialogComponent, FmRecordEditorComponent, TranslateComponent]
 })
 
 export class AdminStaffPortalPageComponent extends AdminPageComponent implements OnInit {

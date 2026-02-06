@@ -1,15 +1,18 @@
 import {Component, OnInit} from '@angular/core';
-import {Router, ActivatedRoute} from '@angular/router';
+import {Router} from '@angular/router';
 import {of, from, switchMap, tap} from 'rxjs';
 import {AuthService} from '@eg/core/auth.service';
-import {PcrudService} from '@eg/core/pcrud.service';
 import {NetService} from '@eg/core/net.service';
 import {IdlObject} from '@eg/core/idl.service';
 import {SckoService, ActionContext} from './scko.service';
 import {PrintService} from '@eg/share/print/print.service';
+import { CommonModule } from '@angular/common';
+import { DueDatePipe } from '@eg/core/format.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
-    templateUrl: 'items.component.html'
+    templateUrl: 'items.component.html',
+    imports: [CommonModule, DueDatePipe, FormsModule]
 })
 
 export class SckoItemsComponent implements OnInit {
@@ -19,10 +22,8 @@ export class SckoItemsComponent implements OnInit {
 
     constructor(
         private router: Router,
-        private route: ActivatedRoute,
         private net: NetService,
         private auth: AuthService,
-        private pcrud: PcrudService,
         private printer: PrintService,
         public  scko: SckoService
     ) {}

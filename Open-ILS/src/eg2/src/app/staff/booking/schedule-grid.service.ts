@@ -7,7 +7,7 @@ import {PcrudService} from '@eg/core/pcrud.service';
 import {GridRowFlairEntry} from '@eg/share/grid/grid';
 import {DateRange} from '@eg/share/daterange-select/daterange-select.component';
 
-import * as moment from 'moment-timezone';
+import moment from 'moment-timezone';
 
 export interface ReservationPatron {
   patronId: number;

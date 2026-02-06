@@ -4,11 +4,32 @@ import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
 import {GridToolbarButton, GridToolbarAction, GridContext} from '@eg/share/grid/grid';
 import {GridPrintComponent} from './grid-print.component';
 import {GridColumn} from './grid';
+import { GridToolbarActionsEditorComponent } from './grid-toolbar-actions-editor.component';
+import { GridManageFiltersDialogComponent } from './grid-manage-filters-dialog.component';
+import { NgClass, NgFor, NgIf, NgTemplateOutlet } from '@angular/common';
+import { NgbDropdown } from '@ng-bootstrap/ng-bootstrap';
+import { GridToolbarActionsMenuComponent } from './grid-toolbar-actions-menu.component';
+import { GridColumnConfigComponent } from './grid-column-config.component';
+import { ButtonStyleDirective } from '../util/button-style.directive';
+import { FormsModule } from '@angular/forms';
 
 @Component({
     selector: 'eg-grid-toolbar',
     templateUrl: 'grid-toolbar.component.html',
-    styleUrls: ['grid-toolbar.component.css']
+    styleUrls: ['grid-toolbar.component.css'],
+    imports: [
+        ButtonStyleDirective,
+        FormsModule,
+        GridColumnConfigComponent,
+        GridManageFiltersDialogComponent,
+        GridToolbarActionsEditorComponent,
+        GridToolbarActionsMenuComponent,
+        NgbDropdown,
+        NgClass,
+        NgFor,
+        NgIf,
+        NgTemplateOutlet
+    ]
 })
 
 export class GridToolbarComponent implements OnInit, AfterViewInit {

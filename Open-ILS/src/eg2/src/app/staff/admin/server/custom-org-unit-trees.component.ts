@@ -9,10 +9,19 @@ import {ToastService} from '@eg/share/toast/toast.service';
 import {StringComponent} from '@eg/share/string/string.component';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 import {CustomOrgUnitTreesDialogComponent} from './custom-org-unit-trees-dialog.component';
+import { StaffBannerComponent } from '@eg/staff/share/staff-banner.component';
+import { TreeComponent } from '@eg/share/tree/tree.component';
 
 @Component({
     templateUrl: './custom-org-unit-trees.component.html',
-    styleUrls: [ './custom-org-unit-trees.component.css' ],
+    styleUrls: ['./custom-org-unit-trees.component.css'],
+    imports: [
+        ConfirmDialogComponent,
+        CustomOrgUnitTreesDialogComponent,
+        StaffBannerComponent,
+        StringComponent,
+        TreeComponent
+    ]
 })
 
 export class CustomOrgUnitTreesComponent implements OnInit {

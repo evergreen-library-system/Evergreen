@@ -23,6 +23,12 @@ import {WorkLogService} from '@eg/staff/share/worklog/worklog.service';
 import {getI18nString} from '@eg/share/util/i18ns';
 import {StoreService} from '@eg/core/store.service';
 import {firstValueFrom, lastValueFrom, tap, toArray} from 'rxjs';
+import { StaffCommonModule } from '@eg/staff/common.module';
+import { WorkLogStringsComponent } from '@eg/staff/share/worklog/strings.component';
+import { OrgSelectComponent } from '@eg/share/org-select/org-select.component';
+import { CommonModule } from '@angular/common';
+import { DateSelectComponent } from '@eg/share/date-select/date-select.component';
+import { FormsModule } from '@angular/forms';
 
 export class HoldRequestStats {
     private successes = 0;
@@ -106,7 +112,18 @@ class HoldContext {
 }
 
 @Component({
-    templateUrl: 'hold.component.html'
+    templateUrl: 'hold.component.html',
+    imports: [
+        AlertDialogComponent,
+        BarcodeSelectComponent,
+        ComboboxComponent,
+        CommonModule,
+        DateSelectComponent,
+        FormsModule,
+        OrgSelectComponent,
+        PatronSearchDialogComponent,
+        WorkLogStringsComponent,
+    ]
 })
 export class HoldComponent implements OnInit, OnDestroy {
 

@@ -2,12 +2,19 @@ import {Component, Input, OnInit} from '@angular/core';
 import {Observable} from 'rxjs';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {GridColumn, GridColumnSet, GridContext} from './grid';
-import {NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
+import {NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
+import { NgFor, NgIf } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
     selector: 'eg-grid-column-config',
     templateUrl: './grid-column-config.component.html',
-    styleUrls: ['./grid-column-config.component.css']
+    styleUrls: ['./grid-column-config.component.css'],
+    imports: [
+        FormsModule,
+        NgFor,
+        NgIf,
+    ]
 })
 
 /**

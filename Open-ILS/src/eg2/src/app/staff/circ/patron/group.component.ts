@@ -15,10 +15,12 @@ import {GridComponent} from '@eg/share/grid/grid.component';
 import {Pager} from '@eg/share/util/pager';
 import {PromptDialogComponent} from '@eg/share/dialog/prompt.component';
 import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
     templateUrl: 'group.component.html',
-    selector: 'eg-patron-group'
+    selector: 'eg-patron-group',
+    imports: [StaffCommonModule]
 })
 export class PatronGroupComponent implements OnInit {
 

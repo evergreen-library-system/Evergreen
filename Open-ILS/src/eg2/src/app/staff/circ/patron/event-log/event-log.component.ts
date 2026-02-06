@@ -3,9 +3,11 @@ import {ActivatedRoute} from '@angular/router';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
 import {EventGridComponent} from './event-grid.component';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
-    templateUrl: 'event-log.component.html'
+    templateUrl: 'event-log.component.html',
+    imports: [StaffCommonModule]
 })
 
 export class EventLogComponent implements OnInit {

@@ -4,11 +4,16 @@ import {AuthService} from '@eg/core/auth.service';
 import {NetService} from '@eg/core/net.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
-import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
+import {ComboboxComponent, ComboboxEntry} from '@eg/share/combobox/combobox.component';
+import { CommonModule } from '@angular/common';
 
 @Component({
     templateUrl: './delete-group-dialog.component.html',
-    selector: 'eg-sip-group-delete-dialog'
+    selector: 'eg-sip-group-delete-dialog',
+    imports: [
+        ComboboxComponent,
+        CommonModule
+    ]
 })
 export class DeleteGroupDialogComponent extends DialogComponent implements OnInit {
 

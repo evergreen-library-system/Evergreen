@@ -2,7 +2,7 @@
 /* eslint-disable rxjs/no-implicit-any-catch, rxjs/no-nested-subscribe */
 import {Component, Input, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {Location} from '@angular/common';
+import {CommonModule, Location} from '@angular/common';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {FormatService} from '@eg/core/format.service';
 import {GridDataSource, GridColumn} from '@eg/share/grid/grid';
@@ -19,7 +19,8 @@ import {BroadcastService} from '@eg/share/util/broadcast.service';
 import {FmRecordEditorComponent, FmFieldOptions
 } from '@eg/share/fm-editor/fm-editor.component';
 import {StringComponent} from '@eg/share/string/string.component';
-import {OrgFamily} from '@eg/share/org-family-select/org-family-select.component';
+import {OrgFamily, OrgFamilySelectComponent} from '@eg/share/org-family-select/org-family-select.component';
+import { GridModule } from '@eg/share/grid/grid.module';
 
 /**
  * General purpose CRUD interface for IDL objects
@@ -29,7 +30,16 @@ import {OrgFamily} from '@eg/share/org-family-select/org-family-select.component
 
 @Component({
     selector: 'eg-admin-page',
-    templateUrl: './admin-page.component.html'
+    templateUrl: './admin-page.component.html',
+    imports: [
+        CommonModule,
+        ConfirmDialogComponent,
+        FmRecordEditorComponent,
+        GridModule,
+        OrgFamilySelectComponent,
+        StringComponent,
+        TranslateComponent,
+    ]
 })
 
 export class AdminPageComponent implements OnInit {

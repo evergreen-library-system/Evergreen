@@ -21,6 +21,7 @@ import {VolCopyService} from './volcopy.service';
 import {NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import {BroadcastService} from '@eg/share/util/broadcast.service';
 import {CopyAttrsComponent} from './copy-attrs.component';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 const COPY_FLESH = {
     flesh: 3,
@@ -55,7 +56,11 @@ interface EditSession {
 
 @Component({
     templateUrl: 'volcopy.component.html',
-    styleUrls: ['./volcopy.component.css']
+    styleUrls: ['./volcopy.component.css'],
+    imports: [
+        StaffCommonModule,
+        VolCopyPermissionDialogComponent
+    ]
 })
 export class VolCopyComponent implements OnInit {
 

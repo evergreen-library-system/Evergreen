@@ -5,11 +5,13 @@ import {PcrudService} from '@eg/core/pcrud.service';
 import {AuthService} from '@eg/core/auth.service';
 import { HoldsService } from '@eg/staff/share/holds/holds.service';
 import {NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
-import { EmptyError, firstValueFrom, lastValueFrom, map, tap, toArray} from 'rxjs';
+import { StaffCommonModule } from '@eg/staff/common.module';
+import { lastValueFrom, map, toArray } from 'rxjs';
 
 @Component({
     selector: 'eg-catalog-part-merge-dialog',
-    templateUrl: './part-merge-dialog.component.html'
+    templateUrl: './part-merge-dialog.component.html',
+    imports: [StaffCommonModule]
 })
 
 /**

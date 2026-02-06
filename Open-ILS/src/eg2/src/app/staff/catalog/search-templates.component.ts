@@ -1,17 +1,16 @@
 import {Component, OnInit, Input, ViewChild} from '@angular/core';
-import {OrgService} from '@eg/core/org.service';
 import {StoreService} from '@eg/core/store.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
-import {PcrudService} from '@eg/core/pcrud.service';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 import {StringService} from '@eg/share/string/string.service';
 import {CatalogService} from '@eg/share/catalog/catalog.service';
 import {CatalogUrlService} from '@eg/share/catalog/catalog-url.service';
-import {CatalogSearchContext, CatalogSearchState} from '@eg/share/catalog/search-context';
+import {CatalogSearchContext} from '@eg/share/catalog/search-context';
 import {StaffCatalogService} from './catalog.service';
 import {AnonCacheService} from '@eg/share/util/anon-cache.service';
-import {NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import { StaffCommonModule } from '../common.module';
 
 const SAVED_TEMPLATES_SETTING = 'eg.catalog.search_templates';
 const RECENT_SEARCHES_KEY = 'eg.catalog.recent_searches';
@@ -28,7 +27,8 @@ class SearchTemplate {
 
 @Component({
     selector: 'eg-catalog-search-templates',
-    templateUrl: 'search-templates.component.html'
+    templateUrl: 'search-templates.component.html',
+    imports: [StaffCommonModule]
 })
 export class SearchTemplatesComponent extends DialogComponent implements OnInit {
 
@@ -46,7 +46,6 @@ export class SearchTemplatesComponent extends DialogComponent implements OnInit 
     @ViewChild('confirmDeleteSearches', { static: true }) confirmDeleteSearches: ConfirmDialogComponent;
 
     constructor(
-        private org: OrgService,
         private store: StoreService,             // anon cache key
         private serverStore: ServerStoreService, // search templates
         private cache: AnonCacheService,         // recent searches

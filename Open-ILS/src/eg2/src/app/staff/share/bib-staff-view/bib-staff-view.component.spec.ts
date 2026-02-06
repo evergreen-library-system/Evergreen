@@ -34,7 +34,6 @@ describe('BibStaffViewComponent', () => {
                 ),
                 null,
                 null,
-                null,
                 MockGenerators.staffCatService(context)
             );
             component.recordId = 123;
@@ -54,7 +53,6 @@ describe('BibStaffViewComponent', () => {
                     null,
                     MockGenerators.permService({PLACE_UNFILLABLE_HOLD: true})
                 ),
-                null,
                 null,
                 null,
                 MockGenerators.staffCatService(context)

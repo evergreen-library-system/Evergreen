@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {Observable, of, from, switchMap, mergeMap} from 'rxjs';
 import {AuthService} from '@eg/core/auth.service';
 import {GridDataSource} from '@eg/share/grid/grid';
@@ -11,6 +11,11 @@ import {ReservationActionsService} from './reservation-actions.service';
 import {CancelReservationDialogComponent} from './cancel-reservation-dialog.component';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {Pager} from '@eg/share/util/pager';
+import { StaffBannerComponent } from '../share/staff-banner.component';
+import { TitleComponent } from '@eg/share/title/title.component';
+import { GridModule } from '@eg/share/grid/grid.module';
+import { CommonModule } from '@angular/common';
+import { OrgSelectComponent } from '@eg/share/org-select/org-select.component';
 
 // The data that comes from the API, along with some fleshing
 interface PullListRow {
@@ -23,7 +28,16 @@ interface PullListRow {
 }
 
 @Component({
-    templateUrl: './pull-list.component.html'
+    templateUrl: './pull-list.component.html',
+    imports: [
+        CancelReservationDialogComponent,
+        CommonModule,
+        GridModule,
+        OrgSelectComponent,
+        ReactiveFormsModule,
+        StaffBannerComponent,
+        TitleComponent,
+    ]
 })
 
 export class PullListComponent implements OnInit {

@@ -5,11 +5,19 @@ import {BibRecordService, BibRecordSummary
 } from '@eg/share/catalog/bib-record.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
 import {CatalogService} from '@eg/share/catalog/catalog.service';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { BibDisplayFieldComponent } from '@eg/share/catalog/bib-display-field.component';
 
 @Component({
     selector: 'eg-bib-summary',
     templateUrl: 'bib-summary.component.html',
-    styleUrls: ['bib-summary.component.css']
+    styleUrls: ['bib-summary.component.css'],
+    imports: [
+        BibDisplayFieldComponent,
+        CommonModule,
+        RouterModule
+    ]
 })
 export class BibSummaryComponent implements OnInit {
 

@@ -12,10 +12,12 @@ import {ToastService} from '@eg/share/toast/toast.service';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 import {PromptDialogComponent} from '@eg/share/dialog/prompt.component';
 import {NetService} from '@eg/core/net.service';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
     selector: 'eg-sr-reports',
     templateUrl: 'sr-my-reports.component.html',
+    imports: [StaffCommonModule]
 })
 
 export class SRReportsComponent implements OnInit {

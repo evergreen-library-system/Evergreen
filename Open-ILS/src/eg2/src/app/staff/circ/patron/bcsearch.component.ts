@@ -3,10 +3,15 @@ import {Router, ActivatedRoute} from '@angular/router';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
 import {BarcodeSelectComponent} from '@eg/staff/share/barcodes/barcode-select.component';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
     templateUrl: 'bcsearch.component.html',
-    selector: 'eg-patron-barcode-search'
+    selector: 'eg-patron-barcode-search',
+    imports: [
+        BarcodeSelectComponent,
+        StaffCommonModule
+    ]
 })
 
 export class BcSearchComponent implements OnInit, AfterViewInit {

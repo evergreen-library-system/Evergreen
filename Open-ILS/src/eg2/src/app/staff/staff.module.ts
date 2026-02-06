@@ -1,4 +1,4 @@
-import {QRCodeModule} from 'angularx-qrcode';
+import {QRCodeComponent} from 'angularx-qrcode';
 
 import {NgModule} from '@angular/core';
 import {StaffCommonModule} from '@eg/staff/common.module';
@@ -14,20 +14,18 @@ import {StaffLoginNotAllowedComponent} from './login-not-allowed.component';
 import { CommonWidgetsModule } from '@eg/share/common-widgets.module';
 
 @NgModule({
-    declarations: [
-        StaffComponent,
-        StaffNavComponent,
-        StaffSplashComponent,
-        AutofocusDirective,
-        StaffLoginComponent,
-        StaffMFAComponent,
-        StaffLoginNotAllowedComponent,
-        AboutComponent
-    ],
     imports: [
+        AboutComponent,
+        AutofocusDirective,
         StaffCommonModule.forRoot(),
+        StaffComponent,
+        StaffLoginComponent,
+        StaffLoginNotAllowedComponent,
+        StaffMFAComponent,
+        StaffNavComponent,
         StaffRoutingModule,
-        QRCodeModule,
+        StaffSplashComponent,
+        QRCodeComponent,
         CommonWidgetsModule
     ]
 })

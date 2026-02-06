@@ -1,10 +1,9 @@
 
 import {Pager} from '@eg/share/util/pager';
-import {Component, OnInit, AfterViewInit, Input, ViewChild, ElementRef} from '@angular/core';
+import {Component, OnInit, Input, ViewChild, ElementRef} from '@angular/core';
 import {GridComponent} from '@eg/share/grid/grid.component';
-import {GridDataSource, GridColumn, GridRowFlairEntry} from '@eg/share/grid/grid';
+import {GridDataSource} from '@eg/share/grid/grid';
 import {ActivatedRoute} from '@angular/router';
-import {Location} from '@angular/common';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
 import {LinkedCircLimitSetsComponent} from './linked-circ-limit-sets.component';
@@ -16,9 +15,16 @@ import {AuthService} from '@eg/core/auth.service';
 import {PermService} from '@eg/core/perm.service';
 import {OrgService} from '@eg/core/org.service';
 import {OrgFamily} from '@eg/share/org-family-select/org-family-select.component';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
   @Component({
-      templateUrl: './circ-matrix-matchpoint.component.html'
+      templateUrl: './circ-matrix-matchpoint.component.html',
+      imports: [
+          CircMatrixMatchpointDialogComponent,
+          FmRecordEditorComponent,
+          LinkedCircLimitSetsComponent,
+          StaffCommonModule
+      ]
   })
 export class CircMatrixMatchpointComponent implements OnInit {
     recId: number;

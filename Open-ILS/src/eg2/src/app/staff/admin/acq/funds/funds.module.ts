@@ -13,7 +13,7 @@ import {FundRolloverDialogComponent} from './fund-rollover-dialog.component';
 import {AcqCommonModule} from '@eg/staff/acq/acq-common.module';
 
 @NgModule({
-    declarations: [
+    imports: [
         FundsComponent,
         FundsManagerComponent,
         FundDetailsDialogComponent,
@@ -21,9 +21,7 @@ import {AcqCommonModule} from '@eg/staff/acq/acq-common.module';
         FundingSourceTransactionsDialogComponent,
         FundTagsComponent,
         FundTransferDialogComponent,
-        FundRolloverDialogComponent
-    ],
-    imports: [
+        FundRolloverDialogComponent,
         StaffCommonModule,
         AdminCommonModule,
         FundsRoutingModule,

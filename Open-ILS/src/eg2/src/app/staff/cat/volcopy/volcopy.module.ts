@@ -8,14 +8,18 @@ import {VolEditComponent} from './vol-edit.component';
 import { VolEditPartDedupePipe } from './vol-edit-part-dedupe.pipe';
 import {VolCopyService} from './volcopy.service';
 import {CopyAttrsComponent} from './copy-attrs.component';
-import {ItemLocationSelectModule} from '@eg/share/item-location-select/item-location-select.module';
 import {VolCopyConfigComponent} from './config.component';
 import {VolCopyTemplateGridComponent} from './template-grid.component';
 import {VolCopyTemplateEditComponent} from './template-edit.component';
 import {VolCopyPermissionDialogComponent} from './vol-copy-permission-dialog.component';
+import { ItemLocationSelectComponent } from '@eg/share/item-location-select/item-location-select.component';
 
 @NgModule({
-    declarations: [
+    imports: [
+        StaffCommonModule,
+        CommonWidgetsModule,
+        HoldingsModule,
+        VolCopyRoutingModule,
         VolCopyComponent,
         VolEditComponent,
         CopyAttrsComponent,
@@ -23,14 +27,8 @@ import {VolCopyPermissionDialogComponent} from './vol-copy-permission-dialog.com
         VolCopyTemplateGridComponent,
         VolCopyTemplateEditComponent,
         VolCopyPermissionDialogComponent,
-        VolEditPartDedupePipe
-    ],
-    imports: [
-        StaffCommonModule,
-        CommonWidgetsModule,
-        HoldingsModule,
-        VolCopyRoutingModule,
-        ItemLocationSelectModule
+        VolEditPartDedupePipe,
+        ItemLocationSelectComponent
     ],
     exports: [
         VolCopyPermissionDialogComponent

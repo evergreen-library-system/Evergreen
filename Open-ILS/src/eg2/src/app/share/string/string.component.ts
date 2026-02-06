@@ -7,6 +7,7 @@
  * this.helloStr.currrent().then(s => console.log(s));
  *
  */
+import { NgIf, NgTemplateOutlet } from '@angular/common';
 import {Component, Input, OnInit, ElementRef, TemplateRef} from '@angular/core';
 import {StringService} from '@eg/share/string/string.service';
 
@@ -21,7 +22,8 @@ import {StringService} from '@eg/share/string/string.service';
         <span>{{text}}</span>
       </ng-container>
     </span>
-  `
+  `,
+    imports: [NgIf, NgTemplateOutlet]
 })
 
 export class StringComponent implements OnInit {

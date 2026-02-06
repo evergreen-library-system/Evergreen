@@ -1,21 +1,25 @@
 import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
-import {Router} from '@angular/router';
 import {HttpClient} from '@angular/common/http';
 import {StoreService} from '@eg/core/store.service';
-import {CatalogService} from '@eg/share/catalog/catalog.service';
 import {CatalogSearchContext} from '@eg/share/catalog/search-context';
-import {CatalogUrlService} from '@eg/share/catalog/catalog-url.service';
 import {StaffCatalogService} from '../catalog.service';
 import {BasketService} from '@eg/share/catalog/basket.service';
 import {StringService} from '@eg/share/string/string.service';
 import {ToastService} from '@eg/share/toast/toast.service';
-import {HoldingsService} from '@eg/staff/share/holdings/holdings.service';
+import { StaffCommonModule } from '@eg/staff/common.module';
+import { UploadJacketImageDialogComponent } from './upload-jacket-image-dialog.component';
+import { AddToCarouselDialogComponent } from './add-to-carousel-dialog.component';
 
 export const AC_CLEAR_CACHE_PATH = '/opac/extras/ac/clearcache/all/r/';
 
 @Component({
     selector: 'eg-catalog-record-actions',
-    templateUrl: 'actions.component.html'
+    templateUrl: 'actions.component.html',
+    imports: [
+        AddToCarouselDialogComponent,
+        StaffCommonModule,
+        UploadJacketImageDialogComponent
+    ]
 })
 export class RecordActionsComponent implements OnInit {
 
@@ -68,15 +72,11 @@ export class RecordActionsComponent implements OnInit {
     @Input() isHoldable: boolean;
 
     constructor(
-        private router: Router,
         private store: StoreService,
         private strings: StringService,
         private toast: ToastService,
-        private cat: CatalogService,
-        private catUrl: CatalogUrlService,
         private staffCat: StaffCatalogService,
         protected basket: BasketService,
-        private holdings: HoldingsService,
         private http: HttpClient
     ) {}
 

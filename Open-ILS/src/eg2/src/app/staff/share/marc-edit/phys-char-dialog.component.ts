@@ -1,10 +1,10 @@
-import {Component, ViewChild, Input, Output, OnInit, EventEmitter} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {MarcEditorDialogComponent} from './editor-dialog.component';
-import {ComboboxComponent, ComboboxEntry} from '@eg/share/combobox/combobox.component';
+import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
+import { CommonModule } from '@angular/common';
 
 /**
  * 007 Physical Characteristics Dialog
@@ -16,7 +16,8 @@ import {ComboboxComponent, ComboboxEntry} from '@eg/share/combobox/combobox.comp
 
 @Component({
     selector: 'eg-phys-char-dialog',
-    templateUrl: './phys-char-dialog.component.html'
+    templateUrl: './phys-char-dialog.component.html',
+    imports: [CommonModule]
 })
 
 export class PhysCharDialogComponent

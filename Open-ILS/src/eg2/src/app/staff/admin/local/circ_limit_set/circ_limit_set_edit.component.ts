@@ -6,10 +6,12 @@ import {ToastService} from '@eg/share/toast/toast.service';
 import {OrgService} from '@eg/core/org.service';
 import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {IdlService } from '@eg/core/idl.service';
-import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
+import {NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
-    templateUrl: './circ_limit_set_edit.component.html'
+    templateUrl: './circ_limit_set_edit.component.html',
+    imports: [StaffCommonModule]
 })
 
 export class CircLimitSetEditComponent  implements OnInit {

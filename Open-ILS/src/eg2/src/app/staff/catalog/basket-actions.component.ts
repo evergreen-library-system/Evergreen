@@ -9,12 +9,14 @@ import {StaffCatalogService} from './catalog.service';
 import {BucketDialogComponent
 } from '@eg/staff/share/buckets/bucket-dialog.component';
 import {ProgressDialogComponent} from '@eg/share/dialog/progress.component';
+import { StaffCommonModule } from '../common.module';
 
 const MAX_FROM_SEARCH_RESULTS = 1000;
 
 @Component({
     selector: 'eg-catalog-basket-actions',
-    templateUrl: 'basket-actions.component.html'
+    templateUrl: 'basket-actions.component.html',
+    imports: [StaffCommonModule]
 })
 export class BasketActionsComponent implements OnInit {
 

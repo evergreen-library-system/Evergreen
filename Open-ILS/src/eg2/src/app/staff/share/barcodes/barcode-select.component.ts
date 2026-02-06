@@ -6,6 +6,7 @@ import {PcrudService} from '@eg/core/pcrud.service';
 import {EventService} from '@eg/core/event.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 /* Support barcode completion for barcoded asset/actor data.
  *
@@ -32,6 +33,7 @@ export interface BarcodeSelectResult {
 @Component({
     selector: 'eg-barcode-select',
     templateUrl: './barcode-select.component.html',
+    imports: [StaffCommonModule]
 })
 
 export class BarcodeSelectComponent extends DialogComponent {

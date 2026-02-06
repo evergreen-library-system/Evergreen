@@ -6,7 +6,6 @@ import {from} from 'rxjs';
 import {AuthService} from '@eg/core/auth.service';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
-import {Pager} from '@eg/share/util/pager';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {GridDataSource, GridCellTextGenerator} from '@eg/share/grid/grid';
 import {ReporterService, SRTemplate} from '../share/reporter.service';
@@ -17,11 +16,17 @@ import {PromptDialogComponent} from '@eg/share/dialog/prompt.component';
 import {FolderShareOrgDialogComponent} from './folder-share-org-dialog.component';
 import {ChangeFolderDialogComponent} from './change-folder-dialog.component';
 import {NetService} from '@eg/core/net.service';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
     selector: 'eg-reporter-templates',
     templateUrl: 'my-templates.component.html',
     styleUrls: ['./my-templates.component.css'],
+    imports: [
+        ChangeFolderDialogComponent,
+        FolderShareOrgDialogComponent,
+        StaffCommonModule
+    ]
 })
 
 export class ReportTemplatesComponent implements OnInit {

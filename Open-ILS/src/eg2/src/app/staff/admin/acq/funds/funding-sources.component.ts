@@ -14,15 +14,22 @@ import {OrgService} from '@eg/core/org.service';
 import {PermService} from '@eg/core/perm.service';
 import {AuthService} from '@eg/core/auth.service';
 import {BroadcastService} from '@eg/share/util/broadcast.service';
-import {NetService} from '@eg/core/net.service';
 import {mergeMap, Observable, forkJoin, of} from 'rxjs';
 import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 import {FundingSourceTransactionsDialogComponent} from './funding-source-transactions-dialog.component';
+import { StaffCommonModule } from '@eg/staff/common.module';
+import { TranslateComponent } from '@eg/share/translate/translate.component';
 
 @Component({
     selector: 'eg-funding-sources',
-    templateUrl: './funding-sources.component.html'
+    templateUrl: './funding-sources.component.html',
+    imports: [
+        FmRecordEditorComponent,
+        FundingSourceTransactionsDialogComponent,
+        StaffCommonModule,
+        TranslateComponent
+    ]
 })
 
 export class FundingSourcesComponent extends AdminPageComponent implements OnInit, AfterViewInit {
@@ -53,7 +60,6 @@ export class FundingSourcesComponent extends AdminPageComponent implements OnIni
         pcrud: PcrudService,
         perm: PermService,
         toast: ToastService,
-        private net: NetService,
         broadcaster: BroadcastService
     ) {
         super(route, ngLocation, format, idl, org, auth, pcrud, perm, toast, broadcaster);

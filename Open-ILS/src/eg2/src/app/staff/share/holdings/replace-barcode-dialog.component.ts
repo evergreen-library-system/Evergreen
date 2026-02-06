@@ -9,6 +9,7 @@ import {ToastService} from '@eg/share/toast/toast.service';
 import {NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {StringComponent} from '@eg/share/string/string.component';
+import { CommonModule } from '@angular/common';
 
 
 /**
@@ -17,7 +18,11 @@ import {StringComponent} from '@eg/share/string/string.component';
 
 @Component({
     selector: 'eg-replace-barcode-dialog',
-    templateUrl: 'replace-barcode-dialog.component.html'
+    templateUrl: 'replace-barcode-dialog.component.html',
+    imports: [
+        CommonModule,
+        StringComponent
+    ]
 })
 
 export class ReplaceBarcodeDialogComponent

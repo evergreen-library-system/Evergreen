@@ -7,12 +7,14 @@ import {NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {ServerStoreService} from '@eg/core/server-store.service';
 import {PrintService} from '@eg/share/print/print.service';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 /** Route Item Dialog */
 
 @Component({
     templateUrl: 'route-dialog.component.html',
-    selector: 'eg-circ-route-dialog'
+    selector: 'eg-circ-route-dialog',
+    imports: [StaffCommonModule]
 })
 export class RouteDialogComponent extends DialogComponent {
 

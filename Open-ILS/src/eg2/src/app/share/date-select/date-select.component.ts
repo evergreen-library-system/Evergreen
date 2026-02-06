@@ -1,8 +1,9 @@
 /* eslint-disable eqeqeq, @angular-eslint/no-output-on-prefix */
 import {Component, OnInit, Input, Output, EventEmitter, forwardRef} from '@angular/core';
-import {NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
-import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
+import {NgbDateStruct, NgbInputDatepicker} from '@ng-bootstrap/ng-bootstrap';
+import {ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule} from '@angular/forms';
 import {DateUtil} from '@eg/share/util/date';
+import { NgClass, NgIf } from '@angular/common';
 
 /**
  * RE: displaying locale dates in the input field:
@@ -14,11 +15,18 @@ import {DateUtil} from '@eg/share/util/date';
     selector: 'eg-date-select',
     templateUrl: './date-select.component.html',
     styleUrls: ['date-select.component.css'],
-    providers: [ {
+    providers: [{
         provide: NG_VALUE_ACCESSOR,
         useExisting: forwardRef(() => DateSelectComponent),
         multi: true
-    } ]
+    }],
+    imports: [
+        FormsModule,
+        ReactiveFormsModule,
+        NgbInputDatepicker,
+        NgClass,
+        NgIf
+    ]
 })
 export class DateSelectComponent implements OnInit, ControlValueAccessor {
 

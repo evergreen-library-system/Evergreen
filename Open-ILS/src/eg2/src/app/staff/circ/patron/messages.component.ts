@@ -15,6 +15,7 @@ import {Pager} from '@eg/share/util/pager';
 import {DateUtil} from '@eg/share/util/date';
 import {PatronNoteDialogComponent
 } from '@eg/staff/share/patron/note-dialog.component';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 
 enum NoteAction {
@@ -25,7 +26,11 @@ enum NoteAction {
 
 @Component({
     selector: 'eg-patron-messages',
-    templateUrl: 'messages.component.html'
+    templateUrl: 'messages.component.html',
+    imports: [
+        PatronNoteDialogComponent,
+        StaffCommonModule
+    ]
 })
 export class PatronMessagesComponent implements OnInit, OnDestroy {
 

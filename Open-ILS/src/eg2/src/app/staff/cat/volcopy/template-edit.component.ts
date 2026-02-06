@@ -8,11 +8,16 @@ import {AuthService} from '@eg/core/auth.service';
 import {VolCopyContext} from './volcopy';
 import {VolCopyService} from './volcopy.service';
 import {CopyAttrsComponent} from './copy-attrs.component';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
     selector: 'eg-volcopy-template-edit',
     templateUrl: 'template-edit.component.html',
-    styles: ['::ng-deep body:has(eg-volcopy-template-edit) { background-color: var(--bs-body-bg-highlight) }']
+    styles: ['::ng-deep body:has(eg-volcopy-template-edit) { background-color: var(--bs-body-bg-highlight) }'],
+    imports: [
+        CopyAttrsComponent,
+        StaffCommonModule
+    ]
 })
 export class VolCopyTemplateEditComponent implements OnInit, OnDestroy {
 

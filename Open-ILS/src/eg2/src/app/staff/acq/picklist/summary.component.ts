@@ -10,11 +10,17 @@ import {ServerStoreService} from '@eg/core/server-store.service';
 import {EventService} from '@eg/core/event.service';
 import {HoldingsService} from '@eg/staff/share/holdings/holdings.service';
 import {BroadcastService} from '@eg/share/util/broadcast.service';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 
 @Component({
     templateUrl: 'summary.component.html',
-    selector: 'eg-acq-picklist-summary'
+    selector: 'eg-acq-picklist-summary',
+    imports: [
+        CommonModule,
+        FormsModule
+    ]
 })
 export class PicklistSummaryComponent implements OnInit {
 

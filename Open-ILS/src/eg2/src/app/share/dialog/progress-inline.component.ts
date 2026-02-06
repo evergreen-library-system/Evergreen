@@ -1,4 +1,5 @@
-import {Component, Input, ViewChild, TemplateRef} from '@angular/core';
+import { NgIf } from '@angular/common';
+import {Component, Input} from '@angular/core';
 
 /**
  * Inline Progress Bar
@@ -35,7 +36,8 @@ import {Component, Input, ViewChild, TemplateRef} from '@angular/core';
 @Component({
     selector: 'eg-progress-inline',
     templateUrl: './progress-inline.component.html',
-    styleUrls: ['progress-inline.component.css']
+    styleUrls: ['progress-inline.component.css'],
+    imports: [NgIf]
 })
 export class ProgressInlineComponent {
 

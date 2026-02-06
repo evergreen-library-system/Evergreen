@@ -3,7 +3,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {from, Observable, Subject, lastValueFrom, firstValueFrom, defaultIfEmpty, EMPTY,
     map, switchMap, takeUntil, take, catchError} from 'rxjs';
 import {AuthService} from '@eg/core/auth.service';
-import {IdlObject,IdlService} from '@eg/core/idl.service';
+import {IdlService} from '@eg/core/idl.service';
 import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
 import {NetService} from '@eg/core/net.service';
 import {EventService} from '@eg/core/event.service';
@@ -23,6 +23,7 @@ import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
 import {PromptDialogComponent} from '@eg/share/dialog/prompt.component';
 import {RecordBucketExportDialogComponent} from '@eg/staff/share/buckets/record-bucket-export-dialog.component';
 import {RecordBucketItemUploadDialogComponent} from '@eg/staff/share/buckets/record-bucket-item-upload-dialog.component';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 /**
  * Record bucket grid interface
@@ -43,7 +44,16 @@ interface BucketView {
 @Component({
     selector: 'eg-record-bucket',
     templateUrl: 'record-bucket.component.html',
-    styleUrls: ['./record-bucket.component.css']
+    styleUrls: ['./record-bucket.component.css'],
+    imports: [
+        BucketActionSummaryDialogComponent,
+        BucketShareDialogComponent,
+        BucketTransferDialogComponent,
+        FmRecordEditorComponent,
+        RecordBucketItemUploadDialogComponent,
+        RecordBucketExportDialogComponent,
+        StaffCommonModule
+    ]
 })
 
 export class RecordBucketComponent implements OnInit, OnDestroy {

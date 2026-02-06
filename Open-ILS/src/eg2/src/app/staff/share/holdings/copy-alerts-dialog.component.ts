@@ -16,6 +16,8 @@ import {
     IThingChanges,
     IThingConfig
 } from './copy-things-dialog.component';
+import { StringComponent } from '@eg/share/string/string.component';
+import { CopyThingsDialogWrapperComponent } from './copy-things-dialog-wrapper.component';
 
 export interface ICopyAlert extends IThingObject {
     alert_type(val?: number): number;
@@ -40,7 +42,13 @@ export interface ICopyAlertChanges extends IThingChanges<ICopyAlert> {
 
 @Component({
     selector: 'eg-copy-alerts-dialog',
-    templateUrl: 'copy-alerts-dialog.component.html'
+    templateUrl: 'copy-alerts-dialog.component.html',
+    imports: [
+        ComboboxComponent,
+        CopyThingsDialogWrapperComponent,
+        FormsModule,
+        StringComponent
+    ]
 })
 export class CopyAlertsDialogComponent extends
     CopyThingsDialogComponent<ICopyAlert, ICopyAlertChanges> {
@@ -357,9 +365,9 @@ export function inactiveEntry(): ValidatorFn {
 }
 
 @Directive({
-// eslint-disable-next-line @angular-eslint/directive-selector
+    // eslint-disable-next-line @angular-eslint/directive-selector
     selector: '[validateDisabledSelection]',
-    providers: [{ provide: NG_VALIDATORS, useExisting: AlertTypeValidatorDirective, multi: true }]
+    providers: [{ provide: NG_VALIDATORS, useExisting: AlertTypeValidatorDirective, multi: true }],
 })
 
 export class AlertTypeValidatorDirective implements Validator {

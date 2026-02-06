@@ -1,12 +1,13 @@
-import {Component, Input, ViewChild, TemplateRef, OnInit} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
-import {IdlService, IdlObject} from '@eg/core/idl.service';
-import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
     selector: 'eg-acq-export-attributes-dialog',
-    templateUrl: './export-attributes-dialog.component.html'
+    templateUrl: './export-attributes-dialog.component.html',
+    imports: [CommonModule, FormsModule]
 })
 
 export class ExportAttributesDialogComponent extends DialogComponent {

@@ -3,9 +3,11 @@ import {Router, ActivatedRoute, NavigationEnd} from '@angular/router';
 import {take} from 'rxjs';
 import {VandelayService} from './vandelay.service';
 import {OrgService}  from '@eg/core/org.service';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
-    templateUrl: 'vandelay.component.html'
+    templateUrl: 'vandelay.component.html',
+    imports: [StaffCommonModule]
 })
 export class VandelayComponent implements OnInit {
     tab: string;

@@ -11,8 +11,14 @@ import {ComboboxEntry, ComboboxComponent
 } from '@eg/share/combobox/combobox.component';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 import {MarcEditContext, MARC_RECORD_TYPE} from './editor-context';
-import {NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
+import {NgbNavChangeEvent, NgbNavModule} from '@ng-bootstrap/ng-bootstrap';
 import {HoldingsService} from '@eg/staff/share/holdings/holdings.service';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { AlertDialogComponent } from '@eg/share/dialog/alert.component';
+import { ProgressInlineComponent } from '@eg/share/dialog/progress-inline.component';
+import { MarcFlatEditorComponent } from './flat-editor.component';
+import { MarcRichEditorComponent } from './rich-editor.component';
 import { FastAddItem, FastAddSelectorComponent } from './fast-add-selector-component';
 import { Maybe, None } from '@eg/share/maybe';
 
@@ -31,7 +37,19 @@ export interface MarcSavedEvent {
 @Component({
     selector: 'eg-marc-editor',
     templateUrl: './editor.component.html',
-    styleUrls: ['editor.component.css', 'rich-editor-colors.css']
+    styleUrls: ['editor.component.css', 'rich-editor-colors.css'],
+    imports: [
+        AlertDialogComponent,
+        ComboboxComponent,
+        CommonModule,
+        ConfirmDialogComponent,
+        FormsModule,
+        MarcFlatEditorComponent,
+        MarcRichEditorComponent,
+        NgbNavModule,
+        ProgressInlineComponent,
+        StringComponent
+    ]
 })
 
 export class MarcEditorComponent implements OnInit, AfterContentInit {

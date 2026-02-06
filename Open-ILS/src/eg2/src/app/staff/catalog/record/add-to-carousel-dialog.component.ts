@@ -9,10 +9,12 @@ import {ToastService} from '@eg/share/toast/toast.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {StringComponent} from '@eg/share/string/string.component';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
     selector: 'eg-add-to-carousel-dialog',
-    templateUrl: './add-to-carousel-dialog.component.html'
+    templateUrl: './add-to-carousel-dialog.component.html',
+    imports: [StaffCommonModule]
 })
 
 

@@ -11,6 +11,8 @@ import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 import {HoldingsService} from './holdings.service';
 import {CopyAlertsDialogComponent} from '@eg/staff/share/holdings/copy-alerts-dialog.component';
+import { StringComponent } from '@eg/share/string/string.component';
+import { CommonModule } from '@angular/common';
 
 /**
  * Dialog for managing copy alerts.
@@ -19,7 +21,12 @@ import {CopyAlertsDialogComponent} from '@eg/staff/share/holdings/copy-alerts-di
 @Component({
     selector: 'eg-copy-alert-manager',
     templateUrl: 'copy-alert-manager.component.html',
-    styles: ['.acknowledged {text-decoration: line-through }']
+    styles: ['.acknowledged {text-decoration: line-through }'],
+    imports: [
+        CommonModule,
+        CopyAlertsDialogComponent,
+        StringComponent,
+    ]
 })
 
 export class CopyAlertManagerDialogComponent extends DialogComponent {

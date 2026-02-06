@@ -3,15 +3,21 @@ import {ComboboxEntry, ComboboxComponent} from '@eg/share/combobox/combobox.comp
 import {Component, Input, OnInit, OnDestroy, ViewChild, Renderer2} from '@angular/core';
 import {GridContext} from '@eg/share/grid/grid';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
-import {NgForm} from '@angular/forms';
+import {FormsModule, NgForm} from '@angular/forms';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
 import {Subject, Subscription, debounceTime, distinctUntilChanged} from 'rxjs';
+import { NgIf } from '@angular/common';
 
 @Component({
     selector: 'eg-grid-manage-filters-dialog',
-    templateUrl: './grid-manage-filters-dialog.component.html'
+    templateUrl: './grid-manage-filters-dialog.component.html',
+    imports: [
+        ComboboxComponent,
+        FormsModule,
+        NgIf
+    ]
 })
 
 export class GridManageFiltersDialogComponent extends DialogComponent implements OnInit, OnDestroy {

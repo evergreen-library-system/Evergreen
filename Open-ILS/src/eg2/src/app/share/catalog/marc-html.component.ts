@@ -1,6 +1,5 @@
 import {Component, OnInit, Input, ElementRef} from '@angular/core';
 import {NetService} from '@eg/core/net.service';
-import {OrgService} from '@eg/core/org.service';
 import {AuthService} from '@eg/core/auth.service';
 
 @Component({

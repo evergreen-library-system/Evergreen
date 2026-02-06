@@ -7,10 +7,12 @@ import {EventService} from '@eg/core/event.service';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {HttpClient, HttpResponse} from '@angular/common/http';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
     selector: 'eg-upload-jacket-image-dialog',
-    templateUrl: './upload-jacket-image-dialog.component.html'
+    templateUrl: './upload-jacket-image-dialog.component.html',
+    imports: [StaffCommonModule]
 })
 
 

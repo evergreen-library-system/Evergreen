@@ -1,9 +1,7 @@
-import {Component, Input, ViewChild, TemplateRef, OnInit} from '@angular/core';
+import {Component, Input, ViewChild, OnInit} from '@angular/core';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {FormatService} from '@eg/core/format.service';
-import {EventService} from '@eg/core/event.service';
-import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {StoreService} from '@eg/core/store.service';
@@ -16,10 +14,16 @@ import {StringComponent} from '@eg/share/string/string.component';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {FundTransferDialogComponent} from './fund-transfer-dialog.component';
 import {mergeMap, Observable, of} from 'rxjs';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
     selector: 'eg-fund-details-dialog',
-    templateUrl: './fund-details-dialog.component.html'
+    templateUrl: './fund-details-dialog.component.html',
+    imports: [
+        FmRecordEditorComponent,
+        FundTransferDialogComponent,
+        StaffCommonModule
+    ]
 })
 
 export class FundDetailsDialogComponent
@@ -45,8 +49,6 @@ export class FundDetailsDialogComponent
 
     constructor(
         private idl: IdlService,
-        private evt: EventService,
-        private net: NetService,
         private auth: AuthService,
         private pcrud: PcrudService,
         private store: StoreService,

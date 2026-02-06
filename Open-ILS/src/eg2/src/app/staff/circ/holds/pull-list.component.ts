@@ -1,13 +1,18 @@
 import {Component} from '@angular/core';
-import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
-import {Router, ActivatedRoute, ParamMap} from '@angular/router';
+import {Router, ActivatedRoute} from '@angular/router';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {AuthService} from '@eg/core/auth.service';
 import {StoreService} from '@eg/core/store.service';
+import { StaffCommonModule } from '@eg/staff/common.module';
+import { HoldsGridComponent } from '@eg/staff/share/holds/grid.component';
 
 @Component({
     selector: 'eg-holds-pull-list',
-    templateUrl: 'pull-list.component.html'
+    templateUrl: 'pull-list.component.html',
+    imports: [
+        HoldsGridComponent,
+        StaffCommonModule
+    ]
 })
 export class HoldsPullListComponent {
 

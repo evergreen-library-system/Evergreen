@@ -1,7 +1,7 @@
 /* eslint-disable */
 /* eslint-disable rxjs/no-nested-subscribe */
 import {Component, OnInit, OnDestroy, Input, ViewChild, ChangeDetectorRef, OnChanges, SimpleChanges, NgZone} from '@angular/core';
-import {Router, ActivatedRoute, ParamMap} from '@angular/router';
+import {Router, ActivatedRoute, ParamMap, RouterModule} from '@angular/router';
 import {takeWhile, firstValueFrom, lastValueFrom, from, of, Subscription, Subject} from 'rxjs';
 import {takeUntil, defaultIfEmpty, debounceTime, tap, concatMap} from 'rxjs/operators';
 import {Pager} from '@eg/share/util/pager';
@@ -16,7 +16,7 @@ import {ServerStoreService} from '@eg/core/server-store.service';
 import {LineitemService, LINEITEM_DISPOSITION} from './lineitem.service';
 import {PoService} from '../po/po.service';
 import {InvoiceService} from '../invoice/invoice.service';
-import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
+import {ComboboxComponent, ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {HoldingsService} from '@eg/staff/share/holdings/holdings.service';
 import {StringComponent} from '@eg/share/string/string.component';
 import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
@@ -32,6 +32,11 @@ import {ClaimPolicyDialogComponent} from './claim-policy-dialog.component';
 import {ManageClaimsDialogComponent} from './manage-claims-dialog.component';
 import {LineitemAlertDialogComponent} from './lineitem-alert-dialog.component';
 import {AddExtraItemsForOrderDialogComponent} from './add-extra-items-for-order-dialog.component';
+import { ProgressInlineComponent } from '@eg/share/dialog/progress-inline.component';
+import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { LineitemCopyAttrsComponent } from './copy-attrs.component';
 
 const DELETABLE_STATES = [
     'new', 'selector-ready', 'order-ready', 'approved', 'pending-order'
@@ -58,7 +63,30 @@ const SORT_ORDER_MAP = {
 @Component({
     templateUrl: 'lineitem-list.component.html',
     selector: 'eg-lineitem-list',
-    styleUrls: ['lineitem-list.component.css']
+    styleUrls: ['lineitem-list.component.css'],
+    imports: [
+        AddExtraItemsForOrderDialogComponent,
+        AddCopiesDialogComponent,
+        AlertDialogComponent,
+        BatchUpdateCopiesDialogComponent,
+        BibFinderDialogComponent,
+        CancelDialogComponent,
+        ClaimPolicyDialogComponent,
+        ComboboxComponent,
+        CommonModule,
+        ConfirmDialogComponent,
+        DeleteLineitemsDialogComponent,
+        ExportAttributesDialogComponent,
+        FormsModule,
+        LineitemAlertDialogComponent,
+        LineitemCopyAttrsComponent,
+        LinkInvoiceDialogComponent,
+        ManageClaimsDialogComponent,
+        NgbDropdownModule,
+        ProgressInlineComponent,
+        RouterModule,
+        StringComponent,
+    ]
 })
 export class LineitemListComponent implements OnInit, OnDestroy, OnChanges {
 

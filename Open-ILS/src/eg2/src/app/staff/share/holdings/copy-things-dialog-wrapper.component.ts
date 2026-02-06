@@ -1,9 +1,11 @@
+import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { IdlObject } from '@eg/core/idl.service';
 
 @Component({
     selector: 'eg-copy-things-dialog',
-    templateUrl: './copy-things-dialog-wrapper.component.html'
+    templateUrl: './copy-things-dialog-wrapper.component.html',
+    imports: [CommonModule]
 })
 export class CopyThingsDialogWrapperComponent {
     @Input() thingType: string;

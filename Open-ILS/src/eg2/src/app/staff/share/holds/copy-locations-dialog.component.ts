@@ -1,5 +1,7 @@
 /* eslint-disable brace-style, no-shadow */
+import { CommonModule } from '@angular/common';
 import {Component, Input, OnDestroy, ViewChild} from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import {IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
 import {PcrudService} from '@eg/core/pcrud.service';
@@ -22,7 +24,13 @@ import {BehaviorSubject, Observable, Subject, of, catchError, exhaustMap,
  */
 @Component({
     selector: 'eg-hold-copy-locations-dialog',
-    templateUrl: './copy-locations-dialog.component.html'
+    templateUrl: './copy-locations-dialog.component.html',
+    imports: [
+        ComboboxComponent,
+        CommonModule,
+        FormsModule,
+        StringComponent,
+    ]
 })
 export class HoldCopyLocationsDialogComponent
     extends DialogComponent implements OnDestroy {

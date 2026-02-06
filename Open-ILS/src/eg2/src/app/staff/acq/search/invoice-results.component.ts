@@ -1,5 +1,5 @@
 import {Component, OnInit, Input, ViewChild} from '@angular/core';
-import {Router, ActivatedRoute} from '@angular/router';
+import {RouterModule} from '@angular/router';
 import {IdlObject} from '@eg/core/idl.service';
 import {EventService} from '@eg/core/event.service';
 import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
@@ -10,10 +10,17 @@ import {GridComponent} from '@eg/share/grid/grid.component';
 import {GridDataSource, GridCellTextGenerator} from '@eg/share/grid/grid';
 import {AcqSearchService, AcqSearchTerm, AcqSearch} from './acq-search.service';
 import {AcqSearchFormComponent} from './acq-search-form.component';
+import { GridModule } from '@eg/share/grid/grid.module';
 
 @Component({
     selector: 'eg-invoice-results',
-    templateUrl: 'invoice-results.component.html'
+    templateUrl: 'invoice-results.component.html',
+    imports: [
+        AcqSearchFormComponent,
+        AlertDialogComponent,
+        GridModule,
+        RouterModule,
+    ]
 })
 export class InvoiceResultsComponent implements OnInit {
 
@@ -41,8 +48,6 @@ export class InvoiceResultsComponent implements OnInit {
     }];
 
     constructor(
-        private router: Router,
-        private route: ActivatedRoute,
         private printer: PrintService,
         private evt: EventService,
         private net: NetService,

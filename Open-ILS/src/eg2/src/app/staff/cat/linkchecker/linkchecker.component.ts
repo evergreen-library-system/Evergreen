@@ -8,14 +8,20 @@ import {GridDataSource} from '@eg/share/grid/grid';
 import {GridFlatDataService} from '@eg/share/grid/grid-flat-data.service';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
-import {OrgFamily} from '@eg/share/org-family-select/org-family-select.component';
+import {OrgFamily, OrgFamilySelectComponent} from '@eg/share/org-family-select/org-family-select.component';
 import {OrgService} from '@eg/core/org.service';
 import {Pager} from '@eg/share/util/pager';
 import {PermService} from '@eg/core/perm.service';
 import {StringComponent} from '@eg/share/string/string.component';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
-    templateUrl: 'linkchecker.component.html'
+    templateUrl: 'linkchecker.component.html',
+    imports: [
+        NewSessionDialogComponent,
+        OrgFamilySelectComponent,
+        StaffCommonModule
+    ]
 })
 export class LinkCheckerComponent implements OnInit {
 

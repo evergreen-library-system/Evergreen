@@ -5,7 +5,7 @@ import {PcrudService} from '@eg/core/pcrud.service';
 import {CourseService} from '@eg/staff/share/course.service';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {Pager} from '@eg/share/util/pager';
-import {GridDataSource, GridColumn} from '@eg/share/grid/grid';
+import {GridDataSource} from '@eg/share/grid/grid';
 import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
 import {StringComponent} from '@eg/share/string/string.component';
 import {ToastService} from '@eg/share/toast/toast.service';
@@ -14,10 +14,17 @@ import {OrgService} from '@eg/core/org.service';
 import {OrgFamily} from '@eg/share/org-family-select/org-family-select.component';
 
 export const WINDOW = new InjectionToken<Window>('Browser window', {  providedIn: 'root',  factory: () => window});
+import {CourseAssociateMaterialComponent
+} from './course-associate-material.component';
+
+import {CourseAssociateUsersComponent
+} from './course-associate-users.component';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
     templateUrl: './course-list.component.html',
-    styleUrls: ['./course-page.component.css']
+    styleUrls: ['./course-page.component.css'],
+    imports: [FmRecordEditorComponent, StaffCommonModule]
 })
 
 export class CourseListComponent implements OnInit, AfterViewInit {

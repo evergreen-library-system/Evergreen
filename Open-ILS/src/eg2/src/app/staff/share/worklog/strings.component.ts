@@ -1,6 +1,6 @@
-import {Component, OnInit, Output, Input, ViewChild, EventEmitter} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {StringComponent} from '@eg/share/string/string.component';
-import {WorkLogService, WorkLogEntry} from './worklog.service';
+import {WorkLogService} from './worklog.service';
 
 /** Component for housing strings related to the worklog service
  *
@@ -11,7 +11,8 @@ import {WorkLogService, WorkLogEntry} from './worklog.service';
 
 @Component({
     templateUrl: 'strings.component.html',
-    selector: 'eg-worklog-strings-components'
+    selector: 'eg-worklog-strings-components',
+    imports: [StringComponent]
 })
 export class WorkLogStringsComponent {
 

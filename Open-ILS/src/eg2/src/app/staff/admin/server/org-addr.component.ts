@@ -6,13 +6,15 @@ import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
 import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import {ToastService} from '@eg/share/toast/toast.service';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 const ADDR_TYPES =
     ['billing_address', 'holds_address', 'mailing_address', 'ill_address'];
 
 @Component({
     selector: 'eg-admin-org-address',
-    templateUrl: './org-addr.component.html'
+    templateUrl: './org-addr.component.html',
+    imports: [StaffCommonModule]
 })
 export class OrgAddressComponent {
 

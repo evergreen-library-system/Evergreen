@@ -2,6 +2,7 @@ import {Component, OnInit, Input} from '@angular/core';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 // Can be used to create match_set_point's and match_set_quality's
 export class MatchSetPointValues {
@@ -18,7 +19,8 @@ export class MatchSetPointValues {
 
 @Component({
     selector: 'eg-match-set-new-point',
-    templateUrl: 'match-set-new-point.component.html'
+    templateUrl: 'match-set-new-point.component.html',
+    imports: [StaffCommonModule]
 })
 export class MatchSetNewPointComponent implements OnInit {
 

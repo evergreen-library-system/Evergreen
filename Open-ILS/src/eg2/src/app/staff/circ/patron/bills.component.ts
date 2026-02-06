@@ -26,11 +26,17 @@ import {AudioService} from '@eg/share/util/audio.service';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {GridFlatDataService} from '@eg/share/grid/grid-flat-data.service';
 import {WorkLogService} from '@eg/staff/share/worklog/worklog.service';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
     templateUrl: 'bills.component.html',
     selector: 'eg-patron-bills',
-    styleUrls: ['bills.component.css']
+    styleUrls: ['bills.component.css'],
+    imports: [
+        AddBillingDialogComponent,
+        CreditCardDialogComponent,
+        StaffCommonModule
+    ]
 })
 export class BillsComponent implements OnInit, AfterViewInit {
 

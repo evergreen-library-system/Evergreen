@@ -4,11 +4,9 @@ import {FieldDocumentationComponent} from './field-documentation.component';
 import {FieldDocumentationRoutingModule} from './routing.module';
 
 @NgModule({
-    declarations: [
-        FieldDocumentationComponent
-    ],
     imports: [
         AdminCommonModule,
+        FieldDocumentationComponent,
         FieldDocumentationRoutingModule
     ],
     exports: [],
