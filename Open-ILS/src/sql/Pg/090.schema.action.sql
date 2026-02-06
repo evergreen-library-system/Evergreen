@@ -365,7 +365,7 @@ BEGIN
     -- Archive a copy of the old row to action.aged_circulation
 
     INSERT INTO action.aged_circulation
-        (id, kept_postcode, usr_home_ou, usr_profile, kept_year, copy_call_number, copy_location,
+        (id, usr_post_code, usr_home_ou, usr_profile, usr_birth_year, copy_call_number, copy_location,
         copy_owning_lib, copy_circ_lib, copy_bib_record, xact_start, xact_finish, target_copy,
         circ_lib, circ_staff, checkin_staff, checkin_lib, renewal_remaining, grace_period, due_date,
         stop_fines_time, checkin_time, create_time, duration, fine_interval, recurring_fine,
@@ -373,7 +373,7 @@ BEGIN
         max_fine_rule, stop_fines, workstation, checkin_workstation, checkin_scan_time, parent_circ,
         auto_renewal, auto_renewal_remaining)
       SELECT
-        id,usr_post_code, usr_home_ou, usr_profile, usr_birth_year, copy_call_number, copy_location,
+        id, kept_postcode, usr_home_ou, usr_profile, kept_year, copy_call_number, copy_location,
         copy_owning_lib, copy_circ_lib, copy_bib_record, xact_start, xact_finish, target_copy,
         circ_lib, circ_staff, checkin_staff, checkin_lib, renewal_remaining, grace_period, due_date,
         stop_fines_time, checkin_time, create_time, duration, fine_interval, recurring_fine,
@@ -859,10 +859,10 @@ BEGIN
     -- Archive a copy of the old row to action.aged_hold_request
 
     INSERT INTO action.aged_hold_request
-           (kept_postcode,
+           (usr_post_code,
             usr_home_ou,
             usr_profile,
-            kept_year,
+            usr_birth_year,
             staff_placed,
             id,
             request_time,
@@ -897,10 +897,10 @@ BEGIN
             current_shelf_lib,
             behind_desk)
       SELECT 
-           usr_post_code,
+           kept_postcode,
            usr_home_ou,
            usr_profile,
-           usr_birth_year,
+           kept_year,
            staff_placed,
            id,
            request_time,
