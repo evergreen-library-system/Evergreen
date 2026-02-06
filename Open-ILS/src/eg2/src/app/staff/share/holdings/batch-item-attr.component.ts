@@ -127,17 +127,21 @@ export class BatchItemAttrComponent implements OnInit {
         this.focusLabel();
     }
 
-    cancelFilter($event?: Event) {
+    selectAllForFilter($event?: Event) {
         if ($event) {
             $event.preventDefault();
             $event.stopPropagation();
         }
         Object.keys(this.labelCounts).forEach(key => this.editValues[key] = true);
-        this.editing = false;
-        this.checkValuesForCSS();
-        this.filterApplied.emit(this.editValues);
-        this.focusLabel();
     }
+    selectNoneForFilter($event?: Event) {
+        if ($event) {
+            $event.preventDefault();
+            $event.stopPropagation();
+        }
+        Object.keys(this.labelCounts).forEach(key => this.editValues[key] = false);
+    }
+
 
     clear($event?: Event) {
         if ($event) {

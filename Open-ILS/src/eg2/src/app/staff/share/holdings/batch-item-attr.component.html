@@ -75,7 +75,8 @@
 
     <div *ngIf="selectOnly" class="edit-buttons">
       <button type="submit" class="btn btn-sm btn-primary" (click)="applyFilter($event)" i18n>Apply Filter</button>
-      <button type="button" class="btn btn-sm btn-normal ms-1" (click)="cancelFilter($event)" i18n>Remove Filter</button>
+      <button type="button" class="btn btn-sm btn-normal ms-1" (click)="selectAllForFilter($event)" i18n>Select All</button>
+      <button type="button" class="btn btn-sm btn-normal ms-1" (click)="selectNoneForFilter($event)" i18n>Select None</button>
     </div>
 
   </div>
