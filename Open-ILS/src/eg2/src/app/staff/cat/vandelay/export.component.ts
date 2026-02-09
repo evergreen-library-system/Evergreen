@@ -103,7 +103,7 @@ export class ExportComponent implements AfterViewInit, OnInit {
                 case 'csv':
                     formData.append('idcolumn', '' + this.fieldNumber);
                     formData.append('idfile',
-                        this.selectedFile, this.selectedFile.name);
+                        this.selectedFile, this.selectedFile?.name);
                     break;
 
                 case 'record-id':

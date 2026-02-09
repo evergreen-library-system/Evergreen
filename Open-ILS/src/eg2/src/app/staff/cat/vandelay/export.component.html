@@ -16,7 +16,7 @@
           <h3 i18n>Select a Record Source</h3>
           <div ngbAccordion [closeOthers]="true">
             <div ngbAccordionItem [collapsed]="false"> 
-              <h4 ngbAccordionHeader><button ngbAccordionButton i18n>CSV File</button></h4>
+              <h4 ngbAccordionHeader><button ngbAccordionButton (click)="recordSource='csv'" i18n>CSV File</button></h4>
               <div ngbAccordionCollapse>
                 <div ngbAccordionBody>
                   <div class="row">
@@ -42,7 +42,7 @@
               </div>
             </div>
             <div ngbAccordionItem>
-              <h4 ngbAccordionHeader><button ngbAccordionButton i18n>Record ID</button></h4>
+              <h4 ngbAccordionHeader><button ngbAccordionButton (click)="recordSource='record-id'" i18n>Record ID</button></h4>
               <div ngbAccordionCollapse>
                 <div ngbAccordionBody>
                   <div class="row">
@@ -58,7 +58,7 @@
               </div>
             </div>
             <div ngbAccordionItem>
-              <h4 ngbAccordionHeader><button ngbAccordionButton i18n>Bucket ID</button></h4>
+              <h4 ngbAccordionHeader><button ngbAccordionButton (click)="recordSource='bucket-id'" i18n>Bucket ID</button></h4>
               <div ngbAccordionCollapse>
                 <div ngbAccordionBody>
                   <div class="row">
