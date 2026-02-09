@@ -170,6 +170,10 @@
         (click)="printReceipt()" i18n>Print Receipt</button>
     </div>
     <div class="me-3">
+      <button type="button" class="btn btn-outline-dark"
+        (click)="emailReceipt()" i18n>Email Receipt</button>
+    </div>
+    <div class="me-3">
       <div class="form-check form-check-inline">
         <input class="form-check-input" type="checkbox" 
           id="trim-list-cbox" [(ngModel)]="trimList"/>

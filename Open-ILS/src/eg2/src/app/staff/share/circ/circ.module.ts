@@ -16,6 +16,7 @@ import {CancelTransitDialogComponent} from './cancel-transit-dialog.component';
 import {BackdateDialogComponent} from './backdate-dialog.component';
 import {WorkLogModule} from '@eg/staff/share/worklog/worklog.module';
 import {BadBarcodeDialogComponent} from './bad-barcode-dialog.component';
+import {CircEmailReceiptDialogComponent} from './circ-email-receipt-dialog.component';
 
 @NgModule({
     declarations: [
@@ -30,7 +31,8 @@ import {BadBarcodeDialogComponent} from './bad-barcode-dialog.component';
         CopyInTransitDialogComponent,
         CancelTransitDialogComponent,
         BadBarcodeDialogComponent,
-        OpenCircDialogComponent
+        OpenCircDialogComponent,
+        CircEmailReceiptDialogComponent
     ],
     imports: [
         StaffCommonModule,

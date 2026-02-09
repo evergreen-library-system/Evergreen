@@ -44,7 +44,13 @@ sub circ_batch_notify {
     my $circs = $e->search_action_circulation({ id => $circlist });
     return $e->event if $e->event;
 
-    my $hook = 'circ.checkout.batch_notify';
+    my $hook = 'circ.' . (
+        $self->api_name =~ /checkin/   ? 'checkin' :
+        $self->api_name =~ /items_out/ ? 'items_out' :
+        $self->api_name =~ /renew/     ? 'renew' : 'checkout'
+    );
+
+    $hook .= '.batch_notify';
     $hook .= '.session' if $self->api_name =~ /session/;
 
     for my $circ (@$circs) {
@@ -140,6 +146,24 @@ __PACKAGE__->register_method(
                     'otherwise. See: open-ils.trigger.event_group.fire'
         }
     }
+);
+__PACKAGE__->register_method(
+    method   => 'circ_batch_notify',
+    api_name => 'open-ils.circ.checkin.batch_notify',
+    stream   => 1,
+    signature => q/@see open-ils.circ.checkout.batch_notify/
+);
+__PACKAGE__->register_method(
+    method   => 'circ_batch_notify',
+    api_name => 'open-ils.circ.items_out.batch_notify',
+    stream   => 1,
+    signature => q/@see open-ils.circ.checkout.batch_notify/
+);
+__PACKAGE__->register_method(
+    method   => 'circ_batch_notify',
+    api_name => 'open-ils.circ.renew.batch_notify',
+    stream   => 1,
+    signature => q/@see open-ils.circ.checkout.batch_notify/
 );
 
 1;

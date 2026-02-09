@@ -31,7 +31,9 @@ angular.module('egRenewApp',
 
 .controller('RenewCtrl',
        ['$scope','$window','$location','egCore','egGridDataProvider','egCirc',
-function($scope , $window , $location , egCore , egGridDataProvider , egCirc) {
+        'ngToast',
+function($scope , $window , $location , egCore , egGridDataProvider , egCirc,
+         ngToast) {
     var now = new Date();
 
     egCore.hatch.getItem('circ.renew.strict_barcode')
@@ -269,5 +271,15 @@ function($scope , $window , $location , egCore , egGridDataProvider , egCirc) {
             scope : print_data,
         });
     }
+
+    $scope.email_receipt = function() {
+        return egCirc.email_renew_receipt(
+            $scope.renewals
+        ).then(function(msg) {
+            if (msg) { ngToast.create(msg) };
+        }).catch(function(errorMsg) {
+            if (errorMsg) { ngToast.danger(errorMsg); }
+        });
+    };
 }])
 

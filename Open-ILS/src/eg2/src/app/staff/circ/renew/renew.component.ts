@@ -2,7 +2,7 @@
 import {Component, ViewChild, OnInit, AfterViewInit} from '@angular/core';
 import {Location} from '@angular/common';
 import {Router, ActivatedRoute} from '@angular/router';
-import {empty, from, concatMap} from 'rxjs';
+import {empty, from, concatMap, EMPTY, catchError, tap} from 'rxjs';
 import {IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {OrgService} from '@eg/core/org.service';
@@ -193,6 +193,16 @@ export class RenewComponent implements OnInit, AfterViewInit {
             templateName: 'renew',
             contextData: {renewals: this.renewals}
         });
+    }
+
+    emailReceipt(): void {
+        this.circ.emailRenewReceipt(this.renewals).pipe(
+            tap(message => this.toast.success(message)),
+            catchError(error => {
+                if (error) { this.toast.danger(error); }
+                return EMPTY;
+            })
+        ).subscribe();
     }
 
     getCopyIds(rows: RenewGridEntry[], skipStatus?: number): number[] {

@@ -16,7 +16,8 @@
           <ng-container *ngTemplateOutlet="progress"></ng-container>
         </ng-container>
         <eg-circ-grid #checkoutsGrid [pageSize]="25" sortField="due_date"
-          persistKey="circ.patron.items_out" (reloadRequested)="load()">
+          persistKey="circ.patron.items_out" (reloadRequested)="load()"
+          [patron]="context.summary?.patron">
         </eg-circ-grid>
       </ng-template>
     </li>
@@ -29,7 +30,9 @@
               <ng-container *ngTemplateOutlet="progress"></ng-container>
             </ng-container>
             <eg-circ-grid #otherGrid [pageSize]="25" sortField="due_date"
-              persistKey="circ.patron.items_out.other" (reloadRequested)="load()">
+              persistKey="circ.patron.items_out.other"
+              (reloadRequested)="load()"
+              [patron]="context.summary?.patron">
             </eg-circ-grid>
           </ng-container>
         </ng-template>

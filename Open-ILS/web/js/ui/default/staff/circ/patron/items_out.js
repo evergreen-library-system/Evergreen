@@ -7,10 +7,10 @@ angular.module('egPatronApp')
 .controller('PatronItemsOutCtrl',
        ['$scope','$q','$routeParams','$timeout','egCore','egUser','patronSvc',
         '$location','egGridDataProvider','$uibModal','egCirc','egConfirmDialog',
-        'egProgressDialog','egBilling','$window','egBibDisplay',
+        'egProgressDialog','egBilling','$window','egBibDisplay','ngToast',
 function($scope , $q , $routeParams , $timeout , egCore , egUser , patronSvc , 
          $location , egGridDataProvider , $uibModal , egCirc , egConfirmDialog , 
-         egProgressDialog , egBilling , $window , egBibDisplay) {
+         egProgressDialog , egBilling , $window , egBibDisplay , ngToast) {
 
     // list of noncatatloged circulations. Define before initTab to 
     // avoid any possibility of race condition, since they are loaded
@@ -428,6 +428,24 @@ function($scope , $q , $routeParams , $timeout , egCore , egUser , patronSvc ,
             scope : print_data,
         });
     }
+
+    $scope.email_receipt = function(items) {
+        return egCirc.email_items_out_receipt(items.map(
+            function(item) {
+                return { au: patronSvc.current, circ: item };
+            }
+        )).then(function(msg) {
+            if (msg) { ngToast.create(msg) };
+        }).catch(function(errorMsg) {
+            if (errorMsg) { ngToast.danger(errorMsg); }
+        });
+    };
+
+    $scope.no_valid_email_on_record = function() {
+        return !patronSvc.current
+            || !patronSvc.current.email()
+            || !patronSvc.current.email().includes('@');
+    };
 
     function batch_action_with_flat_copies(items, action) {
         if (!items.length) return;

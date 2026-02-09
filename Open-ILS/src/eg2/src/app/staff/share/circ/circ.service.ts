@@ -1,6 +1,8 @@
 /* eslint-disable no-case-declarations, no-magic-numbers */
 import {inject, Injectable} from '@angular/core';
-import {Observable, empty, from, concatMap, firstValueFrom} from 'rxjs';
+import {Observable, empty, from, concatMap, firstValueFrom, throwError, tap,
+    exhaustMap, filter, catchError, map, of, finalize, switchMap
+} from 'rxjs';
 import {IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {OrgService} from '@eg/core/org.service';
@@ -23,6 +25,15 @@ export interface CircDisplayInfo {
     volume?: IdlObject;      // acn
     record?: IdlObject;      // bre
     display?: IdlObject;     // mwde
+}
+
+export type EmailReceiptType =
+    'checkout' | 'items_out' | 'checkin' | 'renew';
+export interface EmailReceiptData {
+    patron: IdlObject;
+    circIds: number[];
+    disabled: boolean;
+    type: EmailReceiptType;
 }
 
 const CAN_OVERRIDE_CHECKOUT_EVENTS = [
@@ -1344,6 +1355,100 @@ export class CircService {
         if (checkDigit === 10) { checkDigit = 0; }
 
         return checkDigit;
+    }
+
+    private groupEmailReceiptOptions(
+        items: any[], type: EmailReceiptType = 'checkout'
+    ): EmailReceiptData[] {
+        const optionsMap = items.reduce<{[key: string]: EmailReceiptData}>(
+            (options, { patron, circ }) => {
+                if (!patron || !circ) { return options; }
+                const patronId = patron.id();
+                if (!options[patronId]) {
+                    options[patronId] = {
+                        patron,
+                        circIds: [],
+                        disabled: !patron.email()?.includes('@'),
+                        type
+                    };
+                }
+                options[patronId].circIds.push(circ.id());
+                return options;
+            }, {}
+        );
+        return Object.values(optionsMap);
+    }
+
+    private sendEmailReceipt(receiptData: EmailReceiptData): Observable<boolean> {
+        return this.net.request(
+            'open-ils.circ',
+            `open-ils.circ.${receiptData.type}.batch_notify.atomic`,
+            this.auth.token(),
+            receiptData.patron.id(),
+            receiptData.circIds
+        ).pipe(
+            map(response => {
+                if (response?.[0]?.textcode) {
+                    console.error(response[0].textcode);
+                    return false;
+                }
+                return !!response?.length;
+            }),
+            catchError(error => {
+                console.error(error);
+                return of(false);
+            })
+        );
+    }
+
+    emailReceipt(
+        items: any[], type: EmailReceiptType = 'checkout'
+    ): Observable<string> {
+        if (!items.length) { return throwError(() => ''); }
+
+        const options = this.groupEmailReceiptOptions(items, type);
+        if (!options.length) {
+            return throwError(() =>
+                this.components.emailReceiptNoCircStr.text
+            );
+        }
+        const selectedId = options.find(o => !o.disabled)?.patron.id();
+        if (!selectedId) {
+            return throwError(() =>
+                this.components.emailReceiptInvalidEmailStr.text
+            );
+        }
+
+        const progress = this.components.emailReceiptProgressDialog;
+        const confirm = this.components.emailReceiptDialog;
+        confirm.options = options;
+        confirm.selected = { patronId: selectedId };
+        return (confirm.open() as Observable<EmailReceiptData>).pipe(
+            filter(selectionMade => !!selectionMade),
+            tap(() => { progress.open(); }),
+            exhaustMap(receiptData =>
+                this.sendEmailReceipt(receiptData)
+            ),
+            switchMap(success => {
+                if (success) {
+                    return of(this.components.emailReceiptSentStr.text);
+                }
+                return throwError(() => this.components.emailReceiptFailedStr.text);
+            }),
+            finalize(() => progress.close())
+        );
+    }
+
+    emailCheckinReceipt(checkins: any[]): Observable<string> {
+        return this.emailReceipt(checkins, 'checkin');
+    }
+
+    emailItemsOutReceipt(itemsOut: any[]): Observable<string> {
+        return this.emailReceipt(itemsOut, 'items_out');
+    }
+
+    emailRenewReceipt(renewals: any[]): Observable<string> {
+        return this.emailReceipt(renewals, 'renew');
     }
 }
 

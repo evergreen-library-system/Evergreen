@@ -134,9 +134,13 @@
   <div class="col-md-10">
     <div class="flex-row">
       <div class="flex-cell"></div>
-      <div class="pad-horiz">
+      <div>
         <button class="btn btn-default" 
           ng-click="print_receipt()">[% l('Print Receipt') %]</button>
+      </div>
+      <div class="pad-horiz">
+        <button type="button" class="btn btn-default"
+          ng-click="email_receipt()">[% l('Email Receipt') %]</button>
       </div>
       <div class="checkbox" ng-if="using_hatch_printer">
         <label>

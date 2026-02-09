@@ -43,6 +43,10 @@
       i18n-label label="Print Item Receipt(s)" (onClick)="printReceipts($event)">
     </eg-grid-toolbar-action>
 
+    <eg-grid-toolbar-action [disabled]="!patron?.email()"
+      i18n-label label="Email Item Receipt(s)" (onClick)="emailReceipts($event)">
+    </eg-grid-toolbar-action>
+
     <eg-grid-toolbar-action
       i18n-group group="Add" i18n-label label="Add Item Alerts"
       (onClick)="openItemAlerts($event, 'create')">

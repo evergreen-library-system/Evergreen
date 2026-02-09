@@ -10,6 +10,8 @@ import {CopyInTransitDialogComponent} from './in-transit-dialog.component';
 import {CopyAlertManagerDialogComponent
 } from '@eg/staff/share/holdings/copy-alert-manager.component';
 import {BadBarcodeDialogComponent} from './bad-barcode-dialog.component';
+import {CircEmailReceiptDialogComponent} from './circ-email-receipt-dialog.component';
+import {ProgressDialogComponent} from '@eg/share/dialog/progress.component';
 
 /* Container component for sub-components used by circulation actions.
  *
@@ -38,6 +40,19 @@ export class CircComponentsComponent {
     @ViewChild('holdShelfStr') holdShelfStr: StringComponent;
     @ViewChild('catalogingStr') catalogingStr: StringComponent;
     @ViewChild('badBarcodeDialog') badBarcodeDialog: BadBarcodeDialogComponent;
+
+    @ViewChild('emailReceiptProgressDialog')
+        emailReceiptProgressDialog: ProgressDialogComponent;
+    @ViewChild('emailReceiptDialog')
+        emailReceiptDialog: CircEmailReceiptDialogComponent;
+    @ViewChild('emailReceiptSentStr')
+        emailReceiptSentStr: StringComponent;
+    @ViewChild('emailReceiptNoCircStr')
+        emailReceiptNoCircStr: StringComponent;
+    @ViewChild('emailReceiptInvalidEmailStr')
+        emailReceiptInvalidEmailStr: StringComponent;
+    @ViewChild('emailReceiptFailedStr')
+        emailReceiptFailedStr: StringComponent;
 
     constructor(private circ: CircService) {
         this.circ.components = this;

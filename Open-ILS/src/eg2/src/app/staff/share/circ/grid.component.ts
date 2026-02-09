@@ -1,5 +1,7 @@
 import {Component, OnInit, Output, Input, ViewChild, EventEmitter} from '@angular/core';
-import {Observable, empty, from, map, concatWith as concat, ignoreElements, tap, concatMap} from 'rxjs';
+import {Observable, empty, from, map, concatWith as concat,
+    ignoreElements, tap, concatMap, EMPTY, catchError
+} from 'rxjs';
 import {IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
 import {NetService} from '@eg/core/net.service';
@@ -73,6 +75,8 @@ export class CircGridComponent implements OnInit {
 
     // Override default grid page size
     @Input() pageSize: number = null;
+
+    @Input() patron?: IdlObject;
 
     // Emitted when a grid action modified data in a way that could
     // affect which cirulcations should appear in the grid.  Caller
@@ -303,6 +307,18 @@ export class CircGridComponent implements OnInit {
                 printContext: 'default'
             });
         }
+    }
+
+    emailReceipts(rows: any[]): void {
+        this.circ.emailItemsOutReceipt(rows.map(({ circ }) => ({
+            circ: circ, patron: this.patron
+        }))).pipe(
+            tap(message => this.toast.success(message)),
+            catchError(error => {
+                if (error) { this.toast.danger(error); }
+                return EMPTY;
+            })
+        ).subscribe();
     }
 
     editDueDate(rows: any) {

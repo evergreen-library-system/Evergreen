@@ -54,6 +54,9 @@
 
   <eg-grid-action handler="print_receipt"
     label="[% l('Print Item Receipt') %]"></eg-grid-action>
+  <eg-grid-action handler="email_receipt"
+    disabled="no_valid_email_on_record"
+    label="[% l('Email Item Receipt') %]"></eg-grid-action>
   <eg-grid-action handler="edit_due_date"
     label="[% l('Edit Due Date') %]"></eg-grid-action>
   <eg-grid-action handler="mark_damaged"

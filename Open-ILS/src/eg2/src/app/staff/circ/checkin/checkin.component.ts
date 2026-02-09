@@ -2,7 +2,7 @@
 import {Component, ViewChild, OnInit, AfterViewInit} from '@angular/core';
 import {Location} from '@angular/common';
 import {Router, ActivatedRoute} from '@angular/router';
-import {empty, from, concatMap} from 'rxjs';
+import {empty, from, concatMap, catchError, EMPTY, tap} from 'rxjs';
 import {IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {OrgService} from '@eg/core/org.service';
@@ -255,6 +255,16 @@ export class CheckinComponent implements OnInit, AfterViewInit {
         } else {
             this.store.removeItem('circ.checkin.strict_barcode');
         }
+    }
+
+    emailReceipt(): void {
+        this.circ.emailCheckinReceipt(this.checkins).pipe(
+            tap(message => this.toast.success(message)),
+            catchError(error => {
+                if (error) { this.toast.danger(error); }
+                return EMPTY;
+            })
+        ).subscribe();
     }
 
     printReceipt() {
