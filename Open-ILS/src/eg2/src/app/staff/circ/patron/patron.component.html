@@ -50,31 +50,34 @@
 <eg-worklog-strings-components></eg-worklog-strings-components>
 
 
-<div id="patron-grid" [ngClass]="{'show-nav': showNav && context.summary}"
+<div id="patron-grid" [ngClass]="patronGridClasses()"
   role="region" aria-label="Account summary" i18n-aria-label>
 
   @if (context.summary) {
     <div id="patron-summary">
-      <eg-patron-summary [summary]="context.summary"></eg-patron-summary>
+      <eg-patron-summary [summary]="context.summary"
+        [showPane]="showSummary"
+        (showPaneChange)="updateShowSummary($event)">
+      </eg-patron-summary>
     </div>
   }
 
   <nav id="patron-nav" aria-label="Account details" i18n-aria-label>
     <button type="button" (click)="toggleNavPane()"
       class="nav-link btn btn-sm svg-icon-button patron-nav-toggle"
-      [ngClass]="{'d-none': patronTab === 'search'}"
-      [title]="showNav ? 'Hide Account Navigation' : 'Show Account Navigation'" i18n-title
-      [attr.aria-label]="showNav ? 'Hide Account Navigation' : 'Show Account Navigation'" i18n-aria-label>
+      [ngClass]="{'d-none': hideNavButton()}"
+      [title]="navPaneButtonTitle()"
+      [attr.aria-label]="navPaneButtonTitle()">
       <!-- Our Material Icons set is missing some icons. Using SVG: -->
       <span class="mat-icon-in-button" aria-hidden="true">
         <!-- left_panel_open in SVG -->
-        @if (showNav) {
+        @if (!showNav) {
           <svg xmlns="http://www.w3.org/2000/svg" role="img" height="24" viewBox="0 -960 960 960" width="24">
             <path d="M500-640v320l160-160-160-160ZM200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm120-80v-560H200v560h120Zm80 0h360v-560H400v560Zm-80 0H200h120Z"/>
           </svg>
         }
         <!-- left_panel_close in SVG -->
-        @if (!showNav) {
+        @if (showNav) {
           <svg xmlns="http://www.w3.org/2000/svg" role="img" height="24" viewBox="0 -960 960 960" width="24">
             <path d="M660-320v-320L500-480l160 160ZM200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm120-80v-560H200v560h120Zm80 0h360v-560H400v560Zm-80 0H200h120Z"/>
           </svg>
@@ -312,14 +315,14 @@
   </nav>
 
 
-  <div id="patron-tabs" [ngClass]="{'pt-5': showSummaryPane && patronTab !== 'search'}">
-
+  <div id="patron-tabs" [ngClass]="{'pt-5': !hideNavButton()}">
+    
     @if (patronTab === 'edit') {
       <!-- put the editor toolbar up here in the sticky section -->
       <eg-patron-edit-toolbar #editorToolbar [patronId]="patronId">
       </eg-patron-edit-toolbar>
     }
-
+    
     @if (!loading) {
       <div>
         <div [ngbNavOutlet]="patronNav"></div>

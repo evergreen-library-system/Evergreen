@@ -19922,6 +19922,13 @@ VALUES (
         'cwst', 'label'
     )
 ), (
+    'eg.circ.patron.nav.collapse', 'circ', 'bool',
+    oils_i18n_gettext(
+        'eg.circ.patron.nav.collapse',
+        'Collapse Patron Navigation Display',
+        'cwst', 'label'
+    )
+), (
     'circ.bills.receiptonpay', 'circ', 'bool',
     oils_i18n_gettext(
         'circ.bills.receiptonpay',

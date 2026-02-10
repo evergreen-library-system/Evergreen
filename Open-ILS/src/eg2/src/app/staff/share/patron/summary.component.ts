@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, inject } from '@angular/core';
+import {Component, OnInit, Input, inject, Output, EventEmitter} from '@angular/core';
 import {OrgService} from '@eg/core/org.service';
 import {IdlObject} from '@eg/core/idl.service';
 import {PrintService} from '@eg/share/print/print.service';
@@ -38,7 +38,11 @@ export class PatronSummaryComponent implements OnInit {
     showDob = false;
     penalties = 0;
 
-    @Input() showSummaryPane = true;
+    showSummaryPane = true;
+    @Input() set showPane(show: boolean) {
+        this.showSummaryPane = show;
+    }
+    @Output() showPaneChange = new EventEmitter<boolean>();
 
     ngOnInit() {
         this.serverStore.getItem('circ.obscure_dob').then(hide => {
@@ -186,6 +190,17 @@ export class PatronSummaryComponent implements OnInit {
         }
 
         return codes;
+    }
+
+    toggleShowSummaryPane(): void {
+        this.showSummaryPane = !this.showSummaryPane;
+        this.showPaneChange.emit(this.showSummaryPane);
+    }
+
+    summaryPaneButtonLabel(): string {
+        return this.showSummaryPane
+            ? $localize`Hide Patron Summary`
+            : $localize`Show Patron Summary`;
     }
 }
 
