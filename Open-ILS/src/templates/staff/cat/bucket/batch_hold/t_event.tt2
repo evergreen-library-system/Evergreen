@@ -16,14 +16,14 @@
 
   <eg-grid-field path="id" required hidden></eg-grid-field>
   <eg-grid-field label="[% l('Title') %]" path="target" required visible>
-    <a target="_self" href="[% ctx.base_path %]/staff/cat/catalog/record/{{item['target']}}">
+    <a target="_blank" href="/eg2/staff/catalog/record/{{item['target']}}">
       {{item['title']}}
     </a>
   </eg-grid-field>
   <eg-grid-field label="[% l('Author') %]">{{item['author']}}</eg-grid-field>
   <eg-grid-field label="[% l('Create Date/Time') %]" path='run_date' visible></eg-grid-field>
   <eg-grid-field label="[% l('# of holds placed') %]" path="mappings" required visible>
-    <a target="_self" href="[% ctx.base_path %]/staff/cat/catalog/record/{{item['target']}}/holds">
+    <a target="_blank" href="/eg2/staff/catalog/record/{{item['target']}}/holds">
       {{item['mappings'].length}}
     </a>
   </eg-grid-field>
