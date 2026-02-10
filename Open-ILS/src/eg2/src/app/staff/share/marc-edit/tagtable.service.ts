@@ -177,7 +177,9 @@ export class TagTable {
 
         this.tagMap = this.store.getLocalItem(cacheKey);
 
-        if (this.tagMap) {
+        // ignore arrays - user may have a previously cached version
+        // missing keys with leading zeros (ex: 001, etc)
+        if (this.tagMap && !Array.isArray(this.tagMap)) {
             return Promise.resolve(this.tagMap);
         }
 
@@ -188,7 +190,7 @@ export class TagTable {
     }
 
     fetchTagTable(): Promise<any> {
-        this.tagMap = [];
+        this.tagMap = {};
         return this.net.request(
             'open-ils.cat',
             'open-ils.cat.tag_table.all.retrieve.local',
