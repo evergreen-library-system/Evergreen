@@ -1,8 +1,8 @@
-import { Component, ViewChild, OnInit, HostListener, inject } from '@angular/core';
+import {Component, ViewChild, OnInit, HostListener, inject, OnDestroy} from '@angular/core';
 import {Router, ActivatedRoute, ParamMap, RoutesRecognized} from '@angular/router';
 import {Location} from '@angular/common';
 import {NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
-import {catchError, EMPTY, filter, pairwise, tap} from 'rxjs';
+import {catchError, concatMap, EMPTY, filter, from, pairwise, tap, Subject} from 'rxjs';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';
@@ -60,7 +60,7 @@ import {ToastService} from '@eg/share/toast/toast.service';
         WorkLogStringsComponent
     ]
 })
-export class PatronComponent implements OnInit {
+export class PatronComponent implements OnInit, OnDestroy {
     private router = inject(Router);
     private route = inject(ActivatedRoute);
     private ngLocation = inject(Location);
@@ -83,6 +83,15 @@ export class PatronComponent implements OnInit {
     showNav = true;
     loading = true;
     showRecentPatrons = false;
+
+    private updateSetting = new Subject<{key: string, value: any}>();
+    private onUpdateSetting = this.updateSetting.pipe(
+        concatMap(({ key, value }) =>
+            from(this.serverStore.setItem(key, value)).pipe(
+                catchError(() => EMPTY)
+            )
+        )
+    ).subscribe();
 
     /* eg-patron-edit is unable to find #editorToolbar directly
      * within the template.  Adding a ref here allows it to
@@ -136,10 +145,11 @@ export class PatronComponent implements OnInit {
     }
 
     fetchSettings(): Promise<any> {
-
         return this.serverStore.getItemBatch([
+            'eg.circ.patron.nav.collapse',
             'eg.circ.patron.summary.collapse'
         ]).then(prefs => {
+            this.showNav = !prefs['eg.circ.patron.nav.collapse'];
             this.showSummary = !prefs['eg.circ.patron.summary.collapse'];
         });
     }
@@ -249,22 +259,30 @@ export class PatronComponent implements OnInit {
         }
     }
 
-    showSummaryPane(): boolean {
-        return this.showSummary || this.patronTab === 'search';
+    patronGridClasses(): {[key: string]: boolean} {
+        return {
+            'show-nav': !!(this.showNav && this.context?.summary),
+            'search-form-no-patron': this.hideNavButton()
+        };
     }
 
-    toggleSummaryPane() {
-        this.serverStore.setItem( // collapse is the opposite of show
-            'eg.circ.patron.summary.collapse', this.showSummary);
-        this.showSummary = !this.showSummary;
+    hideNavButton(): boolean {
+        return this.patronTab === 'search' && !this.context?.summary;
     }
 
-    toggleNavPane() {
-        /* TODO: wire up this setting */
-        /*
-        this.serverStore.setItem( // collapse is the opposite of show
-            'eg.circ.patron.nav.collapse', this.showNav);
-        /**/
+    updateShowSummary(show: boolean): void {
+        this.showSummary = show;
+        this.updateSetting.next({
+            key: 'eg.circ.patron.summary.collapse',
+            value: show ? null : true
+        });
+    }
+
+    toggleNavPane(): void {
+        this.updateSetting.next({
+            key: 'eg.circ.patron.nav.collapse',
+            value: this.showNav || null
+        });
         this.showNav = !this.showNav;
     }
 
@@ -444,6 +462,16 @@ export class PatronComponent implements OnInit {
                 return EMPTY;
             })
         ).subscribe();
+    }
+
+    navPaneButtonTitle(): string {
+        return this.showNav
+            ? $localize`Hide Account Navigation`
+            : $localize`Show Account Navigation`;
+    }
+
+    ngOnDestroy() {
+        this.onUpdateSetting.unsubscribe();
     }
 }
 

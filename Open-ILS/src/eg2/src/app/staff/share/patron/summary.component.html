@@ -4,10 +4,10 @@
   <div class="row">
     <div class="d-flex flex-wrap align-items-start">
       <button id="summary-toggle" class="btn btn-sm py-0 lh-sm" type="button"
-        (click)="showSummaryPane = !showSummaryPane"
-        [attr.aria-label]="showSummaryPane ? 'Show Patron Summary' : 'Hide Patron Summary'" i18n-aria-label
-        [title]="showSummaryPane ? 'Show Patron Summary' : 'Hide Patron Summary'" i18n-title>
-        <span class="material-icons mat-icon-in-button">
+        (click)="toggleShowSummaryPane()"
+        [attr.aria-label]="summaryPaneButtonLabel()"
+        [title]="summaryPaneButtonLabel()">
+        <span class="material-icons mat-icon-in-button" aria-hidden="true">
           @if (showSummaryPane) {
             expand_less
           }
