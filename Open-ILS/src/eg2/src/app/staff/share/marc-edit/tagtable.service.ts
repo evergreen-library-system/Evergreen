@@ -207,8 +207,15 @@ export class TagTable {
         const list = this.tagMap[tag].subfields.map(sf => ({
             id: sf.code,
             label: sf.description
-        }))
-            .sort((a, b) => a.id < b.id ? -1 : 1);
+        })).sort((a, b) => {
+            const aid = String(a.id ?? '');
+            const bid = String(b.id ?? '');
+            const aNum = /^\d/.test(aid);
+            const bNum = /^\d/.test(bid);
+            if (aNum !== bNum) { return aNum ? 1 : -1; }
+            if (aid === bid) { return 0; }
+            return aid < bid ? -1 : 1;
+        });
 
         return this.toCache('sfcodes', tag, null, list);
     }
