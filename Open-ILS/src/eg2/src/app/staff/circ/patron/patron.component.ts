@@ -2,7 +2,7 @@ import { Component, ViewChild, OnInit, HostListener, inject } from '@angular/cor
 import {Router, ActivatedRoute, ParamMap, RoutesRecognized} from '@angular/router';
 import {Location} from '@angular/common';
 import {NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
-import {filter, pairwise} from 'rxjs';
+import {catchError, EMPTY, filter, pairwise, tap} from 'rxjs';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';
@@ -33,6 +33,7 @@ import { PatronPermsComponent } from './perms.component';
 import { TestPatronPasswordComponent } from './test-password.component';
 import { BillStatementComponent } from './bill-statement.component';
 import { BillingHistoryComponent } from './billing-history.component';
+import {ToastService} from '@eg/share/toast/toast.service';
 
 @Component({
     templateUrl: 'patron.component.html',
@@ -71,7 +72,7 @@ export class PatronComponent implements OnInit {
     private serverStore = inject(ServerStoreService);
     patronService = inject(PatronService);
     context = inject(PatronContextService);
-
+    private toast = inject(ToastService);
 
     patronId: number;
     patronTab = 'search';
@@ -414,6 +415,35 @@ export class PatronComponent implements OnInit {
         const name = family && given ? `${family}, ${given}` : (family || given);
 
         return [prefix, name, suffix].filter(Boolean).join(': ');
+    }
+
+    refreshPenalties(): void {
+        if (!this.context.summary) { return; }
+
+        const failMsg = $localize`Penalty refresh failed`;
+        const successMsg = $localize`Penalty refresh succeeded`;
+
+        this.net.request(
+            'open-ils.actor',
+            'open-ils.actor.user.penalties.update',
+            this.auth.token(),
+            this.context.summary.id
+        ).pipe(
+            tap(resp => {
+                const error = this.evt.parse(resp);
+                if (error) {
+                    console.error(error.toString());
+                    this.toast.danger(failMsg);
+                } else {
+                    this.context.refreshPatron();
+                    this.toast.success(successMsg);
+                }
+            }),
+            catchError(() => {
+                this.toast.danger(failMsg);
+                return EMPTY;
+            })
+        ).subscribe();
     }
 }
 
