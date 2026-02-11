@@ -5,7 +5,7 @@
 
 indexterm:[OPAC]
 
-From the OPAC home, you can conduct a basic search of all materials owned by all
+From the public catalog (OPAC), you can conduct a basic search of all materials owned by all
 libraries in your Evergreen system.
 
 This search can be as simple as typing keywords into the search box and clicking
@@ -17,7 +17,7 @@ indexterm:[search box]
 The _Homepage_ contains a single search box for you to enter search terms. You 
 can get to the _Homepage_ at any time by clicking the _Basic Search_ link from
 the leftmost link on the bar above your search results in the catalog, or you 
-can enter a search anywhere you see a search box.
+can enter a search anywhere you see a search box. From any page in the OPAC, you can also toggle the _Basic Search_ form visibility on and off by clicking the _Basic Search_ heading at the top of the page.
 
 You can select to search by:
 
@@ -423,7 +423,7 @@ indicate formats such as books, audio books, video recordings, and other
 formats. If you hover your mouse over the icon, a text explanation will show up 
 in a small pop-up box. 
 
-Clicking a title goes to the title details. Clicking an author searches all 
+Clicking the title or the title image goes to the title details. Clicking an author searches all 
 works by the author. If you want to place a hold on the title, click _Place 
 Hold_ beside the format icons.
 
@@ -436,10 +436,7 @@ When enabled, under the _Limit to Available_ checkbox, there is an _Exclude
 Electronic Resources_ checkbox.  Checking this box will filter out materials 
 that are cataloged as electronic in form.
 
-The _Sort by_ dropdown list is found at the top of the search results, beside 
-the _Show More Details_ link. Clicking an entry on the list will re-sort your 
-search results accordingly.
-
+The _Sort by_ dropdown list is found at the top of the search results. To re-sort the search results, select an option from the dropdown and click _Upgrade Search Results_.
 
 === Facets: Authors, Subjects, and Series ===
 
@@ -671,6 +668,21 @@ If you want to suspend the hold to be filled at a specific date, check off _Susp
 to bring up the calendar tool.  From your account you can also suspend and activate holds that are already placed.
 
 image::using_the_public_access_catalog/placing_holds.jpg[Placing Holds]
+
+== Advanced Hold Options ==
+
+Clicking the *Advanced Hold Options* link will take you into the
+metarecord level hold feature, where you can select multiple formats
+and/or languages, if available.
+
+Selecting multiple formats will not place all of these formats on hold.
+For example, selecting CD Audiobook and Book implies that either the CD
+format or the book format is the acceptable format to fill the hold. If
+no format is selected, then any of the available formats may be used to
+fill the hold. The same applies to selecting multiple languages.
+
+image::hold_management/advanced_hold.jpg[Place Hold screen with Advanced Options]
+
 
 === Printing and Emailing Records ===
 
