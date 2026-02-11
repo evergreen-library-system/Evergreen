@@ -169,6 +169,13 @@
         </ng-template>
       </li>
 
+      <li role="presentation" ngbNavItem="refresh_penalties"
+        [disabled]="!context.summary">
+        <button type="button" (click)="refreshPenalties(); false"
+          ngbNavLink i18n>Refresh Penalties
+        </button>
+      </li>
+
       <li role="presentation" ngbNavItem="triggered_events" [disabled]="true">
         <button type="button" role="tab" ngbNavLink (click)="navItemClick('triggered_events', $event)"
         routerLink="/staff/circ/patron/{{patronId}}/triggered_events" i18n>Triggered Events / Notifications</button>
