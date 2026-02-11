@@ -34,7 +34,7 @@ export class PatronBarcodesDialogComponent extends DialogComponent {
         return this._patron;
     }
     private _patron: IdlObject;
-    
+
     primaryCard: number;
     myPerms: {[name: string]: boolean} = {};
     private backendActive: WeakMap<IdlObject, string> = new WeakMap();
@@ -121,7 +121,9 @@ export class PatronBarcodesDialogComponent extends DialogComponent {
 
         // Cannot delete active barcode - must deactivate first
         if (card.active() === 't') {
-            this.toast.danger($localize`Active barcodes cannot be deleted. Deactivate the barcode first, save the patron record, then delete it.`);
+            this.toast.danger(
+                $localize`Active barcodes cannot be deleted. Deactivate the barcode first, save the patron record, then delete it.`
+            );
             return;
         }
 
