@@ -2,7 +2,7 @@ import {Component, ViewChild, OnInit, HostListener} from '@angular/core';
 import {Router, ActivatedRoute, ParamMap, RoutesRecognized} from '@angular/router';
 import {Location} from '@angular/common';
 import {NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
-import {filter, pairwise} from 'rxjs';
+import {catchError, EMPTY, filter, pairwise, tap} from 'rxjs';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';
@@ -18,6 +18,7 @@ import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 import {PromptDialogComponent} from '@eg/share/dialog/prompt.component';
 import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
 import {PatronStatCatsComponent} from '@eg/staff/circ/patron/statcats.component';
+import {ToastService} from '@eg/share/toast/toast.service';
 
 @Component({
     templateUrl: 'patron.component.html',
@@ -62,7 +63,8 @@ export class PatronComponent implements OnInit {
         private store: StoreService,
         private serverStore: ServerStoreService,
         public patronService: PatronService,
-        public context: PatronContextService
+        public context: PatronContextService,
+        private toast: ToastService
     ) {}
 
     ngOnInit() {
@@ -380,6 +382,35 @@ export class PatronComponent implements OnInit {
         const name = family && given ? `${family}, ${given}` : (family || given);
 
         return [prefix, name, suffix].filter(Boolean).join(': ');
+    }
+
+    refreshPenalties(): void {
+        if (!this.context.summary) { return; }
+
+        const failMsg = $localize`Penalty refresh failed`;
+        const successMsg = $localize`Penalty refresh succeeded`;
+
+        this.net.request(
+            'open-ils.actor',
+            'open-ils.actor.user.penalties.update',
+            this.auth.token(),
+            this.context.summary.id
+        ).pipe(
+            tap(resp => {
+                const error = this.evt.parse(resp);
+                if (error) {
+                    console.error(error.toString());
+                    this.toast.danger(failMsg);
+                } else {
+                    this.context.refreshPatron();
+                    this.toast.success(successMsg);
+                }
+            }),
+            catchError(() => {
+                this.toast.danger(failMsg);
+                return EMPTY;
+            })
+        ).subscribe();
     }
 }
 
