@@ -202,8 +202,6 @@ export class TagTable {
     getSubfieldCodes(tag: string): ComboboxEntry[] {
         if (!tag || !this.tagMap[tag]) { return null; }
 
-        const cached = this.fromCache('sfcodes', tag);
-
         const list = this.tagMap[tag].subfields.map(sf => ({
             id: sf.code,
             label: sf.description
