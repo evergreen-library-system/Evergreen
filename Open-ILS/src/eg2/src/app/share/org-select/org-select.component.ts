@@ -440,6 +440,19 @@ export class OrgSelectComponent implements OnInit, AfterViewInit {
     // NgbTypeahead doesn't offer a way to style the dropdown
     // button directly, so we have to reach up and style it ourselves.
     applyDisableStyle() {
+        // DOM nodes may be reused when filtering, so clear styles first
+        const listbox = document.getElementById(
+            this.instance?.['_nativeElement']?.getAttribute('aria-owns')
+        );
+        if (listbox) {
+            const buttons = listbox.querySelectorAll('button.disabled');
+            if (buttons) {
+                buttons.forEach(button => {
+                    button.classList.remove('disabled');
+                });
+            }
+        }
+
         this.disableOrgs.forEach(id => {
             const node = document.getElementById(`${this.domId}-${id}`);
             if (node) {
