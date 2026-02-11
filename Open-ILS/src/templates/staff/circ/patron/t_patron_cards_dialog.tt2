@@ -1,90 +1,39 @@
 <form ng-submit="ok(args)" role="form">
-  <div class="modal-header">
-    <button type="button" class="close" ng-click="cancel()" aria-hidden="true">&times;</button>
-    <h4 class="modal-title">[% l('Patron Barcodes') %]</h4>
-  </div>
-  <div class="modal-body patron-reg-barcodes">
-    <div class="alert alert-warning" ng-if="hasPendingDeletes()" role="alert">
-      <strong>[% l('Note:') %]</strong>
-      <span>[% l('Barcode deletions will take effect when you save the patron record.') %]</span>
+    <div class="modal-header">
+      <button type="button" class="close" ng-click="cancel()" 
+        aria-hidden="true">&times;</button>
+      <h4 class="modal-title">[% l('Patron Barcodes') %]</h4>
     </div>
-
-    <div class="table-responsive">
-      <table class="table align-middle table-borderless">
-        <thead>
-          <tr class="fw-bold">
-            <th class="align-middle">[% l('Barcode') %]</th>
-            <th class="text-nowrap align-middle">[% l('Active') %]</th>
-            <th class="text-nowrap align-middle">[% l('Primary') %]</th>
-            <th class="text-nowrap align-middle" style="white-space:nowrap;">
-              <span style="display:inline-flex; align-items:center; gap:6px;">
-                [% l('Delete') %]
-                <button type="button"
-                  class="btn btn-link p-0 m-0 no-border"
-                  style="line-height:1;"
-                  uib-popover-template="'deletion-help-popover'"
-                  popover-title="[% l('Deletion Requirements') %]"
-                  popover-trigger="'outsideClick'"
-                  popover-placement="left"
-                  aria-label="[% l('Deletion requirements help') %]">
-                  <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
-                </button>
-              </span>
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr ng-repeat="card in args.cards" ng-class="{'barcode-pending-delete': card.isdeleted}">
-            <td>
-              <label>
-                {{card.barcode}}
-                <span class="badge bg-warning text-dark ms-2" ng-if="card.isdeleted">[% l('Pending Deletion') %]</span>
-              </label>
-            </td>
-            <td>
-              <input type="checkbox" ng-model="card.active"
-                ng-disabled="!perms.UPDATE_PATRON_ACTIVE_CARD" class="form-check-input"/>
-            </td>
-            <td>
-              <input type="radio" name="primary"
-                ng-model="args.primary_barcode"
-                ng-value="card.id"
-                ng-disabled="!perms.UPDATE_PATRON_PRIMARY_CARD"
-                aria-label="Use {{card.barcode}} as primary card" class="form-check-input"/>
-            </td>
-            <td>
-              <button type="button" class="btn btn-sm barcode-delete-btn"
-                ng-class="{'btn-danger': !card.isdeleted, 'btn-secondary': card.isdeleted}"
-                ng-click="deleteCard(card)"
-                ng-disabled="!(perms.UPDATE_PATRON_ACTIVE_CARD && perms.UPDATE_PATRON_PRIMARY_CARD) || card.id == args.primary_barcode || card.isdeleted || card.active || hasUnsavedActiveChanges(card)"
-                ng-attr-title="{{ hasUnsavedActiveChanges(card) ? '[% l("Save patron record after deactivating before deleting") %]' : '[% l("Barcode must be deactivated and saved before deletion") %]' }}"
-                aria-label="Delete barcode {{card.barcode}}">
-                [% l('Delete') %]
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+    <div class="modal-body patron-reg-barcodes">
+      <div class="row header">
+        <div class="col-md-4">
+          <label>[% l('Barcode') %]</label>
+        </div>
+        <div class="col-md-4">
+          <label>[% l('Active') %]</label>
+        </div>
+        <div class="col-md-4">
+          <label>[% l('Primary') %]</label>
+        </div>
+      </div>
+      <div class="row" ng-repeat="card in args.cards">
+        <div class="col-md-4">{{card.barcode}}</div>
+        <div class="col-md-4">
+          <input type='checkbox' ng-model='card.active' 
+            ng-disabled="!perms.UPDATE_PATRON_ACTIVE_CARD"/>
+        </div>
+        <div class="col-md-4">
+          <input type='radio' name='primary'
+            ng-model='args.primary_barcode'
+            ng-value='card.id'
+            ng-disabled="!perms.UPDATE_PATRON_PRIMARY_CARD"/>
+        </div>
+      </div>
     </div>
-  </div>
-  <div class="modal-footer">
-    <button type="submit" class="btn btn-success"
-      ng-disabled="!perms.UPDATE_PATRON_PRIMARY_CARD && !perms.UPDATE_PATRON_ACTIVE_CARD">
-      [% l('Apply Changes') %]
-    </button>
-    <button type="button" class="btn btn-normal" ng-click="cancel()">[% l('Cancel') %]</button>
-  </div>
+    <div class="modal-footer">
+      <input type="submit" class="btn btn-primary" value="[% l('Apply Changes') %]"
+        ng-disabled="!perms.UPDATE_PATRON_PRIMARY_CARD && !perms.UPDATE_PATRON_ACTIVE_CARD"/>
+      <button class="btn btn-normal" ng-click="cancel()">[% l('Cancel') %]</button>
+    </div>
+  </div> <!-- modal-content -->
 </form>
-
-<script type="text/ng-template" id="deletion-help-popover">
-  <div class="small p-3">
-    <p class="mb-2">[% l('To delete a barcode, you must:') %]</p>
-    <ol class="mb-3 ps-3">
-      <li>[% l('Deactivate it (uncheck Active)') %]</li>
-      <li>[% l('Apply Changes and Save the patron record') %]</li>
-      <li>[% l('Reopen this dialog') %]</li>
-      <li>[% l('Then click Delete') %]</li>
-    </ol>
-    <p class="mb-0 text-muted">[% l('Note: Primary cards cannot be deleted.') %]</p>
-  </div>
-</script>

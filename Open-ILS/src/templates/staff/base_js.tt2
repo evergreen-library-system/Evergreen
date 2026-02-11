@@ -150,10 +150,6 @@ UpUp.start({
     s.OFFLINE_SESSION_PROCESSING_FAILED = "[% l('Offline session processing failed') %]";
     s.OFFLINE_SESSION_UPLOAD_FAILED = "[% l('Offline transaction upload failed') %]";
     s.PATRON_NOT_FOUND = "[% l('Patron not found') %]";
-    s.CANNOT_DELETE_PRIMARY_CARD = "[% l('Cannot delete the primary barcode') %]";
-    s.CANNOT_DELETE_ACTIVE_CARD = "[% l('Cannot delete an active barcode') %]";
-    s.PERMISSION_DENIED_DELETE_BARCODES = "[% l('Permission denied for deleting barcodes') %]";
-    s.SAVE_AFTER_DEACTIVATE_BEFORE_DELETE = "[% l('Please save the patron record after deactivating the barcode before deleting it.') %]";
     s.PATRON_BLOCKED = "[% l('Patron blocked') %]";
     s.BAD_BARCODE = "[% l('Bad item barcode') %]";
     s.BAD_BARCODE_CD = "[% l('Item barcode does not have a correct check digit.') %]";
