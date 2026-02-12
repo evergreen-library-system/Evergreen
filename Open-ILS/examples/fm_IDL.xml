@@ -6752,15 +6752,15 @@ SELECT  usr,
 			<field reporter:label="Questions" name="questions" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Responses" name="responses" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Description" name="description" reporter:datatype="text" oils_obj:required="true"/>
-			<field reporter:label="Survey End Date/Time" name="end_date" reporter:datatype="timestamp"/>
+			<field reporter:label="Survey End Date/Time" name="end_date" reporter:datatype="timestamp" oils_obj:required="true"/>
 			<field reporter:label="Survey ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Name" name="name" reporter:datatype="text" oils_obj:required="true"/>
-			<field reporter:label="OPAC Survey?" name="opac" reporter:datatype="bool"/>
+			<field reporter:label="OPAC Survey?" name="opac" reporter:datatype="bool" oils_obj:required="true"/>
 			<field reporter:label="Owning Library" name="owner" reporter:datatype="org_unit" oils_obj:required="true"/>
-			<field reporter:label="Poll Style?" name="poll" reporter:datatype="bool"/>
-			<field reporter:label="Is Required?" name="required" reporter:datatype="bool"/>
-			<field reporter:label="Survey Start Date/Time" name="start_date" reporter:datatype="timestamp"/>
-			<field reporter:label="Display in User Summary" name="usr_summary" reporter:datatype="bool"/>
+			<field reporter:label="Poll Style?" name="poll" reporter:datatype="bool" oils_obj:required="true"/>
+			<field reporter:label="Is Required?" name="required" reporter:datatype="bool" oils_obj:required="true"/>
+			<field reporter:label="Survey Start Date/Time" name="start_date" reporter:datatype="timestamp" oils_obj:required="true"/>
+			<field reporter:label="Display in User Summary" name="usr_summary" reporter:datatype="bool" oils_obj:required="true"/>
 		</fields>
 		<links>
 			<link field="owner" reltype="has_a" key="id" map="" class="aou"/>
