@@ -1,15 +1,22 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
-import {StringComponent} from '@eg/share/string/string.component';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
 import {IdlObject, IdlService } from '@eg/core/idl.service';
-import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
+import {NgbNavChangeEvent, NgbNavModule} from '@ng-bootstrap/ng-bootstrap';
+import { FmRecordEditorModule } from '@eg/share/fm-editor/fm-editor.module';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
-    templateUrl: './survey-edit.component.html'
+    templateUrl: './survey-edit.component.html',
+    standalone: true,
+    imports: [
+        FmRecordEditorModule,
+        NgbNavModule,
+        StaffCommonModule
+    ]
 })
 
 export class SurveyEditComponent implements OnInit {
@@ -21,40 +28,6 @@ export class SurveyEditComponent implements OnInit {
     surveyTab: string;
 
     @ViewChild('editDialog', { static: true }) editDialog: FmRecordEditorComponent;
-
-    @ViewChild('createAnswerString', { static: true })
-        createAnswerString: StringComponent;
-    @ViewChild('createAnswerErrString', { static: true })
-        createAnswerErrString: StringComponent;
-    @ViewChild('createQuestionString', { static: true })
-        createQuestionString: StringComponent;
-    @ViewChild('createQuestionErrString', { static: true })
-        createQuestionErrString: StringComponent;
-
-    @ViewChild('updateQuestionSuccessStr', { static: true })
-        updateQuestionSuccessStr: StringComponent;
-    @ViewChild('updateQuestionFailStr', { static: true })
-        updateQuestionFailStr: StringComponent;
-    @ViewChild('updateAnswerSuccessStr', { static: true })
-        updateAnswerSuccessStr: StringComponent;
-    @ViewChild('updateAnswerFailStr', { static: true })
-        updateAnswerFailStr: StringComponent;
-
-    @ViewChild('delAnswerSuccessStr', { static: true })
-        delAnswerSuccessStr: StringComponent;
-    @ViewChild('delAnswerFailStr', { static: true })
-        delAnswerFailStr: StringComponent;
-    @ViewChild('delQuestionSuccessStr', { static: true })
-        delQuestionSuccessStr: StringComponent;
-    @ViewChild('delQuestionFailStr', { static: true })
-        delQuestionFailStr: StringComponent;
-
-    @ViewChild('endSurveyFailedString', { static: true })
-        endSurveyFailedString: StringComponent;
-    @ViewChild('endSurveySuccessString', { static: true })
-        endSurveySuccessString: StringComponent;
-    @ViewChild('questionAlreadyStartedErrString', { static: true })
-        questionAlreadyStartedErrString: StringComponent;
 
     constructor(
         private auth: AuthService,
@@ -77,14 +50,31 @@ export class SurveyEditComponent implements OnInit {
             'open-ils.circ.survey.fleshed.retrieve',
             this.surveyId
         ).subscribe(res => {
-            this.surveyObj = res;
-            this.buildLocalArray(res);
+            this.setRecord(res);
             return res;
         });
     }
 
     onNavChange(event: NgbNavChangeEvent) {
         this.surveyTab = event.nextId;
+    }
+
+    setRecord(record: IdlObject) {
+        // Unlike most PCRUD calls, this API uses 0 and 1 (rather than 'f' and 't') to represent boolean values
+        // We need to normalize them before the FieldMapper Editor (which can handle booleans or 'f' and 't') sees them.
+        const normalizeBooleanValue = (value: number) => {
+            switch (value) {
+                case 0:
+                    return false;
+                case 1:
+                    return true;
+                default:
+                    return value;
+            }
+        };
+        this.booleanFieldNames.forEach(field => record[field](normalizeBooleanValue(record[field]())));
+        this.surveyObj = record;
+        this.buildLocalArray(record);
     }
 
     buildLocalArray(res) {
@@ -132,12 +122,12 @@ export class SurveyEditComponent implements OnInit {
             this.auth.token(), this.surveyObj
         ).subscribe(res => {
             if (res.debug) {
-                this.updateQuestionFailStr.current().then(msg => this.toast.warning(msg));
+                this.toast.warning($localize`Survey Question update failed`);
                 return res;
             } else {
                 this.surveyObj = res;
                 this.buildLocalArray(this.surveyObj);
-                this.updateQuestionSuccessStr.current().then(msg => this.toast.success(msg));
+                this.toast.success($localize`Survey Question updated`);
                 return res;
             }
         });
@@ -154,12 +144,12 @@ export class SurveyEditComponent implements OnInit {
             this.auth.token(), this.surveyObj
         ).subscribe(res => {
             if (res.debug) {
-                this.delQuestionFailStr.current().then(msg => this.toast.warning(msg));
+                this.toast.warning($localize`Survey Question deletion failed`);
                 return res;
             } else {
                 this.surveyObj = res;
                 this.buildLocalArray(this.surveyObj);
-                this.delQuestionSuccessStr.current().then(msg => this.toast.success(msg));
+                this.toast.success($localize`Survey Question deleted`);
                 return res;
             }
 
@@ -184,13 +174,13 @@ export class SurveyEditComponent implements OnInit {
         ).subscribe(res => {
             if (res.debug) {
                 this.newQuestionText = '';
-                this.createQuestionErrString.current().then(msg => this.toast.warning(msg));
+                this.toast.warning($localize`Failed to Create New Question`);
                 return res;
             } else {
                 this.surveyObj = res;
                 this.buildLocalArray(this.surveyObj);
                 this.newQuestionText = '';
-                this.createQuestionString.current().then(msg => this.toast.success(msg));
+                this.toast.success($localize`New Question Added`);
                 return res;
             }
 
@@ -208,12 +198,12 @@ export class SurveyEditComponent implements OnInit {
             this.auth.token(), this.surveyObj
         ).subscribe(res => {
             if (res.debug) {
-                this.delAnswerFailStr.current().then(msg => this.toast.warning(msg));
+                this.toast.warning($localize`Survey Answer deletion failed`);
                 return res;
             } else {
                 this.surveyObj = res;
                 this.buildLocalArray(this.surveyObj);
-                this.delAnswerSuccessStr.current().then(msg => this.toast.success(msg));
+                this.toast.success($localize`Survey Answer deleted`);
                 return res;
             }
         });
@@ -231,12 +221,12 @@ export class SurveyEditComponent implements OnInit {
             this.auth.token(), this.surveyObj
         ).subscribe(res => {
             if (res.debug) {
-                this.updateAnswerFailStr.current().then(msg => this.toast.warning(msg));
+                this.toast.warning($localize`Survey Answer update failed`);
                 return res;
             } else {
                 this.surveyObj = res;
                 this.buildLocalArray(this.surveyObj);
-                this.updateAnswerSuccessStr.current().then(msg => this.toast.success(msg));
+                this.toast.success($localize`Survey Answer updated`);
                 return res;
             }
         });
@@ -256,12 +246,12 @@ export class SurveyEditComponent implements OnInit {
             this.auth.token(), this.surveyObj
         ).subscribe(res => {
             if (res.debug) {
-                this.createAnswerErrString.current().then(msg => this.toast.warning(msg));
+                this.toast.warning($localize`Failed to Create New Answer`);
                 return res;
             } else {
                 this.surveyObj = res;
                 this.buildLocalArray(this.surveyObj);
-                this.createAnswerString.current().then(msg => this.toast.success(msg));
+                this.toast.success($localize`New Answer Added`);
                 return res;
             }
         });
@@ -281,13 +271,13 @@ export class SurveyEditComponent implements OnInit {
             this.auth.token(), surveyClone
         ).subscribe(res => {
             if (res.debug) {
-                this.endSurveyFailedString.current().then(msg => this.toast.warning(msg));
+                this.toast.warning($localize`Ending Survey failed or was not allowed`);
                 return res;
             } else {
                 this.surveyObj = res;
                 this.surveyObj.ischanged(false);
                 this.buildLocalArray(this.surveyObj);
-                this.endSurveySuccessString.current().then(msg => this.toast.success(msg));
+                this.toast.success($localize`Survey ended`);
                 return res;
             }
         });
@@ -297,11 +287,18 @@ export class SurveyEditComponent implements OnInit {
         const surveyStartDate = new Date(this.surveyObj.start_date());
         const now = new Date();
         if (surveyStartDate <= now) {
-            this.questionAlreadyStartedErrString.current().then(msg =>
-                this.toast.warning(msg));
+            this.toast.warning(
+                $localize`The survey Start Date must be set for the future to add new questions or modify existing questions.`
+            );
             return true;
         }
         return false;
+    }
+
+    private get booleanFieldNames(): string[] {
+        return this.idl.classes['asv'].fields
+            .filter((field: any) => field.datatype === 'bool')
+            .map((field: any) => field.name);
     }
 }
 

@@ -1,5 +1,6 @@
 import { AuthService } from '@eg/core/auth.service';
 import { IdlObject, IdlService } from '@eg/core/idl.service';
+import { LocaleService } from '@eg/core/locale.service';
 import { NetService } from '@eg/core/net.service';
 import { PcrudService } from '@eg/core/pcrud.service';
 import { PermService } from '@eg/core/perm.service';
@@ -14,10 +15,24 @@ import { EMPTY, from, of } from 'rxjs';
 
 // Convenience functions that generate mock data for use in automated tests
 export class MockGenerators {
-    static idlObject(keysAndValues: {[key: string]: any}, classname?: string) {
-        const object = jasmine.createSpyObj<IdlObject>(Object.keys(keysAndValues), {classname: classname});
+    static idlObject(keysAndValues: {[key: string]: any}, classname?, isFieldMapper?): IdlObject {
+        const object = {
+            a: null,
+            _isfieldmapper: isFieldMapper,
+            classname: classname,
+            originalValues: keysAndValues,
+            changedValues: {}
+        };
         Object.keys(keysAndValues).forEach((key) => {
-            object[key].and.returnValue(keysAndValues[key]);
+            object[key] = (newValue?: any) => {
+                if (newValue !== undefined) {
+                    object.changedValues[key] = newValue;
+                } else {
+                    // Note: we can't do object.changedValues[key] ?? object.originalValues[key],
+                    // since the value of the field could be null
+                    return key in object.changedValues ? object.changedValues[key] : object.originalValues[key];
+                }
+            };
         });
         return object;
     }
@@ -45,7 +60,10 @@ export class MockGenerators {
     }
 
     static idlService(classes: {}) {
-        const service = jasmine.createSpyObj<IdlService>(['getClassSelector', 'create'], {classes: classes});
+        const service = jasmine.createSpyObj<IdlService>(
+            ['getClassSelector', 'create', 'pkeyMatches', 'sortIdlFields'],
+            {classes: classes}
+        );
         service.create.and.callFake((cls: string, seed?: any) => {
             return new Proxy({
                 a: [],
@@ -61,7 +79,17 @@ export class MockGenerators {
                 }
             });
         });
+        service.sortIdlFields.and.callFake((fields, _desiredOrder) => fields);
         return service;
+    }
+
+    static localeService(returnValues = {}): LocaleService {
+        return {
+            currentLocaleCode: () => returnValues['currentLocaleCode'] || 'en-US',
+            setLocale: (code: string) => {},
+            supportedLocaleCodes: () => returnValues['supportedLocaleCodes'] || ['en-US'],
+            supportedLocales: () => of(returnValues['supportedLocales'] || MockGenerators.idlObject({code: 'en-US'})),
+        } as LocaleService;
     }
 
     // Use the method response map to say which OpenSRF methods
