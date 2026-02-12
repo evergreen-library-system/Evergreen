@@ -2063,7 +2063,9 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
  ( 695, 'ADMIN_CALL_NUMBER_CLASS', oils_i18n_gettext(695,
      'Allow updates to call number classification names, normalizers, and fields.', 'ppl', 'description')),
  ( 696, 'ADMIN_RECORD_DISPLAY', oils_i18n_gettext(696,
-     'Allow modifying the display of catalog records in certain interfaces', 'ppl', 'description'))
+     'Allow modifying the display of catalog records in certain interfaces', 'ppl', 'description')),
+ ( 694, 'PURGE_USER', oils_i18n_gettext(694,
+     'Allow a user to delete (purge) another user', 'ppl', 'description'))
 ;
 
 INSERT INTO permission.perm_list (id,code) VALUES
@@ -2620,7 +2622,8 @@ INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
 		pgt.name = 'Circulation Administrator' AND
 		aout.name = 'Branch' AND
 		perm.code IN (
-			'DELETE_USER');
+			'DELETE_USER',
+			'PURGE_USER');
 
 INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
 	SELECT

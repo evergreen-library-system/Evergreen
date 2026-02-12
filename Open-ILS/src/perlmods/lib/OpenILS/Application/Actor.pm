@@ -4289,7 +4289,7 @@ sub really_delete_user {
     }
     # No deleting yourself - UI is supposed to stop you first, though.
     return $e->die_event unless $e->requestor->id != $user->id;
-    return $e->die_event unless $e->allowed('DELETE_USER', $user->home_ou);
+    return $e->die_event unless $e->allowed('PURGE_USER', $user->home_ou);
     # Check if you are allowed to mess with this patron permission group at all
     my $evt = group_perm_failed($e, $e->requestor, $user);
     return $e->die_event($evt) if $evt;

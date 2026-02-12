@@ -906,7 +906,7 @@ template output
 
 *DELETE_TRIGGER_VALIDATOR.* Allows a user to delete trigger validators
 
-*DELETE_USER.* Allows a user to delete (purge) another user's account
+*DELETE_USER.* Allows a user to mark a user as deleted
 
 *DELETE_USER_BTYPE.* Allows a user to delete user bucket types
 
@@ -1099,6 +1099,8 @@ session (length configured in opensrf.xml)
 
 *PLACE_UNFILLABLE_HOLD.* Allows a user to place a hold that cannot
 currently be filled
+
+*PURGE_USER.* Allows a user to delete (purge) another user's account
 
 *RECEIVE_PURCHASE_ORDER.* Allows an acquisitions user to mark a purchase
 order, lineitem, or individual item as received
