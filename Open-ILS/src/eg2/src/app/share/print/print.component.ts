@@ -214,7 +214,7 @@ export class PrintComponent implements OnInit {
 
             // Extract the print container div from our component markup.
             const container =
-                this.elm.nativeElement.querySelector('#eg-print-container');
+                this.elm.nativeElement.querySelector('#print-div');
 
             // Sometimes the results come from an externally-parsed HTML
             // template, other times they come from an in-page template.
