@@ -463,13 +463,13 @@ input[type="checkbox"]:focus {
 /**
  * Only display the print container when printing
  */
-#eg-print-container {
+#print-div {
     display: none;
 }
 @media print {
   head {display: none} /* just to be safe */
-  /* Display ONLY eg-print-container; Hide literally everything that is not above, below, or itself eg-print-container */
-  *:not(:has(#eg-print-container)):not(#eg-print-container *):not(#eg-print-container) {
+  /* Display ONLY print-div; Hide literally everything that is not above, below, or itself print-div */
+  *:not(:has(#print-div)):not(#print-div *):not(#print-div) {
     display: none
   }
   @page {size: auto} /* work around Bootrap 4's default
@@ -477,8 +477,8 @@ input[type="checkbox"]:focus {
                         size stops browsers from letting
                         the user choose portrait or
                         landscape. LP#1986725 */
-  #eg-print-container {display: block}
-  #eg-print-container pre {border: none}
+  #print-div {display: block}
+  #print-div pre {border: none}
 }
 
 /**
