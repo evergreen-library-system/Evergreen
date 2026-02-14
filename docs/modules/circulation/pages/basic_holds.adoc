@@ -14,7 +14,7 @@ Evergreen has different levels of holds. Library staff can place holds at all le
 
 |==============================
 |*Hold level* |*Abbreviation* |*When to use*        |*How to use*   |*Who can use*    |*Hold tied to*
-|Metarecord        |M             |Patron or staff want first available format of a title  | Patron selects _Combine Same Title_ in public catalog search, then chooses format options under _Select desired format(s)_ from the _Place Hold_ screen. Staff selects _Group Formats/Editions_ in the staff catalog search, then selects format options on the _Place Hold_ screen. | Patron or staff | Holdings beloging to multiple bibliographic (title) records sharing a metarecord
+|Metarecord        |M             |Patron or staff want first available format of a title  | Patron selects _Combine Same Title_ in public catalog search, then chooses format options under _Select desired format(s)_ from the _Place Hold_ screen. Staff selects _Group Formats/Editions_ in the staff catalog search, then selects format options on the _Place Hold_ screen. | Patron or staff | Holdings belonging to multiple bibliographic (title) records sharing a metarecord
 |Title        |T              |Patron or staff want first available copy of a title  | Staff or patron clicks on _Place Hold_ next to title. | Patron or staff | Holdings attached to a single MARC (title) record
 |Part        |P              |Patron or staff a particular part of title (e.g. volume or disk number)    | Staff or patron selects part on the create/edit hold screen when setting holds notification options.   |Patron or staff  |Holdings with identical parts attached to a single MARC (title) record.
 |Volume       |V              |Patron or staff want any title associated with a particular call number | In the staff client, click on _Call Number Hold_ under _Holdable?_ |Staff only |Holdings attached to a single call number (volume)
@@ -35,10 +35,10 @@ If you select the _Suspend this Hold_ checkbox, the hold will be suspended and n
 
 . To place a title-level hold, retrieve the title record on the catalog and click the _Place Hold_ link beside the title on the search results list, or click the _Place Hold_ link on the title summary screen.
 +
-image::hold_management/holds_search_results.jpg[Search Results with Place Hold link]
+image::basic_holds/holds_search_results_staff_client.png[Search Results with Place Hold link]
 +
 . Scan or type the patron's barcode into the _Place hold for patron by
-barcode_ box, or choose _Place this hold for me_.
+barcode_ box, or choose _Place hold for this staff account_. If you want to place a hold for a Hold Group, select _Place hold for this hold group_ and choose the group name from the dropdown menu. Select _Override all hold-blocking conditions possible?_ if you want to automatically override any user account alerts or blocks.
 . If this title contains multiple parts, you can specify which part to
 request. Some libraries enable settings to require the choosing of a part when a record as parts. If a part is not required and you do not select a part, the hold will target any of the
 other copies on this record, that is, those with no parts attached.
@@ -47,58 +47,11 @@ Those copies are usually the complete set, containing all the parts.
 Be sure to choose a valid _Pickup location_.
 . Click _Submit_.
 +
-image::hold_management/place_hold.jpg[Place Holds screen with Basic Options]
+image::basic_holds/place_hold_staff_client.png[Place Holds screen with Basic Options]
 +
-. A confirmation screen appears with the message "Hold was successfully placed".
+. The Holds Status column will change from "Hold Pending" to "Hold Succeeded."
 +
-image::hold_management/hold_confirmation.jpg[Place Holds confirmation screen]
-
-*Advanced Hold Options*
-
-Clicking the *Advanced Hold Options* link will take you into the
-metarecord level hold feature, where you can select multiple formats
-and/or languages, if available.
-
-Selecting multiple formats will not place all of these formats on hold.
-For example, selecting CD Audiobook and Book implies that either the CD
-format or the book format is the acceptable format to fill the hold. If
-no format is selected, then any of the available formats may be used to
-fill the hold. The same applies to selecting multiple languages.
-
-image::hold_management/advanced_hold.jpg[Place Hold screen with Advanced Options]
-
-
-== Patron Search from Place Hold ==
-Patron Search from Place Hold allows staff members, when placing a hold on behalf of a patron in the web staff client, to search for patrons by names and other searchable patron information, rather than relying on barcode alone.
-
-
-=== To Use Patron Search From Place Holds: ===
-1. After performing a search in the catalog, staff will retrieve a bibliographic record.
-2. Click *Place Hold* either in the search results or within the detailed bibliographic record. The Place Hold screen will appear. Note: this feature also appears when placing volume-level holds and item-level holds.
-+
-image::hold_management/hold_details.jpg[Placing hold from the details page]
-+
-3. Next to _Place Hold for patron by barcode_, click on *Patron Search*. Please note that Patron Search will only appear in this interface when using the web-based staff client. It will not appear in the patron-facing OPAC.
-+
-image::hold_management/patron_search_button.jpg[Patron Search]
-+
-4. A dialog box will appear with the patron search interface used elsewhere in the staff client. By default, the search scopes to your workstation organizational unit, and you can search by patron last name, first name, and middle name.
-+
-image::basic_holds/PlaceHold-2.JPG[Select Patron dialog box]
-+
-Clicking the *arrow icon* to the right of _Clear Form_ can either expand or condense the searchable fields display which includes other patron information.
-+
-image::basic_holds/PlaceHold-3.JPG[Select Patron dialog box expanded to show more search fields]
-+
-5. To search for a patron, fill out the relevant search fields, and click *Search* or hit ENTER on your keyboard. Results will appear below in Patron Search Results in the lower half of the screen.
-+
-image::basic_holds/PlaceHold-4.JPG[Select Patron dialog box with search results and Search button highlighted]
-+
-6. Click the row of the desired patron account, and click *Select*.
-+
-image::basic_holds/PlaceHold-5.JPG[Select Patron dialog box with patron account selected]
-+
-7. The dialog box will close and the selected patron's barcode will appear next to _Place hold for patron by barcode_. This will cause the patron's hold notification preferences to appear in the relevant fields in the bottom half of the screen. Changes to the Hold Notification preferences can be made before clicking *Submit* to finish placing a hold for the patron.
+image::basic_holds/hold_confirmation_staff_client.png[Hold Succeeded message]
 
 
 == Part-Level Hold ==
@@ -108,15 +61,12 @@ attached to the title, such as a multi-disc DVD, an annual travel guide,
 or a multi-volume book set.
 . Place the hold as you would for a title-level hold, including patron
 barcode, notification details, and a valid pickup location.
-. Select the applicable part from the _Select a Part_ dropdown menu.
+. Select the applicable part from the _Select a Part_ dropdown menu. The menu displays the number of items available for each part and excludes any unavailable parts.
 . Click _Submit_.
 +
-image::hold_management/holds_parts.jpg[Place Holds screen with Basic Options]
+image::basic_holds/part_hold_dropdown_update.png[Select a Part dropdown with available copies]
 +
-[TIP]
-===============
-Requested formats are listed in the _Holdable Part_ column in hold records. Use the _Column Picker_ to display it when the hold record is displayed.
-===============
+
 
 == Placing Holds in Patron Records ==
 
@@ -132,13 +82,25 @@ Holds can be placed from patron records too.
 
 . You may continue to search for more titles. Once you are done, click the _Holds_ button on the top to go back to the _Holds_ screen. Click the _Refresh_ button to display your newly placed holds.
 
+
+== Patron Search from Place Hold ==
+Patron Search from Place Hold allows staff members, when placing a hold on behalf of a patron in the web staff client, to search for patrons by names and other searchable patron information, rather than relying on barcode alone.
+
+
+=== To Use Patron Search From Place Holds: ===
+. After performing a search in the catalog, staff will retrieve a bibliographic record.
+. Click *Place Hold* either in the search results or within the detailed bibliographic record. The Place Hold screen will appear. Note: this feature also appears when placing volume-level holds and item-level holds.
+. Next to _Place Hold for patron by barcode_, click on *Search for Patron*.
+. A dialog box will appear with the patron search interface used elsewhere in the staff client. Please refer to xref:circulation:circulation_patron_records_web_client.adoc#searching_patrons[Searching Patrons] for instructions on completing a patron search.
+. Once you’ve completed the search, click the row of the desired patron account, and click *Select*.
+. The dialog box will close and the selected patron's barcode will appear next to _Place hold for patron by barcode_. This will cause the patron's hold notification preferences to appear in the relevant fields in the right half of the screen. Changes to the Hold Notification preferences can be made before clicking *Place Hold* to finish placing a hold for the patron.
+
+
 === Placing Multiple Holds on Same Title ===
 
-After a successful hold placement, staff have the option to place another hold on the same title by clicking the link _Place another hold for this title_. This returns to the hold screen, where a different patron's information can be entered.
+To allow for placing multiple holds on the same title for the same account, the _Maximum number of duplicate holds allowed_ library setting must have a value. For example, if the value is set to 20, you can choose up to 20 in the _Number of copies:_ dropdown that appears on the Place Hold screen when the setting is enabled. This feature can be useful for book club groups or new items where a list of waiting patrons needs to be transferred into the system.
 
-image::hold_management/hold_confirmation.jpg[Place another hold link]
-
-This feature can be useful for book groups or new items where a list of waiting patrons needs to be transferred into the system.
+To place multiple holds on the same title, staff users need the CREATE_DUPLICATE_HOLDS permission.
 
 
 == Managing Holds ==
@@ -892,4 +854,3 @@ image::hold_management/holds-detail-view.png[Detail View button in Holds]
 +
 image::hold_management/reset-entries.png[Reset Entries Tab]
 . Order can be reversed to show most recent resets first.
-
