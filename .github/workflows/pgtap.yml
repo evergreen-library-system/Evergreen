@@ -21,22 +21,22 @@ env:
 jobs:
   pgtap:
     name: Run PgTap tests
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     strategy:
       matrix:
-        pg-version: [13, 14, 15, 16, 17]
+        pg-version: [14, 15, 16, 17, 18]
       fail-fast: false
     steps:
       - uses: actions/checkout@v4
 
-      # The Github actions jammy image comes with postgres 14 installed.  To test other postgres
-      # versions, we need to remove 14 first
-      - name: Delete the postgres 14 cluster that comes with the github actions ubuntu image
-        run: sudo pg_dropcluster --stop 14 main
-        if: matrix.pg-version != 14
+      # The Github actions ubuntu image comes with postgres installed.  To test other postgres
+      # versions, we need to remove the installed version first
+      - name: Delete the postgres cluster that comes with the github actions ubuntu image
+        run: sudo pg_dropcluster --stop 16 main
+        if: matrix.pg-version != 16
       - name: Remove any postgres that is already installed in the github actions ubuntu image
         run: sudo apt remove -y postgres*
-        if: matrix.pg-version != 14
+        if: matrix.pg-version != 16
 
       # Next, let's install dependencies
       - name: Install postgres and dependencies
