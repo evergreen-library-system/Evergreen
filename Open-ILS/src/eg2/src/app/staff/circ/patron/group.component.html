@@ -57,23 +57,23 @@
     <eg-grid-column name="family_name"></eg-grid-column>
     <eg-grid-column name="first_given_name"></eg-grid-column>
 
-    <eg-grid-column name="balance_owed" path="_stats.fines.balance_owed" 
+    <eg-grid-column name="balance_owed" path="_stats.fines.balance_owed"
       datatype="money" label="Balance Owed" i18n-label>
     </eg-grid-column>
 
-    <eg-grid-column name="total_out" path="_stats.checkouts.total_out" 
+    <eg-grid-column name="total_out" path="_stats.checkouts.total_out"
       label="Items Out" i18n-label>
     </eg-grid-column>
 
-    <eg-grid-column name="overdue" path="_stats.checkouts.overdue" 
+    <eg-grid-column name="overdue" path="_stats.checkouts.overdue"
       label="Items Overdue" i18n-label>
     </eg-grid-column>
 
-    <eg-grid-column name="lost" path="_stats.checkouts.lost" 
+    <eg-grid-column name="lost" path="_stats.checkouts.lost"
       label="Items Lost" i18n-label>
     </eg-grid-column>
 
-    <eg-grid-column name="barcode" [cellTemplate]="barcodeTemplate"
+    <eg-grid-column name="card" [cellTemplate]="barcodeTemplate"
       label="Barcode" i18n-label>
     </eg-grid-column>
 
