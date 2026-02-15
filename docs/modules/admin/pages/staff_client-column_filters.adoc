@@ -1,36 +1,63 @@
-= Angular Column Filters =
+= Angular Grids = 
 :toc:
 
 indexterm:[Column Filters]
 indexterm:[Angular]
 
-As of 3.4, the Angular eg-grid has been enhanced by adding a new per-column filtering widget with many new features. This widget allows column headers as well as the filter bar to remain visible, or frozen, at the top of the screen if one scrolls down the grid.
+Grids in the Angular framework offer enhanced functionality in column configuration, sorting, and filtering. This page gives an overview of the various capabilities within Angular grids across the staff client.
 
-image::staff_client_column_filters/filters.png[Example of column header filters] 
+== Column Configuration ==
 
-Various column filters can be used in combination with one another to provide a highly specific list.
+You can manage the columns that display and their order by clicking on the gear icon and choosing *Manage Columns*. Along with selecting which data you would like to display, as you do in other grids, you can also set how you would like the text to align within the column and set the width of characters.
 
-For text-based columns, the filtering provided in this widget is case-sensitive by default. Future development could add a trigram index on selected columns as needed in order to permit case-insensitive filtering on those columns. Fully case-insensitive filtering can result in speed issues, particularly where large database tables are involved, and it is advised that future developers balance the needs of case-insensitive search with potential performance concerns.
+image::staff_client_column_filters/grid_align_and_width.png[Column alignment and width of characters]
 
-Each column in the filter bar has an *Operator Button* and an *Entry Box*. The Operator Button is shown on the left in the image below, and the Entry Box on the right.
+To change the order the columns display:
 
-image::staff_client_column_filters/operator.png[Operator Button] 
+. Select the up or down arrows to move the column to the top or bottom of the display. Or you can click and hold the mouse down and drag and drop.
++
+image::staff_client_column_filters/grid_move.png[Move order of columns]
++
+. Click *Move Visible Columns to the Top* to aggregate all visible columns.
+. Click *Save*.
 
-If you select the *Operator Button* you will see that each column also has an *Apply Filter* and a *Clear Filter* button.
+You can also change the order and the width the columns display directly on the grid:
 
-image::staff_client_column_filters/applyclear_buttons.png[Apply Filter and Clear Filter Buttons]
+* To change the order, hover your mouse over the column name you would like to move until you see a hand icon. Click and hold down as you drag the column to where you would like it to appear in the grid and release.
+* To change the width, hover your mouse to the right-hand edge of the column. A resize icon will appear. Click to hold down and drag to the left or right to resize.
 
-To apply a filter, enter text, date, or numeric value in the *Entry Box* then press Enter or select Apply Filter. The type of entry will depend on which column type is being used. Most columns use a default operator of _Is exactly_. For columns using a combobox, selector, or Boolean value, the filter will be applied upon selection of a value and you do not need to press Enter or select Apply Filter.
+== Sorting Columns ==
 
-Operator options are different depending on the column type.
+Column names that are bold and underlined indicate they can be sorted in ascending or descending order. To sort, hover your mouse over the title until you see a pointer icon. An up or down arrow will appear next to the column name to indicate whether the results are ascending or descending.
 
-The example below shows the entry box with a value of “Car” and the Operator selected is _Starts with_.
+image::staff_client_column_filters/sort_angular.png[Sort column]
 
-image::staff_client_column_filters/filter_startswith.png[Example of Starts With filter]
+== Filtering Columns ==
 
-The results of this filter are shown below. A column with a filter in place will show the Operator Button styled blue.
+If columns can be filtered, a funnel icon will appear under the column name.
 
-image::staff_client_column_filters/filter_results_startswith.png[Results of Starts With filter]
+image::staff_client_column_filters/filter_icon_angular.png[Filter icon]
+
+To filter a column:
+
+. Click the icon to open the filter window.
++
+image::staff_client_column_filters/filter_window_angular.png[Filter window]
++
+. Click in the *Operator* field to select the condition from the dropdown menu, for example, _Contains_.
++
+image::staff_client_column_filters/filter_operator_angular.png[Operator list]
++
+. Input the value to filter by and click *Apply filter*.
++
+image::staff_client_column_filters/filter_apply_angular.png[Apply filter]
++
+. Once a filter is applied, a pencil icon will appear instead of the funnel.
+. To edit a filter, click the pencil button, make any changes, and click *Apply filter*.
+
+To clear the filter, click the pencil icon and click *Clear filter*.
+
+image::staff_client_column_filters/filter_clear_angular.png[Clear filter]
 
 Columns which use a text type have operators for:
 
@@ -58,40 +85,57 @@ Columns which use a date or numeric type have operators for:
 * Is less than or equal to
 * Is greater than or equal to
 
-For both of the above operator sets, _Exists_ indicates a value that is not NULL and _Does not exist_ indicates a value that is NULL.
+For both of the above operator sets, _Exists_ indicates a value that is not null, and _Does not exist_ indicates a value that is null.
 
 Date columns also have a _Between_ operator.
 
-Columns which are Boolean have operators for: 
+Boolean columns have operators for: 
 
 * Any
 * True
 * False
 
-Columns which use an Organizational Unit combobox have operators for _Is (or includes)_ and _Is not (or excludes)_. This filter also includes the ability to select Organizational Unit ancestors and/or descendants as part of the filter. The combobox will accept typeahead entry and also will show an Organization Unit dropdown if you click in the entry box.
+Columns which use an Organizational Unit combobox have operators for _Is (or includes)_ and _Is not (or excludes)_. This filter also includes the ability to select Organizational Unit ancestors and/or descendants as part of the filter. The combobox will accept typeahead entry and also will show an Organizational Unit dropdown if you click in the entry box.
 
-image::staff_client_column_filters/orgunit_filter.png[Organizational Unit Filter]
+image::staff_client_column_filters/angular_grid_org_unit_filter.png[Organizational Unit Filter]
 
-NOTE: Be aware that when using Operator types such as _Contains_, _Starts with_, or _Ends with_ there is a risk of invoking a full table scan and thus the possibility of a noticeable slowness in retrieval. This risk is less likely for _Starts with_, as many text columns already have database indexes that lend themselves to left-anchored searches.
+NOTE: Be aware that when using Operator types such as _Contains_, _Starts with_, or _Ends with_, there is a risk of invoking a full table scan and thus the possibility of a noticeable slowness in retrieval. This risk is less likely for _Starts with_, as many text columns already have database indexes that lend themselves to left-anchored searches.
 
-As of this writing, columns with a date data type will only accept typed entry in YYYY-MM-DD format and do not honor the date.format Library Setting. This is a known bug. If an invalid date is entered into the Entry Box, the box will have red styling on the left to indicate this as shown in the image below.
+As of this writing, columns with a date data type will only accept typed entries in YYYY-MM-DD format and do not honor the date.format Library Setting. This is a known bug. If an invalid date is entered into the Entry Box, the box will have red styling on the left to indicate this as shown in the image below.
 
-image::staff_client_column_filters/incorrect_date.png[Invalid Date Entry]
+image::staff_client_column_filters/angular_grid_date_filter.png[Date filter with incorrect format]
 
-To clear a filter, select the *Clear Filter* button. You may also delete the value in the entry box and press Enter if in a text column -- other columns do not require Enter, as noted above. 
+== Managing Actions Menu ==
 
-There is also a *Remove Filters* button available which will remove all currently applied filters in the grid.
+In Angular grids, there is the ability to control which options display in the *Actions* menu. 
 
-image::staff_client_column_filters/removefilters.png[Remove All Filters]
+To add or remove fields:
 
-Clicking a column header will sort the column by ascending value, and show an up arrow in the column header. Clicking the header a second time will sort by descending value, and show a down arrow in the column header. A column sorted ascending is shown below.
+. Click the gear icon and select *Manage Actions Menu*.
++
+image::staff_client_column_filters/grid_manage_actions_menu.png[Manage Actions menu]
++
+. Select or deselect the actions you would like to display or hide, and then click *Close*.
++
+image::staff_client_column_filters/grid_manage_actions_menu_close.png[Adjust options and click Close]
++
 
-image::staff_client_column_filters/asc_sort.png[Column sort by ascending values]
+Those changes will now be reflected in the actions menu.
 
-As part of this project, several improvements were made to existing Angular widgets to support the grid filtering feature:
+image::staff_client_column_filters/grid_manage_actions_menu_menu.png[Updated Actions menu]
 
-* The date selector now has better visual styling.
-* The date selector now supports hitting the enter key to enable an action once a date has been entered.
-* The date selector now highlights when an incorrectly-formatted date has been entered by the user.
-* The date selector and organizational unit selector widgets now offer methods for code to readily reset their states and fetch the current entered value.
-* The patron date of birth field could be incorrectly displayed by the Angular client; this is now fixed.
+
+== Downloading or Printing Results ==
+
+From a grid, staff can choose to *Download Full CSV*, *Print Full Grid*, and *Print Selected Rows*, available from the dropdown arrow or gear icon in the function bar. (If there are no results in the grid, these options will be disabled.)
+
+image::staff_client_column_filters/download_print_options.png[Download and print options]
+
+*Download Full CSV* will download all of the records in the grid regardless of whether or not all of the records are currently visible. For example, if you complete a patron search and retrieve 65 patrons but have your _Rows_ number set to 25, you will only see 25 patrons per page.  Clicking *Download Full CSV* will download all 65 patron records to a CSV file. When the CSV file downloads, it will display data for the columns you have visible.
+
+Likewise, the option for *Print Full Grid* will also print the visible columns for all of the retrieved records even if they span multiple pages.
+
+To print specific rows:
+
+. From the grid, select the rows you would like to print.
+. Click the arrow or gear icon at the top right of the grid, and click *Print Selected Rows*.
