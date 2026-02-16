@@ -455,8 +455,7 @@ image::basic_holds/holds-clearing-4.png[holds-clearing-4]
 +
 . Click the _Print Full List_ button if you need a printed list. To format the printout customize the *Holds Shelf* receipt template. This can be done in _Administration_ -> _Workstation_ -> _Print Templates_.
 
-. The _Clear These Holds_ button becomes enabled when viewing clearable
-holds. Click it and the expired holds will be canceled.
+. The _Clear These Holds_ button becomes enabled when viewing clearable holds. Click it and the expired holds will be canceled. (Note that if your organization has enabled the "Hide the Clear These Holds button" xref:admin:librarysettings.adoc#lse-gui[library setting], the _Clear These Holds_ button will not display.)
 
 . Bring items down from the hold shelf and check them in.
 
