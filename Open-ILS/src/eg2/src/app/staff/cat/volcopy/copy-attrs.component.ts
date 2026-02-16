@@ -63,6 +63,11 @@ export class CopyAttrsComponent implements OnInit, OnDestroy, AfterViewInit {
 
     statCatFilter: number;
 
+    canUnset = new Set(['copy_number', 'prefix', 'suffix',
+        'age_protect', 'floating', 'circ_as_type', 'circ_modifier',
+        'price', 'cost'
+    ]);
+
     @ViewChild('loanDurationShort', {static: false})
         loanDurationShort: StringComponent;
     @ViewChild('loanDurationNormal', {static: false})
@@ -619,6 +624,19 @@ export class CopyAttrsComponent implements OnInit, OnDestroy, AfterViewInit {
         if (value === undefined) {
             value = this.values[field];
         } else {
+            this.values[field] = value;
+        }
+
+        // Some fields aren't IDL required, but won't save if null.
+        if (value === null && !this.templateOnlyMode && !this.canUnset.has(field)) {
+            this.cancelValueChange(field);
+            return;
+        }
+
+        if (field === 'owning_lib' || field === 'prefix' || field === 'suffix' || field === 'label_class') {
+            this.somethingOnCallNumberChanged(field, value, changeSelection);
+
+        } else {
             // If the field is number-ish, the empty string means null. Force that here.
             // ??? Should all fields be forced to null on empty string?
             if (value === '' &&
@@ -626,13 +644,6 @@ export class CopyAttrsComponent implements OnInit, OnDestroy, AfterViewInit {
             ) {
                 value = null;
             }
-            this.values[field] = value;
-        }
-
-        if (field === 'owning_lib' || field === 'prefix' || field === 'suffix' || field === 'label_class') {
-            this.somethingOnCallNumberChanged(field, value, changeSelection);
-
-        } else {
 
             this.local_copyList.forEach(copy => {
                 if (!copy[field] || copy[field]() === value) { return; }
@@ -657,8 +668,14 @@ export class CopyAttrsComponent implements OnInit, OnDestroy, AfterViewInit {
 
     somethingOnCallNumberChanged(field: string, value: any, changeSelection?: BatchChangeSelection) {
         console.debug('somethingOnCallNumberChanged', field, value, changeSelection);
-        if (!value && (field === 'prefix' || field === 'suffix')) { value = -1; }
-        if (!value) { return; }
+        if (!value) {
+            if (field === 'prefix' || field === 'suffix') {
+                value = -1;
+            } else {
+                this.cancelValueChange(field);
+                return;
+            }
+        }
 
         // Map existing vol IDs to their replacments.
         const newVols: any = {};
@@ -802,6 +819,7 @@ export class CopyAttrsComponent implements OnInit, OnDestroy, AfterViewInit {
         attr.hasChanged = false;
         attr.editing = false;
         attr.checkValuesForCSS();
+        this.cancelValueChange(fieldName, false);
         // console.debug('attr ' + attr.name, attr);
         if (this.context) {
             // Restore copies from backup
@@ -872,6 +890,7 @@ export class CopyAttrsComponent implements OnInit, OnDestroy, AfterViewInit {
         }
         // "new" values new conditions
         attr.checkValuesForCSS();
+        this.emitSaveChange();
     }
 
     valueClearedForStatCat(catId: number) {
@@ -1569,6 +1588,43 @@ export class CopyAttrsComponent implements OnInit, OnDestroy, AfterViewInit {
 
     cancel(field) {
         this.batchAttrs.filter(attr => attr.editing && attr.name === field).forEach(attr => attr.cancel());
+    }
+
+    // If a field edit was canceled, unset, or reset, make sure
+    // the batch attr input isn't out of sync and revert it to
+    // the current value (or null if there are multiple values).
+    cancelValueChange(field: string, checkValueForCSS = true): void {
+        const copies = this.local_copyList;
+        if (!copies?.length) { return; }
+
+        const callNumFields = [
+            'owning_lib', 'prefix', 'suffix', 'label_class'
+        ];
+        if (callNumFields.indexOf(field) !== -1) {
+            const firstVal = copies[0]?.call_number()?.[field]();
+            const firstValId = this.idl.pkeyValue(firstVal);
+            const multipleValues = copies.find(copy => {
+                const callNumVal = copy?.call_number()?.[field]();
+                return this.idl.pkeyValue(callNumVal) !== firstValId;
+            });
+            this.values[field] = multipleValues ? null : firstVal;
+
+        } else {
+            const firstVal = copies[0]?.[field]();
+            const firstValId = this.idl.pkeyValue(firstVal);
+            const multipleValues = copies.find(copy =>
+                this.idl.pkeyValue(copy[field]()) !== firstValId
+            );
+            this.values[field] = multipleValues ? null : firstVal;
+        }
+
+        if (checkValueForCSS) {
+            const attr = this.batchAttrs.find(attr => attr.name === field);
+            if (attr) {
+                attr.hasChanged = false;
+                attr.checkValuesForCSS();
+            }
+        }
     }
 
     applyPendingChanges() {

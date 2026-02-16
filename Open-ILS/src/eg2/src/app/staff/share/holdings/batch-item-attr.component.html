@@ -37,9 +37,10 @@
 }" (click)="(readOnly || editing) ? null : enterEditMode()">
   <div class="card-header">
     <h5 id="label-{{editInputDomId}}" *ngIf="readOnly || editing" class="readonly field-heading">
-      <span i18n>{{label}}</span><br/>
-      <button *ngIf="selectOnly && !editing" type="button" class="btn-link edit-toggle" (click)="enterFilterMode()" i18n>
-        Select Subset to Edit
+      {{label}}
+      <button *ngIf="selectOnly && !editing" type="button"
+        class="btn-link edit-toggle d-block"
+        (click)="enterFilterMode()" i18n>Select Subset to Edit
       </button>
     </h5>
     <h5 id="label-{{editInputDomId}}" class="field-heading" *ngIf="!readOnly && !editing">
@@ -70,7 +71,12 @@
     <div *ngIf="!readOnly" class="edit-buttons">
       <button type="submit" class="btn btn-sm btn-primary" (click)="save($event)" i18n>Apply</button>
       <button type="button" class="btn btn-sm btn-normal ms-1" (click)="cancel($event)" i18n>Cancel</button>
-      <button type="button" class="btn btn-sm btn-destroy ms-auto" (click)="clear($event)" i18n>Clear</button>
+      <button type="button" class="btn btn-sm btn-destroy ms-auto"
+        [disabled]="!templateOnlyMode && !canUnset"
+        (click)="unset($event)" i18n>Clear</button>
+      <button type="button" class="btn btn-sm btn-destroy ms-1"
+        *ngIf="!templateOnlyMode"
+        (click)="clear($event)" i18n>Reset</button>
     </div>
 
     <div *ngIf="selectOnly" class="edit-buttons">

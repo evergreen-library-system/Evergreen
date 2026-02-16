@@ -48,7 +48,10 @@
     [editInputDomId]="field + '-input'"
     [editTemplate]="template"
     [labelCounts]="itemAttrCounts(field)"
+    [canUnset]="canUnset.has(field)"
+    (valueUnset)="applyCopyValue(field, null)"
     (valueCleared)="valueCleared(field)"
+    (changesCanceled)="cancelValueChange(field)"
     (changesSaved)="applyCopyValue(field, undefined, $event)">
   </eg-batch-item-attr>
 </ng-template>
@@ -782,9 +785,11 @@
           <eg-batch-item-attr label="{{cat.name()}} ({{orgSn(cat.owner())}})" i18n-label
             name="stat_cat_{{cat.id()}}" editInputDomId="stat-cat-input-{{cat.id()}}"
             [readOnly]="!userMayEdit"
+            [templateOnlyMode]="templateOnlyMode"
             [valueRequired]="cat.required() === 't'"
             [editTemplate]="statCatTemplate"
             [labelCounts]="statCatCounts(cat.id())"
+            (valueUnset)="statCatChanged(cat.id(), true)"
             (valueCleared)="valueClearedForStatCat(cat.id())"
             (changesSaved)="statCatChanged(cat.id())">
           </eg-batch-item-attr>

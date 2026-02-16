@@ -14,7 +14,7 @@ import { StringComponent } from '@eg/share/string/string.component';
 
 describe('CopyAttrsComponent', () => {
     let component: CopyAttrsComponent;
-    const idlMock = jasmine.createSpyObj<IdlService>(['clone']);
+    const idlMock = jasmine.createSpyObj<IdlService>(['clone', 'pkeyValue']);
     const orgMock = jasmine.createSpyObj<OrgService>(['get']);
     const authServiceMock = jasmine.createSpyObj<AuthService>(['user']);
     const formatServiceMock = jasmine.createSpyObj<FormatService>(['transform']);
@@ -107,13 +107,39 @@ describe('CopyAttrsComponent', () => {
             volCopyServiceMock.copyStatIsMagic.and.returnValue(true);
             // eslint-disable-next-line no-unused-expressions
             const item = jasmine.createSpyObj<IdlObject>(['ischanged'], {'status': () => {1;}});
-            const contextMock = jasmine.createSpyObj<VolCopyContext>(['copyList']);
-            contextMock.copyList.and.returnValue([item]);
-            component.context = contextMock;
+            (component as any).local_copyList = [item];
             spyOn(component, 'emitSaveChange');
 
             component.applyCopyValue('status', 0);
             expect(item.ischanged).not.toHaveBeenCalled();
+        });
+        it('cancels change when non-nullable value is null', () => {
+            spyOn(component, 'cancelValueChange');
+            spyOn(component, 'emitSaveChange');
+            component.templateOnlyMode = false;
+
+            component.applyCopyValue('status', null);
+            expect(component.cancelValueChange).toHaveBeenCalledWith('status');
+            expect(component.emitSaveChange).not.toHaveBeenCalled();
+        });
+        it('does not cancel change when non-nullable value is null in templateOnlyMode', () => {
+            spyOn(component, 'cancelValueChange');
+            spyOn(component, 'emitSaveChange');
+            component.templateOnlyMode = true;
+
+            component.applyCopyValue('status', null);
+            expect(component.cancelValueChange).not.toHaveBeenCalled();
+            expect(component.emitSaveChange).toHaveBeenCalled();
+        });
+        it('applies null if a numeric field is an empty string', () => {
+            const copy = jasmine.createSpyObj<IdlObject>(['ischanged', 'price']);
+            copy.price.and.returnValue(5);
+            (component as any).local_copyList = [copy];
+            idlMock.classes = { acp: { field_map: { price: { datatype: 'money' } } } };
+            spyOn(component, 'emitSaveChange');
+
+            component.applyCopyValue('price', '');
+            expect(copy.price).toHaveBeenCalledWith(null);
         });
     });
     describe('saveTemplate()', () => {
@@ -204,6 +230,66 @@ describe('CopyAttrsComponent', () => {
                     ischanged: false
                 }));
             });
+        });
+    });
+    describe('somethingOnCallNumberChanged()', () => {
+        ['owning_lib', 'label_class'].forEach(field => {
+            it(`cancels the change when ${field} is falsy`, () => {
+                spyOn(component, 'cancelValueChange');
+                component.somethingOnCallNumberChanged(field, null);
+                expect(component.cancelValueChange).toHaveBeenCalledWith(field);
+            });
+        });
+        ['prefix', 'suffix'].forEach(field => {
+            it(`applies -1 when ${field} is falsy`, () => {
+                const vol = jasmine.createSpyObj<IdlObject>(['id', field, 'isnew']);
+                vol.id.and.returnValue(1);
+                vol[field].and.returnValue(5);
+
+                const newVol = jasmine.createSpyObj<IdlObject>(['id', field, 'isnew']);
+                newVol.id.and.returnValue(-1);
+                idlMock.clone.and.returnValue(newVol);
+
+                const copy = jasmine.createSpyObj<IdlObject>(['id', 'call_number', 'ischanged']);
+                copy.id.and.returnValue(100);
+                copy.call_number.and.returnValue(vol);
+
+                (component as any).local_copyList = [copy];
+                volCopyServiceMock.autoId = -1;
+
+                const contextMock = jasmine.createSpyObj<VolCopyContext>(
+                    ['copyList', 'volNodes', 'removeCopyNode', 'findOrCreateCopyNode']);
+                contextMock.volNodes.and.returnValue([]);
+                component.context = contextMock;
+
+                component.somethingOnCallNumberChanged(field, null);
+                expect(newVol[field]).toHaveBeenCalledWith(-1);
+            });
+        });
+    });
+    describe('cancelValueChange()', () => {
+        it('syncs editable value with current copy value', () => {
+            const modifierValue = 'book';
+            const copy = jasmine.createSpyObj<IdlObject>(['circ_modifier']);
+            copy.circ_modifier.and.returnValue(modifierValue);
+            (component as any).local_copyList = [copy];
+            idlMock.pkeyValue.and.callFake(v => v);
+            component.batchAttrs = new QueryList();
+
+            component.cancelValueChange('circ_modifier', false);
+            expect(component.values['circ_modifier']).toBe(modifierValue);
+        });
+        it('sets editable value to null if copies have different values', () => {
+            const copy1 = jasmine.createSpyObj<IdlObject>(['circ_modifier']);
+            copy1.circ_modifier.and.returnValue('book');
+            const copy2 = jasmine.createSpyObj<IdlObject>(['circ_modifier']);
+            copy2.circ_modifier.and.returnValue('dvd');
+            (component as any).local_copyList = [copy1, copy2];
+            idlMock.pkeyValue.and.callFake(v => v);
+            component.batchAttrs = new QueryList();
+
+            component.cancelValueChange('circ_modifier', false);
+            expect(component.values['circ_modifier']).toBeNull();
         });
     });
 });

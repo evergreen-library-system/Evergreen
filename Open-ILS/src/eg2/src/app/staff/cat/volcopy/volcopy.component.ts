@@ -817,9 +817,11 @@ export class VolCopyComponent implements OnInit {
         const settingEnabled = this.orgRequiresParts[org];
         const recordHasParts = this.volcopy.bibParts[record] && this.volcopy.bibParts[record].length > 0;
 
-        const copyStatusHoldable = this.volcopy.copyStatuses[copyNode.target.status()].holdable() === 't';
+        const status = this.volcopy.copyStatuses[copyNode.target.status()];
+        const copyStatusHoldable = status?.holdable() === 't';
         const copyHoldableFlag = copyNode.target.holdable() === 't';
-        const copyShelvingLocationHoldable = copyNode.target.location().holdable() === 't';
+        const shelfLoc = copyNode.target.location();
+        const copyShelvingLocationHoldable = shelfLoc?.holdable() === 't';
         const copyIsHoldable = copyStatusHoldable && copyHoldableFlag && copyShelvingLocationHoldable;
 
         const copyRequiresPart = settingEnabled && recordHasParts && copyIsHoldable;
