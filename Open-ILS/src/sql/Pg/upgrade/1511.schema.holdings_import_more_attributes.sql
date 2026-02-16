@@ -1,6 +1,6 @@
 BEGIN;
 
--- SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1511', :eg_version);
 
 
 ALTER TABLE vandelay.import_item_attr_definition
