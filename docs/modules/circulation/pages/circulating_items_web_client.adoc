@@ -188,7 +188,7 @@ At the right bottom corner there is a *Checkin Modifiers* pop-up list. The optio
 
 - *Capture Local Holds as Transits*: With this checkin modifier, any local holds will be given an in transit status instead of on holds shelf. The intent is to stop the system from sending holds notifications before the item is ready to be placed on the holds shelf and item will have a status of in-transit until checked in again. If you wish to simply delay notification and allow time for staff to process item to holds shelf, you may wish to use the Hold Shelf Status Delay setting in Library Settings Editor instead. See Local Administration section for more information.
 
-- *Manual Floating Active*: Floating Groups must be configured for this modifier to function. The manual flag in Floating Groups dictates whether or not the "Manual Floating Active" checkin modifier needs to be active for a copy to float. This allows for greater control over when items float. 
+- *Manual Floating Active*: Floating Groups must be configured for this modifier to function. The manual flag in Floating Groups dictates whether or not the "Manual Floating Active" checkin modifier needs to be active for an item to float. This allows for greater control over when items float. 
 
 - *Update Inventory*: When this checkin modifier is selected, scanned barcodes will have the current date/time added as the inventory date while the item is checked in. 
 
@@ -342,8 +342,7 @@ in the patron record is automatically increased.
 +
 [NOTE]
 ======
-Some libraries prefer to use the status _Missing_.  This can be set using the library setting 
-_Claim Return: Mark copy as missing_.
+Some libraries prefer to use the status _Missing_. This can be set by changing the value of the _Claim Return Copy Status_ library setting to _Missing_.
 ====== 
 +
 image::circulating_items_web_client/mark-claims-returned-3.png[View of a claims returned item in a patron's Other/Special Circulations tab.]
@@ -543,16 +542,15 @@ If you need to balance a bill with a negative amount, you need to add two dummy 
  
 image::circulating_items_web_client/record_in_house_action_web_client.png[Record In-House Use option in the Circulation toolbar.]
  
-2) To record in-house use for cataloged items, enter number of uses, scan 
- barcode or type barcode and click *Submit*.
+2) To record in-house use for cataloged items, enter number of uses and scan or type the barcode into the *Barcode* field. If you would like to update the inventory for the item, select the *Update Inventory* checkbox. Then click *Submit*.
  
-image::circulating_items_web_client/in_house_use_web_client.png[In-House Use entry screen for cataloged items.]
+image::circulating_items_web_client/in_house_use_update_inventory.png[In-House Use entry screen for cataloged items.]
  
 [NOTE]
 ====================================
-There are two independent library settings that will allow copy alerts to display when scanned in In-house Use:
-*Display copy alert for in-house-use* set to true will cause an alert message to appear, if it has one, when recording in-house-use for the copy.
-*Display copy location check in alert for in-house-use* set to true will cause an alert message indicating that the item needs to be routed to its location if the location has check in alert set to true.
+There are two independent library settings that will allow item alerts to display when scanned in In-house Use:
+*Display item alert for in-house-use* set to true will cause an alert message to appear, if it has one, when recording in-house-use for the item.
+*Display shelving location check in alert for in-house-use* set to true will cause an alert message indicating that the item needs to be routed to its location if the location has check in alert set to true.
 ====================================
  
 3) To record in-house use for non-cataloged items, enter number of uses, choose non-cataloged type from drop-down menu, and click *Submit*.  xref:admin:circing_uncataloged_materials.adoc#noncat-items[Click here to manage non-cataloged items.]
@@ -590,7 +588,7 @@ This section goes over all item statuses and their relationship to the system.
 
 -*On holds shelf*: Item is captured for a hold of a patron at their pickup location and waiting to be checked out.
 
--*On order*: A title has been ordered, but the physical copy has not yet been processed and added to the catalog. Can allow patrons to discover forthcoming acquisitions, and to place holds prior to the library receiving the item in question.
+-*On order*: A title has been ordered, but the physical item has not yet been processed and added to the catalog. Can allow patrons to discover forthcoming acquisitions, and to place holds prior to the library receiving the item in question.
 
 -*ILL*: Inter-library loan.
 
@@ -629,7 +627,7 @@ This section goes over all item statuses and their relationship to the system.
 == Item Status Properties ==
 
 |===
-|Name |Holdable? |OPAC Visible? |Sets copy active? |Is available? |Assignable?
+|Name |Holdable? |OPAC Visible? |Sets item active? |Is available? |Assignable?
 
 |Available
 |Yes
@@ -791,7 +789,7 @@ The following properties can be set for each status:
 -*Holdable* - If checked, users can place holds on copies in this status, provided nothing else prevents holds. If unchecked, users cannot place holds on copies in this status.
 
 -*OPAC Visible* - If checked, copies in this status will be visible in the public catalog. If unchecked, copies in this status will Not be visible in the public catalog, but they will be visible when using the catalog in the staff client.
-Sets copy active - If checked, moving a copy that does not yet have an active date to this status will set the active date. If the copy already has an active date, then no changes will be made to the active date. If “No”, this status will never set the copy’s active date.
+Sets item active - If checked, moving an item that does not yet have an active date to this status will set the active date. If the item already has an active date, then no changes will be made to the active date. If “No”, this status will never set the item’s active date.
 
 -*Is Available* - If checked, copies with this status will appear in catalog searches where “limit to available” is selected as a search filter. Also, copies with this status will check out without status warnings. By default, the “Available” and “Reshelving” statuses have the “Is Available” flag set as true/yes.
 
@@ -925,7 +923,7 @@ The following Library Settings enable you to set preferences related to long ove
 
 * *Circulation: Void Processing Fee on Long-Overdue Item Return*
 
-* *Finances: Leave transaction open when long overdue balance equals zero* —Leave transaction open when long-overdue balance equals zero. This leaves the lost copy on the patron record when it is paid
+* *Finances: Leave transaction open when long overdue balance equals zero* —Leave transaction open when long-overdue balance equals zero. This leaves the lost item on the patron record when it is paid
 
 * *Finances: Long-Overdue Materials Processing Fee*
 
