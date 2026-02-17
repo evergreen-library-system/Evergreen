@@ -28,6 +28,8 @@ jobs:
       fail-fast: false
     steps:
       - uses: actions/checkout@v4
+      - name: accept default cpan configuration
+        run: echo | sudo cpan
 
       # The Github actions ubuntu image comes with postgres installed.  To test other postgres
       # versions, we need to remove the installed version first
