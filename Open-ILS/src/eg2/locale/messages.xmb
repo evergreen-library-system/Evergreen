@@ -352,12 +352,13 @@ Error generating print content for template name=&quot;<ph name="INTERPOLATION"/
   <msg id="1635508036322556376"><source>src/app/staff/acq/lineitem/batch-copies.component.html:13</source>Circ Modifier</msg>
   <msg id="6895956835617199416"><source>src/app/staff/acq/lineitem/batch-copies.component.html:14</source>Callnumber</msg>
   <msg id="8077748088202154898"><source>src/app/staff/acq/lineitem/batch-copies.component.html:16</source><ph name="START_TAG_NG_CONTAINER"/>Barcode<ph name="CLOSE_TAG_NG_CONTAINER"/></msg>
-  <msg id="1639610296500577415"><source>src/app/staff/acq/lineitem/batch-copies.component.html:18</source>Receiver</msg>
+  <msg id="4388879716045736175"><source>src/app/staff/acq/lineitem/batch-copies.component.html:18</source>Note</msg>
+  <msg id="1639610296500577415"><source>src/app/staff/acq/lineitem/batch-copies.component.html:19</source>Receiver</msg>
   <msg id="3963237490919688796"><source>src/app/staff/acq/lineitem/batch-update-copies-dialog.component.html:14</source>Batch Update Items on Selected Line Items</msg>
   <msg id="1330225862064772503"><source>src/app/staff/acq/lineitem/batch-update-copies-dialog.component.html:27</source>Item Count: </msg>
   <msg id="2464988903872844272"><source>src/app/staff/acq/lineitem/batch-update-copies-dialog.component.html:32</source> | </msg>
   <msg id="7192076682647485596"><source>src/app/staff/acq/lineitem/batch-update-copies-dialog.component.html:33</source>Distribution Formulas</msg>
-  <msg id="3038562493718362657"><source>src/app/staff/acq/lineitem/batch-update-copies-dialog.component.html:61</source>Batch Update</msg>
+  <msg id="3038562493718362657"><source>src/app/staff/acq/lineitem/batch-update-copies-dialog.component.html:62</source>Batch Update</msg>
   <msg id="1690193071856351334"><source>src/app/staff/acq/lineitem/bib-finder-dialog.component.html:3</source>Link Line Item to Catalog</msg>
   <msg id="8947891103463644135"><source>src/app/staff/acq/lineitem/bib-finder-dialog.component.html:8</source>Line Item: <ph name="INTERPOLATION"/></msg>
   <msg id="292587458566915181"><source>src/app/staff/acq/lineitem/bib-finder-dialog.component.html:10</source>Search catalog for</msg>
@@ -385,17 +386,17 @@ Error generating print content for template name=&quot;<ph name="INTERPOLATION"/
   <msg id="7579632829395602909"><source>src/app/staff/acq/lineitem/copies.component.html:0</source>Items for Line Item <ph name="INTERPOLATION"/> (<ph name="INTERPOLATION_1"/>)</msg>
   <msg id="7474429911231654139"><source>src/app/staff/acq/lineitem/copies.component.html:4</source>Unsaved Changes Warning</msg>
   <msg id="5726901694701586223"><source>src/app/staff/acq/lineitem/copies.component.html:5</source>There are unsaved changes. Are you sure you want to leave?</msg>
-  <msg id="4319441956121197474"><source>src/app/staff/acq/lineitem/copies.component.html:34</source>Save Changes</msg>
+  <msg id="4319441956121197474"><source>src/app/staff/acq/lineitem/copies.component.html:36</source>Save Changes</msg>
   <msg id="1195962910098843194"><source>src/app/staff/acq/lineitem/copies.component.html:49</source>Distribution formulas applied to this lineitem</msg>
   <msg id="6852420369792548962"><source>src/app/staff/acq/lineitem/copies.component.html:56,58</source>Delete <ph name="INTERPOLATION"/></msg>
-  <msg id="1823568892914777098"><source>src/app/staff/acq/lineitem/copy-attrs.component.html:11</source>Owning Branch...</msg>
-  <msg id="911478925859771244"><source>src/app/staff/acq/lineitem/copy-attrs.component.html:33</source>Collection Code...</msg>
-  <msg id="1647716532620320762"><source>src/app/staff/acq/lineitem/copy-attrs.component.html:50</source>Circ Modifier...</msg>
-  <msg id="5786776490852491565"><source>src/app/staff/acq/lineitem/copy-attrs.component.html:64</source>Call Number...</msg>
-  <msg id="4151553779532669447"><source>src/app/staff/acq/lineitem/copy-attrs.component.html:95</source>Delete Item</msg>
-  <msg id="8355517649880978703"><source>src/app/staff/acq/lineitem/copy-attrs.component.html:101</source>Mark Received</msg>
-  <msg id="6338451971053544657"><source>src/app/staff/acq/lineitem/copy-attrs.component.html:104</source>Un-Receive</msg>
-  <msg id="6484862367130027935"><source>src/app/staff/acq/lineitem/copy-attrs.component.html:129,133</source><ph name="START_TAG_SPAN"/><ph name="INTERPOLATION"/><ph name="CLOSE_TAG_SPAN"/></msg>
+  <msg id="1823568892914777098"><source>src/app/staff/acq/lineitem/copy-attrs.component.html:18</source>Owning Branch...</msg>
+  <msg id="911478925859771244"><source>src/app/staff/acq/lineitem/copy-attrs.component.html:40</source>Collection Code...</msg>
+  <msg id="1647716532620320762"><source>src/app/staff/acq/lineitem/copy-attrs.component.html:57</source>Circ Modifier...</msg>
+  <msg id="5786776490852491565"><source>src/app/staff/acq/lineitem/copy-attrs.component.html:71</source>Call Number...</msg>
+  <msg id="4151553779532669447"><source>src/app/staff/acq/lineitem/copy-attrs.component.html:108</source>Delete Item</msg>
+  <msg id="8355517649880978703"><source>src/app/staff/acq/lineitem/copy-attrs.component.html:114</source>Mark Received</msg>
+  <msg id="6338451971053544657"><source>src/app/staff/acq/lineitem/copy-attrs.component.html:117</source>Un-Receive</msg>
+  <msg id="6484862367130027935"><source>src/app/staff/acq/lineitem/copy-attrs.component.html:145,149</source><ph name="START_TAG_SPAN"/><ph name="INTERPOLATION"/><ph name="CLOSE_TAG_SPAN"/></msg>
   <msg id="2005645058899473569"><source>src/app/staff/acq/lineitem/create-assets.component.html:1</source>Load Bibs and Items</msg>
   <msg id="350438188165481520"><source>src/app/staff/acq/lineitem/create-assets.component.html:2</source>Load Bibs and Items, then Activate Order</msg>
   <msg id="5052376135820169452"><source>src/app/staff/acq/lineitem/create-assets.component.html:11</source>Bib and Item Creation Status</msg>
@@ -561,7 +562,6 @@ Error generating print content for template name=&quot;<ph name="INTERPOLATION"/
   <msg id="4231892502839572383"><source>src/app/staff/acq/lineitem/manage-claims-dialog.component.html:37,41</source> <ph name="INTERPOLATION"/> (<ph name="INTERPOLATION_1"/>) <ph name="START_ITALIC_TEXT"/><ph name="INTERPOLATION_2"/><ph name="CLOSE_ITALIC_TEXT"/><ph name="START_TAG_NG_CONTAINER"/> [Library initiated]<ph name="CLOSE_TAG_NG_CONTAINER"/></msg>
   <msg id="407831415461443870"><source>src/app/staff/acq/lineitem/manage-claims-dialog.component.html:42</source>Claim Type</msg>
   <msg id="4271083529799234362"><source>src/app/staff/acq/lineitem/manage-claims-dialog.component.html:46</source>Claim Note</msg>
-  <msg id="4388879716045736175"><source>src/app/staff/acq/lineitem/manage-claims-dialog.component.html:47</source>Note</msg>
   <msg id="5159856948894794624"><source>src/app/staff/acq/lineitem/manage-claims-dialog.component.html:54</source>Claim Selected</msg>
   <msg id="200797386431580530"><source>src/app/staff/acq/lineitem/manage-claims-dialog.component.html:56</source>Abort Batch</msg>
   <msg id="6758469861485941091"><source>src/app/staff/acq/lineitem/notes.component.html:5</source>Note Text</msg>
@@ -2015,11 +2015,11 @@ Delete Provider</msg>
   <msg id="945332359235727772"><source>src/app/staff/cat/vandelay/import.component.html:236,239</source> Use Org Unit Matching in Copy to Determine Best Match </msg>
   <msg id="5140682479609280001"><source>src/app/staff/cat/vandelay/import.component.html:248</source>This Upload</msg>
   <msg id="5630749362851202314"><source>src/app/staff/cat/vandelay/import.component.html:262</source>Select or Create a Queue...</msg>
-  <msg id="4146759437902554818"><source>src/app/staff/cat/vandelay/import.component.html:317</source>Upload Progress</msg>
-  <msg id="409647756283979918"><source>src/app/staff/cat/vandelay/import.component.html:325</source>Enqueue Progress</msg>
-  <msg id="4211111309632890253"><source>src/app/staff/cat/vandelay/import.component.html:333</source>Import Progress</msg>
-  <msg id="3391680224336643433"><source>src/app/staff/cat/vandelay/import.component.html:343</source>Go To Queue</msg>
-  <msg id="3063233671426292489"><source>src/app/staff/cat/vandelay/import.component.html:350</source>Go To Background Import Management</msg>
+  <msg id="4146759437902554818"><source>src/app/staff/cat/vandelay/import.component.html:320</source>Upload Progress</msg>
+  <msg id="409647756283979918"><source>src/app/staff/cat/vandelay/import.component.html:328</source>Enqueue Progress</msg>
+  <msg id="4211111309632890253"><source>src/app/staff/cat/vandelay/import.component.html:336</source>Import Progress</msg>
+  <msg id="3391680224336643433"><source>src/app/staff/cat/vandelay/import.component.html:346</source>Go To Queue</msg>
+  <msg id="3063233671426292489"><source>src/app/staff/cat/vandelay/import.component.html:353</source>Go To Background Import Management</msg>
   <msg id="3742284469838142371"><source>src/app/staff/cat/vandelay/match-set-expression.component.html:1,8</source><ph name="START_TAG_NG_CONTAINER"/><ph name="START_TAG_SPAN"/>NOT <ph name="CLOSE_TAG_SPAN"/><ph name="START_TAG_SPAN_1"/>Normalized Heading<ph name="CLOSE_TAG_SPAN"/><ph name="START_TAG_SPAN_2"/><ph name="INTERPOLATION"/><ph name="INTERPOLATION_1"/><ph name="INTERPOLATION_2"/><ph name="CLOSE_TAG_SPAN"/><ph name="START_TAG_SPAN_3"/> ‡<ph name="INTERPOLATION_3"/><ph name="CLOSE_TAG_SPAN"/><ph name="START_TAG_SPAN_4"/> | Match score <ph name="INTERPOLATION_4"/><ph name="CLOSE_TAG_SPAN"/><ph name="CLOSE_TAG_NG_CONTAINER"/></msg>
   <msg id="6812871516942651060"><source>src/app/staff/cat/vandelay/match-set-expression.component.html:14,17</source> Your Expression: <ph name="INTERPOLATION"/> </msg>
   <msg id="6205540213661359687"><source>src/app/staff/cat/vandelay/match-set-expression.component.html:20</source>Add New:</msg>
@@ -2669,33 +2669,33 @@ Delete Provider</msg>
   <msg id="1706257715386386167"><source>src/app/staff/catalog/search-form.component.html:264</source>All Literary Forms</msg>
   <msg id="7101915224114661423"><source>src/app/staff/catalog/search-form.component.html:275,278</source> <ph name="INTERPOLATION"/> (<ph name="INTERPOLATION_1"/>) </msg>
   <msg id="8021113684733014055"><source>src/app/staff/catalog/search-form.component.html:283</source>Clear the Library Group or Shelving Location Group selection to choose individual Shelving Locations</msg>
-  <msg id="6131485316916951527"><source>src/app/staff/catalog/search-form.component.html:288</source>Publication Year is</msg>
+  <msg id="27494424370894008"><source>src/app/staff/catalog/search-form.component.html:287</source>Publication Year</msg>
   <msg id="4942331693527539064"><source>src/app/staff/catalog/search-form.component.html:289</source>compare publication dates using...</msg>
-  <msg id="9147046130713106935"><source>src/app/staff/catalog/search-form.component.html:293</source>Is</msg>
-  <msg id="1218334388194408974"><source>src/app/staff/catalog/search-form.component.html:294</source>Before</msg>
-  <msg id="6371576811194810854"><source>src/app/staff/catalog/search-form.component.html:295</source>After</msg>
-  <msg id="1788144081998564888"><source>src/app/staff/catalog/search-form.component.html:300</source>Year, or beginning of year range</msg>
-  <msg id="8114146008755159884"><source>src/app/staff/catalog/search-form.component.html:305</source>End of year range</msg>
-  <msg id="7171276766661761441"><source>src/app/staff/catalog/search-form.component.html:314</source>Numeric Search</msg>
-  <msg id="8048107774628227659"><source>src/app/staff/catalog/search-form.component.html:318</source>Query Type</msg>
-  <msg id="5729347704943251933"><source>src/app/staff/catalog/search-form.component.html:326</source>LCCN</msg>
-  <msg id="6143330778178833170"><source>src/app/staff/catalog/search-form.component.html:327</source>TCN</msg>
-  <msg id="865668397856791272"><source>src/app/staff/catalog/search-form.component.html:328</source>Item Barcode</msg>
-  <msg id="8865123935207425518"><source>src/app/staff/catalog/search-form.component.html:339</source>Numeric Query...</msg>
-  <msg id="95301782947665561"><source>src/app/staff/catalog/search-form.component.html:345</source>MARC Search</msg>
-  <msg id="787163983066183218"><source>src/app/staff/catalog/search-form.component.html:400</source>Browse</msg>
-  <msg id="6871968110130773266"><source>src/app/staff/catalog/search-form.component.html:403</source>Browse for</msg>
-  <msg id="8755099053691815611"><source>src/app/staff/catalog/search-form.component.html:413</source> starting with </msg>
-  <msg id="4031118666027324953"><source>src/app/staff/catalog/search-form.component.html:419</source>Browse for...</msg>
-  <msg id="8655712393339193505"><source>src/app/staff/catalog/search-form.component.html:428,431</source> Browse Call Numbers starting with </msg>
-  <msg id="6030204061808901083"><source>src/app/staff/catalog/search-form.component.html:436</source>Browse Call Numbers...</msg>
-  <msg id="2802875410834862878"><source>src/app/staff/catalog/search-form.component.html:449</source>Search in Library</msg>
-  <msg id="4359570952749455284"><source>src/app/staff/catalog/search-form.component.html:457,460</source> Library Group <ph name="INTERPOLATION"/> </msg>
-  <msg id="531372723217962784"><source>src/app/staff/catalog/search-form.component.html:465</source>No Group Restriction</msg>
-  <msg id="7145703130854996777"><source>src/app/staff/catalog/search-form.component.html:474</source>Clear the individual Shelving Location selections in the advanced search filters to search by Library Group or Shelving Location Group</msg>
-  <msg id="6159894181793056461"><source>src/app/staff/catalog/search-form.component.html:483,486</source> Search </msg>
-  <msg id="3466654961496504426"><source>src/app/staff/catalog/search-form.component.html:489,492</source> Reset </msg>
-  <msg id="5120743112006725492"><source>src/app/staff/catalog/search-form.component.html:511</source>Did you mean:</msg>
+  <msg id="9147046130713106935"><source>src/app/staff/catalog/search-form.component.html:291</source>Is</msg>
+  <msg id="1218334388194408974"><source>src/app/staff/catalog/search-form.component.html:292</source>Before</msg>
+  <msg id="6371576811194810854"><source>src/app/staff/catalog/search-form.component.html:293</source>After</msg>
+  <msg id="1788144081998564888"><source>src/app/staff/catalog/search-form.component.html:298</source>Year, or beginning of year range</msg>
+  <msg id="8114146008755159884"><source>src/app/staff/catalog/search-form.component.html:303</source>End of year range</msg>
+  <msg id="7171276766661761441"><source>src/app/staff/catalog/search-form.component.html:311</source>Numeric Search</msg>
+  <msg id="8048107774628227659"><source>src/app/staff/catalog/search-form.component.html:315</source>Query Type</msg>
+  <msg id="5729347704943251933"><source>src/app/staff/catalog/search-form.component.html:323</source>LCCN</msg>
+  <msg id="6143330778178833170"><source>src/app/staff/catalog/search-form.component.html:324</source>TCN</msg>
+  <msg id="865668397856791272"><source>src/app/staff/catalog/search-form.component.html:325</source>Item Barcode</msg>
+  <msg id="8865123935207425518"><source>src/app/staff/catalog/search-form.component.html:336</source>Numeric Query...</msg>
+  <msg id="95301782947665561"><source>src/app/staff/catalog/search-form.component.html:342</source>MARC Search</msg>
+  <msg id="787163983066183218"><source>src/app/staff/catalog/search-form.component.html:397</source>Browse</msg>
+  <msg id="6871968110130773266"><source>src/app/staff/catalog/search-form.component.html:400</source>Browse for</msg>
+  <msg id="8755099053691815611"><source>src/app/staff/catalog/search-form.component.html:410</source> starting with </msg>
+  <msg id="4031118666027324953"><source>src/app/staff/catalog/search-form.component.html:416</source>Browse for...</msg>
+  <msg id="8655712393339193505"><source>src/app/staff/catalog/search-form.component.html:425,428</source> Browse Call Numbers starting with </msg>
+  <msg id="6030204061808901083"><source>src/app/staff/catalog/search-form.component.html:433</source>Browse Call Numbers...</msg>
+  <msg id="2802875410834862878"><source>src/app/staff/catalog/search-form.component.html:446</source>Search in Library</msg>
+  <msg id="4359570952749455284"><source>src/app/staff/catalog/search-form.component.html:454,457</source> Library Group <ph name="INTERPOLATION"/> </msg>
+  <msg id="531372723217962784"><source>src/app/staff/catalog/search-form.component.html:462</source>No Group Restriction</msg>
+  <msg id="7145703130854996777"><source>src/app/staff/catalog/search-form.component.html:471</source>Clear the individual Shelving Location selections in the advanced search filters to search by Library Group or Shelving Location Group</msg>
+  <msg id="6159894181793056461"><source>src/app/staff/catalog/search-form.component.html:480,483</source> Search </msg>
+  <msg id="3466654961496504426"><source>src/app/staff/catalog/search-form.component.html:486,489</source> Reset </msg>
+  <msg id="5120743112006725492"><source>src/app/staff/catalog/search-form.component.html:508</source>Did you mean:</msg>
   <msg id="3350073712470262570"><source>src/app/staff/catalog/search-templates.component.html:3</source>Delete saved search template &apos;<ph name="INTERPOLATION"/>&apos;?</msg>
   <msg id="4229975594546660291"><source>src/app/staff/catalog/search-templates.component.html:8</source>Confirm Delete All</msg>
   <msg id="2589672350783676854"><source>src/app/staff/catalog/search-templates.component.html:9</source>Delete all saved templates?</msg>
@@ -2971,12 +2971,13 @@ Delete Provider</msg>
   <msg id="7232876308600105417"><source>src/app/staff/circ/patron/group.component.html:1</source>Enter the patron barcode</msg>
   <msg id="5250569740790418380"><source>src/app/staff/circ/patron/group.component.html:4</source>User not found</msg>
   <msg id="1163440368480899487"><source>src/app/staff/circ/patron/group.component.html:7</source>Group Member Details</msg>
-  <msg id="4109091780811411493"><source>src/app/staff/circ/patron/group.component.html:37</source>Move Another Patron To This Group</msg>
-  <msg id="6234770488440609143"><source>src/app/staff/circ/patron/group.component.html:42</source>Register a New Group Member By Cloning Selected Patron</msg>
-  <msg id="5421197292829637268"><source>src/app/staff/circ/patron/group.component.html:46</source>Remove Selected From Group</msg>
-  <msg id="190107746489742282"><source>src/app/staff/circ/patron/group.component.html:50</source>Move Selected To Another Patron&apos;s Group</msg>
-  <msg id="508869859691185174"><source>src/app/staff/circ/patron/group.component.html:62</source>Items Out</msg>
-  <msg id="7335532207455509119"><source>src/app/staff/circ/patron/group.component.html:66</source>Items Overdue</msg>
+  <msg id="4109091780811411493"><source>src/app/staff/circ/patron/group.component.html:39</source>Move Another Patron To This Group</msg>
+  <msg id="6234770488440609143"><source>src/app/staff/circ/patron/group.component.html:44</source>Register a New Group Member By Cloning Selected Patron</msg>
+  <msg id="5421197292829637268"><source>src/app/staff/circ/patron/group.component.html:48</source>Remove Selected From Group</msg>
+  <msg id="190107746489742282"><source>src/app/staff/circ/patron/group.component.html:52</source>Move Selected To Another Patron&apos;s Group</msg>
+  <msg id="508869859691185174"><source>src/app/staff/circ/patron/group.component.html:64</source>Items Out</msg>
+  <msg id="7335532207455509119"><source>src/app/staff/circ/patron/group.component.html:68</source>Items Overdue</msg>
+  <msg id="773494596403405672"><source>src/app/staff/circ/patron/group.component.html:72</source>Items Lost</msg>
   <msg id="5094524139451153680"><source>src/app/staff/circ/patron/hold-notify-update.component.html:2</source>Update Hold Notification Info?</msg>
   <msg id="5855714915405246774"><source>src/app/staff/circ/patron/hold-notify-update.component.html:38,43</source> A carrier other than &quot;<ph name="INTERPOLATION"/>&quot; is currently used in <ph name="INTERPOLATION_1"/> hold(s). Update to &quot;<ph name="INTERPOLATION_2"/>&quot;? </msg>
   <msg id="838395155409215861"><source>src/app/staff/circ/patron/hold-notify-update.component.html:43,48</source> <ph name="INTERPOLATION"/> hold(s) have it set to <ph name="START_TAG_EG_BOOL"/><ph name="CLOSE_TAG_EG_BOOL"/>. Update to <ph name="START_TAG_EG_BOOL_1"/><ph name="CLOSE_TAG_EG_BOOL"/>. </msg>
@@ -4124,7 +4125,6 @@ Delete Provider</msg>
   <msg id="5949340167693851954"><source>src/app/staff/share/holds/grid.component.html:235</source>CN Full label</msg>
   <msg id="7343370343478083891"><source>src/app/staff/share/holds/grid.component.html:236</source>Part label</msg>
   <msg id="6856439253809043530"><source>src/app/staff/share/holds/grid.component.html:238</source>Series Title</msg>
-  <msg id="27494424370894008"><source>src/app/staff/share/holds/grid.component.html:246</source>Publication Year</msg>
   <msg id="3125133596878817552"><source>src/app/staff/share/holds/grid.component.html:260</source>Requested Item</msg>
   <msg id="8126834983869274020"><source>src/app/staff/share/holds/grid.component.html:265</source>Potential Items</msg>
   <msg id="882539848517566512"><source>src/app/staff/share/holds/grid.component.html:278</source>Patron Home Library</msg>
@@ -5088,7 +5088,7 @@ Delete Provider</msg>
   <msg id="6938783266808775735"><source>src/app/staff/share/patron/search.component.html:23</source>Advanced search fields:</msg>
   <msg id="2385071239585089569"><source>src/app/staff/share/patron/search.component.html:27</source>Name, Guardian</msg>
   <msg id="8174024896474769180"><source>src/app/staff/share/patron/search.component.html:31</source>Phone, Address</msg>
-  <msg id="2458413883885186523"><source>src/app/staff/share/patron/search.component.html:35</source>ID, Email, Date of Birth</msg>
+  <msg id="1989998323775948358"><source>src/app/staff/share/patron/search.component.html:35</source>Username, Email, ID, Date of Birth</msg>
   <msg id="2228083987016776477"><source>src/app/staff/share/patron/search.component.html:45</source>Barcode / Card</msg>
   <msg id="4212720883106184788"><source>src/app/staff/share/patron/search.component.html:80</source>Home Library</msg>
   <msg id="4816767784445044140"><source>src/app/staff/share/patron/search.component.html:91</source>Name Keywords</msg>
