@@ -6496,8 +6496,12 @@ Zkopírováno <ph name="INTERPOLATION"/></translation>
   <translation id="1323385474079117517">Přihlásit se pomocí jednotného přihlašování</translation>
   <translation id="6360866402485758559">Aktivuj rozbalení kombinovaných polí</translation>
   <translation id="1056725106110906396">E-mail zákonného zástupce</translation>
-  <translation id="5640217348405780223">Call Number Classification</translation>
-  <translation id="561998273195635812">Relative Queue Position</translation>
-  <translation id="3949492330113173426">Global Queue Position</translation>
-  <translation id="5591989979573150669">Received On</translation>
+  <translation id="5640217348405780223">Klasifikace pro signaturu</translation>
+  <translation id="561998273195635812">Relativní pozice ve frontě</translation>
+  <translation id="3949492330113173426">Celková pozice ve frontě</translation>
+  <translation id="5591989979573150669">Přijato</translation>
+  <translation id="773494596403405672">Items Lost</translation>
+  <translation id="4698299184961617039">First 5 Characters</translation>
+  <translation id="7729181123707636273">First Contiguous Non-space String</translation>
+  <translation id="1989998323775948358">Username, Email, ID, Date of Birth</translation>
 </translationbundle>
