@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2025-11-19 19:30+0000\n"
-"PO-Revision-Date: 2025-11-18 20:43+0000\n"
+"PO-Revision-Date: 2026-02-16 14:28+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2025-11-20 08:08+0000\n"
-"X-Generator: Launchpad (build 1d08ffb47b836b8a4c9a0f11318dfdea7420ab6d)\n"
+"X-Launchpad-Export-Date: 2026-02-17 08:13+0000\n"
+"X-Generator: Launchpad (build 357f4dbcf6d55b96276140b48d9caf6c75ab8067)\n"
 
 #. ("{{pendingXacts | date:\"short\"}}")
 #: ../../Open-ILS/src/templates/staff/t_login.tt2:62
@@ -1247,7 +1247,7 @@ msgstr "Autoritní tezaury"
 
 #: ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:24
 msgid "Authorized users of this account"
-msgstr ""
+msgstr "Oprávnění uživatelé tohoto účtu"
 
 #: ../../Open-ILS/src/templates/staff/navbar.tt2:746 ../../Open-ILS/src/templates/staff/navbar.tt2:771
 msgid "Auto"
@@ -4886,7 +4886,7 @@ msgstr "Globální indikátory"
 
 #: ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:88 ../../Open-ILS/src/templates/staff/circ/holds/t_shelf_list.tt2:77 ../../Open-ILS/src/templates/staff/circ/patron/t_holds_list.tt2:77
 msgid "Global Queue Position"
-msgstr ""
+msgstr "Celková pozice ve frontě"
 
 #: ../../Open-ILS/src/templates/staff/circ/patron/t_credentials.tt2:107 ../../Open-ILS/src/templates/staff/circ/patron/t_credentials.tt2:91
 msgid "Globally Exempt"
@@ -5180,7 +5180,7 @@ msgstr "Seznam rezervací k vyzvednutí"
 
 #: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_templates.tt2:23
 msgid "Hold Shelf Slip"
-msgstr "Průvodka rezervací k zachycení"
+msgstr "Průvodka rezervace k vyzvednutí"
 
 #: ../../Open-ILS/src/templates/staff/circ/share/t_hold_shelf_dialog.tt2:5
 msgid "Hold Slip"
@@ -7595,7 +7595,7 @@ msgstr "Otevřít v novém okně"
 
 #: ../../Open-ILS/src/templates/staff/base.tt2:73
 msgid "Opens in new tab"
-msgstr ""
+msgstr "Otevře se v novém panelu"
 
 #: ../../Open-ILS/src/templates/staff/reporter/t_edit_template.tt2:225
 msgid "Operator"
@@ -9021,7 +9021,7 @@ msgstr "Relativní datum"
 
 #: ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:87 ../../Open-ILS/src/templates/staff/circ/holds/t_shelf_list.tt2:76 ../../Open-ILS/src/templates/staff/circ/patron/t_holds_list.tt2:76
 msgid "Relative Queue Position"
-msgstr ""
+msgstr "Relativní pozice ve frontě"
 
 #: ../../Open-ILS/src/templates/staff/circ/curbside/t_to_be_staged_manager.tt2:46
 msgid "Release Claim"
@@ -12098,7 +12098,7 @@ msgstr "Pracovní stanice"
 
 #: ../../Open-ILS/src/templates/staff/admin/workstation/t_workstations.tt2:46
 msgid "Workstations Registered With This Browser"
-msgstr "Pracovní stanice je registrovaná pro tento prohlížeč"
+msgstr "Pracovní stanice registrované pro tento prohlížeč"
 
 #: ../../Open-ILS/src/templates/staff/circ/holds/index.tt2:24 ../../Open-ILS/src/templates/staff/circ/share/hold_strings.tt2:13
 msgid "Wrong Shelf"
