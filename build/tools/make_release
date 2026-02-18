@@ -361,7 +361,7 @@ if [ "$SKIP_BUILD_BROWSER_CLIENT" == "NO" ]; then
     echo "Building Angular browser staff client"
     cd src/eg2
     npm install   # fetch build dependencies
-    ng build --configuration production --localize true
+    npx ng build --configuration production --localize true
     # npm cache is big and unnecessary in the final build. remove it.
     rm -rf node_modules 
     # similarly, the .angular directory, which includes the build
