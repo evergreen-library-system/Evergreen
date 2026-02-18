@@ -86,8 +86,8 @@ msgstr ""
 msgid "%1 "
 msgstr ""
 
-#. (title, hold.hold.part.label)
 #. (copy.label, copy_org.name)
+#. (title, hold.hold.part.label)
 #. (title, part.label)
 #. (lang.label, lang.source_bibs.size)
 #: ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds.tt2:171 ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds/edit.tt2:27 ../../Open-ILS/src/templates-bootstrap/opac/myopac/lists.tt2:347 ../../Open-ILS/src/templates-bootstrap/opac/parts/anon_list.tt2:83 ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold_result.tt2:56 ../../Open-ILS/src/templates-bootstrap/opac/parts/record/summary.tt2:316
@@ -168,7 +168,7 @@ msgstr ""
 msgid "(' _ note _ ')"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/pref_lib_display.tt2:5
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/pref_lib_display.tt2:4
 msgid "(Change library)"
 msgstr ""
 
@@ -1175,7 +1175,7 @@ msgstr ""
 msgid "Check Out History"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_settings.tt2:136 ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_settings.tt2:160
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_settings.tt2:138 ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_settings.tt2:166
 msgid "Check Out Items"
 msgstr ""
 
@@ -2763,7 +2763,7 @@ msgstr ""
 msgid "Jurisdiction governed"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_settings.tt2:176
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_settings.tt2:183
 msgid "Keep history of checked out items?"
 msgstr ""
 
@@ -3253,7 +3253,7 @@ msgstr ""
 msgid "NO"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/lists.tt2:204 ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_settings.tt2:118 ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_settings.tt2:147
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/lists.tt2:204 ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_settings.tt2:119 ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_settings.tt2:152
 msgid "Name:"
 msgstr ""
 
@@ -3497,7 +3497,7 @@ msgstr ""
 msgid "OR"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_settings.tt2:142 ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_settings.tt2:164
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_settings.tt2:144 ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_settings.tt2:170
 msgid "Obtain Circulation Information"
 msgstr ""
 
@@ -3545,7 +3545,7 @@ msgstr ""
 msgid "Originator"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_settings.tt2:172 ../../Open-ILS/src/templates-bootstrap/opac/parts/relators.tt2:2
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_settings.tt2:179 ../../Open-ILS/src/templates-bootstrap/opac/parts/relators.tt2:2
 msgid "Other"
 msgstr ""
 
@@ -3777,7 +3777,7 @@ msgstr ""
 msgid "Physical Description:"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_settings.tt2:130 ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_settings.tt2:156
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_settings.tt2:132 ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_settings.tt2:162
 msgid "Pick Up Holds"
 msgstr ""
 
@@ -3814,7 +3814,7 @@ msgstr ""
 msgid "Place Hold on E-Item"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_settings.tt2:124 ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_settings.tt2:152 ../../Open-ILS/src/templates-bootstrap/opac/parts/cart.tt2:6 ../../Open-ILS/src/templates-bootstrap/opac/parts/cart_nav.tt2:13
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_settings.tt2:126 ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_settings.tt2:158 ../../Open-ILS/src/templates-bootstrap/opac/parts/cart.tt2:6 ../../Open-ILS/src/templates-bootstrap/opac/parts/cart_nav.tt2:13
 msgid "Place Holds"
 msgstr ""
 
@@ -4516,7 +4516,7 @@ msgstr ""
 msgid "Saturday"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/lists.tt2:216 ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_my_lists.tt2:53 ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_notify.tt2:140 ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_settings.tt2:198
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/lists.tt2:216 ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_my_lists.tt2:53 ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_notify.tt2:140 ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_settings.tt2:205
 msgid "Save"
 msgstr ""
 
@@ -4971,7 +4971,7 @@ msgstr ""
 msgid "Skip to main content"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_settings.tt2:186
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_settings.tt2:193
 msgid "Skip warning when adding to temporary book list?"
 msgstr ""
 

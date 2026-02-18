@@ -236,12 +236,12 @@ msgstr ""
 msgid "%1, %2 %3"
 msgstr ""
 
-#. ("{{user.family_name()}}", "{{user.first_given_name()}}", "{{user.second_given_name()}}", "{{user.card().barcode()}}")
 #. ("{{prev_circ_usr.family_name()}}", "{{prev_circ_usr.first_given_name()}}", "{{prev_circ_usr.second_given_name()}}", "{{prev_circ_usr.card().barcode()}}")
 #. ("{{circ.usr().family_name()}}", "{{circ.usr().first_given_name()}}", "{{circ.usr().second_given_name()}}", "{{circ.usr().card().barcode()}}")
 #. ("{{hold.usr().family_name()}}", "{{hold.usr().first_given_name()}}", "{{hold.usr().second_given_name()}}", "{{hold.usr().card().barcode()}}")
 #. ("{{hold.requestor().family_name()}}", "{{hold.requestor().first_given_name()}}", "{{hold.requestor().second_given_name()}}", "{{hold.requestor().card().barcode()}}")
 #. ("{{extra.user_obj.family_name}}", "{{extra.user_obj.first_given_name}}", "{{extra.user_obj.second_given_name}}", "{{extra.user_obj.home_ou.shortname}}")
+#. ("{{user.family_name()}}", "{{user.first_given_name()}}", "{{user.second_given_name()}}", "{{user.card().barcode()}}")
 #: ../../Open-ILS/src/templates/staff/acq/requests/t_edit.tt2:27 ../../Open-ILS/src/templates/staff/cat/item/t_circ_list_pane.tt2:27 ../../Open-ILS/src/templates/staff/cat/item/t_circs_pane.tt2:118 ../../Open-ILS/src/templates/staff/cat/item/t_circs_pane.tt2:18 ../../Open-ILS/src/templates/staff/cat/item/t_holds_pane.tt2:17 ../../Open-ILS/src/templates/staff/cat/item/t_holds_pane.tt2:30 ../../Open-ILS/src/templates/staff/circ/patron/t_move_to_group_dialog.tt2:16
 msgid "%1, %2 %3 : %4"
 msgstr ""
@@ -1245,7 +1245,7 @@ msgstr ""
 msgid "Balance Due"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:64 ../../Open-ILS/src/templates/staff/circ/patron/bucket/t_pending.tt2:60 ../../Open-ILS/src/templates/staff/circ/patron/bucket/t_view.tt2:60 ../../Open-ILS/src/templates/staff/circ/patron/t_bills_list.tt2:54 ../../Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2:114 ../../Open-ILS/src/templates/staff/circ/patron/t_group.tt2:42 ../../Open-ILS/src/templates/staff/circ/renew/t_renew.tt2:93
+#: ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:64 ../../Open-ILS/src/templates/staff/circ/patron/bucket/t_pending.tt2:60 ../../Open-ILS/src/templates/staff/circ/patron/bucket/t_view.tt2:60 ../../Open-ILS/src/templates/staff/circ/patron/t_bills_list.tt2:54 ../../Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2:114 ../../Open-ILS/src/templates/staff/circ/patron/t_group.tt2:44 ../../Open-ILS/src/templates/staff/circ/renew/t_renew.tt2:93
 msgid "Balance Owed"
 msgstr ""
 
@@ -1318,9 +1318,9 @@ msgstr ""
 msgid "Barcode: %1 Checkin date: %2"
 msgstr ""
 
-#. ("{{checkout.copy.barcode}}", "{{checkout.circ.due_date | egDueDate:$root.egDateAndTimeFormat:checkout.circ.circ_lib:checkout.circ.duration}}")
-#. ("{{checkout.barcode}}", "{{checkout.due_date | date:\"short\"}}")
 #. ("{{renewal.copy.barcode}}", "{{renewal.circ.due_date | egDueDate:$root.egDateAndTimeFormat:renewal.circ.circ_lib:renewal.circ.duration}}")
+#. ("{{checkout.barcode}}", "{{checkout.due_date | date:\"short\"}}")
+#. ("{{checkout.copy.barcode}}", "{{checkout.circ.due_date | egDueDate:$root.egDateAndTimeFormat:checkout.circ.circ_lib:checkout.circ.duration}}")
 #: ../../Open-ILS/src/templates/staff/share/print_templates/t_checkout.tt2:47 ../../Open-ILS/src/templates/staff/share/print_templates/t_items_out.tt2:43 ../../Open-ILS/src/templates/staff/share/print_templates/t_offline_renew.tt2:16 ../../Open-ILS/src/templates/staff/share/print_templates/t_renew.tt2:27
 msgid "Barcode: %1 Due: %2"
 msgstr ""
@@ -1386,8 +1386,8 @@ msgstr ""
 msgid "Between"
 msgstr ""
 
-#. ("{{lead_id}}")
 #. ("{{record_id}}")
+#. ("{{lead_id}}")
 #: ../../Open-ILS/src/templates/staff/cat/bucket/record/t_merge_records.tt2:49 ../../Open-ILS/src/templates/staff/cat/catalog/index.tt2:66
 msgid "Bib %1"
 msgstr ""
@@ -3063,6 +3063,10 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:62 ../../Open-ILS/src/templates/staff/circ/holds/t_pull_list.tt2:119 ../../Open-ILS/src/templates/staff/circ/holds/t_shelf_list.tt2:52 ../../Open-ILS/src/templates/staff/circ/patron/t_holds_list.tt2:52 ../../Open-ILS/src/templates/staff/circ/share/t_hold_details.tt2:14 ../../Open-ILS/src/templates/staff/share/print_templates/t_holds_for_bib.tt2:25
 msgid "Current Item"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/circ/patron/t_group.tt2:53
+msgid "Current Library Card"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/cat/item/t_holds_pane.tt2:45 ../../Open-ILS/src/templates/staff/circ/share/t_hold_details.tt2:32
@@ -5092,7 +5096,7 @@ msgstr ""
 msgid "Home"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/cat/bucket/batch_hold/t_pending.tt2:48 ../../Open-ILS/src/templates/staff/cat/bucket/batch_hold/t_view.tt2:19 ../../Open-ILS/src/templates/staff/circ/patron/bucket/t_pending.tt2:59 ../../Open-ILS/src/templates/staff/circ/patron/bucket/t_update_all.tt2:37 ../../Open-ILS/src/templates/staff/circ/patron/bucket/t_view.tt2:59 ../../Open-ILS/src/templates/staff/circ/patron/t_pending_list.tt2:33 ../../Open-ILS/src/templates/staff/circ/patron/t_search_results.tt2:39 ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:41 ../../Open-ILS/src/templates/staff/share/print_templates/t_patron_data.tt2:24 ../../Open-ILS/src/templates/staff/share/t_patron_search_form.tt2:94 ../../Open-ILS/src/templates/staff/share/t_patron_search_results.tt2:18
+#: ../../Open-ILS/src/templates/staff/cat/bucket/batch_hold/t_pending.tt2:48 ../../Open-ILS/src/templates/staff/cat/bucket/batch_hold/t_view.tt2:19 ../../Open-ILS/src/templates/staff/circ/patron/bucket/t_pending.tt2:59 ../../Open-ILS/src/templates/staff/circ/patron/bucket/t_update_all.tt2:37 ../../Open-ILS/src/templates/staff/circ/patron/bucket/t_view.tt2:59 ../../Open-ILS/src/templates/staff/circ/patron/t_group.tt2:54 ../../Open-ILS/src/templates/staff/circ/patron/t_pending_list.tt2:33 ../../Open-ILS/src/templates/staff/circ/patron/t_search_results.tt2:39 ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:41 ../../Open-ILS/src/templates/staff/share/print_templates/t_patron_data.tt2:24 ../../Open-ILS/src/templates/staff/share/t_patron_search_form.tt2:94 ../../Open-ILS/src/templates/staff/share/t_patron_search_results.tt2:18
 msgid "Home Library"
 msgstr ""
 
@@ -5700,11 +5704,15 @@ msgstr ""
 msgid "Items Checked Out"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_templates.tt2:30 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:151 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:87 ../../Open-ILS/src/templates/staff/circ/patron/t_group.tt2:43 ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:91
+#: ../../Open-ILS/src/templates/staff/circ/patron/t_group.tt2:47
+msgid "Items Lost"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_templates.tt2:30 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:151 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:87 ../../Open-ILS/src/templates/staff/circ/patron/t_group.tt2:45 ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:91
 msgid "Items Out"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/t_group.tt2:44
+#: ../../Open-ILS/src/templates/staff/circ/patron/t_group.tt2:46
 msgid "Items Overdue"
 msgstr ""
 
@@ -6590,7 +6598,7 @@ msgstr ""
 msgid "Move %1 Hold(s) to the front of the holds queue above other holds that are not likewise flagged as Top of Queue?"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/t_group.tt2:20
+#: ../../Open-ILS/src/templates/staff/circ/patron/t_group.tt2:22
 msgid "Move Another Patron To This Group"
 msgstr ""
 
@@ -6610,7 +6618,7 @@ msgstr ""
 msgid "Move Selected Items to Pending Items"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/t_group.tt2:29
+#: ../../Open-ILS/src/templates/staff/circ/patron/t_group.tt2:31
 msgid "Move Selected Patrons to Another Patron's Group"
 msgstr ""
 
@@ -8671,7 +8679,7 @@ msgstr ""
 msgid "Register Patron"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/t_group.tt2:23
+#: ../../Open-ILS/src/templates/staff/circ/patron/t_group.tt2:25
 msgid "Register a New Group Member by Cloning Selected Patron"
 msgstr ""
 
@@ -8767,7 +8775,7 @@ msgstr ""
 msgid "Remove Row: CTRL+Del"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/t_group.tt2:26
+#: ../../Open-ILS/src/templates/staff/circ/patron/t_group.tt2:28
 msgid "Remove Selected From Group"
 msgstr ""
 
@@ -9107,7 +9115,7 @@ msgstr ""
 msgid "Retrieve Recent Patrons"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/t_group.tt2:32
+#: ../../Open-ILS/src/templates/staff/circ/patron/t_group.tt2:34
 msgid "Retrieve Selected Patrons"
 msgstr ""
 
@@ -10674,6 +10682,10 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/circ/holds/t_pull_list.tt2:180
 msgid "Total Holds"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/circ/patron/t_group.tt2:10
+msgid "Total Lost: "
 msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/circ/patron/t_items_out.tt2:113
