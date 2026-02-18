@@ -50,11 +50,6 @@
         [%- ctx.metalinks.push('<meta property="og:title" content="' _ ctx.page_title _ '" />'); %]
         [%- ctx.metalinks.push('<meta property="og:site_name" content="' _ libname _ '" />'); %]
         [% FOREACH meta IN ctx.metalinks; meta _ "\n"; END; -%]
-        [% IF want_dojo %]
-        <style>
-            @import "[% ctx.media_prefix %]/js/dojo/dijit/themes/tundra/tundra.css[% ctx.cache_key %]";
-        </style>
-        [% END %]
 
         [% IF !ctx.is_staff %]
             [% INCLUDE 'opac/parts/goog_analytics.tt2' %]
@@ -63,7 +58,7 @@
         [% PROCESS 'opac/parts/stripe.tt2' %]
 <script src="[% ctx.media_prefix %]/opac/deps/node_modules/jquery/dist/jquery.min.js[% ctx.cache_key %]"></script>
     </head>
-    <body class="tundra d-flex flex-column min-vh-100 page-[%- ctx.page; IF ctx.page == 'myopac'; '-' _ myopac_page; END; -%] [% IF we_want_to_turn_on_facet_styling.defined %] styled_facets [% END %]">
+    <body class="d-flex flex-column min-vh-100 page-[%- ctx.page; IF ctx.page == 'myopac'; '-' _ myopac_page; END; -%] [% IF we_want_to_turn_on_facet_styling.defined %] styled_facets [% END %]">
         [%#Each content page needs (at minimum) an <h2> describing the content%]
         <a class="skip-link" href="#main">[% l('Skip to main content') %]</a>
        <div class="mb-3">
