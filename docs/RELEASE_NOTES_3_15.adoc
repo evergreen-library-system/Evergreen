@@ -3,6 +3,84 @@
 :numbered:
 :toclevels: 3
 
+== Evergreen 3.15.10 ==
+
+This release contains bug fixes and documentation fixes improving on Evergreen 3.15.9.
+
+
+=== Accessibility ===
+
+* Corrects form label associations for catalog search Sort Results and Publication Year inputs. (https://bugs.launchpad.net/evergreen/+bug/2107992[Bug 2107992])
+
+
+=== Acquisitions ===
+
+* Restores the display & editing of line item detail notes (https://bugs.launchpad.net/evergreen/+bug/2026600[Bug 2026600])
+* Fixes a regression where copy attributes, including funds, were not able to be changed after PO activation. (https://bugs.launchpad.net/evergreen/+bug/2101912[Bug 2101912])
+
+=== Cataloging ===
+
+* Distinguish between "Upload" and "Import" in the submit button on MARC Import/Export re-import actions (https://bugs.launchpad.net/evergreen/+bug/1868173[Bug 1868173])
+* Subfield tag suggestions are sorted with alphabetical subfields first in the MARC editor. (https://bugs.launchpad.net/evergreen/+bug/2140575[Bug 2140575])
+* Fixes a bug where the Marc Editor did not show suggestions for fields with tags below 100. (https://bugs.launchpad.net/evergreen/+bug/2140574[Bug 2140574])
+* Adjust the size of Z39.50 Edit then Import MARC editor. (https://bugs.launchpad.net/evergreen/+bug/2137267[Bug 2137267])
+
+=== Circulation ===
+
+* Updates CLAIMSRETURNED stop fines reason if the item has a subsequent checkout. The item's previous claims returned circulation is now updated with a stop-fines reason of "CHECKIN" at the time of the new checkout. (https://bugs.launchpad.net/evergreen/+bug/2015886[Bug 2015886])
+* Adds "Username" to list of extra fields available in Experimental Circulation Patron Search. (https://bugs.launchpad.net/evergreen/+bug/2130749[Bug 2130749])
+* Sorts patron alerts on the summary bar by create date. (https://bugs.launchpad.net/evergreen/+bug/2047174[Bug 2047174])
+* Show more useful information in the Group Member Details interface. (https://bugs.launchpad.net/evergreen/+bug/1803726[Bug 1803726])
+* Canceled holds are now displayed according to the canceled hold display age and count settings. (https://bugs.launchpad.net/evergreen/+bug/2116971[Bug 2116971])
+
+=== Documentation ===
+
+* Updates to hold levels table in basic_holds.adoc (https://bugs.launchpad.net/evergreen/+bug/2112586[Bug 2112586])
+* Extensive updates to permissions documentation and screenshots. (https://bugs.launchpad.net/evergreen/+bug/2131106[Bug 2131106])
+
+=== Public Catalog ===
+
+* Fixes "clear basket" and "select all" checkboxes in the Basket interface (https://bugs.launchpad.net/evergreen/+bug/1788467[Bug 1788467])
+* Accessibility updates to Preferences > Other Settings page. (https://bugs.launchpad.net/evergreen/+bug/2115525[Bug 2115525])
+* Re-adds list of lists to Search Results > Add to my list > See All. (https://bugs.launchpad.net/evergreen/+bug/2139625[Bug 2139625])
+* Adjusts the Change library link to lead directly to the preferred library input (https://bugs.launchpad.net/evergreen/+bug/2115376[Bug 2115376])
+
+=== Staff Catalog ===
+
+* Fixes an issue where monographic parts are not sorted in the Staff Catalog Place Hold screen. (https://bugs.launchpad.net/evergreen/+bug/2139366[Bug 2139366])
+
+=== Acknowledgements ===
+
+We would like to thank the following individuals who contributed code, testing, documentation, and patches to the 3.15.10 point release of Evergreen:
+
+* Andrea Buntz Neiman
+* Blake Graham-Henderson
+* Chris Sharp
+* Christine Morgan
+* Dan Briem
+* Galen Charlton
+* Gina Monti
+* Ian Skelskey
+* Jane Sandberg
+* Jason Boyer
+* Jason Stephenson
+* Jeff Godin
+* Jennifer Pringle
+* Llewellyn Marshall
+* Mary Llewellyn
+* Michele Morgan
+* Mike Rylander
+* Stephanie Leary
+* Steven Mayo
+* Susan Morrison
+* Tara Kunesh
+* Terran McCanna
+* Tiffany Little
+
+
+
+
+
 
 == Evergreen 3.15.9 ==
 
