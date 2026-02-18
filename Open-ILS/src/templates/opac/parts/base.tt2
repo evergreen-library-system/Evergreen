@@ -42,6 +42,11 @@
         [%- ctx.metalinks.push('<meta property="og:title" content="' _ ctx.page_title _ '" />'); %]
         [%- ctx.metalinks.push('<meta property="og:site_name" content="' _ libname _ '" />'); %]
         [% FOREACH meta IN ctx.metalinks; meta _ "\n"; END; -%]
+        [% IF want_dojo %]
+        <style type="text/css">
+            @import "[% ctx.media_prefix %]/js/dojo/dijit/themes/tundra/tundra.css[% ctx.cache_key %]";
+        </style>
+        [% END %]
 
         [% IF !ctx.is_staff %]
             [% INCLUDE 'opac/parts/goog_analytics.tt2' %]
@@ -49,7 +54,7 @@
         [% END %]
         [% PROCESS 'opac/parts/stripe.tt2' %]
     </head>
-    <body>
+    <body[% IF want_dojo; ' class="tundra"'; END %]>
         <a i18n class="skip-nav" href="#main-content-landing">[% l('Skip to main content') %]</a>
 
         <h1 class="sr-only">[% l('Catalog') %]</h1>

@@ -44,7 +44,7 @@
 
         <title>[% l("Kids' Catalog - [_1]", ctx.page_title) %] - [% libname %]</title>
     </head>
-    <body class="d-flex flex-column min-vh-100">
+    <body class="tundra d-flex flex-column min-vh-100">
         [%#Each content page needs (at minimum) an <h2> describing the content%]
         <a class="skip-link" href="#main">[% l('Skip to main content') %]</a>
 

@@ -41,6 +41,10 @@
         [%- ctx.metalinks.push('<meta property="og:site_name" content="' _ libname _ '" />'); %]
         [% FOREACH meta IN ctx.metalinks; meta _ "\n"; END; -%]
         [% IF want_dojo %]
+        <style>
+            @import "[% ctx.media_prefix %]/js/dojo/dijit/themes/tundra/tundra.css[% ctx.cache_key %]";
+        </style>
+        [% END %]
 
         [% IF !ctx.is_staff %]
             [% INCLUDE 'opac/parts/goog_analytics.tt2' %]
@@ -55,7 +59,7 @@
 		</script>
 
     </head>
-    <body class="d-flex flex-column min-vh-100" page-[%- ctx.page; IF ctx.page == 'myopac'; '-' _ myopac_page; END; -%]>
+    <body[% IF want_dojo; ' class="tundra d-flex flex-column min-vh-100"'; ELSE; ' class="tundra d-flex flex-column min-vh-100"';  END %] page-[%- ctx.page; IF ctx.page == 'myopac'; '-' _ myopac_page; END; -%]>
         [%#Each content page needs (at minimum) an <h2> describing the content%]
         <a class="skip-link" href="#main">[% l('Skip to main content') %]</a>
        <div class="mb-3">
