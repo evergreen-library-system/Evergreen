@@ -3,6 +3,112 @@
 :numbered:
 :toclevels: 3
 
+== Evergreen 3.16.4 ==
+
+This release contains bug fixes and documentation fixes improving on Evergreen 3.16.3.
+
+The following fixes require an upgrade script:
+
+* Adds setting to controls strictness of address checks when offering e-renewal via Quipu (https://bugs.launchpad.net/evergreen/+bug/2137016[Bug 2137016])
+
+=== Accessibility ===
+
+* Accessibility updates to Preferences > Other Settings page. (https://bugs.launchpad.net/evergreen/+bug/2115525[Bug 2115525])
+* Corrects form label associations for catalog search Sort Results and Publication Year inputs. (https://bugs.launchpad.net/evergreen/+bug/2107992[Bug 2107992])
+
+=== Acquisitions ===
+
+* Restores the display & editing of line item detail notes (https://bugs.launchpad.net/evergreen/+bug/2026600[Bug 2026600])
+
+=== Administration ===
+
+* Fixes to LP1902937-convert-quipu-early-adopter.sql.in (https://bugs.launchpad.net/evergreen/+bug/2137142[Bug 2137142])
+* Add missing staff.login.shib_sso.shib_path YAOUS for fresh installs (https://bugs.launchpad.net/evergreen/+bug/2140411[Bug 2140411])
+* Adds setting to controls strictness of address checks when offering e-renewal via Quipu (https://bugs.launchpad.net/evergreen/+bug/2137016[Bug 2137016])
+* Updates menu item for Link Checker to use the Angular version (https://bugs.launchpad.net/evergreen/+bug/2080881[Bug 2080881])
+
+
+=== Cataloging ===
+
+* Distinguish between "Upload" and "Import" in the submit button on MARC Import/Export re-import actions (https://bugs.launchpad.net/evergreen/+bug/1868173[Bug 1868173])
+* Fixes issue with bib export by ID or Bucket (https://bugs.launchpad.net/evergreen/+bug/2139821[Bug 2139821])
+* Subfield tag suggestions are sorted with alphabetical subfields first in the MARC editor. (https://bugs.launchpad.net/evergreen/+bug/2140575[Bug 2140575])
+* Fixes a bug where the Marc Editor did not show suggestions for fields with tags below 100. (https://bugs.launchpad.net/evergreen/+bug/2140574[Bug 2140574])
+* Adjust the size of Z39.50 Edit then Import MARC editor. (https://bugs.launchpad.net/evergreen/+bug/2137267[Bug 2137267])
+
+=== Circulation ===
+
+* Updates CLAIMSRETURNED stop fines reason if the item has a subsequent checkout. The item's previous claims returned circulation is now updated with a stop-fines reason of "CHECKIN" at the time of the new checkout. (https://bugs.launchpad.net/evergreen/+bug/2015886[Bug 2015886])
+* Honors the "Default showing suggested patron registration fields" setting in the Angular patron interfaces. (https://bugs.launchpad.net/evergreen/+bug/2133898[Bug 2133898])
+* Fixes an issue where monographic parts are not sorted in the Staff Catalog Place Hold screen. (https://bugs.launchpad.net/evergreen/+bug/2139366[Bug 2139366])
+* Added "Username" to list of extra fields available in Experimental Circulation Patron Search. (https://bugs.launchpad.net/evergreen/+bug/2130749[Bug 2130749])
+* Fixes issue that could break data retrieval for Angular grids, most notably the Angular patron billings grids. (https://bugs.launchpad.net/evergreen/+bug/2138969[Bug 2138969])
+* Allows staff to delete inactive patron barcodes via the web client. (https://bugs.launchpad.net/evergreen/+bug/1917761[Bug 1917761])
+* Fixes a bug where certain libraries are incorrectly greyed out on Place Hold screen. (https://bugs.launchpad.net/evergreen/+bug/2139375[Bug 2139375])
+* Sorts patron alerts on the summary bar by create date. (https://bugs.launchpad.net/evergreen/+bug/2047174[Bug 2047174])
+* Update catalog link in hold group events grid. (https://bugs.launchpad.net/evergreen/+bug/2139605[Bug 2139605])
+* Show more useful information in the Group Member Details interface. (https://bugs.launchpad.net/evergreen/+bug/1803726[Bug 1803726])
+* Canceled holds are now displayed according to the canceled hold display age and count settings. (https://bugs.launchpad.net/evergreen/+bug/2116971[Bug 2116971])
+
+=== Documentation ===
+
+* Updates to hold levels table in basic_holds.adoc (https://bugs.launchpad.net/evergreen/+bug/2112586[Bug 2112586])
+* Extensive updates to permissions documentation and screenshots. (https://bugs.launchpad.net/evergreen/+bug/2131106[Bug 2131106])
+
+=== Public Catalog ===
+
+* Fixes "clear basket" and "select all" checkboxes in the Basket interface (https://bugs.launchpad.net/evergreen/+bug/1788467[Bug 1788467])
+* Several layout fixes to action buttons on OPAC search results and record details pages. (https://bugs.launchpad.net/evergreen/+bug/2137231[Bug 2137231])
+* Fixes occasionally broken KPAC breadcrumb link (https://bugs.launchpad.net/evergreen/+bug/2138813[Bug 2138813])
+* Re-adds list of lists to Search Results > Add to my list > See All. (https://bugs.launchpad.net/evergreen/+bug/2139625[Bug 2139625])
+* Displays all lists in View Basket -> Move selected items to list. (https://bugs.launchpad.net/evergreen/+bug/2140353[Bug 2140353])
+* Corrects placement of divider line in OPAC add to list dropdown. (https://bugs.launchpad.net/evergreen/+bug/2140588[Bug 2140588])
+* Adjusts the Change library link to lead directly to the preferred library input (https://bugs.launchpad.net/evergreen/+bug/2115376[Bug 2115376])
+* Removes the confusing count number indicating basket size from the 'Place Hold', and 'Add to my list' buttons. (https://bugs.launchpad.net/evergreen/+bug/2137671[Bug 2137671])
+
+=== Reports ===
+
+* Expand the display field and filter lists in the reports template editor by default. (https://bugs.launchpad.net/evergreen/+bug/2137225[Bug 2137225])
+* Restores the First Contiguous Non-Space Characters transform to the Advanced Reporter. (https://bugs.launchpad.net/evergreen/+bug/2120189[Bug 2120189])
+
+=== Acknowledgements ===
+
+We would like to thank the following individuals who contributed code, testing, documentation, and patches to the 3.16.4 point release of Evergreen:
+
+* Andrea Buntz Neiman
+* Blake Graham-Henderson
+* Brett French
+* Brian Kennedy
+* Chris Sharp
+* Christine Morgan
+* Dan Briem
+* Devon Bates
+* Elizabeth Davis
+* Galen Charlton
+* Gina Monti
+* Ian Skelskey
+* Jane Sandberg
+* Jason Stephenson
+* Jennifer Pringle
+* Katie Greenleaf Martin
+* Llewellyn Marshall
+* Martha Driscoll
+* Mary Llewellyn
+* Michele Morgan
+* Mike Rylander
+* Stephanie Leary
+* Steven Mayo
+* Susan Morrison
+* Tara Kunesh
+* Terran McCanna
+* Tiffany Little
+
+
+
+
+
+
+
 
 == Evergreen 3.16.3 ==
 
