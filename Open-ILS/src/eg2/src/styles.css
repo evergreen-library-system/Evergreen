@@ -311,7 +311,7 @@ a[target="_blank"]:not(:has(img)):after {
  * Invalid fields are left-border styled in red-ish.
  */
 
-.form-validated .ng-valid[required]:not(:is(fieldset, form)),
+.form-validated .ng-valid[required]:not(:is(fieldset, form, eg-date-select, eg-datetime-select)),
 .form-validated .ng-valid.required, 
 .form-validated input[formcontrolname].ng-valid.required {
   border-left: 5px solid var(--bs-form-valid-border-color);
@@ -321,7 +321,7 @@ a[target="_blank"]:not(:has(img)):after {
 	animation-duration: 0.35s;
 }
 
-.form-validated .ng-invalid:not(:is(fieldset, form)),
+.form-validated .ng-invalid:not(:is(fieldset, form, eg-date-select, eg-datetime-select)),
 .form-validated input[formcontrolname].ng-invalid,
 .form-validated .invalid:not(:is(form)) {
   border-left: 5px solid var(--bs-form-invalid-border-color);
