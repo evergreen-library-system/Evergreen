@@ -1,4 +1,6 @@
+/* Wrapped in media screen so only light mode is defined while printing */
 /* Dark mode */
+@media screen {
 :root[data-bs-theme="dark"] {
   --evergreen: var(--eg-green-200); /* brand color */
   --black: white;
@@ -104,4 +106,4 @@
   --batch-item-attr-header-bg: var(--bs-blue-900-desat);
   --status-archived: var(--bs-gray-500);
   --star-stroke: transparent;
-}
+}}
