@@ -26,8 +26,9 @@ GNU General Public License for more details.
 extern "C" {
 #endif
 
-dbi_conn oilsConnectDB( const char* mod_name );
-void oilsSetSQLOptions( const char* module_name, int do_pcrud, int flesh_depth );
+int oilsInitializeDbiInstance( dbi_inst* instance );
+dbi_conn oilsConnectDB( const char* mod_name, dbi_inst* instance );
+void oilsSetSQLOptions( const char* module_name, int do_pcrud, int flesh_depth, int retail_vis_test );
 void oilsSetDBConnection( dbi_conn conn );
 int oilsIsDBConnected( dbi_conn handle );
 int oilsExtendIDL( dbi_conn handle );

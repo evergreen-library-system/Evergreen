@@ -172,19 +172,29 @@ static char* random_cursor_name() {
 }
 
 /**
+	@brief Initialize a dbi_inst
+	@param instance: an uninitialized DBI instance
+	@return The number of drivers successfully loaded, or -1 if there was an error.
+*/
+int oilsInitializeDbiInstance( dbi_inst* instance ) {
+	osrfLogDebug( OSRF_LOG_MARK, "Attempting to initialize libdbi..." );
+	int result = dbi_initialize_r( NULL, instance );
+	if( result == -1 ) {
+		osrfLogError( OSRF_LOG_MARK, "Unable to initialize libdbi" );
+	} else {
+		osrfLogDebug( OSRF_LOG_MARK, "... libdbi initialized." );
+	}
+	return result;
+}
+
+/**
 	@brief Connect to the database.
+	@param instance: an initialized DBI instance
 	@return A database connection if successful, or NULL if not.
 */
-dbi_conn oilsConnectDB( const char* mod_name ) {
+dbi_conn oilsConnectDB( const char* mod_name, dbi_inst* instance ) {
 
     srand(time(NULL)); // In case we need some randomness, just once per db connection.
-
-	osrfLogDebug( OSRF_LOG_MARK, "Attempting to initialize libdbi..." );
-	if( dbi_initialize( NULL ) == -1 ) {
-		osrfLogError( OSRF_LOG_MARK, "Unable to initialize libdbi" );
-		return NULL;
-	} else
-		osrfLogDebug( OSRF_LOG_MARK, "... libdbi initialized." );
 
 	char* driver = osrf_settings_host_value( "/apps/%s/app_settings/driver", mod_name );
 	char* user   = osrf_settings_host_value( "/apps/%s/app_settings/database/user", mod_name );
@@ -195,7 +205,7 @@ dbi_conn oilsConnectDB( const char* mod_name ) {
 	char* pg_app = osrf_settings_host_value( "/apps/%s/app_settings/database/application_name", mod_name );
 
 	osrfLogDebug( OSRF_LOG_MARK, "Attempting to load the database driver [%s]...", driver );
-	dbi_conn handle = dbi_conn_new( driver );
+	dbi_conn handle = dbi_conn_new_r( driver, *instance );
 
 	if( !handle ) {
 		osrfLogError( OSRF_LOG_MARK, "Error loading database driver [%s]", driver );
@@ -213,6 +223,7 @@ dbi_conn oilsConnectDB( const char* mod_name ) {
 	if( db )     dbi_conn_set_option( handle, "dbname", db );
 	if( pg_app ) dbi_conn_set_option( handle, "pgsql_application_name", pg_app );
 
+	free( driver );
 	free( user );
 	free( host );
 	free( port );

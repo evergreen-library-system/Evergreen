@@ -292,8 +292,8 @@ if test "x$openils_core" = "xtrue"; then
     #dynamically). This example checks for the mysql driver
     AC_MSG_CHECKING([for libdbi pgsql driver (dynamic load)])
     AC_RUN_IFELSE(
-      [AC_LANG_PROGRAM(,
-        [[dbi_initialize(0); return(dbi_conn_new("pgsql") ? 0 : 1);]])],
+      [AC_LANG_PROGRAM([#include <dbi/dbi.h>],
+        [[dbi_inst instance; dbi_initialize_r(NULL, &instance); return(dbi_conn_new_r("pgsql", instance) ? 0 : 1);]])],
       [AC_MSG_RESULT("yes")],
       [AC_MSG_FAILURE("pgsql driver not installed?")])
 

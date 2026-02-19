@@ -27,6 +27,7 @@ typedef struct {
 	StoredQ*       query;
 } CachedQuery;
 
+static dbi_inst instance;
 static dbi_conn dbhandle; /* our db connection */
 
 static const char modulename[] = "open-ils.qstore";
@@ -76,6 +77,9 @@ int osrfAppInitialize() {
 
 	if ( !oilsIDLInit( osrf_settings_host_value( "/IDL" )))
 		return 1; /* return non-zero to indicate error */
+
+	if ( !oilsInitializeDbiInstance( &instance ) )
+		return 1;
 
 	// Set the SQL options.  Here the second and third parameters are irrelevant, but we need
 	// to set the module name for use in error messages.
@@ -144,7 +148,7 @@ int osrfAppInitialize() {
 */
 int osrfAppChildInit( void ) {
 
-	dbhandle = oilsConnectDB( modulename );
+	dbhandle = oilsConnectDB( modulename, &instance );
 	if( !dbhandle )
 		return -1;
 	else {
