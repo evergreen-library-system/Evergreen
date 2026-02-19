@@ -287,7 +287,6 @@ static void _oilsEventParseEvents() {
 	}
 
 	xmlDocPtr doc = xmlParseFile(xml);
-	free(xml);
 	int success = 0;
 	_oilsEventEvents = osrfNewHash();
 	_oilsEventDescriptions = osrfNewHash();
@@ -340,4 +339,5 @@ static void _oilsEventParseEvents() {
 
 	if(!success)
 		osrfLogError(OSRF_LOG_MARK, " ! Unable to parse events file: %s", xml );
+	free(xml);
 }

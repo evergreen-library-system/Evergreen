@@ -719,7 +719,7 @@ static oilsEvent* oilsAuthHandleLoginOK( osrfMethodContext* ctx, jsonObject* use
                 }
 
                 jsonObjectFree(upgradeEvt);
-                jsonObjectRemoveKey(evtPayload, "provisional"); // so the caller knows it's "real"
+                jsonObjectRemoveKey((jsonObject *)evtPayload, "provisional"); // so the caller knows it's "real"
                 osrfLogActivity(OSRF_LOG_MARK, "Upgraded provisional session: %s", token );
             }
 
@@ -864,7 +864,7 @@ int oilsAuthComplete( osrfMethodContext* ctx ) {
     bool initFoundUserByBarcode = false;
     jsonObject* value = NULL;
     jsonIterator* cacheIter = jsonNewIterator(cacheObj);
-    while (value = jsonIteratorNext(cacheIter)) {
+    while ((value = jsonIteratorNext(cacheIter))) {
         const char *key_name = cacheIter->key;
         if (!strcmp(key_name, "barcode")) {
             initFoundUserByBarcode = true;
