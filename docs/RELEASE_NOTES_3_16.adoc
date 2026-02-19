@@ -43,7 +43,6 @@ The following fixes require an upgrade script:
 * Fixes an issue where monographic parts are not sorted in the Staff Catalog Place Hold screen. (https://bugs.launchpad.net/evergreen/+bug/2139366[Bug 2139366])
 * Added "Username" to list of extra fields available in Experimental Circulation Patron Search. (https://bugs.launchpad.net/evergreen/+bug/2130749[Bug 2130749])
 * Fixes issue that could break data retrieval for Angular grids, most notably the Angular patron billings grids. (https://bugs.launchpad.net/evergreen/+bug/2138969[Bug 2138969])
-* Allows staff to delete inactive patron barcodes via the web client. (https://bugs.launchpad.net/evergreen/+bug/1917761[Bug 1917761])
 * Fixes a bug where certain libraries are incorrectly greyed out on Place Hold screen. (https://bugs.launchpad.net/evergreen/+bug/2139375[Bug 2139375])
 * Sorts patron alerts on the summary bar by create date. (https://bugs.launchpad.net/evergreen/+bug/2047174[Bug 2047174])
 * Update catalog link in hold group events grid. (https://bugs.launchpad.net/evergreen/+bug/2139605[Bug 2139605])
