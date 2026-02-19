@@ -16,9 +16,9 @@
 #include "openils/oils_utils.h"
 #include "openils/oils_sql.h"
 
+static dbi_inst instance;
 static dbi_conn writehandle; /* our MASTER db connection */
 static dbi_conn dbhandle; /* our CURRENT db connection */
-//static osrfHash * readHandles;
 
 static const int enforce_pcrud = 1;     // Boolean
 static const char modulename[] = "open-ils.pcrud";
@@ -97,9 +97,12 @@ int osrfAppInitialize( void ) {
 	if ( !oilsIDLInit( osrf_settings_host_value( "/IDL" )))
 		return 1; /* return non-zero to indicate error */
 
+	if ( !oilsInitializeDbiInstance( &instance ) )
+		return 1;
+
 	// Open the database temporarily.  Look up the datatypes of all
 	// the non-virtual fields and record them with the IDL data.
-	dbi_conn handle = oilsConnectDB( modulename );
+	dbi_conn handle = oilsConnectDB( modulename, &instance );
 	if( !handle )
 		return -1;
 	else if( oilsExtendIDL( handle )) {
@@ -114,6 +117,7 @@ int osrfAppInitialize( void ) {
 	int disable_new_vis_tests = 0;
 	if (dv && !strcmp("true", dv))
 		disable_new_vis_tests = 1;
+	free( dv );
 
 	// Get the maximum flesh depth from the settings
 	char* md = osrf_settings_host_value(
@@ -125,6 +129,7 @@ int osrfAppInitialize( void ) {
 		max_flesh_depth = 1;
 	else if( max_flesh_depth > 1000 )
 		max_flesh_depth = 1000;
+	free( md );
 
 	oilsSetSQLOptions( modulename, enforce_pcrud, max_flesh_depth, disable_new_vis_tests );
 
@@ -304,7 +309,7 @@ int osrfAppInitialize( void ) {
 */
 int osrfAppChildInit( void ) {
 
-	writehandle = oilsConnectDB( modulename );
+	writehandle = oilsConnectDB( modulename, &instance );
 	if( !writehandle )
 		return -1;
 
