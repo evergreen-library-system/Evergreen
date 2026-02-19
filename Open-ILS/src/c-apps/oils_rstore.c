@@ -279,7 +279,7 @@ int osrfAppInitialize( void ) {
 			);
 
 		} // end for each global method
-		free( readonly );
+		free( (void *)readonly );
 	} // end for each class in IDL
 
 	osrf_buffer_free( method_name );

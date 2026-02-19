@@ -396,7 +396,7 @@ osrfHash* oilsIDLInit( const char* idl_filename ) {
 											"true"
 										)
 									) {
-										osrfHashSet( _tmp_fcontext, local_pkey, "fkey" );
+										osrfHashSet( _tmp_fcontext, (void *)local_pkey, "fkey" );
 									} else {
 										osrfHashSet( _tmp_fcontext, osrfHashGet(_flink, "field"), "fkey" );
 									}
