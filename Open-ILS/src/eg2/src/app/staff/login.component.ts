@@ -113,7 +113,7 @@ export class StaffLoginComponent implements OnInit {
 
 
     applyWorkstation() {
-        const wanted = this.route.snapshot.queryParamMap.get('workstation');
+        const wanted = this.route.snapshot.queryParamMap.get('ws');
         if (!wanted) { return this.args.workstation; } // use the default
 
         const exists = this.workstations.find(w => w.name === wanted);

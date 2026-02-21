@@ -90,7 +90,7 @@ export class WorkstationsComponent implements OnInit {
     useNow(): void {
         if (this.selected()) {
             this.router.navigate(['/staff/login'],
-                {queryParams: {workstation: this.selected().name}});
+                {queryParams: {ws: this.selected().name}});
         }
     }
 
