@@ -226,7 +226,8 @@
           <li class="list-group-item">
             <button type="button" class="btn btn-success" (click)="placeHolds()"
               [disabled]="!readyToPlaceHolds()" i18n>Place Hold(s)</button>
-            <button type="button" class="btn btn-outline-dark ms-2" (click)="resetForm()" i18n>Reset</button>
+            <button type="button" class="btn btn-outline-dark ms-2"
+              (click)="onReset()" i18n>Reset</button>
           </li>
         </ul><!-- col -->
       </div><!-- row -->
