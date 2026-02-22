@@ -526,6 +526,10 @@ export class HoldComponent implements OnInit, OnDestroy {
         if (!keepBarcode) { this.userBarcode = null; }
     }
 
+    onReset(): Promise<void> {
+        return this.resetForm().then(() => { this.holdFor = 'patron'; });
+    }
+
     resetForm(keepBarcode?: boolean): Promise<any> {
         this.placeHoldsClicked = false;
         this.resetRecipient(keepBarcode);

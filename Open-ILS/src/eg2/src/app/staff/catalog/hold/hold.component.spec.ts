@@ -140,6 +140,18 @@ describe('HoldComponent', () => {
                 expect(component['holds'].placeHold).toHaveBeenCalledWith(expectedParams);
             });
         });
+
+        describe('onReset()', () => {
+            it('calls resetForm() then resets holdFor to patron', async () => {
+                component.holdFor = 'staff';
+                spyOn(component, 'resetRecipient');
+
+                await component.onReset();
+
+                expect(component.resetRecipient).toHaveBeenCalled();
+                expect(component.holdFor).toBe('patron');
+            });
+        });
     });
 
     describe('when there are hold groups', () => {
