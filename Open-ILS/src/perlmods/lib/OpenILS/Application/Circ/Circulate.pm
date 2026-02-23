@@ -2480,6 +2480,18 @@ sub extend_renewal_due_date {
 sub create_due_date {
     my( $self, $duration, $date_ceiling, $force_date, $start_time ) = @_;
 
+    # should do date arithmetic in UTC to avoid potential
+    # crashes if the new due time falls in a DST transition hour
+    my $due_date = $start_time ?
+        DateTime::Format::ISO8601
+            ->new
+            ->parse_datetime(clean_ISO8601($start_time))
+            ->set_time_zone('UTC') :
+        DateTime->now(time_zone => 'UTC');
+
+    # add the circ duration
+    $due_date->add(seconds => OpenILS::Utils::DateTime->interval_to_seconds($duration, $due_date));
+
     # Look up circulating library's TZ, or else use client TZ, falling
     # back to server TZ
     my $tz = $U->ou_ancestor_setting_value(
@@ -2488,15 +2500,8 @@ sub create_due_date {
         $self->editor
     ) || 'local';
 
-    my $due_date = $start_time ?
-        DateTime::Format::ISO8601
-            ->new
-            ->parse_datetime(clean_ISO8601($start_time))
-            ->set_time_zone($tz) :
-        DateTime->now(time_zone => $tz);
-
-    # add the circ duration
-    $due_date->add(seconds => OpenILS::Utils::DateTime->interval_to_seconds($duration, $due_date));
+    # use the library's TZ for the due date going forward
+    $due_date->set_time_zone($tz);
 
     if($date_ceiling) {
         my $cdate = DateTime::Format::ISO8601
