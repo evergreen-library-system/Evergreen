@@ -34,6 +34,7 @@ export DEBS = \
 	libbusiness-onlinepayment-authorizenet-perl\
 	libbusiness-onlinepayment-payflowpro-perl\
 	libbusiness-onlinepayment-perl\
+	libcbor-xs-perl \
 	libdate-manip-perl\
 	libdatetime-format-builder-perl\
 	libdatetime-format-iso8601-perl\
@@ -55,6 +56,7 @@ export DEBS = \
     libhttp-async-perl\
 	liblocale-maketext-lexicon-perl\
 	liblog-log4perl-perl\
+	libmouse-perl \
 	libncurses5-dev\
     libnet-https-nb-perl\
 	libnet-ip-perl\
