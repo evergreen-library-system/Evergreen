@@ -11,7 +11,7 @@ Permission groups can be managed in the staff client under *Administration* > *S
 
 Upon opening the interface, you will see a tree of the existing permission groups. With the first install of Evergreen, the tree will show the default permission groups, shown in the screenshot below. The groups can be modified to meet the needs of your library. 
 
-image:://permission_groups/default permission group tree.png[Permission groups tree]
+image:://permission_groups/default_permission_group_tree.png[Permission groups tree]
 
 The tree can be collapsed or expanded using the arrows next to each parent permission group. Any group that is nested under another group is called a child group; each child group will inherit any permissions from their parent group(s). For example, in the list of default permission groups shown in the screenshot above, the Staff group inherits all permissions assigned to the Users group. The Catalogers group inherits permissions from the Users group _and_ Staff group.
 
@@ -102,7 +102,7 @@ image::permission_groups/permission_groups_perm_list_editable.png[Locally assign
 
 If a permission is inherited through a parent group, the permissions table will look like the below:
 
-image::permission_groups/inherited permissions.png[Inherited permissions]
+image::permission_groups/inherited_permissions.png[Inherited permissions]
 
 More information about depth and grantability is included in the last section of this page.
 
@@ -194,7 +194,7 @@ You can edit and delete multiple permissions at a time. For example, you can sel
 * REMOVE_GROUP_PERM
 * VIEW_PERMISSION
 
-
+[[depth_and_grantability]]
 == Depth and Grantability ==
 
 === Depth ===
