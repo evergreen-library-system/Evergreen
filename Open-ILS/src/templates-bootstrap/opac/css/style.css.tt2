@@ -4582,6 +4582,10 @@ padding: 15px;
     border: 1px solid [% css_colors.border_table %];
 }
 
+.proxy-grid {
+    min-width:16rem;
+}
+
 .pointer {
     cursor: pointer;
 }

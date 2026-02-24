@@ -114,7 +114,7 @@
                 <fieldset class="row">
                     [% FOR waiver IN ctx.user.waiver_entries %]
                     <fieldset id="fieldset-[% waiver.id %]" aria-labelledby="privacy_waiver_heading">
-                        <div id="waiver_[% waiver.id %]" class="subgrid">
+                        <div id="waiver_[% waiver.id %]" class="subgrid proxy-grid">
                             <input type="hidden" name="waiver_id" value="[% waiver.id %]"/>
                             <label class="form-label" for="waiver_name_[% waiver.id %]">[% l('Name:') %]</label>
                             <input class="form-control" type="textbox" id="waiver_name_[% waiver.id %]" name="waiver_name_[% waiver.id %]" value="[% waiver.name | html %]"/>
@@ -148,7 +148,7 @@
                     </fieldset>
                     [% END %]
 
-                    <fieldset class="subgrid" id="fieldset-new" aria-labelledby="privacy_waiver_heading">
+                    <fieldset class="subgrid proxy-grid" id="fieldset-new" aria-labelledby="privacy_waiver_heading">
                         <label class="form-label" for="waiver_name_new">[% l('Name:') %]</label>
                         <input type="textbox" class="form-control" name="waiver_name_new" id="waiver_name_new"/>
 
