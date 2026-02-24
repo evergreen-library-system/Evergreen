@@ -127,7 +127,7 @@ image::permissions/permissions_1.png[Click User Permission Editor in the Patron'
 permissions cannot be edited because they are either a) already granted to the 
 account, or b) not grantable, i.e., not available for the staff member to assign.
 +
-image::permissions/profile-5.png[profile-5]
+image::describing_your_people/dyp_staff_permissions_working_loc.png[User Permission Editor showing working locations]
 +
 
 This interface shows:
@@ -142,11 +142,11 @@ To assign a permission:
 
 . Check the *Applied* column next to the permission name, for example, OFFLINE_EXECUTE.
 +
-image::permissions/profile-6.png[profile-6]
+image::describing_your_people/dyp_staff_permissions_add.png[Adding a permission via the staff account]
 +
 . Scroll down and click *Save* to apply the changes.
 +
-image::permissions/profile-7.png[profile-7]
+image::describing_your_people/dyp_staff_permissions_save.png[Saving permissions changes in the staff account]
 
 === Managing Permissions in the Database ===
 
