@@ -393,7 +393,7 @@
   </div>
     <!-- advanced search options -->
 	<ng-container *ngIf="!hideForm()">
-		<div class="row px-3 pt-3 pb-1 mb-1" [hidden]="!showSearchFilters || searchTab != 'term'">
+		<div class="row px-3 pt-3 pb-1 mb-1" [hidden]="!showSearchFilters || searchTab !== 'term'">
 			<div class="col-lg-6 mt-3">
 			  <label i18n class="form-label select-label" for="context-termSearch-copyLocations">Shelving Location</label>
 			  <select class="form-select" id="context-termSearch-copyLocations" [disabled]="context.termSearch.locationGroupOrLasso !== ''"
@@ -403,6 +403,9 @@
 				  {{loc.name()}} ({{orgName(loc.owning_lib())}})
 				</option>
 			  </select>
+        <p *ngIf="context.termSearch.locationGroupOrLasso !== ''" class="form-text mx-1 mt-2 mb-0">
+          <i i18n>Clear the Library Group or Shelving Location Group selection to choose individual Shelving Locations</i>
+        </p>
 			</div>
 			<div class="col-lg-6 mt-3" *ngIf="searchFilters().includes('item_type')">
 			  <label i18n class="form-label select-label" for="context-termSearch-ccvmFilters-item_type">Item Type</label>
@@ -415,7 +418,7 @@
 			  </select>
 			</div>
 		</div>
-		<div class="row px-3 pt-3 pb-1 mb-1" [hidden]="!showSearchFilters || searchTab != 'term'">
+		<div class="row px-3 pt-3 pb-1 mb-1" [hidden]="!showSearchFilters || searchTab !== 'term'">
 			<div class="col-lg-4 mt-3" *ngIf="searchFilters().includes('item_form')">
 			  <label i18n class="form-label select-label" for="context-termSearch-ccvmFilters-item_form">Form</label>
 			  <select class="form-select" multiple="true" id="context-termSearch-ccvmFilters-item_form"
@@ -447,7 +450,7 @@
 			  </select>
 			</div>
 		</div>
-		<div class="row px-3 pt-3 pb-1 mb-1" [hidden]="!showSearchFilters || searchTab != 'term'">
+		<div class="row px-3 pt-3 pb-1 mb-1" [hidden]="!showSearchFilters || searchTab !== 'term'">
 			<div class="col-lg-4 mt-3" *ngIf="searchFilters().includes('vr_format')">
 			  <label i18n class="form-label select-label" for="context-termSearch-ccvmFilters-vr_format">Video Format</label>
 			  <select class="form-select" id="context-termSearch-ccvmFilters-vr_format"
@@ -478,11 +481,6 @@
 				</ng-container>
 			  </select>
 			</div>
-		</div>
-		<div *ngIf="context.termSearch.locationGroupOrLasso !== ''" class="row px-3 pt-3 pb-1 mb-1" [hidden]="!showSearchFilters || searchTab != 'term'">
-			<p class="form-text mx-1 my-0">
-			  <i i18n>Clear the Library Group or Shelving Location Group selection to choose individual Shelving Locations</i>
-			</p>
 		</div>
 		<fieldset class="row row-cols-auto mt-3" [hidden]="!showSearchFilters">
 			<legend class="form-label col-form-label" i18n>Publication Year</legend>
