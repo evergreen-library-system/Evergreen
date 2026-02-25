@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, AfterViewInit} from '@angular/core';
+import { Component, Input, OnInit, AfterViewInit, inject } from '@angular/core';
 import {Router} from '@angular/router';
 import {IdlObject} from '@eg/core/idl.service';
 import {EventService} from '@eg/core/event.service';
@@ -13,6 +13,12 @@ import { StaffCommonModule } from '@eg/staff/common.module';
     imports: [StaffCommonModule]
 })
 export class TestPatronPasswordComponent implements OnInit, AfterViewInit {
+    private router = inject(Router);
+    private evt = inject(EventService);
+    private net = inject(NetService);
+    private auth = inject(AuthService);
+    patronService = inject(PatronService);
+
 
     @Input() patronId: number;
     patron: IdlObject;
@@ -21,14 +27,6 @@ export class TestPatronPasswordComponent implements OnInit, AfterViewInit {
     password = '';
     verified = null;
     notFound = false;
-
-    constructor(
-        private router: Router,
-        private evt: EventService,
-        private net: NetService,
-        private auth: AuthService,
-        public patronService: PatronService
-    ) {}
 
     ngOnInit() {
 

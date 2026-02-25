@@ -1,5 +1,5 @@
 /* eslint-disable */
-import {Component, Input} from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import {OnInit} from '@angular/core';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {PoService} from './po.service';
@@ -11,15 +11,13 @@ import { CommonModule } from '@angular/common';
     imports: [CommonModule]
 })
 export class PoLabelComponent implements OnInit {
+    private idl = inject(IdlService);
+    private poService = inject(PoService);
+
 
     @Input() po: IdlObject;
     @Input() poId: number;
     @Input() showEstimatedCost = false;
-
-    constructor(
-        private idl: IdlService,
-        private poService: PoService,
-    ) {}
 
     async ngOnInit() {
         console.debug('PoLabelComponent, poId, po, this',this.poId,this.po,this);

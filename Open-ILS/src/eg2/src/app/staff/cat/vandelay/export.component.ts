@@ -1,4 +1,4 @@
-import {Component, AfterViewInit, ViewChild, Renderer2, OnInit} from '@angular/core';
+import { Component, AfterViewInit, ViewChild, Renderer2, OnInit, inject } from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {HttpClient, HttpRequest, HttpEventType,
     HttpResponse, HttpErrorResponse} from '@angular/common/http';
@@ -16,6 +16,13 @@ import { StaffCommonModule } from '@eg/staff/common.module';
     imports: [StaffCommonModule]
 })
 export class ExportComponent implements AfterViewInit, OnInit {
+    private renderer = inject(Renderer2);
+    private route = inject(ActivatedRoute);
+    private http = inject(HttpClient);
+    private toast = inject(ToastService);
+    private auth = inject(AuthService);
+    private basket = inject(BasketService);
+
 
     recordSource = 'csv';
     fieldNumber: number;
@@ -34,14 +41,7 @@ export class ExportComponent implements AfterViewInit, OnInit {
     @ViewChild('exportProgress', { static: true })
     private exportProgress: ProgressInlineComponent;
 
-    constructor(
-        private renderer: Renderer2,
-        private route: ActivatedRoute,
-        private http: HttpClient,
-        private toast: ToastService,
-        private auth: AuthService,
-        private basket: BasketService
-    ) {
+    constructor() {
         this.recordType = 'biblio';
         this.recordFormat = 'USMARC';
         this.recordEncoding = 'UTF-8';

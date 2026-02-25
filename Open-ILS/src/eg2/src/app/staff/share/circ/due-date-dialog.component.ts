@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, ViewChild} from '@angular/core';
+import { Component, OnInit, Input, ViewChild, inject } from '@angular/core';
 import {IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {EventService} from '@eg/core/event.service';
@@ -20,6 +20,13 @@ import { CommonModule } from '@angular/common';
 
 export class DueDateDialogComponent
     extends DialogComponent implements OnInit {
+    private modal: NgbModal;
+    private toast = inject(ToastService);
+    private net = inject(NetService);
+    private evt = inject(EventService);
+    private pcrud = inject(PcrudService);
+    private auth = inject(AuthService);
+
 
     @Input() circs: IdlObject[] = [];
     @Input() allowPastDate = false;
@@ -31,14 +38,12 @@ export class DueDateDialogComponent
     dueDateIso: string;
     nowTime: number;
 
-    constructor(
-        private modal: NgbModal, // required for passing to parent
-        private toast: ToastService,
-        private net: NetService,
-        private evt: EventService,
-        private pcrud: PcrudService,
-        private auth: AuthService) {
+    constructor() {
+        const modal = inject(NgbModal);
+
         super(modal); // required for subclassing
+
+        this.modal = modal;
     }
 
     ngOnInit() {

@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import { Component, Input, OnInit, ViewChild, inject } from '@angular/core';
 import {FormControl} from '@angular/forms';
 import {takeLast} from 'rxjs';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
@@ -19,6 +19,12 @@ import { StaffCommonModule } from '@eg/staff/common.module';
 
 
 export class AddToCarouselDialogComponent extends DialogComponent implements OnInit {
+    private modal: NgbModal;
+    private auth = inject(AuthService);
+    private evt = inject(EventService);
+    private net = inject(NetService);
+    private toast = inject(ToastService);
+
 
     // IDs of records to add to the carousel
     @Input() recordIds: number[];
@@ -34,14 +40,12 @@ export class AddToCarouselDialogComponent extends DialogComponent implements OnI
     public addToCarousel: () => void;
     private reset: () => void;
 
-    constructor(
-        private modal: NgbModal,
-        private auth: AuthService,
-        private evt: EventService,
-        private net: NetService,
-        private toast: ToastService
-    ) {
+    constructor() {
+        const modal = inject(NgbModal);
+
         super(modal);
+
+        this.modal = modal;
     }
 
     ngOnInit() {

@@ -1,6 +1,6 @@
 /**
  */
-import {Component, ViewEncapsulation} from '@angular/core';
+import { Component, ViewEncapsulation, inject } from '@angular/core';
 import {AccessKeyService} from '@eg/share/accesskey/accesskey.service';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
@@ -14,11 +14,16 @@ import { BoolDisplayComponent } from '../util/bool.component';
     imports: [BoolDisplayComponent]
 })
 export class AccessKeyInfoComponent extends DialogComponent {
+    private modal: NgbModal;
+    private keyService = inject(AccessKeyService);
 
-    constructor(
-        private modal: NgbModal, // required for passing to parent
-        private keyService: AccessKeyService) {
+
+    constructor() {
+        const modal = inject(NgbModal);
+
         super(modal);
+
+        this.modal = modal;
     }
 
     assignments(): any[] {

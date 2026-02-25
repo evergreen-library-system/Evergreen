@@ -1,5 +1,5 @@
 /* eslint-disable */
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import { Component, Input, OnInit, ViewChild, inject } from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 import {map, concatMap} from 'rxjs/operators';
 import {from} from 'rxjs';
@@ -30,6 +30,15 @@ import { StaffCommonModule } from '@eg/staff/common.module';
 })
 
 export class ReportReportsComponent implements OnInit {
+    private router = inject(Router);
+    private route = inject(ActivatedRoute);
+    private auth = inject(AuthService);
+    private pcrud = inject(PcrudService);
+    private idl = inject(IdlService);
+    RSvc = inject(ReporterService);
+    private toast = inject(ToastService);
+    private net = inject(NetService);
+
 
     @Input() currentFolder: IdlObject = null;
     @Input() searchTemplate: IdlObject = null;
@@ -56,18 +65,6 @@ export class ReportReportsComponent implements OnInit {
 
 
     cellTextGenerator: GridCellTextGenerator;
-
-    constructor(
-        private router: Router,
-        private route: ActivatedRoute,
-        private auth: AuthService,
-        private pcrud: PcrudService,
-        private idl: IdlService,
-        public RSvc: ReporterService,
-        private toast: ToastService,
-        private net: NetService
-    ) {
-    }
 
     ngOnInit() {
         this.gridSource = this.RSvc.getReportsDatasource(this.currentFolder ?? this.searchTemplate);

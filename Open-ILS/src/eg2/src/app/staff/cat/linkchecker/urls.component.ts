@@ -1,6 +1,6 @@
 import {Router, ActivatedRoute} from '@angular/router';
 import {AuthService} from '@eg/core/auth.service';
-import {Component, ChangeDetectorRef, OnInit, ViewChild} from '@angular/core';
+import { Component, ChangeDetectorRef, OnInit, ViewChild, inject } from '@angular/core';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {GridDataSource} from '@eg/share/grid/grid';
 import {GridFlatDataService} from '@eg/share/grid/grid-flat-data.service';
@@ -16,6 +16,15 @@ import { StaffCommonModule } from '@eg/staff/common.module';
     imports: [StaffCommonModule]
 })
 export class LinkCheckerUrlsComponent implements OnInit {
+    private auth = inject(AuthService);
+    private flatData = inject(GridFlatDataService);
+    private idl = inject(IdlService);
+    private net = inject(NetService);
+    private pcrud = inject(PcrudService);
+    private route = inject(ActivatedRoute);
+    private router = inject(Router);
+    private cdr = inject(ChangeDetectorRef);
+
 
     sessions: number[];
     session_names: string[] = [];
@@ -46,17 +55,6 @@ export class LinkCheckerUrlsComponent implements OnInit {
     dataSource: GridDataSource = new GridDataSource();
     noSelectedRows: boolean;
     oneSelectedRow: boolean;
-
-    constructor(
-        private auth: AuthService,
-        private flatData: GridFlatDataService,
-        private idl: IdlService,
-        private net: NetService,
-        private pcrud: PcrudService,
-        private route: ActivatedRoute,
-        private router: Router,
-        private cdr: ChangeDetectorRef,
-    ) {}
 
     ngOnInit() {
         this.route.queryParams.subscribe( params => {

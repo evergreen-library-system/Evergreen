@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, ViewChild} from '@angular/core';
+import { Component, OnInit, Input, ViewChild, inject } from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {GridDataSource} from '@eg/share/grid/grid';
 import {GridComponent} from '@eg/share/grid/grid.component';
@@ -17,6 +17,10 @@ import { StaffCommonModule } from '@eg/staff/common.module';
 })
 
 export class SearchFilterGroupEntriesComponent implements OnInit {
+    private route = inject(ActivatedRoute);
+    private pcrud = inject(PcrudService);
+    private toast = inject(ToastService);
+
 
     @ViewChild('editDialog') editDialog: FmRecordEditorComponent;
     @ViewChild('queryDialog') queryDialog: QueryDialogComponent;
@@ -35,11 +39,7 @@ export class SearchFilterGroupEntriesComponent implements OnInit {
 
     currentId: number;
 
-    constructor(
-        private route: ActivatedRoute,
-        private pcrud: PcrudService,
-        private toast: ToastService
-    ) {
+    constructor() {
         this.dataSource = new GridDataSource();
     }
 

@@ -120,7 +120,7 @@
           "builder": "@nightwatch/schematics:nightwatch",
           "options": {
             "devServerTarget": "eg:serve",
-            "tsConfig": "../nightwatch/tsconfig.json",
+            "tsConfig": "./nightwatch/tsconfig.json",
             "config": "./nightwatch.conf.js",
             "env": "firefox"
           },
@@ -134,7 +134,7 @@
           "builder": "@nightwatch/schematics:nightwatch",
           "options": {
             "devServerTarget": "eg:serve",
-            "tsConfig": "../nightwatch/tsconfig.json",
+            "tsConfig": "./nightwatch/tsconfig.json",
             "config": "./nightwatch.conf.js",
             "env": "firefox"
           },
@@ -151,10 +151,30 @@
   "schematics": {
     "@schematics/angular:component": {
       "prefix": "eg",
-      "style": "css"
+      "style": "css",
+      "type": "component"
     },
     "@schematics/angular:directive": {
-      "prefix": "eg"
+      "prefix": "eg",
+      "type": "directive"
+    },
+    "@schematics/angular:service": {
+      "type": "service"
+    },
+    "@schematics/angular:guard": {
+      "typeSeparator": "."
+    },
+    "@schematics/angular:interceptor": {
+      "typeSeparator": "."
+    },
+    "@schematics/angular:module": {
+      "typeSeparator": "."
+    },
+    "@schematics/angular:pipe": {
+      "typeSeparator": "."
+    },
+    "@schematics/angular:resolver": {
+      "typeSeparator": "."
     }
   },
   "cli": {

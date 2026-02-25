@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 import {StoreService} from '@eg/core/store.service';
 import { StaffCommonModule } from '@eg/staff/common.module';
@@ -8,13 +8,11 @@ import { StaffCommonModule } from '@eg/staff/common.module';
     imports: [StaffCommonModule]
 })
 export class LastPatronComponent implements OnInit {
-    noRecents = false;
+    private router = inject(Router);
+    private route = inject(ActivatedRoute);
+    private store = inject(StoreService);
 
-    constructor(
-        private router: Router,
-        private route: ActivatedRoute,
-        private store: StoreService
-    ) {}
+    noRecents = false;
 
     ngOnInit() {
 

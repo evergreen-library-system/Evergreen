@@ -1,4 +1,4 @@
-import {Component, ViewChild, OnInit, OnDestroy, Input} from '@angular/core';
+import { Component, ViewChild, OnInit, OnDestroy, Input, inject } from '@angular/core';
 import {Subscription, EMPTY, from, lastValueFrom,
     defaultIfEmpty, catchError, concatMap, switchMap, tap} from 'rxjs';
 import {IdlObject} from '@eg/core/idl.service';
@@ -33,6 +33,14 @@ enum NoteAction {
     ]
 })
 export class PatronMessagesComponent implements OnInit, OnDestroy {
+    private org = inject(OrgService);
+    private net = inject(NetService);
+    private pcrud = inject(PcrudService);
+    private auth = inject(AuthService);
+    private serverStore = inject(ServerStoreService);
+    patronService = inject(PatronService);
+    context = inject(PatronContextService);
+
 
     @Input() patronId: number;
 
@@ -48,16 +56,6 @@ export class PatronMessagesComponent implements OnInit, OnDestroy {
     private noteDialog: PatronNoteDialogComponent;
 
     private subscriptions = new Subscription();
-
-    constructor(
-        private org: OrgService,
-        private net: NetService,
-        private pcrud: PcrudService,
-        private auth: AuthService,
-        private serverStore: ServerStoreService,
-        public patronService: PatronService,
-        public context: PatronContextService
-    ) {}
 
     ngOnInit() {
 

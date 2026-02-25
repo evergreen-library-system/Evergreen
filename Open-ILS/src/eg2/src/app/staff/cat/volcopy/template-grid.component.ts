@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import {Component, Input, OnInit, OnDestroy, ViewChild, ElementRef} from '@angular/core';
+import { Component, Input, OnInit, OnDestroy, ViewChild, ElementRef, inject } from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 import {Subject,Observable,from,takeUntil} from 'rxjs';
 import {SafeUrl} from '@angular/platform-browser';
@@ -21,6 +21,15 @@ import { StaffCommonModule } from '@eg/staff/common.module';
     imports: [StaffCommonModule]
 })
 export class VolCopyTemplateGridComponent implements OnInit, OnDestroy {
+    private router = inject(Router);
+    route = inject(ActivatedRoute);
+    private idl = inject(IdlService);
+    private org = inject(OrgService);
+    private auth = inject(AuthService);
+    private broadcaster = inject(BroadcastService);
+    private flatData = inject(GridFlatDataService);
+    volcopy = inject(VolCopyService);
+
 
     private destroy$ = new Subject<void>();
 
@@ -38,17 +47,6 @@ export class VolCopyTemplateGridComponent implements OnInit, OnDestroy {
     cellTextGenerator: GridCellTextGenerator;
     noSelectedRows: boolean;
     oneSelectedRow: boolean;
-
-    constructor(
-        private router: Router,
-        public route: ActivatedRoute,
-        private idl: IdlService,
-        private org: OrgService,
-        private auth: AuthService,
-        private broadcaster: BroadcastService,
-        private flatData: GridFlatDataService,
-        public  volcopy: VolCopyService
-    ) {}
 
     ngOnInit() {
         // console.debug('VolCopyTemplateGridComponent, ngOnInit, this', this);

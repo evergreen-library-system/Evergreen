@@ -1,5 +1,5 @@
 /* eslint-disable no-bitwise, no-magic-numbers */
-import {Component, OnInit, Input, ViewChild} from '@angular/core';
+import { Component, OnInit, Input, ViewChild, inject } from '@angular/core';
 import {tap} from 'rxjs';
 import {NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import {OrgService} from '@eg/core/org.service';
@@ -21,6 +21,17 @@ import { StaffCommonModule } from '@eg/staff/common.module';
     imports: [StaffCommonModule]
 })
 export class ItemsComponent implements OnInit {
+    private org = inject(OrgService);
+    private net = inject(NetService);
+    private pcrud = inject(PcrudService);
+    private auth = inject(AuthService);
+    circ = inject(CircService);
+    private audio = inject(AudioService);
+    private store = inject(StoreService);
+    private serverStore = inject(ServerStoreService);
+    patronService = inject(PatronService);
+    context = inject(PatronContextService);
+
 
     // Note we can get the patron id from this.context.patron.id(), but
     // on a new page load, this requires us to wait for the arrival of
@@ -41,19 +52,6 @@ export class ItemsComponent implements OnInit {
     @ViewChild('checkoutsGrid') private checkoutsGrid: CircGridComponent;
     @ViewChild('otherGrid') private otherGrid: CircGridComponent;
     @ViewChild('nonCatGrid') private nonCatGrid: CircGridComponent;
-
-    constructor(
-        private org: OrgService,
-        private net: NetService,
-        private pcrud: PcrudService,
-        private auth: AuthService,
-        public circ: CircService,
-        private audio: AudioService,
-        private store: StoreService,
-        private serverStore: ServerStoreService,
-        public patronService: PatronService,
-        public context: PatronContextService
-    ) {}
 
     ngOnInit() {
         this.load(true);

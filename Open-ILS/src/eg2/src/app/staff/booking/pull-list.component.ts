@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {Observable, of, from, switchMap, mergeMap} from 'rxjs';
 import {AuthService} from '@eg/core/auth.service';
@@ -41,6 +41,12 @@ interface PullListRow {
 })
 
 export class PullListComponent implements OnInit {
+    private auth = inject(AuthService);
+    private net = inject(NetService);
+    private org = inject(OrgService);
+    private pcrud = inject(PcrudService);
+    private actions = inject(ReservationActionsService);
+
     @ViewChild('confirmCancelReservationDialog', { static: true })
     private cancelReservationDialog: CancelReservationDialogComponent;
 
@@ -53,14 +59,6 @@ export class PullListComponent implements OnInit {
 
     currentOrg: number;
     pullListCriteria: FormGroup;
-
-    constructor(
-        private auth: AuthService,
-        private net: NetService,
-        private org: OrgService,
-        private pcrud: PcrudService,
-        private actions: ReservationActionsService,
-    ) { }
 
 
     ngOnInit() {

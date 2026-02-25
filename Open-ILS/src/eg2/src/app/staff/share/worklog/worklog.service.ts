@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import {AuthService} from '@eg/core/auth.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
 import {StoreService} from '@eg/core/store.service';
@@ -20,16 +20,14 @@ export interface WorkLogEntry {
 
 @Injectable()
 export class WorkLogService {
+    private store = inject(StoreService);
+    private serverStore = inject(ServerStoreService);
+    private auth = inject(AuthService);
+
 
     maxEntries: number = null;
     maxPatrons: number = null;
     workLogStrings: WorkLogStringsComponent = null;
-
-    constructor(
-        private store: StoreService,
-        private serverStore: ServerStoreService,
-        private auth: AuthService
-    ) {}
 
     loadSettings(): Promise<any> {
         return this.serverStore.getItemBatch([

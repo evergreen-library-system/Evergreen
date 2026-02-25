@@ -1,4 +1,4 @@
-import {Component, Host, Input, OnInit, AfterViewInit} from '@angular/core';
+import { Component, Input, OnInit, AfterViewInit, inject } from '@angular/core';
 import {MarcSimplifiedEditorComponent} from './simplified-editor.component';
 import {MarcField, MarcSubfield} from '../marcrecord';
 
@@ -12,6 +12,8 @@ import {MarcField, MarcSubfield} from '../marcrecord';
     template: ''
 })
 export class MarcSimplifiedEditorFieldComponent implements OnInit, AfterViewInit {
+    private editor = inject(MarcSimplifiedEditorComponent, { host: true });
+
 
   @Input() tag = 'a';
   @Input() ind1 = ' ';
@@ -22,8 +24,6 @@ export class MarcSimplifiedEditorFieldComponent implements OnInit, AfterViewInit
   marcVersion: MarcField;
 
   addSubfield: (code: string, defaultValue?: string) => void;
-
-  constructor(@Host() private editor: MarcSimplifiedEditorComponent) {}
 
   ngOnInit() {
       this.marcVersion = {

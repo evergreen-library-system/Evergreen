@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Router, NavigationEnd, RouterOutlet } from '@angular/router';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 
@@ -9,8 +9,10 @@ import {DialogComponent} from '@eg/share/dialog/dialog.component';
 })
 
 export class BaseComponent {
+    private router = inject(Router);
 
-    constructor(private router: Router) {
+
+    constructor() {
         this.router.events.subscribe(routeEvent => {
             if (routeEvent instanceof NavigationEnd) {
                 // Prevent dialogs from persisting across navigation.

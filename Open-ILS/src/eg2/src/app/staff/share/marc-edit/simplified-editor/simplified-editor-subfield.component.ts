@@ -1,4 +1,4 @@
-import {Input, Host, OnInit, Component} from '@angular/core';
+import { Input, OnInit, Component, inject } from '@angular/core';
 import {MarcSimplifiedEditorFieldComponent} from './simplified-editor-field.component';
 
 /**
@@ -11,11 +11,11 @@ import {MarcSimplifiedEditorFieldComponent} from './simplified-editor-field.comp
     template: ''
 })
 export class MarcSimplifiedEditorSubfieldComponent implements OnInit {
+    private field = inject(MarcSimplifiedEditorFieldComponent, { host: true });
+
 
   @Input() code: string;
   @Input() defaultValue: string;
-
-  constructor(@Host() private field: MarcSimplifiedEditorFieldComponent) {}
 
   ngOnInit() {
       this.field.addSubfield(this.code, this.defaultValue);

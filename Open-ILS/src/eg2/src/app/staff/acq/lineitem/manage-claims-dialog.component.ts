@@ -1,4 +1,4 @@
-import {Component, Input, ViewChild, TemplateRef} from '@angular/core';
+import { Component, Input, ViewChild, TemplateRef, inject } from '@angular/core';
 import {Observable} from 'rxjs';
 import {NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
@@ -7,7 +7,6 @@ import {NetService} from '@eg/core/net.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {AuthService} from '@eg/core/auth.service';
 import {ComboboxComponent, ComboboxEntry} from '@eg/share/combobox/combobox.component';
-import {LineitemService} from '../lineitem/lineitem.service';
 import {PrintService} from '@eg/share/print/print.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -23,6 +22,12 @@ import { FormsModule } from '@angular/forms';
 })
 
 export class ManageClaimsDialogComponent extends DialogComponent {
+    private modal: NgbModal;
+    private net = inject(NetService);
+    private auth = inject(AuthService);
+    private pcrud = inject(PcrudService);
+    private printer = inject(PrintService);
+
     @Input() li: IdlObject;
     @Input() lidIds: number[];
     @Input() insideBatch: boolean;
@@ -36,14 +41,11 @@ export class ManageClaimsDialogComponent extends DialogComponent {
     selectedClaimEventTypes: number[] = [];
     claimType: ComboboxEntry;
 
-    constructor(
-        private modal: NgbModal,
-        private net: NetService,
-        private auth: AuthService,
-        private pcrud: PcrudService,
-        private printer: PrintService,
-        private liService: LineitemService
-    ) { super(modal); }
+    constructor() {
+        const modal = inject(NgbModal);
+        super(modal);
+        this.modal = modal;
+    }
 
     open(args?: NgbModalOptions): Observable<any> {
         if (!args) {

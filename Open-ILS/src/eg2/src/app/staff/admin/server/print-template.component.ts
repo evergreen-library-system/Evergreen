@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import {Observable, map} from 'rxjs';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
@@ -41,6 +41,15 @@ import { FormsModule } from '@angular/forms';
 })
 
 export class PrintTemplateComponent implements OnInit {
+    private idl = inject(IdlService);
+    private org = inject(OrgService);
+    private pcrud = inject(PcrudService);
+    private auth = inject(AuthService);
+    private store = inject(ServerStoreService);
+    private locale = inject(LocaleService);
+    private printer = inject(PrintService);
+    private samples = inject(SampleDataService);
+
 
     entries: ComboboxEntry[];
     template: IdlObject;
@@ -71,16 +80,7 @@ export class PrintTemplateComponent implements OnInit {
         serials_routing_list: {},
     };
 
-    constructor(
-        private idl: IdlService,
-        private org: OrgService,
-        private pcrud: PcrudService,
-        private auth: AuthService,
-        private store: ServerStoreService,
-        private locale: LocaleService,
-        private printer: PrintService,
-        private samples: SampleDataService
-    ) {
+    constructor() {
         this.entries = [];
         this.localeEntries = [];
     }

@@ -1,4 +1,4 @@
-import {Component, Input, ViewChild, OnInit, AfterViewInit} from '@angular/core';
+import { Component, Input, ViewChild, OnInit, AfterViewInit, inject } from '@angular/core';
 import {Location} from '@angular/common';
 import {FormatService} from '@eg/core/format.service';
 import {GridDataSource, GridCellTextGenerator} from '@eg/share/grid/grid';
@@ -50,21 +50,7 @@ export class FundingSourcesComponent extends AdminPageComponent implements OnIni
     notOneSelectedRow: (rows: IdlObject[]) => boolean;
     notOneSelectedActiveRow: (rows: IdlObject[]) => boolean;
 
-    constructor(
-        route: ActivatedRoute,
-        ngLocation: Location,
-        format: FormatService,
-        idl: IdlService,
-        org: OrgService,
-        auth: AuthService,
-        pcrud: PcrudService,
-        perm: PermService,
-        toast: ToastService,
-        broadcaster: BroadcastService
-    ) {
-        super(route, ngLocation, format, idl, org, auth, pcrud, perm, toast, broadcaster);
-        this.dataSource = new GridDataSource();
-    }
+    dataSource = new GridDataSource();
 
     ngOnInit() {
         this.cellTextGenerator = {

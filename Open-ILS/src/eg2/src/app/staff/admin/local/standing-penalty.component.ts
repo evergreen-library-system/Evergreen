@@ -1,5 +1,5 @@
 import {Pager} from '@eg/share/util/pager';
-import {Component, OnInit, Input, ViewChild} from '@angular/core';
+import { Component, OnInit, Input, ViewChild, inject } from '@angular/core';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {GridDataSource, GridColumn, GridRowFlairEntry} from '@eg/share/grid/grid';
 import {IdlObject} from '@eg/core/idl.service';
@@ -18,6 +18,9 @@ import { StaffCommonModule } from '@eg/staff/common.module';
 })
 
 export class StandingPenaltyComponent implements OnInit {
+    private pcrud = inject(PcrudService);
+    private toast = inject(ToastService);
+
     recId: number;
     gridDataSource: GridDataSource;
     initDone = false;
@@ -50,10 +53,7 @@ export class StandingPenaltyComponent implements OnInit {
     // Optional comma-separated list of read-only fields
     // @Input() readonlyFields: string;
 
-    constructor(
-        private pcrud: PcrudService,
-        private toast: ToastService
-    ) {
+    constructor() {
         this.gridDataSource = new GridDataSource();
     }
 

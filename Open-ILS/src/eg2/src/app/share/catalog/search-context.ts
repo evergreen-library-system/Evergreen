@@ -430,8 +430,7 @@ export class CatalogSearchContext {
      */
     reset(): void {
         this.pager.offset = 0;
-        // eslint-disable-next-line no-constant-binary-expression -- I think this is a bug, and the two sides of || should be reversed?
-        this.sort = '' || this.defaultSort;
+        this.sort = this.defaultSort || '';
         this.showBasket = false;
         this.result = new CatalogSearchResults();
         this.resultIds = [];

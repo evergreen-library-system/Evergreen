@@ -1,6 +1,6 @@
 
 import {Pager} from '@eg/share/util/pager';
-import {Component, OnInit, Input, ViewChild, ElementRef} from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef, inject } from '@angular/core';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {GridDataSource} from '@eg/share/grid/grid';
 import {ActivatedRoute} from '@angular/router';
@@ -27,6 +27,14 @@ import { StaffCommonModule } from '@eg/staff/common.module';
       ]
   })
 export class CircMatrixMatchpointComponent implements OnInit {
+    private route = inject(ActivatedRoute);
+    private pcrud = inject(PcrudService);
+    private toast = inject(ToastService);
+    idl = inject(IdlService);
+    private org = inject(OrgService);
+    auth = inject(AuthService);
+    private perm = inject(PermService);
+
     recId: number;
     orgField = 'org_unit';
     disableOrgFilter = false;
@@ -69,16 +77,6 @@ export class CircMatrixMatchpointComponent implements OnInit {
     orgFieldLabel: string;
     viewPerms: string;
     canCreate: boolean;
-
-    constructor(
-        private route: ActivatedRoute,
-        private pcrud: PcrudService,
-        private toast: ToastService,
-        public idl: IdlService,
-        private org: OrgService,
-        public auth: AuthService,
-        private perm: PermService
-    ) {}
 
     ngOnInit() {
         this.initDone = true;

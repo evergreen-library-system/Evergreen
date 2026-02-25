@@ -1,15 +1,15 @@
-import {Injectable} from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {IdlObject} from '@eg/core/idl.service';
 
 @Injectable()
 export class AttrDefsService {
+    private pcrud = inject(PcrudService);
+
 
     attrDefs: {[code: string]: IdlObject};
 
-    constructor(
-        private pcrud: PcrudService
-    ) {
+    constructor() {
         this.attrDefs = {};
     }
 

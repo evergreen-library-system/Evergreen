@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import { StaffCommonModule } from '@eg/staff/common.module';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
@@ -11,13 +11,17 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 export class ClonePortalEntriesDialogComponent
     extends DialogComponent implements OnInit {
+    private modal: NgbModal;
+
 
     result = { };
 
-    constructor(
-        private modal: NgbModal
-    ) {
+    constructor() {
+        const modal = inject(NgbModal);
+
         super(modal);
+
+        this.modal = modal;
     }
 
     ngOnInit() {

@@ -1,8 +1,7 @@
-import { Component, ViewChild, forwardRef } from '@angular/core';
+import { Component, ViewChild, forwardRef, inject } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { ComboboxComponent, ComboboxEntry } from '@eg/share/combobox/combobox.component';
 import { Timezone } from '@eg/share/util/timezone';
-import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
     selector: 'eg-timezone-select',
@@ -14,15 +13,15 @@ import { StaffCommonModule } from '@eg/staff/common.module';
             useExisting: forwardRef(() => TimezoneSelectComponent),
             multi: true
         }],
-    imports: [StaffCommonModule]
+    imports: [ComboboxComponent]
 })
 export class TimezoneSelectComponent implements ControlValueAccessor {
+    private timezone = inject(Timezone);
+
     entries: ComboboxEntry[];
     startId: string;
 
-    constructor(
-    private timezone: Timezone
-    ) {
+    constructor() {
         this.entries = this.timezone.values().map((timezoneValue) => {
             return {id: timezoneValue, label: timezoneValue};
         });

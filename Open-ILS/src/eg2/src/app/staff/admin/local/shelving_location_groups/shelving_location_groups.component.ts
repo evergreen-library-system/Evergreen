@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, ViewChild} from '@angular/core';
+import { Component, OnInit, Input, ViewChild, inject } from '@angular/core';
 import {finalize} from 'rxjs';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
@@ -16,6 +16,12 @@ import { StaffCommonModule } from '@eg/staff/common.module';
 })
 
 export class ShelvingLocationGroupsComponent implements OnInit {
+    private org = inject(OrgService);
+    private pcrud = inject(PcrudService);
+    private toast = inject(ToastService);
+    private idl = inject(IdlService);
+    private perm = inject(PermService);
+
 
     selectedOrg: IdlObject;
     selectedOrgId = 1;
@@ -47,13 +53,7 @@ export class ShelvingLocationGroupsComponent implements OnInit {
     @ViewChild ('changeOrderSuccess', {static: true}) changeOrderSuccess: StringComponent;
     @ViewChild ('changeOrderFailure', {static: true}) changeOrderFailure: StringComponent;
 
-    constructor(
-        private org: OrgService,
-        private pcrud: PcrudService,
-        private toast: ToastService,
-        private idl: IdlService,
-        private perm: PermService
-    ) {
+    constructor() {
         this.permissions = [];
     }
 

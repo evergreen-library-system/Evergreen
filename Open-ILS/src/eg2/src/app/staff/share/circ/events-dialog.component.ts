@@ -1,4 +1,4 @@
-import {Component, OnInit, Input} from '@angular/core';
+import { Component, OnInit, Input, inject } from '@angular/core';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {EgEvent} from '@eg/core/event.service';
@@ -21,6 +21,9 @@ import { StringComponent } from '@eg/share/string/string.component';
     ]
 })
 export class CircEventsComponent extends DialogComponent implements OnInit {
+    private modal: NgbModal;
+    private strings = inject(StringService);
+
 
     @Input() events: EgEvent[] = [];
     @Input() mode: 'checkout' | 'renew' | 'checkin';
@@ -30,10 +33,11 @@ export class CircEventsComponent extends DialogComponent implements OnInit {
     patronName: string;
     copyBarcode: string;
 
-    constructor(
-        private modal: NgbModal,
-        private strings: StringService
-    ) { super(modal); }
+    constructor() {
+        const modal = inject(NgbModal);
+        super(modal);
+        this.modal = modal;
+    }
 
     ngOnInit() {
         this.onOpen$.subscribe(_ => {

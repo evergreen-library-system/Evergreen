@@ -1,4 +1,4 @@
-import {Injectable, EventEmitter} from '@angular/core';
+import { Injectable, EventEmitter, inject } from '@angular/core';
 import {IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {OrgService} from '@eg/core/org.service';
@@ -51,6 +51,12 @@ const PATRON_FLESH_FIELDS = [
 
 @Injectable()
 export class PatronContextService {
+    private store = inject(StoreService);
+    private serverStore = inject(ServerStoreService);
+    private org = inject(OrgService);
+    private circ = inject(CircService);
+    patrons = inject(PatronService);
+
 
     summary: PatronSummary;
     loaded = false;
@@ -63,14 +69,6 @@ export class PatronContextService {
     maxRecentPatrons = 1;
 
     settingsCache: {[key: string]: any} = {};
-
-    constructor(
-        private store: StoreService,
-        private serverStore: ServerStoreService,
-        private org: OrgService,
-        private circ: CircService,
-        public patrons: PatronService
-    ) {}
 
     reset() {
         this.summary = null;

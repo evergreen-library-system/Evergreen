@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import {Observable, EMPTY} from 'rxjs';
 import {Pager} from '@eg/share/util/pager';
 import {NetService} from '@eg/core/net.service';
@@ -24,6 +24,11 @@ import { StaffCommonModule } from '@eg/staff/common.module';
     ]
 })
 export class BrowseAuthorityComponent implements OnInit {
+    private net = inject(NetService);
+    private org = inject(OrgService);
+    private pcrud = inject(PcrudService);
+    browse = inject(BrowseService);
+
 
     authorityAxis: ComboboxEntry;
     dataSource: GridDataSource;
@@ -36,13 +41,6 @@ export class BrowseAuthorityComponent implements OnInit {
     @ViewChild('rowSelected', {static: false}) rowSelected: StringComponent;
     @ViewChild('mergeDialog', {static: false})
         mergeDialog: AuthorityMergeDialogComponent;
-
-    constructor(
-        private net: NetService,
-        private org: OrgService,
-        private pcrud: PcrudService,
-        public browse: BrowseService
-    ) {}
 
     ngOnInit() {
         this.browse.fetchAxes();

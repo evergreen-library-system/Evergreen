@@ -2,6 +2,10 @@ import { HoldsService } from './holds.service';
 import { MockGenerators } from 'test_data/mock_generators';
 import { of } from 'rxjs';
 import { BibRecordService } from '@eg/share/catalog/bib-record.service';
+import { TestBed } from '@angular/core/testing';
+import { NetService } from '@eg/core/net.service';
+import { AuthService } from '@eg/core/auth.service';
+import { EventService } from '@eg/core/event.service';
 
 describe('HoldsService', () => {
     let service: HoldsService;
@@ -15,7 +19,14 @@ describe('HoldsService', () => {
         authService = MockGenerators.authService();
         eventService = jasmine.createSpyObj('EventService', ['parse']);
         bibRecordService = jasmine.createSpyObj<BibRecordService>(['getBibSummary']);
-        service = new HoldsService (eventService, netService, authService, bibRecordService);
+        TestBed.configureTestingModule({providers: [
+            {provide: NetService, useValue: netService},
+            {provide: AuthService, useValue: authService},
+            {provide: EventService, useValue: eventService},
+            {provide: BibRecordService, useValue: bibRecordService},
+            {provide: HoldsService}
+        ]});
+        service = TestBed.inject(HoldsService);
     });
 
     it('can place a hold', (done) => {

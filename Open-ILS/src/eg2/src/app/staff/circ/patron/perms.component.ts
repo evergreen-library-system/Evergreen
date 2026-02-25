@@ -1,4 +1,4 @@
-import {Component, ViewChild, Input, OnInit, AfterViewInit} from '@angular/core';
+import { Component, ViewChild, Input, OnInit, AfterViewInit, inject } from '@angular/core';
 import {Observable, concatMap, tap, finalize} from 'rxjs';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
@@ -15,6 +15,13 @@ import { StaffCommonModule } from '@eg/staff/common.module';
     imports: [StaffCommonModule]
 })
 export class PatronPermsComponent implements OnInit, AfterViewInit {
+    private idl = inject(IdlService);
+    private org = inject(OrgService);
+    private auth = inject(AuthService);
+    private net = inject(NetService);
+    private pcrud = inject(PcrudService);
+    private perms = inject(PermService);
+
 
     @Input() patronId: number;
 
@@ -30,16 +37,6 @@ export class PatronPermsComponent implements OnInit, AfterViewInit {
     orgDepths: number[];
 
     @ViewChild('progress') private progress: ProgressInlineComponent;
-
-    constructor(
-        private idl: IdlService,
-        private org: OrgService,
-        private auth: AuthService,
-        private net: NetService,
-        private pcrud: PcrudService,
-        private perms: PermService
-    ) {
-    }
 
     ngOnInit() {
 

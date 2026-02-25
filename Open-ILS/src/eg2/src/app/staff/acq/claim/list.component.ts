@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import {IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
@@ -15,16 +15,14 @@ import { OrgSelectComponent } from '@eg/share/org-select/org-select.component';
     ]
 })
 export class ClaimEligibleListComponent implements OnInit {
+    private net = inject(NetService);
+    private auth = inject(AuthService);
+
 
     lids: IdlObject[];
     contextOrg: number;
 
     @ViewChild(LineitemListComponent, { static: false }) lineitemList: LineitemListComponent;
-
-    constructor(
-        private net: NetService,
-        private auth: AuthService,
-    ) {}
 
     ngOnInit() {
         console.debug('ClaimEligibleListComponent',this);

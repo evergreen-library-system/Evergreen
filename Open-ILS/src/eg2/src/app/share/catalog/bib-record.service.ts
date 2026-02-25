@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {Observable, from, map} from 'rxjs';
 import {OrgService} from '@eg/core/org.service';
 import {IdlObject} from '@eg/core/idl.service';
@@ -96,10 +96,11 @@ export class BibRecordService {
     userCache: {[id: number]: IdlObject};
     allowUnfillableHolds: boolean;
 
+    private net = inject(NetService);
+    private org = inject(OrgService);
+    private perm = inject(PermService);
+
     constructor(
-        private net: NetService,
-        private org: OrgService,
-        private perm: PermService
     ) {
         this.userCache = {};
         this.perm.hasWorkPermHere(['PLACE_UNFILLABLE_HOLD'])

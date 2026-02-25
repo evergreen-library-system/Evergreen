@@ -1,4 +1,4 @@
-/* eslint-disable max-len */
+/* eslint-disable max-len, @angular-eslint/prefer-inject */
 import { Component, Input, ViewChild, TemplateRef, Optional, Inject, InjectionToken } from '@angular/core';
 import { lastValueFrom, Observable, throwError, from, tap, defaultIfEmpty, switchMap } from 'rxjs';
 import { IdlService, IdlObject } from '@eg/core/idl.service';
@@ -89,7 +89,6 @@ export abstract class CopyThingsDialogComponent<
     @ViewChild('errorMsg', { static: true })
     protected errorMsg: StringComponent;
 
-    // protected config: IThingConfig<T>;
 
     constructor(
         protected modal: NgbModal,

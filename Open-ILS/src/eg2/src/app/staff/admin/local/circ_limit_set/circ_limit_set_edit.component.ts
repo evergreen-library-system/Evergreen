@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, ViewChild} from '@angular/core';
+import { Component, OnInit, Input, ViewChild, inject } from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {StringComponent} from '@eg/share/string/string.component';
@@ -15,6 +15,12 @@ import { StaffCommonModule } from '@eg/staff/common.module';
 })
 
 export class CircLimitSetEditComponent  implements OnInit {
+    private org = inject(OrgService);
+    private route = inject(ActivatedRoute);
+    private pcrud = inject(PcrudService);
+    private toast = inject(ToastService);
+    private idl = inject(IdlService);
+
     recordId: number;
     recordName: String;
     locations: any[];
@@ -36,13 +42,7 @@ export class CircLimitSetEditComponent  implements OnInit {
     @ViewChild('updatingEntryError', {static: true}) updatingEntryError: StringComponent;
     @ViewChild('savedSuccess', {static: true}) savedSuccess: StringComponent;
 
-    constructor(
-        private org: OrgService,
-        private route: ActivatedRoute,
-        private pcrud: PcrudService,
-        private toast: ToastService,
-        private idl: IdlService,
-    ) {
+    constructor() {
         this.locations = [];
         this.circMods = [];
         this.allCircMods = [];

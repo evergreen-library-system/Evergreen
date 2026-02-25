@@ -1,5 +1,5 @@
 import { of } from 'rxjs';
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, inject } from '@angular/core';
 import {
     BibRecordService, BibRecordSummary
 } from '@eg/share/catalog/bib-record.service';
@@ -15,6 +15,11 @@ import { NgIf } from '@angular/common';
     imports: [NgIf]
 })
 export class AddedContentComponent implements OnInit {
+    private bib = inject(BibRecordService);
+    private store = inject(ServerStoreService);
+    private staffCat = inject(StaffCatalogService);
+    private script = inject(ScriptService);
+
 
     recId: number;
     initDone = false;
@@ -32,13 +37,6 @@ export class AddedContentComponent implements OnInit {
   @Input() set bibSummary(s: any) {
       this.summary = s;
   }
-
-  constructor(
-    private bib: BibRecordService,
-    private store: ServerStoreService,
-    private staffCat: StaffCatalogService,
-    private script: ScriptService
-  ) { }
 
   ngOnInit() {
       // NovelistSelect settings

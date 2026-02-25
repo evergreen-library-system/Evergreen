@@ -1,5 +1,5 @@
 /* eslint-disable eqeqeq, no-magic-numbers */
-import {Component, Input, ViewChild, OnInit} from '@angular/core';
+import { Component, Input, ViewChild, OnInit, inject } from '@angular/core';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
@@ -25,6 +25,11 @@ import { ComboboxComponent } from '@eg/share/combobox/combobox.component';
 
 export class DistributionFormulaEditDialogComponent
     extends DialogComponent implements OnInit {
+    private idl = inject(IdlService);
+    private org = inject(OrgService);
+    private pcrud = inject(PcrudService);
+    private modal: NgbModal;
+
 
     @Input() mode = 'create';
     @Input() formulaId: number;
@@ -35,13 +40,12 @@ export class DistributionFormulaEditDialogComponent
     deadEntries: IdlObject[];
     clonedLabel = '';
 
-    constructor(
-        private idl: IdlService,
-        private org: OrgService,
-        private pcrud: PcrudService,
-        private modal: NgbModal
-    ) {
+    constructor() {
+        const modal = inject(NgbModal);
+
         super(modal);
+
+        this.modal = modal;
     }
 
     ngOnInit() {

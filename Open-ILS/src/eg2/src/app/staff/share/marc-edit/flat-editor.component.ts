@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import {IdlService} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
@@ -19,17 +19,15 @@ import { FormsModule } from '@angular/forms';
 })
 
 export class MarcFlatEditorComponent implements OnInit {
+    private idl = inject(IdlService);
+    private org = inject(OrgService);
+    private store = inject(ServerStoreService);
+
 
     @Input() context: MarcEditContext;
     get record(): MarcRecord {
         return this.context.record;
     }
-
-    constructor(
-        private idl: IdlService,
-        private org: OrgService,
-        private store: ServerStoreService
-    ) {}
 
     ngOnInit() {
         // Be sure changes made in the enriched editor are

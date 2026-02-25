@@ -1,6 +1,5 @@
 /* eslint-disable */
-import {Component, AfterViewInit, Input,
-    ViewChild, OnDestroy} from '@angular/core';
+import { Component, AfterViewInit, Input, ViewChild, OnDestroy, inject } from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 import {tap} from 'rxjs/operators';
 import {IdlObject} from '@eg/core/idl.service';
@@ -76,6 +75,18 @@ const ORG_SETTINGS = [
     ]
 })
 export class UploadComponent implements AfterViewInit, OnDestroy {
+    private http = inject(HttpClient);
+    private router = inject(Router);
+    private route = inject(ActivatedRoute);
+    private toast = inject(ToastService);
+    private evt = inject(EventService);
+    private net = inject(NetService);
+    private auth = inject(AuthService);
+    private org = inject(OrgService);
+    private perm = inject(PermService);
+    private store = inject(ServerStoreService);
+    private vlagent = inject(PicklistUploadService);
+
 
     // mode can be one of
     //  upload:          actually upload and process a MARC order file
@@ -167,19 +178,7 @@ export class UploadComponent implements AfterViewInit, OnDestroy {
     private loadMarcOrderTemplateSetAsDefaultString: StringComponent;
 
 
-    constructor(
-        private http: HttpClient,
-        private router: Router,
-        private route: ActivatedRoute,
-        private toast: ToastService,
-        private evt: EventService,
-        private net: NetService,
-        private auth: AuthService,
-        private org: OrgService,
-        private perm: PermService,
-        private store: ServerStoreService,
-        private vlagent: PicklistUploadService
-    ) {
+    constructor() {
         // If we're inside Vandelay, note that fact
         this.route.snapshot.pathFromRoot.forEach(p => {
             if (p.url.find(s => s.path === 'vandelay')) {

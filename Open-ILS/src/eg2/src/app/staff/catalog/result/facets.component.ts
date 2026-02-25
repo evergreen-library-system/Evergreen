@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import {BehaviorSubject} from 'rxjs';
 import {CatalogUrlService} from '@eg/share/catalog/catalog-url.service';
 import {CatalogSearchContext, FacetFilter} from '@eg/share/catalog/search-context';
@@ -29,6 +29,15 @@ export const FACET_CONFIG = {
     imports: [StaffCommonModule]
 })
 export class ResultFacetsComponent implements OnInit {
+    private evt = inject(EventService);
+    private catUrl = inject(CatalogUrlService);
+    private staffCat = inject(StaffCatalogService);
+    private bucketService = inject(BucketService);
+    private auth = inject(AuthService);
+    private org = inject(OrgService);
+    private toast = inject(ToastService);
+    private basket = inject(BasketService);
+
 
     favoriteBuckets$ = new BehaviorSubject<any[]>([]);
     recentBuckets$ = new BehaviorSubject<any[]>([]);
@@ -42,16 +51,7 @@ export class ResultFacetsComponent implements OnInit {
 
     public isCollapsed = false;
 
-    constructor(
-        private evt: EventService,
-        private catUrl: CatalogUrlService,
-        private staffCat: StaffCatalogService,
-        private bucketService: BucketService,
-        private auth: AuthService,
-        private org: OrgService,
-        private toast: ToastService,
-        private basket: BasketService,
-    ) {
+    constructor() {
         this.facetConfig = FACET_CONFIG;
     }
 

@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import {Router, Resolve, RouterStateSnapshot,
     ActivatedRouteSnapshot} from '@angular/router';
 import {ServerStoreService} from '@eg/core/server-store.service';
@@ -10,12 +10,10 @@ import {CircService} from '@eg/staff/share/circ/circ.service';
 
 @Injectable()
 export class PatronResolver implements Resolve<Promise<any[]>> {
+    private store = inject(ServerStoreService);
+    private context = inject(PatronContextService);
+    private circ = inject(CircService);
 
-    constructor(
-        private store: ServerStoreService,
-        private context: PatronContextService,
-        private circ: CircService
-    ) {}
 
     resolve(
         route: ActivatedRouteSnapshot,

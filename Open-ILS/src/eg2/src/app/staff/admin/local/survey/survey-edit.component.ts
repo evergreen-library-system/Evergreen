@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
 import {ToastService} from '@eg/share/toast/toast.service';
@@ -19,6 +19,12 @@ import { StaffCommonModule } from '@eg/staff/common.module';
 })
 
 export class SurveyEditComponent implements OnInit {
+    private auth = inject(AuthService);
+    private net = inject(NetService);
+    private route = inject(ActivatedRoute);
+    private toast = inject(ToastService);
+    private idl = inject(IdlService);
+
     surveyId: number;
     surveyObj: IdlObject;
     localArray: any;
@@ -27,15 +33,6 @@ export class SurveyEditComponent implements OnInit {
     surveyTab: string;
 
     @ViewChild('editDialog', { static: true }) editDialog: FmRecordEditorComponent;
-
-    constructor(
-        private auth: AuthService,
-        private net: NetService,
-        private route: ActivatedRoute,
-        private toast: ToastService,
-        private idl: IdlService,
-    ) {
-    }
 
     ngOnInit() {
         this.surveyId = parseInt(this.route.snapshot.paramMap.get('id'), 10);

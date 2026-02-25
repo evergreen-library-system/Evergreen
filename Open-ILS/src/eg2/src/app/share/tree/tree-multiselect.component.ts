@@ -1,5 +1,5 @@
 /* eslint-disable */
-import {Component, Input, Output, ViewChild, EventEmitter, TemplateRef, OnInit} from '@angular/core';
+import { Component, Input, Output, ViewChild, EventEmitter, TemplateRef, OnInit, inject } from '@angular/core';
 import {map} from 'rxjs/operators';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {IdlService} from '@eg/core/idl.service';
@@ -36,6 +36,10 @@ import {TreeComponent} from './tree.component';
     imports: [TreeComponent]
 })
 export class TreeMultiselectComponent implements OnInit {
+    private pcrud = inject(PcrudService);
+    private org = inject(OrgService);
+    private idl = inject(IdlService);
+
 
     @ViewChild('internalTree', { static: true }) private internalTree: TreeComponent;
 
@@ -82,11 +86,7 @@ export class TreeMultiselectComponent implements OnInit {
     @Output() nodeClicked: EventEmitter<TreeNode>;
     @Output() stateFlagClicked: EventEmitter<TreeNode>;
 
-    constructor(
-        private pcrud: PcrudService,
-        private org: OrgService,
-        private idl: IdlService
-    ) {
+    constructor() {
         if (this.disabled) {
             this.showLabelFilter = false;
             this.showSelectAll = false;

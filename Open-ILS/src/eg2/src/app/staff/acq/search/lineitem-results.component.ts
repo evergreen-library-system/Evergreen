@@ -1,6 +1,6 @@
 /* eslint-disable */
 /* eslint-disable rxjs/no-nested-subscribe */
-import {Component, OnInit, OnDestroy, Input, ViewChild, TemplateRef} from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, ViewChild, TemplateRef, inject } from '@angular/core';
 import {from, of, Subscription, BehaviorSubject, combineLatest} from 'rxjs';
 import {concatMap} from 'rxjs/operators';
 import {Router, RouterModule} from '@angular/router';
@@ -50,6 +50,15 @@ import { GridModule } from '@eg/share/grid/grid.module';
     ]
 })
 export class LineitemResultsComponent implements OnInit, OnDestroy {
+    private idl = inject(IdlService);
+    private evt = inject(EventService);
+    private router = inject(Router);
+    private net = inject(NetService);
+    private auth = inject(AuthService);
+    private toast = inject(ToastService);
+    private liService = inject(LineitemService);
+    private acqSearch = inject(AcqSearchService);
+
 
     @Input() initialSearchTerms: AcqSearchTerm[] = [];
     @Input() callbackButtonLabel: string;
@@ -87,17 +96,6 @@ export class LineitemResultsComponent implements OnInit, OnDestroy {
     rowsNotOkayForInvoice: (rows: IdlObject[]) => boolean;
 
     cellTextGenerator: GridCellTextGenerator;
-
-    constructor(
-        private idl: IdlService,
-        private evt: EventService,
-        private router: Router,
-        private net: NetService,
-        private auth: AuthService,
-        private toast: ToastService,
-        private liService: LineitemService,
-        private acqSearch: AcqSearchService) {
-    }
 
     keepResultSub: Subscription;
     keepResultsReceived = new BehaviorSubject(false);

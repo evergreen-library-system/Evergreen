@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, ViewChild} from '@angular/core';
+import { Component, OnInit, Input, ViewChild, inject } from '@angular/core';
 import {from, concatMap, tap} from 'rxjs';
 import {AuthService} from '@eg/core/auth.service';
 import {NetService} from '@eg/core/net.service';
@@ -17,6 +17,12 @@ import { StaffCommonModule } from '@eg/staff/common.module';
     imports: [StaffCommonModule]
 })
 export class CancelTransitDialogComponent extends DialogComponent implements OnInit {
+    private modal: NgbModal;
+    private auth = inject(AuthService);
+    private net = inject(NetService);
+    private evt = inject(EventService);
+    private toast = inject(ToastService);
+
 
     @Input() transitIds: number[];
     numTransits: number;
@@ -24,13 +30,11 @@ export class CancelTransitDialogComponent extends DialogComponent implements OnI
     @ViewChild('success') success: StringComponent;
     @ViewChild('failure') failure: StringComponent;
 
-    constructor(
-        private modal: NgbModal,
-        private auth: AuthService,
-        private net: NetService,
-        private evt: EventService,
-        private toast: ToastService
-    ) { super(modal); }
+    constructor() {
+        const modal = inject(NgbModal);
+        super(modal);
+        this.modal = modal;
+    }
 
     ngOnInit() {
         this.onOpen$.subscribe(_ => {

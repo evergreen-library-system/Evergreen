@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import {Router, Resolve, RouterStateSnapshot,
     ActivatedRouteSnapshot} from '@angular/router';
 import {IdlService} from '@eg/core/idl.service';
@@ -11,14 +11,12 @@ declare let OpenSRF;
 
 @Injectable()
 export class BaseResolver implements Resolve<Promise<void>> {
+    private router = inject(Router);
+    private idl = inject(IdlService);
+    private org = inject(OrgService);
+    private pcrud = inject(PcrudService);
+    private locale = inject(LocaleService);
 
-    constructor(
-        private router: Router,
-        private idl: IdlService,
-        private org: OrgService,
-        private pcrud: PcrudService,
-        private locale: LocaleService
-    ) {}
 
     /**
      * Loads pre-auth data common to all applications.

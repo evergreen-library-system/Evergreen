@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, ViewChild} from '@angular/core';
+import { Component, OnInit, Input, ViewChild, inject } from '@angular/core';
 import {Observable, of, map} from 'rxjs';
 import {NetService} from '@eg/core/net.service';
 import {StaffCatalogService} from '../catalog.service';
@@ -17,6 +17,13 @@ import { StaffCommonModule } from '@eg/staff/common.module';
     imports: [StaffCommonModule]
 })
 export class CopiesComponent implements OnInit {
+    private course = inject(CourseService);
+    private net = inject(NetService);
+    private org = inject(OrgService);
+    private staffCat = inject(StaffCatalogService);
+    private broadcaster = inject(BroadcastService);
+    private perm = inject(PermService);
+
 
     recId: number;
     initDone = false;
@@ -38,14 +45,7 @@ export class CopiesComponent implements OnInit {
 
     cellTextGenerator: GridCellTextGenerator;
 
-    constructor(
-        private course: CourseService,
-        private net: NetService,
-        private org: OrgService,
-        private staffCat: StaffCatalogService,
-        private broadcaster: BroadcastService,
-        private perm: PermService
-    ) {
+    constructor() {
         this.gridDataSource = new GridDataSource();
     }
 

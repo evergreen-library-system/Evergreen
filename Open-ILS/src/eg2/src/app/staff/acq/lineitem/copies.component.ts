@@ -1,5 +1,4 @@
-import {Component, OnInit, AfterViewInit, Input, Output, EventEmitter,
-    ViewChild} from '@angular/core';
+import { Component, OnInit, AfterViewInit, Input, Output, EventEmitter, ViewChild, inject } from '@angular/core';
 import {ActivatedRoute, ParamMap} from '@angular/router';
 import {Observable, of, tap, map} from 'rxjs';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
@@ -40,6 +39,13 @@ interface FormulaApplication {
     ]
 })
 export class LineitemCopiesComponent implements OnInit, AfterViewInit {
+    private route = inject(ActivatedRoute);
+    private idl = inject(IdlService);
+    private org = inject(OrgService);
+    private pcrud = inject(PcrudService);
+    private auth = inject(AuthService);
+    private liService = inject(LineitemService);
+
 
     static newCopyId = -1;
 
@@ -71,15 +77,6 @@ export class LineitemCopiesComponent implements OnInit, AfterViewInit {
     liLocked = false;
 
     @ViewChild('leaveConfirm', { static: true }) leaveConfirm: ConfirmDialogComponent;
-
-    constructor(
-        private route: ActivatedRoute,
-        private idl: IdlService,
-        private org: OrgService,
-        private pcrud: PcrudService,
-        private auth: AuthService,
-        private liService: LineitemService
-    ) {}
 
     ngOnInit() {
 

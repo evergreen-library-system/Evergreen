@@ -1,6 +1,5 @@
 /* eslint-disable */
-import {Component, OnInit, Input, ViewChild,
-    Output, EventEmitter, TemplateRef} from '@angular/core';
+import { Component, OnInit, Input, ViewChild, Output, EventEmitter, TemplateRef, inject } from '@angular/core';
 import {FormsModule, NgForm} from '@angular/forms';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {Observable} from 'rxjs';
@@ -133,6 +132,13 @@ export interface FmFieldOptions {
 })
 export class FmRecordEditorComponent
     extends DialogComponent implements OnInit {
+    private modal: NgbModal;
+    private idl = inject(IdlService);
+    private toast = inject(ToastService);
+    private format = inject(FormatService);
+    private org = inject(OrgService);
+    private pcrud = inject(PcrudService);
+
 
     // IDL class hint (e.g. "aou")
     @Input() idlClass: string;
@@ -296,14 +302,12 @@ export class FmRecordEditorComponent
     // When true, show a delete button and support delete operations.
     @Input() showDelete: boolean;
 
-    constructor(
-      private modal: NgbModal, // required for passing to parent
-      private idl: IdlService,
-      private toast: ToastService,
-      private format: FormatService,
-      private org: OrgService,
-      private pcrud: PcrudService) {
+    constructor() {
+        const modal = inject(NgbModal);
+
         super(modal);
+    
+        this.modal = modal;
     }
 
     // Avoid fetching data on init since that may lead to unnecessary

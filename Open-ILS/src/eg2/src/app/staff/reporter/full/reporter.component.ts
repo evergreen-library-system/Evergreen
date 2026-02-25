@@ -1,5 +1,5 @@
 /* eslint-disable */
-import {Component, OnInit, ViewChild} from '@angular/core';
+import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 import {Location} from '@angular/common';
 import {EventService} from '@eg/core/event.service';
@@ -24,6 +24,15 @@ import { ReportTemplatesComponent } from './my-templates.component';
 })
 
 export class FullReporterComponent implements OnInit {
+    private route = inject(ActivatedRoute);
+    private router = inject(Router);
+    private location = inject(Location);
+    private toast = inject(ToastService);
+    private evt = inject(EventService);
+    private idl = inject(IdlService);
+    private pcrud = inject(PcrudService);
+    RSvc = inject(ReporterService);
+
 
     @ViewChild('newF', { static: true} ) newFolderString: StringComponent;
 	@ViewChild('promptNewFolder', { static: true }) newFolderDialog: PromptDialogComponent;
@@ -37,18 +46,6 @@ export class FullReporterComponent implements OnInit {
 	managableFolderType = false;
 	rerenderGridArea: Array<number> = [1];
 	rerenderSearchArea: Array<number> = [1];
-
-	constructor(
-        private route: ActivatedRoute,
-        private router: Router,
-        private location: Location,
-        private toast: ToastService,
-        private evt: EventService,
-        private idl: IdlService,
-        private pcrud: PcrudService,
-        public RSvc: ReporterService
-	) {
-	}
 
 	getMyFolders() {
 	    return this.RSvc.myFolderTrees;

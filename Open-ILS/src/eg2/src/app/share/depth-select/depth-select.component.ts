@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, OnChanges, SimpleChanges, EventEmitter, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, Output, OnChanges, SimpleChanges, EventEmitter, ViewChild, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {AuthService} from '@eg/core/auth.service';
 import {OrgService} from '@eg/core/org.service';
@@ -10,6 +10,9 @@ import { ComboboxEntry, ComboboxComponent } from '@eg/share/combobox/combobox.co
     imports: [ComboboxComponent, FormsModule]
 })
 export class DepthSelectComponent implements OnInit, OnChanges {
+    private org = inject(OrgService);
+    private auth = inject(AuthService);
+
     @Input() contextOrgId: number;
     @Input() disabled: boolean;
     @Output() depthChange = new EventEmitter<ComboboxEntry>();
@@ -19,7 +22,7 @@ export class DepthSelectComponent implements OnInit, OnChanges {
 
     @ViewChild('depthBox') depthBox: ComboboxComponent;
 
-    constructor(private org: OrgService, private auth: AuthService) {
+    constructor() {
         this.contextOrgId = this.auth.user().ws_ou(); // Default if not provided
     }
 

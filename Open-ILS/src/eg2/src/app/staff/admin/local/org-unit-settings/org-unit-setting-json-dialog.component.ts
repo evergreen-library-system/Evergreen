@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import { StaffCommonModule } from '@eg/staff/common.module';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
@@ -10,14 +10,18 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 })
 
 export class OuSettingJsonDialogComponent extends DialogComponent {
+    private modal: NgbModal;
+
 
     isExport: boolean;
     @Input() jsonData: string;
 
-    constructor(
-        private modal: NgbModal
-    ) {
+    constructor() {
+        const modal = inject(NgbModal);
+
         super(modal);
+
+        this.modal = modal;
     }
 
     update() {

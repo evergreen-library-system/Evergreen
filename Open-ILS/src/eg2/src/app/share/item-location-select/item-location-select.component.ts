@@ -1,5 +1,4 @@
-import {Component, OnInit, AfterViewInit, Input, Output, ViewChild,
-    EventEmitter, forwardRef} from '@angular/core';
+import { Component, OnInit, AfterViewInit, Input, Output, ViewChild, EventEmitter, forwardRef, inject } from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 import {Observable, from, of, map, switchMap, firstValueFrom} from 'rxjs';
 import {IdlObject} from '@eg/core/idl.service';
@@ -35,6 +34,12 @@ import { NgIf } from '@angular/common';
 })
 export class ItemLocationSelectComponent
 implements OnInit, AfterViewInit, ControlValueAccessor {
+    private org = inject(OrgService);
+    private auth = inject(AuthService);
+    private perm = inject(PermService);
+    private pcrud = inject(PcrudService);
+    private loc = inject(ItemLocationService);
+
     static domIdAuto = 0;
 
     // Limit copy locations to those owned at or above org units where
@@ -123,13 +128,7 @@ implements OnInit, AfterViewInit, ControlValueAccessor {
 
     getLocationsAsyncHandler = term => this.getLocationsAsync(term);
 
-    constructor(
-        private org: OrgService,
-        private auth: AuthService,
-        private perm: PermService,
-        private pcrud: PcrudService,
-        private loc: ItemLocationService
-    ) {
+    constructor() {
         this.valueChange = new EventEmitter<IdlObject>();
         this.entryChange = new EventEmitter<ComboboxEntry>();
     }

@@ -1,4 +1,4 @@
-import {Component, OnInit, NgZone, HostListener} from '@angular/core';
+import { Component, OnInit, NgZone, HostListener, inject } from '@angular/core';
 import {Router, ActivatedRoute, NavigationEnd, RouterModule} from '@angular/router';
 import {AuthService, AuthWsState} from '@eg/core/auth.service';
 import {NetService} from '@eg/core/net.service';
@@ -28,15 +28,13 @@ const WS_MANAGE_PATH = '/staff/admin/workstation/workstations/manage';
 })
 
 export class StaffComponent implements OnInit {
+    private router = inject(Router);
+    private route = inject(ActivatedRoute);
+    private zone = inject(NgZone);
+    private net = inject(NetService);
+    private auth = inject(AuthService);
+    private keys = inject(AccessKeyService);
 
-    constructor(
-        private router: Router,
-        private route: ActivatedRoute,
-        private zone: NgZone,
-        private net: NetService,
-        private auth: AuthService,
-        private keys: AccessKeyService
-    ) {}
 
     ngOnInit() {
 

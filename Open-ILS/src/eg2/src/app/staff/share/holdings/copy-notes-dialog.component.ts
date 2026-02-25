@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { IdlService, IdlObject } from '@eg/core/idl.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastService } from '@eg/share/toast/toast.service';
@@ -64,14 +64,14 @@ export class CopyNotesDialogComponent extends
 
     notes: IdlObject[] = [];
 
-    constructor(
-        modal: NgbModal,
-        toast: ToastService,
-        idl: IdlService,
-        pcrud: PcrudService,
-        org: OrgService,
-        auth: AuthService
-    ) {
+    constructor() {
+        const modal = inject(NgbModal);
+        const toast = inject(ToastService);
+        const idl = inject(IdlService);
+        const pcrud = inject(PcrudService);
+        const org = inject(OrgService);
+        const auth = inject(AuthService);
+
         const config: IThingConfig<ICopyNote> = {
             idlClass: 'acpn',
             thingField: 'notes',

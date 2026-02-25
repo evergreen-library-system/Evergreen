@@ -1,4 +1,4 @@
-import {Component, OnInit, Input} from '@angular/core';
+import { Component, OnInit, Input, inject } from '@angular/core';
 import {OrgService} from '@eg/core/org.service';
 import {CourseService} from '@eg/staff/share/course.service';
 import {BibRecordService, BibRecordSummary
@@ -20,6 +20,12 @@ import { BibDisplayFieldComponent } from '@eg/share/catalog/bib-display-field.co
     ]
 })
 export class BibSummaryComponent implements OnInit {
+    private bib = inject(BibRecordService);
+    private org = inject(OrgService);
+    private store = inject(ServerStoreService);
+    private cat = inject(CatalogService);
+    private course = inject(CourseService);
+
 
     initDone = false;
     hasCourse = false;
@@ -47,14 +53,6 @@ export class BibSummaryComponent implements OnInit {
             this.loadCourseInformation(this.summary.record.id());
         }
     }
-
-    constructor(
-        private bib: BibRecordService,
-        private org: OrgService,
-        private store: ServerStoreService,
-        private cat: CatalogService,
-        private course: CourseService
-    ) {}
 
     ngOnInit() {
 

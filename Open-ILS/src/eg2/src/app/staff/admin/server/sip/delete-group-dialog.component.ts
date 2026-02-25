@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import {IdlObject} from '@eg/core/idl.service';
 import {AuthService} from '@eg/core/auth.service';
 import {NetService} from '@eg/core/net.service';
@@ -16,18 +16,22 @@ import { CommonModule } from '@angular/common';
     ]
 })
 export class DeleteGroupDialogComponent extends DialogComponent implements OnInit {
+    private modal: NgbModal;
+    private auth = inject(AuthService);
+    private net = inject(NetService);
+
 
     @Input() group: IdlObject;
     @Input() settingGroups: ComboboxEntry[];
     targetGroup = 1;  // Default to the 'Default Settings' group.
     trimmedSettingGroups: ComboboxEntry[];
 
-    constructor(
-        private modal: NgbModal,
-        private auth: AuthService,
-        private net: NetService
-    ) {
+    constructor() {
+        const modal = inject(NgbModal);
+
         super(modal);
+
+        this.modal = modal;
     }
 
     ngOnInit() {

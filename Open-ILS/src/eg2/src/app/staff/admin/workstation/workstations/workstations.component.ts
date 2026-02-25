@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 import {StoreService} from '@eg/core/store.service';
 import {IdlObject} from '@eg/core/idl.service';
@@ -23,6 +23,16 @@ interface Workstation {
     imports: [StaffCommonModule]
 })
 export class WorkstationsComponent implements OnInit {
+    private router = inject(Router);
+    private route = inject(ActivatedRoute);
+    private evt = inject(EventService);
+    private net = inject(NetService);
+    private store = inject(StoreService);
+    private auth = inject(AuthService);
+    private org = inject(OrgService);
+    private hatch = inject(HatchService);
+    private perm = inject(PermService);
+
 
     selectedName: string;
     workstations: Workstation[] = [];
@@ -40,18 +50,6 @@ export class WorkstationsComponent implements OnInit {
     orgOnChange = (org: IdlObject): void => {
         this.newOwner = org;
     };
-
-    constructor(
-        private router: Router,
-        private route: ActivatedRoute,
-        private evt: EventService,
-        private net: NetService,
-        private store: StoreService,
-        private auth: AuthService,
-        private org: OrgService,
-        private hatch: HatchService,
-        private perm: PermService
-    ) {}
 
     ngOnInit() {
         this.store.getWorkstations()

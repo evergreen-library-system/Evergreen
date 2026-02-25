@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TreeComboboxComponent } from '@eg/share/tree-combobox/tree-combobox.component';
 import { Tree, TreeNode } from '@eg/share/tree/tree';
@@ -12,11 +12,12 @@ import { ServerStoreService } from '@eg/core/server-store.service';
     templateUrl: './catalog-org-select.component.html'
 })
 export class CatalogOrgSelectComponent implements OnInit {
+    private enhancedOrgTree = inject(EnhancedOrgTree);
+    private serverStore = inject(ServerStoreService);
+
     @Input() initialOrg: IdlObject;
     @Output() orgChanged$ = new EventEmitter<IdlObject>();
     tree = new Tree();
-
-    constructor(private enhancedOrgTree: EnhancedOrgTree, private serverStore: ServerStoreService) {}
 
     ngOnInit() {
         this.initializeTree();

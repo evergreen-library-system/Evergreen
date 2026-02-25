@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import {of, from, throwError, concatMap, mergeMap} from 'rxjs';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
@@ -14,18 +14,22 @@ import { StaffCommonModule } from '@eg/staff/common.module';
 })
 export class ClaimsReturnedDialogComponent
     extends DialogComponent implements OnInit {
+    private modal: NgbModal;
+    private net = inject(NetService);
+    private auth = inject(AuthService);
+    private evt = inject(EventService);
+
 
     barcodes: string[];
     returnDate: string;
     patronExceeds: boolean;
     completed: {[barcode: string]: boolean} = {};
 
-    constructor(
-        private modal: NgbModal,
-        private net: NetService,
-        private auth: AuthService,
-        private evt: EventService
-    ) { super(modal); }
+    constructor() {
+        const modal = inject(NgbModal);
+        super(modal);
+        this.modal = modal;
+    }
 
     ngOnInit() {
         this.onOpen$.subscribe(_ => {

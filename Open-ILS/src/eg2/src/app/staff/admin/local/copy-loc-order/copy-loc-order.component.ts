@@ -1,4 +1,4 @@
-import {Component, ViewChild, OnInit} from '@angular/core';
+import { Component, ViewChild, OnInit, inject } from '@angular/core';
 import {tap} from 'rxjs';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
@@ -14,6 +14,12 @@ import { StaffCommonModule } from '@eg/staff/common.module';
     imports: [StaffCommonModule]
 })
 export class CopyLocOrderComponent implements OnInit {
+    private idl = inject(IdlService);
+    private org = inject(OrgService);
+    private auth = inject(AuthService);
+    private pcrud = inject(PcrudService);
+    private toast = inject(ToastService);
+
 
     @ViewChild('editString') editString: StringComponent;
     /*
@@ -25,14 +31,6 @@ export class CopyLocOrderComponent implements OnInit {
     entries: IdlObject[] = [];
     contextOrg: number;
     selectedEntry: number;
-
-    constructor(
-        private idl: IdlService,
-        private org: OrgService,
-        private auth: AuthService,
-        private pcrud: PcrudService,
-        private toast: ToastService
-    ) {}
 
     ngOnInit() {
         this.contextOrg = Number(this.auth.user().ws_ou());

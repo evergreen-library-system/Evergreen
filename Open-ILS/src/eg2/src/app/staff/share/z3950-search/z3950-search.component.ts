@@ -1,5 +1,5 @@
 /* eslint-disable */
-import {Component, ViewChild, OnInit, Input, TemplateRef, Directive, ElementRef} from '@angular/core';
+import { Component, ViewChild, OnInit, Input, TemplateRef, Directive, ElementRef, inject } from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {FormsModule} from '@angular/forms';
 import {map, mergeMap} from 'rxjs/operators';
@@ -32,9 +32,9 @@ import { MarcHtmlComponent } from '@eg/share/catalog/marc-html.component';
     selector: '[egautofocus]'
 })
 export class AutofocusDirective implements OnInit {
-    @Input() egautofocus: boolean;
+    private host = inject(ElementRef);
 
-    constructor(private host: ElementRef) {}
+    @Input() egautofocus: boolean;
 
     ngOnInit() {
         if (this.egautofocus) {this.host.nativeElement.focus();}
@@ -63,6 +63,17 @@ export class AutofocusDirective implements OnInit {
 })
 
 export class Z3950SearchComponent implements OnInit {
+    private route = inject(ActivatedRoute);
+    private holdings = inject(HoldingsService);
+    private toast = inject(ToastService);
+    private net = inject(NetService);
+    private idl = inject(IdlService);
+    private pcrud = inject(PcrudService);
+    private store = inject(StoreService);
+    private zService = inject(Z3950SearchService);
+    private evt = inject(EventService);
+    private auth = inject(AuthService);
+
     static domId = 0;
 
     cellTextGenerator: GridCellTextGenerator;
@@ -131,18 +142,7 @@ export class Z3950SearchComponent implements OnInit {
         });
     }
 
-    constructor(
-        private route: ActivatedRoute,
-        private holdings: HoldingsService,
-        private toast: ToastService,
-        private net: NetService,
-        private idl: IdlService,
-        private pcrud: PcrudService,
-        private store: StoreService,
-        private zService: Z3950SearchService,
-        private evt: EventService,
-        private auth: AuthService
-    ) {
+    constructor() {
 
         this.overlayTarget = this.store.getLocalItem('eg.cat.marked_overlay_record');
         if (this.overlayTarget) {

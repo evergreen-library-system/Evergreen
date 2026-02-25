@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import {Observable} from 'rxjs';
 import {NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
@@ -22,6 +22,10 @@ import { FormsModule } from '@angular/forms';
 })
 
 export class BatchUpdateCopiesDialogComponent extends DialogComponent {
+    private modal: NgbModal;
+    private org = inject(OrgService);
+    private auth = inject(AuthService);
+
 
     @Input() ids: number[];
     @Input() activatedPo: boolean;
@@ -31,12 +35,12 @@ export class BatchUpdateCopiesDialogComponent extends DialogComponent {
     formulaFilter = {owner: []};
     templateCopy: IdlObject;
 
-    constructor(
-        private modal: NgbModal,
-        private org: OrgService,
-        private auth: AuthService
-    ) {
+    constructor() {
+        const modal = inject(NgbModal);
+
         super(modal);
+
+        this.modal = modal;
     }
 
     open(args?: NgbModalOptions): Observable<any> {

@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, AfterViewInit, ViewChild} from '@angular/core';
+import { Component, Input, OnInit, AfterViewInit, ViewChild, inject } from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 import {from, empty, range, concatMap, tap} from 'rxjs';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
@@ -39,6 +39,25 @@ import { StaffCommonModule } from '@eg/staff/common.module';
     ]
 })
 export class BillsComponent implements OnInit, AfterViewInit {
+    private router = inject(Router);
+    private route = inject(ActivatedRoute);
+    private audio = inject(AudioService);
+    private toast = inject(ToastService);
+    private org = inject(OrgService);
+    private evt = inject(EventService);
+    private net = inject(NetService);
+    private pcrud = inject(PcrudService);
+    private auth = inject(AuthService);
+    private idl = inject(IdlService);
+    private printer = inject(PrintService);
+    private serverStore = inject(ServerStoreService);
+    private circ = inject(CircService);
+    private billing = inject(BillingService);
+    private flatData = inject(GridFlatDataService);
+    private worklog = inject(WorkLogService);
+    patronService = inject(PatronService);
+    context = inject(PatronContextService);
+
 
     @Input() patronId: number;
     summary: IdlObject;
@@ -79,27 +98,6 @@ export class BillsComponent implements OnInit, AfterViewInit {
     @ViewChild('adjustToZeroDialog') private adjustToZeroDialog: ConfirmDialogComponent;
     @ViewChild('creditCardDialog') private creditCardDialog: CreditCardDialogComponent;
     @ViewChild('billingDialog') private billingDialog: AddBillingDialogComponent;
-
-    constructor(
-        private router: Router,
-        private route: ActivatedRoute,
-        private audio: AudioService,
-        private toast: ToastService,
-        private org: OrgService,
-        private evt: EventService,
-        private net: NetService,
-        private pcrud: PcrudService,
-        private auth: AuthService,
-        private idl: IdlService,
-        private printer: PrintService,
-        private serverStore: ServerStoreService,
-        private circ: CircService,
-        private billing: BillingService,
-        private flatData: GridFlatDataService,
-        private worklog: WorkLogService,
-        public patronService: PatronService,
-        public context: PatronContextService
-    ) {}
 
     ngOnInit() {
 

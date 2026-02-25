@@ -27,7 +27,7 @@ describe('ReservationActionsService', () => {
                 { provide: PrintService, useValue: printServiceStub }
             ]
         });
-        service = TestBed.get(ReservationActionsService);
+        service = TestBed.inject(ReservationActionsService);
     });
     it('can open the manage by barcode route', () => {
         service.manageReservationsByResource('barcode123');

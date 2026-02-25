@@ -1,4 +1,4 @@
-import {Component, Input, TemplateRef, ViewChild} from '@angular/core';
+import { Component, Input, TemplateRef, ViewChild, inject } from '@angular/core';
 import {ProgressDialogComponent} from '@eg/share/dialog/progress.component';
 import {PrintService} from '@eg/share/print/print.service';
 import {GridContext} from '@eg/share/grid/grid';
@@ -16,13 +16,13 @@ import { NgFor } from '@angular/common';
 /**
  */
 export class GridPrintComponent {
+    private printer = inject(PrintService);
+
 
     @Input() gridContext: GridContext;
     @ViewChild('printTemplate', { static: true }) private printTemplate: TemplateRef<any>;
     @ViewChild('progressDialog', { static: true })
     private progressDialog: ProgressDialogComponent;
-
-    constructor(private printer: PrintService) {}
 
     printGrid() {
         this.progressDialog.open();

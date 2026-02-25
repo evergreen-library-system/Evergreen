@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import {Router} from '@angular/router';
 import {IdlObject} from '@eg/core/idl.service';
 import {EventService} from '@eg/core/event.service';
@@ -16,20 +16,18 @@ import { StaffCommonModule } from '@eg/staff/common.module';
     imports: [StaffCommonModule]
 })
 export class PatronStatCatsComponent implements OnInit {
+    private router = inject(Router);
+    private evt = inject(EventService);
+    private net = inject(NetService);
+    private auth = inject(AuthService);
+    private org = inject(OrgService);
+    private pcrud = inject(PcrudService);
+    private patronService = inject(PatronService);
+    private context = inject(PatronContextService);
+
 
     @Input() patronId: number;
     catMaps: IdlObject[] = [];
-
-    constructor(
-        private router: Router,
-        private evt: EventService,
-        private net: NetService,
-        private auth: AuthService,
-        private org: OrgService,
-        private pcrud: PcrudService,
-        private patronService: PatronService,
-        private context: PatronContextService
-    ) {}
 
     ngOnInit() {
 

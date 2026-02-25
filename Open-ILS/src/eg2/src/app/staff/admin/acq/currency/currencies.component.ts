@@ -1,4 +1,4 @@
-import {Component, ViewChild, OnInit} from '@angular/core';
+import { Component, ViewChild, OnInit, inject } from '@angular/core';
 import {CommonModule, Location} from '@angular/common';
 import {FormatService} from '@eg/core/format.service';
 import {GridDataSource, GridCellTextGenerator} from '@eg/share/grid/grid';
@@ -44,6 +44,8 @@ import { FmRecordEditorComponent } from '@eg/share/fm-editor/fm-editor.component
 })
 
 export class CurrenciesComponent extends AdminPageComponent implements OnInit {
+    private net = inject(NetService);
+
     idlClass = 'acqct';
     classLabel: string;
 
@@ -55,22 +57,7 @@ export class CurrenciesComponent extends AdminPageComponent implements OnInit {
     cellTextGenerator: GridCellTextGenerator;
     notOneSelectedRow: (rows: IdlObject[]) => boolean;
 
-    constructor(
-        route: ActivatedRoute,
-        ngLocation: Location,
-        format: FormatService,
-        idl: IdlService,
-        org: OrgService,
-        auth: AuthService,
-        pcrud: PcrudService,
-        perm: PermService,
-        toast: ToastService,
-        private net: NetService,
-        broadcaster: BroadcastService
-    ) {
-        super(route, ngLocation, format, idl, org, auth, pcrud, perm, toast, broadcaster);
-        this.dataSource = new GridDataSource();
-    }
+    dataSource = new GridDataSource();
 
     ngOnInit() {
         this.notOneSelectedRow = (rows: IdlObject[]) => (rows.length !== 1);

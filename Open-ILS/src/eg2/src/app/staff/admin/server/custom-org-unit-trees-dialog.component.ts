@@ -1,5 +1,5 @@
 /* eslint-disable no-empty */
-import {Component, Input} from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {Tree, TreeNode} from '@eg/share/tree/tree';
 import { TreeComponent } from '@eg/share/tree/tree.component';
@@ -15,16 +15,20 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 export class CustomOrgUnitTreesDialogComponent
     extends DialogComponent {
+    private modal: NgbModal;
+
 
     @Input() customTree: Tree;
     @Input() nodeToMove: TreeNode;
 
     moveNodeHereDisabled = false;
 
-    constructor(
-        private modal: NgbModal
-    ) {
+    constructor() {
+        const modal = inject(NgbModal);
+
         super(modal);
+        this.modal = modal;
+
         if (this.modal) {} // de-lint
     }
 

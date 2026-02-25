@@ -1,4 +1,4 @@
-import {Component, Input, ViewChild} from '@angular/core';
+import { Component, Input, ViewChild, inject } from '@angular/core';
 import {Observable} from 'rxjs';
 import {NetService} from '@eg/core/net.service';
 import {EventService} from '@eg/core/event.service';
@@ -30,6 +30,14 @@ import { CommonModule } from '@angular/common';
 
 export class HoldCancelDialogComponent
     extends DialogComponent {
+    private modal: NgbModal;
+    private toast = inject(ToastService);
+    private net = inject(NetService);
+    private evt = inject(EventService);
+    private pcrud = inject(PcrudService);
+    private auth = inject(AuthService);
+    private worklog = inject(WorkLogService);
+
 
     @Input() holdIds: number[];
     @ViewChild('successMsg', { static: true }) private successMsg: StringComponent;
@@ -42,15 +50,12 @@ export class HoldCancelDialogComponent
     cancelReasons: ComboboxEntry[];
     cancelNote: string;
 
-    constructor(
-        private modal: NgbModal, // required for passing to parent
-        private toast: ToastService,
-        private net: NetService,
-        private evt: EventService,
-        private pcrud: PcrudService,
-        private auth: AuthService,
-        private worklog: WorkLogService) {
-        super(modal); // required for subclassing
+    constructor() {
+        const modal = inject(NgbModal);
+
+        super(modal);
+        this.modal = modal;
+        // required for subclassing
         this.cancelReasons = [];
     }
 

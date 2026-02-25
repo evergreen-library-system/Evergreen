@@ -1,4 +1,4 @@
-import {Component, AfterViewInit, Input, Output, EventEmitter} from '@angular/core';
+import { Component, AfterViewInit, Input, Output, EventEmitter, inject } from '@angular/core';
 import {Observable} from 'rxjs';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
@@ -13,19 +13,17 @@ import { FormsModule } from '@angular/forms';
     imports: [CommonModule, FormsModule]
 })
 export class PoNotesComponent implements AfterViewInit {
+    private idl = inject(IdlService);
+    private org = inject(OrgService);
+    private auth = inject(AuthService);
+    private net = inject(NetService);
+
 
     @Input() po: IdlObject;
     noteText: string;
     vendorPublic = false;
 
     @Output() closeRequested: EventEmitter<void> = new EventEmitter<void>();
-
-    constructor(
-        private idl: IdlService,
-        private org: OrgService,
-        private auth: AuthService,
-        private net: NetService
-    ) {}
 
     ngAfterViewInit() {
         const node = document.getElementById('note-text-input');

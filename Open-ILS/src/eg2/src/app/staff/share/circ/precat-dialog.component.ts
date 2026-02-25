@@ -1,4 +1,4 @@
-import {Component, OnInit, Input} from '@angular/core';
+import { Component, OnInit, Input, inject } from '@angular/core';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
@@ -16,6 +16,9 @@ import { StaffCommonModule } from '@eg/staff/common.module';
 })
 
 export class PrecatCheckoutDialogComponent extends DialogComponent implements OnInit {
+    private perm = inject(PermService);
+    private modal: NgbModal;
+
 
     @Input() barcode = '';
 
@@ -29,10 +32,12 @@ export class PrecatCheckoutDialogComponent extends DialogComponent implements On
         circ_modifier: null
     };
 
-    constructor(
-        private perm: PermService,
-        private modal: NgbModal) {
+    constructor() {
+        const modal = inject(NgbModal);
+
         super(modal);
+
+        this.modal = modal;
     }
 
     ngOnInit() {

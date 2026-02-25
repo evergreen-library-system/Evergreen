@@ -1,17 +1,15 @@
-import {Injectable} from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import {Router, Resolve, RouterStateSnapshot,
     ActivatedRouteSnapshot} from '@angular/router';
 import {AttrDefsService} from './attr-defs.service';
 
 @Injectable()
 export class AttrDefsResolver implements Resolve<Promise<any[]>> {
+    private router = inject(Router);
+    private attrDefs = inject(AttrDefsService);
+
 
     savedId: number = null;
-
-    constructor(
-        private router: Router,
-        private attrDefs: AttrDefsService
-    ) {}
 
     resolve(
         route: ActivatedRouteSnapshot,

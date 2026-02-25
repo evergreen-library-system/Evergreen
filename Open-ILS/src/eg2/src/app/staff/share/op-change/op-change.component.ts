@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, Renderer2} from '@angular/core';
+import { Component, OnInit, Input, Renderer2, inject } from '@angular/core';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {AuthService} from '@eg/core/auth.service';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
@@ -15,6 +15,12 @@ import { FormsModule } from '@angular/forms';
 
 export class OpChangeComponent
     extends DialogComponent implements OnInit {
+    private modal: NgbModal;
+    private renderer = inject(Renderer2);
+    private toast = inject(ToastService);
+    private net = inject(NetService);
+    private auth = inject(AuthService);
+
 
     @Input() username: string;
     @Input() password: string;
@@ -25,13 +31,12 @@ export class OpChangeComponent
 
     requestToEscalate: NetRequest;
 
-    constructor(
-        private modal: NgbModal, // required for passing to parent
-        private renderer: Renderer2,
-        private toast: ToastService,
-        private net: NetService,
-        private auth: AuthService) {
+    constructor() {
+        const modal = inject(NgbModal);
+
         super(modal);
+
+        this.modal = modal;
     }
 
     ngOnInit() {

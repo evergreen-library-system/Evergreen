@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
@@ -22,6 +22,10 @@ import { CommonModule } from '@angular/common';
 
 export class PhysCharDialogComponent
     extends DialogComponent implements OnInit {
+    private modal: NgbModal;
+    private idl = inject(IdlService);
+    private pcrud = inject(PcrudService);
+
 
     // The 007 data
     @Input() fieldData = '';
@@ -50,11 +54,12 @@ export class PhysCharDialogComponent
     slotOffset = 0;
     slotSize = 1;
 
-    constructor(
-        private modal: NgbModal,
-        private idl: IdlService,
-        private pcrud: PcrudService) {
+    constructor() {
+        const modal = inject(NgbModal);
+
         super(modal);
+
+        this.modal = modal;
     }
 
     ngOnInit() {

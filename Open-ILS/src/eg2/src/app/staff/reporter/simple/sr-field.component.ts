@@ -1,4 +1,4 @@
-import {Component, Input, Output, EventEmitter, OnInit} from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, inject } from '@angular/core';
 import {IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
 import {AuthService} from '@eg/core/auth.service';
@@ -12,6 +12,10 @@ import { StaffCommonModule } from '@eg/staff/common.module';
     imports: [StaffCommonModule]
 })
 export class SRFieldComponent implements OnInit {
+    private org = inject(OrgService);
+    private auth = inject(AuthService);
+    private srSvc = inject(ReporterService);
+
 
     operators = [];
     transforms = [];
@@ -36,13 +40,6 @@ export class SRFieldComponent implements OnInit {
     @Output() downEvent = new EventEmitter();
     @Input() disableUp = false;
     @Input() disableDown = false;
-
-    constructor(
-        private org: OrgService,
-        private auth: AuthService,
-        private srSvc: ReporterService
-    ) {
-    }
 
     ngOnInit() {
 

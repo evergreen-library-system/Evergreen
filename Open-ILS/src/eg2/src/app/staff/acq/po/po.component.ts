@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import {ActivatedRoute, ParamMap, RouterModule} from '@angular/router';
 import {PoService} from './po.service';
 import { StaffBannerComponent } from '@eg/staff/share/staff-banner.component';
@@ -17,13 +17,11 @@ import { CommonModule } from '@angular/common';
     ]
 })
 export class PoComponent implements OnInit {
+    private route = inject(ActivatedRoute);
+    poService = inject(PoService);
+
 
     poId: number;
-
-    constructor(
-        private route: ActivatedRoute,
-        public  poService: PoService
-    ) {}
 
     ngOnInit() {
         this.route.paramMap.subscribe((params: ParamMap) => {

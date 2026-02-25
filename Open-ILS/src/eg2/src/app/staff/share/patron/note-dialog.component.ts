@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy, Input, ViewChild} from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, ViewChild, inject } from '@angular/core';
 import {Observable, of, from, Subscription, tap, catchError, switchMap} from 'rxjs';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
@@ -40,6 +40,17 @@ import { FormatValuePipe } from '@eg/core/format.service';
 
 export class PatronNoteDialogComponent
     extends DialogComponent implements OnInit, OnDestroy {
+    private modal: NgbModal;
+    private idl = inject(IdlService);
+    private org = inject(OrgService);
+    private net = inject(NetService);
+    private store = inject(ServerStoreService);
+    private evt = inject(EventService);
+    private toast = inject(ToastService);
+    private auth = inject(AuthService);
+    private perm = inject(PermService);
+    private pcrud = inject(PcrudService);
+
 
     @Input() patronId: number;
     @Input() patron: IdlObject;
@@ -80,18 +91,12 @@ export class PatronNoteDialogComponent
     @ViewChild('successMsg', {static: false}) successMsg: StringComponent;
     @ViewChild('errorMsg', {static: false}) errorMsg: StringComponent;
 
-    constructor(
-        private modal: NgbModal,
-        private idl: IdlService,
-        private org: OrgService,
-        private net: NetService,
-        private store: ServerStoreService,
-        private evt: EventService,
-        private toast: ToastService,
-        private auth: AuthService,
-        private perm: PermService,
-        private pcrud: PcrudService) {
+    constructor() {
+        const modal = inject(NgbModal);
+
         super(modal);
+
+        this.modal = modal;
     }
 
     private subscription: Subscription;

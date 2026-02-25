@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, ViewChild} from '@angular/core';
+import { Component, OnInit, Input, ViewChild, inject } from '@angular/core';
 import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
 import {GridDataSource} from '@eg/share/grid/grid';
 import {GridComponent} from '@eg/share/grid/grid.component';
@@ -16,6 +16,11 @@ import { StaffCommonModule } from '@eg/staff/common.module';
 })
 
 export class FieldDocumentationComponent implements OnInit {
+    private auth = inject(AuthService);
+    private idl = inject(IdlService);
+    private pcrud = inject(PcrudService);
+    private toast = inject(ToastService);
+
 
     idlEntries: any[] = [];
     fieldOptions: any = {};
@@ -31,13 +36,6 @@ export class FieldDocumentationComponent implements OnInit {
     @ViewChild('createSuccessString', { static: false }) createSuccessString: StringComponent;
     @ViewChild('createFailedString', { static: false }) createFailedString: StringComponent;
     @ViewChild('updateFailedString', { static: false }) updateFailedString: StringComponent;
-
-    constructor(
-    private auth: AuthService,
-        private idl: IdlService,
-        private pcrud: PcrudService,
-        private toast: ToastService
-    ) {}
 
     ngOnInit() {
         this.gridDataSource = new GridDataSource();

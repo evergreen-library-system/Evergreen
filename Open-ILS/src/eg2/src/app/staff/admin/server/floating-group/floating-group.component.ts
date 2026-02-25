@@ -1,5 +1,5 @@
 import {Pager} from '@eg/share/util/pager';
-import {Component, Input, ViewChild, OnInit} from '@angular/core';
+import { Component, Input, ViewChild, OnInit, inject } from '@angular/core';
 import {Location} from '@angular/common';
 import {Router, ActivatedRoute} from '@angular/router';
 import {FormatService} from '@eg/core/format.service';
@@ -26,6 +26,8 @@ import { FmRecordEditorComponent } from '@eg/share/fm-editor/fm-editor.component
 })
 
 export class FloatingGroupComponent extends AdminPageComponent implements OnInit {
+    private router = inject(Router);
+
 
     idlClass = 'cfg';
 
@@ -33,22 +35,6 @@ export class FloatingGroupComponent extends AdminPageComponent implements OnInit
 
     @ViewChild('grid', {static: true}) grid: GridComponent;
     @ViewChild('delConfirm', { static: true }) delConfirm: ConfirmDialogComponent;
-
-    constructor(
-        route: ActivatedRoute,
-        ngLocation: Location,
-        format: FormatService,
-        idl: IdlService,
-        org: OrgService,
-        auth: AuthService,
-        pcrud: PcrudService,
-        perm: PermService,
-        toast: ToastService,
-        private router: Router,
-        broadcaster: BroadcastService
-    ) {
-        super(route, ngLocation, format, idl, org, auth, pcrud, perm, toast, broadcaster);
-    }
 
     ngOnInit() {
         super.ngOnInit();

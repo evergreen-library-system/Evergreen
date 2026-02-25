@@ -1,6 +1,5 @@
 /* eslint-disable */
-import {Component, OnInit, Input, Output, EventEmitter, ViewChild,
-    OnChanges, SimpleChanges} from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild, OnChanges, SimpleChanges, inject } from '@angular/core';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {StringComponent} from '@eg/share/string/string.component';
@@ -30,6 +29,11 @@ import { IntervalInputComponent } from '@eg/share/interval-input/interval-input.
 })
 
 export class AcqSearchFormComponent implements OnInit, OnChanges {
+    private pcrud = inject(PcrudService);
+    private store = inject(ServerStoreService);
+    private idl = inject(IdlService);
+    private toast = inject(ToastService);
+
 
     @Input() initialSearchTerms: AcqSearchTerm[] = [];
     @Input() fallbackSearchTerms: AcqSearchTerm[] = [];
@@ -77,13 +81,6 @@ export class AcqSearchFormComponent implements OnInit, OnChanges {
     trimList = false;
 
     searchTerms: AcqSearchTerm[] = [];
-
-    constructor(
-        private pcrud: PcrudService,
-        private store: ServerStoreService,
-        private idl: IdlService,
-        private toast: ToastService
-    ) {}
 
     loadRunImmediatelySettingAndMaybeRun() {
         const self = this;

@@ -3,6 +3,13 @@ import { BibStaffViewComponent } from './bib-staff-view.component';
 import { BibRecordService } from '@eg/share/catalog/bib-record.service';
 import { of } from 'rxjs';
 import { CatalogSearchContext } from '@eg/share/catalog/search-context';
+import { TestBed } from '@angular/core/testing';
+import { NetService } from '@eg/core/net.service';
+import { PermService } from '@eg/core/perm.service';
+import { OrgService } from '@eg/core/org.service';
+import { StoreService } from '@eg/core/store.service';
+import { CatalogService } from '@eg/share/catalog/catalog.service';
+import { StaffCatalogService } from '@eg/staff/catalog/catalog.service';
 
 describe('BibStaffViewComponent', () => {
     describe('loadSummary()', () => {
@@ -22,20 +29,24 @@ describe('BibStaffViewComponent', () => {
                 ]
             })
         });
+        beforeEach(() => {
+            TestBed.configureTestingModule({providers: [
+                {provide: NetService, useValue: mockBibNetService},
+                {provide: PermService, useValue: MockGenerators.permService({PLACE_UNFILLABLE_HOLD: true})},
+                {provide: OrgService, useValue: null},
+                {provide: StoreService, useValue: null},
+                {provide: CatalogService, useValue: null},
+                BibRecordService
+            ]});
+        });
 
         it('can fetch a summary', async () => {
             const context = new CatalogSearchContext();
             context.searchOrg = MockGenerators.idlObject({id: 35});
-            const component = new BibStaffViewComponent(
-                new BibRecordService(
-                    mockBibNetService,
-                    null,
-                    MockGenerators.permService({PLACE_UNFILLABLE_HOLD: true})
-                ),
-                null,
-                null,
-                MockGenerators.staffCatService(context)
-            );
+            const component = TestBed.configureTestingModule({providers: [
+                {provide: StaffCatalogService, useValue: MockGenerators.staffCatService(context)}
+            ]}).createComponent(BibStaffViewComponent).componentInstance;
+
             component.recordId = 123;
 
             await component.loadSummary();
@@ -47,16 +58,9 @@ describe('BibStaffViewComponent', () => {
             context.searchOrg = MockGenerators.idlObject({id: 35});
             context.termSearch.locationGroupOrLasso = 'lasso(18)';
 
-            const component = new BibStaffViewComponent(
-                new BibRecordService(
-                    mockBibNetService,
-                    null,
-                    MockGenerators.permService({PLACE_UNFILLABLE_HOLD: true})
-                ),
-                null,
-                null,
-                MockGenerators.staffCatService(context)
-            );
+            const component = TestBed.configureTestingModule({providers: [
+                {provide: StaffCatalogService, useValue: MockGenerators.staffCatService(context)}
+            ]}).createComponent(BibStaffViewComponent).componentInstance;
             component.recordId = 123;
 
             await component.loadSummary();

@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, ViewChild} from '@angular/core';
+import { Component, OnInit, Input, ViewChild, inject } from '@angular/core';
 import {RouterModule} from '@angular/router';
 import {AuthService} from '@eg/core/auth.service';
 import {GridComponent} from '@eg/share/grid/grid.component';
@@ -17,6 +17,9 @@ import { GridModule } from '@eg/share/grid/grid.module';
     ]
 })
 export class PurchaseOrderResultsComponent implements OnInit {
+    private auth = inject(AuthService);
+    private acqSearch = inject(AcqSearchService);
+
 
     @Input() initialSearchTerms: AcqSearchTerm[] = [];
 
@@ -37,11 +40,6 @@ export class PurchaseOrderResultsComponent implements OnInit {
         value1: 'on-order',
         value2: ''
     }];
-
-    constructor(
-        private auth: AuthService,
-        private acqSearch: AcqSearchService) {
-    }
 
     ngOnInit() {
         this.gridSource = this.acqSearch.getAcqSearchDataSource('purchase_order');

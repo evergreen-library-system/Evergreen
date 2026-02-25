@@ -1,5 +1,5 @@
 /* eslint-disable */
-import {Component, OnInit, ViewChild} from '@angular/core';
+import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 import {Location} from '@angular/common';
 import {of} from 'rxjs';
@@ -20,6 +20,15 @@ import { StaffCommonModule } from '@eg/staff/common.module';
 })
 
 export class FullReporterDefinitionComponent implements OnInit {
+    private route = inject(ActivatedRoute);
+    private router = inject(Router);
+    private location = inject(Location);
+    private toast = inject(ToastService);
+    private evt = inject(EventService);
+    private idl = inject(IdlService);
+    private pcrud = inject(PcrudService);
+    private RSvc = inject(ReporterService);
+
 
     selectedTab = 'rptFilterFields';
     rptType = '';
@@ -50,16 +59,7 @@ export class FullReporterDefinitionComponent implements OnInit {
     @ViewChild('changeTypeDialog', { static: false }) changeTypeDialog: ConfirmDialogComponent;
     @ViewChild('closeFormDialog', { static: false }) closeFormDialog: ConfirmDialogComponent;
 
-    constructor(
-        private route: ActivatedRoute,
-        private router: Router,
-        private location: Location,
-        private toast: ToastService,
-        private evt: EventService,
-        private idl: IdlService,
-        private pcrud: PcrudService,
-        private RSvc: ReporterService
-    ) {
+    constructor() {
         const t_id = this.route.snapshot.paramMap.get('t_id');
         const r_id = this.route.snapshot.paramMap.get('r_id');
         this.RSvc.outputFolder = null;

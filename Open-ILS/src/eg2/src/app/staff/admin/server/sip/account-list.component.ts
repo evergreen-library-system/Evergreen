@@ -1,4 +1,4 @@
-import {Component, ViewChild, OnInit} from '@angular/core';
+import { Component, ViewChild, OnInit, inject } from '@angular/core';
 import {Router} from '@angular/router';
 import {Observable} from 'rxjs';
 import {PcrudService} from '@eg/core/pcrud.service';
@@ -18,15 +18,13 @@ import { GridModule } from '@eg/share/grid/grid.module';
     ]
 })
 export class SipAccountListComponent implements OnInit {
+    private router = inject(Router);
+    private pcrud = inject(PcrudService);
+
 
     gridSource: GridDataSource = new GridDataSource();
     @ViewChild('grid') grid: GridComponent;
     @ViewChild('confirmDelete') confirmDelete: ConfirmDialogComponent;
-
-    constructor(
-        private router: Router,
-        private pcrud: PcrudService
-    ) {}
 
     ngOnInit() {
         this.gridSource.getRows = (pager: Pager, sort: any[]) => {

@@ -1,4 +1,4 @@
-import {Component, OnInit, Output, EventEmitter} from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, inject } from '@angular/core';
 import {AuthService} from '@eg/core/auth.service';
 import {AcqProviderSearchTerm, AcqProviderSearch} from './acq-provider-search.service';
 import {StoreService} from '@eg/core/store.service';
@@ -20,6 +20,9 @@ import { ComboboxComponent } from '@eg/share/combobox/combobox.component';
 })
 
 export class AcqProviderSearchFormComponent implements OnInit {
+    private localStore = inject(StoreService);
+    private auth = inject(AuthService);
+
 
     @Output() searchSubmitted = new EventEmitter<AcqProviderSearch>();
 
@@ -36,11 +39,6 @@ export class AcqProviderSearchFormComponent implements OnInit {
     providerEDIDefault = null;
     providerURL = '';
     providerIsActive = 'active';
-
-    constructor(
-        private localStore: StoreService,
-        private auth: AuthService,
-    ) {}
 
     ngOnInit() {
         const self = this;

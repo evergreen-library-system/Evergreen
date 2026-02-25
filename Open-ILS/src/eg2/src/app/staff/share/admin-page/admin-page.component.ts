@@ -1,6 +1,6 @@
 /* eslint-disable */
 /* eslint-disable rxjs/no-implicit-any-catch, rxjs/no-nested-subscribe */
-import {Component, Input, OnInit, TemplateRef, ViewChild} from '@angular/core';
+import { Component, Input, OnInit, TemplateRef, ViewChild, inject } from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {CommonModule, Location} from '@angular/common';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
@@ -43,6 +43,17 @@ import { GridModule } from '@eg/share/grid/grid.module';
 })
 
 export class AdminPageComponent implements OnInit {
+    private route = inject(ActivatedRoute);
+    private ngLocation = inject(Location);
+    private format = inject(FormatService);
+    idl = inject(IdlService);
+    private org = inject(OrgService);
+    auth = inject(AuthService);
+    pcrud = inject(PcrudService);
+    private perm = inject(PermService);
+    toast = inject(ToastService);
+    broadcaster = inject(BroadcastService);
+
 
     @Input() idlClass: string;
 
@@ -201,18 +212,7 @@ export class AdminPageComponent implements OnInit {
     // They are used to augment the grid data search query.
     gridFilters: {[key: string]: string | number};
 
-    constructor(
-        private route: ActivatedRoute,
-        private ngLocation: Location,
-        private format: FormatService,
-        public idl: IdlService,
-        private org: OrgService,
-        public auth: AuthService,
-        public pcrud: PcrudService,
-        private perm: PermService,
-        public toast: ToastService,
-        public broadcaster: BroadcastService
-    ) {
+    constructor() {
         this.translatableFields = [];
         this.configFields = [];
     }

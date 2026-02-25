@@ -1,4 +1,4 @@
-import {Injectable, EventEmitter, TemplateRef} from '@angular/core';
+import { Injectable, EventEmitter, TemplateRef, inject } from '@angular/core';
 import {StoreService} from '@eg/core/store.service';
 import {LocaleService} from '@eg/core/locale.service';
 import {AuthService} from '@eg/core/auth.service';
@@ -27,6 +27,10 @@ export interface PrintTemplateResponse {
 
 @Injectable()
 export class PrintService {
+    private locale = inject(LocaleService);
+    private auth = inject(AuthService);
+    private store = inject(StoreService);
+
 
     onPrintRequest$: EventEmitter<PrintRequest>;
 
@@ -35,11 +39,7 @@ export class PrintService {
     // is not necessarily an indication the job has completed.
     printJobQueued$: EventEmitter<PrintRequest>;
 
-    constructor(
-        private locale: LocaleService,
-        private auth: AuthService,
-        private store: StoreService
-    ) {
+    constructor() {
         this.onPrintRequest$ = new EventEmitter<PrintRequest>();
         this.printJobQueued$ = new EventEmitter<PrintRequest>();
     }

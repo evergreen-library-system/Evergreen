@@ -1,5 +1,4 @@
-import {Component, Input, Output, OnInit, AfterViewInit,
-    EventEmitter, ViewChild} from '@angular/core';
+import { Component, Input, Output, OnInit, AfterViewInit, EventEmitter, ViewChild, inject } from '@angular/core';
 import {ActivatedRoute, ParamMap, RouterModule} from '@angular/router';
 import {Observable, of, from, map, concatMap} from 'rxjs';
 import {IdlObject} from '@eg/core/idl.service';
@@ -71,6 +70,14 @@ export interface PatronSearch {
 })
 
 export class PatronSearchComponent implements OnInit, AfterViewInit {
+    private route = inject(ActivatedRoute);
+    private net = inject(NetService);
+    org = inject(OrgService);
+    private auth = inject(AuthService);
+    private store = inject(ServerStoreService);
+    private format = inject(FormatService);
+    locale = inject(LocaleService);
+
 
     @ViewChild('searchGrid') searchGrid: GridComponent;
     @ViewChild('addToBucket') addToBucket: BucketDialogComponent;
@@ -111,15 +118,7 @@ export class PatronSearchComponent implements OnInit, AfterViewInit {
     dataSource: GridDataSource;
     profileGroups: IdlObject[] = [];
 
-    constructor(
-        private route: ActivatedRoute,
-        private net: NetService,
-        public org: OrgService,
-        private auth: AuthService,
-        private store: ServerStoreService,
-        private format: FormatService,
-        public locale: LocaleService
-    ) {
+    constructor() {
         this.patronsActivated = new EventEmitter<any>();
         this.selectionChange = new EventEmitter<number[]>();
         this.searchFired = new EventEmitter<PatronSearch>();

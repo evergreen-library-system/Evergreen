@@ -1,6 +1,5 @@
 /* eslint-disable */
-import {Component, OnInit, Input,
-    Output, EventEmitter} from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, inject } from '@angular/core';
 import {NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 import {Observable} from 'rxjs';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
@@ -12,6 +11,9 @@ import { StaffCommonModule } from '@eg/staff/common.module';
     imports: [StaffCommonModule]
 })
 export class CircMatrixMatchpointDialogComponent extends DialogComponent implements OnInit {
+    private modal: NgbModal // required for passing to parent
+;
+
 
     // Emit the modified object when the save action completes.
     @Output() recordSaved = new EventEmitter<any>();
@@ -19,10 +21,12 @@ export class CircMatrixMatchpointDialogComponent extends DialogComponent impleme
     // Emit the original object when the save action is canceled.
     @Output() recordCanceled = new EventEmitter<any>();
 
-    constructor(
-        private modal: NgbModal // required for passing to parent
-    ) {
+    constructor() {
+        const modal = inject(NgbModal);
+
         super(modal);
+    
+        this.modal = modal;
     }
 
     ngOnInit() {

@@ -1,4 +1,4 @@
-import {Component, Input, ViewChild, TemplateRef} from '@angular/core';
+import { Component, Input, ViewChild, TemplateRef, inject } from '@angular/core';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
@@ -18,19 +18,24 @@ import { lastValueFrom, map, toArray } from 'rxjs';
  * Ask the user which part is the lead part then merge others parts in.
  */
 export class PartMergeDialogComponent extends DialogComponent {
+    private idl = inject(IdlService);
+    private pcrud = inject(PcrudService);
+    private auth = inject(AuthService);
+    private holds = inject(HoldsService);
+    private modal: NgbModal;
+
 
     // What parts are we merging
     parts: IdlObject[];
     copyPartMaps: IdlObject[];
     leadPart: number;
 
-    constructor(
-        private idl: IdlService,
-        private pcrud: PcrudService,
-        private auth: AuthService,
-        private holds: HoldsService,
-        private modal: NgbModal) {
+    constructor() {
+        const modal = inject(NgbModal);
+
         super(modal);
+
+        this.modal = modal;
     }
 
     // 1. Apply lead part to all copies 2. Apply lead part to all holds 3. Delete subordinate parts - which should have no copies

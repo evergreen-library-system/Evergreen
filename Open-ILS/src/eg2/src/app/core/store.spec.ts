@@ -1,12 +1,17 @@
 import {StoreService} from './store.service';
 import {HatchService} from './hatch.service';
+import { TestBed } from '@angular/core/testing';
+import { CookieService } from 'ngx-cookie';
 
 describe('StoreService', () => {
     let service: StoreService;
-    let hatchService: HatchService;
     beforeEach(() => {
-        hatchService = new HatchService();
-        service = new StoreService(null /* CookieService */, hatchService);
+        TestBed.configureTestingModule({providers: [
+            {provide: CookieService, useValue: null},
+            HatchService,
+            StoreService
+        ]});
+        service = TestBed.inject(StoreService);
     });
 
     it('should set/get a localStorage value', () => {

@@ -1,5 +1,4 @@
-import {Component, OnInit, ViewChild, Input, Renderer2,
-    Output, EventEmitter, ViewChildren, QueryList, PipeTransform, Pipe} from '@angular/core';
+import { Component, OnInit, ViewChild, Input, Renderer2, Output, EventEmitter, ViewChildren, QueryList, inject } from '@angular/core';
 import {tap} from 'rxjs';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
@@ -21,6 +20,14 @@ import { StaffCommonModule } from '@eg/staff/common.module';
 
 
 export class VolEditComponent implements OnInit {
+    private renderer = inject(Renderer2);
+    private idl = inject(IdlService);
+    private org = inject(OrgService);
+    private pcrud = inject(PcrudService);
+    private net = inject(NetService);
+    private auth = inject(AuthService);
+    volcopy = inject(VolCopyService);
+
 
     @Input() context: VolCopyContext;
 
@@ -81,16 +88,6 @@ export class VolEditComponent implements OnInit {
     // Emitted when the save-ability of this form changes.
     @Output() canSaveChange: EventEmitter<boolean> = new EventEmitter<boolean>();
     changedCallnumberFields: string[] = [];
-
-    constructor(
-        private renderer: Renderer2,
-        private idl: IdlService,
-        private org: OrgService,
-        private pcrud: PcrudService,
-        private net: NetService,
-        private auth: AuthService,
-        public  volcopy: VolCopyService
-    ) {}
 
     ngOnInit() {
 

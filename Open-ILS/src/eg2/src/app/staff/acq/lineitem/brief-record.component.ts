@@ -1,5 +1,5 @@
 /* eslint-disable */
-import {Component, OnInit, OnDestroy, ViewChild} from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, inject } from '@angular/core';
 import {ActivatedRoute, Router, ParamMap} from '@angular/router';
 import {firstValueFrom, Observable, of} from 'rxjs';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
@@ -35,6 +35,16 @@ const MARC_XML_BASE = `
     ]
 })
 export class BriefRecordComponent implements OnInit, OnDestroy {
+    private router = inject(Router);
+    private route = inject(ActivatedRoute);
+    private idl = inject(IdlService);
+    private auth = inject(AuthService);
+    private net = inject(NetService);
+    private evt = inject(EventService);
+    private pcrud = inject(PcrudService);
+    private store = inject(ServerStoreService);
+    private liService = inject(LineitemService);
+
 
     @ViewChild('MARCTemplateSelector', { static: true }) MARCTemplateSelector: ComboboxComponent;
 
@@ -56,18 +66,6 @@ export class BriefRecordComponent implements OnInit, OnDestroy {
     };
 
     isSaving = false;
-
-    constructor(
-        private router: Router,
-        private route: ActivatedRoute,
-        private idl: IdlService,
-        private auth: AuthService,
-        private net: NetService,
-        private evt: EventService,
-        private pcrud: PcrudService,
-        private store: ServerStoreService,
-        private liService: LineitemService
-    ) { }
 
     ngOnInit() {
 

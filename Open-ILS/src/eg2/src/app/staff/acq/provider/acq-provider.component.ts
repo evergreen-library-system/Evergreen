@@ -1,4 +1,4 @@
-import {Component, OnInit, AfterViewInit, ViewChild, ChangeDetectorRef, OnDestroy} from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, ChangeDetectorRef, OnDestroy, inject } from '@angular/core';
 import {filter, takeUntil, Subject, Observable, of} from 'rxjs';
 import {NgbNavChangeEvent, NgbNavModule} from '@ng-bootstrap/ng-bootstrap';
 import {Router, ActivatedRoute, NavigationEnd} from '@angular/router';
@@ -41,6 +41,15 @@ import { ProviderPurchaseOrdersComponent } from './provider-purchase-orders.comp
 })
 
 export class AcqProviderComponent implements OnInit, AfterViewInit, OnDestroy {
+    private router = inject(Router);
+    private route = inject(ActivatedRoute);
+    private auth = inject(AuthService);
+    private idl = inject(IdlService);
+    providerRecord = inject(ProviderRecordService);
+    private toast = inject(ToastService);
+    private store = inject(StoreService);
+    private changeDetector = inject(ChangeDetectorRef);
+
 
     activeTab = '';
     showSearchForm = false;
@@ -65,16 +74,7 @@ export class AcqProviderComponent implements OnInit, AfterViewInit, OnDestroy {
     public destroyed = new Subject<any>();
     _alreadyDeactivated = false;
 
-    constructor(
-        private router: Router,
-        private route: ActivatedRoute,
-        private auth: AuthService,
-        private idl: IdlService,
-        public providerRecord: ProviderRecordService,
-        private toast: ToastService,
-        private store: StoreService,
-        private changeDetector: ChangeDetectorRef
-    ) {
+    constructor() {
         this.router.events.pipe(
             filter((event): event is NavigationEnd => event instanceof NavigationEnd),
             takeUntil(this.destroyed)

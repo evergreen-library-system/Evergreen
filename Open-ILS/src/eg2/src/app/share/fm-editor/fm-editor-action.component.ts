@@ -1,4 +1,4 @@
-import {Component, Input, Output, EventEmitter, Host, OnInit} from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, inject } from '@angular/core';
 import {FmRecordEditorComponent} from './fm-editor.component';
 
 @Component({
@@ -7,6 +7,8 @@ import {FmRecordEditorComponent} from './fm-editor.component';
 })
 
 export class FmRecordEditorActionComponent implements OnInit {
+    private editor = inject(FmRecordEditorComponent, { host: true });
+
 
     // unique identifier
     @Input() key: string;
@@ -20,7 +22,7 @@ export class FmRecordEditorActionComponent implements OnInit {
 
     @Input() disabled: boolean;
 
-    constructor(@Host() private editor: FmRecordEditorComponent) {
+    constructor() {
         this.actionClick = new EventEmitter<string>();
     }
 

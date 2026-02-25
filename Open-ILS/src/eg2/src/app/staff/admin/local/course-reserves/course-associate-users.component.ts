@@ -1,4 +1,4 @@
-import {Component, Input, ViewChild, OnInit} from '@angular/core';
+import { Component, Input, ViewChild, OnInit, inject } from '@angular/core';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {AuthService} from '@eg/core/auth.service';
 import {NetService} from '@eg/core/net.service';
@@ -27,6 +27,13 @@ import { StaffCommonModule } from '@eg/staff/common.module';
 })
 
 export class CourseAssociateUsersComponent extends DialogComponent implements OnInit {
+    private auth = inject(AuthService);
+    private course = inject(CourseService);
+    private net = inject(NetService);
+    private pcrud = inject(PcrudService);
+    private toast = inject(ToastService);
+    private modal: NgbModal;
+
     @Input() currentCourse: IdlObject;
     @Input() courseId: number;
     @Input() courseIsArchived: String;
@@ -51,15 +58,12 @@ export class CourseAssociateUsersComponent extends DialogComponent implements On
     userBarcode: String;
     userRoleInput: ComboboxEntry;
 
-    constructor(
-        private auth: AuthService,
-        private course: CourseService,
-        private net: NetService,
-        private pcrud: PcrudService,
-        private toast: ToastService,
-        private modal: NgbModal
-    ) {
+    constructor() {
+        const modal = inject(NgbModal);
+
         super(modal);
+        this.modal = modal;
+
         this.usersDataSource = new GridDataSource();
     }
 

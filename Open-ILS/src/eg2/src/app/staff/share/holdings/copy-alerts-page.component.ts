@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, ViewChild } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CopyAlertsDialogComponent } from './copy-alerts-dialog.component';
 import { StaffBannerComponent } from '../staff-banner.component';
@@ -9,14 +9,12 @@ import { StaffBannerComponent } from '../staff-banner.component';
     imports: [StaffBannerComponent, CopyAlertsDialogComponent]
 })
 export class CopyAlertsPageComponent implements AfterViewInit {
+    private route = inject(ActivatedRoute);
+
     @ViewChild('copyAlertsDialog', {static: false})
     private copyAlertsDialog: CopyAlertsDialogComponent;
 
     copyIds = [];
-
-    constructor(
-        private route: ActivatedRoute
-    ) {}
 
     ngAfterViewInit() {
         console.debug('CopyAlertsPageComponent, ngAfterViewInit, this', this);

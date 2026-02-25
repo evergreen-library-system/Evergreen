@@ -1,5 +1,5 @@
 /* eslint-disable no-magic-numbers */
-import {Component, ViewChild, OnInit, AfterViewInit} from '@angular/core';
+import { Component, ViewChild, OnInit, AfterViewInit, inject } from '@angular/core';
 import {Location} from '@angular/common';
 import {Router, ActivatedRoute} from '@angular/router';
 import {empty, from, concatMap, EMPTY, catchError, tap} from 'rxjs';
@@ -52,6 +52,20 @@ const TRIM_LIST_TO = 20;
     ]
 })
 export class RenewComponent implements OnInit, AfterViewInit {
+    private router = inject(Router);
+    private route = inject(ActivatedRoute);
+    private ngLocation = inject(Location);
+    private net = inject(NetService);
+    private org = inject(OrgService);
+    private auth = inject(AuthService);
+    private store = inject(ServerStoreService);
+    private circ = inject(CircService);
+    private toast = inject(ToastService);
+    private printer = inject(PrintService);
+    private holdings = inject(HoldingsService);
+    private anonCache = inject(AnonCacheService);
+    patronService = inject(PatronService);
+
     renewals: RenewGridEntry[] = [];
     autoIndex = 0;
 
@@ -74,22 +88,6 @@ export class RenewComponent implements OnInit, AfterViewInit {
     @ViewChild('copyAlertsDialog') private copyAlertsDialog: CopyAlertsDialogComponent;
     @ViewChild('itemNeverCircedStr') private itemNeverCircedStr: StringComponent;
     @ViewChild('cancelTransitDialog') private cancelTransitDialog: CancelTransitDialogComponent;
-
-    constructor(
-        private router: Router,
-        private route: ActivatedRoute,
-        private ngLocation: Location,
-        private net: NetService,
-        private org: OrgService,
-        private auth: AuthService,
-        private store: ServerStoreService,
-        private circ: CircService,
-        private toast: ToastService,
-        private printer: PrintService,
-        private holdings: HoldingsService,
-        private anonCache: AnonCacheService,
-        public patronService: PatronService
-    ) {}
 
     ngOnInit() {
 

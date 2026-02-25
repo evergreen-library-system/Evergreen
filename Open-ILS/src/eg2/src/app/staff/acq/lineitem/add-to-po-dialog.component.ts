@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {ComboboxComponent, ComboboxEntry} from '@eg/share/combobox/combobox.component';
@@ -16,9 +16,15 @@ import { FormsModule } from '@angular/forms';
 })
 
 export class AddToPoDialogComponent extends DialogComponent {
+    private modal: NgbModal;
+
     @Input() ids: number[];
     po: ComboboxEntry;
-    constructor(private modal: NgbModal) { super(modal); }
+    constructor() {
+        const modal = inject(NgbModal);
+        super(modal);
+        this.modal = modal;
+    }
 }
 
 

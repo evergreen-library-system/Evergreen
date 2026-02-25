@@ -1,5 +1,5 @@
 // eslint-disable @angular-eslint/no-output-on-prefix
-import {Component, EventEmitter, Input, Output, ViewChild, OnInit, Optional, Self} from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewChild, OnInit, inject } from '@angular/core';
 import {FormatService} from '@eg/core/format.service';
 import {AbstractControl, ControlValueAccessor, FormControl, FormGroup, FormsModule, NgControl, ReactiveFormsModule} from '@angular/forms';
 import {DatetimeValidator} from '@eg/share/validators/datetime_validator.directive';
@@ -19,6 +19,10 @@ import { NgbDatepicker, NgbDropdown, NgbTimepicker } from '@ng-bootstrap/ng-boot
     ]
 })
 export class DateTimeSelectComponent implements OnInit, ControlValueAccessor {
+    private format = inject(FormatService);
+    private dtv = inject(DatetimeValidator);
+    controlDir = inject(NgControl, { optional: true, self: true });
+
     @Input() domId = '';
     @Input() fieldName: string;
     @Input() initialIso: string;
@@ -41,13 +45,9 @@ export class DateTimeSelectComponent implements OnInit, ControlValueAccessor {
     onChange = (_: any) => {};
     onTouched = () => {};
 
-    constructor(
-        private format: FormatService,
-        private dtv: DatetimeValidator,
-        @Optional()
-        @Self()
-        public controlDir: NgControl, // so that the template can access validation state
-    ) {
+    constructor() {
+        const controlDir = this.controlDir;
+
         if (controlDir) { controlDir.valueAccessor = this; }
         this.onChangeAsIso = new EventEmitter<string>();
         const startValue = moment.tz([], this.timezone);

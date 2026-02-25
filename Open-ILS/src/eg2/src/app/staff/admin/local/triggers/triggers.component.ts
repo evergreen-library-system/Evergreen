@@ -1,5 +1,5 @@
 import {Pager} from '@eg/share/util/pager';
-import {Component, OnInit, ViewChild} from '@angular/core';
+import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {GridDataSource} from '@eg/share/grid/grid';
 import {Router} from '@angular/router';
@@ -21,6 +21,11 @@ import { StaffCommonModule } from '@eg/staff/common.module';
 })
 
 export class TriggersComponent implements OnInit {
+    private idl = inject(IdlService);
+    private pcrud = inject(PcrudService);
+    private toast = inject(ToastService);
+    private router = inject(Router);
+
 
     eventsDataSource: GridDataSource = new GridDataSource();
     hooksDataSource: GridDataSource = new GridDataSource();
@@ -49,14 +54,6 @@ export class TriggersComponent implements OnInit {
     @ViewChild('deleteSuccessString', {static: false}) deleteSuccessString: StringComponent;
     @ViewChild('createSuccessString', {static: false}) createSuccessString: StringComponent;
     @ViewChild('createErrString', {static: false}) createErrString: StringComponent;
-
-    constructor(
-        private idl: IdlService,
-        private pcrud: PcrudService,
-        private toast: ToastService,
-        private router: Router,
-    ) {
-    }
 
     ngOnInit() {
         this.eventsDataSource.getRows = (pager: Pager, sort: any[]) => {

@@ -5,33 +5,25 @@ import {DbStoreService} from './db-store.service';
 import {NetService} from './net.service';
 import {AuthService} from './auth.service';
 import {PcrudService} from './pcrud.service';
-import {StoreService} from './store.service';
 import {OrgService} from './org.service';
 import {LocaleService} from './locale.service';
 import {FormatService, WS_ORG_TIMEZONE} from './format.service';
-import {HatchService} from './hatch.service';
 import {SpyLocation} from '@angular/common/testing';
 import localeArJO from '@angular/common/locales/ar-JO';
 import localeCs from '@angular/common/locales/cs';
 import localeFrCA from '@angular/common/locales/fr-CA';
 import { TestBed } from '@angular/core/testing';
+import { MockGenerators } from 'test_data/mock_generators';
+import { CookieService } from 'ngx-cookie';
 
 describe('FormatService', () => {
 
     let decimalPipe: DecimalPipe;
     let datePipe: DatePipe;
     let idlService: IdlService;
-    let netService: NetService;
-    let authService: AuthService;
-    let pcrudService: PcrudService;
     let orgService: OrgService;
     let evtService: EventService;
-    let storeService: StoreService;
-    let dbStoreService: DbStoreService;
-    let localeService: LocaleService;
-    let hatchService: HatchService;
 
-    let location: SpyLocation;
     let service: FormatService;
 
     beforeEach(() => {
@@ -39,35 +31,35 @@ describe('FormatService', () => {
         datePipe = new DatePipe('en');
         idlService = new IdlService();
         evtService = new EventService();
-        hatchService = new HatchService();
-        storeService = new StoreService(null /* CookieService */, hatchService);
-        netService = new NetService(evtService);
-        authService = new AuthService(evtService, netService, storeService);
-        pcrudService = new PcrudService(idlService, null, netService, authService);
-        dbStoreService = new DbStoreService();
-        orgService = new OrgService(dbStoreService, netService, authService, pcrudService);
-        localeService = new LocaleService(location, null, pcrudService);
         TestBed.configureTestingModule({
             providers: [
+                {provide: AuthService, useValue: MockGenerators.authService()},
                 {provide: DatePipe, useValue: datePipe},
+                {provide: CookieService, useValue: null},
+                DbStoreService,
                 {provide: DecimalPipe, useValue: decimalPipe},
+                FormatService,
                 {provide: IdlService, useValue: idlService},
-                {provide: OrgService, useValue: orgService},
-                {provide: LocaleService, useValue: localeService},
+                {provide: Location, useClass: SpyLocation},
+                LocaleService,
+                {provide: NetService, useValue: MockGenerators.netService({})},
+                OrgService,
+                {provide: PcrudService, useValue: null},
                 {provide: WS_ORG_TIMEZONE, useValue: 'America/Chicago'},
             ]
         });
+        orgService = TestBed.inject(OrgService);
         service = TestBed.inject(FormatService);
     });
 
-    const initTestData = () => {
+    const initTestData = (orgTreeGenerator: OrgService) => {
         idlService.parseIdl();
         const win: any = window; // trick TS
-        win._eg_mock_data.generateOrgTree(idlService, orgService);
+        win._eg_mock_data.generateOrgTree(idlService, orgTreeGenerator);
     };
 
     it('should format an org unit name', () => {
-        initTestData();
+        initTestData(orgService);
         const str = service.transform({
             value: orgService.root(),
             datatype: 'org_unit',
@@ -77,7 +69,7 @@ describe('FormatService', () => {
     });
 
     it('should format a date', () => {
-        initTestData();
+        initTestData(orgService);
         const str = service.transform({
             value: Date.parse('2018-07-05T12:30:01.000-05:00'),
             datatype: 'timestamp',
@@ -86,7 +78,7 @@ describe('FormatService', () => {
     });
 
     it('should format a date plus time', () => {
-        initTestData();
+        initTestData(orgService);
         const str = service.transform({
             value: Date.parse('2018-07-05T12:30:01.000-05:00'),
             datatype: 'timestamp',
@@ -98,7 +90,7 @@ describe('FormatService', () => {
 
 
     it('should format money', () => {
-        initTestData();
+        initTestData(orgService);
         const str = service.transform({
             value: '12.1',
             datatype: 'money'

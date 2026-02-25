@@ -1,6 +1,6 @@
 /* eslint-disable */
 /* eslint-disable rxjs/no-nested-subscribe */
-import {Component, OnInit, OnDestroy, Input, ViewChild, ChangeDetectorRef, OnChanges, SimpleChanges, NgZone} from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, ViewChild, ChangeDetectorRef, OnChanges, SimpleChanges, NgZone, inject } from '@angular/core';
 import {Router, ActivatedRoute, ParamMap, RouterModule} from '@angular/router';
 import {takeWhile, firstValueFrom, lastValueFrom, from, of, Subscription, Subject} from 'rxjs';
 import {takeUntil, defaultIfEmpty, debounceTime, tap, concatMap} from 'rxjs/operators';
@@ -89,6 +89,23 @@ const SORT_ORDER_MAP = {
     ]
 })
 export class LineitemListComponent implements OnInit, OnDestroy, OnChanges {
+    private router = inject(Router);
+    private route = inject(ActivatedRoute);
+    private changeDetector = inject(ChangeDetectorRef);
+    private zone = inject(NgZone);
+    private evt = inject(EventService);
+    private net = inject(NetService);
+    private perm = inject(PermService);
+    private auth = inject(AuthService);
+    private org = inject(OrgService);
+    private store = inject(ServerStoreService);
+    private idl = inject(IdlService);
+    private toast = inject(ToastService);
+    private holdings = inject(HoldingsService);
+    private liService = inject(LineitemService);
+    private poService = inject(PoService);
+    private invoiceService = inject(InvoiceService);
+
 
     private permissions: any;
     picklistId: number = null;
@@ -192,25 +209,6 @@ export class LineitemListComponent implements OnInit, OnDestroy, OnChanges {
     @ViewChild('stopPercentAlertDialog') stopPercentAlertDialog: AlertDialogComponent;
     @ViewChild('stopPercentConfirmDialog') stopPercentConfirmDialog: ConfirmDialogComponent;
     @ViewChild('warnPercentConfirmDialog') warnPercentConfirmDialog: ConfirmDialogComponent;
-
-    constructor(
-        private router: Router,
-        private route: ActivatedRoute,
-        private changeDetector: ChangeDetectorRef,
-        private zone: NgZone,
-        private evt: EventService,
-        private net: NetService,
-        private perm: PermService,
-        private auth: AuthService,
-        private org: OrgService,
-        private store: ServerStoreService,
-        private idl: IdlService,
-        private toast: ToastService,
-        private holdings: HoldingsService,
-        private liService: LineitemService,
-        private poService: PoService,
-        private invoiceService: InvoiceService
-    ) {}
 
     ngOnInit() {
 

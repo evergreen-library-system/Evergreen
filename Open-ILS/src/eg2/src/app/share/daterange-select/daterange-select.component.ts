@@ -1,4 +1,4 @@
-import {Component, Input, forwardRef, OnInit} from '@angular/core';
+import { Component, Input, forwardRef, OnInit, inject } from '@angular/core';
 import {NgbDate, NgbCalendar, NgbDatepicker} from '@ng-bootstrap/ng-bootstrap';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 
@@ -19,6 +19,8 @@ export interface DateRange {
     imports: [NgbDatepicker]
 })
 export class DateRangeSelectComponent implements ControlValueAccessor, OnInit {
+    private calendar = inject(NgbCalendar);
+
 
     // Number of days in the initial
     // date range shown to user
@@ -39,8 +41,6 @@ export class DateRangeSelectComponent implements ControlValueAccessor, OnInit {
 
     onChange = (_: any) => {};
     onTouched = () => {};
-
-    constructor(private calendar: NgbCalendar) { }
 
     ngOnInit() {
         this.selectedRange = {

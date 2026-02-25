@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy, HostListener} from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener, inject } from '@angular/core';
 import {Subscription} from 'rxjs';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {CatalogService} from '@eg/share/catalog/catalog.service';
@@ -36,6 +36,14 @@ const mobileWidth = 992;
     ]
 })
 export class ResultsComponent implements OnInit, OnDestroy {
+    private route = inject(ActivatedRoute);
+    private cat = inject(CatalogService);
+    private catUrl = inject(CatalogUrlService);
+    private staffCat = inject(StaffCatalogService);
+    private serverStore = inject(ServerStoreService);
+    private basket = inject(BasketService);
+    private router = inject(Router);
+
 
     searchContext: CatalogSearchContext;
 
@@ -59,16 +67,6 @@ export class ResultsComponent implements OnInit, OnDestroy {
         this.facetsHorizontal =
         event.target.innerWidth > mobileWidth;
     }
-
-    constructor(
-        private route: ActivatedRoute,
-        private cat: CatalogService,
-        private catUrl: CatalogUrlService,
-        private staffCat: StaffCatalogService,
-        private serverStore: ServerStoreService,
-        private basket: BasketService,
-        private router: Router
-    ) {}
 
     ngOnInit() {
         this.searchContext = this.staffCat.searchContext;

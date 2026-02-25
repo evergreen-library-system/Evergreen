@@ -1,6 +1,6 @@
 import { IdlService, IdlObject } from './../../../core/idl.service';
 import { QueryList } from '@angular/core';
-import { waitForAsync } from '@angular/core/testing';
+import { TestBed, waitForAsync } from '@angular/core/testing';
 import { AuthService } from '@eg/core/auth.service';
 import { FormatService } from '@eg/core/format.service';
 import { OrgService } from '@eg/core/org.service';
@@ -11,6 +11,8 @@ import { CopyAttrsComponent } from './copy-attrs.component';
 import { VolCopyContext, HoldingsTreeNode } from './volcopy';
 import { VolCopyService } from './volcopy.service';
 import { StringComponent } from '@eg/share/string/string.component';
+import { PermService } from '@eg/core/perm.service';
+import { PcrudService } from '@eg/core/pcrud.service';
 
 describe('CopyAttrsComponent', () => {
     let component: CopyAttrsComponent;
@@ -23,9 +25,17 @@ describe('CopyAttrsComponent', () => {
     const volCopyServiceMock = jasmine.createSpyObj<VolCopyService>(['copyStatIsMagic', 'saveTemplates']);
 
     beforeEach(() => {
-        component = new CopyAttrsComponent(idlMock, orgMock, authServiceMock,
-            null, null, formatServiceMock, storeServiceMock,
-            toastServiceMock, volCopyServiceMock);
+        TestBed.configureTestingModule({providers: [
+            {provide: IdlService, useValue: idlMock},
+            {provide: OrgService, useValue: orgMock},
+            {provide: AuthService, useValue: authServiceMock},
+            {provide: PermService, useValue: null},
+            {provide: PcrudService, useValue: null},
+            {provide: FormatService, useValue: formatServiceMock},
+            {provide: StoreService, useValue: storeServiceMock},
+            {provide: ToastService, useValue: toastServiceMock},
+            {provide: VolCopyService, useValue: volCopyServiceMock}
+        ]});
         storeServiceMock.getLocalItem.and.returnValue({});
 
         const contextMock = new VolCopyContext();
@@ -41,6 +51,8 @@ describe('CopyAttrsComponent', () => {
         contextMock.deletedAlerts = [];
         contextMock.deletedTagMaps = [];
         contextMock.deletedNotes = [];
+
+        component = TestBed.createComponent(CopyAttrsComponent).componentInstance;
 
         component.context = contextMock;
         volCopyServiceMock.currentContext = contextMock;

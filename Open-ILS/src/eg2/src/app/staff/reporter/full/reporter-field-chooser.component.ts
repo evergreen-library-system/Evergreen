@@ -1,4 +1,4 @@
-import {Component, Input, Output, EventEmitter, ViewChild} from '@angular/core';
+import { Component, Input, Output, EventEmitter, ViewChild, inject } from '@angular/core';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import { StaffCommonModule } from '@eg/staff/common.module';
 import { ReporterFieldComponent } from './reporter-field.component';
@@ -14,6 +14,8 @@ import { ReporterFieldComponent } from './reporter-field.component';
 })
 
 export class ReporterFieldChooserComponent {
+    private idl = inject(IdlService);
+
 
     @Input() editorMode = 'template';
     @Input() fieldType = 'display';
@@ -24,11 +26,6 @@ export class ReporterFieldChooserComponent {
     @Input() selectedFields: IdlObject[] = [];
     @Output() selectedFieldsChange = new EventEmitter<IdlObject[]>();
     @Input() listFields: IdlObject[] = [];
-
-    constructor(
-        private idl: IdlService
-    ) {
-    }
 
     hasFilterSuggestions() {
         return this.allFields.filter(f => !!f.suggest_filter).length > 0;

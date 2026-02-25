@@ -1,4 +1,4 @@
-import {Component, Input, ViewChild} from '@angular/core';
+import { Component, Input, ViewChild, inject } from '@angular/core';
 import {Observable} from 'rxjs';
 import {NetService} from '@eg/core/net.service';
 import {EventService} from '@eg/core/event.service';
@@ -25,6 +25,12 @@ import { CommonModule } from '@angular/common';
 
 export class HoldRetargetDialogComponent
     extends DialogComponent {
+    private modal: NgbModal;
+    private toast = inject(ToastService);
+    private net = inject(NetService);
+    private evt = inject(EventService);
+    private auth = inject(AuthService);
+
 
     @Input() holdIds: number | number[];
     @ViewChild('successMsg', { static: true }) private successMsg: StringComponent;
@@ -34,13 +40,12 @@ export class HoldRetargetDialogComponent
     numSucceeded: number;
     numFailed: number;
 
-    constructor(
-        private modal: NgbModal, // required for passing to parent
-        private toast: ToastService,
-        private net: NetService,
-        private evt: EventService,
-        private auth: AuthService) {
+    constructor() {
+        const modal = inject(NgbModal);
+
         super(modal); // required for subclassing
+
+        this.modal = modal;
     }
 
     open(args: NgbModalOptions): Observable<boolean> {

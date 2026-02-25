@@ -1,4 +1,4 @@
-import {Component, ViewChild, OnInit} from '@angular/core';
+import { Component, ViewChild, OnInit, inject } from '@angular/core';
 import {Router, ActivatedRoute, RouterModule} from '@angular/router';
 import {Observable, of, map, tap} from 'rxjs';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
@@ -36,6 +36,16 @@ import { GridModule } from '@eg/share/grid/grid.module';
     ]
 })
 export class SipAccountComponent implements OnInit {
+    private route = inject(ActivatedRoute);
+    private router = inject(Router);
+    private idl = inject(IdlService);
+    private net = inject(NetService);
+    private auth = inject(AuthService);
+    private evt = inject(EventService);
+    private pcrud = inject(PcrudService);
+    private toast = inject(ToastService);
+    private strings = inject(StringService);
+
 
     accountId: number;
     account: IdlObject;
@@ -54,18 +64,6 @@ export class SipAccountComponent implements OnInit {
     @ViewChild('settingGrid') settingGrid: GridComponent;
     @ViewChild('deleteGroupDialog') deleteGroupDialog: DialogComponent;
     @ViewChild('passwordDialog') passwordDialog: PromptDialogComponent;
-
-    constructor(
-        private route: ActivatedRoute,
-        private router: Router,
-        private idl: IdlService,
-        private net: NetService,
-        private auth: AuthService,
-        private evt: EventService,
-        private pcrud: PcrudService,
-        private toast: ToastService,
-        private strings: StringService
-    ) {}
 
     ngOnInit() {
 

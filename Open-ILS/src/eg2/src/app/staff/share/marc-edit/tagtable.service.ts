@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {map, tap, distinct} from 'rxjs';
 import {StoreService} from '@eg/core/store.service';
 import {IdlObject} from '@eg/core/idl.service';
@@ -387,12 +387,10 @@ export class TagTableService {
     tagTables: {[marcRecordType: string]: TagTable} = {};
     controlledBibTags: string[];
 
-    constructor(
-        private store: StoreService,
-        private auth: AuthService,
-        private net: NetService,
-        private pcrud: PcrudService,
-    ) {}
+    private store = inject(StoreService);
+    private auth = inject(AuthService);
+    private net = inject(NetService);
+    private pcrud = inject(PcrudService);
 
     loadTags(selector: TagTableSelector): Promise<TagTable> {
         if (!selector.marcFormat) {

@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {Location} from '@angular/common';
 import {NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
@@ -9,16 +9,14 @@ import { StaffCommonModule } from '@eg/staff/common.module';
     imports: [StaffCommonModule]
 })
 export class FundsComponent implements OnInit {
+    private location = inject(Location);
+    private router = inject(Router);
+    private route = inject(ActivatedRoute);
+
 
     activeTab: string;
     fundId: number;
     fundingSourceId: number;
-
-    constructor(
-        private location: Location,
-        private router: Router,
-        private route: ActivatedRoute
-    ) {}
 
     ngOnInit() {
         this.route.paramMap.subscribe((params: ParamMap) => {

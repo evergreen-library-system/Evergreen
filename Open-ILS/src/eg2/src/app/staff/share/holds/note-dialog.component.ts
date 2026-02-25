@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import {IdlService} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
@@ -15,6 +15,10 @@ import { FormsModule } from '@angular/forms';
     ]
 })
 export class HoldNoteDialogComponent extends DialogComponent {
+    private modal: NgbModal;
+    private idl = inject(IdlService);
+    private pcrud = inject(PcrudService);
+
     pub = false;
     slip = false;
     title: string;
@@ -22,11 +26,11 @@ export class HoldNoteDialogComponent extends DialogComponent {
 
     @Input() holdId: number;
 
-    constructor(
-        private modal: NgbModal,
-        private idl: IdlService,
-        private pcrud: PcrudService
-    ) { super(modal); }
+    constructor() {
+        const modal = inject(NgbModal);
+        super(modal);
+        this.modal = modal;
+    }
 
     createNote() {
         const note = this.idl.create('ahrn');

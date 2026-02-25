@@ -8,7 +8,7 @@
  *
  */
 import { NgIf, NgTemplateOutlet } from '@angular/common';
-import {Component, Input, OnInit, ElementRef, TemplateRef} from '@angular/core';
+import { Component, Input, OnInit, ElementRef, TemplateRef, inject } from '@angular/core';
 import {StringService} from '@eg/share/string/string.service';
 
 @Component({
@@ -27,6 +27,9 @@ import {StringService} from '@eg/share/string/string.service';
 })
 
 export class StringComponent implements OnInit {
+    private elm = inject(ElementRef);
+    private strings = inject(StringService);
+
 
     // Storage key for future reference by the string service
     @Input() key: string;
@@ -41,7 +44,10 @@ export class StringComponent implements OnInit {
     // This supersedes 'template'
     @Input() text: string;
 
-    constructor(private elm: ElementRef, private strings: StringService) {
+    constructor() {
+        const elm = this.elm;
+        const strings = this.strings;
+
         this.elm = elm;
         this.strings = strings;
     }

@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import {Router, ActivatedRoute, RouterModule} from '@angular/router';
 import {CommonModule, Location} from '@angular/common';
 import {from, tap} from 'rxjs';
@@ -33,6 +33,14 @@ interface ReceiveResponse {
     ]
 })
 export class AsnReceiveComponent implements OnInit {
+    private route = inject(ActivatedRoute);
+    private router = inject(Router);
+    private ngLocation = inject(Location);
+    private pcrud = inject(PcrudService);
+    private net = inject(NetService);
+    private auth = inject(AuthService);
+    private li = inject(LineitemService);
+
 
     barcode = '';
     receiving = false;
@@ -53,16 +61,6 @@ export class AsnReceiveComponent implements OnInit {
     @ViewChild('progress') private progress: ProgressInlineComponent;
 
     gridDataSource: GridDataSource = new GridDataSource();
-
-    constructor(
-        private route: ActivatedRoute,
-        private router: Router,
-        private ngLocation: Location,
-        private pcrud: PcrudService,
-        private net: NetService,
-        private auth: AuthService,
-        private li: LineitemService
-    ) {}
 
     ngOnInit() {
         this.barcode = this.route.snapshot.paramMap.get('containerCode') || '';

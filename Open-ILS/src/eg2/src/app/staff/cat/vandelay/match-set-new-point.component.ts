@@ -1,4 +1,4 @@
-import {Component, OnInit, Input} from '@angular/core';
+import { Component, OnInit, Input, inject } from '@angular/core';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
@@ -23,6 +23,9 @@ export class MatchSetPointValues {
     imports: [StaffCommonModule]
 })
 export class MatchSetNewPointComponent implements OnInit {
+    private idl = inject(IdlService);
+    private pcrud = inject(PcrudService);
+
 
     public values: MatchSetPointValues;
 
@@ -44,10 +47,7 @@ export class MatchSetNewPointComponent implements OnInit {
         this.values.value = '';
     }
 
-    constructor(
-        private idl: IdlService,
-        private pcrud: PcrudService
-    ) {
+    constructor() {
         this.values = new MatchSetPointValues();
         this.bibAttrDefs = [];
         this.bibAttrDefEntries = [];

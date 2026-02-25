@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, ViewChild} from '@angular/core';
+import { Component, OnInit, Input, ViewChild, inject } from '@angular/core';
 import {Observable, switchMap, tap} from 'rxjs';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
@@ -26,6 +26,16 @@ const DEFAULT_BILLING_TYPE = 101; // Stock "Misc"
 
 export class AddBillingDialogComponent
     extends DialogComponent implements OnInit {
+    private modal: NgbModal;
+    private toast = inject(ToastService);
+    private net = inject(NetService);
+    private idl = inject(IdlService);
+    private evt = inject(EventService);
+    private pcrud = inject(PcrudService);
+    private billing = inject(BillingService);
+    private org = inject(OrgService);
+    private auth = inject(AuthService);
+
 
     @Input() xactId: number;
     @Input() newXact = false;
@@ -43,17 +53,12 @@ export class AddBillingDialogComponent
     @ViewChild('errorMsg') private errorMsg: StringComponent;
     @ViewChild('bTypeCbox') private bTypeCbox: ComboboxComponent;
 
-    constructor(
-        private modal: NgbModal, // required for passing to parent
-        private toast: ToastService,
-        private net: NetService,
-        private idl: IdlService,
-        private evt: EventService,
-        private pcrud: PcrudService,
-        private billing: BillingService,
-        private org: OrgService,
-        private auth: AuthService) {
+    constructor() {
+        const modal = inject(NgbModal);
+
         super(modal);
+
+        this.modal = modal;
     }
 
     ngOnInit() {

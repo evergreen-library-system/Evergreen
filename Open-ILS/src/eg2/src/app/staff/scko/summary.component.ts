@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import {SckoService} from './scko.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -15,13 +15,11 @@ import { RouterModule } from '@angular/router';
 })
 
 export class SckoSummaryComponent implements OnInit {
+    scko = inject(SckoService);
+
 
     showEmailOption = false;
     receiptType = 'email';
-
-    constructor(
-        public scko: SckoService
-    ) {}
 
     ngOnInit() {
         this.scko.patronLoaded.subscribe(() => {

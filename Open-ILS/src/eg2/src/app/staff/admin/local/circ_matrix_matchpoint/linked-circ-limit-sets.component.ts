@@ -1,6 +1,6 @@
 
 
-import {Component, OnInit, Input, Output, EventEmitter, ViewChild} from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild, inject } from '@angular/core';
 import { IdlService} from '@eg/core/idl.service';
 import { ComboboxComponent } from '@eg/share/combobox/combobox.component';
 import { StaffCommonModule } from '@eg/staff/common.module';
@@ -19,6 +19,8 @@ class LinkedLimitSetObjects {
 })
 
 export class LinkedCircLimitSetsComponent implements OnInit {
+    private idl = inject(IdlService);
+
 
     @Input() usedSetLimitList = {};
     @Input() limitSetNames = {};
@@ -29,9 +31,7 @@ export class LinkedCircLimitSetsComponent implements OnInit {
 
     @ViewChild('combobox') combobox: ComboboxComponent;
 
-    constructor(
-        private idl: IdlService,
-    ) {
+    constructor() {
         this.outputLinkedLimitSet = new EventEmitter();
     }
 

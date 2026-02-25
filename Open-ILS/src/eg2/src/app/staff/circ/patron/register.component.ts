@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import {Location} from '@angular/common';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {EventService} from '@eg/core/event.service';
@@ -23,22 +23,20 @@ import { WorkLogStringsComponent } from '@eg/staff/share/worklog/strings.compone
     ]
 })
 export class RegisterPatronComponent implements OnInit {
+    private router = inject(Router);
+    private route = inject(ActivatedRoute);
+    private evt = inject(EventService);
+    private net = inject(NetService);
+    private auth = inject(AuthService);
+    private org = inject(OrgService);
+    private pcrud = inject(PcrudService);
+    private ngLocation = inject(Location);
+    private patronService = inject(PatronService);
+    private context = inject(PatronContextService);
+
 
     stageUsername: string;
     cloneId: number;
-
-    constructor(
-        private router: Router,
-        private route: ActivatedRoute,
-        private evt: EventService,
-        private net: NetService,
-        private auth: AuthService,
-        private org: OrgService,
-        private pcrud: PcrudService,
-        private ngLocation: Location,
-        private patronService: PatronService,
-        private context: PatronContextService
-    ) {}
 
     ngOnInit() {
         this.route.paramMap.subscribe((params: ParamMap) => {

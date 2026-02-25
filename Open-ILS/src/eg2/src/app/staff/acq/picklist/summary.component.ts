@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {FormatService} from '@eg/core/format.service';
@@ -23,6 +23,18 @@ import { FormsModule } from '@angular/forms';
     ]
 })
 export class PicklistSummaryComponent implements OnInit {
+    private idl = inject(IdlService);
+    private net = inject(NetService);
+    private format = inject(FormatService);
+    private evt = inject(EventService);
+    private org = inject(OrgService);
+    private pcrud = inject(PcrudService);
+    private auth = inject(AuthService);
+    private store = inject(StoreService);
+    private serverStore = inject(ServerStoreService);
+    private broadcaster = inject(BroadcastService);
+    private holdingSvc = inject(HoldingsService);
+
 
     private _picklistId: number;
     @Input() set picklistId(id: number) {
@@ -42,20 +54,6 @@ export class PicklistSummaryComponent implements OnInit {
     newPlName: string;
     editPlName = false;
     initDone = false;
-
-    constructor(
-        private idl: IdlService,
-        private net: NetService,
-        private format: FormatService,
-        private evt: EventService,
-        private org: OrgService,
-        private pcrud: PcrudService,
-        private auth: AuthService,
-        private store: StoreService,
-        private serverStore: ServerStoreService,
-        private broadcaster: BroadcastService,
-        private holdingSvc: HoldingsService
-    ) {}
 
     ngOnInit() {
         this.load().then(_ => this.initDone = true);

@@ -1,4 +1,4 @@
-import {Component, OnDestroy} from '@angular/core';
+import { Component, OnDestroy, inject } from '@angular/core';
 import {SckoService} from './scko.service';
 import { CommonModule } from '@angular/common';
 import { DueDatePipe } from '@eg/core/format.service';
@@ -9,10 +9,8 @@ import { DueDatePipe } from '@eg/core/format.service';
 })
 
 export class SckoCheckoutComponent implements OnDestroy {
+    scko = inject(SckoService);
 
-    constructor(
-        public  scko: SckoService
-    ) {}
 
     ngOnDestroy() {
         // Removew checkout errors when navigating away.

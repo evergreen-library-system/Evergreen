@@ -2,7 +2,7 @@
  * <eg-multi-select idlClass="acpl" linkedLibraryLabel="owning_lib" idlKey="id">
  * </eg-multi-select>
  */
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, inject } from '@angular/core';
 import { map } from 'rxjs';
 import { PcrudService } from '@eg/core/pcrud.service';
 import { IdlService } from '@eg/core/idl.service';
@@ -30,6 +30,10 @@ import { NgFor, NgIf } from '@angular/common';
     ]
 })
 export class MultiSelectComponent implements OnInit {
+    private pcrud = inject(PcrudService);
+    private org = inject(OrgService);
+    private idl = inject(IdlService);
+
 
     selected: ComboboxEntry;
     entrylist: ComboboxEntry[];
@@ -50,11 +54,7 @@ export class MultiSelectComponent implements OnInit {
     acplContextOrgId: number;
     acplIncludeDescendants: boolean;
 
-    constructor(
-        private pcrud: PcrudService,
-        private org: OrgService,
-        private idl: IdlService,
-    ) {
+    constructor() {
         this.entrylist = [];
         this.onChange = new EventEmitter<string>();
     }

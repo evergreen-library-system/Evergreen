@@ -2,7 +2,7 @@
 /**
  * Common code for mananging holdings
  */
-import {Injectable} from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import {IdlObject} from '@eg/core/idl.service';
 import {tap} from 'rxjs';
 import {NetService} from '@eg/core/net.service';
@@ -21,16 +21,14 @@ export interface CallNumData {
 
 @Injectable()
 export class HoldingsService {
+    private net = inject(NetService);
+    private auth = inject(AuthService);
+    private pcrud = inject(PcrudService);
+    private evt = inject(EventService);
+    private anonCache = inject(AnonCacheService);
+
 
     copyStatuses: {[id: number]: IdlObject};
-
-    constructor(
-        private net: NetService,
-        private auth: AuthService,
-        private pcrud: PcrudService,
-        private evt: EventService,
-        private anonCache: AnonCacheService
-    ) {}
 
     // Open the holdings editor UI in a new browser window/tab.
     spawnAddHoldingsUi(

@@ -1,4 +1,5 @@
-import {Component, Input, Output, OnInit, EventEmitter, ViewChild, AfterContentInit, ContentChild} from '@angular/core';
+import {Component, Input, Output, OnInit, EventEmitter, ViewChild, AfterContentInit, ContentChild, inject} from '@angular/core';
+import {IdlService} from '@eg/core/idl.service';
 import {EventService} from '@eg/core/event.service';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
@@ -53,6 +54,16 @@ export interface MarcSavedEvent {
 })
 
 export class MarcEditorComponent implements OnInit, AfterContentInit {
+    private evt = inject(EventService);
+    private idl = inject(IdlService);
+    private net = inject(NetService);
+    private auth = inject(AuthService);
+    private org = inject(OrgService);
+    private pcrud = inject(PcrudService);
+    private toast = inject(ToastService);
+    private holdings = inject(HoldingsService);
+    private store = inject(ServerStoreService);
+
 
     editorTab: 'rich' | 'flat';
     sources: ComboboxEntry[];
@@ -119,15 +130,7 @@ export class MarcEditorComponent implements OnInit, AfterContentInit {
     initCalled = false;
     private fastAddIntent: Maybe<FastAddItem> = new None();
 
-    constructor(
-        private evt: EventService,
-        private net: NetService,
-        private auth: AuthService,
-        private pcrud: PcrudService,
-        private toast: ToastService,
-        private holdings: HoldingsService,
-        private store: ServerStoreService
-    ) {
+    constructor() {
         this.sources = [];
         this.recordSaved = new EventEmitter<MarcSavedEvent>();
         this.context = new MarcEditContext();

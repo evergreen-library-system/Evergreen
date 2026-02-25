@@ -1,11 +1,11 @@
-import { Component, OnInit, AfterViewInit, QueryList, ViewChildren, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, AfterViewInit, QueryList, ViewChildren, ViewChild, OnDestroy, inject } from '@angular/core';
 import {FormGroup, FormControl, ValidationErrors, ValidatorFn, FormArray, ReactiveFormsModule} from '@angular/forms';
 import {Router, ActivatedRoute} from '@angular/router';
 import {iif, Observable, of, throwError, timer, Subscription, catchError, debounceTime,
     takeLast, mapTo, single, switchMap, tap} from 'rxjs';
 import {NgbCalendar, NgbNav, NgbNavModule, NgbTimepicker} from '@ng-bootstrap/ng-bootstrap';
 import {AuthService} from '@eg/core/auth.service';
-import {ComboboxComponent, ComboboxEntry} from '@eg/share/combobox/combobox.component';
+import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {FormatService} from '@eg/core/format.service';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {GridDataSource, GridRowFlairEntry, GridCellTextGenerator} from '@eg/share/grid/grid';
@@ -21,12 +21,9 @@ import {ScheduleGridService, ScheduleRow} from './schedule-grid.service';
 import {NoTimezoneSetComponent} from './no-timezone-set.component';
 
 import moment from 'moment-timezone';
-import { StaffBannerComponent } from '../share/staff-banner.component';
-import { TitleComponent } from '@eg/share/title/title.component';
-import { CommonModule, NgFor, NgIf } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { DateSelectComponent } from '@eg/share/date-select/date-select.component';
 import { OrgFamilySelectComponent } from '@eg/share/org-family-select/org-family-select.component';
-import { ComboboxEntryComponent } from '@eg/share/combobox/combobox-entry.component';
 import { GridModule } from '@eg/share/grid/grid.module';
 import { StaffCommonModule } from '../common.module';
 
@@ -59,6 +56,17 @@ const startOfDayIsBeforeEndOfDayValidator: ValidatorFn = (fg: FormGroup): Valida
     ]
 })
 export class CreateReservationComponent implements OnInit, AfterViewInit, OnDestroy {
+    private auth = inject(AuthService);
+    private calendar = inject(NgbCalendar);
+    private format = inject(FormatService);
+    private net = inject(NetService);
+    private pcrud = inject(PcrudService);
+    private route = inject(ActivatedRoute);
+    private router = inject(Router);
+    private scheduleService = inject(ScheduleGridService);
+    private store = inject(ServerStoreService);
+    private toast = inject(ToastService);
+
 
     criteria: FormGroup;
 
@@ -98,20 +106,6 @@ export class CreateReservationComponent implements OnInit, AfterViewInit, OnDest
     @ViewChild('noTimezoneSetDialog', { static: true }) noTimezoneSetDialog: NoTimezoneSetComponent;
     @ViewChild('viewReservation', { static: true }) viewReservation: FmRecordEditorComponent;
     @ViewChildren('scheduleGrid') scheduleGrids: QueryList<GridComponent>;
-
-    constructor(
-        private auth: AuthService,
-        private calendar: NgbCalendar,
-        private format: FormatService,
-        private net: NetService,
-        private pcrud: PcrudService,
-        private route: ActivatedRoute,
-        private router: Router,
-        private scheduleService: ScheduleGridService,
-        private store: ServerStoreService,
-        private toast: ToastService,
-    ) {
-    }
 
     ngOnInit() {
         if (!(this.format.wsOrgTimezone)) {

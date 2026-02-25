@@ -1,4 +1,4 @@
-import {Component, OnInit, Input} from '@angular/core';
+import { Component, OnInit, Input, inject } from '@angular/core';
 import {OrgService} from '@eg/core/org.service';
 import {IdlObject} from '@eg/core/idl.service';
 import {PrintService} from '@eg/share/print/print.service';
@@ -16,6 +16,11 @@ import { RouterModule } from '@angular/router';
     ]
 })
 export class PatronSummaryComponent implements OnInit {
+    private org = inject(OrgService);
+    private printer = inject(PrintService);
+    private serverStore = inject(ServerStoreService);
+    patronService = inject(PatronService);
+
 
     private _summary: PatronSummary;
     @Input() set summary(s: PatronSummary) {
@@ -34,13 +39,6 @@ export class PatronSummaryComponent implements OnInit {
     penalties = 0;
 
     @Input() showSummaryPane = true;
-
-    constructor(
-        private org: OrgService,
-        private printer: PrintService,
-        private serverStore: ServerStoreService,
-        public patronService: PatronService
-    ) {}
 
     ngOnInit() {
         this.serverStore.getItem('circ.obscure_dob').then(hide => {

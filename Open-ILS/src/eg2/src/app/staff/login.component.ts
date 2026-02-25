@@ -1,10 +1,4 @@
-import {
-    Component,
-    ElementRef,
-    OnInit,
-    Renderer2,
-    ViewChild
-} from '@angular/core';
+import { Component, ElementRef, OnInit, Renderer2, ViewChild, inject } from '@angular/core';
 import {Location, NgClass, NgIf} from '@angular/common';
 import {Router, ActivatedRoute} from '@angular/router';
 import {AuthService, AuthWsState} from '@eg/core/auth.service';
@@ -25,6 +19,15 @@ import { FormsModule } from '@angular/forms';
     ]
 })
 export class StaffLoginComponent implements OnInit {
+    private router = inject(Router);
+    private route = inject(ActivatedRoute);
+    private ngLocation = inject(Location);
+    private renderer = inject(Renderer2);
+    private auth = inject(AuthService);
+    private org = inject(OrgService);
+    private store = inject(StoreService);
+    private offline = inject(OfflineService);
+
 
     @ViewChild('password')
         passwordInput: ElementRef;
@@ -44,17 +47,6 @@ export class StaffLoginComponent implements OnInit {
         workstation : '',
         type : 'staff'
     };
-
-    constructor(
-      private router: Router,
-      private route: ActivatedRoute,
-      private ngLocation: Location,
-      private renderer: Renderer2,
-      private auth: AuthService,
-      private org: OrgService,
-      private store: StoreService,
-      private offline: OfflineService
-    ) {}
 
     ngOnInit() {
         this.activeLogout = !!this.route.snapshot.queryParamMap.get('activeLogout');

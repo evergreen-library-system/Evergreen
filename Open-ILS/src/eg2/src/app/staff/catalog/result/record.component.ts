@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy, Input, ViewChild} from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, ViewChild, inject } from '@angular/core';
 import {Subject, BehaviorSubject, Subscription, lastValueFrom, EMPTY, Observable,
     catchError, takeUntil} from 'rxjs';
 import {Router} from '@angular/router';
@@ -23,6 +23,16 @@ import { StaffCommonModule } from '@eg/staff/common.module';
     imports: [StaffCommonModule]
 })
 export class ResultRecordComponent implements OnInit, OnDestroy {
+    private router = inject(Router);
+    private cat = inject(CatalogService);
+    private catUrl = inject(CatalogUrlService);
+    private staffCat = inject(StaffCatalogService);
+    private basket = inject(BasketService);
+    private course = inject(CourseService);
+    private bucketService = inject(BucketService);
+    private auth = inject(AuthService);
+    private toast = inject(ToastService);
+
 
     @ViewChild('addRecordToBucketDialog', { static: true })
         addToBucketDialog: BucketDialogComponent;
@@ -48,18 +58,6 @@ export class ResultRecordComponent implements OnInit, OnDestroy {
     favoriteBucketIds: number[] = [];
     recentBucketIds: number[] = [];
     recordIds: number[] = [];
-
-    constructor(
-        private router: Router,
-        private cat: CatalogService,
-        private catUrl: CatalogUrlService,
-        private staffCat: StaffCatalogService,
-        private basket: BasketService,
-        private course: CourseService,
-        private bucketService: BucketService,
-        private auth: AuthService,
-        private toast: ToastService,
-    ) {}
 
     async ngOnInit() {
         this.searchContext = this.staffCat.searchContext;

@@ -1,4 +1,4 @@
-import {Component, OnInit, AfterViewInit, Directive, ElementRef, ViewChild} from '@angular/core';
+import { Component, OnInit, AfterViewInit, Directive, ElementRef, ViewChild, inject } from '@angular/core';
 import {OrgService} from '@eg/core/org.service';
 import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';
@@ -22,19 +22,17 @@ import { FormsModule } from '@angular/forms';
 })
 
 export class StaffSplashComponent implements OnInit {
+    private pcrud = inject(PcrudService);
+    private auth = inject(AuthService);
+    private org = inject(OrgService);
+    private router = inject(Router);
+    private toast = inject(ToastService);
+
 
     @ViewChild('noPermissionString', { static: true }) noPermissionString: StringComponent;
     catSearchQuery: string;
     portalEntries: any[][] = [];
     portalHeaders: any[] = [];
-
-    constructor(
-        private pcrud: PcrudService,
-        private auth: AuthService,
-        private org: OrgService,
-        private router: Router,
-        private toast: ToastService
-    ) {}
 
     ngOnInit() {
         const tmpPortalEntries: any[][] = [];
@@ -123,7 +121,8 @@ export class StaffSplashComponent implements OnInit {
     selector: '[egAutofocus]'
 })
 export class AutofocusDirective implements AfterViewInit {
-    constructor(private host: ElementRef) {}
+    private host = inject(ElementRef);
+
 
     ngAfterViewInit() {
         this.host.nativeElement.focus();

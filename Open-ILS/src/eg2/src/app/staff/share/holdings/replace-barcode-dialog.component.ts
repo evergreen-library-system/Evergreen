@@ -1,4 +1,4 @@
-import {Component, Input, ViewChild, Renderer2} from '@angular/core';
+import { Component, Input, ViewChild, Renderer2, inject } from '@angular/core';
 import {Observable, switchMap, map, tap} from 'rxjs';
 import {AuthService} from '@eg/core/auth.service';
 import {IdlObject} from '@eg/core/idl.service';
@@ -27,6 +27,14 @@ import { CommonModule } from '@angular/common';
 
 export class ReplaceBarcodeDialogComponent
     extends DialogComponent {
+    private modal: NgbModal;
+    private toast = inject(ToastService);
+    private auth = inject(AuthService);
+    private net = inject(NetService);
+    private evt = inject(EventService);
+    private pcrud = inject(PcrudService);
+    private renderer = inject(Renderer2);
+
 
     @Input() copyIds: number[];
     ids: number[]; // copy of list so we can pop()
@@ -44,15 +52,12 @@ export class ReplaceBarcodeDialogComponent
     @ViewChild('errorMsg', { static: true })
     private errorMsg: StringComponent;
 
-    constructor(
-        private modal: NgbModal, // required for passing to parent
-        private toast: ToastService,
-        private auth: AuthService,
-        private net: NetService,
-        private evt: EventService,
-        private pcrud: PcrudService,
-        private renderer: Renderer2) {
+    constructor() {
+        const modal = inject(NgbModal);
+
         super(modal); // required for subclassing
+
+        this.modal = modal;
     }
 
     open(args: NgbModalOptions): Observable<boolean> {

@@ -1,5 +1,5 @@
 /* eslint-disable no-self-assign, no-magic-numbers */
-import {Component, Input, OnInit, OnDestroy, ViewChild} from '@angular/core';
+import { Component, Input, OnInit, OnDestroy, ViewChild, inject } from '@angular/core';
 import {Router, RouterModule} from '@angular/router';
 import {Subscription, tap} from 'rxjs';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
@@ -43,6 +43,17 @@ const PO_ACTIVATION_WARNINGS = [
     ]
 })
 export class PoSummaryComponent implements OnInit, OnDestroy {
+    private router = inject(Router);
+    private evt = inject(EventService);
+    private idl = inject(IdlService);
+    private net = inject(NetService);
+    private org = inject(OrgService);
+    private pcrud = inject(PcrudService);
+    private auth = inject(AuthService);
+    private store = inject(ServerStoreService);
+    private liService = inject(LineitemService);
+    private poService = inject(PoService);
+
 
     private _poId: number;
     @Input() set poId(id: number) {
@@ -80,19 +91,6 @@ export class PoSummaryComponent implements OnInit, OnDestroy {
     @ViewChild('progressDialog') progressDialog: ProgressDialogComponent;
     @ViewChild('confirmFinalize') confirmFinalize: ConfirmDialogComponent;
     @ViewChild('confirmActivate') confirmActivate: ConfirmDialogComponent;
-
-    constructor(
-        private router: Router,
-        private evt: EventService,
-        private idl: IdlService,
-        private net: NetService,
-        private org: OrgService,
-        private pcrud: PcrudService,
-        private auth: AuthService,
-        private store: ServerStoreService,
-        private liService: LineitemService,
-        private poService: PoService
-    ) {}
 
     ngOnInit() {
         this.load().then(_ => this.initDone = true);

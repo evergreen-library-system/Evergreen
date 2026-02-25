@@ -9,7 +9,7 @@
  * 3. LoginItem: Stored as session cookies and persist until the browser
  *    is closed.  These values are avalable to all browser windows/tabs.
  */
-import {Injectable} from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import {CookieService} from 'ngx-cookie';
 import {HatchService} from './hatch.service';
 
@@ -18,6 +18,9 @@ const WS_DEF_KEY = 'eg.workstation.default';
 
 @Injectable({providedIn: 'root'})
 export class StoreService {
+    private cookieService = inject(CookieService);
+    private hatch = inject(HatchService);
+
 
     // Base path for cookie-based storage.
     // Useful for limiting cookies to subsections of the application.
@@ -34,11 +37,6 @@ export class StoreService {
         'eg.auth.token.oc',
         'eg.auth.time.oc'
     ];
-
-    constructor(
-        private cookieService: CookieService,
-        private hatch: HatchService) {
-    }
 
     private parseJson(valJson: string): any {
         if (valJson === undefined || valJson === null || valJson === '') {

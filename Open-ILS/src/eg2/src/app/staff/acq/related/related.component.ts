@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import {Router, ActivatedRoute, ParamMap, RouterModule} from '@angular/router';
 import {tap} from 'rxjs';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
@@ -26,6 +26,14 @@ import { CommonModule } from '@angular/common';
     ]
 })
 export class RelatedComponent implements OnInit {
+    private router = inject(Router);
+    private route = inject(ActivatedRoute);
+    private idl = inject(IdlService);
+    private evt = inject(EventService);
+    private net = inject(NetService);
+    private auth = inject(AuthService);
+    private pcrud = inject(PcrudService);
+
 
     recordId: number;
     addingToPl = false;
@@ -35,16 +43,6 @@ export class RelatedComponent implements OnInit {
 
     @ViewChild('newPlDialog') newPlDialog: PromptDialogComponent;
     @ViewChild('plNameExists') plNameExists: AlertDialogComponent;
-
-    constructor(
-        private router: Router,
-        private route: ActivatedRoute,
-        private idl: IdlService,
-        private evt: EventService,
-        private net: NetService,
-        private auth: AuthService,
-        private pcrud: PcrudService
-    ) {}
 
     ngOnInit() {
         this.route.paramMap.subscribe((params: ParamMap) => {

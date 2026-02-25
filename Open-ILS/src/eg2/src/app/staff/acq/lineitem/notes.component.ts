@@ -1,4 +1,4 @@
-import {Component, OnInit, AfterViewInit, Input, Output, EventEmitter} from '@angular/core';
+import { Component, OnInit, AfterViewInit, Input, Output, EventEmitter, inject } from '@angular/core';
 import {Observable} from 'rxjs';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
@@ -18,6 +18,11 @@ import { FormsModule } from '@angular/forms';
     ]
 })
 export class LineitemNotesComponent implements OnInit, AfterViewInit {
+    private idl = inject(IdlService);
+    private org = inject(OrgService);
+    private auth = inject(AuthService);
+    private net = inject(NetService);
+
 
     @Input() lineitem: IdlObject;
     noteText: string;
@@ -27,13 +32,6 @@ export class LineitemNotesComponent implements OnInit, AfterViewInit {
     owners: number[];
 
     @Output() closeRequested: EventEmitter<void> = new EventEmitter<void>();
-
-    constructor(
-        private idl: IdlService,
-        private org: OrgService,
-        private auth: AuthService,
-        private net: NetService
-    ) {}
 
     ngOnInit() {
         this.owners = this.org.ancestors(this.auth.user().ws_ou(), true);

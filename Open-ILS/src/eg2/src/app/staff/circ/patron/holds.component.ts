@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {Router} from '@angular/router';
 import {PatronService} from '@eg/staff/share/patron/patron.service';
 import {PatronContextService} from './patron.service';
@@ -17,13 +17,11 @@ const HOLD_FOR_PATRON_KEY = 'eg.circ.patron_hold_target';
     ]
 })
 export class HoldsComponent {
+    private router = inject(Router);
+    private store = inject(StoreService);
+    patronService = inject(PatronService);
+    context = inject(PatronContextService);
 
-    constructor(
-        private router: Router,
-        private store: StoreService,
-        public patronService: PatronService,
-        public context: PatronContextService
-    ) {}
 
     newHold() {
 

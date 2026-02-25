@@ -1,5 +1,5 @@
 /* eslint-disable no-cond-assign */
-import {Injectable} from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import {ParamMap} from '@angular/router';
 import {OrgService} from '@eg/core/org.service';
 import {CatalogSearchContext, FacetFilter, CATALOG_CCVM_FILTERS} from './search-context';
@@ -7,10 +7,8 @@ import {HashParams} from '@eg/share/util/hash-params';
 
 @Injectable()
 export class CatalogUrlService {
+    private org = inject(OrgService);
 
-    // consider supporting a param name prefix/namespace
-
-    constructor(private org: OrgService) { }
 
     /**
      * Returns a URL query structure suitable for using with

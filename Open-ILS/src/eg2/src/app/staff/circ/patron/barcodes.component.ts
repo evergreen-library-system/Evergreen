@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import {Observable} from 'rxjs';
 import {IdlObject} from '@eg/core/idl.service';
 import {ToastService} from '@eg/share/toast/toast.service';
@@ -19,6 +19,10 @@ const PERMS = ['UPDATE_PATRON_ACTIVE_CARD', 'UPDATE_PATRON_PRIMARY_CARD'];
 })
 
 export class PatronBarcodesDialogComponent extends DialogComponent {
+    private modal: NgbModal;
+    private toast = inject(ToastService);
+    private perms = inject(PermService);
+
 
     // Localized strings for template (JIT-compatible)
     deletionRequirementsTitle = $localize`Deletion Requirements`;
@@ -42,11 +46,11 @@ export class PatronBarcodesDialogComponent extends DialogComponent {
     private backendActive: WeakMap<IdlObject, string> = new WeakMap();
     private origPrimaryCard: number;
 
-    constructor(
-        private modal: NgbModal,
-        private toast: ToastService,
-        private perms: PermService
-    ) { super(modal); }
+    constructor() {
+        const modal = inject(NgbModal);
+        super(modal);
+        this.modal = modal;
+    }
 
     open(ops: NgbModalOptions): Observable<any> {
         this.primaryCard = this.patron.card().id();

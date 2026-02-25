@@ -1,4 +1,4 @@
-import {Component, Input, Output, OnInit, Host, TemplateRef, EventEmitter} from '@angular/core';
+import { Component, Input, Output, OnInit, TemplateRef, EventEmitter, inject } from '@angular/core';
 import {ButtonStyle, ButtonStyleDirective} from '@eg/share/util/button-style.directive';
 import {GridToolbarButton} from './grid';
 import {GridComponent} from './grid.component';
@@ -9,6 +9,8 @@ import {GridComponent} from './grid.component';
 })
 
 export class GridToolbarButtonComponent implements OnInit {
+    private grid = inject(GridComponent, { host: true });
+
 
     // Note most input fields should match class fields for GridColumn
     @Input() label: string;
@@ -47,7 +49,7 @@ export class GridToolbarButtonComponent implements OnInit {
     button: GridToolbarButton;
 
     // get a reference to our container grid.
-    constructor(@Host() private grid: GridComponent) {
+    constructor() {
         this.onClick = new EventEmitter<any>();
         this.button = new GridToolbarButton();
     }

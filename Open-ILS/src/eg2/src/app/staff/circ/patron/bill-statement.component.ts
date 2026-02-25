@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import { Component, Input, OnInit, ViewChild, inject } from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 import {IdlObject} from '@eg/core/idl.service';
 import {EventService} from '@eg/core/event.service';
@@ -27,6 +27,22 @@ import { StaffCommonModule } from '@eg/staff/common.module';
     imports: [StaffCommonModule]
 })
 export class BillStatementComponent implements OnInit {
+    private router = inject(Router);
+    private route = inject(ActivatedRoute);
+    private audio = inject(AudioService);
+    private toast = inject(ToastService);
+    private org = inject(OrgService);
+    private evt = inject(EventService);
+    private net = inject(NetService);
+    private pcrud = inject(PcrudService);
+    private auth = inject(AuthService);
+    private printer = inject(PrintService);
+    private serverStore = inject(ServerStoreService);
+    private circ = inject(CircService);
+    private billing = inject(BillingService);
+    patronService = inject(PatronService);
+    context = inject(PatronContextService);
+
 
     @Input() patronId: number;
     @Input() xactId: number;
@@ -42,24 +58,6 @@ export class BillStatementComponent implements OnInit {
     @ViewChild('billingGrid') private billingGrid: GridComponent;
     @ViewChild('noteDialog') private noteDialog: PromptDialogComponent;
     @ViewChild('voidBillsDialog') private voidBillsDialog: ConfirmDialogComponent;
-
-    constructor(
-        private router: Router,
-        private route: ActivatedRoute,
-        private audio: AudioService,
-        private toast: ToastService,
-        private org: OrgService,
-        private evt: EventService,
-        private net: NetService,
-        private pcrud: PcrudService,
-        private auth: AuthService,
-        private printer: PrintService,
-        private serverStore: ServerStoreService,
-        private circ: CircService,
-        private billing: BillingService,
-        public patronService: PatronService,
-        public context: PatronContextService
-    ) {}
 
     ngOnInit() {
 

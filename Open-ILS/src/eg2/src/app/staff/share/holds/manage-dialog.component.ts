@@ -1,4 +1,4 @@
-import {Component, OnInit, Input} from '@angular/core';
+import { Component, OnInit, Input, inject } from '@angular/core';
 import {Observable} from 'rxjs';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
@@ -20,12 +20,17 @@ import { HoldManageComponent } from './manage.component';
 
 export class HoldManageDialogComponent
     extends DialogComponent implements OnInit {
+    private modal: NgbModal;
+
 
     @Input() holdIds: number[];
 
-    constructor(
-        private modal: NgbModal) { // required for passing to parent
+    constructor() {
+        const modal = inject(NgbModal);
+        // required for passing to parent
         super(modal); // required for subclassing
+
+        this.modal = modal;
     }
 
     open(args: NgbModalOptions): Observable<boolean> {

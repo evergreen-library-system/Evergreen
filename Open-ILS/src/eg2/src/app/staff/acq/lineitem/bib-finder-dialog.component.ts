@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import {Observable} from 'rxjs';
 import {NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
@@ -23,6 +23,12 @@ import { MarcHtmlComponent } from '@eg/share/catalog/marc-html.component';
 })
 
 export class BibFinderDialogComponent extends DialogComponent {
+    private modal: NgbModal;
+    private net = inject(NetService);
+    private evt = inject(EventService);
+    private bib = inject(BibRecordService);
+    private liService = inject(LineitemService);
+
     @Input() liId: number;
 
     queryString: string;
@@ -31,14 +37,12 @@ export class BibFinderDialogComponent extends DialogComponent {
     doingSearch = false;
     bibToDisplay: number;
 
-    constructor(
-        private modal: NgbModal,
-        private net: NetService,
-        private evt: EventService,
-        private bib: BibRecordService,
-        private liService: LineitemService
-    ) {
+    constructor() {
+        const modal = inject(NgbModal);
+
         super(modal);
+
+        this.modal = modal;
     }
 
     open(args?: NgbModalOptions): Observable<any> {

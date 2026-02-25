@@ -1,4 +1,4 @@
-import {Component, Input, Output, EventEmitter, ViewChild} from '@angular/core';
+import { Component, Input, Output, EventEmitter, ViewChild, inject } from '@angular/core';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {ReporterService} from '../share/reporter.service';
 import { StaffCommonModule } from '@eg/staff/common.module';
@@ -11,6 +11,9 @@ import { StaffCommonModule } from '@eg/staff/common.module';
 })
 
 export class SRFieldChooserComponent {
+    private idl = inject(IdlService);
+    private srSvc = inject(ReporterService);
+
 
     @Input() fieldType = 'display';
     @Input() allFields: IdlObject[] = [];
@@ -20,12 +23,6 @@ export class SRFieldChooserComponent {
     @Input() selectedFields: IdlObject[] = [];
     @Output() selectedFieldsChange = new EventEmitter<IdlObject[]>();
     @Input() listFields: IdlObject[] = [];
-
-    constructor(
-        private idl: IdlService,
-        private srSvc: ReporterService
-    ) {
-    }
 
     fieldIsSelected(field: IdlObject) {
         return this.selectedFields.findIndex(el => el.name === field.name) > -1;

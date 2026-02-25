@@ -1,4 +1,4 @@
-import {Component, OnInit, Input} from '@angular/core';
+import { Component, OnInit, Input, inject } from '@angular/core';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {EventService} from '@eg/core/event.service';
@@ -22,23 +22,28 @@ import { StaffCommonModule } from '@eg/staff/common.module';
 
 export class CreditCardDialogComponent
     extends DialogComponent implements OnInit {
+    private modal: NgbModal;
+    private toast = inject(ToastService);
+    private net = inject(NetService);
+    private idl = inject(IdlService);
+    private evt = inject(EventService);
+    private pcrud = inject(PcrudService);
+    private org = inject(OrgService);
+    private serverStore = inject(ServerStoreService);
+    private auth = inject(AuthService);
+
 
     @Input() patron: IdlObject; // au, fleshed with billing address
     args: CreditCardPaymentParams;
     supportsExternal: boolean;
     thisYear = new Date().getFullYear();
 
-    constructor(
-        private modal: NgbModal,
-        private toast: ToastService,
-        private net: NetService,
-        private idl: IdlService,
-        private evt: EventService,
-        private pcrud: PcrudService,
-        private org: OrgService,
-        private serverStore: ServerStoreService,
-        private auth: AuthService) {
+    constructor() {
+        const modal = inject(NgbModal);
+
         super(modal);
+
+        this.modal = modal;
     }
 
     ngOnInit() {

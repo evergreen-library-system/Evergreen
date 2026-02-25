@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import { Component, Input, OnInit, ViewChild, inject } from '@angular/core';
 import {Location} from '@angular/common';
 import {Router} from '@angular/router';
 import {from, concatMap} from 'rxjs';
@@ -23,6 +23,16 @@ import { StaffCommonModule } from '@eg/staff/common.module';
     imports: [StaffCommonModule]
 })
 export class PatronGroupComponent implements OnInit {
+    private router = inject(Router);
+    private evt = inject(EventService);
+    private net = inject(NetService);
+    private auth = inject(AuthService);
+    private org = inject(OrgService);
+    private pcrud = inject(PcrudService);
+    private ngLocation = inject(Location);
+    private patronService = inject(PatronService);
+    private context = inject(PatronContextService);
+
 
     @Input() patronId: number;
     patrons: IdlObject[] = [];
@@ -37,18 +47,6 @@ export class PatronGroupComponent implements OnInit {
     @ViewChild('groupGrid') private groupGrid: GridComponent;
     @ViewChild('moveToGroupDialog') private moveToGroupDialog: PromptDialogComponent;
     @ViewChild('userNotFoundDialog') private userNotFoundDialog: AlertDialogComponent;
-
-    constructor(
-        private router: Router,
-        private evt: EventService,
-        private net: NetService,
-        private auth: AuthService,
-        private org: OrgService,
-        private pcrud: PcrudService,
-        private ngLocation: Location,
-        private patronService: PatronService,
-        private context: PatronContextService
-    ) {}
 
     ngOnInit() {
 

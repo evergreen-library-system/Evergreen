@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import { StaffCommonModule } from '@eg/staff/common.module';
@@ -10,6 +10,8 @@ import { StaffCommonModule } from '@eg/staff/common.module';
 })
 
 export class RecordBucketExportDialogComponent extends DialogComponent {
+    private modal: NgbModal;
+
 
     recordFormat = 'USMARC';
     encoding = 'UTF-8';
@@ -23,10 +25,12 @@ export class RecordBucketExportDialogComponent extends DialogComponent {
         });
     }
 
-    constructor(
-        private modal: NgbModal,
-    ) {
+    constructor() {
+        const modal = inject(NgbModal);
+
         super(modal);
+
+        this.modal = modal;
     }
 }
 

@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import {AuthService} from '@eg/core/auth.service';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
@@ -17,6 +17,12 @@ import { StaffCommonModule } from '@eg/staff/common.module';
 })
 
 export class SROutputsComponent implements OnInit {
+    private auth = inject(AuthService);
+    private pcrud = inject(PcrudService);
+    private idl = inject(IdlService);
+    private toast = inject(ToastService);
+    private srSvc = inject(ReporterService);
+
 
     gridSource: GridDataSource;
     @ViewChild('srOutputsGrid', { static: true }) outputsGrid: GridComponent;
@@ -26,13 +32,7 @@ export class SROutputsComponent implements OnInit {
 
     cellTextGenerator: GridCellTextGenerator;
 
-    constructor(
-        private auth: AuthService,
-        private pcrud: PcrudService,
-        private idl: IdlService,
-        private toast: ToastService,
-        private srSvc: ReporterService,
-    ) {
+    constructor() {
         // These values are all replaced via custom templates and cause warnings if not specified here.
         this.cellTextGenerator = {
             _output: row => ''

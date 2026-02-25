@@ -1,5 +1,5 @@
 /* eslint-disable */
-import {Component, Input, OnInit} from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import {IdlService} from '@eg/core/idl.service';
 import {ReporterService, SRTemplate} from '../share/reporter.service';
 import {Tree} from '@eg/share/tree/tree';
@@ -14,6 +14,10 @@ import { StaffCommonModule } from '@eg/staff/common.module';
 })
 
 export class ReporterOutputOptionsComponent implements OnInit {
+    private auth = inject(AuthService);
+    private idl = inject(IdlService);
+    RSvc = inject(ReporterService);
+
 
     @Input() advancedMode = false;
     @Input() disabled = false;
@@ -25,11 +29,7 @@ export class ReporterOutputOptionsComponent implements OnInit {
     report_tree: Tree;
     output_tree: Tree;
 
-    constructor(
-        private auth: AuthService,
-        private idl: IdlService,
-        public RSvc: ReporterService
-    ) {
+    constructor() {
         this.report_tree = this.RSvc.myFolderTrees.reports.clone({expanded:!this.RSvc.reportFolder});
         this.output_tree = this.RSvc.myFolderTrees.outputs.clone({expanded:!this.RSvc.outputFolder});
     }

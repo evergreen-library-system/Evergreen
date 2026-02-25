@@ -1,4 +1,4 @@
-/* eslint-disable eqeqeq, no-shadow */
+/* eslint-disable eqeqeq */
 import {Injectable} from '@angular/core';
 
 export type PrintContext = 'default' | 'receipt' | 'label' | 'mail' | 'offline';

@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, Host, TemplateRef} from '@angular/core';
+import { Component, Input, OnInit, TemplateRef, inject } from '@angular/core';
 import {GridColumn} from './grid';
 import {GridComponent} from './grid.component';
 
@@ -8,6 +8,8 @@ import {GridComponent} from './grid.component';
 })
 
 export class GridColumnComponent implements OnInit {
+    private grid = inject(GridComponent, { host: true });
+
 
     // Note most input fields should match class fields for GridColumn
     @Input() name: string;
@@ -61,9 +63,6 @@ export class GridColumnComponent implements OnInit {
 
     // IDL class of the object which contains this field.
     @Input() idlClass: string;
-
-    // get a reference to our container grid.
-    constructor(@Host() private grid: GridComponent) {}
 
     ngOnInit() {
 

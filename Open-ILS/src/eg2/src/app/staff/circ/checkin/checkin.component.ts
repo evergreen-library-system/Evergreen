@@ -1,5 +1,5 @@
 /* eslint-disable no-magic-numbers */
-import {Component, ViewChild, OnInit, AfterViewInit} from '@angular/core';
+import { Component, ViewChild, OnInit, AfterViewInit, inject } from '@angular/core';
 import {Location} from '@angular/common';
 import {Router, ActivatedRoute} from '@angular/router';
 import {empty, from, concatMap, catchError, EMPTY, tap} from 'rxjs';
@@ -72,6 +72,17 @@ const SETTINGS = [
     ]
 })
 export class CheckinComponent implements OnInit, AfterViewInit {
+    private route = inject(ActivatedRoute);
+    private ngLocation = inject(Location);
+    private org = inject(OrgService);
+    private store = inject(ServerStoreService);
+    private circ = inject(CircService);
+    private toast = inject(ToastService);
+    private printer = inject(PrintService);
+    private holdings = inject(HoldingsService);
+    private anonCache = inject(AnonCacheService);
+    patronService = inject(PatronService);
+
     checkins: CheckinGridEntry[] = [];
     autoIndex = 0;
 
@@ -101,19 +112,6 @@ export class CheckinComponent implements OnInit, AfterViewInit {
     @ViewChild('itemNeverCircedStr') private itemNeverCircedStr: StringComponent;
     @ViewChild('backdateDialog') private backdateDialog: BackdateDialogComponent;
     @ViewChild('cancelTransitDialog') private cancelTransitDialog: CancelTransitDialogComponent;
-
-    constructor(
-        private route: ActivatedRoute,
-        private ngLocation: Location,
-        private org: OrgService,
-        private store: ServerStoreService,
-        private circ: CircService,
-        private toast: ToastService,
-        private printer: PrintService,
-        private holdings: HoldingsService,
-        private anonCache: AnonCacheService,
-        public patronService: PatronService
-    ) {}
 
     ngOnInit() {
 

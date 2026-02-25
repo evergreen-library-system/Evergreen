@@ -1,6 +1,6 @@
 /* eslint-disable brace-style, no-shadow */
 import { CommonModule } from '@angular/common';
-import {Component, Input, OnDestroy, ViewChild} from '@angular/core';
+import { Component, Input, OnDestroy, ViewChild, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
@@ -34,6 +34,10 @@ import {BehaviorSubject, Observable, Subject, of, catchError, exhaustMap,
 })
 export class HoldCopyLocationsDialogComponent
     extends DialogComponent implements OnDestroy {
+    private modal: NgbModal;
+    private org = inject(OrgService);
+    private pcrud = inject(PcrudService);
+
 
 
   // limit to locations or groups owned by this org or its ancestors
@@ -75,12 +79,12 @@ export class HoldCopyLocationsDialogComponent
   );
 
 
-  constructor(
-    private modal: NgbModal,
-    private org: OrgService,
-    private pcrud: PcrudService
-  ) {
+  constructor() {
+      const modal = inject(NgbModal);
+
       super(modal);
+
+      this.modal = modal;
   }
 
   ngOnDestroy(): void {

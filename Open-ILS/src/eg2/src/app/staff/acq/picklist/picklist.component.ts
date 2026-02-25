@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import {ActivatedRoute, ParamMap, RouterModule} from '@angular/router';
 import { StaffBannerComponent } from '@eg/staff/share/staff-banner.component';
 import { PicklistSummaryComponent } from './summary.component';
@@ -17,10 +17,10 @@ import { PicklistSummaryComponent } from './summary.component';
     ]
 })
 export class PicklistComponent implements OnInit {
+    private route = inject(ActivatedRoute);
+
 
     picklistId: number;
-
-    constructor(private route: ActivatedRoute) {}
 
     ngOnInit() {
         this.route.paramMap.subscribe((params: ParamMap) => {

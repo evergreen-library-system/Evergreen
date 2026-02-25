@@ -1,4 +1,4 @@
-import {Component, ViewChild, Input} from '@angular/core';
+import { Component, ViewChild, Input, inject } from '@angular/core';
 import {IdlObject} from '@eg/core/idl.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
@@ -23,6 +23,8 @@ import { NgIf } from '@angular/common';
 
 export class PatronSearchDialogComponent
     extends DialogComponent {
+    private modal: NgbModal;
+
 
     @Input() dialogTitle: string;
 
@@ -36,7 +38,11 @@ export class PatronSearchDialogComponent
     @ViewChild('searchForm', {static: false})
         searchForm: PatronSearchComponent;
 
-    constructor(private modal: NgbModal) { super(modal); }
+    constructor() {
+        const modal = inject(NgbModal);
+        super(modal);
+        this.modal = modal;
+    }
 
     // Fired when a row in the search grid is dbl-clicked / activated
     patronsSelected(patrons: IdlObject[]) {

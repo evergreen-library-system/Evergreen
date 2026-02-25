@@ -1,4 +1,4 @@
-import {Component, Input, ViewChild, OnInit} from '@angular/core';
+import { Component, Input, ViewChild, OnInit, inject } from '@angular/core';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
@@ -19,6 +19,12 @@ import { StaffCommonModule } from '@eg/staff/common.module';
 
 export class FundTransferDialogComponent
     extends DialogComponent implements OnInit {
+    private net = inject(NetService);
+    private auth = inject(AuthService);
+    private pcrud = inject(PcrudService);
+    private toast = inject(ToastService);
+    private modal: NgbModal;
+
 
     @Input() sourceFund: IdlObject;
     doneLoading = false;
@@ -32,14 +38,12 @@ export class FundTransferDialogComponent
     sourceAmount = null;
     note = null;
 
-    constructor(
-        private net: NetService,
-        private auth: AuthService,
-        private pcrud: PcrudService,
-        private toast: ToastService,
-        private modal: NgbModal
-    ) {
+    constructor() {
+        const modal = inject(NgbModal);
+
         super(modal);
+
+        this.modal = modal;
     }
 
     ngOnInit() {

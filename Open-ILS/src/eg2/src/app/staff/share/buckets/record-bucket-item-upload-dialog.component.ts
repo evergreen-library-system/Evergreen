@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import {Component, Input, OnInit, OnDestroy, ViewChild} from '@angular/core';
+import { Component, Input, OnInit, OnDestroy, ViewChild, inject } from '@angular/core';
 import {firstValueFrom} from 'rxjs';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
@@ -19,6 +19,13 @@ import { StaffCommonModule } from '@eg/staff/common.module';
 })
 export class RecordBucketItemUploadDialogComponent
     extends DialogComponent implements OnInit, OnDestroy {
+    private auth = inject(AuthService);
+    private net = inject(NetService);
+    private pcrud = inject(PcrudService);
+    private evt = inject(EventService);
+    private idl = inject(IdlService);
+    private modal: NgbModal;
+
 
     @Input() containerObjects: any[];
     @Input() bucketLabel: string;
@@ -34,15 +41,12 @@ export class RecordBucketItemUploadDialogComponent
     csvColumnNumber = 1;
     maxCsvColumns = 100;
 
-    constructor(
-        private auth: AuthService,
-        private net: NetService,
-        private pcrud: PcrudService,
-        private evt: EventService,
-        private idl: IdlService,
-        private modal: NgbModal
-    ) {
+    constructor() {
+        const modal = inject(NgbModal);
+
         super(modal);
+
+        this.modal = modal;
     }
 
     ngOnInit() {

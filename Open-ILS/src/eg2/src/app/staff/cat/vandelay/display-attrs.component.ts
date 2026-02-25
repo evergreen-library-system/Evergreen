@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import { AdminPageComponent } from '@eg/staff/share/admin-page/admin-page.component';
 import {NgbNavChangeEvent, NgbNavModule} from '@ng-bootstrap/ng-bootstrap';
@@ -8,12 +8,13 @@ import {NgbNavChangeEvent, NgbNavModule} from '@ng-bootstrap/ng-bootstrap';
     imports: [AdminPageComponent, NgbNavModule]
 })
 export class DisplayAttrsComponent {
+    private router = inject(Router);
+    private route = inject(ActivatedRoute);
+
 
     attrType: string;
 
-    constructor(
-        private router: Router,
-        private route: ActivatedRoute) {
+    constructor() {
 
         this.route.paramMap.subscribe((params: ParamMap) => {
             this.attrType = params.get('atype');

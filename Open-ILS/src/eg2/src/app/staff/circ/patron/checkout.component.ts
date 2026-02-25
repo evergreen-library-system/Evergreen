@@ -1,4 +1,4 @@
-import {Component, OnInit, AfterViewInit, ViewChild} from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, inject } from '@angular/core';
 import {Router} from '@angular/router';
 import {Subscription, Observable, empty, of, from, switchMap} from 'rxjs';
 import {IdlObject} from '@eg/core/idl.service';
@@ -38,6 +38,20 @@ const SESSION_DUE_DATE = 'eg.circ.checkout.is_until_logout';
     ]
 })
 export class CheckoutComponent implements OnInit, AfterViewInit {
+    private router = inject(Router);
+    private store = inject(StoreService);
+    private serverStore = inject(ServerStoreService);
+    private org = inject(OrgService);
+    private pcrud = inject(PcrudService);
+    private net = inject(NetService);
+    circ = inject(CircService);
+    patronService = inject(PatronService);
+    context = inject(PatronContextService);
+    private toast = inject(ToastService);
+    private auth = inject(AuthService);
+    private printer = inject(PrintService);
+    private audio = inject(AudioService);
+
     static autoId = 0;
 
     // eslint-disable-next-line no-magic-numbers
@@ -64,22 +78,6 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
     private barcodeSelect: BarcodeSelectComponent;
     @ViewChild('receiptEmailed')
     private receiptEmailed: StringComponent;
-
-    constructor(
-        private router: Router,
-        private store: StoreService,
-        private serverStore: ServerStoreService,
-        private org: OrgService,
-        private pcrud: PcrudService,
-        private net: NetService,
-        public circ: CircService,
-        public patronService: PatronService,
-        public context: PatronContextService,
-        private toast: ToastService,
-        private auth: AuthService,
-        private printer: PrintService,
-        private audio: AudioService
-    ) {}
 
     ngOnInit() {
         this.circ.getNonCatTypes();

@@ -16,17 +16,17 @@
  * Files are only played when sounds are configured to play via
  * workstation settings.
  */
-import {Injectable, EventEmitter} from '@angular/core';
+import { Injectable, EventEmitter, inject } from '@angular/core';
 import {ServerStoreService} from '@eg/core/server-store.service';
 const AUDIO_BASE_URL = '/audio/notifications/';
 
 @Injectable()
 export class AudioService {
+    private store = inject(ServerStoreService);
+
 
     // map of requested audio path to resolved path
     private urlCache: {[path: string]: string} = {};
-
-    constructor(private store: ServerStoreService) {}
 
     play(path: string): void {
         if (path) {

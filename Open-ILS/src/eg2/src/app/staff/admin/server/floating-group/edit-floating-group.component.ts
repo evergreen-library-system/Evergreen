@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {GridDataSource} from '@eg/share/grid/grid';
 import {Pager} from '@eg/share/util/pager';
@@ -18,6 +18,10 @@ import { FmRecordEditorComponent } from '@eg/share/fm-editor/fm-editor.component
 })
 
 export class EditFloatingGroupComponent implements OnInit {
+    private route = inject(ActivatedRoute);
+    private pcrud = inject(PcrudService);
+    private idl = inject(IdlService);
+
 
     dataSource: GridDataSource;
 
@@ -26,13 +30,6 @@ export class EditFloatingGroupComponent implements OnInit {
 
     // This is the ID of the floating group being edited currently
     currentId: number;
-
-    constructor(
-        private route: ActivatedRoute,
-        private pcrud: PcrudService,
-        private idl: IdlService,
-    ) {
-    }
 
     ngOnInit() {
         this.currentId = parseInt(this.route.snapshot.paramMap.get('id'), 10);

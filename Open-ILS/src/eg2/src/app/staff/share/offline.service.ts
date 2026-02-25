@@ -1,5 +1,5 @@
 import {from, concatMap} from 'rxjs';
-import {Injectable} from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import {AuthService} from '@eg/core/auth.service';
 import {EventService} from '@eg/core/event.service';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
@@ -14,18 +14,16 @@ const OFFLINE_CACHE_TIMEOUT = 86400000; // 1 day
 
 @Injectable()
 export class OfflineService {
+    private auth = inject(AuthService);
+    private evt = inject(EventService);
+    private idl = inject(IdlService);
+    private net = inject(NetService);
+    private org = inject(OrgService);
+    private pcrud = inject(PcrudService);
+    private db = inject(DbStoreService);
+
 
     isOffline = false;
-
-    constructor(
-        private auth: AuthService,
-        private evt: EventService,
-        private idl: IdlService,
-        private net: NetService,
-        private org: OrgService,
-        private pcrud: PcrudService,
-        private db: DbStoreService
-    ) {}
 
     refreshOfflineData(): Promise<any> {
         return this.cacheNeedsUpdating()
