@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {map} from 'rxjs';
 import {NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
@@ -25,20 +25,17 @@ import { MarcEditorComponent } from '@eg/staff/share/marc-edit/editor.component'
     ]
 })
 export class ManageAuthorityComponent implements OnInit {
+    private router = inject(Router);
+    private route = inject(ActivatedRoute);
+    private net = inject(NetService);
+    private org = inject(OrgService);
+    private pcrud = inject(PcrudService);
+
 
     authId: number;
     authTab = 'bibs';
     authMeta: any;
     linkedBibIdSource: (pager: Pager, sort: any) => Promise<number[]>;
-
-    constructor(
-        private router: Router,
-        private route: ActivatedRoute,
-        private net: NetService,
-        private org: OrgService,
-        private pcrud: PcrudService
-    ) {
-    }
 
     ngOnInit() {
         this.route.paramMap.subscribe((params: ParamMap) => {

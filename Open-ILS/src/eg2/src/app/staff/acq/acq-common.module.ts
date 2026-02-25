@@ -26,16 +26,8 @@ import {PcrudService} from '@eg/core/pcrud.service';
         PoService,
         {
             provide: InvoiceService,
-            useFactory: (
-                evt: EventService,
-                net: NetService,
-                pcrud: PcrudService,
-                auth: AuthService,
-                poService: PoService,
-                liService: LineitemService,
-                idl: IdlService
-            ) => {
-                const invoiceService = new InvoiceService(evt, net, pcrud, auth, poService, liService, idl);
+            useFactory: () => {
+                const invoiceService = new InvoiceService();
                 // Initialize the service before providing it
                 invoiceService.initialize().then();
                 return invoiceService;

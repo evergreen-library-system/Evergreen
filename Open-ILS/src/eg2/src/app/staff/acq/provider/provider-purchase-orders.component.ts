@@ -1,4 +1,4 @@
-import {Component, OnInit, AfterViewInit, OnDestroy, Input, ViewChild} from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy, Input, ViewChild, inject } from '@angular/core';
 import {Subscription} from 'rxjs';
 import {RouterModule} from '@angular/router';
 import {IdlObject} from '@eg/core/idl.service';
@@ -20,6 +20,9 @@ import { GridModule } from '@eg/share/grid/grid.module';
     ]
 })
 export class ProviderPurchaseOrdersComponent implements OnInit, AfterViewInit, OnDestroy {
+    private providerRecord = inject(ProviderRecordService);
+    private acqSearch = inject(AcqSearchService);
+
 
     @Input() initialSearchTerms: AcqSearchTerm[] = [];
 
@@ -32,11 +35,6 @@ export class ProviderPurchaseOrdersComponent implements OnInit, AfterViewInit, O
     cellTextGenerator: GridCellTextGenerator;
 
     subscription: Subscription;
-
-    constructor(
-        private providerRecord: ProviderRecordService,
-        private acqSearch: AcqSearchService) {
-    }
 
     ngOnInit() {
         this.gridSource = this.acqSearch.getAcqSearchDataSource('purchase_order');

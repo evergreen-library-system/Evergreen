@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
@@ -34,6 +34,18 @@ const VALID_PRE_PO_LI_STATES = [
     ]
 })
 export class PoCreateComponent implements OnInit {
+    private router = inject(Router);
+    private route = inject(ActivatedRoute);
+    private evt = inject(EventService);
+    private idl = inject(IdlService);
+    private net = inject(NetService);
+    private org = inject(OrgService);
+    private pcrud = inject(PcrudService);
+    private auth = inject(AuthService);
+    private store = inject(ServerStoreService);
+    private liService = inject(LineitemService);
+    private poService = inject(PoService);
+
 
     initDone = false;
     lineitems: number[] = [];
@@ -47,20 +59,6 @@ export class PoCreateComponent implements OnInit {
         dupeFound: false,
         dupePoId: -1
     };
-
-    constructor(
-        private router: Router,
-        private route: ActivatedRoute,
-        private evt: EventService,
-        private idl: IdlService,
-        private net: NetService,
-        private org: OrgService,
-        private pcrud: PcrudService,
-        private auth: AuthService,
-        private store: ServerStoreService,
-        private liService: LineitemService,
-        private poService: PoService
-    ) {}
 
     ngOnInit() {
         this.poService.currentPo = null;

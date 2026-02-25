@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy, QueryList, ViewChild, ViewChildren} from '@angular/core';
+import { Component, OnInit, OnDestroy, QueryList, ViewChild, ViewChildren, inject } from '@angular/core';
 import {Router, RouterModule} from '@angular/router';
 import {NgClass, NgIf, ViewportScroller} from '@angular/common';
 import {Subscription} from 'rxjs';
@@ -34,6 +34,16 @@ import {AccessKeyInfoComponent} from '@eg/share/accesskey/accesskey-info.compone
 })
 
 export class StaffNavComponent implements OnInit, OnDestroy {
+    private router = inject(Router);
+    private store = inject(StoreService);
+    private net = inject(NetService);
+    private org = inject(OrgService);
+    private auth = inject(AuthService);
+    private perm = inject(PermService);
+    private locale = inject(LocaleService);
+    private printer = inject(PrintService);
+    protected vs = inject(ViewportScroller);
+
 
     // Locales that have Angular staff translations
     locales: any[];
@@ -57,17 +67,7 @@ export class StaffNavComponent implements OnInit, OnDestroy {
     @ViewChild('egAccessKeyInfo', {static: true}) egAccessKeyInfo: AccessKeyInfoComponent;
     permFailedSub: Subscription;
 
-    constructor(
-        private router: Router,
-        private store: StoreService,
-        private net: NetService,
-        private org: OrgService,
-        private auth: AuthService,
-        private perm: PermService,
-        private locale: LocaleService,
-        private printer: PrintService,
-        protected vs: ViewportScroller
-    ) {
+    constructor() {
         this.locales = [];
     }
 

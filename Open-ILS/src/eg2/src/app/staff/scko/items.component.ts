@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import {Router} from '@angular/router';
 import {of, from, switchMap, tap} from 'rxjs';
 import {AuthService} from '@eg/core/auth.service';
@@ -16,17 +16,15 @@ import { FormsModule } from '@angular/forms';
 })
 
 export class SckoItemsComponent implements OnInit {
+    private router = inject(Router);
+    private net = inject(NetService);
+    private auth = inject(AuthService);
+    private printer = inject(PrintService);
+    scko = inject(SckoService);
+
 
     circs: IdlObject[] = [];
     selected: {[id: number]: boolean} = {};
-
-    constructor(
-        private router: Router,
-        private net: NetService,
-        private auth: AuthService,
-        private printer: PrintService,
-        public  scko: SckoService
-    ) {}
 
     ngOnInit() {
 

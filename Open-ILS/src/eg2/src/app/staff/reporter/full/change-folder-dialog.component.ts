@@ -1,5 +1,5 @@
 /* eslint-disable */
-import {Input, Component} from '@angular/core';
+import { Input, Component, inject } from '@angular/core';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {IdlObject} from '@eg/core/idl.service';
 import {ReporterService} from '../share/reporter.service';
@@ -13,15 +13,19 @@ import { StaffCommonModule } from '@eg/staff/common.module';
 })
 
 export class ChangeFolderDialogComponent extends DialogComponent {
+    private modal: NgbModal;
+    RSvc = inject(ReporterService);
+
 
     @Input() currentFolder: IdlObject = null;
     newFolder: IdlObject = null;
 
-    constructor(
-        private modal: NgbModal,
-        public RSvc: ReporterService
-    ) {
+    constructor() {
+        const modal = inject(NgbModal);
+
         super(modal);
+    
+        this.modal = modal;
     }
 
     folderNodeSelected(node) {

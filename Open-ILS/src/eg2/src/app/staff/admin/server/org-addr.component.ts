@@ -1,4 +1,4 @@
-import {Component, Input, Output, EventEmitter} from '@angular/core';
+import { Component, Input, Output, EventEmitter, inject } from '@angular/core';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
 import {PcrudService} from '@eg/core/pcrud.service';
@@ -17,6 +17,13 @@ const ADDR_TYPES =
     imports: [StaffCommonModule]
 })
 export class OrgAddressComponent {
+    private idl = inject(IdlService);
+    private org = inject(OrgService);
+    private pcrud = inject(PcrudService);
+    private auth = inject(AuthService);
+    private net = inject(NetService);
+    private toast = inject(ToastService);
+
 
     orgUnit: IdlObject = null;
     tabName: string;
@@ -38,14 +45,7 @@ export class OrgAddressComponent {
 
     @Output() addrChange: EventEmitter<IdlObject>;
 
-    constructor(
-        private idl: IdlService,
-        private org: OrgService,
-        private pcrud: PcrudService,
-        private auth: AuthService,
-        private net: NetService,
-        private toast: ToastService
-    ) {
+    constructor() {
         this.addrChange = new EventEmitter<IdlObject>();
     }
 

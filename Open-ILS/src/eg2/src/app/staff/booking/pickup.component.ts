@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild, OnDestroy} from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, inject } from '@angular/core';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {Subscription, of, single, filter, switchMap, debounceTime, tap} from 'rxjs';
 import {PatronService} from '@eg/staff/share/patron/patron.service';
@@ -26,6 +26,14 @@ import { CommonModule } from '@angular/common';
 })
 
 export class PickupComponent implements OnInit, OnDestroy {
+    private pcrud = inject(PcrudService);
+    private patron = inject(PatronService);
+    private pbv = inject(PatronBarcodeValidator);
+    private route = inject(ActivatedRoute);
+    private router = inject(Router);
+    private store = inject(ServerStoreService);
+    private toast = inject(ToastService);
+
     patronId: number;
     findPatron: FormGroup;
     subscriptions: Subscription[] = [];
@@ -37,17 +45,6 @@ export class PickupComponent implements OnInit, OnDestroy {
     noSelectedRows: (rows: IdlObject[]) => boolean;
     handleShowCapturedChange: () => void;
     retrievePatron: () => void;
-
-    constructor(
-        private pcrud: PcrudService,
-        private patron: PatronService,
-        private pbv: PatronBarcodeValidator,
-        private route: ActivatedRoute,
-        private router: Router,
-        private store: ServerStoreService,
-        private toast: ToastService
-    ) {
-    }
 
 
     ngOnInit() {

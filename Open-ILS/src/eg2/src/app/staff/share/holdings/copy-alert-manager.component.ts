@@ -1,4 +1,4 @@
-import {Component, ViewChild} from '@angular/core';
+import { Component, ViewChild, inject } from '@angular/core';
 import {Observable, from, concatMap} from 'rxjs';
 import {NetService} from '@eg/core/net.service';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
@@ -30,6 +30,16 @@ import { CommonModule } from '@angular/common';
 })
 
 export class CopyAlertManagerDialogComponent extends DialogComponent {
+    private modal: NgbModal;
+    private toast = inject(ToastService);
+    private net = inject(NetService);
+    private idl = inject(IdlService);
+    private pcrud = inject(PcrudService);
+    private org = inject(OrgService);
+    private auth = inject(AuthService);
+    private strings = inject(StringService);
+    private holdings = inject(HoldingsService);
+
 
     mode: string;
     alerts: IdlObject[];
@@ -39,17 +49,12 @@ export class CopyAlertManagerDialogComponent extends DialogComponent {
 
     @ViewChild('copyAlertsDialog') private copyAlertsDialog: CopyAlertsDialogComponent;
 
-    constructor(
-        private modal: NgbModal,
-        private toast: ToastService,
-        private net: NetService,
-        private idl: IdlService,
-        private pcrud: PcrudService,
-        private org: OrgService,
-        private auth: AuthService,
-        private strings: StringService,
-        private holdings: HoldingsService
-    ) { super(modal); console.log('CopyAlertManagerDialogComponent, this',this); }
+    constructor() {
+        const modal = inject(NgbModal);
+        super(modal);
+        this.modal = modal;
+        console.log('CopyAlertManagerDialogComponent, this',this);
+    }
 
     open(ops?: NgbModalOptions): Observable<any> {
 

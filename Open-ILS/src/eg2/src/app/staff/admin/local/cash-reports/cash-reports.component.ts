@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, ViewChild, TemplateRef} from '@angular/core';
+import { Component, OnInit, Input, ViewChild, TemplateRef, inject } from '@angular/core';
 import {DateUtil} from '@eg/share/util/date';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {GridDataSource, GridCellTextGenerator} from '@eg/share/grid/grid';
@@ -43,6 +43,12 @@ class UserTotals {
     ]
 })
 export class CashReportsComponent implements OnInit {
+    private idl = inject(IdlService);
+    private net = inject(NetService);
+    private org = inject(OrgService);
+    private auth = inject(AuthService);
+    private printer = inject(PrintService);
+
     initDone = false;
     deskPaymentDataSource: GridDataSource = new GridDataSource();
     userPaymentDataSource: GridDataSource = new GridDataSource();
@@ -71,13 +77,6 @@ export class CashReportsComponent implements OnInit {
     @ViewChild('criteria') criteria: NgForm;
     @ViewChild('deskPrintTmpl') deskPrintTmpl: TemplateRef<any>;
     @ViewChild('userPrintTmpl') userPrintTmpl: TemplateRef<any>;
-
-    constructor(
-        private idl: IdlService,
-        private net: NetService,
-        private org: OrgService,
-        private auth: AuthService,
-        private printer: PrintService) {}
 
     ngOnInit() {
         this.disabledOrgs = this.getFilteredOrgList();

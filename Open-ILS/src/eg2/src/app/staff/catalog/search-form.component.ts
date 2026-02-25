@@ -1,5 +1,5 @@
 /* eslint-disable */
-import {Component, OnInit, AfterViewInit, Renderer2} from '@angular/core';
+import { Component, OnInit, AfterViewInit, Renderer2, inject } from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 import {IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
@@ -40,6 +40,14 @@ const COLLAPSE_ON_PAGES = [
     ]
 })
 export class SearchFormComponent implements OnInit, AfterViewInit {
+    private renderer = inject(Renderer2);
+    private router = inject(Router);
+    private route = inject(ActivatedRoute);
+    private org = inject(OrgService);
+    private cat = inject(CatalogService);
+    private store = inject(ServerStoreService);
+    private staffCat = inject(StaffCatalogService);
+
 
     context: CatalogSearchContext;
     ccvmMap: {[ccvm: string]: IdlObject[]} = {};
@@ -67,15 +75,7 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
     sortMethodSetting: string;
 
 
-    constructor(
-        private renderer: Renderer2,
-        private router: Router,
-        private route: ActivatedRoute,
-        private org: OrgService,
-        private cat: CatalogService,
-        private store: ServerStoreService,
-        private staffCat: StaffCatalogService
-    ) {
+    constructor() {
         this.copyLocations = [];
         this.copyLocationGroups = [];
         this.libraryGroups = [];

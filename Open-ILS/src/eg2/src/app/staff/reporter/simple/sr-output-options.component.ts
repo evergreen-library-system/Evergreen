@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import {IdlService} from '@eg/core/idl.service';
 import {ReporterService, SRTemplate} from '../share/reporter.service';
 import moment from 'moment-timezone';
@@ -11,15 +11,13 @@ import { StaffCommonModule } from '@eg/staff/common.module';
 })
 
 export class SROutputOptionsComponent {
+    private idl = inject(IdlService);
+    private srSvc = inject(ReporterService);
+
 
     @Input() templ: SRTemplate;
     @Input() readyToSchedule: () => boolean;
     @Input() saveTemplate: (args: any) => void;
-
-    constructor(
-        private idl: IdlService,
-        private srSvc: ReporterService
-    ) { }
 
     defaultTime() {
         // When changing to Later for the first time default minutes to the quarter hour

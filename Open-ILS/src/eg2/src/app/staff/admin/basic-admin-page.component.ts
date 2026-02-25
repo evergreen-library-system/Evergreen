@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import {ActivatedRoute, ParamMap} from '@angular/router';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
 import { TitleComponent } from '@eg/share/title/title.component';
@@ -46,6 +46,9 @@ import { AdminPageComponent } from '../share/admin-page/admin-page.component';
 })
 
 export class BasicAdminPageComponent implements OnInit {
+    private route = inject(ActivatedRoute);
+    private idl = inject(IdlService);
+
 
     idlClass: string;
     classLabel: string;
@@ -79,12 +82,6 @@ export class BasicAdminPageComponent implements OnInit {
     private schema: string;
     private table: string;
     private defaultNewRecord: Record<string, any>;
-
-    constructor(
-        private route: ActivatedRoute,
-        private idl: IdlService
-    ) {
-    }
 
     ngOnInit() {
         console.log('BasicAdminPageComponent, this', this);

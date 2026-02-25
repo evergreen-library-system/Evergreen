@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild, HostListener, OnDestroy} from '@angular/core';
+import { Component, OnInit, ViewChild, HostListener, OnDestroy, inject } from '@angular/core';
 import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {IdlObject} from '@eg/core/idl.service';
@@ -47,6 +47,15 @@ import { CnBrowseResultsComponent } from '../cnbrowse/results.component';
     ]
 })
 export class RecordComponent implements OnInit, OnDestroy {
+    private router = inject(Router);
+    private route = inject(ActivatedRoute);
+    private auth = inject(AuthService);
+    private bib = inject(BibRecordService);
+    private staffCat = inject(StaffCatalogService);
+    private holdings = inject(HoldingsService);
+    private store = inject(StoreService);
+    private serverStore = inject(ServerStoreService);
+
 
     recordId: number;
     recordTab: string;
@@ -65,17 +74,6 @@ export class RecordComponent implements OnInit, OnDestroy {
 
     @ViewChild('pendingChangesDialog', {static: false})
         pendingChangesDialog: ConfirmDialogComponent;
-
-    constructor(
-        private router: Router,
-        private route: ActivatedRoute,
-        private auth: AuthService,
-        private bib: BibRecordService,
-        private staffCat: StaffCatalogService,
-        private holdings: HoldingsService,
-        private store: StoreService,
-        private serverStore: ServerStoreService,
-    ) {}
 
     ngOnInit() {
         this.searchContext = this.staffCat.searchContext;

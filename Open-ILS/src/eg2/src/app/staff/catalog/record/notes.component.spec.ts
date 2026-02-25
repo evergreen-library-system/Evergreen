@@ -3,11 +3,15 @@ import { NotesComponent } from './notes.component';
 import { of } from 'rxjs';
 import { PermService } from '@eg/core/perm.service';
 import { GridComponent } from '@eg/share/grid/grid.component';
-import { waitForAsync } from '@angular/core/testing';
-import { EventEmitter } from '@angular/core';
+import { TestBed, waitForAsync } from '@angular/core/testing';
+import { CUSTOM_ELEMENTS_SCHEMA, EventEmitter } from '@angular/core';
 import { Pager } from '@eg/share/util/pager';
 import { NetService } from '@eg/core/net.service';
 import { AuthService } from '@eg/core/auth.service';
+import { IdlService } from '@eg/core/idl.service';
+import { GridModule } from '@eg/share/grid/grid.module';
+import { FmRecordEditorComponent } from '@eg/share/fm-editor/fm-editor.component';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 describe('NotesComponent', () => {
     describe('grid data source', () => {
@@ -24,7 +28,19 @@ describe('NotesComponent', () => {
             const mockPerm = jasmine.createSpyObj<PermService>(['hasWorkPermHere']);
             mockPerm.hasWorkPermHere.and.resolveTo(null);
 
-            const component = new NotesComponent(null, mockPcrud, mockPerm, mockNet, jasmine.createSpyObj<AuthService>(['token']));
+            TestBed.configureTestingModule({providers: [
+                {provide: IdlService, useValue: null},
+                {provide: PcrudService, useValue: mockPcrud},
+                {provide: PermService, useValue: mockPerm},
+                {provide: NetService, useValue: mockNet},
+                {provide: AuthService, useValue: jasmine.createSpyObj<AuthService>(['token'])}
+            ]});
+            TestBed.overrideComponent(NotesComponent, {
+                add: {schemas: [CUSTOM_ELEMENTS_SCHEMA]},
+                remove: {imports: [FmRecordEditorComponent, GridModule, StaffCommonModule]}
+            });
+
+            const component = TestBed.createComponent(NotesComponent).componentInstance;
             component.notesGrid = jasmine.createSpyObj<GridComponent>('GridComponent', [], {onRowActivate: new EventEmitter()});
 
             spyOn(component.noteCountUpdated, 'emit');

@@ -1,4 +1,4 @@
-import {Component, HostListener, OnDestroy, OnInit} from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit, inject } from '@angular/core';
 import {IdlObject} from '@eg/core/idl.service';
 import {StaffCatalogService} from './catalog.service';
 import {Subject, takeUntil} from 'rxjs';
@@ -13,12 +13,10 @@ import { SearchFormComponent } from './search-form.component';
     ]
 })
 export class CatalogComponent implements OnInit, OnDestroy {
+    private staffCat = inject(StaffCatalogService);
+
 
     private onDestroy = new Subject<null>();
-
-    constructor(
-        private staffCat: StaffCatalogService
-    ) {}
 
     ngOnInit() {
         // Create the search context that will be used by all of my

@@ -1,4 +1,4 @@
-import {Component, OnInit, AfterViewInit, Input, Output, EventEmitter, ViewChild} from '@angular/core';
+import { Component, OnInit, AfterViewInit, Input, Output, EventEmitter, ViewChild, inject } from '@angular/core';
 import {Router} from '@angular/router';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
@@ -23,6 +23,13 @@ import { BoolDisplayComponent } from '@eg/share/util/bool.component';
 })
 
 export class AcqProviderSummaryPaneComponent implements OnInit, AfterViewInit {
+    private router = inject(Router);
+    private pcrud = inject(PcrudService);
+    private idl = inject(IdlService);
+    private org = inject(OrgService);
+    private toast = inject(ToastService);
+    private prov = inject(ProviderRecordService);
+
 
     @ViewChild('deleteSuccessString', { static: true }) deleteSuccessString: StringComponent;
 
@@ -75,15 +82,6 @@ export class AcqProviderSummaryPaneComponent implements OnInit, AfterViewInit {
 
     provider: IdlObject;
     provRec: ProviderRecord;
-
-    constructor(
-        private router: Router,
-        private pcrud: PcrudService,
-        private idl: IdlService,
-        private org: OrgService,
-        private toast: ToastService,
-        private prov: ProviderRecordService,
-    ) {}
 
     ngOnInit() {
         this.provider_id_label = this.idl.classes['acqpro'].field_map['id'].label;

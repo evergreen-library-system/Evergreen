@@ -1,7 +1,7 @@
 /**
  * Common code for mananging holds
  */
-import {Injectable} from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {Observable, map, mergeMap} from 'rxjs';
 import {IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
@@ -64,12 +64,10 @@ export interface HoldRequestTarget {
 @Injectable()
 export class HoldsService {
 
-    constructor(
-        private evt: EventService,
-        private net: NetService,
-        private auth: AuthService,
-        private bib: BibRecordService,
-    ) {}
+    private evt = inject(EventService);
+    private net = inject(NetService);
+    private auth = inject(AuthService);
+    private bib = inject(BibRecordService);
 
     placeHold(request: HoldRequest): Observable<HoldRequest> {
         if (request.holdGroup) {

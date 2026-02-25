@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, inject } from '@angular/core';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
 import {PcrudService} from '@eg/core/pcrud.service';
@@ -23,6 +23,11 @@ import { DateSelectComponent } from '@eg/share/date-select/date-select.component
     ]
 })
 export class HoldManageComponent implements OnInit {
+    private idl = inject(IdlService);
+    private org = inject(OrgService);
+    private pcrud = inject(PcrudService);
+    private holds = inject(HoldsService);
+
 
     // One holds ID means standard edit mode.
     // >1 hold IDs means batch edit mode.
@@ -37,12 +42,7 @@ export class HoldManageComponent implements OnInit {
     // eslint-disable-next-line @angular-eslint/no-output-on-prefix
     @Output() onComplete: EventEmitter<boolean>;
 
-    constructor(
-        private idl: IdlService,
-        private org: OrgService,
-        private pcrud: PcrudService,
-        private holds: HoldsService
-    ) {
+    constructor() {
         this.onComplete = new EventEmitter<boolean>();
         this.smsCarriers = [];
         this.holdIds = [];

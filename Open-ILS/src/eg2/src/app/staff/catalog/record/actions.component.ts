@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, inject } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {StoreService} from '@eg/core/store.service';
 import {CatalogSearchContext} from '@eg/share/catalog/search-context';
@@ -22,6 +22,13 @@ export const AC_CLEAR_CACHE_PATH = '/opac/extras/ac/clearcache/all/r/';
     ]
 })
 export class RecordActionsComponent implements OnInit {
+    private store = inject(StoreService);
+    private strings = inject(StringService);
+    private toast = inject(ToastService);
+    private staffCat = inject(StaffCatalogService);
+    protected basket = inject(BasketService);
+    private http = inject(HttpClient);
+
 
     @Output() addHoldingsRequested: EventEmitter<void>
         = new EventEmitter<void>();
@@ -70,15 +77,6 @@ export class RecordActionsComponent implements OnInit {
     }
 
     @Input() isHoldable: boolean;
-
-    constructor(
-        private store: StoreService,
-        private strings: StringService,
-        private toast: ToastService,
-        private staffCat: StaffCatalogService,
-        protected basket: BasketService,
-        private http: HttpClient
-    ) {}
 
     ngOnInit() {
         this.initDone = true;

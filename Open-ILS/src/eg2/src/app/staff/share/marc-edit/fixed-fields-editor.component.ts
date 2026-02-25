@@ -1,4 +1,4 @@
-import {Component, Input, ViewEncapsulation} from '@angular/core';
+import { Component, Input, ViewEncapsulation, inject } from '@angular/core';
 import {IdlService} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
 import {MarcRecord} from './marcrecord';
@@ -23,14 +23,12 @@ import { FixedFieldComponent } from './fixed-field.component';
 })
 
 export class FixedFieldsEditorComponent {
+    private idl = inject(IdlService);
+    private org = inject(OrgService);
+    private tagTable = inject(TagTableService);
+
 
     @Input() context: MarcEditContext;
     get record(): MarcRecord { return this.context.record; }
-
-    constructor(
-        private idl: IdlService,
-        private org: OrgService,
-        private tagTable: TagTableService
-    ) {}
 }
 

@@ -1,4 +1,4 @@
-import {Component, ViewChild, Input} from '@angular/core';
+import { Component, ViewChild, Input, inject } from '@angular/core';
 import {of} from 'rxjs';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
@@ -20,6 +20,12 @@ import { StaffCommonModule } from '@eg/staff/common.module';
     ]
 })
 export class MatchSetQualityComponent {
+    private idl = inject(IdlService);
+    private pcrud = inject(PcrudService);
+    private net = inject(NetService);
+    private auth = inject(AuthService);
+    private org = inject(OrgService);
+
 
     // Match set arrives from parent async.
     matchSet_: IdlObject;
@@ -40,13 +46,7 @@ export class MatchSetQualityComponent {
     @ViewChild('grid', { static: true }) grid: GridComponent;
     deleteSelected: (rows: IdlObject[]) => void;
 
-    constructor(
-        private idl: IdlService,
-        private pcrud: PcrudService,
-        private net: NetService,
-        private auth: AuthService,
-        private org: OrgService
-    ) {
+    constructor() {
 
         this.dataSource = new GridDataSource();
         this.dataSource.getRows = (pager: Pager, sort: any[]) => {

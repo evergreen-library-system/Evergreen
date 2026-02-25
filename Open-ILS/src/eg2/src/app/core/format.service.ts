@@ -34,13 +34,13 @@ export class FormatService {
     wsOrgTimezone: string = inject(WS_ORG_TIMEZONE);
     tzCache: {[orgId: number]: string} = {};
 
-    constructor(
-        private datePipe: DatePipe,
-        private decimalPipe: DecimalPipe,
-        private idl: IdlService,
-        private org: OrgService,
-        private locale: LocaleService
-    ) {
+    private datePipe = inject(DatePipe);
+    private decimalPipe = inject(DecimalPipe);
+    private idl = inject(IdlService);
+    private locale = inject(LocaleService);
+    private org = inject(OrgService);
+
+    constructor() {
 
         // Create an inilne polyfill for Number.isNaN, which is
         // not available in PhantomJS for unit testing.
@@ -377,7 +377,8 @@ export class FormatService {
     name: 'formatValue'
 })
 export class FormatValuePipe implements PipeTransform {
-    constructor(private formatter: FormatService) {}
+    private formatter = inject(FormatService);
+
     // Add other filter params as needed to fill in the FormatParams
     transform(value: string, datatype: string): string {
         return this.formatter.transform({value: value, datatype: datatype});
@@ -388,7 +389,8 @@ export class FormatValuePipe implements PipeTransform {
     name: 'egOrgDateInContext'
 })
 export class OrgDateInContextPipe implements PipeTransform {
-    constructor(private formatter: FormatService) {}
+    private formatter = inject(FormatService);
+
 
     transform(value: string, orgId?: number, interval?: string ): string {
         return this.formatter.transform({
@@ -404,7 +406,8 @@ export class OrgDateInContextPipe implements PipeTransform {
     name: 'egDueDate'
 })
 export class DueDatePipe implements PipeTransform {
-    constructor(private formatter: FormatService) {}
+    private formatter = inject(FormatService);
+
 
     transform(circ: IdlObject): string {
         return this.formatter.transform({
@@ -441,9 +444,10 @@ export class Js2JsonPipe implements PipeTransform {
     name: 'fundLabel', pure: false
 })
 export class FundLabelPipe implements PipeTransform {
-    private cache = new Map<number, string>();
+    private pcrud = inject(PcrudService);
+    private org = inject(OrgService);
 
-    constructor(private pcrud: PcrudService, private org: OrgService,) {}
+    private cache = new Map<number, string>();
 
     transform(fundId: number): string {
         if (this.cache.has(fundId)) {

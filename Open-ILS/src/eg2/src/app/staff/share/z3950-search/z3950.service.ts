@@ -1,5 +1,5 @@
 /* eslint-disable */
-import {Injectable} from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import {Router, Resolve, RouterStateSnapshot,
     ActivatedRouteSnapshot} from '@angular/router';
 import {map, mergeMap, defaultIfEmpty, last} from 'rxjs/operators';
@@ -18,23 +18,20 @@ import {StoreService} from '@eg/core/store.service';
 
 @Injectable()
 export class Z3950SearchService {
+    private store = inject(StoreService);
+    private serverStore = inject(ServerStoreService);
+    private pcrud = inject(PcrudService);
+    private net = inject(NetService);
+    private org = inject(OrgService);
+    private idl = inject(IdlService);
+    private event = inject(EventService);
+    private auth = inject(AuthService);
+
 
     targets = [];
     searchFields = {};
     rawSearch = '';
     default_targets = {};
-
-    constructor(
-        private store: StoreService,
-        private serverStore: ServerStoreService,
-        private pcrud: PcrudService,
-        private net: NetService,
-        private org: OrgService,
-        private idl: IdlService,
-        private event: EventService,
-        private auth: AuthService
-    ) {
-    }
 
 
     loadTargets = () => {

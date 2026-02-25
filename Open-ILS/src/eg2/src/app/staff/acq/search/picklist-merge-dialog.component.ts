@@ -1,4 +1,4 @@
-import {Component, Input, ViewChild} from '@angular/core';
+import { Component, Input, ViewChild, inject } from '@angular/core';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
 import {IdlObject} from '@eg/core/idl.service';
@@ -19,6 +19,11 @@ import { FormsModule } from '@angular/forms';
 
 export class PicklistMergeDialogComponent
     extends DialogComponent {
+    private evt = inject(EventService);
+    private net = inject(NetService);
+    private auth = inject(AuthService);
+    private modal: NgbModal;
+
 
   @Input() grid: any;
   listNames: string[];
@@ -27,13 +32,12 @@ export class PicklistMergeDialogComponent
 
   @ViewChild('fail', { static: true }) private fail: AlertDialogComponent;
 
-  constructor(
-    private evt: EventService,
-    private net: NetService,
-    private auth: AuthService,
-    private modal: NgbModal
-  ) {
+  constructor() {
+      const modal = inject(NgbModal);
+
       super(modal);
+
+      this.modal = modal;
   }
 
   update() {

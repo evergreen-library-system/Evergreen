@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, Output, EventEmitter, ViewChild} from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild, inject } from '@angular/core';
 import {CommonModule, Location} from '@angular/common';
 import {Observable, Observer, of, from, concatMap} from 'rxjs';
 import {IdlObject} from '@eg/core/idl.service';
@@ -56,6 +56,14 @@ import { RouterModule } from '@angular/router';
     ]
 })
 export class HoldsGridComponent implements OnInit {
+    private ngLocation = inject(Location);
+    private net = inject(NetService);
+    private org = inject(OrgService);
+    private store = inject(ServerStoreService);
+    private auth = inject(AuthService);
+    private printer = inject(PrintService);
+    private holdings = inject(HoldingsService);
+
 
     // Hide the "Holds Count" header
     @Input() hideHoldsCount = false;
@@ -209,15 +217,7 @@ export class HoldsGridComponent implements OnInit {
     // Notify the caller the place hold button was clicked.
     @Output() placeHoldRequested: EventEmitter<void> = new EventEmitter<void>();
 
-    constructor(
-        private ngLocation: Location,
-        private net: NetService,
-        private org: OrgService,
-        private store: ServerStoreService,
-        private auth: AuthService,
-        private printer: PrintService,
-        private holdings: HoldingsService
-    ) {
+    constructor() {
         this.gridDataSource = new GridDataSource();
         this.enablePreFetch = null;
     }

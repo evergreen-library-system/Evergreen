@@ -1,4 +1,4 @@
-import {Component, OnInit, Input} from '@angular/core';
+import { Component, OnInit, Input, inject } from '@angular/core';
 import {CatalogSearchContext} from '@eg/share/catalog/search-context';
 import {StaffCatalogService} from '../catalog.service';
 import { StaffCommonModule } from '@eg/staff/common.module';
@@ -10,15 +10,15 @@ import { StaffCommonModule } from '@eg/staff/common.module';
     imports: [StaffCommonModule]
 })
 export class ResultPaginationComponent implements OnInit {
+    private staffCat = inject(StaffCatalogService);
+
 
     searchContext: CatalogSearchContext;
 
     // Maximum number of jump-to-page buttons displayed.
     @Input() numPages: number;
 
-    constructor(
-        private staffCat: StaffCatalogService
-    ) {
+    constructor() {
         this.numPages = 10;
     }
 

@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, ViewChild} from '@angular/core';
+import { Component, OnInit, Input, ViewChild, inject } from '@angular/core';
 import {RouterModule} from '@angular/router';
 import {IdlObject} from '@eg/core/idl.service';
 import {EventService} from '@eg/core/event.service';
@@ -23,6 +23,12 @@ import { GridModule } from '@eg/share/grid/grid.module';
     ]
 })
 export class InvoiceResultsComponent implements OnInit {
+    private printer = inject(PrintService);
+    private evt = inject(EventService);
+    private net = inject(NetService);
+    private auth = inject(AuthService);
+    private acqSearch = inject(AcqSearchService);
+
 
     @Input() initialSearchTerms: AcqSearchTerm[] = [];
 
@@ -46,14 +52,6 @@ export class InvoiceResultsComponent implements OnInit {
         value1: null,
         value2: ''
     }];
-
-    constructor(
-        private printer: PrintService,
-        private evt: EventService,
-        private net: NetService,
-        private auth: AuthService,
-        private acqSearch: AcqSearchService) {
-    }
 
     ngOnInit() {
         this.gridSource = this.acqSearch.getAcqSearchDataSource('invoice');

@@ -1,4 +1,4 @@
-import {Component, ViewChild, OnInit} from '@angular/core';
+import { Component, ViewChild, OnInit, inject } from '@angular/core';
 import {EMPTY, map} from 'rxjs';
 import {IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
@@ -14,6 +14,10 @@ import { StaffCommonModule } from '@eg/staff/common.module';
     imports: [StaffCommonModule]
 })
 export class NegativeBalancesComponent implements OnInit {
+    private org = inject(OrgService);
+    private auth = inject(AuthService);
+    private net = inject(NetService);
+
 
     dataSource: GridDataSource = new GridDataSource();
     contextOrg: IdlObject;
@@ -21,12 +25,6 @@ export class NegativeBalancesComponent implements OnInit {
     cellTextGenerator: GridCellTextGenerator;
 
     @ViewChild('grid') private grid: GridComponent;
-
-    constructor(
-        private org: OrgService,
-        private auth: AuthService,
-        private net: NetService,
-    ) {}
 
     ngOnInit() {
         this.contextOrg = this.org.get(this.auth.user().ws_ou());

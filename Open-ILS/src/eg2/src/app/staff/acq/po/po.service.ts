@@ -1,4 +1,4 @@
-import {Injectable, EventEmitter} from '@angular/core';
+import { Injectable, EventEmitter, inject } from '@angular/core';
 import {IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
 import {EventService} from '@eg/core/event.service';
@@ -14,18 +14,16 @@ export interface PoDupeCheckResults {
 
 @Injectable()
 export class PoService {
+    private evt = inject(EventService);
+    private net = inject(NetService);
+    private org = inject(OrgService);
+    private pcrud = inject(PcrudService);
+    private auth = inject(AuthService);
+
 
     currentPo: IdlObject;
 
     poRetrieved: EventEmitter<IdlObject> = new EventEmitter<IdlObject>();
-
-    constructor(
-        private evt: EventService,
-        private net: NetService,
-        private org: OrgService,
-        private pcrud: PcrudService,
-        private auth: AuthService
-    ) {}
 
     getFleshedPo(id: number, params: FleshCacheParams = {}): Promise<IdlObject> {
 

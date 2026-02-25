@@ -1,4 +1,4 @@
-import {Component, OnInit, AfterViewInit} from '@angular/core';
+import { Component, OnInit, AfterViewInit, inject } from '@angular/core';
 import {RouterModule} from '@angular/router';
 import {AuthService} from '@eg/core/auth.service';
 
@@ -8,13 +8,11 @@ import {AuthService} from '@eg/core/auth.service';
 })
 
 export class StaffLoginNotAllowedComponent implements OnInit, AfterViewInit {
+    private auth = inject(AuthService);
+
 
     username: string;
     userId: number;
-
-    constructor(
-      private auth: AuthService
-    ) {}
 
     ngOnInit() {
         this.username = this.auth.user().usrname();

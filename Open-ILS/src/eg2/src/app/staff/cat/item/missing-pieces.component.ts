@@ -1,4 +1,4 @@
-import {Component, AfterViewInit, ViewChild} from '@angular/core';
+import { Component, AfterViewInit, ViewChild, inject } from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {IdlObject} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
@@ -18,6 +18,14 @@ import { StaffCommonModule } from '@eg/staff/common.module';
     ]
 })
 export class MarkItemMissingPiecesComponent implements AfterViewInit {
+    private route = inject(ActivatedRoute);
+    private net = inject(NetService);
+    private printer = inject(PrintService);
+    private pcrud = inject(PcrudService);
+    private auth = inject(AuthService);
+    private evt = inject(EventService);
+    private holdings = inject(HoldingsService);
+
 
     itemId: number;
     itemBarcode: string;
@@ -31,15 +39,7 @@ export class MarkItemMissingPiecesComponent implements AfterViewInit {
     @ViewChild('noteDialog', {static: false})
         noteDialog: PatronNoteDialogComponent;
 
-    constructor(
-        private route: ActivatedRoute,
-        private net: NetService,
-        private printer: PrintService,
-        private pcrud: PcrudService,
-        private auth: AuthService,
-        private evt: EventService,
-        private holdings: HoldingsService
-    ) {
+    constructor() {
         this.itemId = +this.route.snapshot.paramMap.get('id');
     }
 

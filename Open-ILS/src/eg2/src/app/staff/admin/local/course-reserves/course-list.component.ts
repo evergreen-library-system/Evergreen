@@ -28,6 +28,15 @@ import { StaffCommonModule } from '@eg/staff/common.module';
 })
 
 export class CourseListComponent implements OnInit, AfterViewInit {
+    private courseSvc = inject(CourseService);
+    private auth = inject(AuthService);
+    private idl = inject(IdlService);
+    private org = inject(OrgService);
+    private pcrud = inject(PcrudService);
+    private router = inject(Router);
+    private toast = inject(ToastService);
+    private window = inject(WINDOW);
+
 
     @ViewChild('editDialog', { static: true }) editDialog: FmRecordEditorComponent;
     @ViewChild('grid') grid: GridComponent;
@@ -54,19 +63,6 @@ export class CourseListComponent implements OnInit, AfterViewInit {
     defaultOuId: number;
     searchOrgs: OrgFamily;
     defaultTerm: IdlObject;
-
-
-    constructor(
-        private courseSvc: CourseService,
-        private auth: AuthService,
-        private idl: IdlService,
-        private org: OrgService,
-        private pcrud: PcrudService,
-        private router: Router,
-        private toast: ToastService
-    ) {}
-
-    private window = inject(WINDOW);
 
     ngOnInit() {
         this.getSource();

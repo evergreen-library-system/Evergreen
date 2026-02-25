@@ -1,4 +1,4 @@
-import {Component, OnInit, AfterViewInit, ViewChild, ViewEncapsulation} from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, ViewEncapsulation, inject } from '@angular/core';
 import {Router, ActivatedRoute, RouterModule} from '@angular/router';
 import {AuthService} from '@eg/core/auth.service';
 import {NetService} from '@eg/core/net.service';
@@ -32,17 +32,15 @@ import { SckoSummaryComponent } from './summary.component';
 })
 
 export class SckoComponent implements OnInit, AfterViewInit {
+    private router = inject(Router);
+    private route = inject(ActivatedRoute);
+    private net = inject(NetService);
+    private auth = inject(AuthService);
+    scko = inject(SckoService);
+
 
     @ViewChild('logoutDialog') logoutDialog: ConfirmDialogComponent;
     @ViewChild('alertDialog') alertDialog: ConfirmDialogComponent;
-
-    constructor(
-        private router: Router,
-        private route: ActivatedRoute,
-        private net: NetService,
-        private auth: AuthService,
-        public  scko: SckoService
-    ) {}
 
     ngOnInit() {
         this.net.authExpired$.subscribe(how => {

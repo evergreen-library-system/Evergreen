@@ -1,5 +1,5 @@
 /* eslint-disable no-case-declarations, no-cond-assign, no-magic-numbers, no-self-assign */
-import {Component, OnInit, Input, ViewChild} from '@angular/core';
+import { Component, OnInit, Input, ViewChild, inject } from '@angular/core';
 import {Router} from '@angular/router';
 import {empty, from, concatMap, tap} from 'rxjs';
 import {OrgService} from '@eg/core/org.service';
@@ -122,6 +122,23 @@ interface StatCat {
     ]
 })
 export class EditComponent implements OnInit {
+    private router = inject(Router);
+    private org = inject(OrgService);
+    private net = inject(NetService);
+    private auth = inject(AuthService);
+    private pcrud = inject(PcrudService);
+    private idl = inject(IdlService);
+    private strings = inject(StringService);
+    private toast = inject(ToastService);
+    private perms = inject(PermService);
+    private evt = inject(EventService);
+    private serverStore = inject(ServerStoreService);
+    private broadcaster = inject(BroadcastService);
+    private patronService = inject(PatronService);
+    private printer = inject(PrintService);
+    private worklog = inject(WorkLogService);
+    context = inject(PatronContextService);
+
 
     @Input() patronId: number = null;
     @Input() cloneId: number = null;
@@ -228,25 +245,6 @@ export class EditComponent implements OnInit {
     holdNotifyTypes: {email?: boolean, phone?: boolean, sms?: boolean} = {};
 
     fieldDoc: {[cls: string]: {[field: string]: string}} = {};
-
-    constructor(
-        private router: Router,
-        private org: OrgService,
-        private net: NetService,
-        private auth: AuthService,
-        private pcrud: PcrudService,
-        private idl: IdlService,
-        private strings: StringService,
-        private toast: ToastService,
-        private perms: PermService,
-        private evt: EventService,
-        private serverStore: ServerStoreService,
-        private broadcaster: BroadcastService,
-        private patronService: PatronService,
-        private printer: PrintService,
-        private worklog: WorkLogService,
-        public context: PatronContextService
-    ) {}
 
     ngOnInit() {
         this.load();

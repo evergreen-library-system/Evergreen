@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import {tap} from 'rxjs';
 import {CatalogService} from '@eg/share/catalog/catalog.service';
 import {CatalogSearchContext} from '@eg/share/catalog/search-context';
@@ -17,16 +17,14 @@ interface BrowsePage {
     imports: [StaffCommonModule]
 })
 export class BrowsePagerComponent implements OnInit {
+    private cat = inject(CatalogService);
+    private staffCat = inject(StaffCatalogService);
+
 
     searchContext: CatalogSearchContext;
     browseLoading = false;
     prevEntry: any;
     nextEntry: any;
-
-    constructor(
-        private cat: CatalogService,
-        private staffCat: StaffCatalogService
-    ) {}
 
     ngOnInit() {
         this.searchContext = this.staffCat.searchContext;

@@ -1,4 +1,4 @@
-import {Component, ViewChild, OnInit, HostListener} from '@angular/core';
+import { Component, ViewChild, OnInit, HostListener, inject } from '@angular/core';
 import {Router, ActivatedRoute, ParamMap, RoutesRecognized} from '@angular/router';
 import {Location} from '@angular/common';
 import {NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
@@ -49,6 +49,18 @@ import { PatronStatCatsComponent } from './statcats.component';
     ]
 })
 export class PatronComponent implements OnInit {
+    private router = inject(Router);
+    private route = inject(ActivatedRoute);
+    private ngLocation = inject(Location);
+    private net = inject(NetService);
+    private auth = inject(AuthService);
+    private pcrud = inject(PcrudService);
+    private evt = inject(EventService);
+    private store = inject(StoreService);
+    private serverStore = inject(ServerStoreService);
+    patronService = inject(PatronService);
+    context = inject(PatronContextService);
+
 
     patronId: number;
     patronTab = 'search';
@@ -75,20 +87,6 @@ export class PatronComponent implements OnInit {
     @ViewChild('purgeConfirmOverride') private purgeConfirmOverride: ConfirmDialogComponent;
     @ViewChild('purgeStaffDialog') private purgeStaffDialog: PromptDialogComponent;
     @ViewChild('purgeBadBarcode') private purgeBadBarcode: AlertDialogComponent;
-
-    constructor(
-        private router: Router,
-        private route: ActivatedRoute,
-        private ngLocation: Location,
-        private net: NetService,
-        private auth: AuthService,
-        private pcrud: PcrudService,
-        private evt: EventService,
-        private store: StoreService,
-        private serverStore: ServerStoreService,
-        public patronService: PatronService,
-        public context: PatronContextService
-    ) {}
 
     ngOnInit() {
         this.patronTab = 'search';

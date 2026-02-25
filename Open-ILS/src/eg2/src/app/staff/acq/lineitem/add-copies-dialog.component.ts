@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {IdlObject} from '@eg/core/idl.service';
@@ -12,9 +12,15 @@ import { CommonModule } from '@angular/common';
 })
 
 export class AddCopiesDialogComponent extends DialogComponent {
+    private modal: NgbModal;
+
     @Input() ids: number[];
     lineitemWithCopies: IdlObject;
-    constructor(private modal: NgbModal) { super(modal); }
+    constructor() {
+        const modal = inject(NgbModal);
+        super(modal);
+        this.modal = modal;
+    }
 }
 
 

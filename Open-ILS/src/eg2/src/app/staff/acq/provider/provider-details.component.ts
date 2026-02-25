@@ -1,4 +1,4 @@
-import {Component, OnInit, Output, EventEmitter, ViewChild} from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, ViewChild, inject } from '@angular/core';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {ProviderRecordService} from './provider-record.service';
 import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
@@ -13,6 +13,9 @@ import {StringComponent} from '@eg/share/string/string.component';
     ]
 })
 export class ProviderDetailsComponent implements OnInit {
+    private idl = inject(IdlService);
+    private providerRecord = inject(ProviderRecordService);
+
 
     @ViewChild('successString', { static: true }) successString: StringComponent;
     @ViewChild('updateFailedString', { static: false }) updateFailedString: StringComponent;
@@ -25,12 +28,6 @@ export class ProviderDetailsComponent implements OnInit {
     permissions: {[name: string]: boolean};
 
     @Output() desireSummarize: EventEmitter<number> = new EventEmitter<number>();
-
-    constructor(
-        private idl: IdlService,
-        private providerRecord: ProviderRecordService,
-    ) {
-    }
 
     ngOnInit() {
         this.refresh();

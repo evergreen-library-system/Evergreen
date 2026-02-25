@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import {ActivatedRoute, Router, ParamMap} from '@angular/router';
 import {NetService} from '@eg/core/net.service';
 import {EventService, EgEvent} from '@eg/core/event.service';
@@ -26,6 +26,12 @@ interface AssetCreationResponse {
     ]
 })
 export class CreateAssetsComponent implements OnInit {
+    private router = inject(Router);
+    private route = inject(ActivatedRoute);
+    private auth = inject(AuthService);
+    private net = inject(NetService);
+    private evt = inject(EventService);
+
 
     targetPo: number;
     creationRequested = false;
@@ -41,14 +47,6 @@ export class CreateAssetsComponent implements OnInit {
         copiesProcessed: 0
     };
     creationErrors: EgEvent[] = [];
-
-    constructor(
-        private router: Router,
-        private route: ActivatedRoute,
-        private auth: AuthService,
-        private net: NetService,
-        private evt: EventService,
-    ) { }
 
     ngOnInit() {
         this.activatePo = history.state.activatePo ? true : false;

@@ -1,5 +1,5 @@
 /* eslint-disable */
-import {Injectable} from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import {Router, Resolve, RouterStateSnapshot,
     ActivatedRouteSnapshot} from '@angular/router';
 import moment from 'moment-timezone';
@@ -511,6 +511,13 @@ export class SRTemplate {
     providedIn: 'root'
 })
 export class ReporterService {
+    private evt = inject(EventService);
+    private auth = inject(AuthService);
+    private idl = inject(IdlService);
+    private pcrud = inject(PcrudService);
+    private org = inject(OrgService);
+    private net = inject(NetService);
+
 
     currentFolderType = '';
     selectedTemplate: IdlObject = null;
@@ -533,14 +540,7 @@ export class ReporterService {
     globalCanShare: boolean = false;
     topPermOrg = { RUN_REPORTS: -1, SHARE_REPORT_FOLDER: -1, VIEW_REPORT_OUTPUT: -1 };
 
-    constructor (
-        private evt: EventService,
-        private auth: AuthService,
-        private idl: IdlService,
-        private pcrud: PcrudService,
-        private org: OrgService,
-        private net: NetService
-    ) {
+    constructor () {
         this.reloadFolders();
     }
 
@@ -2276,12 +2276,10 @@ export class ReporterService {
 
 @Injectable()
 export class SimpleReporterServiceResolver implements Resolve<Promise<any[]>> {
+    private router = inject(Router);
+    private perm = inject(PermService);
+    private svc = inject(ReporterService);
 
-    constructor(
-                private router: Router,
-                private perm: PermService,
-                private svc: ReporterService
-    ) {}
 
     resolve(
         route: ActivatedRouteSnapshot,
@@ -2305,12 +2303,10 @@ export class SimpleReporterServiceResolver implements Resolve<Promise<any[]>> {
 
 @Injectable()
 export class FullReporterServiceResolver implements Resolve<Promise<any[]>> {
+    private router = inject(Router);
+    private perm = inject(PermService);
+    private svc = inject(ReporterService);
 
-    constructor(
-                private router: Router,
-                private perm: PermService,
-                private svc: ReporterService
-    ) {}
 
     resolve(
         route: ActivatedRouteSnapshot,

@@ -1,6 +1,6 @@
 /* eslint-disable rxjs-x/no-nested-subscribe */
 import { Observable, merge, throwError, tap, switchMap } from 'rxjs';
-import {Injectable} from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {AuthService} from '@eg/core/auth.service';
 import {EventService} from '@eg/core/event.service';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
@@ -11,14 +11,12 @@ import {PcrudService} from '@eg/core/pcrud.service';
 @Injectable()
 export class CourseService {
 
-    constructor(
-        private auth: AuthService,
-        private evt: EventService,
-        private idl: IdlService,
-        private net: NetService,
-        private org: OrgService,
-        private pcrud: PcrudService
-    ) {}
+    private auth = inject(AuthService);
+    private evt = inject(EventService);
+    private idl = inject(IdlService);
+    private net = inject(NetService);
+    private org = inject(OrgService);
+    private pcrud = inject(PcrudService);
 
     isOptedIn(): Promise<any> {
         return new Promise((resolve) => {

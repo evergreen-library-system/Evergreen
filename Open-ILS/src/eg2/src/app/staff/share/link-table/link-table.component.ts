@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import {Component, Input, OnInit, Host} from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 interface LinkTableLink {
@@ -40,11 +40,11 @@ export class LinkTableComponent {
 })
 
 export class LinkTableLinkComponent implements OnInit {
+    private linkTable = inject(LinkTableComponent, { host: true });
+
     @Input() label: string;
     @Input() url: string;
     @Input() routerLink: string;
-
-    constructor(@Host() private linkTable: LinkTableComponent) {}
 
     ngOnInit() {
         this.linkTable.links.push({

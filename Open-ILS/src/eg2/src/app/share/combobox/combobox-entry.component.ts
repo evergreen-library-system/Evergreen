@@ -1,4 +1,4 @@
-import {Component, Input, Host, OnInit} from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import {ComboboxComponent} from './combobox.component';
 
 @Component({
@@ -6,13 +6,13 @@ import {ComboboxComponent} from './combobox.component';
     template: '<ng-template></ng-template>'
 })
 export class ComboboxEntryComponent implements OnInit {
+    private combobox = inject(ComboboxComponent, { host: true });
+
 
     @Input() entryId: any;
     @Input() entryLabel: string;
     @Input() entryClass?: any;  // any valid ngClass value
     @Input() selected: boolean;
-
-    constructor(@Host() private combobox: ComboboxComponent) {}
 
     ngOnInit() {
         if (this.selected) {

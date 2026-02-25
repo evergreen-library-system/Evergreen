@@ -1,7 +1,7 @@
 /* eslint-disable no-magic-numbers */
 
 import {timer as observableTimer, Observable, map, take} from 'rxjs';
-import {Component, OnInit, ViewChild, Input, TemplateRef} from '@angular/core';
+import { Component, OnInit, ViewChild, Input, TemplateRef, inject } from '@angular/core';
 import {ProgressDialogComponent} from '@eg/share/dialog/progress.component';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {StringService} from '@eg/share/string/string.service';
@@ -44,6 +44,16 @@ import { Z3950SearchComponent } from '../share/z3950-search/z3950-search.compone
     ]
 })
 export class SandboxComponent implements OnInit {
+    private idl = inject(IdlService);
+    private org = inject(OrgService);
+    private pcrud = inject(PcrudService);
+    private strings = inject(StringService);
+    private toast = inject(ToastService);
+    private format = inject(FormatService);
+    private printer = inject(PrintService);
+    private samples = inject(SampleDataService);
+    private h2txt = inject(HtmlToTxtService);
+
 
     @ViewChild('progressDialog', { static: true })
     private progressDialog: ProgressDialogComponent;
@@ -133,17 +143,7 @@ export class SandboxComponent implements OnInit {
     circDaily: IdlObject;
     circHourly: IdlObject;
 
-    constructor(
-        private idl: IdlService,
-        private org: OrgService,
-        private pcrud: PcrudService,
-        private strings: StringService,
-        private toast: ToastService,
-        private format: FormatService,
-        private printer: PrintService,
-        private samples: SampleDataService,
-        private h2txt: HtmlToTxtService
-    ) {
+    constructor() {
         // BroadcastChannel is not yet defined in PhantomJS and elsewhere
         this.sbChannel = (typeof BroadcastChannel === 'undefined') ?
             {} : new BroadcastChannel('eg.sbChannel');

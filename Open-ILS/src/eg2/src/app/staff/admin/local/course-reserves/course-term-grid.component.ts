@@ -1,4 +1,4 @@
-import {Component, Input, ViewChild, OnInit, AfterViewInit} from '@angular/core';
+import { Component, Input, ViewChild, OnInit, AfterViewInit, inject } from '@angular/core';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {CourseService} from '@eg/staff/share/course.service';
@@ -21,6 +21,13 @@ import { StaffCommonModule } from '@eg/staff/common.module';
 })
 
 export class TermListComponent implements OnInit, AfterViewInit {
+    private courseSvc = inject(CourseService);
+    private auth = inject(AuthService);
+    private idl = inject(IdlService);
+    private org = inject(OrgService);
+    private pcrud = inject(PcrudService);
+    private toast = inject(ToastService);
+
 
     @ViewChild('editDialog', { static: true }) editDialog: FmRecordEditorComponent;
     @ViewChild('deleteLinkedTermWarning', { static: true }) deleteLinkedTermWarning: ConfirmDialogComponent;
@@ -44,16 +51,6 @@ export class TermListComponent implements OnInit, AfterViewInit {
     searchOrgs: OrgFamily;
     defaultTerm: IdlObject;
     termToDelete: String;
-
-
-    constructor(
-        private courseSvc: CourseService,
-        private auth: AuthService,
-        private idl: IdlService,
-        private org: OrgService,
-        private pcrud: PcrudService,
-        private toast: ToastService
-    ) {}
 
     ngOnInit() {
         this.getSource();

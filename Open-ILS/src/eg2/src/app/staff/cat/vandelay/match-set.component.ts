@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import {IdlObject} from '@eg/core/idl.service';
@@ -11,17 +11,17 @@ import { StaffCommonModule } from '@eg/staff/common.module';
     imports: [StaffCommonModule]
 })
 export class MatchSetComponent implements OnInit {
+    private router = inject(Router);
+    private route = inject(ActivatedRoute);
+    private pcrud = inject(PcrudService);
+    private org = inject(OrgService);
+
 
     matchSet: IdlObject;
     matchSetId: number;
     matchSetTab: string;
 
-    constructor(
-        private router: Router,
-        private route: ActivatedRoute,
-        private pcrud: PcrudService,
-        private org: OrgService
-    ) {
+    constructor() {
         this.route.paramMap.subscribe((params: ParamMap) => {
             this.matchSetId = +params.get('id');
             this.matchSetTab = params.get('matchSetTab');

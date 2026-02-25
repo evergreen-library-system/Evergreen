@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import {NetService} from './net.service';
 import {OrgService} from './org.service';
 import {AuthService} from './auth.service';
@@ -13,12 +13,10 @@ interface HasPermHereResult {
 
 @Injectable({providedIn: 'root'})
 export class PermService {
+    private net = inject(NetService);
+    private org = inject(OrgService);
+    private auth = inject(AuthService);
 
-    constructor(
-        private net: NetService,
-        private org: OrgService,
-        private auth: AuthService,
-    ) {}
 
     // workstation not required.
     hasWorkPermAt(permNames: string[], asId?: boolean): Promise<HasPermAtResult> {

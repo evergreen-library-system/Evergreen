@@ -1,7 +1,7 @@
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { EditOuSettingDialogComponent } from './edit-org-unit-setting-dialog.component';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, ChangeDetectorRef, Component, TemplateRef, ViewChild } from '@angular/core';
+import { AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, ChangeDetectorRef, Component, TemplateRef, ViewChild, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '@eg/core/auth.service';
 import { StaffCommonModule } from '@eg/staff/common.module';
@@ -24,9 +24,10 @@ let component: EditOuSettingDialogComponent;
     imports: [CommonModule, EditOuSettingDialogComponent]
 })
 class MockModalComponent implements AfterViewInit {
+    private cdr = inject(ChangeDetectorRef);
+
     @ViewChild('dialog') componentRef: EditOuSettingDialogComponent;
     modal: TemplateRef<any>;
-    constructor(private cdr: ChangeDetectorRef) {}
     ngAfterViewInit() {
         this.modal = this.componentRef.dialogContent;
         this.cdr.detectChanges();
@@ -74,7 +75,7 @@ describe('EditOuSettingDialogComponent', () => {
         });
     });
     describe('template', () => {
-        it('displays a timezone select if the entry is lib.timezone'), waitForAsync(() => {
+        it(('displays a timezone select if the entry is lib.timezone'), waitForAsync(() => {
             const mockModalFixture = TestBed.createComponent(MockModalComponent);
             const mockModal = mockModalFixture.debugElement.componentInstance;
             mockModalFixture.detectChanges();
@@ -88,6 +89,6 @@ describe('EditOuSettingDialogComponent', () => {
             const editElement: HTMLElement = mockModalFixture.nativeElement;
             mockModalFixture.detectChanges();
             expect(editElement.querySelectorAll('eg-timezone-select').length).toEqual(1);
-        });
+        }));
     });
 });

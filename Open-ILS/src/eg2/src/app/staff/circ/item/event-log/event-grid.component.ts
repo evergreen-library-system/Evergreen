@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnInit, ViewChild} from '@angular/core';
+import { Component, Input, OnChanges, OnInit, ViewChild, inject } from '@angular/core';
 import {Router} from '@angular/router';
 import {Observable} from 'rxjs';
 import {AuthService} from '@eg/core/auth.service';
@@ -24,6 +24,17 @@ import { StaffCommonModule } from '@eg/staff/common.module';
 })
 
 export class ItemEventGridComponent implements OnChanges, OnInit {
+    private idl = inject(IdlService);
+    private auth = inject(AuthService);
+    private bib = inject(BibRecordService);
+    private format = inject(FormatService);
+    private pcrud = inject(PcrudService);
+    private router = inject(Router);
+    private toast = inject(ToastService);
+    private net = inject(NetService);
+    private evt = inject(EventService);
+    private org = inject(OrgService);
+
 
     @Input() item: number;
     @Input() event_type: string;
@@ -35,21 +46,6 @@ export class ItemEventGridComponent implements OnChanges, OnInit {
     noRowSelected: (rows: IdlObject[]) => boolean;
 
     @ViewChild('grid', { static: true }) grid: GridComponent;
-
-    constructor(
-        private idl: IdlService,
-        private auth: AuthService,
-        private bib: BibRecordService,
-        private format: FormatService,
-        private pcrud: PcrudService,
-        private router: Router,
-        private toast: ToastService,
-        private net: NetService,
-        private evt: EventService,
-        private org: OrgService
-    ) {
-
-    }
 
     ngOnInit() {
         this.gridSource = new GridDataSource();

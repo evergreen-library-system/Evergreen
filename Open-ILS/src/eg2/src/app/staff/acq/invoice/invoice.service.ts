@@ -1,5 +1,5 @@
 /* eslint-disable */
-import {Injectable, EventEmitter} from '@angular/core';
+import { Injectable, EventEmitter, inject } from '@angular/core';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {EventService} from '@eg/core/event.service';
 import {NetService} from '@eg/core/net.service';
@@ -26,6 +26,14 @@ interface UpdateInvoiceOptions {
 
 @Injectable()
 export class InvoiceService {
+    private evt = inject(EventService);
+    private net = inject(NetService);
+    private pcrud = inject(PcrudService);
+    private auth = inject(AuthService);
+    private poService = inject(PoService);
+    private liService = inject(LineitemService);
+    private idl = inject(IdlService);
+
 
     currentInvoice: IdlObject; // this may be a new or pending changes invoice
 
@@ -43,15 +51,7 @@ export class InvoiceService {
 
     invoiceRetrieved: EventEmitter<IdlObject> = new EventEmitter<IdlObject>();
 
-    constructor(
-        private evt: EventService,
-        private net: NetService,
-        private pcrud: PcrudService,
-        private auth: AuthService,
-        private poService: PoService,
-        private liService: LineitemService,
-        private idl: IdlService,
-    ) {
+    constructor() {
         console.debug('InvoiceService',this);
     }
 

@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import {from, filter, concatMap} from 'rxjs';
 import {IdlService} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
@@ -29,6 +29,15 @@ export interface HoldNotifyMod {
 
 export class HoldNotifyUpdateDialogComponent
     extends DialogComponent implements OnInit {
+    private modal: NgbModal;
+    private toast = inject(ToastService);
+    private net = inject(NetService);
+    private idl = inject(IdlService);
+    private evt = inject(EventService);
+    private pcrud = inject(PcrudService);
+    private org = inject(OrgService);
+    private auth = inject(AuthService);
+
 
     // Values provided directly by our parent component
     patronId: number;
@@ -39,16 +48,12 @@ export class HoldNotifyUpdateDialogComponent
     selected: {[field: string]: boolean} = {};
     loading = false;
 
-    constructor(
-        private modal: NgbModal,
-        private toast: ToastService,
-        private net: NetService,
-        private idl: IdlService,
-        private evt: EventService,
-        private pcrud: PcrudService,
-        private org: OrgService,
-        private auth: AuthService) {
+    constructor() {
+        const modal = inject(NgbModal);
+
         super(modal);
+
+        this.modal = modal;
     }
 
     isPhoneChange(mod: HoldNotifyMod): boolean {

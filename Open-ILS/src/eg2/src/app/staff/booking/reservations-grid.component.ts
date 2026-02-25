@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output, OnChanges, OnInit, ViewChild} from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnChanges, OnInit, ViewChild, inject } from '@angular/core';
 import {Router} from '@angular/router';
 import {Observable, from, of, tap, switchMap, mergeMap} from 'rxjs';
 import {AuthService} from '@eg/core/auth.service';
@@ -41,6 +41,15 @@ import { DateTimeSelectComponent } from '@eg/share/datetime-select/datetime-sele
     ]
 })
 export class ReservationsGridComponent implements OnChanges, OnInit {
+    private auth = inject(AuthService);
+    private format = inject(FormatService);
+    private pcrud = inject(PcrudService);
+    private router = inject(Router);
+    private toast = inject(ToastService);
+    private net = inject(NetService);
+    private org = inject(OrgService);
+    private actions = inject(ReservationActionsService);
+
 
     @Input() patron: number;
     @Input() resourceBarcode: string;
@@ -88,19 +97,6 @@ export class ReservationsGridComponent implements OnChanges, OnInit {
     reprintNotAppropriate: (rows: IdlObject[]) => boolean;
     editNotAppropriate: (rows: IdlObject[]) => boolean;
     returnNotAppropriate: (rows: IdlObject[]) => boolean;
-
-    constructor(
-        private auth: AuthService,
-        private format: FormatService,
-        private pcrud: PcrudService,
-        private router: Router,
-        private toast: ToastService,
-        private net: NetService,
-        private org: OrgService,
-        private actions: ReservationActionsService,
-    ) {
-
-    }
 
     ngOnInit() {
         if (!(this.format.wsOrgTimezone)) {

@@ -1,6 +1,6 @@
 /* eslint-disable max-len, no-prototype-builtins */
-import {Injectable, EventEmitter, OnDestroy, inject} from '@angular/core';
-import {Subject, tap, takeUntil, toArray, lastValueFrom, firstValueFrom} from 'rxjs';
+import { Injectable, EventEmitter, OnDestroy, inject } from '@angular/core';
+import {Subject, tap, takeUntil, toArray, lastValueFrom, Observable, Subscription, firstValueFrom} from 'rxjs';
 import {SafeUrl} from '@angular/platform-browser';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
@@ -28,6 +28,17 @@ interface VolCopyDefaults {
 
 @Injectable()
 export class VolCopyService implements OnDestroy {
+    private evt = inject(EventService);
+    private net = inject(NetService);
+    private idl = inject(IdlService);
+    private org = inject(OrgService);
+    private auth = inject(AuthService);
+    private pcrud = inject(PcrudService);
+    private holdings = inject(HoldingsService);
+    private fileExport = inject(FileExportService);
+    private store = inject(StoreService);
+    private serverStore = inject(ServerStoreService);
+
 
     autoId = -1;
 
@@ -64,17 +75,7 @@ export class VolCopyService implements OnDestroy {
     // Currently spans from volcopy.component to vol-edit.component.
     genBarcodesRequested: EventEmitter<void> = new EventEmitter<void>();
 
-    constructor(
-        private net: NetService,
-        private idl: IdlService,
-        private org: OrgService,
-        private auth: AuthService,
-        private pcrud: PcrudService,
-        private holdings: HoldingsService,
-        private fileExport: FileExportService,
-        private store: StoreService,
-        private serverStore: ServerStoreService
-    ) {
+    constructor() {
         // Listen for ServerStoreService cache invalidation completions within this tab
         this.serverStore.cacheCleared$
             .pipe(takeUntil(this.destroy$))

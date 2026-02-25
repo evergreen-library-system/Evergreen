@@ -1,5 +1,5 @@
 
-import {Component, OnInit, AfterViewInit, Input, ViewChild} from '@angular/core';
+import { Component, OnInit, AfterViewInit, Input, ViewChild, inject } from '@angular/core';
 import {EMPTY, throwError, from, map} from 'rxjs';
 import {Pager} from '@eg/share/util/pager';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
@@ -23,6 +23,12 @@ import { GridModule } from '@eg/share/grid/grid.module';
     ]
 })
 export class ProviderContactAddressesComponent implements OnInit, AfterViewInit {
+    private evt = inject(EventService);
+    private idl = inject(IdlService);
+    private providerRecord = inject(ProviderRecordService);
+    private toast = inject(ToastService);
+    private pcrud = inject(PcrudService);
+
 
     addresses: any[] = [];
 
@@ -48,14 +54,6 @@ export class ProviderContactAddressesComponent implements OnInit, AfterViewInit 
     // Size of create/edito dialog.  Uses large by default.
     @Input() dialogSize: 'sm' | 'lg' = 'lg';
     @Input() contactId: any;
-
-    constructor(
-        private evt: EventService,
-        private idl: IdlService,
-        private providerRecord: ProviderRecordService,
-        private toast: ToastService,
-        private pcrud: PcrudService) {
-    }
 
     ngOnInit() {
         this.gridSource = this.getDataSource();

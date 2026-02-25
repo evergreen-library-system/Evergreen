@@ -1,4 +1,4 @@
-import {Component, Input, ViewChild} from '@angular/core';
+import { Component, Input, ViewChild, inject } from '@angular/core';
 import {Observable, throwError, from, switchMap} from 'rxjs';
 import {NetService} from '@eg/core/net.service';
 import {IdlObject} from '@eg/core/idl.service';
@@ -33,6 +33,16 @@ import { FormsModule } from '@angular/forms';
 
 export class MarkDamagedDialogComponent
     extends DialogComponent {
+    private modal: NgbModal;
+    private toast = inject(ToastService);
+    private net = inject(NetService);
+    private evt = inject(EventService);
+    private pcrud = inject(PcrudService);
+    private org = inject(OrgService);
+    private billing = inject(BillingService);
+    private bib = inject(BibRecordService);
+    private auth = inject(AuthService);
+
 
     @Input() copyId: number;
 
@@ -56,17 +66,12 @@ export class MarkDamagedDialogComponent
     // Charge data returned from the server requesting additional charge info.
     chargeResponse: any;
 
-    constructor(
-        private modal: NgbModal, // required for passing to parent
-        private toast: ToastService,
-        private net: NetService,
-        private evt: EventService,
-        private pcrud: PcrudService,
-        private org: OrgService,
-        private billing: BillingService,
-        private bib: BibRecordService,
-        private auth: AuthService) {
+    constructor() {
+        const modal = inject(NgbModal);
+
         super(modal); // required for subclassing
+
+        this.modal = modal;
     }
 
     /**

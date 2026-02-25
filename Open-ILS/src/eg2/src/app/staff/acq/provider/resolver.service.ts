@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import {Observable} from 'rxjs';
 import {Router, Resolve, RouterStateSnapshot,
     ActivatedRouteSnapshot, CanDeactivate} from '@angular/router';
@@ -6,13 +6,11 @@ import {ProviderRecordService} from './provider-record.service';
 
 @Injectable()
 export class ProviderResolver implements Resolve<Promise<any[]>> {
+    private router = inject(Router);
+    private providerRecord = inject(ProviderRecordService);
+
 
     savedId: number = null;
-
-    constructor(
-        private router: Router,
-        private providerRecord: ProviderRecordService,
-    ) {}
 
     resolve(
         route: ActivatedRouteSnapshot,

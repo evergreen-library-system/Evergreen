@@ -1,4 +1,4 @@
-import {Component, ViewChild, OnInit} from '@angular/core';
+import { Component, ViewChild, OnInit, inject } from '@angular/core';
 import {Location} from '@angular/common';
 import {FormatService} from '@eg/core/format.service';
 import {AdminPageComponent} from '@eg/staff/share/admin-page/admin-page.component';
@@ -28,6 +28,8 @@ import { TranslateComponent } from '@eg/share/translate/translate.component';
 })
 
 export class AdminCarouselComponent extends AdminPageComponent implements OnInit {
+    private net = inject(NetService);
+
 
     idlClass = 'cc';
     classLabel: string;
@@ -42,22 +44,6 @@ export class AdminCarouselComponent extends AdminPageComponent implements OnInit
     @ViewChild('refreshString', { static: true }) refreshString: StringComponent;
     @ViewChild('refreshErrString', { static: true }) refreshErrString: StringComponent;
     @ViewChild('delConfirm', { static: true }) delConfirm: ConfirmDialogComponent;
-
-    constructor(
-        route: ActivatedRoute,
-        ngLocation: Location,
-        format: FormatService,
-        idl: IdlService,
-        org: OrgService,
-        auth: AuthService,
-        pcrud: PcrudService,
-        perm: PermService,
-        toast: ToastService,
-        private net: NetService,
-        broadcaster: BroadcastService
-    ) {
-        super(route, ngLocation, format, idl, org, auth, pcrud, perm, toast, broadcaster);
-    }
 
     ngOnInit() {
         super.ngOnInit();

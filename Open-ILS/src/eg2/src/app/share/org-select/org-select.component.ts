@@ -1,5 +1,5 @@
 /** TODO PORT ME TO <eg-combobox> */
-import {Component, OnInit, Input, Output, ViewChild, EventEmitter, AfterViewInit} from '@angular/core';
+import { Component, OnInit, Input, Output, ViewChild, EventEmitter, AfterViewInit, inject } from '@angular/core';
 import {Observable, Subject, map, mapTo, debounceTime, distinctUntilChanged, mergeWith as merge, filter} from 'rxjs';
 import {AuthService} from '@eg/core/auth.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
@@ -40,6 +40,11 @@ interface OrgDisplay {
     imports: [NgIf, NgbTypeahead, FormsModule, ReactiveFormsModule]
 })
 export class OrgSelectComponent implements OnInit, AfterViewInit {
+    private auth = inject(AuthService);
+    private serverStore = inject(ServerStoreService);
+    private org = inject(OrgService);
+    private perm = inject(PermService);
+
     static _domId = 0;
 
     showCombinedNames = false; // Managed via user/workstation setting
@@ -201,12 +206,7 @@ export class OrgSelectComponent implements OnInit, AfterViewInit {
         return this.selected ? this.selected.id : null;
     }
 
-    constructor(
-      private auth: AuthService,
-      private serverStore: ServerStoreService,
-      private org: OrgService,
-      private perm: PermService,
-    ) {
+    constructor() {
         this.orgClassCallback = (orgId: number): string => '';
         this.orgSelectGroup = new FormGroup({
             orgSelect: new FormControl()

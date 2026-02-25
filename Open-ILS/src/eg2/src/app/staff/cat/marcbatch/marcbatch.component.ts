@@ -1,4 +1,4 @@
-import {Component, OnInit, Renderer2} from '@angular/core';
+import { Component, OnInit, Renderer2, inject } from '@angular/core';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {HttpClient} from '@angular/common/http';
 import {tap} from 'rxjs';
@@ -28,6 +28,16 @@ interface TemplateRule {
     imports: [StaffCommonModule]
 })
 export class MarcBatchComponent implements OnInit {
+    private router = inject(Router);
+    private route = inject(ActivatedRoute);
+    private http = inject(HttpClient);
+    private renderer = inject(Renderer2);
+    private net = inject(NetService);
+    private pcrud = inject(PcrudService);
+    private auth = inject(AuthService);
+    private store = inject(ServerStoreService);
+    private cache = inject(AnonCacheService);
+
 
     session: string;
     source: 'b' | 'c' | 'r' = 'b';
@@ -44,18 +54,6 @@ export class MarcBatchComponent implements OnInit {
     progressValue: number = null;
     numSucceeded = 0;
     numFailed = 0;
-
-    constructor(
-        private router: Router,
-        private route: ActivatedRoute,
-        private http: HttpClient,
-        private renderer: Renderer2,
-        private net: NetService,
-        private pcrud: PcrudService,
-        private auth: AuthService,
-        private store: ServerStoreService,
-        private cache: AnonCacheService
-    ) {}
 
     ngOnInit() {
 

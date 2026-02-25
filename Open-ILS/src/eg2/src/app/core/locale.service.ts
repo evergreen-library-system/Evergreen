@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import {Location} from '@angular/common';
 import {environment} from '../../environments/environment';
 import {Observable, of} from 'rxjs';
@@ -8,12 +8,10 @@ import {PcrudService} from '@eg/core/pcrud.service';
 
 @Injectable({providedIn: 'root'})
 export class LocaleService {
+    private ngLocation = inject(Location);
+    private cookieService = inject(CookieService);
+    private pcrud = inject(PcrudService);
 
-    constructor(
-        private ngLocation: Location,
-        private cookieService: CookieService,
-        private pcrud: PcrudService) {
-    }
 
     setLocale(code: string) {
         let url = this.ngLocation.prepareExternalUrl('/');

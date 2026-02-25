@@ -1,4 +1,4 @@
-import {Component, Input, Output, OnInit, ViewChild, EventEmitter} from '@angular/core';
+import { Component, Input, Output, OnInit, ViewChild, EventEmitter, inject } from '@angular/core';
 import {FormGroup, FormControl, Validators, ReactiveFormsModule} from '@angular/forms';
 import {Router} from '@angular/router';
 import {Observable, of, switchMap, single, startWith, tap} from 'rxjs';
@@ -19,7 +19,7 @@ import {ComboboxComponent, ComboboxEntry} from '@eg/share/combobox/combobox.comp
 import moment from 'moment-timezone';
 import { datesInOrderValidator } from '@eg/share/validators/dates_in_order_validator.directive';
 import { DateTimeSelectComponent } from '@eg/share/datetime-select/datetime-select.component';
-import { NgIf } from '@angular/common';
+import { CommonModule, NgIf } from '@angular/common';
 import { OrgSelectComponent } from '@eg/share/org-select/org-select.component';
 import { EgHelpPopoverComponent } from '@eg/share/eg-help-popover/eg-help-popover.component';
 import { ComboboxEntryComponent } from '@eg/share/combobox/combobox-entry.component';
@@ -29,11 +29,11 @@ import { ComboboxEntryComponent } from '@eg/share/combobox/combobox-entry.compon
     templateUrl: './create-reservation-dialog.component.html',
     imports: [
         AlertDialogComponent,
+        CommonModule,
         ComboboxComponent,
         ComboboxEntryComponent,
         DateTimeSelectComponent,
         EgHelpPopoverComponent,
-        NgIf,
         OrgSelectComponent,
         PatronSearchDialogComponent,
         ReactiveFormsModule,
@@ -42,6 +42,16 @@ import { ComboboxEntryComponent } from '@eg/share/combobox/combobox-entry.compon
 
 export class CreateReservationDialogComponent
     extends DialogComponent implements OnInit {
+    private auth = inject(AuthService);
+    private format = inject(FormatService);
+    private net = inject(NetService);
+    private org = inject(OrgService);
+    private pcrud = inject(PcrudService);
+    private router = inject(Router);
+    private modal: NgbModal;
+    private pbv = inject(PatronBarcodeValidator);
+    private toast = inject(ToastService);
+
 
     @Input() targetResource: number;
     @Input() targetResourceBarcode: string;
@@ -64,18 +74,12 @@ export class CreateReservationDialogComponent
 
     handlePickupLibChange: ($event: IdlObject) => void;
 
-    constructor(
-        private auth: AuthService,
-        private format: FormatService,
-        private net: NetService,
-        private org: OrgService,
-        private pcrud: PcrudService,
-        private router: Router,
-        private modal: NgbModal,
-        private pbv: PatronBarcodeValidator,
-        private toast: ToastService
-    ) {
+    constructor() {
+        const modal = inject(NgbModal);
+
         super(modal);
+        this.modal = modal;
+
         this.reservationRequestCompleted = new EventEmitter<boolean>();
     }
 

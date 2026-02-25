@@ -1,6 +1,6 @@
 /* eslint-disable */
 import { NgClass, NgFor } from '@angular/common';
-import { Component, ChangeDetectorRef, forwardRef, OnInit, Input, Output } from '@angular/core';
+import { Component, ChangeDetectorRef, forwardRef, OnInit, Input, Output, inject } from '@angular/core';
 import {ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR} from '@angular/forms';
 
 @Component({
@@ -18,6 +18,8 @@ import {ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR} from '@angular/for
 })
 
 export class BooleanSelectComponent implements ControlValueAccessor {
+  cdr = inject(ChangeDetectorRef);
+
 
   @Input() label: string;
   @Input() name: string;
@@ -78,8 +80,6 @@ export class BooleanSelectComponent implements ControlValueAccessor {
   setRequiredState?(isRequired: boolean): void {
       this.required = isRequired;
   }
-
-  constructor(public cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {}
 

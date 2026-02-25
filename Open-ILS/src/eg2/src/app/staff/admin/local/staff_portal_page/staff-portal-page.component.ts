@@ -1,4 +1,4 @@
-import {Component, ViewChild, OnInit} from '@angular/core';
+import { Component, ViewChild, OnInit, inject } from '@angular/core';
 import {Location} from '@angular/common';
 import {FormatService} from '@eg/core/format.service';
 import {AdminPageComponent} from '@eg/staff/share/admin-page/admin-page.component';
@@ -26,6 +26,8 @@ import { TranslateComponent } from '@eg/share/translate/translate.component';
 })
 
 export class AdminStaffPortalPageComponent extends AdminPageComponent implements OnInit {
+    private net = inject(NetService);
+
 
     idlClass = 'cusppe';
     fieldOrder = 'label,entry_type,target_url,url_newtab,entry_text,image_url,page_col,col_pos,owner,id';
@@ -41,22 +43,6 @@ export class AdminStaffPortalPageComponent extends AdminPageComponent implements
     @ViewChild('cloneFailedString', { static: true }) cloneFailedString: StringComponent;
     @ViewChild('cloneDialog', { static: true}) cloneDialog: ClonePortalEntriesDialogComponent;
     @ViewChild('delConfirm', { static: true }) delConfirm: ConfirmDialogComponent;
-
-    constructor(
-        route: ActivatedRoute,
-        ngLocation: Location,
-        format: FormatService,
-        idl: IdlService,
-        org: OrgService,
-        auth: AuthService,
-        pcrud: PcrudService,
-        perm: PermService,
-        toast: ToastService,
-        private net: NetService,
-        broadcaster: BroadcastService
-    ) {
-        super(route, ngLocation, format, idl, org, auth, pcrud, perm, toast, broadcaster);
-    }
 
     ngOnInit() {
         super.ngOnInit();

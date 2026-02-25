@@ -1,4 +1,4 @@
-import {Component, Input, Output, OnInit, Host, EventEmitter} from '@angular/core';
+import { Component, Input, Output, OnInit, EventEmitter, inject } from '@angular/core';
 import {GridToolbarAction} from './grid';
 import {GridComponent} from './grid.component';
 
@@ -8,6 +8,8 @@ import {GridComponent} from './grid.component';
 })
 
 export class GridToolbarActionComponent implements OnInit {
+    private grid = inject(GridComponent, { host: true });
+
 
     toolbarAction: GridToolbarAction;
 
@@ -45,7 +47,7 @@ export class GridToolbarActionComponent implements OnInit {
     @Input() isSeparator: boolean;
 
     // get a reference to our container grid.
-    constructor(@Host() private grid: GridComponent) {
+    constructor() {
         this.onClick = new EventEmitter<any []>();
         this.toolbarAction = new GridToolbarAction();
     }

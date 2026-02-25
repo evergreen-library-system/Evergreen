@@ -1,4 +1,4 @@
-import {Component, OnInit, AfterViewInit, OnDestroy, Input, ViewChild} from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy, Input, ViewChild, inject } from '@angular/core';
 import {NgForm} from '@angular/forms';
 import {EMPTY, from, Subscription} from 'rxjs';
 import {Pager} from '@eg/share/util/pager';
@@ -26,6 +26,10 @@ import { ComboboxComponent } from '@eg/share/combobox/combobox.component';
     ]
 })
 export class ProviderHoldingsComponent implements OnInit, AfterViewInit, OnDestroy {
+    private idl = inject(IdlService);
+    private providerRecord = inject(ProviderRecordService);
+    private toast = inject(ToastService);
+
 
     @Input() providerId: any;
     holdings: any[] = [];
@@ -56,13 +60,6 @@ export class ProviderHoldingsComponent implements OnInit, AfterViewInit, OnDestr
 
     // Size of create/edito dialog.  Uses large by default.
     @Input() dialogSize: 'sm' | 'lg' = 'lg';
-
-    constructor(
-        private idl: IdlService,
-        private providerRecord: ProviderRecordService,
-        private toast: ToastService) {
-
-    }
 
     ngOnInit() {
         this.gridSource = this.getDataSource();

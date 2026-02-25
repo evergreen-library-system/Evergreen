@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import { Component, Input, OnInit, ViewChild, inject } from '@angular/core';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {from, concatMap, tap} from 'rxjs';
 import {NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
@@ -30,6 +30,21 @@ import { StaffCommonModule } from '@eg/staff/common.module';
     ]
 })
 export class BillingHistoryComponent implements OnInit {
+    private router = inject(Router);
+    private route = inject(ActivatedRoute);
+    private org = inject(OrgService);
+    private evt = inject(EventService);
+    private net = inject(NetService);
+    private pcrud = inject(PcrudService);
+    private auth = inject(AuthService);
+    private idl = inject(IdlService);
+    private circ = inject(CircService);
+    private billing = inject(BillingService);
+    private printer = inject(PrintService);
+    private flatData = inject(GridFlatDataService);
+    patronService = inject(PatronService);
+    context = inject(PatronContextService);
+
 
     @Input() patronId: number;
     @Input() tab: string;
@@ -49,23 +64,6 @@ export class BillingHistoryComponent implements OnInit {
     @ViewChild('xactsGrid') private xactsGrid: GridComponent;
     @ViewChild('paymentsGrid') private paymentsGrid: GridComponent;
     @ViewChild('billingDialog') private billingDialog: AddBillingDialogComponent;
-
-    constructor(
-        private router: Router,
-        private route: ActivatedRoute,
-        private org: OrgService,
-        private evt: EventService,
-        private net: NetService,
-        private pcrud: PcrudService,
-        private auth: AuthService,
-        private idl: IdlService,
-        private circ: CircService,
-        private billing: BillingService,
-        private printer: PrintService,
-        private flatData: GridFlatDataService,
-        public patronService: PatronService,
-        public context: PatronContextService
-    ) {}
 
     ngOnInit() {
 

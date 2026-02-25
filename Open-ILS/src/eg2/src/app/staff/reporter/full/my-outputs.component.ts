@@ -1,5 +1,5 @@
 /* eslint-disable */
-import {Component, OnInit, ViewChild, Input} from '@angular/core';
+import { Component, OnInit, ViewChild, Input, inject } from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 import {AuthService} from '@eg/core/auth.service';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
@@ -26,6 +26,14 @@ import { StaffCommonModule } from '@eg/staff/common.module';
 })
 
 export class FullReporterOutputsComponent implements OnInit {
+    private router = inject(Router);
+    private route = inject(ActivatedRoute);
+    private auth = inject(AuthService);
+    private pcrud = inject(PcrudService);
+    private idl = inject(IdlService);
+    private toast = inject(ToastService);
+    RSvc = inject(ReporterService);
+
 
     @Input() currentFolder: IdlObject = null;
     @Input() searchReport: IdlObject = null;
@@ -49,15 +57,7 @@ export class FullReporterOutputsComponent implements OnInit {
 
     cellTextGenerator: GridCellTextGenerator;
 
-    constructor(
-        private router: Router,
-        private route: ActivatedRoute,
-        private auth: AuthService,
-        private pcrud: PcrudService,
-        private idl: IdlService,
-        private toast: ToastService,
-        public RSvc: ReporterService,
-    ) {
+    constructor() {
         // These values are all replaced via custom templates and cause warnings if not specified here.
         this.cellTextGenerator = {
             _output: row => ''

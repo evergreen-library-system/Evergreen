@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import {NgbNavModule} from '@ng-bootstrap/ng-bootstrap';
 import {Location, NgIf} from '@angular/common';
 import {ActivatedRoute} from '@angular/router';
@@ -20,6 +20,13 @@ import moment from 'moment-timezone';
 })
 
 export class StaffMFAComponent implements OnInit {
+    private net = inject(NetService);
+    private route = inject(ActivatedRoute);
+    private ngLocation = inject(Location);
+    private auth = inject(AuthService);
+    private org = inject(OrgService);
+    private offline = inject(OfflineService);
+
 
     active_factor = 'CONFIG';
     method_suffix = '';
@@ -51,14 +58,7 @@ export class StaffMFAComponent implements OnInit {
     sms_otp_phone = '';
     sms_otp_carrier: number;
 
-    constructor(
-      private net: NetService,
-      private route: ActivatedRoute,
-      private ngLocation: Location,
-      private auth: AuthService,
-      private org: OrgService,
-      private offline: OfflineService
-    ) {
+    constructor() {
         this.configured_factors = [];
         this.available_factors = [];
         this.hostname = window.location.hostname;

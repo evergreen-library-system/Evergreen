@@ -1,5 +1,5 @@
 /* eslint-disable no-await-in-loop, no-shadow */
-import {Component, ViewChild, OnInit} from '@angular/core';
+import { Component, ViewChild, OnInit, inject } from '@angular/core';
 import {catchError, firstValueFrom, lastValueFrom, of, take, defaultIfEmpty} from 'rxjs';
 import {Tree, TreeNode} from '@eg/share/tree/tree';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
@@ -25,6 +25,11 @@ import { TreeComponent } from '@eg/share/tree/tree.component';
 })
 
 export class CustomOrgUnitTreesComponent implements OnInit {
+    private idl = inject(IdlService);
+    private org = inject(OrgService);
+    private pcrud = inject(PcrudService);
+    private toast = inject(ToastService);
+
 
     tree: Tree;
     custom_tree: Tree;
@@ -45,14 +50,6 @@ export class CustomOrgUnitTreesComponent implements OnInit {
     @ViewChild('delConfirm', { static: true }) delConfirm: ConfirmDialogComponent;
     @ViewChild('moveNodeElsewhereDialog', { static: true })
         moveNodeElsewhereDialog: CustomOrgUnitTreesDialogComponent;
-
-    constructor(
-        private idl: IdlService,
-        private org: OrgService,
-        private pcrud: PcrudService,
-        // private strings: StringService,
-        private toast: ToastService
-    ) {}
 
 
     async ngOnInit() {

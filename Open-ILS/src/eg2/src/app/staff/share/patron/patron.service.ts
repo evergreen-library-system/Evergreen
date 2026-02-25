@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import {tap, Observable, firstValueFrom} from 'rxjs';
 import {IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
@@ -90,6 +90,13 @@ export interface PatronSetting {
 
 @Injectable()
 export class PatronService {
+    private net = inject(NetService);
+    private org = inject(OrgService);
+    private evt = inject(EventService);
+    private pcrud = inject(PcrudService);
+    private auth = inject(AuthService);
+    private store = inject(ServerStoreService);
+
 
     identTypes: IdlObject[];
     inetLevels: IdlObject[];
@@ -98,15 +105,6 @@ export class PatronService {
     statCats: IdlObject[];
     surveys: IdlObject[];
     userSettingTypes: {[settingName: string]: IdlObject};
-
-    constructor(
-        private net: NetService,
-        private org: OrgService,
-        private evt: EventService,
-        private pcrud: PcrudService,
-        private auth: AuthService,
-        private store: ServerStoreService
-    ) {}
 
     bcSearch(barcode: string): Observable<any> {
         return this.net.request(

@@ -1,6 +1,6 @@
 /* eslint-disable */
 /* eslint-disable no-empty, no-magic-numbers */
-import {Injectable, EventEmitter} from '@angular/core';
+import { Injectable, EventEmitter, inject } from '@angular/core';
 import {Observable, of} from 'rxjs';
 import {map, tap, finalize} from 'rxjs/operators';
 import {OrgService} from '@eg/core/org.service';
@@ -14,6 +14,13 @@ import { ServerStoreService } from '@eg/core/server-store.service';
 
 @Injectable({providedIn: 'root'})
 export class CatalogService {
+    private net = inject(NetService);
+    private org = inject(OrgService);
+    private pcrud = inject(PcrudService);
+    private bibService = inject(BibRecordService);
+    private basket = inject(BasketService);
+    private store = inject(ServerStoreService);
+
 
     ccvmMap: {[ccvm: string]: IdlObject[]} = {};
     cmfMap: {[cmf: string]: IdlObject} = {};
@@ -33,15 +40,9 @@ export class CatalogService {
     // Allow anyone to watch for completed searches.
     onSearchComplete: EventEmitter<CatalogSearchContext>;
 
-    constructor(
-        private net: NetService,
-        private org: OrgService,
-        private pcrud: PcrudService,
-        private bibService: BibRecordService,
-        private basket: BasketService,
-        private store: ServerStoreService
+    constructor() {
+        const store = this.store;
 
-    ) {
         this.net.request(
             'open-ils.search',
             'open-ils.search.staff.location_groups_with_lassos'

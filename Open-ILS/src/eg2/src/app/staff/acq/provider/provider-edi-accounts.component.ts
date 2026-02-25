@@ -1,4 +1,5 @@
-import {Component, OnInit, AfterViewInit, OnDestroy, Input, Output, EventEmitter, ViewChild, ChangeDetectorRef} from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy, Input, Output,
+    EventEmitter, ViewChild, ChangeDetectorRef, inject } from '@angular/core';
 import {EMPTY, from, Subscription} from 'rxjs';
 import {Pager} from '@eg/share/util/pager';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
@@ -31,6 +32,13 @@ import { GridToolbarActionComponent } from '@eg/share/grid/grid-toolbar-action.c
     ]
 })
 export class ProviderEdiAccountsComponent implements OnInit, AfterViewInit, OnDestroy {
+    private changeDetector = inject(ChangeDetectorRef);
+    private idl = inject(IdlService);
+    private auth = inject(AuthService);
+    private pcrud = inject(PcrudService);
+    private providerRecord = inject(ProviderRecordService);
+    private toast = inject(ToastService);
+
 
     edi_accounts: any[] = [];
 
@@ -69,15 +77,6 @@ export class ProviderEdiAccountsComponent implements OnInit, AfterViewInit, OnDe
     // Size of create/edito dialog.  Uses large by default.
     @Input() dialogSize: 'sm' | 'lg' = 'lg';
     @Output() desireSummarize: EventEmitter<number> = new EventEmitter<number>();
-
-    constructor(
-        private changeDetector: ChangeDetectorRef,
-        private idl: IdlService,
-        private auth: AuthService,
-        private pcrud: PcrudService,
-        private providerRecord: ProviderRecordService,
-        private toast: ToastService) {
-    }
 
     ngOnInit() {
         this.gridSource = this.getDataSource();

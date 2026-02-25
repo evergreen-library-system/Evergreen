@@ -1,16 +1,16 @@
 /**
  * Create and consume BroadcastChannel broadcasts
  */
-import {Injectable} from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
 
 @Injectable()
 export class FileExportService {
+    private sanitizer = inject(DomSanitizer);
+
 
     resolver: Function = null;
     safeUrl: SafeUrl;
-
-    constructor(private sanitizer: DomSanitizer) { }
 
     exportFile($event: any, content: string,
         contentType = 'text/plain'): Promise<any> {

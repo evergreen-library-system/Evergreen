@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import {Observable, of, switchMap} from 'rxjs';
 import {NgbTimeStruct} from '@ng-bootstrap/ng-bootstrap';
 import {AuthService} from '@eg/core/auth.service';
@@ -28,12 +28,9 @@ export interface ScheduleRow {
 
 @Injectable({providedIn: 'root'})
 export class ScheduleGridService {
+    private auth = inject(AuthService);
+    private pcrud = inject(PcrudService);
 
-    constructor(
-        private auth: AuthService,
-        private pcrud: PcrudService,
-    ) {
-    }
     hoursOfOperation = (date: Date): Observable<{startOfDay: NgbTimeStruct, endOfDay: NgbTimeStruct}> => {
         const defaultStartHour = 9;
         const defaultEndHour = 17;

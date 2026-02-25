@@ -1,4 +1,4 @@
-import {Component, ViewChild, Input, OnInit, forwardRef} from '@angular/core';
+import { Component, ViewChild, Input, OnInit, forwardRef, inject } from '@angular/core';
 import {NetService} from '@eg/core/net.service';
 import {OrgService} from '@eg/core/org.service';
 import {AuthService} from '@eg/core/auth.service';
@@ -28,6 +28,12 @@ import { FormsModule } from '@angular/forms';
 
 export class AuthorityLinkingDialogComponent
     extends DialogComponent implements OnInit {
+    private modal: NgbModal;
+    private auth = inject(AuthService);
+    private org = inject(OrgService);
+    private pcrud = inject(PcrudService);
+    private net = inject(NetService);
+
 
     @Input() bibField: MarcField;
     @Input() thesauri: string = null;
@@ -49,13 +55,12 @@ export class AuthorityLinkingDialogComponent
     @ViewChild('marcEditDialog', {static: false})
         marcEditDialog: MarcEditorDialogComponent;
 
-    constructor(
-        private modal: NgbModal,
-        private auth: AuthService,
-        private org: OrgService,
-        private pcrud: PcrudService,
-        private net: NetService) {
+    constructor() {
+        const modal = inject(NgbModal);
+
         super(modal);
+
+        this.modal = modal;
     }
 
     ngOnInit() {

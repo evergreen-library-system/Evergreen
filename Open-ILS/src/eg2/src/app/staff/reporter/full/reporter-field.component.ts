@@ -1,5 +1,5 @@
 /* eslint-disable */
-import {Component, Input, Output, EventEmitter, OnInit, ViewEncapsulation} from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, ViewEncapsulation, inject } from '@angular/core';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
 import {AuthService} from '@eg/core/auth.service';
@@ -17,6 +17,12 @@ import { StaffCommonModule } from '@eg/staff/common.module';
     imports: [StaffCommonModule]
 })
 export class ReporterFieldComponent implements OnInit {
+    private idl = inject(IdlService);
+    private org = inject(OrgService);
+    private auth = inject(AuthService);
+    private pcrud = inject(PcrudService);
+    private RSvc = inject(ReporterService);
+
 
     operators = [];
     transforms = [];
@@ -52,15 +58,6 @@ export class ReporterFieldComponent implements OnInit {
     @Input() disableUp = false;
     @Input() disableDown = false;
     @Input() disabled = false;
-
-    constructor(
-        private idl: IdlService,
-        private org: OrgService,
-        private auth: AuthService,
-        private pcrud: PcrudService,
-        private RSvc: ReporterService
-    ) {
-    }
 
     visibleTransforms() { return this.transforms.filter(t => !t.hidden); }
     visibleOperators() { return this.operators.filter(t => !t.hidden || !t.hidden.includes(this.field.transform?.final_datatype || this.field.datatype)); }

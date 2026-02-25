@@ -1,7 +1,7 @@
 /**
  * Set and get server-stored settings.
  */
-import {Injectable,OnDestroy} from '@angular/core';
+import { Injectable, OnDestroy, inject } from '@angular/core';
 import {Subject, tap, takeUntil} from 'rxjs';
 import {AuthService} from './auth.service';
 import {NetService} from './net.service';
@@ -19,6 +19,11 @@ interface ServerSettingSummary {
 
 @Injectable({providedIn: 'root'})
 export class ServerStoreService implements OnDestroy {
+    private db = inject(DbStoreService);
+    private net = inject(NetService);
+    private auth = inject(AuthService);
+    private broadcaster = inject(BroadcastService);
+
 
     cache: {[key: string]: any};
 
@@ -26,11 +31,7 @@ export class ServerStoreService implements OnDestroy {
     private cacheCleared = new Subject<void>();
     cacheCleared$ = this.cacheCleared.asObservable();
 
-    constructor(
-        private db: DbStoreService,
-        private net: NetService,
-        private auth: AuthService,
-        private broadcaster: BroadcastService) {
+    constructor() {
         this.cache = {};
         // Listen for cache invalidation broadcasts
         this.broadcaster.listen('eg.invalidate_server_store_cache')

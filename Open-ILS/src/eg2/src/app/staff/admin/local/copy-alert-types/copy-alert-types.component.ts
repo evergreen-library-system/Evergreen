@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { PcrudService } from '@eg/core/pcrud.service';
 import { OrgService } from '@eg/core/org.service';
 import { AuthService } from '@eg/core/auth.service';
@@ -13,17 +13,15 @@ import { AdminPageComponent } from '@eg/staff/share/admin-page/admin-page.compon
     imports: [AdminPageComponent, StaffCommonModule]
 })
 export class CopyAlertTypesComponent implements OnInit {
+    private auth = inject(AuthService);
+    private idl = inject(IdlService);
+    private org = inject(OrgService);
+    private pcrud = inject(PcrudService);
+
 
     copyStatuses: {};
     alertTypeStateEntries: ComboboxEntry[] = [];
     defaultNewRecord: IdlObject;
-
-    constructor(
-      private auth: AuthService,
-      private idl: IdlService,
-      private org: OrgService,
-      private pcrud: PcrudService,
-    ) {}
 
     ngOnInit() {
         this.getAlertStatuses();

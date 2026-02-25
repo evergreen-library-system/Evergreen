@@ -1,4 +1,4 @@
-import {Component, OnInit, Input} from '@angular/core';
+import { Component, OnInit, Input, inject } from '@angular/core';
 import {BibRecordService, BibRecordSummary
 } from '@eg/share/catalog/bib-record.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
@@ -16,6 +16,11 @@ import { CommonModule } from '@angular/common';
     ]
 })
 export class BibStaffViewComponent implements OnInit {
+    private bib = inject(BibRecordService);
+    private store = inject(ServerStoreService);
+    private cat = inject(CatalogService);
+    private staffCat = inject(StaffCatalogService);
+
 
     recId: number;
     initDone = false;
@@ -47,13 +52,6 @@ export class BibStaffViewComponent implements OnInit {
             this.summary.getBibCallNumber();
         }
     }
-
-    constructor(
-        private bib: BibRecordService,
-        private store: ServerStoreService,
-        private cat: CatalogService,
-        private staffCat: StaffCatalogService
-    ) {}
 
     ngOnInit() {
 

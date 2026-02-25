@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 import {from, concatMap} from 'rxjs';
 import {ServerStoreService} from '@eg/core/server-store.service';
@@ -26,6 +26,17 @@ import { StaffBannerComponent } from '@eg/staff/share/staff-banner.component';
     ]
 })
 export class PrintersComponent implements OnInit {
+    private router = inject(Router);
+    private route = inject(ActivatedRoute);
+    private evt = inject(EventService);
+    private net = inject(NetService);
+    private serverStore = inject(ServerStoreService);
+    private auth = inject(AuthService);
+    private org = inject(OrgService);
+    private hatch = inject(HatchService);
+    private printer = inject(PrintService);
+    private perm = inject(PermService);
+
 
     printers: any[];
     printerName: string;
@@ -67,19 +78,6 @@ export class PrintersComponent implements OnInit {
 
     @ViewChild('fileWriter') private fileWriter: StringComponent;
     @ViewChild('browserPrinting') private browserPrinting: StringComponent;
-
-    constructor(
-        private router: Router,
-        private route: ActivatedRoute,
-        private evt: EventService,
-        private net: NetService,
-        private serverStore: ServerStoreService,
-        private auth: AuthService,
-        private org: OrgService,
-        private hatch: HatchService,
-        private printer: PrintService,
-        private perm: PermService
-    ) {}
 
     ngOnInit() {
 

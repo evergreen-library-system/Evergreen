@@ -1,4 +1,4 @@
-import { waitForAsync } from '@angular/core/testing';
+import { TestBed, waitForAsync } from '@angular/core/testing';
 import { CourseService } from './course.service';
 import { AuthService } from '@eg/core/auth.service';
 import { EventService } from '@eg/core/event.service';
@@ -66,9 +66,16 @@ describe('CourseService', () => {
     };
 
     beforeEach(() => {
-        service = new CourseService(authServiceSpy, evtServiceSpy,
-            idlServiceSpy, netServiceSpy,
-            orgServiceSpy, pcrudServiceSpy);
+        TestBed.configureTestingModule({providers: [
+            {provide: AuthService, useValue: authServiceSpy},
+            {provide: EventService, useValue: evtServiceSpy},
+            {provide: IdlService, useValue: idlServiceSpy},
+            {provide: NetService, useValue: netServiceSpy},
+            {provide: OrgService, useValue: orgServiceSpy},
+            {provide: PcrudService, useValue: pcrudServiceSpy},
+            CourseService
+        ]});
+        service = TestBed.inject(CourseService);
         orgServiceSpy.canHaveVolumes.and.returnValue(true);
         circLib = 5; // set the item's circ lib to 5
     });

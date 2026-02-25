@@ -1,5 +1,5 @@
 import { PermService } from '@eg/core/perm.service';
-import {Component, Input, ViewChild, OnInit} from '@angular/core';
+import { Component, Input, ViewChild, OnInit, inject } from '@angular/core';
 import { Observable, merge, of, EMPTY, from, switchMap, concatMap } from 'rxjs';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {AuthService} from '@eg/core/auth.service';
@@ -23,6 +23,14 @@ import { StaffCommonModule } from '@eg/staff/common.module';
 })
 
 export class CourseAssociateMaterialComponent extends DialogComponent implements OnInit {
+    private auth = inject(AuthService);
+    private course = inject(CourseService);
+    private net = inject(NetService);
+    private pcrud = inject(PcrudService);
+    private toast = inject(ToastService);
+    private perm = inject(PermService);
+    private modal: NgbModal;
+
     @Input() currentCourse: IdlObject;
     @Input() courseId: any;
     @Input() courseIsArchived: string;
@@ -64,16 +72,12 @@ export class CourseAssociateMaterialComponent extends DialogComponent implements
     associateBriefRecord: (newRecord: string) => void;
     associateElectronicBibRecord: () => void;
 
-    constructor(
-        private auth: AuthService,
-        private course: CourseService,
-        private net: NetService,
-        private pcrud: PcrudService,
-        private toast: ToastService,
-        private perm: PermService,
-        private modal: NgbModal
-    ) {
+    constructor() {
+        const modal = inject(NgbModal);
+
         super(modal);
+        this.modal = modal;
+
         this.materialsDataSource = new GridDataSource();
 
         this.materialsDataSource.getRows = (pager: Pager, sort: any[]) => {

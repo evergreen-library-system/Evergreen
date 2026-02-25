@@ -1,4 +1,4 @@
-import {Component, ViewChild} from '@angular/core';
+import { Component, ViewChild, inject } from '@angular/core';
 import {IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
@@ -21,6 +21,11 @@ import {StringComponent} from '@eg/share/string/string.component';
 })
 
 export class TransferItemsComponent {
+    private toast = inject(ToastService);
+    private net = inject(NetService);
+    private auth = inject(AuthService);
+    private evt = inject(EventService);
+
 
     @ViewChild('successMsg', {static: false})
     private successMsg: StringComponent;
@@ -38,12 +43,6 @@ export class TransferItemsComponent {
     private alertDialog: AlertDialogComponent;
 
     eventDesc: string;
-
-    constructor(
-        private toast: ToastService,
-        private net: NetService,
-        private auth: AuthService,
-        private evt: EventService) {}
 
     // Transfers a set of items/copies (by ID) to the selected call
     // number (by ID).

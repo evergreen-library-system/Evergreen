@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, Output, EventEmitter, ViewChild} from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild, inject } from '@angular/core';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {EventService} from '@eg/core/event.service';
 import {NetService} from '@eg/core/net.service';
@@ -31,6 +31,12 @@ const BATCH_FIELDS = [
     ]
 })
 export class LineitemBatchCopiesComponent implements OnInit {
+    private evt = inject(EventService);
+    private idl = inject(IdlService);
+    private net = inject(NetService);
+    private auth = inject(AuthService);
+    private liService = inject(LineitemService);
+
 
     @Input() lineitem: IdlObject;
     @Input() batchAdd = false;
@@ -46,14 +52,6 @@ export class LineitemBatchCopiesComponent implements OnInit {
     liId: number;
     liTitle: string;
     alertComment: string;
-
-    constructor(
-        private evt: EventService,
-        private idl: IdlService,
-        private net: NetService,
-        private auth: AuthService,
-        private liService: LineitemService
-    ) {}
 
     ngOnInit() {
         if (!this.lineitem) {

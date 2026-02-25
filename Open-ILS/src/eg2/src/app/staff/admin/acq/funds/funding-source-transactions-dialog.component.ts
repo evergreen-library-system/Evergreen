@@ -1,4 +1,4 @@
-import {Component, Input, ViewChild, OnInit} from '@angular/core';
+import { Component, Input, ViewChild, OnInit, inject } from '@angular/core';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {FormatService} from '@eg/core/format.service';
@@ -25,6 +25,14 @@ import { StaffCommonModule } from '@eg/staff/common.module';
 
 export class FundingSourceTransactionsDialogComponent
     extends DialogComponent implements OnInit {
+    private idl = inject(IdlService);
+    private auth = inject(AuthService);
+    private pcrud = inject(PcrudService);
+    private org = inject(OrgService);
+    private format = inject(FormatService);
+    private toast = inject(ToastService);
+    private modal: NgbModal;
+
 
     @Input() fundingSourceId: number;
     @Input() activeTab = 'credits';
@@ -40,16 +48,12 @@ export class FundingSourceTransactionsDialogComponent
     @ViewChild('successString', { static: true }) successString: StringComponent;
     @ViewChild('updateFailedString', { static: false }) updateFailedString: StringComponent;
 
-    constructor(
-        private idl: IdlService,
-        private auth: AuthService,
-        private pcrud: PcrudService,
-        private org: OrgService,
-        private format: FormatService,
-        private toast: ToastService,
-        private modal: NgbModal
-    ) {
+    constructor() {
+        const modal = inject(NgbModal);
+
         super(modal);
+
+        this.modal = modal;
     }
 
     ngOnInit() {

@@ -1,5 +1,5 @@
 import {Pager} from '@eg/share/util/pager';
-import {Component, OnInit, Input, ViewChild} from '@angular/core';
+import { Component, OnInit, Input, ViewChild, inject } from '@angular/core';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {GridDataSource} from '@eg/share/grid/grid';
 import {Router} from '@angular/router';
@@ -26,6 +26,13 @@ const DAYS_IN_WEEK = 7;
 })
 
 export class SurveyComponent implements OnInit {
+    private auth = inject(AuthService);
+    private idl = inject(IdlService);
+    private net = inject(NetService);
+    private pcrud = inject(PcrudService);
+    private toast = inject(ToastService);
+    private router = inject(Router);
+
 
     defaultNewRecord: IdlObject;
     gridDataSource: GridDataSource;
@@ -37,15 +44,7 @@ export class SurveyComponent implements OnInit {
     @Input() idlClass = 'asv';
     @Input() dialogSize: 'sm' | 'lg' = 'lg';
 
-
-    constructor(
-        private auth: AuthService,
-        private idl: IdlService,
-        private net: NetService,
-        private pcrud: PcrudService,
-        private toast: ToastService,
-        private router: Router
-    ) {
+    constructor() {
         this.gridDataSource = new GridDataSource();
     }
 

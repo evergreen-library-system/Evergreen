@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, Input, OnInit, OnDestroy, ViewChild} from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit, OnDestroy, ViewChild, inject } from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {from, Observable, Subject, lastValueFrom, firstValueFrom, defaultIfEmpty, EMPTY,
     map, switchMap, takeUntil, take, catchError} from 'rxjs';
@@ -57,6 +57,17 @@ interface BucketView {
 })
 
 export class RecordBucketComponent implements OnInit, OnDestroy {
+    private router = inject(Router);
+    private route = inject(ActivatedRoute);
+    private cdr = inject(ChangeDetectorRef);
+    private auth = inject(AuthService);
+    private idl = inject(IdlService);
+    private pcrud = inject(PcrudService);
+    private net = inject(NetService);
+    private evt = inject(EventService);
+    private flatData = inject(GridFlatDataService);
+    private bucketService = inject(BucketService);
+
 
     @Input() userId: Number;
 
@@ -91,19 +102,6 @@ export class RecordBucketComponent implements OnInit, OnDestroy {
     containerDeletionResultMap = {};
 
     catSearchQuery: string;
-
-    constructor(
-        private router: Router,
-        private route: ActivatedRoute,
-        private cdr: ChangeDetectorRef,
-        private auth: AuthService,
-        private idl: IdlService,
-        private pcrud: PcrudService,
-        private net: NetService,
-        private evt: EventService,
-        private flatData: GridFlatDataService,
-        private bucketService: BucketService,
-    ) {}
 
     async ngOnInit() {
         this.initInProgress = true; console.warn('initInProgress = true');

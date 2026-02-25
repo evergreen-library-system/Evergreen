@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import {ActivatedRoute, ParamMap} from '@angular/router';
 import {tap} from 'rxjs';
 import {IdlObject} from '@eg/core/idl.service';
@@ -18,15 +18,13 @@ import { MarcEditorComponent } from '@eg/staff/share/marc-edit/editor.component'
     ]
 })
 export class LineitemDetailComponent implements OnInit {
+    private route = inject(ActivatedRoute);
+    private liService = inject(LineitemService);
+
 
     lineitemId: number;
     lineitem: IdlObject;
     tab: string;
-
-    constructor(
-        private route: ActivatedRoute,
-        private liService: LineitemService
-    ) {}
 
     ngOnInit() {
 

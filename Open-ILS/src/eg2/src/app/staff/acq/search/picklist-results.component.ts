@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, ViewChild} from '@angular/core';
+import { Component, OnInit, Input, ViewChild, inject } from '@angular/core';
 import {RouterModule} from '@angular/router';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {StringComponent} from '@eg/share/string/string.component';
@@ -30,6 +30,11 @@ import { GridModule } from '@eg/share/grid/grid.module';
     ]
 })
 export class PicklistResultsComponent implements OnInit {
+    private toast = inject(ToastService);
+    private auth = inject(AuthService);
+    private acqSearch = inject(AcqSearchService);
+    private perm = inject(PermService);
+
 
     @Input() initialSearchTerms: AcqSearchTerm[] = [];
 
@@ -62,12 +67,7 @@ export class PicklistResultsComponent implements OnInit {
         value2: ''
     }];
 
-    constructor(
-        private toast: ToastService,
-        private auth: AuthService,
-        private acqSearch: AcqSearchService,
-        private perm: PermService
-    ) {
+    constructor() {
         this.permissions = {};
     }
 

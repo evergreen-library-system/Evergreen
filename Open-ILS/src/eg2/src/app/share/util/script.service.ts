@@ -1,5 +1,5 @@
 /* eslint-disable brace-style */
-import {Injectable} from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { ScriptStore } from './script.store';
 import { OrgService } from '@eg/core/org.service';
 
@@ -7,10 +7,12 @@ declare var document: any; // eslint-disable-line no-var
 
 @Injectable()
 export class ScriptService {
+    private org = inject(OrgService);
+
 
     private scripts: any = {};
 
-    constructor(private org: OrgService) {
+    constructor() {
         ScriptStore.forEach((script: any) => {
         // a script may have both a URL and an OU setting that replaces it
             if (script.setting) {

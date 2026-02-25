@@ -1,5 +1,5 @@
 /* eslint-disable eqeqeq */
-import {Component, Input, OnInit, QueryList, ViewChild, ViewChildren} from '@angular/core';
+import { Component, Input, OnInit, QueryList, ViewChild, ViewChildren, inject } from '@angular/core';
 import {GridContext, GridColumn} from './grid';
 import {IdlObject} from '@eg/core/idl.service';
 import {ComboboxComponent, ComboboxEntry} from '@eg/share/combobox/combobox.component';
@@ -31,6 +31,8 @@ import { NgClass, NgIf, NgSwitch, NgSwitchCase, NgTemplateOutlet } from '@angula
 })
 
 export class GridFilterControlComponent implements OnInit {
+    private org = inject(OrgService);
+
 
     @Input() context: GridContext;
     @Input() col:     GridColumn;
@@ -45,10 +47,6 @@ export class GridFilterControlComponent implements OnInit {
 
     // So we can use (ngModelChange) on the link combobox
     linkFilterEntry: ComboboxEntry = null;
-
-    constructor(
-        private org: OrgService
-    ) {}
 
     ngOnInit() {
         if (this.col.filterValue !== undefined) {

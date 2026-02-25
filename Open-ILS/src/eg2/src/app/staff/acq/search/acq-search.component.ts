@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild, ViewChildren, QueryList, OnDestroy} from '@angular/core';
+import { Component, OnInit, ViewChild, ViewChildren, QueryList, OnDestroy, inject } from '@angular/core';
 import {NgbNav, NgbNavChangeEvent, NgbNavModule} from '@ng-bootstrap/ng-bootstrap';
 import {Router, ActivatedRoute, ParamMap, NavigationEnd} from '@angular/router';
 import {filter, takeUntil, Subject} from 'rxjs';
@@ -22,6 +22,9 @@ import { StaffBannerComponent } from '@eg/staff/share/staff-banner.component';
 })
 
 export class AcqSearchComponent implements OnInit, OnDestroy {
+    private router = inject(Router);
+    private route = inject(ActivatedRoute);
+
 
     searchType = '';
     validSearchTypes = ['lineitems', 'purchaseorders', 'invoices', 'selectionlists'];
@@ -39,10 +42,7 @@ export class AcqSearchComponent implements OnInit, OnDestroy {
     previousUrl: string = null;
     public destroyed = new Subject<any>();
 
-    constructor(
-        private router: Router,
-        private route: ActivatedRoute,
-    ) {
+    constructor() {
         this.route.queryParamMap.subscribe((params: ParamMap) => {
             this.urlSearchTerms = [];
             const fields = params.getAll('f');

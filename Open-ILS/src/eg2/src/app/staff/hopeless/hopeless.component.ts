@@ -1,6 +1,6 @@
 /* eslint-disable no-magic-numbers */
 
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import {IdlObject} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {AuthService} from '@eg/core/auth.service';
@@ -17,6 +17,11 @@ import { HoldsGridComponent } from '../share/holds/grid.component';
     ]
 })
 export class HopelessComponent implements OnInit {
+    private pcrud = inject(PcrudService);
+    private auth = inject(AuthService);
+    private format = inject(FormatService);
+    private bib = inject(BibRecordService);
+
 
     startDate: any;
     endDate: any;
@@ -32,13 +37,6 @@ export class HopelessComponent implements OnInit {
         date.setSeconds(59);
         this.endDate = date;
     }
-
-    constructor(
-        private pcrud: PcrudService,
-        private auth: AuthService,
-        private format: FormatService,
-        private bib: BibRecordService,
-    ) {}
 
     ngOnInit() {
 

@@ -1,5 +1,5 @@
 /* eslint-disable */
-import {Component, OnInit, OnDestroy, ChangeDetectorRef, ViewChild} from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef, ViewChild, inject } from '@angular/core';
 import {Subscription, Subject, firstValueFrom, lastValueFrom} from 'rxjs';
 import {debounceTime, takeUntil, defaultIfEmpty} from 'rxjs/operators';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
@@ -25,6 +25,13 @@ import { CommonModule } from '@angular/common';
     ]
 })
 export class InvoiceChargesComponent implements OnInit, OnDestroy {
+    private idl = inject(IdlService);
+    private changeDetector = inject(ChangeDetectorRef);
+    private evt = inject(EventService);
+    private perm = inject(PermService);
+    private liService = inject(LineitemService);
+    invoiceService = inject(InvoiceService);
+
 
     private permissions: any;
 
@@ -47,16 +54,6 @@ export class InvoiceChargesComponent implements OnInit, OnDestroy {
     @ViewChild('stopPercentAlertDialog') stopPercentAlertDialog: AlertDialogComponent;
     @ViewChild('stopPercentConfirmDialog') stopPercentConfirmDialog: ConfirmDialogComponent;
     @ViewChild('warnPercentConfirmDialog') warnPercentConfirmDialog: ConfirmDialogComponent;
-
-    constructor(
-        private idl: IdlService,
-        private changeDetector: ChangeDetectorRef,
-        // private net: NetService,
-        private evt: EventService,
-        private perm: PermService,
-        private liService: LineitemService,
-        public  invoiceService: InvoiceService
-    ) {}
 
     ngOnInit() {
 

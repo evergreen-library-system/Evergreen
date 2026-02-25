@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import {Router, ActivatedRoute, NavigationEnd} from '@angular/router';
 import {take} from 'rxjs';
 import {VandelayService} from './vandelay.service';
@@ -10,14 +10,15 @@ import { StaffCommonModule } from '@eg/staff/common.module';
     imports: [StaffCommonModule]
 })
 export class VandelayComponent implements OnInit {
+    private org = inject(OrgService);
+    private router = inject(Router);
+    private route = inject(ActivatedRoute);
+    private vandelay = inject(VandelayService);
+
     tab: string;
     importTabSetting: string;
 
-    constructor(
-        private org: OrgService,
-        private router: Router,
-        private route: ActivatedRoute,
-        private vandelay: VandelayService) {
+    constructor() {
 
         // As the parent component of the vandelay route tree, our
         // activated route never changes.  Instead, listen for global

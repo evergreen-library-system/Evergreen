@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild, OnDestroy} from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, inject } from '@angular/core';
 import {FormGroup, FormControl, ReactiveFormsModule} from '@angular/forms';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {Subscription, of, debounceTime, single, tap, switchMap} from 'rxjs';
@@ -31,6 +31,16 @@ import { CommonModule } from '@angular/common';
     ]
 })
 export class ManageReservationsComponent implements OnInit, OnDestroy {
+    private route = inject(ActivatedRoute);
+    private router = inject(Router);
+    private auth = inject(AuthService);
+    private net = inject(NetService);
+    private pcrud = inject(PcrudService);
+    private store = inject(ServerStoreService);
+    private toast = inject(ToastService);
+    private patronValidator = inject(PatronBarcodeValidator);
+    private resourceValidator = inject(BookingResourceBarcodeValidator);
+
 
     patronId: number;
     resourceId: number;
@@ -44,17 +54,7 @@ export class ManageReservationsComponent implements OnInit, OnDestroy {
 
     removeFilters: () => void;
 
-    constructor(
-        private route: ActivatedRoute,
-        private router: Router,
-        private auth: AuthService,
-        private net: NetService,
-        private pcrud: PcrudService,
-        private store: ServerStoreService,
-        private toast: ToastService,
-        private patronValidator: PatronBarcodeValidator,
-        private resourceValidator: BookingResourceBarcodeValidator
-    ) {
+    constructor() {
         this.store.getItem('eg.booking.manage.selected_org_family').then((pickupLibs) => {
             if (pickupLibs) {
                 this.startingPickupOrgs = pickupLibs;

@@ -16,7 +16,7 @@ describe('ScheduleGridService', () => {
                 { provide: PcrudService, useValue: pcrudServiceStub }
             ]
         });
-        service = TestBed.get(ScheduleGridService);
+        service = TestBed.inject(ScheduleGridService);
     });
 
     it('should recognize when a row is completely busy', () => {

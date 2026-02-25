@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, ViewChild, Renderer2} from '@angular/core';
+import { Component, OnInit, Input, ViewChild, Renderer2, inject } from '@angular/core';
 import {throwError, switchMap} from 'rxjs';
 import {NetService} from '@eg/core/net.service';
 import {IdlService} from '@eg/core/idl.service';
@@ -33,6 +33,15 @@ import { NgIf } from '@angular/common';
 })
 
 export class BucketDialogComponent extends DialogComponent implements OnInit {
+    private modal: NgbModal;
+    private renderer = inject(Renderer2);
+    private toast = inject(ToastService);
+    private idl = inject(IdlService);
+    private net = inject(NetService);
+    private bucketService = inject(BucketService);
+    private evt = inject(EventService);
+    private auth = inject(AuthService);
+
 
     activeTabId = 1; // Existing Buckets tab
     selectedBucket: number;
@@ -59,16 +68,12 @@ export class BucketDialogComponent extends DialogComponent implements OnInit {
     @ViewChild('confirmAddToShared') confirmAddToShared: ConfirmDialogComponent;
     @ViewChild('successString') successString: StringComponent;
 
-    constructor(
-        private modal: NgbModal, // required for passing to parent
-        private renderer: Renderer2,
-        private toast: ToastService,
-        private idl: IdlService,
-        private net: NetService,
-        private bucketService: BucketService,
-        private evt: EventService,
-        private auth: AuthService) {
-        super(modal); // required for subclassing
+    constructor() {
+        const modal = inject(NgbModal);
+
+        super(modal);
+        this.modal = modal;
+        // required for subclassing
         this.buckets = [];
         this.itemIds = [];
         this.fromBibQueue = null;

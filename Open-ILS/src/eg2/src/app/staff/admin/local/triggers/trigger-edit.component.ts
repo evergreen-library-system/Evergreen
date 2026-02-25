@@ -1,5 +1,5 @@
 import {Pager} from '@eg/share/util/pager';
-import {Component, OnInit, ViewChild} from '@angular/core';
+import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {GridDataSource} from '@eg/share/grid/grid';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -19,6 +19,14 @@ import { StaffCommonModule } from '@eg/staff/common.module';
 })
 
 export class EditEventDefinitionComponent implements OnInit {
+    private router = inject(Router);
+    private idl = inject(IdlService);
+    private pcrud = inject(PcrudService);
+    private toast = inject(ToastService);
+    private route = inject(ActivatedRoute);
+    private net = inject(NetService);
+    private auth = inject(AuthService);
+
 
     evtDefId: number;
     evtDefName: String;
@@ -54,17 +62,6 @@ export class EditEventDefinitionComponent implements OnInit {
     @ViewChild('createErrString') createErrString: StringComponent;
     @ViewChild('eventDuringTestString') eventDuringTestString: StringComponent;
     @ViewChild('errorDuringTestString') errorDuringTestString: StringComponent;
-
-    constructor(
-        private router: Router,
-        private idl: IdlService,
-        private pcrud: PcrudService,
-        private toast: ToastService,
-        private route: ActivatedRoute,
-        private net: NetService,
-        private auth: AuthService,
-    ) {
-    }
 
     ngOnInit() {
         this.evtDefId = parseInt(this.route.snapshot.paramMap.get('id'), 10);

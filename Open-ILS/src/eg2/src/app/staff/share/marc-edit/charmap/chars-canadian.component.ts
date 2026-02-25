@@ -1,4 +1,4 @@
-import {Component, ViewEncapsulation} from '@angular/core';
+import { Component, ViewEncapsulation, inject } from '@angular/core';
 import { CharMapDialogComponent } from './charmap-dialog.component';
 
 /**
@@ -13,7 +13,8 @@ import { CharMapDialogComponent } from './charmap-dialog.component';
 })
 
 export class CharsCanadianComponent {
-    constructor( private charmap: CharMapDialogComponent ) { }
+    private charmap = inject(CharMapDialogComponent);
+
 
     copyChar(char: string): void {
         this.charmap.copyChar(char);

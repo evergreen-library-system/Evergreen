@@ -1,4 +1,4 @@
-import {Component, ViewChild} from '@angular/core';
+import { Component, ViewChild, inject } from '@angular/core';
 import {map} from 'rxjs';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {Pager} from '@eg/share/util/pager';
@@ -17,6 +17,13 @@ import { StaffCommonModule } from '@eg/staff/common.module';
     imports: [StaffCommonModule]
 })
 export class BackgroundImportComponent {
+    private router = inject(Router);
+    private route = inject(ActivatedRoute);
+    private pcrud = inject(PcrudService);
+    private evt = inject(EventService);
+    private net = inject(NetService);
+    private auth = inject(AuthService);
+
 
     import_type_param: string = null;
     jobsToDelete: any[] = [];
@@ -28,13 +35,7 @@ export class BackgroundImportComponent {
 
     cellTextGenerator: GridCellTextGenerator;
 
-    constructor(
-        private router: Router,
-        private route: ActivatedRoute,
-        private pcrud: PcrudService,
-        private evt: EventService,
-        private net: NetService,
-        private auth: AuthService) {
+    constructor() {
 
         this.route.queryParamMap.subscribe((params: ParamMap) => {
             this.import_type_param = params.get('type');

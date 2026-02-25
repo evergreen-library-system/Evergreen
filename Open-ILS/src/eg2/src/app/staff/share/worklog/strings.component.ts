@@ -1,4 +1,4 @@
-import {Component, ViewChild} from '@angular/core';
+import { Component, ViewChild, inject } from '@angular/core';
 import {StringComponent} from '@eg/share/string/string.component';
 import {WorkLogService} from './worklog.service';
 
@@ -15,6 +15,8 @@ import {WorkLogService} from './worklog.service';
     imports: [StringComponent]
 })
 export class WorkLogStringsComponent {
+    private worklog = inject(WorkLogService);
+
 
     // Worklog string variable names have to match "worklog_{{action}}"
     @ViewChild('worklog_checkout') worklog_checkout: StringComponent;
@@ -27,7 +29,7 @@ export class WorkLogStringsComponent {
     @ViewChild('worklog_registered_patron') worklog_registered_patron: StringComponent;
     @ViewChild('worklog_paid_bill') worklog_paid_bill: StringComponent;
 
-    constructor(private worklog: WorkLogService) {
+    constructor() {
         this.worklog.workLogStrings = this;
     }
 }

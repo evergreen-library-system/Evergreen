@@ -1,4 +1,4 @@
-import {Component, ViewChild, OnInit} from '@angular/core';
+import { Component, ViewChild, OnInit, inject } from '@angular/core';
 import {map, of, firstValueFrom} from 'rxjs';
 import {Tree, TreeNode} from '@eg/share/tree/tree';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
@@ -39,6 +39,12 @@ import { BoolDisplayComponent } from '@eg/share/util/bool.component';
 })
 
 export class PermGroupTreeComponent implements OnInit {
+    private idl = inject(IdlService);
+    private org = inject(OrgService);
+    private pcrud = inject(PcrudService);
+    private net = inject(NetService);
+    private toast = inject(ToastService);
+
 
     tree: Tree;
     selected: TreeNode;
@@ -68,13 +74,7 @@ export class PermGroupTreeComponent implements OnInit {
     @ViewChild('addMappingDialog', { static: true }) addMappingDialog: PermGroupMapDialogComponent;
     @ViewChild('loadProgress', { static: false }) loadProgress: ProgressInlineComponent;
 
-    constructor(
-        private idl: IdlService,
-        private org: OrgService,
-        private pcrud: PcrudService,
-        private net: NetService,
-        private toast: ToastService
-    ) {
+    constructor() {
         this.allFactorMaps = [];
         this.mfa_factors = [];
         this.mfa_factor_details = { factors: {}, flags: {} };

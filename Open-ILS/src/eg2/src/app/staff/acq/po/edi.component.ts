@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import {ActivatedRoute, ParamMap} from '@angular/router';
 import {empty} from 'rxjs';
 import {Pager} from '@eg/share/util/pager';
@@ -11,14 +11,12 @@ import { GridModule } from '@eg/share/grid/grid.module';
     imports: [GridModule]
 })
 export class PoEdiMessagesComponent implements OnInit {
+    private route = inject(ActivatedRoute);
+    private pcrud = inject(PcrudService);
+
 
     poId: number;
     dataSource: GridDataSource = new GridDataSource();
-
-    constructor(
-        private route: ActivatedRoute,
-        private pcrud: PcrudService
-    ) {}
 
     ngOnInit() {
         this.dataSource.getRows = (pager: Pager, sort: any) =>

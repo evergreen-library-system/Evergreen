@@ -1,4 +1,4 @@
-import {Component, Input, ViewChild, Renderer2} from '@angular/core';
+import { Component, Input, ViewChild, Renderer2, inject } from '@angular/core';
 import {Observable, throwError} from 'rxjs';
 import {IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
@@ -27,6 +27,14 @@ import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 
 export class DeleteHoldingDialogComponent
     extends DialogComponent {
+    private modal: NgbModal;
+    private toast = inject(ToastService);
+    private net = inject(NetService);
+    private pcrud = inject(PcrudService);
+    private evt = inject(EventService);
+    private renderer = inject(Renderer2);
+    private auth = inject(AuthService);
+
 
     // List of "acn" objects which may contain copies.
     // Objects of either type marked "isdeleted" will be deleted.
@@ -54,15 +62,12 @@ export class DeleteHoldingDialogComponent
     @ViewChild('confirmOverride', {static: false})
     private confirmOverride: ConfirmDialogComponent;
 
-    constructor(
-        private modal: NgbModal, // required for passing to parent
-        private toast: ToastService,
-        private net: NetService,
-        private pcrud: PcrudService,
-        private evt: EventService,
-        private renderer: Renderer2,
-        private auth: AuthService) {
+    constructor() {
+        const modal = inject(NgbModal);
+
         super(modal); // required for subclassing
+
+        this.modal = modal;
     }
 
     open(args: NgbModalOptions): Observable<boolean> {

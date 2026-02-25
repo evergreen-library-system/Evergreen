@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import {NetService} from '@eg/core/net.service';
 import { StaffBannerComponent } from './share/staff-banner.component';
 
@@ -9,12 +9,10 @@ import { StaffBannerComponent } from './share/staff-banner.component';
 })
 
 export class AboutComponent implements OnInit {
+    private net = inject(NetService);
+
     server: string;
     version: string;
-
-    constructor(
-        private net: NetService
-    ) {}
 
     ngOnInit() {
         this.server = window.location.hostname;

@@ -1,4 +1,4 @@
-import {Injectable, EventEmitter} from '@angular/core';
+import { Injectable, EventEmitter, inject } from '@angular/core';
 import {Router, ActivatedRoute, NavigationEnd} from '@angular/router';
 import {empty, Observable} from 'rxjs';
 import {OrgService} from '@eg/core/org.service';
@@ -54,6 +54,18 @@ const CIRC_FLESH_FIELDS = {
 
 @Injectable({providedIn: 'root'})
 export class SckoService {
+    private router = inject(Router);
+    private route = inject(ActivatedRoute);
+    private org = inject(OrgService);
+    private net = inject(NetService);
+    private evt = inject(EventService);
+    auth = inject(AuthService);
+    private pcrud = inject(PcrudService);
+    private printer = inject(PrintService);
+    private audio = inject(AudioService);
+    private strings = inject(StringService);
+    private patrons = inject(PatronService);
+
 
     // Currently active patron account object.
     patronSummary: PatronSummary;
@@ -80,20 +92,6 @@ export class SckoService {
     alertDialog: AlertDialogComponent;
     focusBarcode: EventEmitter<void> = new EventEmitter<void>();
     patronLoaded: EventEmitter<void> = new EventEmitter<void>();
-
-    constructor(
-        private router: Router,
-        private route: ActivatedRoute,
-        private org: OrgService,
-        private net: NetService,
-        private evt: EventService,
-        public auth: AuthService,
-        private pcrud: PcrudService,
-        private printer: PrintService,
-        private audio: AudioService,
-        private strings: StringService,
-        private patrons: PatronService,
-    ) {}
 
     logoutStaff() {
         this.resetPatron();

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import {Component, Input} from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import { EdiAttrSetProvidersComponent } from './edi-attr-set-providers.component';
@@ -15,12 +15,16 @@ import { EdiAttrSetProvidersComponent } from './edi-attr-set-providers.component
 
 export class EdiAttrSetProvidersDialogComponent
     extends DialogComponent {
+    private modal: NgbModal;
+
 
     @Input() attrSetId: number;
 
-    constructor(
-        private modal: NgbModal
-    ) {
+    constructor() {
+        const modal = inject(NgbModal);
+
         super(modal);
+
+        this.modal = modal;
     }
 }

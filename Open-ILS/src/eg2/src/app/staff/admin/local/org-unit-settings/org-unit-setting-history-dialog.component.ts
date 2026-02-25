@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import {Observable} from 'rxjs';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {OrgService} from '@eg/core/org.service';
@@ -15,6 +15,9 @@ import { StaffCommonModule } from '@eg/staff/common.module';
 })
 
 export class OuSettingHistoryDialogComponent extends DialogComponent implements OnInit {
+    private org = inject(OrgService);
+    private modal: NgbModal;
+
 
     entry: any = {};
     history: any[] = [];
@@ -22,11 +25,12 @@ export class OuSettingHistoryDialogComponent extends DialogComponent implements 
     @ViewChild('historyGrid', { static: true }) historyGrid: GridComponent;
 
 
-    constructor(
-        private org: OrgService,
-        private modal: NgbModal
-    ) {
+    constructor() {
+        const modal = inject(NgbModal);
+
         super(modal);
+        this.modal = modal;
+
         this.gridDataSource = new GridDataSource();
     }
 

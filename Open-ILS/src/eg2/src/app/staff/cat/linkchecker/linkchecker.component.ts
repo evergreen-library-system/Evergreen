@@ -1,6 +1,6 @@
 import {Router, ActivatedRoute} from '@angular/router';
 import {AuthService} from '@eg/core/auth.service';
-import {Component, OnInit, ViewChild} from '@angular/core';
+import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 import {NewSessionDialogComponent} from './new-session-dialog.component';
 import {GridComponent} from '@eg/share/grid/grid.component';
@@ -24,6 +24,15 @@ import { StaffCommonModule } from '@eg/staff/common.module';
     ]
 })
 export class LinkCheckerComponent implements OnInit {
+    private auth = inject(AuthService);
+    private flatData = inject(GridFlatDataService);
+    private idl = inject(IdlService);
+    private net = inject(NetService);
+    private org = inject(OrgService);
+    private perm = inject(PermService);
+    private route = inject(ActivatedRoute);
+    private router = inject(Router);
+
 
     viewIdlClass = 'uvsa';
     viewSortField = 'name';
@@ -57,17 +66,6 @@ export class LinkCheckerComponent implements OnInit {
     @ViewChild('createSuccessString', { static: false }) createSuccessString: StringComponent;
     @ViewChild('createFailedString', { static: false }) createFailedString: StringComponent;
     @ViewChild('deleteSessionConfirmDialog', { static: true }) deleteSessionConfirmDialog: ConfirmDialogComponent;
-
-    constructor(
-        private auth: AuthService,
-        private flatData: GridFlatDataService,
-        private idl: IdlService,
-        private net: NetService,
-        private org: OrgService,
-        private perm: PermService,
-        private route: ActivatedRoute,
-        private router: Router,
-    ) {}
 
     ngOnInit() {
 

@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, ViewChild} from '@angular/core';
+import { Component, OnInit, Input, ViewChild, inject } from '@angular/core';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {OrgService} from '@eg/core/org.service';
@@ -14,6 +14,11 @@ import { StaffCommonModule } from '@eg/staff/common.module';
     imports: [StaffCommonModule]
 })
 export class FundTagsComponent implements OnInit {
+    private idl = inject(IdlService);
+    private pcrud = inject(PcrudService);
+    private org = inject(OrgService);
+    private toast = inject(ToastService);
+
 
     @Input() fundId: number;
     @Input() fundOwner: number;
@@ -27,13 +32,6 @@ export class FundTagsComponent implements OnInit {
     tagMaps: IdlObject[];
     newTag: ComboboxEntry = null;
     tagSelectorDataSource: (term: string) => Observable<ComboboxEntry>;
-
-    constructor(
-        private idl: IdlService,
-        private pcrud: PcrudService,
-        private org: OrgService,
-        private toast: ToastService
-    ) {}
 
     ngOnInit() {
         this._loadTagMaps();

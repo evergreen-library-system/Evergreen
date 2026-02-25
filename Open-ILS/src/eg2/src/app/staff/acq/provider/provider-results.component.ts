@@ -1,4 +1,4 @@
-import {Component, OnInit, AfterViewInit, Output, EventEmitter, ViewChild, ElementRef} from '@angular/core';
+import { Component, OnInit, AfterViewInit, Output, EventEmitter, ViewChild, ElementRef, inject } from '@angular/core';
 import {IdlObject} from '@eg/core/idl.service';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {GridDataSource, GridCellTextGenerator} from '@eg/share/grid/grid';
@@ -18,6 +18,9 @@ import { CommonModule } from '@angular/common';
     ]
 })
 export class ProviderResultsComponent implements OnInit, AfterViewInit {
+    private elementRef = inject(ElementRef);
+    private providerSearch = inject(AcqProviderSearchService);
+
 
     gridSource: GridDataSource;
     @ViewChild('acqSearchProviderGrid', { static: true }) providerResultsGrid: GridComponent;
@@ -27,11 +30,6 @@ export class ProviderResultsComponent implements OnInit, AfterViewInit {
     @Output() previewRow: (row: any, hideSearchForm?: boolean) => void;
     @Output() desireSummarize: EventEmitter<number> = new EventEmitter<number>();
     @Output() summarizeSearchFormOpen: EventEmitter<number> = new EventEmitter<number>();
-
-    constructor(
-        private elementRef: ElementRef,
-        private providerSearch: AcqProviderSearchService) {
-    }
 
     ngOnInit() {
         this.gridSource = this.providerSearch.getDataSource();

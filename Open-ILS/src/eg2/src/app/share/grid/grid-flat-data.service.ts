@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import {Observable, throwError} from 'rxjs';
 import {AuthService} from '@eg/core/auth.service';
 import {NetService} from '@eg/core/net.service';
@@ -17,11 +17,9 @@ interface FlatQueryFields {
 
 @Injectable()
 export class GridFlatDataService {
+    private net = inject(NetService);
+    private auth = inject(AuthService);
 
-    constructor(
-        private net: NetService,
-        private auth: AuthService
-    ) {}
 
 
     getRows(gridContext: GridContext,

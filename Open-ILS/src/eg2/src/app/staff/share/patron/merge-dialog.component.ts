@@ -1,4 +1,4 @@
-import {Component, OnInit, Input} from '@angular/core';
+import { Component, OnInit, Input, inject } from '@angular/core';
 import {AuthService} from '@eg/core/auth.service';
 import {NetService} from '@eg/core/net.service';
 import {EventService} from '@eg/core/event.service';
@@ -45,6 +45,12 @@ const PATRON_FLESH_FIELDS = [
 
 export class PatronMergeDialogComponent
     extends DialogComponent implements OnInit {
+    private modal: NgbModal;
+    private auth = inject(AuthService);
+    private net = inject(NetService);
+    private evt = inject(EventService);
+    private patrons = inject(PatronService);
+
 
     @Input() patronIds: [number, number];
 
@@ -54,13 +60,11 @@ export class PatronMergeDialogComponent
     leadAccount: number = null;
     loading = true;
 
-    constructor(
-        private modal: NgbModal,
-        private auth: AuthService,
-        private net: NetService,
-        private evt: EventService,
-        private patrons: PatronService
-    ) { super(modal); }
+    constructor() {
+        const modal = inject(NgbModal);
+        super(modal);
+        this.modal = modal;
+    }
 
     ngOnInit() {
         this.onOpen$.subscribe(_ => {

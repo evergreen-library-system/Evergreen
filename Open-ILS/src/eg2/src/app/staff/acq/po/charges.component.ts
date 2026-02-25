@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy, ViewChild} from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, inject } from '@angular/core';
 import {Subscription} from 'rxjs';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
@@ -25,6 +25,15 @@ import { FormsModule } from '@angular/forms';
     ]
 })
 export class PoChargesComponent implements OnInit, OnDestroy {
+    private idl = inject(IdlService);
+    private net = inject(NetService);
+    private evt = inject(EventService);
+    private auth = inject(AuthService);
+    private pcrud = inject(PcrudService);
+    private org = inject(OrgService);
+    poService = inject(PoService);
+    private perm = inject(PermService);
+
 
     showBody = false;
     canModify = false;
@@ -33,17 +42,6 @@ export class PoChargesComponent implements OnInit, OnDestroy {
     owners: number[] = [];
 
     @ViewChild('disencumberChargeDialog') disencumberChargeDialog: DisencumberChargeDialogComponent;
-
-    constructor(
-        private idl: IdlService,
-        private net: NetService,
-        private evt: EventService,
-        private auth: AuthService,
-        private pcrud: PcrudService,
-        private org: OrgService,
-        public  poService: PoService,
-        private perm: PermService
-    ) {}
 
     ngOnInit() {
         if (this.po()) {

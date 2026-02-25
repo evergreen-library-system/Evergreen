@@ -1,4 +1,4 @@
-import {Component, OnInit, TemplateRef, ElementRef, Renderer2} from '@angular/core';
+import { Component, OnInit, TemplateRef, ElementRef, Renderer2, inject } from '@angular/core';
 import {PrintService, PrintRequest} from './print.service';
 import {StoreService} from '@eg/core/store.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
@@ -19,6 +19,16 @@ const HATCH_BROWSER_PRINTING_PRINTER = 'hatch_browser_printing';
 })
 
 export class PrintComponent implements OnInit {
+    private renderer = inject(Renderer2);
+    private elm = inject(ElementRef);
+    private store = inject(StoreService);
+    private serverStore = inject(ServerStoreService);
+    private h2txt = inject(HtmlToTxtService);
+    private hatch = inject(HatchService);
+    private toast = inject(ToastService);
+    private strings = inject(StringService);
+    private printer = inject(PrintService);
+
 
     // Template that requires local processing
     template: TemplateRef<any>;
@@ -36,16 +46,7 @@ export class PrintComponent implements OnInit {
     // True if Hatch printing is enabled and we're able to talk to Hatch.
     useHatchPrinting: boolean = null;
 
-    constructor(
-        private renderer: Renderer2,
-        private elm: ElementRef,
-        private store: StoreService,
-        private serverStore: ServerStoreService,
-        private h2txt: HtmlToTxtService,
-        private hatch: HatchService,
-        private toast: ToastService,
-        private strings: StringService,
-        private printer: PrintService) {
+    constructor() {
         this.isPrinting = false;
         this.printQueue = [];
     }

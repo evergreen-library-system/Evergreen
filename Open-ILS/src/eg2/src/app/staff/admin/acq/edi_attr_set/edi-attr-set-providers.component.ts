@@ -1,4 +1,4 @@
-import {Component, Input, ViewChild, OnInit} from '@angular/core';
+import { Component, Input, ViewChild, OnInit, inject } from '@angular/core';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {IdlObject} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
@@ -16,6 +16,9 @@ import { GridModule } from '@eg/share/grid/grid.module';
 
 export class EdiAttrSetProvidersComponent
     extends DialogComponent implements OnInit {
+    private pcrud = inject(PcrudService);
+    private modal: NgbModal;
+
 
     @Input() attrSetId: number;
     @ViewChild('grid', { static: false }) grid: GridComponent;
@@ -23,11 +26,12 @@ export class EdiAttrSetProvidersComponent
     dataSource: GridDataSource;
     cellTextGenerator: GridCellTextGenerator;
 
-    constructor(
-        private pcrud: PcrudService,
-        private modal: NgbModal
-    ) {
+    constructor() {
+        const modal = inject(NgbModal);
+
         super(modal);
+        this.modal = modal;
+
         this.dataSource = new GridDataSource();
     }
 

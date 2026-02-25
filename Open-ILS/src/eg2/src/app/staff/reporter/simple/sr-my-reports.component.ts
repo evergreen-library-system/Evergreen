@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 import {map, concatMap, from} from 'rxjs';
 import {AuthService} from '@eg/core/auth.service';
@@ -21,6 +21,15 @@ import { StaffCommonModule } from '@eg/staff/common.module';
 })
 
 export class SRReportsComponent implements OnInit {
+    private router = inject(Router);
+    private route = inject(ActivatedRoute);
+    private auth = inject(AuthService);
+    private pcrud = inject(PcrudService);
+    private idl = inject(IdlService);
+    private srSvc = inject(ReporterService);
+    private toast = inject(ToastService);
+    private net = inject(NetService);
+
 
     gridSource: GridDataSource;
     editSelected: ($event: any) => void;
@@ -38,18 +47,6 @@ export class SRReportsComponent implements OnInit {
 
 
     cellTextGenerator: GridCellTextGenerator;
-
-    constructor(
-        private router: Router,
-        private route: ActivatedRoute,
-        private auth: AuthService,
-        private pcrud: PcrudService,
-        private idl: IdlService,
-        private srSvc: ReporterService,
-        private toast: ToastService,
-        private net: NetService
-    ) {
-    }
 
     ngOnInit() {
         this.gridSource = this.srSvc.getSReportsDatasource();

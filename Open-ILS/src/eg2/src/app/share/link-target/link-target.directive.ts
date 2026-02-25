@@ -1,4 +1,4 @@
-import { Directive, ElementRef, HostBinding } from '@angular/core';
+import { Directive, ElementRef, HostBinding, inject } from '@angular/core';
 import { LinkTargetService } from './link-target.service';
 import { take } from 'rxjs';
 
@@ -20,6 +20,9 @@ const SAME_TAB_TARGETS = new Set(['_self', '_parent', '_top']);
     selector: 'a[target]'
 })
 export class LinkTargetDirective {
+    private readonly el = inject<ElementRef<HTMLAnchorElement>>(ElementRef);
+    private readonly linkTarget = inject(LinkTargetService);
+
 
     private newTabsDisabled?: boolean;
 
@@ -51,10 +54,7 @@ export class LinkTargetDirective {
         return ids.length ? ids.join(' ') : null;
     }
 
-    constructor(
-        private readonly el: ElementRef<HTMLAnchorElement>,
-        private readonly linkTarget: LinkTargetService
-    ) {
+    constructor() {
         // the UI for the workstation setting is in AngularJS,
         // so we won't get more than one emission here
         this.linkTarget.newTabsDisabled$.pipe(

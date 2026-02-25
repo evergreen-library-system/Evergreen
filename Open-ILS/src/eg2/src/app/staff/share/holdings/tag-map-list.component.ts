@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, ViewChild, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, ViewChild, EventEmitter, inject } from '@angular/core';
 import { firstValueFrom, Observable, from } from 'rxjs';
 import { OrgService } from '@eg/core/org.service';
 import { IdlObject, IdlService } from '@eg/core/idl.service';
@@ -20,6 +20,11 @@ import { GridModule } from '@eg/share/grid/grid.module';
     ]
 })
 export class TagMapListComponent implements OnInit {
+    private org = inject(OrgService);
+    private idl = inject(IdlService);
+    private pcrud = inject(PcrudService);
+    private broadcaster = inject(BroadcastService);
+
     @Input() maps: IdlObject[] = [];
     @Input() newThings: IdlObject[] = [];
     @Input() headerText: string;
@@ -47,13 +52,6 @@ export class TagMapListComponent implements OnInit {
     // noSelectedRows: (rows: IdlObject[]) => boolean;
     noSelectedTagMaps: (rows: IdlObject[]) => boolean;
     noSelectedTags: (rows: IdlObject[]) => boolean;
-
-    constructor(
-        private org: OrgService,
-        private idl: IdlService,
-        private pcrud: PcrudService,
-        private broadcaster: BroadcastService
-    ) {}
 
     ngOnInit() {
         // console.debug('TagMapListComponent, ngOnInit, this', this);

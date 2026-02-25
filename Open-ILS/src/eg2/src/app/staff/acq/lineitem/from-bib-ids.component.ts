@@ -1,5 +1,5 @@
 /* eslint-disable */
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import {ActivatedRoute, Router, ParamMap} from '@angular/router';
 import {IdlService} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
@@ -20,6 +20,13 @@ import { FormsModule } from '@angular/forms';
     ]
 })
 export class LineitemFromBibIdsComponent implements OnInit {
+    private router = inject(Router);
+    private route = inject(ActivatedRoute);
+    private idl = inject(IdlService);
+    private auth = inject(AuthService);
+    private net = inject(NetService);
+    private evt = inject(EventService);
+
 
     targetPicklist: number;
     targetPo: number;
@@ -28,15 +35,6 @@ export class LineitemFromBibIdsComponent implements OnInit {
 
     // From the inline PL selector
     selectedPl: ComboboxEntry;
-
-    constructor(
-        private router: Router,
-        private route: ActivatedRoute,
-        private idl: IdlService,
-        private auth: AuthService,
-        private net: NetService,
-        private evt: EventService,
-    ) { }
 
     ngOnInit() {
 

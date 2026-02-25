@@ -1,4 +1,4 @@
-import {Component, Input, ViewChild, OnInit} from '@angular/core';
+import { Component, Input, ViewChild, OnInit, inject } from '@angular/core';
 import {Tree, TreeNode} from '@eg/share/tree/tree';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
@@ -26,6 +26,12 @@ import { TreeComponent } from '@eg/share/tree/tree.component';
 })
 
 export class OrgUnitTypeComponent implements OnInit {
+    private idl = inject(IdlService);
+    private org = inject(OrgService);
+    private auth = inject(AuthService);
+    private pcrud = inject(PcrudService);
+    private toast = inject(ToastService);
+
 
     tree: Tree;
     selected: TreeNode;
@@ -34,14 +40,6 @@ export class OrgUnitTypeComponent implements OnInit {
     @ViewChild('createString', { static: true }) createString: StringComponent;
     @ViewChild('errorString', { static: true }) errorString: StringComponent;
     @ViewChild('delConfirm', { static: true }) delConfirm: ConfirmDialogComponent;
-
-    constructor(
-        private idl: IdlService,
-        private org: OrgService,
-        private auth: AuthService,
-        private pcrud: PcrudService,
-        private toast: ToastService
-    ) {}
 
 
     ngOnInit() {

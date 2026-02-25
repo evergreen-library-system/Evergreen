@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import {Resolve, RouterStateSnapshot,
     ActivatedRouteSnapshot} from '@angular/router';
 import {ServerStoreService} from '@eg/core/server-store.service';
@@ -11,14 +11,12 @@ import {CATALOG_CCVM_FILTERS} from '@eg/share/catalog/search-context';
 
 @Injectable()
 export class CatalogResolver implements Resolve<Promise<any[]>> {
+    private store = inject(ServerStoreService);
+    private org = inject(OrgService);
+    private cat = inject(CatalogService);
+    private staffCat = inject(StaffCatalogService);
+    private basket = inject(BasketService);
 
-    constructor(
-        private store: ServerStoreService,
-        private org: OrgService,
-        private cat: CatalogService,
-        private staffCat: StaffCatalogService,
-        private basket: BasketService
-    ) {}
 
     resolve(
         route: ActivatedRouteSnapshot,

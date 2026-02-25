@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {IdlObject} from '@eg/core/idl.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
@@ -19,6 +19,8 @@ import { CommonModule } from '@angular/common';
 })
 
 export class EditOuSettingDialogComponent extends DialogComponent {
+    private modal: NgbModal;
+
 
     // What OU Setting we're editing
     entry: any = {};
@@ -26,10 +28,12 @@ export class EditOuSettingDialogComponent extends DialogComponent {
     entryContext: IdlObject;
     linkedFieldOptions: IdlObject[];
 
-    constructor(
-        private modal: NgbModal
-    ) {
+    constructor() {
+        const modal = inject(NgbModal);
+
         super(modal);
+        this.modal = modal;
+
         if (!this.entry) {
             this.entryValue = null;
             this.entryContext = null;

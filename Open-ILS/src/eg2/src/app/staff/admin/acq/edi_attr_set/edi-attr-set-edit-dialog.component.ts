@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
@@ -17,6 +17,10 @@ import { CommonModule } from '@angular/common';
 
 export class EdiAttrSetEditDialogComponent
     extends DialogComponent implements OnInit {
+    private idl = inject(IdlService);
+    private pcrud = inject(PcrudService);
+    private modal: NgbModal;
+
 
     @Input() mode = 'create';
     @Input() attrSetId: number;
@@ -25,12 +29,12 @@ export class EdiAttrSetEditDialogComponent
     attrInputs: any = [];
     clonedLabel = '';
 
-    constructor(
-        private idl: IdlService,
-        private pcrud: PcrudService,
-        private modal: NgbModal
-    ) {
+    constructor() {
+        const modal = inject(NgbModal);
+
         super(modal);
+
+        this.modal = modal;
     }
 
     ngOnInit() {

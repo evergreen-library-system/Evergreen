@@ -1,5 +1,5 @@
 /* eslint-disable */
-import {Input, Component} from '@angular/core';
+import { Input, Component, inject } from '@angular/core';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {IdlObject} from '@eg/core/idl.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
@@ -15,17 +15,21 @@ import { StaffCommonModule } from '@eg/staff/common.module';
 })
 
 export class FolderShareOrgDialogComponent extends DialogComponent {
+    private RSvc = inject(ReporterService);
+    private modal: NgbModal;
+    private org = inject(OrgService);
+    private auth = inject(AuthService);
+
 
     @Input() currentFolder: IdlObject = null;
     contextOrg = null;
 
-    constructor(
-        private RSvc: ReporterService,
-        private modal: NgbModal,
-        private org: OrgService,
-        private auth: AuthService
-    ) {
+    constructor() {
+        const modal = inject(NgbModal);
+
         super(modal);
+    
+        this.modal = modal;
     }
 
     notMyOrgs() {

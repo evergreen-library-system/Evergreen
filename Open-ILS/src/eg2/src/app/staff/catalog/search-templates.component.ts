@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, ViewChild} from '@angular/core';
+import { Component, OnInit, Input, ViewChild, inject } from '@angular/core';
 import {StoreService} from '@eg/core/store.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
@@ -31,6 +31,15 @@ class SearchTemplate {
     imports: [StaffCommonModule]
 })
 export class SearchTemplatesComponent extends DialogComponent implements OnInit {
+    private store = inject(StoreService);
+    private serverStore = inject(ServerStoreService);
+    private cache = inject(AnonCacheService);
+    private strings = inject(StringService);
+    private cat = inject(CatalogService);
+    private catUrl = inject(CatalogUrlService);
+    private staffCat = inject(StaffCatalogService);
+    private modal: NgbModal;
+
 
     recentSearchesCount = 0;
     context: CatalogSearchContext;
@@ -45,16 +54,12 @@ export class SearchTemplatesComponent extends DialogComponent implements OnInit 
     @ViewChild('confirmDeleteAll', { static: true }) confirmDeleteAll: ConfirmDialogComponent;
     @ViewChild('confirmDeleteSearches', { static: true }) confirmDeleteSearches: ConfirmDialogComponent;
 
-    constructor(
-        private store: StoreService,             // anon cache key
-        private serverStore: ServerStoreService, // search templates
-        private cache: AnonCacheService,         // recent searches
-        private strings: StringService,
-        private cat: CatalogService,
-        private catUrl: CatalogUrlService,
-        private staffCat: StaffCatalogService,
-        private modal: NgbModal) {
+    constructor() {
+        const modal = inject(NgbModal);
+
         super(modal);
+
+        this.modal = modal;
     }
 
     ngOnInit() {

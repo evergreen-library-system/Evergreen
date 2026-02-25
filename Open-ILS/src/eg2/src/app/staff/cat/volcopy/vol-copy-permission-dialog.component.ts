@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import { StaffCommonModule } from '@eg/staff/common.module';
@@ -10,8 +10,14 @@ import { StaffCommonModule } from '@eg/staff/common.module';
 })
 
 export class VolCopyPermissionDialogComponent extends DialogComponent {
+    private modal: NgbModal;
+
     dispatch: string;
-    constructor(private modal: NgbModal) { super(modal); }
+    constructor() {
+        const modal = inject(NgbModal);
+        super(modal);
+        this.modal = modal;
+    }
 }
 
 

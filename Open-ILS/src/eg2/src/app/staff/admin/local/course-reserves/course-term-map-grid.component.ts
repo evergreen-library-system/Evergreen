@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import { Component, Input, OnInit, ViewChild, inject } from '@angular/core';
 import {Observable, map, switchMap} from 'rxjs';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {Pager} from '@eg/share/util/pager';
@@ -16,6 +16,10 @@ import { StaffCommonModule } from '@eg/staff/common.module';
     imports: [FmRecordEditorComponent, StaffCommonModule]
 })
 export class CourseTermMapGridComponent implements OnInit {
+    private idl = inject(IdlService);
+    private org = inject(OrgService);
+    private pcrud = inject(PcrudService);
+
     @Input() courseId: number;
     @ViewChild('grid') private grid: GridComponent;
     @ViewChild('editDialog') private editDialog: FmRecordEditorComponent;
@@ -29,11 +33,7 @@ export class CourseTermMapGridComponent implements OnInit {
     termEntryGenerator: (course: number) => (query: string) => Observable<ComboboxEntry>;
     termEntries: (query: string) => Observable<ComboboxEntry>;
 
-    constructor(
-        private idl: IdlService,
-        private org: OrgService,
-        private pcrud: PcrudService,
-    ) {
+    constructor() {
         this.gridDataSource = new GridDataSource();
         this.defaultNewAcmtcm = this.idl.create('acmtcm');
     }

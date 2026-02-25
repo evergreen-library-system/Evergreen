@@ -1,7 +1,6 @@
 /* eslint-disable no-case-declarations, no-magic-numbers, no-shadow */
 /* eslint-disable max-len */
-import {Component, Input, OnInit, OnDestroy, AfterViewInit, ViewChild,
-    EventEmitter, Output, QueryList, ViewChildren} from '@angular/core';
+import { Component, Input, OnInit, OnDestroy, AfterViewInit, ViewChild, EventEmitter, Output, QueryList, ViewChildren, inject } from '@angular/core';
 import {firstValueFrom,BehaviorSubject,Subject,Observable,take,takeUntil,filter} from 'rxjs';
 import {SafeUrl} from '@angular/platform-browser';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
@@ -33,6 +32,16 @@ import { StaffCommonModule } from '@eg/staff/common.module';
     imports: [StaffCommonModule]
 })
 export class CopyAttrsComponent implements OnInit, OnDestroy, AfterViewInit {
+    private idl = inject(IdlService);
+    private org = inject(OrgService);
+    private auth = inject(AuthService);
+    private perm = inject(PermService);
+    private pcrud = inject(PcrudService);
+    private format = inject(FormatService);
+    private store = inject(StoreService);
+    private toast = inject(ToastService);
+    volcopy = inject(VolCopyService);
+
 
     @Input() context: VolCopyContext;
     @Input() contextChanged: Observable<VolCopyContext>;
@@ -115,18 +124,6 @@ export class CopyAttrsComponent implements OnInit, OnDestroy, AfterViewInit {
     @Output() clearChanges: EventEmitter<boolean> = new EventEmitter<boolean>();
 
     userMayEdit = true;
-
-    constructor(
-        private idl: IdlService,
-        private org: OrgService,
-        private auth: AuthService,
-        private perm: PermService,
-        private pcrud: PcrudService,
-        private format: FormatService,
-        private store: StoreService,
-        private toast: ToastService,
-        public  volcopy: VolCopyService
-    ) { }
 
     ngOnInit() {
         // console.debug('CopyAttrsComponent, ngOnInit, this', this);

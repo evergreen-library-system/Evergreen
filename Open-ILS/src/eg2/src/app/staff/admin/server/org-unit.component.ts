@@ -1,5 +1,5 @@
 /* eslint-disable eqeqeq, max-len, no-magic-numbers */
-import {Component, ViewChild, OnInit} from '@angular/core';
+import { Component, ViewChild, OnInit, inject } from '@angular/core';
 import {Tree, TreeNode} from '@eg/share/tree/tree';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {NgbNavChangeEvent, NgbNavModule} from '@ng-bootstrap/ng-bootstrap';
@@ -27,6 +27,14 @@ import { FmRecordEditorModule } from '@eg/share/fm-editor/fm-editor.module';
     ]
 })
 export class OrgUnitComponent implements OnInit {
+    private idl = inject(IdlService);
+    private org = inject(OrgService);
+    private auth = inject(AuthService);
+    private pcrud = inject(PcrudService);
+    private strings = inject(StringService);
+    private toast = inject(ToastService);
+    private perm = inject(PermService);
+
 
     tree: Tree;
     selected: TreeNode;
@@ -37,16 +45,6 @@ export class OrgUnitComponent implements OnInit {
     @ViewChild('editString', { static: true }) editString: StringComponent;
     @ViewChild('errorString', { static: true }) errorString: StringComponent;
     @ViewChild('delConfirm', { static: true }) delConfirm: ConfirmDialogComponent;
-
-    constructor(
-        private idl: IdlService,
-        private org: OrgService,
-        private auth: AuthService,
-        private pcrud: PcrudService,
-        private strings: StringService,
-        private toast: ToastService,
-        private perm: PermService,
-    ) {}
 
 
     ngOnInit() {

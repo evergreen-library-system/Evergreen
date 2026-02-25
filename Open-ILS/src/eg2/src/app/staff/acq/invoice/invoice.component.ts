@@ -1,5 +1,5 @@
 /* eslint-disable */
-import {Component, OnInit, OnDestroy, QueryList, ViewChild, ViewChildren} from '@angular/core';
+import { Component, OnInit, OnDestroy, QueryList, ViewChild, ViewChildren, inject } from '@angular/core';
 import {ActivatedRoute, ParamMap, Router} from '@angular/router';
 import {CanComponentDeactivate} from '@eg/share/util/can-deactivate.guard';
 import {NgbNav, NgbNavChangeEvent, NgbNavModule} from '@ng-bootstrap/ng-bootstrap';
@@ -30,6 +30,17 @@ import { CommonModule } from '@angular/common';
     ]
 })
 export class InvoiceComponent implements OnInit, OnDestroy, CanComponentDeactivate {
+    private route = inject(ActivatedRoute);
+    private router = inject(Router);
+    private idl = inject(IdlService);
+    private evt = inject(EventService);
+    private auth = inject(AuthService);
+    private perm = inject(PermService);
+    private pcrud = inject(PcrudService);
+    invoiceService = inject(InvoiceService);
+    poService = inject(PoService);
+    store = inject(ServerStoreService);
+
 
     private angularNavigation = false;
     private permissions: any;
@@ -54,21 +65,6 @@ export class InvoiceComponent implements OnInit, OnDestroy, CanComponentDeactiva
     @ViewChild(LineitemListComponent, { static: false }) invoiceEntries: LineitemListComponent;
     @ViewChild(InvoiceChargesComponent, { static: false }) invoiceCharges: InvoiceChargesComponent;
     @ViewChild(NgbNav, { static: false }) acqInvoiceTabs: NgbNav;
-
-    // isNavigating = false;
-
-    constructor(
-        private route: ActivatedRoute,
-        private router: Router,
-        private idl: IdlService,
-        private evt: EventService,
-        private auth: AuthService,
-        private perm: PermService,
-        private pcrud: PcrudService,
-        public  invoiceService: InvoiceService,
-        public  poService: PoService,
-        public  store: ServerStoreService
-    ) {}
 
     ngOnInit() {
         console.warn('InvoiceComponent, this', this);

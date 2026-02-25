@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
 import {ActivatedRoute, ParamMap} from '@angular/router';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
@@ -126,6 +126,20 @@ class HoldContext {
     ]
 })
 export class HoldComponent implements OnInit, OnDestroy {
+    private route = inject(ActivatedRoute);
+    private net = inject(NetService);
+    private org = inject(OrgService);
+    private store = inject(ServerStoreService);
+    private auth = inject(AuthService);
+    private pcrud = inject(PcrudService);
+    private cat = inject(CatalogService);
+    private staffCat = inject(StaffCatalogService);
+    private holds = inject(HoldsService);
+    private patron = inject(PatronService);
+    private perm = inject(PermService);
+    private worklog = inject(WorkLogService);
+    private sessionStore = inject(StoreService);
+
 
     holdType: string;
     holdTargets: number[];
@@ -193,21 +207,7 @@ export class HoldComponent implements OnInit, OnDestroy {
     @ViewChild('activeDateAlert') private activeDateAlert: AlertDialogComponent;
     @ViewChild('expireDateAlert') private expireDateAlert: AlertDialogComponent;
 
-    constructor(
-        private route: ActivatedRoute,
-        private net: NetService,
-        private org: OrgService,
-        private store: ServerStoreService,
-        private auth: AuthService,
-        private pcrud: PcrudService,
-        private cat: CatalogService,
-        private staffCat: StaffCatalogService,
-        private holds: HoldsService,
-        private patron: PatronService,
-        private perm: PermService,
-        private worklog: WorkLogService,
-        private sessionStore: StoreService
-    ) {
+    constructor() {
         this.holdContexts = [];
         this.smsCarriers = [];
     }

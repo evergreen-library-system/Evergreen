@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import { Component, Input, OnInit, ViewChild, inject } from '@angular/core';
 import {filter} from 'rxjs';
 import {NetService} from '@eg/core/net.service';
 import {OrgService} from '@eg/core/org.service';
@@ -37,6 +37,11 @@ import { FormsModule } from '@angular/forms';
 })
 
 export class MarcRichEditorComponent implements OnInit {
+    private net = inject(NetService);
+    private org = inject(OrgService);
+    private store = inject(ServerStoreService);
+    private tagTable = inject(TagTableService);
+
 
     @Input() context: MarcEditContext;
     get record(): MarcRecord { return this.context.record; }
@@ -59,13 +64,6 @@ export class MarcRichEditorComponent implements OnInit {
 
     @ViewChild('charMapDialog', {static: false})
         CharMapDialog: CharMapDialogComponent;
-
-    constructor(
-        private net: NetService,
-        private org: OrgService,
-        private store: ServerStoreService,
-        private tagTable: TagTableService
-    ) {}
 
     ngOnInit() {
 

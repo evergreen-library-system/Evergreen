@@ -1,4 +1,4 @@
-import {Component, Input, ViewChild, OnInit, AfterViewInit} from '@angular/core';
+import { Component, Input, ViewChild, OnInit, AfterViewInit, inject } from '@angular/core';
 import {Location} from '@angular/common';
 import {FormatService} from '@eg/core/format.service';
 import {GridDataSource, GridCellTextGenerator} from '@eg/share/grid/grid';
@@ -32,6 +32,8 @@ import { FmRecordEditorComponent } from '@eg/share/fm-editor/fm-editor.component
 })
 
 export class FundsManagerComponent extends AdminPageComponent implements OnInit, AfterViewInit {
+    private perm2 = inject(PermService);
+
     idlClass = 'acqf';
     classLabel: string;
 
@@ -44,23 +46,7 @@ export class FundsManagerComponent extends AdminPageComponent implements OnInit,
     cellTextGenerator: GridCellTextGenerator;
     canRollover = false;
 
-    constructor(
-        route: ActivatedRoute,
-        ngLocation: Location,
-        format: FormatService,
-        idl: IdlService,
-        org: OrgService,
-        auth: AuthService,
-        pcrud: PcrudService,
-        perm: PermService,
-        private perm2: PermService, // need copy because perm is private to base
-        // component
-        toast: ToastService,
-        broadcaster: BroadcastService
-    ) {
-        super(route, ngLocation, format, idl, org, auth, pcrud, perm, toast, broadcaster);
-        this.dataSource = new GridDataSource();
-    }
+    dataSource = new GridDataSource();
 
     ngOnInit() {
         this.cellTextGenerator = {

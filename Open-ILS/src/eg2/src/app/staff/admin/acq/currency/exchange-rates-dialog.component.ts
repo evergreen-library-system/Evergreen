@@ -1,4 +1,4 @@
-import {Component, Input, ViewChild, OnInit} from '@angular/core';
+import { Component, Input, ViewChild, OnInit, inject } from '@angular/core';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
@@ -20,6 +20,11 @@ import { FormsModule } from '@angular/forms';
 
 export class ExchangeRatesDialogComponent
     extends DialogComponent implements OnInit {
+    private idl = inject(IdlService);
+    private pcrud = inject(PcrudService);
+    private perm = inject(PermService);
+    private modal: NgbModal;
+
 
     @Input() currencyCode: string;
     currency: IdlObject;
@@ -35,13 +40,12 @@ export class ExchangeRatesDialogComponent
     @ViewChild('successString', { static: true }) successString: StringComponent;
     @ViewChild('updateFailedString', { static: false }) updateFailedString: StringComponent;
 
-    constructor(
-        private idl: IdlService,
-        private pcrud: PcrudService,
-        private perm: PermService,
-        private modal: NgbModal
-    ) {
+    constructor() {
+        const modal = inject(NgbModal);
+
         super(modal);
+
+        this.modal = modal;
     }
 
     ngOnInit() {

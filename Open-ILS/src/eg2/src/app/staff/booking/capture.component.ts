@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy, ViewChild} from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, inject } from '@angular/core';
 import {FormGroup, FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {of, Subscription, debounceTime, switchMap} from 'rxjs';
 import {AuthService} from '@eg/core/auth.service';
@@ -23,6 +23,12 @@ import { TitleComponent } from '@eg/share/title/title.component';
 })
 
 export class CaptureComponent implements OnInit, OnDestroy {
+    private auth = inject(AuthService);
+    private net = inject(NetService);
+    private resourceValidator = inject(BookingResourceBarcodeValidator);
+    private toast = inject(ToastService);
+    private actions = inject(ReservationActionsService);
+
 
     findResource: FormGroup;
     subscriptions: Subscription[] = [];
@@ -31,15 +37,6 @@ export class CaptureComponent implements OnInit, OnDestroy {
     @ViewChild('noResourceString', { static: true }) noResourceString: StringComponent;
     @ViewChild('captureSuccessString', { static: true }) captureSuccessString: StringComponent;
     @ViewChild('captureFailureString', { static: true }) captureFailureString: StringComponent;
-
-    constructor(
-        private auth: AuthService,
-        private net: NetService,
-        private resourceValidator: BookingResourceBarcodeValidator,
-        private toast: ToastService,
-        private actions: ReservationActionsService
-    ) {
-    }
 
     ngOnInit() {
         this.findResource = new FormGroup({

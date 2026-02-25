@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy, QueryList, ViewChildren, ViewChild} from '@angular/core';
+import { Component, OnInit, OnDestroy, QueryList, ViewChildren, ViewChild, inject } from '@angular/core';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {FormGroup, FormControl, Validators, ReactiveFormsModule} from '@angular/forms';
 import {NgbNav, NgbNavChangeEvent, NgbNavModule} from '@ng-bootstrap/ng-bootstrap';
@@ -28,6 +28,14 @@ import { CommonModule } from '@angular/common';
 })
 
 export class ReturnComponent implements OnInit, OnDestroy {
+    private pcrud = inject(PcrudService);
+    private patron = inject(PatronService);
+    private pbv = inject(PatronBarcodeValidator);
+    private route = inject(ActivatedRoute);
+    private router = inject(Router);
+    private store = inject(ServerStoreService);
+    private toast = inject(ToastService);
+
     patronId: number;
     findPatron: FormGroup;
     subscriptions: Subscription[] = [];
@@ -37,17 +45,6 @@ export class ReturnComponent implements OnInit, OnDestroy {
     handleNavChange: ($event: NgbNavChangeEvent) => void;
     @ViewChild('tabs', { static: true }) tabs: NgbNav;
     @ViewChildren(ReservationsGridComponent) grids: QueryList<ReservationsGridComponent>;
-
-    constructor(
-        private pcrud: PcrudService,
-        private patron: PatronService,
-        private pbv: PatronBarcodeValidator,
-        private route: ActivatedRoute,
-        private router: Router,
-        private store: ServerStoreService,
-        private toast: ToastService
-    ) {
-    }
 
 
     ngOnInit() {

@@ -1,4 +1,4 @@
-import { Component, Input, Directive, HostBinding } from '@angular/core';
+import { Component, Input, Directive, HostBinding, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastService } from '@eg/share/toast/toast.service';
@@ -52,6 +52,8 @@ export interface ICopyAlertChanges extends IThingChanges<ICopyAlert> {
 })
 export class CopyAlertsDialogComponent extends
     CopyThingsDialogComponent<ICopyAlert, ICopyAlertChanges> {
+    private serverStore = inject(ServerStoreService);
+
 
     protected thingType = 'alerts';
     protected successMessage = $localize`Successfully Modified Item Alerts`;
@@ -73,15 +75,14 @@ export class CopyAlertsDialogComponent extends
 
     alerts: IdlObject[] = [];
 
-    constructor(
-        modal: NgbModal,
-        toast: ToastService,
-        idl: IdlService,
-        pcrud: PcrudService,
-        org: OrgService,
-        auth: AuthService,
-        private serverStore: ServerStoreService
-    ) {
+    constructor() {
+        const modal = inject(NgbModal);
+        const toast = inject(ToastService);
+        const idl = inject(IdlService);
+        const pcrud = inject(PcrudService);
+        const org = inject(OrgService);
+        const auth = inject(AuthService);
+
         const config: IThingConfig<ICopyAlert> = {
             idlClass: 'aca',
             thingField: 'copy_alerts',
@@ -371,8 +372,8 @@ export function inactiveEntry(): ValidatorFn {
 })
 
 export class AlertTypeValidatorDirective implements Validator {
+    private combobox = inject(ComboboxComponent);
 
-    constructor(private combobox: ComboboxComponent) {}
 
     validate(control: AbstractControl): { [key: string]: any } | null {
         return inactiveEntry()(control);

@@ -1,4 +1,4 @@
-import {Component, OnInit, AfterViewInit, ViewChild} from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, inject } from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
@@ -15,17 +15,15 @@ import { StaffCommonModule } from '@eg/staff/common.module';
 })
 
 export class BcSearchComponent implements OnInit, AfterViewInit {
+    private router = inject(Router);
+    private route = inject(ActivatedRoute);
+    private net = inject(NetService);
+    private auth = inject(AuthService);
+
 
     notFound = false;
     barcode = '';
     @ViewChild('barcodeSelect') private barcodeSelect: BarcodeSelectComponent;
-
-    constructor(
-        private router: Router,
-        private route: ActivatedRoute,
-        private net: NetService,
-        private auth: AuthService
-    ) {}
 
     ngOnInit() {
         this.barcode = this.route.snapshot.paramMap.get('barcode');

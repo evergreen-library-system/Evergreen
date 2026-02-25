@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, ViewChild} from '@angular/core';
+import { Component, OnInit, Input, ViewChild, inject } from '@angular/core';
 import {NetService} from '@eg/core/net.service';
 import {EventService} from '@eg/core/event.service';
 import {ToastService} from '@eg/share/toast/toast.service';
@@ -20,6 +20,12 @@ import { StaffCommonModule } from '@eg/staff/common.module';
 
 export class AuthorityMergeDialogComponent
     extends DialogComponent implements OnInit {
+    private modal: NgbModal;
+    private toast = inject(ToastService);
+    private net = inject(NetService);
+    private evt = inject(EventService);
+    private auth = inject(AuthService);
+
 
     // Rows passed from the authority browse grid.
     @Input() authData: any[] = [];
@@ -32,13 +38,12 @@ export class AuthorityMergeDialogComponent
     @ViewChild('errorMsg', {static: true})
     private errorMsg: StringComponent;
 
-    constructor(
-        private modal: NgbModal, // required for passing to parent
-        private toast: ToastService,
-        private net: NetService,
-        private evt: EventService,
-        private auth: AuthService) {
+    constructor() {
+        const modal = inject(NgbModal);
+
         super(modal); // required for subclassing
+
+        this.modal = modal;
     }
 
     ngOnInit() {

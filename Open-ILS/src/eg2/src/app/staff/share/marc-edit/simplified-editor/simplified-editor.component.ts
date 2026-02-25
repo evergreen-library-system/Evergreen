@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
 import {FormGroup, FormControl, FormsModule} from '@angular/forms';
 import {MarcField, MarcRecord} from '../marcrecord';
 import {TagTableService} from '../tagtable.service';
@@ -24,6 +24,9 @@ const DEFAULT_RECORD_TYPE = 'BKS';
     providers: [TagTableService]
 })
 export class MarcSimplifiedEditorComponent implements AfterViewInit, OnInit {
+    private net = inject(NetService);
+    private tagTable = inject(TagTableService);
+
 
     @Input() buttonLabel: string;
     @Output() xmlRecordEvent = new EventEmitter<string>();
@@ -43,11 +46,6 @@ export class MarcSimplifiedEditorComponent implements AfterViewInit, OnInit {
     addField: (field: MarcField) => void;
 
     editorFieldIdentifier: (field: MarcField, subfield: Array<any>) => string;
-
-    constructor(
-        private net: NetService,
-        private tagTable: TagTableService
-    ) {}
 
     ngOnInit() {
         // Add some randomness to the generated DOM IDs to ensure against clobbering

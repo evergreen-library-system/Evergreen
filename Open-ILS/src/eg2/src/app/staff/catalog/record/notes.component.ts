@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, ViewChild, EventEmitter, Output} from '@angular/core';
+import { Component, OnInit, Input, ViewChild, EventEmitter, Output, inject } from '@angular/core';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {Pager} from '@eg/share/util/pager';
@@ -20,6 +20,12 @@ import { StaffCommonModule } from '@eg/staff/common.module';
     ]
 })
 export class NotesComponent implements OnInit {
+    private idl = inject(IdlService);
+    private pcrud = inject(PcrudService);
+    private perm = inject(PermService);
+    private net = inject(NetService);
+    private auth = inject(AuthService);
+
 
     recId: number;
     gridDataSource: GridDataSource;
@@ -49,13 +55,7 @@ export class NotesComponent implements OnInit {
         return this.recId;
     }
 
-    constructor(
-        private idl: IdlService,
-        private pcrud: PcrudService,
-        private perm: PermService,
-        private net: NetService,
-        private auth: AuthService
-    ) {
+    constructor() {
         this.permissions = {};
         this.gridDataSource = new GridDataSource();
     }

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { ServerStoreService } from '@eg/core/server-store.service';
 import { concat, EMPTY, from, Observable, of, Subject, catchError, concatMap, distinctUntilChanged, map, shareReplay } from 'rxjs';
 
@@ -16,6 +16,8 @@ const SETTING_KEY = 'ui.staff.disable_links_newtabs';
     providedIn: 'root'
 })
 export class LinkTargetService {
+    private readonly store = inject(ServerStoreService);
+
 
     private readonly updates = new Subject<SettingValue>();
     private readonly updates$ = this.updates.pipe(
@@ -31,8 +33,6 @@ export class LinkTargetService {
             distinctUntilChanged(),
             shareReplay({ bufferSize: 1, refCount: false })
         );
-
-    constructor(private readonly store: ServerStoreService) {}
 
     private getSetting(): Observable<SettingValue> {
         return from(this.store.getItem(SETTING_KEY)).pipe(

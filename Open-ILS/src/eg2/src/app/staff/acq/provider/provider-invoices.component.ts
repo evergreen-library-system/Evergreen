@@ -1,4 +1,4 @@
-import {Component, OnInit, AfterViewInit, OnDestroy, Input, ViewChild} from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy, Input, ViewChild, inject } from '@angular/core';
 import {Subscription} from 'rxjs';
 import {IdlObject} from '@eg/core/idl.service';
 import {EventService} from '@eg/core/event.service';
@@ -25,6 +25,13 @@ import { GridModule } from '@eg/share/grid/grid.module';
     ]
 })
 export class ProviderInvoicesComponent implements OnInit, AfterViewInit, OnDestroy {
+    private printer = inject(PrintService);
+    private evt = inject(EventService);
+    private net = inject(NetService);
+    private auth = inject(AuthService);
+    private providerRecord = inject(ProviderRecordService);
+    private acqSearch = inject(AcqSearchService);
+
 
     @Input() initialSearchTerms: AcqSearchTerm[] = [];
 
@@ -37,15 +44,6 @@ export class ProviderInvoicesComponent implements OnInit, AfterViewInit, OnDestr
     cellTextGenerator: GridCellTextGenerator;
 
     subscription: Subscription;
-
-    constructor(
-        private printer: PrintService,
-        private evt: EventService,
-        private net: NetService,
-        private auth: AuthService,
-        private providerRecord: ProviderRecordService,
-        private acqSearch: AcqSearchService) {
-    }
 
     ngOnInit() {
         this.gridSource = this.acqSearch.getAcqSearchDataSource('invoice');

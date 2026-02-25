@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, Renderer2} from '@angular/core';
+import { Component, OnInit, Input, Renderer2, inject } from '@angular/core';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {LocaleService} from '@eg/core/locale.service';
 import {PcrudService} from '@eg/core/pcrud.service';
@@ -19,6 +19,12 @@ import { FormsModule } from '@angular/forms';
 
 export class TranslateComponent
     extends DialogComponent implements OnInit {
+    private modal: NgbModal;
+    private renderer = inject(Renderer2);
+    private idl = inject(IdlService);
+    private locale = inject(LocaleService);
+    private pcrud = inject(PcrudService);
+
 
     idlClassDef: any;
     locales: IdlObject[];
@@ -47,14 +53,12 @@ export class TranslateComponent
         this.field = n;
     }
 
-    constructor(
-        private modal: NgbModal, // required for passing to parent
-        private renderer: Renderer2,
-        private idl: IdlService,
-        private locale: LocaleService,
-        private pcrud: PcrudService,
-    ) {
+    constructor() {
+        const modal = inject(NgbModal);
+
         super(modal);
+
+        this.modal = modal;
     }
 
     ngOnInit() {
