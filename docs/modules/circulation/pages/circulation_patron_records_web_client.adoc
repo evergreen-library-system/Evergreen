@@ -493,7 +493,7 @@ New notes, alerts, and blocks can be added by clicking the *Create Note* button.
 ** Patron visible notes, alerts, and blocks that have been read by the patron cannot be deleted by staff.
 * _Archive Note_ - will move the note, alert, or block to the Archived Notes section of the screen.
 ** Archiving a block will remove the block from the patron account.
-** Once archived, notes, alerts, and blocks cannot be deleted from the _Notes_ tab. Archived patron visible notes will continue to display in the patron's OPAC account unless they are deleted from the _Other -> Message Center_ interface.
+** Once archived, notes, alerts, and blocks cannot be deleted from the _Notes_ tab. Archived patron visible notes will continue to display in the patron's OPAC account. To remove a patron visible note, un-archive the note and then remove the note.
 
 image::circulation_patron_records_web_client/actions_menu.png[Notes Actions Menu expanded to show the three options described above.]
 
@@ -527,16 +527,15 @@ To create a new Note:
 
 image::circulation_patron_records_web_client/note_modal.png[A screenshot of the Note Modal. The fields are as described above. Only the Title field is highlighted yellow to indicate a required field.]
 
-==== Messages and Message Center ====
+==== Messages ====
 [[patron_messages]]
 
-When a patron visible Note is created on an account, Evergreen automatically creates a Message that then displays in the patron’s OPAC account. The original Note can be viewed in the Notes tab. The Message can be viewed in the staff interface under _Other -> Message Center_.
+When a patron visible Note is created on an account, Evergreen automatically creates a message that then displays in the patron’s OPAC account. The original Note can be viewed in the Notes tab.
 
-The Message Center provides an interface for staff to view all patron visible notes that have been added to a patron account. Staff can double click on a message to view the full title and content of the message, as well as the date and time the message was created and the date and time that the message was read. Staff can also see if a patron has deleted the message from their OPAC account in the _Deleted?_ column.
+Staff can double click on a note to view the full title and content of the note. The notes grid can display the date and time the note was created and edited, as well as the date and time that the message was read. Staff can also see if a patron has deleted the message from their OPAC account in the _Deleted?_ column.
 
-NOTE: Deleting a message from this interface will remove it from the patron's view. If the message is linked to a note in the Notes tab, the note will continue to appear in the Notes tab.
+NOTE: Removing a message from this interface will remove it from the patron's view regardless of whether or not the note has been read. Removing an unread note should be done with caution.
 
-NOTE: Deleting a patron visible note from the Notes tab will also remove the message from the patron's OPAC account. If the message is linked to a note in the Notes tab, the note will continue to appear in the Notes tab.
 
 ==== Viewing Messages in the OPAC ====
 
