@@ -626,7 +626,7 @@ export class HoldComponent implements OnInit, OnDestroy {
         if (!this.pickupLib || this.disableOrgs.includes(this.pickupLib)) {
             return false;
         }
-        if (this.holdFor === 'patron' && !this.user) {
+        if (this.holdFor !== 'group' && !this.user) {
             return false;
         }
         if (this.holdFor === 'group' && !this.selectedHoldGroup) {
