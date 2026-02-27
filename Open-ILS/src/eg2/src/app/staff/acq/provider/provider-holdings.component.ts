@@ -1,5 +1,5 @@
 import { Component, OnInit, AfterViewInit, OnDestroy, Input, ViewChild, inject } from '@angular/core';
-import {NgForm} from '@angular/forms';
+import {FormsModule, NgForm} from '@angular/forms';
 import {EMPTY, from, Subscription} from 'rxjs';
 import {Pager} from '@eg/share/util/pager';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
@@ -9,9 +9,10 @@ import {ProviderRecordService} from './provider-record.service';
 import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
 import {StringComponent} from '@eg/share/string/string.component';
 import {ToastService} from '@eg/share/toast/toast.service';
-import { CommonModule } from '@angular/common';
+
 import { GridModule } from '@eg/share/grid/grid.module';
 import { ComboboxComponent } from '@eg/share/combobox/combobox.component';
+import { ComboboxEntryComponent } from '@eg/share/combobox/combobox-entry.component';
 
 
 @Component({
@@ -19,10 +20,11 @@ import { ComboboxComponent } from '@eg/share/combobox/combobox.component';
     templateUrl: 'provider-holdings.component.html',
     imports: [
         ComboboxComponent,
-        CommonModule,
         FmRecordEditorComponent,
+        FormsModule,
         GridModule,
         StringComponent,
+        ComboboxEntryComponent
     ]
 })
 export class ProviderHoldingsComponent implements OnInit, AfterViewInit, OnDestroy {

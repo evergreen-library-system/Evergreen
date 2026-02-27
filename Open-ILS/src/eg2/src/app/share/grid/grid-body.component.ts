@@ -3,7 +3,7 @@ import { Component, Input, inject } from '@angular/core';
 import {GridContext} from './grid';
 import {GridComponent} from './grid.component';
 import {NgbPopover} from '@ng-bootstrap/ng-bootstrap';
-import { NgClass, NgFor, NgIf } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { GridBodyCellComponent } from './grid-body-cell.component';
 import { GridToolbarActionsMenuComponent } from './grid-toolbar-actions-menu.component';
@@ -16,9 +16,7 @@ import { GridToolbarActionsMenuComponent } from './grid-toolbar-actions-menu.com
         GridBodyCellComponent,
         GridToolbarActionsMenuComponent,
         NgbPopover,
-        NgClass,
-        NgFor,
-        NgIf,
+        NgClass
     ]
 })
 

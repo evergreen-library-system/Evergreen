@@ -1,6 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import {NgbNavModule} from '@ng-bootstrap/ng-bootstrap';
-import {Location, NgIf} from '@angular/common';
+import { Location } from '@angular/common';
 import {ActivatedRoute} from '@angular/router';
 import {AuthService} from '@eg/core/auth.service';
 import {NetService} from '@eg/core/net.service';
@@ -9,13 +9,14 @@ import {OfflineService} from '@eg/staff/share/offline.service';
 import {StoreService} from '@eg/core/store.service';
 import {OrgService} from '@eg/core/org.service';
 import moment from 'moment-timezone';
+import { QRCodeComponent } from 'angularx-qrcode';
 
 @Component({
     styleUrls: ['./mfa.component.css'],
     templateUrl: './mfa.component.html',
     imports: [
         NgbNavModule,
-        NgIf,
+        QRCodeComponent
     ]
 })
 

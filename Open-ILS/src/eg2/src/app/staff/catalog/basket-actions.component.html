@@ -8,7 +8,7 @@
 
     <div class="float-end">
       <!-- note basket view link does not propagate search params -->
-      <a routerLink="/staff/catalog/search" [queryParams]="{showBasket: true}" 
+      <a routerLink="/staff/catalog/search" [queryParams]="{showBasket: true}"
         class="label-with-material-icon">
         <span class="material-icons" aria-hidden="true">shopping_basket</span>
         <span class="visually-hidden" i18n>Basket</span>
@@ -19,34 +19,38 @@
   <div class="pe-1">
     <div ngbDropdown placement="bottom-right">
       <button  type="button" class="btn btn-light" id="basketActions"
-        ngbDropdownToggle i18n>Basket Actions</button>
+      ngbDropdownToggle i18n>Basket Actions</button>
       <div ngbDropdownMenu aria-labelledby="basketActions">
         <button type="button" class="dropdown-item" ngbDropdownItem [disabled]="isMetarecordSearch()"
-          (click)="applyAction('add_all')" i18n>Add All Search Results</button>
-        <button type="button" class="dropdown-item" ngbDropdownItem *ngIf="canAddRecord()"
+        (click)="applyAction('add_all')" i18n>Add All Search Results</button>
+        @if (canAddRecord()) {
+          <button type="button" class="dropdown-item" ngbDropdownItem
           (click)="applyAction('add_record')" i18n>Add This Record</button>
-        <button type="button" class="dropdown-item" ngbDropdownItem *ngIf="canRemoveRecord()"
+        }
+        @if (canRemoveRecord()) {
+          <button type="button" class="dropdown-item" ngbDropdownItem
           (click)="applyAction('remove_record')" i18n>Remove This Record</button>
+        }
         <button type="button" class="dropdown-item" ngbDropdownItem [disabled]="!basketCount()"
-          (click)="applyAction('view')" i18n>View Basket</button>
+        (click)="applyAction('view')" i18n>View Basket</button>
         <button type="button" class="dropdown-item" ngbDropdownItem [disabled]="!basketCount()"
-          (click)="applyAction('hold')" i18n>Place Hold</button>
+        (click)="applyAction('hold')" i18n>Place Hold</button>
         <button type="button" class="dropdown-item" ngbDropdownItem [disabled]="!basketCount()"
-          (click)="applyAction('print')" i18n>Print Title Details</button>
+        (click)="applyAction('print')" i18n>Print Title Details</button>
         <button type="button" class="dropdown-item" ngbDropdownItem [disabled]="!basketCount()"
-          (click)="applyAction('email')" i18n>Email Title Details</button>
+        (click)="applyAction('email')" i18n>Email Title Details</button>
         <button type="button" class="dropdown-item" ngbDropdownItem [disabled]="!basketCount()"
-          (click)="applyAction('bucket')" i18n>Add Basket to Bucket</button>
+        (click)="applyAction('bucket')" i18n>Add Basket to Bucket</button>
         <button type="button" class="dropdown-item" ngbDropdownItem [disabled]="!basketCount()"
-          (click)="applyAction('export_marc')" i18n>Export Records</button>
+        (click)="applyAction('export_marc')" i18n>Export Records</button>
         <button type="button" class="dropdown-item" ngbDropdownItem [disabled]="!basketCount()"
-          (click)="applyAction('clear')" i18n>Clear Basket</button>
+        (click)="applyAction('clear')" i18n>Clear Basket</button>
       </div>
     </div>
   </div>
   <div>
     <!-- Note this Prefernces links is not specific to Basket handling,
-        but it's here since it allowed for consistent formatting -->
+    but it's here since it allowed for consistent formatting -->
     <a routerLink="/staff/catalog/prefs" queryParamsHandling="merge" class="btn btn-light" i18n>Search Preferences</a>
   </div>
 </div>

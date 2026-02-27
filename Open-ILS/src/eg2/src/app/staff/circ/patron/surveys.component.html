@@ -1,24 +1,28 @@
 
-<div class="mt-2" *ngFor="let survey of surveys">
-  <h2 class="text-dark">{{survey.survey.name()}}</h2>
-  <table class="table table-striped">
-    <thead>
-      <th scope="col" i18n="Patron survey responses table header">Question</th>
-      <th scope="col" i18n="Patron survey responses table header">Response</th>
-      <th scope="col" i18n="Patron survey responses table header">Last Answered</th>
-    </thead>
-    <tbody>
-      <tr *ngFor="let response of survey.responses">
-        <td>
-          {{response.question().question()}}
-        </td>
-        <td>
-          {{response.answer().answer()}}
-        </td>
-        <td>
-          {{response.answer_date() | date:'short'}}
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+@for (survey of surveys; track survey) {
+  <div class="mt-2">
+    <h2 class="text-dark">{{survey.survey.name()}}</h2>
+    <table class="table table-striped">
+      <thead>
+        <th scope="col" i18n="Patron survey responses table header">Question</th>
+        <th scope="col" i18n="Patron survey responses table header">Response</th>
+        <th scope="col" i18n="Patron survey responses table header">Last Answered</th>
+      </thead>
+      <tbody>
+        @for (response of survey.responses; track response) {
+          <tr>
+            <td>
+              {{response.question().question()}}
+            </td>
+            <td>
+              {{response.answer().answer()}}
+            </td>
+            <td>
+              {{response.answer_date() | date:'short'}}
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+}

@@ -10,7 +10,7 @@
   </eg-z3950-search>
 </div>
 
-<eg-title 
+<eg-title
   i18n-prefix i18n-suffix
   prefix=":) {{dynamicTitleText}}"
   suffix="Sandbox">
@@ -25,553 +25,563 @@
 
 <hr>
 
-<!-- Button & Material Icon Accessibility -->
-<div class="row mt-2 mb-3">
-  <h2 i18n>Accessible Buttons and Icons</h2>
-  <div class="row row-auto-cols m-2">
-    <div class="col">
-      <p i18n>Icon only:</p>
-      <!-- aria-label and title should match -->
-      <button type="button" class="btn btn-success" (click)="null"
-        aria-label="New Items" i18n-aria-label
-        title="New Items" i18n-title>
-        <span class="material-icons mat-icon-in-button" aria-hidden="true">new_releases</span>
-      </button>
-    </div>
+  <!-- Button & Material Icon Accessibility -->
+  <div class="row mt-2 mb-3">
+    <h2 i18n>Accessible Buttons and Icons</h2>
+    <div class="row row-auto-cols m-2">
+      <div class="col">
+        <p i18n>Icon only:</p>
+        <!-- aria-label and title should match -->
+        <button type="button" class="btn btn-success" (click)="null"
+          aria-label="New Items" i18n-aria-label
+          title="New Items" i18n-title>
+          <span class="material-icons mat-icon-in-button" aria-hidden="true">new_releases</span>
+        </button>
+      </div>
 
-    <div class="col">
-      <p>Icon with text:</p>
-      <!-- aria-label is not needed because there is equivalent visible text -->
-      <button type="button" class="btn btn-secondary label-with-material-icon" (click)="null"
-        title="Folders" i18n-title>
-        <span class="material-icons mat-icon-in-button" aria-hidden="true">folder_open</span>
-        <span class="ms-1" i18n>Folders</span>
-      </button>
-    </div>
+      <div class="col">
+        <p>Icon with text:</p>
+        <!-- aria-label is not needed because there is equivalent visible text -->
+        <button type="button" class="btn btn-secondary label-with-material-icon" (click)="null"
+          title="Folders" i18n-title>
+          <span class="material-icons mat-icon-in-button" aria-hidden="true">folder_open</span>
+          <span class="ms-1" i18n>Folders</span>
+        </button>
+      </div>
 
-    <div class="col">
-      <p>Icon inline with link text:</p>
-      <!-- Use <a> only with href or routerLink. Otherwise use <button> -->
-      <a class="label-with-material-icon" routerLink="/staff/admin/server/splash">
-        <span class="material-icons" aria-hidden="true">edit</span>
-        <span i18n>Edit Settings</span>
-      </a>
-    </div>
+      <div class="col">
+        <p>Icon inline with link text:</p>
+        <!-- Use <a> only with href or routerLink. Otherwise use <button> -->
+        <a class="label-with-material-icon" routerLink="/staff/admin/server/splash">
+          <span class="material-icons" aria-hidden="true">edit</span>
+          <span i18n>Edit Settings</span>
+        </a>
+      </div>
 
-    <div class="col">
-      <p>Icon by itself:</p>
-      <!-- aria-label is not valid on <span>, <div>, or <p>. Use visually-hidden text instead. -->
-      <span class="material-icons" aria-hidden="true"
+      <div class="col">
+        <p>Icon by itself:</p>
+        <!-- aria-label is not valid on <span>, <div>, or <p>. Use visually-hidden text instead. -->
+        <span class="material-icons" aria-hidden="true"
         title="Error" i18n-title>report</span>
-      <span i18n class="visually-hidden">Error</span>
-    </div>
+        <span i18n class="visually-hidden">Error</span>
+      </div>
 
-    <div class="col">
-      <p>Button styled as a link:</p>
-      <button type="button" class="btn btn-link" (click)="null" i18n>
+      <div class="col">
+        <p>Button styled as a link:</p>
+        <button type="button" class="btn btn-link" (click)="null" i18n>
         Download CSV
       </button>
+      </div>
     </div>
-  </div>
   </div>
   <div class="row mt-2 mb-3 bg-light border">
-  <h2 class="mt-3" i18n>Inaccessible examples: what not to do</h2>
-  <!-- eslint-disable @angular-eslint/template/click-events-have-key-events, @angular-eslint/template/interactive-supports-focus -->
-  <div class="row row-auto-cols m-2">
-    <div class="col">
-      <p i18n>These buttons cannot be accessed using the keyboard and are announced with the wrong roles:</p>
-      <!-- do not copy this example -->
-      <a class="btn btn-primary" (click)="null" i18n>Mouse users only!</a>
-      <!-- especially do not copy this example -->
-      <!-- screen readers do not even announce this as a clickable element -->
-      <div class="btn btn-danger ms-2" (click)="null" i18n>No role!</div>
-    </div>
+    <h2 class="mt-3" i18n>Inaccessible examples: what not to do</h2>
+    <!-- eslint-disable @angular-eslint/template/click-events-have-key-events, @angular-eslint/template/interactive-supports-focus -->
+    <div class="row row-auto-cols m-2">
+      <div class="col">
+        <p i18n>These buttons cannot be accessed using the keyboard and are announced with the wrong roles:</p>
+        <!-- do not copy this example -->
+        <a class="btn btn-primary" (click)="null" i18n>Mouse users only!</a>
+        <!-- especially do not copy this example -->
+        <!-- screen readers do not even announce this as a clickable element -->
+        <div class="btn btn-danger ms-2" (click)="null" i18n>No role!</div>
+      </div>
 
-    <div class="col">
-      <p i18n>This button is announced as "new underscore releases" (no ARIA label):</p>
-      <!-- do not copy this example -->
-      <button type="button" class="btn btn-danger" (click)="null" 
-        title="This tooltip is not read by screen readers" i18n-title>
-        <span class="material-icons mat-icon-in-button">new_releases</span>
-      </button>
-    </div>
+      <div class="col">
+        <p i18n>This button is announced as "new underscore releases" (no ARIA label):</p>
+        <!-- do not copy this example -->
+        <button type="button" class="btn btn-danger" (click)="null"
+          title="This tooltip is not read by screen readers" i18n-title>
+          <span class="material-icons mat-icon-in-button">new_releases</span>
+        </button>
+      </div>
 
-    <div class="col">
-      <p i18n>This button will submit form input on <kbd>Spacebar</kbd> or <kbd>Enter</kbd> (no type attribute):</p>
-      <!-- do not copy this example -->
-       
-      <button class="btn btn-info" (click)="null" i18n>Whoops!</button>
+      <div class="col">
+        <p i18n>This button will submit form input on <kbd>Spacebar</kbd> or <kbd>Enter</kbd> (no type attribute):</p>
+        <!-- do not copy this example -->
+
+        <button class="btn btn-info" (click)="null" i18n>Whoops!</button>
+      </div>
     </div>
+    <!-- eslint-enable @angular-eslint/template/click-events-have-key-events, @angular-eslint/template/interactive-supports-focus -->
   </div>
-  <!-- eslint-enable @angular-eslint/template/click-events-have-key-events, @angular-eslint/template/interactive-supports-focus -->
-</div>
 
-<!-- FM Editor Experiments ----------------------------- -->
-<div class="row my-2">
-  <ng-template #descriptionTemplate 
+  <!-- FM Editor Experiments ----------------------------- -->
+  <div class="row my-2">
+    <ng-template #descriptionTemplate
       let-field="field" let-record="record" let-hello="hello">
-  <!-- example custom template for editing the 'description' field -->
-    <textarea
-      placeholder="{{hello}}"
-      class="form-control"
-      name="{{field.name}}"
-      [readonly]="field.readOnly"
-      [required]="field.isRequired()"
-      [ngModel]="record[field.name]()"
-      (ngModelChange)="record[field.name]($event)">
-    </textarea>
-  </ng-template>
-  <!-- note: fieldOptions would be best defined in the .ts file, but
-      want to demostrate it can be set in the template as well -->
-  <eg-fm-record-editor #fmRecordEditor 
-    idlClass="cmrcfld" mode="create" hiddenFields="id"
-    fieldOrder="owner,name,description,marc_format,marc_record_type,tag"
-    [fieldOptions]="{marc_record_type:{customValues:[{id:'biblio'},{id:'serial'},{id:'authority'}]},description:{customTemplate:{template:descriptionTemplate,context:{'hello':'goodbye'}}}}"
-    recordId="1" orgDefaultAllowed="owner">
-  </eg-fm-record-editor>
-  <button type="button" class="btn btn-dark" (click)="openEditor()">
+      <!-- example custom template for editing the 'description' field -->
+      <textarea
+        placeholder="{{hello}}"
+        class="form-control"
+        name="{{field.name}}"
+        [readonly]="field.readOnly"
+        [required]="field.isRequired()"
+        [ngModel]="record[field.name]()"
+        (ngModelChange)="record[field.name]($event)">
+      </textarea>
+    </ng-template>
+    <!-- note: fieldOptions would be best defined in the .ts file, but
+    want to demostrate it can be set in the template as well -->
+    <eg-fm-record-editor #fmRecordEditor
+      idlClass="cmrcfld" mode="create" hiddenFields="id"
+      fieldOrder="owner,name,description,marc_format,marc_record_type,tag"
+      [fieldOptions]="{marc_record_type:{customValues:[{id:'biblio'},{id:'serial'},{id:'authority'}]},description:{customTemplate:{template:descriptionTemplate,context:{'hello':'goodbye'}}}}"
+      recordId="1" orgDefaultAllowed="owner">
+    </eg-fm-record-editor>
+    <button type="button" class="btn btn-dark" (click)="openEditor()">
       Fm Record Editor
-  </button>
-</div>
-<!-- / FM Editor Experiments ----------------------------- -->
+    </button>
+  </div>
+  <!-- / FM Editor Experiments ----------------------------- -->
 
-<!-- Progress Dialog Experiments ----------------------------- -->
-<div class="row mb-3">
-  <div class="col-lg-3">
-    <button type="button" class="btn btn-outline-danger" (click)="progress.increment()">Increment Inline</button>
-    <eg-help-popover [placement]="'bottom'" helpText="Exercise your clicking finger by clicking the button above.">
-    </eg-help-popover>
+  <!-- Progress Dialog Experiments ----------------------------- -->
+  <div class="row mb-3">
+    <div class="col-lg-3">
+      <button type="button" class="btn btn-outline-danger" (click)="progress.increment()">Increment Inline</button>
+      <eg-help-popover [placement]="'bottom'" helpText="Exercise your clicking finger by clicking the button above.">
+      </eg-help-popover>
+    </div>
+    <div class="col-lg-3">
+      <eg-progress-inline [max]="100" [value]="1" #progress></eg-progress-inline>
+    </div>
   </div>
-  <div class="col-lg-3">
-    <eg-progress-inline [max]="100" [value]="1" #progress></eg-progress-inline>
-  </div>
-</div>
-<div class="row mb-3">
-  <div class="col-lg-4">
-    <eg-progress-dialog #progressDialog>
-    </eg-progress-dialog>
-    <button type="button" class="btn btn-light" (click)="showProgress()">Test Progress Dialog</button>
-  </div>
-  <div class="col-lg-3">
-    <eg-help-popover helpLink="https://www.youtube.com/watch?v=dQw4w9WgXcQ" helpText="This popover is supposed to help or something...!"></eg-help-popover>
-    <eg-combobox [allowFreeText]="true" 
-      placeholder="Combobox with static data"
+  <div class="row mb-3">
+    <div class="col-lg-4">
+      <eg-progress-dialog #progressDialog>
+      </eg-progress-dialog>
+      <button type="button" class="btn btn-light" (click)="showProgress()">Test Progress Dialog</button>
+    </div>
+    <div class="col-lg-3">
+      <eg-help-popover helpLink="https://www.youtube.com/watch?v=dQw4w9WgXcQ" helpText="This popover is supposed to help or something...!"></eg-help-popover>
+      <eg-combobox [allowFreeText]="true"
+        placeholder="Combobox with static data"
       [entries]="cbEntries"></eg-combobox>
-  </div>
-  <div class="col-lg-3">
-    <eg-help-popover helpText="You have to type to see any options in this dropdown."></eg-help-popover>
-    <eg-combobox
-      placeholder="Combobox with dynamic data that does not enable click if no search term is supplied"
+    </div>
+    <div class="col-lg-3">
+      <eg-help-popover helpText="You have to type to see any options in this dropdown."></eg-help-popover>
+      <eg-combobox
+        placeholder="Combobox with dynamic data that does not enable click if no search term is supplied"
       [asyncDataSource]="cbAsyncSource"></eg-combobox>
+    </div>
   </div>
-</div>
-<div class="row mb-3">
-  <div class="col-lg-4">
-   <eg-help-popover helpText="If you like Toast you must click below!" placement="'auto'"></eg-help-popover>
-   <button type="button" class="btn btn-info" (click)="testToast()">Test Toast Message</button>
+  <div class="row mb-3">
+    <div class="col-lg-4">
+      <eg-help-popover helpText="If you like Toast you must click below!" placement="'auto'"></eg-help-popover>
+      <button type="button" class="btn btn-info" (click)="testToast()">Test Toast Message</button>
+    </div>
+    <div class="col-lg-2">
+      <label for="limitPermsSelect" class="form-label org-unit-select-label" i18n>Org select with limit perms</label>
+    </div>
+    <div class="col-lg-2">
+      <eg-org-select
+        domId="limitPermsSelect"
+        [limitPerms]="['REGISTER_WORKSTATION']">
+      </eg-org-select>
+    </div>
   </div>
-  <div class="col-lg-2">
-    <label for="limitPermsSelect" class="form-label org-unit-select-label" i18n>Org select with limit perms</label>
+  <div class="row mb-3">
+    <div class="col-lg-4">
+    </div>
+    <div class="col-lg-3">
+      <eg-combobox placeholder="Combobox with @idlClass = 'aou' @idlField='shortname'" idlClass="aou" idlField="shortname" [asyncSupportsEmptyTermClick]="true">
+      </eg-combobox>
+    </div>
+    <div class="col-lg-3">
+      <eg-combobox placeholder="Combobox with @idlClass = 'cvrfm'" idlClass="cvrfm" [asyncSupportsEmptyTermClick]="true">
+      </eg-combobox>
+    </div>
+    <div class="col-lg-3">
+      <eg-combobox placeholder="Combobox with @idlClass = 'csp'" idlClass="csp" [asyncSupportsEmptyTermClick]="true">
+      </eg-combobox>
+    </div>
   </div>
-  <div class="col-lg-2">
-    <eg-org-select 
-      domId="limitPermsSelect"
-      [limitPerms]="['REGISTER_WORKSTATION']">
-    </eg-org-select>
+  <div class="row mb-3">
+    <div class="col-lg-4">
+    </div>
+    <div class="col-lg-3">
+      <eg-combobox placeholder="Combobox with @idlClass = 'aou'" idlClass="aou" [asyncSupportsEmptyTermClick]="true">
+      </eg-combobox>
+    </div>
+    <div class="col-lg-3">
+      <eg-multi-select idlClass="acpl" linkedLibraryLabel="owning_lib" [startValue]="'{129,130,131}'">
+      </eg-multi-select>
+    </div>
   </div>
-</div>
-<div class="row mb-3">
-  <div class="col-lg-4">
-  </div>
-  <div class="col-lg-3">
-    <eg-combobox placeholder="Combobox with @idlClass = 'aou' @idlField='shortname'" idlClass="aou" idlField="shortname" [asyncSupportsEmptyTermClick]="true">
-    </eg-combobox>
-  </div>
-  <div class="col-lg-3">
-    <eg-combobox placeholder="Combobox with @idlClass = 'cvrfm'" idlClass="cvrfm" [asyncSupportsEmptyTermClick]="true">
-    </eg-combobox>
-  </div>
-  <div class="col-lg-3">
-    <eg-combobox placeholder="Combobox with @idlClass = 'csp'" idlClass="csp" [asyncSupportsEmptyTermClick]="true">
-    </eg-combobox>
-  </div>
-</div>
-<div class="row mb-3">
-  <div class="col-lg-4">
-  </div>
-  <div class="col-lg-3">
-    <eg-combobox placeholder="Combobox with @idlClass = 'aou'" idlClass="aou" [asyncSupportsEmptyTermClick]="true">
-    </eg-combobox>
-  </div>
-  <div class="col-lg-3">
-    <eg-multi-select idlClass="acpl" linkedLibraryLabel="owning_lib" [startValue]="'{129,130,131}'">
-    </eg-multi-select>
-  </div>
-</div>
-<!-- /Progress Dialog Experiments ----------------------------- -->
+  <!-- /Progress Dialog Experiments ----------------------------- -->
 
-<!-- eg strings -->
-<!--
-<div class="row mb-3">
+  <!-- eg strings -->
+  <!--
+  <div class="row mb-3">
     <eg-string #helloString text="Hello, {{name}}" i18n-text></eg-string>
     <button type="button" class="btn btn-success" (click)="testStrings()">Test Strings</button>
-</div>
--->
+  </div>
+  -->
 
-<div class="row mb-3">
+  <div class="row mb-3">
     <ng-template #helloStrTmpl let-name="name" i18n>Hello, {{name}}</ng-template>
     <!--
     <eg-string #helloStr key="helloKey" [template]="helloStrTmpl"></eg-string>
     -->
     <eg-string key="staff.sandbox.test" [template]="helloStrTmpl"></eg-string>
     <button type="button" class="btn btn-success" (click)="testStrings()">Test Strings</button>
-</div>
-
-<div class="row">
-  <div class="form-group">
-    <eg-date-select (onChangeAsDate)="changeDate($event)"
-        initialYmd="2017-03-04">
-    </eg-date-select>
   </div>
-  <div>HERE: {{testDate}}</div>
-</div>
 
-<!-- printing -->
-
-<h4>PRINTING</h4>
-
-<div class="d-flex">
-  <div class="me-2">
-    <button type="button" class="btn btn-info" (click)="doPrint()">Test Local Print</button>
-    <ng-template #printTemplate let-context>Hello, {{context.world}}!</ng-template>
-  </div>
-  <div class="me-2">
-    <button type="button" class="btn btn-info" (click)="printWithDialog()">
-      Print with dialog (Hatch Only)
-    </button>
-  </div>
-  <div class="me-2">
-    <button type="button" class="btn btn-info" 
-      (click)="testServerPrint()">Test Server-Generated Print</button>
-  </div>
-</div>
-
-<br/><br/>
-<div class="row">
-  <div class="col-lg-3">
-    <eg-translate #translate [idlObject]="oneBtype" fieldName="name"></eg-translate>
-    <button type="button" class="btn btn-info"
-      (click)="translate.open({size:'lg'})">Translate</button>
-  </div>
-</div>
-<br/><br/>
-
-
-<div>
-  <h4>File reader component</h4>
-  <eg-file-reader [(ngModel)]="fileContents"></eg-file-reader>
-  <h5>Contents are:</h5>
-  <ol *ngIf="fileContents && fileContents.length > 0">
-    <li *ngFor="let val of fileContents">{{val}}</li>
-  </ol>
-</div>
-
-<div>
-  <h4>Cross-tab communications example</h4>
-  <p>To test, open this sandbox in a second browser tab. Enter something in the input box below, then switch to the other tab and click anywhere on the page. 
-     You should see the message that you sent to the other browser tab.</p>
-</div>
-<div class="row">
-  <div class="col-lg-3">
-    <input type="text" #sendSbMessage placeholder="message to send to another tab" size="40" (change)="sendMessage($event)">
-  </div>
-  <div class="col-lg-3">
-    message received: {{sbChannelText}}
-  </div>
-</div>
-<br/><br/>
-
-<div ngbAccordion>
-  <div ngbAccordionItem>
-    <h2 ngbAccordionHeader>
-      <button ngbAccordionButton i18n>Open me for comboboxes</button>
-    </h2>
-    <div ngbAccordionCollapse>
-      <div ngbAccordionBody>
-        <ng-template>
-          <eg-org-select ariaLabel="Org Unit" i18n-ariaLabel></eg-org-select>
-          <eg-combobox>
-            <eg-combobox-entry entryId="bib" entryLabel="Bibliographic Records"
-              i18n-entryLabel></eg-combobox-entry>
-            <eg-combobox-entry entryId="auth" entryLabel="Authority Records"
-              i18n-entryLabel></eg-combobox-entry>
-            <eg-combobox-entry entryId="bib-acq" entryLabel="Acquisitions Records"
-              i18n-entryLabel></eg-combobox-entry>
-          </eg-combobox>
-        </ng-template>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- grid stuff -->
-<ng-template #cellTmpl let-row="row" let-col="col" let-userContext="userContext">
-  HELLO {{userContext.hello}}
-  <button type="button">{{row.id()}}</button>
-</ng-template>
-<eg-grid #cbtGrid idlClass="cbt" 
-  [dataSource]="btSource" 
-  [rowClassCallback]="btGridRowClassCallback"
-  [rowFlairIsEnabled]="true"
-  flairColumnHeader="Flair Column Tooltip" i18n-flairColumnHeader
-  [rowFlairCallback]="btGridRowFlairCallback"
-  flairColumnHeader="Flair Column Tooltip" i18n-flairColumnHeader
-  [cellClassCallback]="btGridCellClassCallback"
-  [stickyHeader]="true"
-  [cellTextGenerator]="btGridCellTextGenerator"
-  [sortable]="true">
-  <eg-grid-toolbar-action label="Action that needs a single row" i18n-label
-    (onClick)="complimentEvergreen($event)" [disableOnRows]="notOneSelectedRow">
-  </eg-grid-toolbar-action>
-  <eg-grid-toolbar-action [isSeparator]="true">
-  </eg-grid-toolbar-action>
-  <eg-grid-toolbar-action label="Another Action" i18n-label
-    (onClick)="complimentEvergreen2($event)" [describedbySelectionCount]="true">
-  </eg-grid-toolbar-action>
-  <eg-grid-column name="test" [cellTemplate]="cellTmpl" 
-    [cellContext]="btGridTestContext" [sortable]="false">
-  </eg-grid-column>
-  <eg-grid-column [sortable]="false" path="owner.name"></eg-grid-column>
-  <eg-grid-column [sortable]="false" path="datetime_test" 
-    datatype="timestamp" [datePlusTime]="true"></eg-grid-column>
-</eg-grid>
-
-<br/><br/>
-<div class="row">
-  <div class="col">
-    <eg-daterange-select
-      ngModel #myRange="ngModel"
-      [initialRangeStart]="sevenDaysAgo()"
-      [initialRangeLength]="5"
-      [markDisabled]="allFutureDates">
-    </eg-daterange-select>
-    Your range is: {{myRange.value | json}}
-  </div>
-  <div class="col">
-    <form [formGroup]="myTimeForm">
-      <eg-datetime-select
-        formControlName="datetime">
-      </eg-datetime-select>
-      Your datetime is: {{myTimeForm.get('datetime').value | json}}
-    </form>
-  </div>
-</div>
-<label class="form-label" for="date-time-input">
-  Set the datetime and timezone library settings, and enter a valid datetime string for an exciting animation surprise:
-</label>
-<input id="date-time-input" type="text" class="date-time-input" ngModel egValidDatetime required>
-<br/><br/>
-
-<h4>Grid with filtering</h4>
-<eg-grid #acpGrid idlClass="acp"
-  [dataSource]="acpSource"
-  [filterable]="true"
-  [sortable]="true"
-  [stickyHeader]="true"
-  showFields="barcode,location,circ_lib,price,dummy_title,create_date"
->
-  <eg-grid-toolbar-action label="Edit Selected" i18n-label [action]="editSelected" [describedbySelectionCount]="true">
-  </eg-grid-toolbar-action>
-  <eg-grid-column [sortable]="true" [filterable]="false"  path="barcode"></eg-grid-column>
-  <eg-grid-column [sortable]="true" path="circ_lib"></eg-grid-column>
-  <eg-grid-column [sortable]="true" path="price"></eg-grid-column>
-  <eg-grid-column [sortable]="true" path="dummy_title"></eg-grid-column>
-  <eg-grid-column [sortable]="true" path="create_date"></eg-grid-column>
-</eg-grid>
-
-<eg-fm-record-editor #acpEditDialog idlClass="acp" hiddenFields="call_number,creator,create_date,editor,edit_time,loan_duration,fine_level,dummy_author,dummy_isbn,ref,floating,holdable,circ_as_type,active_date,mint_condition,cost,deleted,deposit,deposit_amount,circulate,status_changed_time,copy_number"
-   [fieldOptions]="{status:{linkedSearchConditions:{'is_available':'t'},preloadLinkedValues:true}}">
-</eg-fm-record-editor>
-<eg-string #successString text="Updated succeeded!" i18n-text></eg-string>
-<eg-string #updateFailedString text="Updated failed!" i18n-text></eg-string>
-
-<h4>PCRUD auto flesh and FormatService detection</h4>
-<div *ngIf="aMetarecord">Fingerprint: {{aMetarecord}}</div>
-
-<div class="row">
-  <div class="card col-md-6">
-    <div class="card-body">
-      <h3 class="card-title">Do you like template-driven forms?</h3>
-      <div class="card-text">
-        <eg-org-family-select
-          [ancestorSelectorChecked]="true"
-          [hideDescendantSelector]="true"
-          selectedOrgId="7"
-          labelText="Choose the best libraries"
-          ngModel #bestOnes="ngModel">
-        </eg-org-family-select>
-        The best libraries are: {{bestOnes.value | json}}
-        <hr>
-        <eg-combobox [(ngModel)]="kingdom" [allowFreeText]="true">
-          <eg-combobox-entry entryId="Bacteria"></eg-combobox-entry>
-          <eg-combobox-entry entryId="Archaea"></eg-combobox-entry>
-          <eg-combobox-entry entryId="Protozoa"></eg-combobox-entry>
-          <eg-combobox-entry entryId="Chromista"></eg-combobox-entry>
-          <eg-combobox-entry entryId="Plantae"></eg-combobox-entry>
-          <eg-combobox-entry entryId="Fungi"></eg-combobox-entry>
-          <eg-combobox-entry entryId="Animalia"></eg-combobox-entry>
-        </eg-combobox>
-      Result: {{kingdom | json}}
-        <hr>
-        <eg-date-select [(ngModel)]="dateObject">
-        </eg-date-select>
-      ngModel: {{dateObject.toLocaleDateString()}}
-      </div>
-    </div>
-  </div>
-  <form class="card col-md-4" [formGroup]="ranganathan">
-    <div class="card-body">
-      <h3 class="card-title">Or perhaps reactive forms interest you?</h3>
-      <div class="card-text">
-        Choose your favorite law of library science: 
-        <eg-combobox formControlName="law" value="second" 
-          [allowFreeText]="true" [startIdFiresOnChange]="true">
-          <eg-combobox-entry entryId="first" entryLabel="Books are for use" i18n-entryLabel></eg-combobox-entry>
-          <eg-combobox-entry entryId="second" entryLabel="Every person his or her book" i18n-entryLabel></eg-combobox-entry>
-          <eg-combobox-entry entryId="third" entryLabel="Every book its reader" i18n-entryLabel></eg-combobox-entry>
-          <eg-combobox-entry entryId="fourth" entryLabel="Save the time of the reader" i18n-entryLabel></eg-combobox-entry>
-          <eg-combobox-entry entryId="fifth" entryLabel="Library is a growing organism" i18n-entryLabel></eg-combobox-entry>
-          <eg-combobox-entry entryId="wrong" entryLabel="42" i18n-entryLabel></eg-combobox-entry>
-        </eg-combobox>
-        <div *ngIf="!ranganathan.valid" class="alert alert-danger">
-          <span class="material-icons" aria-hidden="true">error</span>
-          <span class="visually-hidden" i18n>Error</span>
-          <span i18n>That isn't a real law of library science!</span>
-        </div>
-      </div>
-    </div>
-  </form>
-  <form class="card col-md-4" [formGroup]="badOrgForm">
-    <div class="card-body">
-      <h3 class="card-title">Another reactive form!</h3>
-      <div class="card-text">
-        <eg-org-family-select
-          formControlName="badOrgSelector"
-          ariaLabel="Choose the fanciest libraries" i18n-ariaLabel>
-        </eg-org-family-select>
-        <div *ngIf="!badOrgForm.valid" class="alert alert-danger">
-          <span class="material-icons" aria-hidden="true">error</span>
-          <span class="visually-hidden" i18n>Error</span>
-          <span i18n>Too many fancy libraries!</span>
-        </div>
-      </div>
-    </div>
-  </form>
-</div>
-
-<button type="button" (click)="confirmNumber(1)">Confirm 1</button>
-<button type="button" (click)="confirmNumber(0)">Confirm 0</button>
-<button type="button" (click)="confirmNumber(20)">Confirm 20</button>
-
-<eg-confirm-dialog #numConfirmDialog
-  i18n-dialogTitle
-  dialogTitle="Confirm Number"
-  [dialogBodyTemplate]="confirmMsg">
-</eg-confirm-dialog>
-<ng-template #confirmMsg>
-  <span i18n>Are you sure you want to confirm {numThings, plural, =1 {this thing} other {these {{numThings}} things}}?</span>
-</ng-template>
-
-<div class="row">
-  <eg-fm-record-editor #bresvEditor
-    idlClass="bresv"
-    hiddenFields="capture_staff,usr" readonlyFields="cancel_time">
-  </eg-fm-record-editor>
-  <button type="button" class="btn btn-info" (click)="bresvEditor.open({})">
-    Test Readonly Date
-  </button>
-</div>
-
-<div class="row m-3 p-3 border-top border-dark">
-  <div class="col-lg-3">Simple Combobox using [(ngModel)]</div>
-  <div class="col-lg-3">
-    <eg-combobox [(ngModel)]="simpleCombo" [allowFreeText]="true">
-      <eg-combobox-entry 
-        entryId="abc" entryLabel="ABC" i18n-entryLabel></eg-combobox-entry>
-      <eg-combobox-entry 
-        entryId="def" entryLabel="DEF" i18n-entryLabel></eg-combobox-entry>
-    </eg-combobox>
-  </div>
-  <div class="col-lg-3">
-    <span i18n>Combobox Value: {{simpleCombo ? simpleCombo.label : ''}}</span>
-  </div>
-</div>
-
-<div class="mt-4 mb-4">
-  <h4>Inline FM Editor</h4>
   <div class="row">
-    <div class="col-lg-6">
-      <eg-fm-record-editor displayMode="inline"
-        idlClass="cbt" mode="update" recordId="1" orgDefaultAllowed="owner">
-      </eg-fm-record-editor>
+    <div class="form-group">
+      <eg-date-select (onChangeAsDate)="changeDate($event)"
+        initialYmd="2017-03-04">
+      </eg-date-select>
     </div>
-
-<div class="m-4">
-  <div class="col-lg-4">
-    <h4>
-      <label for="styledOrgSelect" class="form-label org-unit-select-label" i18n>Org Unit Selector With Styled Orgs</label>
-    </h4>
-    <eg-org-select domId="styledOrgSelect" [orgClassCallback]="orgClassCallback" labelClass="visually-hidden">
-    </eg-org-select>
+    <div>HERE: {{testDate}}</div>
   </div>
-</div>
 
-<div class="mt-4 mb-4">
-  <h4>Add Patron Note</h4>
-  <eg-patron-note-dialog #noteDialog patronId="1"></eg-patron-note-dialog>
-  <button type="button" class="btn btn-outline-dark" (click)="openNote()" i18n>
+  <!-- printing -->
+
+  <h4>PRINTING</h4>
+
+  <div class="d-flex">
+    <div class="me-2">
+      <button type="button" class="btn btn-info" (click)="doPrint()">Test Local Print</button>
+      <ng-template #printTemplate let-context>Hello, {{context.world}}!</ng-template>
+    </div>
+    <div class="me-2">
+      <button type="button" class="btn btn-info" (click)="printWithDialog()">
+        Print with dialog (Hatch Only)
+      </button>
+    </div>
+    <div class="me-2">
+      <button type="button" class="btn btn-info"
+      (click)="testServerPrint()">Test Server-Generated Print</button>
+    </div>
+  </div>
+
+  <br/><br/>
+  <div class="row">
+    <div class="col-lg-3">
+      <eg-translate #translate [idlObject]="oneBtype" fieldName="name"></eg-translate>
+      <button type="button" class="btn btn-info"
+      (click)="translate.open({size:'lg'})">Translate</button>
+    </div>
+  </div>
+  <br/><br/>
+
+
+  <div>
+    <h4>File reader component</h4>
+    <eg-file-reader [(ngModel)]="fileContents"></eg-file-reader>
+    <h5>Contents are:</h5>
+    @if (fileContents && fileContents.length > 0) {
+      <ol>
+        @for (val of fileContents; track val) {
+          <li>{{val}}</li>
+        }
+      </ol>
+    }
+  </div>
+
+  <div>
+    <h4>Cross-tab communications example</h4>
+    <p>To test, open this sandbox in a second browser tab. Enter something in the input box below, then switch to the other tab and click anywhere on the page.
+    You should see the message that you sent to the other browser tab.</p>
+  </div>
+  <div class="row">
+    <div class="col-lg-3">
+      <input type="text" #sendSbMessage placeholder="message to send to another tab" size="40" (change)="sendMessage($event)">
+    </div>
+    <div class="col-lg-3">
+      message received: {{sbChannelText}}
+    </div>
+  </div>
+  <br/><br/>
+
+  <div ngbAccordion>
+    <div ngbAccordionItem>
+      <h2 ngbAccordionHeader>
+        <button ngbAccordionButton i18n>Open me for comboboxes</button>
+      </h2>
+      <div ngbAccordionCollapse>
+        <div ngbAccordionBody>
+          <ng-template>
+            <eg-org-select ariaLabel="Org Unit" i18n-ariaLabel></eg-org-select>
+            <eg-combobox>
+              <eg-combobox-entry entryId="bib" entryLabel="Bibliographic Records"
+              i18n-entryLabel></eg-combobox-entry>
+              <eg-combobox-entry entryId="auth" entryLabel="Authority Records"
+              i18n-entryLabel></eg-combobox-entry>
+              <eg-combobox-entry entryId="bib-acq" entryLabel="Acquisitions Records"
+              i18n-entryLabel></eg-combobox-entry>
+            </eg-combobox>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- grid stuff -->
+  <ng-template #cellTmpl let-row="row" let-col="col" let-userContext="userContext">
+    HELLO {{userContext.hello}}
+    <button type="button">{{row.id()}}</button>
+  </ng-template>
+  <eg-grid #cbtGrid idlClass="cbt"
+    [dataSource]="btSource"
+    [rowClassCallback]="btGridRowClassCallback"
+    [rowFlairIsEnabled]="true"
+    flairColumnHeader="Flair Column Tooltip" i18n-flairColumnHeader
+    [rowFlairCallback]="btGridRowFlairCallback"
+    flairColumnHeader="Flair Column Tooltip" i18n-flairColumnHeader
+    [cellClassCallback]="btGridCellClassCallback"
+    [stickyHeader]="true"
+    [cellTextGenerator]="btGridCellTextGenerator"
+    [sortable]="true">
+    <eg-grid-toolbar-action label="Action that needs a single row" i18n-label
+      (onClick)="complimentEvergreen($event)" [disableOnRows]="notOneSelectedRow">
+    </eg-grid-toolbar-action>
+    <eg-grid-toolbar-action [isSeparator]="true">
+    </eg-grid-toolbar-action>
+    <eg-grid-toolbar-action label="Another Action" i18n-label
+      (onClick)="complimentEvergreen2($event)" [describedbySelectionCount]="true">
+    </eg-grid-toolbar-action>
+    <eg-grid-column name="test" [cellTemplate]="cellTmpl"
+      [cellContext]="btGridTestContext" [sortable]="false">
+    </eg-grid-column>
+    <eg-grid-column [sortable]="false" path="owner.name"></eg-grid-column>
+    <eg-grid-column [sortable]="false" path="datetime_test"
+    datatype="timestamp" [datePlusTime]="true"></eg-grid-column>
+  </eg-grid>
+
+  <br/><br/>
+  <div class="row">
+    <div class="col">
+      <eg-daterange-select
+        ngModel #myRange="ngModel"
+        [initialRangeStart]="sevenDaysAgo()"
+        [initialRangeLength]="5"
+        [markDisabled]="allFutureDates">
+      </eg-daterange-select>
+      Your range is: {{myRange.value | json}}
+    </div>
+    <div class="col">
+      <form [formGroup]="myTimeForm">
+        <eg-datetime-select
+          formControlName="datetime">
+        </eg-datetime-select>
+        Your datetime is: {{myTimeForm.get('datetime').value | json}}
+      </form>
+    </div>
+  </div>
+  <label class="form-label" for="date-time-input">
+    Set the datetime and timezone library settings, and enter a valid datetime string for an exciting animation surprise:
+  </label>
+  <input id="date-time-input" type="text" class="date-time-input" ngModel egValidDatetime required>
+  <br/><br/>
+
+  <h4>Grid with filtering</h4>
+  <eg-grid #acpGrid idlClass="acp"
+    [dataSource]="acpSource"
+    [filterable]="true"
+    [sortable]="true"
+    [stickyHeader]="true"
+    showFields="barcode,location,circ_lib,price,dummy_title,create_date"
+    >
+    <eg-grid-toolbar-action label="Edit Selected" i18n-label [action]="editSelected" [describedbySelectionCount]="true">
+    </eg-grid-toolbar-action>
+    <eg-grid-column [sortable]="true" [filterable]="false"  path="barcode"></eg-grid-column>
+    <eg-grid-column [sortable]="true" path="circ_lib"></eg-grid-column>
+    <eg-grid-column [sortable]="true" path="price"></eg-grid-column>
+    <eg-grid-column [sortable]="true" path="dummy_title"></eg-grid-column>
+    <eg-grid-column [sortable]="true" path="create_date"></eg-grid-column>
+  </eg-grid>
+
+  <eg-fm-record-editor #acpEditDialog idlClass="acp" hiddenFields="call_number,creator,create_date,editor,edit_time,loan_duration,fine_level,dummy_author,dummy_isbn,ref,floating,holdable,circ_as_type,active_date,mint_condition,cost,deleted,deposit,deposit_amount,circulate,status_changed_time,copy_number"
+    [fieldOptions]="{status:{linkedSearchConditions:{'is_available':'t'},preloadLinkedValues:true}}">
+  </eg-fm-record-editor>
+  <eg-string #successString text="Updated succeeded!" i18n-text></eg-string>
+  <eg-string #updateFailedString text="Updated failed!" i18n-text></eg-string>
+
+  <h4>PCRUD auto flesh and FormatService detection</h4>
+  @if (aMetarecord) {
+    <div>Fingerprint: {{aMetarecord}}</div>
+  }
+
+  <div class="row">
+    <div class="card col-md-6">
+      <div class="card-body">
+        <h3 class="card-title">Do you like template-driven forms?</h3>
+        <div class="card-text">
+          <eg-org-family-select
+            [ancestorSelectorChecked]="true"
+            [hideDescendantSelector]="true"
+            selectedOrgId="7"
+            labelText="Choose the best libraries"
+            ngModel #bestOnes="ngModel">
+          </eg-org-family-select>
+          The best libraries are: {{bestOnes.value | json}}
+          <hr>
+            <eg-combobox [(ngModel)]="kingdom" [allowFreeText]="true">
+              <eg-combobox-entry entryId="Bacteria"></eg-combobox-entry>
+              <eg-combobox-entry entryId="Archaea"></eg-combobox-entry>
+              <eg-combobox-entry entryId="Protozoa"></eg-combobox-entry>
+              <eg-combobox-entry entryId="Chromista"></eg-combobox-entry>
+              <eg-combobox-entry entryId="Plantae"></eg-combobox-entry>
+              <eg-combobox-entry entryId="Fungi"></eg-combobox-entry>
+              <eg-combobox-entry entryId="Animalia"></eg-combobox-entry>
+            </eg-combobox>
+            Result: {{kingdom | json}}
+            <hr>
+              <eg-date-select [(ngModel)]="dateObject">
+              </eg-date-select>
+              ngModel: {{dateObject.toLocaleDateString()}}
+            </div>
+          </div>
+        </div>
+        <form class="card col-md-4" [formGroup]="ranganathan">
+          <div class="card-body">
+            <h3 class="card-title">Or perhaps reactive forms interest you?</h3>
+            <div class="card-text">
+              Choose your favorite law of library science:
+              <eg-combobox formControlName="law" value="second"
+                [allowFreeText]="true" [startIdFiresOnChange]="true">
+                <eg-combobox-entry entryId="first" entryLabel="Books are for use" i18n-entryLabel></eg-combobox-entry>
+                <eg-combobox-entry entryId="second" entryLabel="Every person his or her book" i18n-entryLabel></eg-combobox-entry>
+                <eg-combobox-entry entryId="third" entryLabel="Every book its reader" i18n-entryLabel></eg-combobox-entry>
+                <eg-combobox-entry entryId="fourth" entryLabel="Save the time of the reader" i18n-entryLabel></eg-combobox-entry>
+                <eg-combobox-entry entryId="fifth" entryLabel="Library is a growing organism" i18n-entryLabel></eg-combobox-entry>
+                <eg-combobox-entry entryId="wrong" entryLabel="42" i18n-entryLabel></eg-combobox-entry>
+              </eg-combobox>
+              @if (!ranganathan.valid) {
+                <div class="alert alert-danger">
+                  <span class="material-icons" aria-hidden="true">error</span>
+                  <span class="visually-hidden" i18n>Error</span>
+                  <span i18n>That isn't a real law of library science!</span>
+                </div>
+              }
+            </div>
+          </div>
+        </form>
+        <form class="card col-md-4" [formGroup]="badOrgForm">
+          <div class="card-body">
+            <h3 class="card-title">Another reactive form!</h3>
+            <div class="card-text">
+              <eg-org-family-select
+                formControlName="badOrgSelector"
+                ariaLabel="Choose the fanciest libraries" i18n-ariaLabel>
+              </eg-org-family-select>
+              @if (!badOrgForm.valid) {
+                <div class="alert alert-danger">
+                  <span class="material-icons" aria-hidden="true">error</span>
+                  <span class="visually-hidden" i18n>Error</span>
+                  <span i18n>Too many fancy libraries!</span>
+                </div>
+              }
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <button type="button" (click)="confirmNumber(1)">Confirm 1</button>
+      <button type="button" (click)="confirmNumber(0)">Confirm 0</button>
+      <button type="button" (click)="confirmNumber(20)">Confirm 20</button>
+
+      <eg-confirm-dialog #numConfirmDialog
+        i18n-dialogTitle
+        dialogTitle="Confirm Number"
+        [dialogBodyTemplate]="confirmMsg">
+      </eg-confirm-dialog>
+      <ng-template #confirmMsg>
+        <span i18n>Are you sure you want to confirm {numThings, plural, =1 {this thing} other {these {{numThings}} things}}?</span>
+      </ng-template>
+
+      <div class="row">
+        <eg-fm-record-editor #bresvEditor
+          idlClass="bresv"
+          hiddenFields="capture_staff,usr" readonlyFields="cancel_time">
+        </eg-fm-record-editor>
+        <button type="button" class="btn btn-info" (click)="bresvEditor.open({})">
+          Test Readonly Date
+        </button>
+      </div>
+
+      <div class="row m-3 p-3 border-top border-dark">
+        <div class="col-lg-3">Simple Combobox using [(ngModel)]</div>
+        <div class="col-lg-3">
+          <eg-combobox [(ngModel)]="simpleCombo" [allowFreeText]="true">
+            <eg-combobox-entry
+            entryId="abc" entryLabel="ABC" i18n-entryLabel></eg-combobox-entry>
+            <eg-combobox-entry
+            entryId="def" entryLabel="DEF" i18n-entryLabel></eg-combobox-entry>
+          </eg-combobox>
+        </div>
+        <div class="col-lg-3">
+          <span i18n>Combobox Value: {{simpleCombo ? simpleCombo.label : ''}}</span>
+        </div>
+      </div>
+
+      <div class="mt-4 mb-4">
+        <h4>Inline FM Editor</h4>
+        <div class="row">
+          <div class="col-lg-6">
+            <eg-fm-record-editor displayMode="inline"
+              idlClass="cbt" mode="update" recordId="1" orgDefaultAllowed="owner">
+            </eg-fm-record-editor>
+          </div>
+
+          <div class="m-4">
+            <div class="col-lg-4">
+              <h4>
+                <label for="styledOrgSelect" class="form-label org-unit-select-label" i18n>Org Unit Selector With Styled Orgs</label>
+              </h4>
+              <eg-org-select domId="styledOrgSelect" [orgClassCallback]="orgClassCallback" labelClass="visually-hidden">
+              </eg-org-select>
+            </div>
+          </div>
+
+          <div class="mt-4 mb-4">
+            <h4>Add Patron Note</h4>
+            <eg-patron-note-dialog #noteDialog patronId="1"></eg-patron-note-dialog>
+            <button type="button" class="btn btn-outline-dark" (click)="openNote()" i18n>
     Open Note Dialog
   </button>
-</div>
+          </div>
 
-<div class="mt-4 mb-4">
-  <h4>Grid Stock Selector Display and Filtering</h4>
-  <eg-grid #eventsGrid idlClass="atevdef"
-    [dataSource]="eventsDataSource"
-    showFields="name,hook,validator,reactor"
-    [sortable]="true" [filterable]="true">
-    <!-- demo how explicit fields and auto fields support link field selector
-         display and filtering consisently without additional biolerplate -->
-    <eg-grid-column name="name"></eg-grid-column>
-    <eg-grid-column name="hook"></eg-grid-column>
-  </eg-grid>
-</div>
+          <div class="mt-4 mb-4">
+            <h4>Grid Stock Selector Display and Filtering</h4>
+            <eg-grid #eventsGrid idlClass="atevdef"
+              [dataSource]="eventsDataSource"
+              showFields="name,hook,validator,reactor"
+              [sortable]="true" [filterable]="true">
+              <!-- demo how explicit fields and auto fields support link field selector
+              display and filtering consisently without additional biolerplate -->
+              <eg-grid-column name="name"></eg-grid-column>
+              <eg-grid-column name="hook"></eg-grid-column>
+            </eg-grid>
+          </div>
 
-<div class="mt-4 mb-4">
-  <h4>Item (Copy) Location Selector</h4>
-  <div class="row">
-    <div class="col-lg-3 form-validated">
-      <eg-item-location-select permFilter="UPDATE_COPY"
-        [(ngModel)]="locId" (valueChange)="aLocation = $event">
-      </eg-item-location-select>
-    </div>
-    <div class="col-lg-2">Selected ID: {{locId}}</div>
-    <div class="col-lg-4">
-      valueChange Handler Produced: {{aLocation ? aLocation.name() : '(none)'}}
-    </div>
-  </div>
-</div>
+          <div class="mt-4 mb-4">
+            <h4>Item (Copy) Location Selector</h4>
+            <div class="row">
+              <div class="col-lg-3 form-validated">
+                <eg-item-location-select permFilter="UPDATE_COPY"
+                  [(ngModel)]="locId" (valueChange)="aLocation = $event">
+                </eg-item-location-select>
+              </div>
+              <div class="col-lg-2">Selected ID: {{locId}}</div>
+              <div class="col-lg-4">
+                valueChange Handler Produced: {{aLocation ? aLocation.name() : '(none)'}}
+              </div>
+            </div>
+          </div>
 
 
-<div class="mt-4 mb-4">
-  <h4>Due Date Pipe Examples</h4>
-  <div class="row">
-    <div class="col-lg-2">Due Date Daily Duration:</div>
-    <div class="col-lg-2">{{circDaily | egDueDate}}</div>
-    <div class="col-lg-2">Due Date Hourly Duration:</div>
-    <div class="col-lg-2">{{circHourly | egDueDate}}</div>
-  </div>
-</div>
+          <div class="mt-4 mb-4">
+            <h4>Due Date Pipe Examples</h4>
+            <div class="row">
+              <div class="col-lg-2">Due Date Daily Duration:</div>
+              <div class="col-lg-2">{{circDaily | egDueDate}}</div>
+              <div class="col-lg-2">Due Date Hourly Duration:</div>
+              <div class="col-lg-2">{{circHourly | egDueDate}}</div>
+            </div>
+          </div>
 
 
 

@@ -8,83 +8,147 @@
         [attr.aria-label]="showSummaryPane ? 'Show Patron Summary' : 'Hide Patron Summary'" i18n-aria-label
         [title]="showSummaryPane ? 'Show Patron Summary' : 'Hide Patron Summary'" i18n-title>
         <span class="material-icons mat-icon-in-button">
-          <ng-container *ngIf="showSummaryPane">expand_less</ng-container>
-          <ng-container *ngIf="!showSummaryPane">expand_more</ng-container>
+          @if (showSummaryPane) {
+            expand_less
+          }
+          @if (!showSummaryPane) {
+            expand_more
+          }
         </span>
       </button>
-      
+
       <div class="patron-status">
         <h2 class="text-dark fw-bold d-inline m-0" i18n>
           {{patronService.namePart(p(), 'family_name')}}, 
           {{patronService.namePart(p(), 'first_given_name')}} 
           {{patronService.namePart(p(), 'second_given_name')}}
         </h2>
-        <ul *ngIf="patronStatusCodes().length > 0" class="list-unstyled d-inline my-0 ms-1" aria-label="Status" i18n-aria-label>
-          <li *ngFor="let code of patronStatusCodes()" class="d-inline">
-            <span class="d-inline badge {{code}}" [ngSwitch]="code">
-              <span i18n="Patron status" *ngSwitchCase="'PATRON_BARRED'">Barred</span>
-              <span i18n="Patron status" *ngSwitchCase="'PATRON_HAS_ALERT'">Alert</span>
-              <span i18n="Patron status" *ngSwitchCase="'PATRON_HAS_STAFF_ALERT'">Staff Alert</span>
-              <span i18n="Patron status" *ngSwitchCase="'PATRON_JUVENILE'">Juvenile</span>
-              <span i18n="Patron status" *ngSwitchCase="'PATRON_EXPIRED'">Expired</span>
-              <span i18n="Patron status" *ngSwitchCase="'PATRON_INACTIVE'">Inactive</span>
-              <span i18n="Patron status" *ngSwitchCase="'PATRON_EXCEEDS_CHECKOUT_COUNT'">Exceeds Checkouts</span>
-              <span i18n="Patron status" *ngSwitchCase="'PATRON_EXCEEDS_OVERDUE_COUNT'">Exceeds Overdues</span>
-              <span i18n="Patron status" *ngSwitchCase="'PATRON_EXCEEDS_LONGOVERDUE_COUNT'">Exceeds Long Overdues</span>
-              <span i18n="Patron status" *ngSwitchCase="'PATRON_EXCEEDS_LOST_COUNT'">Exceeds Lost</span>
-              <span i18n="Patron status" *ngSwitchCase="'PATRON_EXCEEDS_FINES'">Exceeds Fines</span>
-              <span i18n="Patron status" *ngSwitchCase="'MULTIPLE_PENALTIES'">Penalties ({{penalties}})</span>
-              <span i18n="Patron status" *ngSwitchCase="'ONE_PENALTY'">Penalty (1)</span>
-              <span i18n="Patron status" *ngSwitchCase="'NO_PENALTIES'">No Penalties</span>
-              <span i18n="Patron status" *ngSwitchCase="'PATRON_HAS_BILLS'">Bills ({{summary.stats.fines.balance_owed | currency}})</span>
-              <span i18n="Patron status" *ngSwitchCase="'PATRON_HAS_OVERDUES'">Overdue ({{summary.stats.checkouts.overdue}})</span>
-              <span i18n="Patron status" *ngSwitchCase="'PATRON_HAS_LOST'">Lost ({{summary.stats.checkouts.lost}})</span>
-              <span i18n="Patron status" *ngSwitchCase="'PATRON_HAS_NOTES'">Notes ({{p().notes().length}})</span>
-              <span i18n="Patron status" *ngSwitchCase="'INVALID_PATRON_ADDRESS'">Invalid Address</span>
-              <span i18n="Patron status" *ngSwitchCase="'INVALID_PATRON_EMAIL_ADDRESS'">Invalid Email</span>
-              <span i18n="Patron status" *ngSwitchCase="'INVALID_PATRON_DAY_PHONE'">Invalid Phone</span>
-              <span i18n="Patron status" *ngSwitchCase="'INVALID_PATRON_EVENING_PHONE'">Invalid Phone</span>
-              <span i18n="Patron status" *ngSwitchCase="'INVALID_PATRON_OTHER_PHONE'">Invalid Phone</span>
-              <span i18n="Patron status" *ngSwitchCase="'PATRON_IN_COLLECTIONS'">In Collections</span>
-            </span>
-          </li>
-        </ul>
+        @if (patronStatusCodes().length > 0) {
+          <ul class="list-unstyled d-inline my-0 ms-1" aria-label="Status" i18n-aria-label>
+            @for (code of patronStatusCodes(); track code) {
+              <li class="d-inline">
+                <span class="d-inline badge {{code}}">
+                  @switch (code) {
+                    @case ('PATRON_BARRED') {
+                      <span i18n="Patron status">Barred</span>
+                    }
+                    @case ('PATRON_HAS_ALERT') {
+                      <span i18n="Patron status">Alert</span>
+                    }
+                    @case ('PATRON_HAS_STAFF_ALERT') {
+                      <span i18n="Patron status">Staff Alert</span>
+                    }
+                    @case ('PATRON_JUVENILE') {
+                      <span i18n="Patron status">Juvenile</span>
+                    }
+                    @case ('PATRON_EXPIRED') {
+                      <span i18n="Patron status">Expired</span>
+                    }
+                    @case ('PATRON_INACTIVE') {
+                      <span i18n="Patron status">Inactive</span>
+                    }
+                    @case ('PATRON_EXCEEDS_CHECKOUT_COUNT') {
+                      <span i18n="Patron status">Exceeds Checkouts</span>
+                    }
+                    @case ('PATRON_EXCEEDS_OVERDUE_COUNT') {
+                      <span i18n="Patron status">Exceeds Overdues</span>
+                    }
+                    @case ('PATRON_EXCEEDS_LONGOVERDUE_COUNT') {
+                      <span i18n="Patron status">Exceeds Long Overdues</span>
+                    }
+                    @case ('PATRON_EXCEEDS_LOST_COUNT') {
+                      <span i18n="Patron status">Exceeds Lost</span>
+                    }
+                    @case ('PATRON_EXCEEDS_FINES') {
+                      <span i18n="Patron status">Exceeds Fines</span>
+                    }
+                    @case ('MULTIPLE_PENALTIES') {
+                      <span i18n="Patron status">Penalties ({{penalties}})</span>
+                    }
+                    @case ('ONE_PENALTY') {
+                      <span i18n="Patron status">Penalty (1)</span>
+                    }
+                    @case ('NO_PENALTIES') {
+                      <span i18n="Patron status">No Penalties</span>
+                    }
+                    @case ('PATRON_HAS_BILLS') {
+                      <span i18n="Patron status">Bills ({{summary.stats.fines.balance_owed | currency}})</span>
+                    }
+                    @case ('PATRON_HAS_OVERDUES') {
+                      <span i18n="Patron status">Overdue ({{summary.stats.checkouts.overdue}})</span>
+                    }
+                    @case ('PATRON_HAS_LOST') {
+                      <span i18n="Patron status">Lost ({{summary.stats.checkouts.lost}})</span>
+                    }
+                    @case ('PATRON_HAS_NOTES') {
+                      <span i18n="Patron status">Notes ({{p().notes().length}})</span>
+                    }
+                    @case ('INVALID_PATRON_ADDRESS') {
+                      <span i18n="Patron status">Invalid Address</span>
+                    }
+                    @case ('INVALID_PATRON_EMAIL_ADDRESS') {
+                      <span i18n="Patron status">Invalid Email</span>
+                    }
+                    @case ('INVALID_PATRON_DAY_PHONE') {
+                      <span i18n="Patron status">Invalid Phone</span>
+                    }
+                    @case ('INVALID_PATRON_EVENING_PHONE') {
+                      <span i18n="Patron status">Invalid Phone</span>
+                    }
+                    @case ('INVALID_PATRON_OTHER_PHONE') {
+                      <span i18n="Patron status">Invalid Phone</span>
+                    }
+                    @case ('PATRON_IN_COLLECTIONS') {
+                      <span i18n="Patron status">In Collections</span>
+                    }
+                  }
+                </span>
+              </li>
+            }
+          </ul>
+        }
       </div>
 
       <a routerLink="/staff/circ/patron/search" class="btn btn-normal ms-auto" i18n>New Search</a>
     </div>
   </div>
-  <div class="summary-details" *ngIf="showSummaryPane">
-    <div class="row mb-1 alert alert-danger p-0" 
-      *ngIf="summary.alerts.accountExpiresSoon">
-      <div class="col-lg-12" i18n>
+  @if (showSummaryPane) {
+    <div class="summary-details">
+      @if (summary.alerts.accountExpiresSoon) {
+        <div class="row mb-1 alert alert-danger p-0"
+          >
+          <div class="col-lg-12" i18n>
         Patron account will expire soon.  Please renew.
       </div>
-    </div>
-
-      <div class="row mb-1 alert alert-warning p-0" *ngIf="p().juvenile() === 't'">
-        <div class="col-lg-12" i18n>
+        </div>
+      }
+      @if (p().juvenile() === 't') {
+        <div class="row mb-1 alert alert-warning p-0">
+          <div class="col-lg-12" i18n>
           Juvenile Account
         </div>
-      </div>
-
-      <div class="row alert-penalties" *ngIf="summary.alerts.alertPenalties.count > 0">
-        <div class="col-lg-12 p-0">
-          <h3 i18n>Penalties</h3>
         </div>
-        <div class="row" *ngFor="let pen of summary.alerts.alertPenalties">
-          <div class="col-lg-3">
-            {{pen.set_date() | date:'shortDate'}}
+      }
+      @if (summary.alerts.alertPenalties.count > 0) {
+        <div class="row alert-penalties">
+          <div class="col-lg-12 p-0">
+            <h3 i18n>Penalties</h3>
           </div>
-          <div class="col-lg-3">
-            {{pen.standing_penalty().name()}}
-          </div>
-          <div class="col-lg-6">
-            {{penaltyLabel(pen)}}
-          </div>
+          @for (pen of summary.alerts.alertPenalties; track pen) {
+            <div class="row">
+              <div class="col-lg-3">
+                {{pen.set_date() | date:'shortDate'}}
+              </div>
+              <div class="col-lg-3">
+                {{pen.standing_penalty().name()}}
+              </div>
+              <div class="col-lg-6">
+                {{penaltyLabel(pen)}}
+              </div>
+            </div>
+          }
         </div>
-      </div>
-    
+      }
       <div class="account-sections mt-3">
         <div class="account-col account-summary">
           <h3 class="visually-hidden" i18n>Account Summary</h3>
@@ -106,8 +170,12 @@
                 <button type="button" class="btn btn-link p-0" (click)="showDob = !showDob" i18n>Date of Birth</button>
               </dt>
               <dd>
-                <span class="datetime" *ngIf="showDob">{{p().dob() | date}}</span>
-                <ng-container *ngIf="!showDob" i18n>&lt;Hidden&gt;</ng-container>
+                @if (showDob) {
+                  <span class="datetime">{{p().dob() | date}}</span>
+                }
+                @if (!showDob) {
+                  <ng-container i18n>&lt;Hidden&gt;</ng-container>
+                }
               </dd>
             </div>
             <div>
@@ -117,9 +185,9 @@
             <div>
               <dt i18n>Last Activity</dt>
               <dd class="datetime">
-                <ng-container *ngIf="p().usr_activity()[0]">
+                @if (p().usr_activity()[0]) {
                   {{p().usr_activity()[0].event_time() | date:'shortDate'}}
-                </ng-container>
+                }
               </dd>
             </div>
             <div>
@@ -136,65 +204,64 @@
             </div>
           </dl>
         </div>
-
-        <div class="account-col account-status" *ngIf="summary">
-          <dl>
-            <div
-              [ngClass]="{'alert PATRON_HAS_BILLS': summary.stats.fines.balance_owed > 0}">
-              <dt i18n>Fines Owed</dt>
-              <dd class="numeric">{{summary.stats.fines.balance_owed | currency}}</dd>
-            </div>
-
-            <ng-container 
-              *ngIf="summary.stats.fines.group_balance_owed > summary.stats.fines.balance_owed">
-              <div class="alert PATRON_HAS_BILLS">
-                <dt i18n>Group Fines</dt>
-                <dd class="numeric">{{summary.stats.fines.group_balance_owed | currency}}</dd>
+        @if (summary) {
+          <div class="account-col account-status">
+            <dl>
+              <div
+                [ngClass]="{'alert PATRON_HAS_BILLS': summary.stats.fines.balance_owed > 0}">
+                <dt i18n>Fines Owed</dt>
+                <dd class="numeric">{{summary.stats.fines.balance_owed | currency}}</dd>
               </div>
-            </ng-container>
-
-            <div>
-              <dt i18n>Items Out</dt>
-              <dd class="numeric">{{summary.stats.checkouts.total_out}}</dd>
-            </div>
-            <div
-              [ngClass]="{'alert PATRON_HAS_OVERDUES': summary.stats.checkouts.overdue > 0}">
-              <dt i18n>Overdue</dt>
-              <dd class="numeric">{{summary.stats.checkouts.overdue}}</dd>
-            </div>
-            <div
-              *ngIf="summary.stats.checkouts.group.overdue > summary.stats.checkouts.overdue"
-              [ngClass]="{'alert PATRON_HAS_OVERDUES': summary.stats.checkouts.group.overdue > 0}">
-              <dt i18n>Group Overdue</dt>
-              <dd class="numeric">{{summary.stats.checkouts.group.overdue}}</dd>
-            </div>
-            <div
-              [ngClass]="{'alert PATRON_HAS_OVERDUES': summary.stats.checkouts.long_overdue > 0}">
-              <dt i18n>Long Overdue</dt>
-              <dd class="numeric">{{summary.stats.checkouts.long_overdue}}</dd>
-            </div>
-            <div
-              [ngClass]="{'alert alert-danger': summary.stats.checkouts.claims_returned > 0}">
-              <dt i18n>Claimed Returned</dt>
-              <dd class="numeric">{{summary.stats.checkouts.claims_returned}}</dd>
-            </div>
-            <div
-              [ngClass]="{'alert PATRON_HAS_LOST': summary.stats.checkouts.lost > 0}">
-              <dt i18n>Lost</dt>
-              <dd class="numeric">{{summary.stats.checkouts.lost}}</dd>
-            </div>
-            <div>
-              <dt i18n>Non-Cataloged</dt>
-              <dd class="numeric">{{summary.stats.checkouts.noncat}}</dd>
-            </div>
-            <div>
-              <dt i18n>Holds</dt>
-              <dd class="numeric">
-                {{summary.stats.holds.ready}} / {{summary.stats.holds.total}}
-              </dd>
-            </div>
-          </dl>
-        </div>
+              @if (summary.stats.fines.group_balance_owed > summary.stats.fines.balance_owed) {
+                <div class="alert PATRON_HAS_BILLS">
+                  <dt i18n>Group Fines</dt>
+                  <dd class="numeric">{{summary.stats.fines.group_balance_owed | currency}}</dd>
+                </div>
+              }
+              <div>
+                <dt i18n>Items Out</dt>
+                <dd class="numeric">{{summary.stats.checkouts.total_out}}</dd>
+              </div>
+              <div
+                [ngClass]="{'alert PATRON_HAS_OVERDUES': summary.stats.checkouts.overdue > 0}">
+                <dt i18n>Overdue</dt>
+                <dd class="numeric">{{summary.stats.checkouts.overdue}}</dd>
+              </div>
+              @if (summary.stats.checkouts.group.overdue > summary.stats.checkouts.overdue) {
+                <div
+                  [ngClass]="{'alert PATRON_HAS_OVERDUES': summary.stats.checkouts.group.overdue > 0}">
+                  <dt i18n>Group Overdue</dt>
+                  <dd class="numeric">{{summary.stats.checkouts.group.overdue}}</dd>
+                </div>
+              }
+              <div
+                [ngClass]="{'alert PATRON_HAS_OVERDUES': summary.stats.checkouts.long_overdue > 0}">
+                <dt i18n>Long Overdue</dt>
+                <dd class="numeric">{{summary.stats.checkouts.long_overdue}}</dd>
+              </div>
+              <div
+                [ngClass]="{'alert alert-danger': summary.stats.checkouts.claims_returned > 0}">
+                <dt i18n>Claimed Returned</dt>
+                <dd class="numeric">{{summary.stats.checkouts.claims_returned}}</dd>
+              </div>
+              <div
+                [ngClass]="{'alert PATRON_HAS_LOST': summary.stats.checkouts.lost > 0}">
+                <dt i18n>Lost</dt>
+                <dd class="numeric">{{summary.stats.checkouts.lost}}</dd>
+              </div>
+              <div>
+                <dt i18n>Non-Cataloged</dt>
+                <dd class="numeric">{{summary.stats.checkouts.noncat}}</dd>
+              </div>
+              <div>
+                <dt i18n>Holds</dt>
+                <dd class="numeric">
+                  {{summary.stats.holds.ready}} / {{summary.stats.holds.total}}
+                </dd>
+              </div>
+            </dl>
+          </div>
+        }
         <div class="account-col account-id">
           <dl>
             <div>
@@ -211,71 +278,87 @@
             </div>
             <div>
               <dt i18n>Day Phone</dt>
-              <dd class="numeric">{{p().day_phone()}}</dd> 
+              <dd class="numeric">{{p().day_phone()}}</dd>
             </div>
             <div>
               <dt i18n>Evening Phone</dt>
-              <dd class="numeric">{{p().evening_phone()}}</dd> 
+              <dd class="numeric">{{p().evening_phone()}}</dd>
             </div>
             <div>
               <dt i18n>Other Phone</dt>
-              <dd class="numeric">{{p().other_phone()}}</dd> 
+              <dd class="numeric">{{p().other_phone()}}</dd>
             </div>
             <div>
               <dt i18n>ID1 </dt>
-              <dd class="numeric">{{p().ident_value()}}</dd> 
+              <dd class="numeric">{{p().ident_value()}}</dd>
             </div>
             <div>
               <dt i18n>ID2</dt>
-              <dd class="numeric">{{p().ident_value2()}}</dd> 
+              <dd class="numeric">{{p().ident_value2()}}</dd>
             </div>
             <div>
               <dt i18n>Email</dt>
               <dd>
-                <a *ngIf="p().email()" href="mailto:{{p().email()}}">{{p().email()}}</a>
-              </dd> 
+                @if (p().email()) {
+                  <a href="mailto:{{p().email()}}">{{p().email()}}</a>
+                }
+              </dd>
             </div>
-            <div *ngIf="p().name_keywords()">
-              <dt i18n>Name Keywords</dt>
-              <dd>{{p().name_keywords()}}</dd> 
-            </div>
+            @if (p().name_keywords()) {
+              <div>
+                <dt i18n>Name Keywords</dt>
+                <dd>{{p().name_keywords()}}</dd>
+              </div>
+            }
           </dl>
           <h3 class="visually-hidden" i18n>Waivers</h3>
-            <ng-container *ngIf="p().waiver_entries().length">
-              <div class="row mb-1 justify-content-between alert alert-info p-0">
-                <div class="col-lg-12" i18n>Allow others to use my account</div>
-              </div>
-              <dl>
-                <div *ngFor="let waiver of p().waiver_entries()">
+          @if (p().waiver_entries().length) {
+            <div class="row mb-1 justify-content-between alert alert-info p-0">
+              <div class="col-lg-12" i18n>Allow others to use my account</div>
+            </div>
+            <dl>
+              @for (waiver of p().waiver_entries(); track waiver) {
+                <div>
                   <dt i18n>{{waiver.name()}}</dt>
                   <dd>
                     <ul>
-                      <li *ngIf="waiver.place_holds() === 't'" i18n>Place holds</li>
-                      <li *ngIf="waiver.pickup_holds() === 't'" i18n>Pick up holds</li>
-                      <li *ngIf="waiver.view_history() === 't'" i18n>View borrowing history</li>
-                      <li *ngIf="waiver.checkout_items() === 't'" i18n>Check out items</li>
+                      @if (waiver.place_holds() === 't') {
+                        <li i18n>Place holds</li>
+                      }
+                      @if (waiver.pickup_holds() === 't') {
+                        <li i18n>Pick up holds</li>
+                      }
+                      @if (waiver.view_history() === 't') {
+                        <li i18n>View borrowing history</li>
+                      }
+                      @if (waiver.checkout_items() === 't') {
+                        <li i18n>Check out items</li>
+                      }
                     </ul>
                   </dd>
                 </div>
-              </dl>
-            </ng-container>
+              }
+            </dl>
+          }
         </div>
         <div class="account-col account-address">
           <dl>
-            <div *ngFor="let setting of summary.settings">
-              <dt>{{setting.label}}</dt>
-              <dd>{{setting.value}}</dd>
-            </div>
+            @for (setting of summary.settings; track setting) {
+              <div>
+                <dt>{{setting.label}}</dt>
+                <dd>{{setting.value}}</dd>
+              </div>
+            }
           </dl>
-            <h3 class="visually-hidden" i18n>Addresses</h3>
-            <div *ngFor="let addr of p().addresses()">
-
+          <h3 class="visually-hidden" i18n>Addresses</h3>
+          @for (addr of p().addresses(); track addr) {
+            <div>
               <div class="hstack" [ngClass]="{'alert alert-danger': addr.valid() === 'f'}">
                 <h4 class="text-normal">
-                  <ng-container *ngIf="addr.valid() === 'f'">
+                  @if (addr.valid() === 'f') {
                     <span class="material-icons" aria-hidden="true">warning</span>
                     <span i18n>Address is invalid</span>
-                  </ng-container>
+                  }
                   <span class="address-type">{{addr.address_type().toLowerCase()}}</span>
                 </h4>
                 <div class="btn-group ms-auto">
@@ -297,14 +380,15 @@
                 <div i18n>{{addr.street1()}} {{addr.street2()}}</div>
                 <div i18n>{{addr.city()}}, {{addr.state()}} {{addr.post_code()}}</div>
               </address>
-
               <!-- hidden textarea used only for copying the text -->
               <textarea id="patron-address-copy-{{addr.id()}}" rows="2" hidden>
                 {{p().first_given_name()}} {{p().second_given_name()}} {{p().family_name()}}
                 {{addr.street1()}} {{addr.street2()}}
-                {{addr.city()}}, {{addr.state()}} {{addr.post_code()}}</textarea>
+              {{addr.city()}}, {{addr.state()}} {{addr.post_code()}}</textarea>
             </div>
+          }
         </div>
       </div>
-  </div>
+    </div>
+  }
 </div>

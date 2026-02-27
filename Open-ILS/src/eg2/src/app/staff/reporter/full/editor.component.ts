@@ -4,7 +4,6 @@ import {Router, ActivatedRoute} from '@angular/router';
 import {Location} from '@angular/common';
 import {of} from 'rxjs';
 import {NgbNav} from '@ng-bootstrap/ng-bootstrap';
-import {EventService} from '@eg/core/event.service';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
@@ -15,12 +14,14 @@ import {Tree, TreeNode} from '@eg/share/tree/tree';
 import { StaffCommonModule } from '@eg/staff/common.module';
 import { TreeComponent } from '@eg/share/tree/tree.component';
 import { ReporterFieldChooserComponent } from './reporter-field-chooser.component';
+import { ReporterSortOrderComponent } from './reporter-sort-order.component';
 
 @Component({
     templateUrl: './editor.component.html',
     styleUrls: ['./editor.component.css'],
     imports: [
         ReporterFieldChooserComponent,
+        ReporterSortOrderComponent,
         StaffCommonModule,
         TreeComponent
     ]
@@ -31,7 +32,6 @@ export class FullReporterEditorComponent implements OnInit {
     private router = inject(Router);
     private location = inject(Location);
     private toast = inject(ToastService);
-    private evt = inject(EventService);
     private idl = inject(IdlService);
     private pcrud = inject(PcrudService);
     RSvc = inject(ReporterService);

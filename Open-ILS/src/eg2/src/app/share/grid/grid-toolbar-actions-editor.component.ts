@@ -1,14 +1,14 @@
 import {Component, Input, OnInit, Host} from '@angular/core';
 import {GridToolbarAction, GridContext} from '@eg/share/grid/grid';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
-import { NgFor, NgIf } from '@angular/common';
+
 
 /** Allows users to show/hide toolbar action entries */
 
 @Component({
     selector: 'eg-grid-toolbar-actions-editor',
     templateUrl: 'grid-toolbar-actions-editor.component.html',
-    imports: [NgFor, NgIf]
+    imports: []
 })
 
 export class GridToolbarActionsEditorComponent extends DialogComponent {

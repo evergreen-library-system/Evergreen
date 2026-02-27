@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, Input, OnInit, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
@@ -20,7 +20,6 @@ interface LinkTableLink {
     `
     ],
     imports: [
-        CommonModule,
         RouterModule
     ]
 })

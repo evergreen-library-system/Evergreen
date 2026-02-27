@@ -6,7 +6,7 @@ import {IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
 import {OrgSelectComponent} from '@eg/share/org-select/org-select.component';
 import {ServerStoreService} from '@eg/core/server-store.service';
-import { NgIf } from '@angular/common';
+
 
 export interface OrgFamily {
   primaryOrgId: number;
@@ -26,9 +26,8 @@ export interface OrgFamily {
         }
     ],
     imports: [
-        NgIf,
         OrgSelectComponent,
-        ReactiveFormsModule,
+        ReactiveFormsModule
     ]
 })
 export class OrgFamilySelectComponent implements ControlValueAccessor, OnInit {

@@ -1,7 +1,7 @@
 /* eslint-disable no-magic-numbers, @angular-eslint/component-selector */
 import {Component, Input, OnInit, AfterViewInit, QueryList, ViewChildren,
     inject, NgZone, OnDestroy, Renderer2, DOCUMENT} from '@angular/core';
-import {NgClass, NgFor, NgIf} from '@angular/common';
+import { NgClass } from '@angular/common';
 import {GridContext, GridColumn} from './grid';
 import {GridFilterControlComponent} from './grid-filter-control.component';
 import {takeUntil, switchMap, map, tap, Subject, fromEvent} from 'rxjs';
@@ -13,9 +13,7 @@ import { FormsModule } from '@angular/forms';
     imports: [
         FormsModule,
         GridFilterControlComponent,
-        NgClass,
-        NgFor,
-        NgIf,
+        NgClass
     ]
 })
 

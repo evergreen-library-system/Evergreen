@@ -4,14 +4,13 @@ import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+
 
 @Component({
     selector: 'eg-edi-attr-set-edit-dialog',
     templateUrl: './edi-attr-set-edit-dialog.component.html',
     imports: [
-        CommonModule,
-        FormsModule,
+        FormsModule
     ]
 })
 

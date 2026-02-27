@@ -2,31 +2,35 @@
 
   <div class="modal-header">
     <h4 class="modal-title" i18n>Special Characters Map</h4>
-    <button type="button" class="btn-close btn-close-white" i18n-aria-label 
-      aria-label="Close dialog" (click)="close()"></button>
+    <button type="button" class="btn-close btn-close-white" i18n-aria-label
+    aria-label="Close dialog" (click)="close()"></button>
   </div>
 
   <div class="modal-body charmap-body">
     <div class="row">
       <div class="col">
-        <ul ngbNav #charMapNav="ngbNav" class="nav-tabs" 
+        <ul ngbNav #charMapNav="ngbNav" class="nav-tabs"
           [keyboard]="true" [roles]="false" role="tablist"
           [activeId]="latinTab">
           <li role="presentation" ngbNavItem="latinTab">
             <button type="button" role="tab" ngbNavLink i18n>Latin</button>
             <ng-template ngbNavContent>
-              <p *ngIf="!disableAccessKeys">
-                <span i18n>Press any English letter to jump to its group.</span>
-                <button type="button" class="btn btn-link ms-2" (click)="setAccessKeysPref(true)" i18n>
+              @if (!disableAccessKeys) {
+                <p>
+                  <span i18n>Press any English letter to jump to its group.</span>
+                  <button type="button" class="btn btn-link ms-2" (click)="setAccessKeysPref(true)" i18n>
                   Disable single-letter keyboard shortcuts
                 </button>
-              </p>
-              <p *ngIf="disableAccessKeys">
-                <span i18n>Single-letter keyboard shortcuts are disabled.</span>
-                <button type="button" class="btn btn-link ms-2" (click)="setAccessKeysPref(false)" i18n>
+                </p>
+              }
+              @if (disableAccessKeys) {
+                <p>
+                  <span i18n>Single-letter keyboard shortcuts are disabled.</span>
+                  <button type="button" class="btn btn-link ms-2" (click)="setAccessKeysPref(false)" i18n>
                   Turn them on to jump to groups by letter
                 </button>
-              </p>
+                </p>
+              }
               <eg-chars-latin></eg-chars-latin>
             </ng-template>
           </li>

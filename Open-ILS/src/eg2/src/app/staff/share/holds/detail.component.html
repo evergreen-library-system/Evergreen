@@ -1,9 +1,11 @@
 <eg-hold-note-dialog #noteDialog [holdId]="holdId"></eg-hold-note-dialog>
 <eg-hold-notify-dialog #notifyDialog [holdId]="holdId"></eg-hold-notify-dialog>
 
-<div class="mb-3" *ngIf="showRecordSummary">
-  <eg-bib-summary [recordId]="hold.record_id"></eg-bib-summary>
-</div>
+@if (showRecordSummary) {
+  <div class="mb-3">
+    <eg-bib-summary [recordId]="hold.record_id"></eg-bib-summary>
+  </div>
+}
 
 <div class="row">
   <div class="col-lg-2">
@@ -25,7 +27,7 @@
     <div class="well-label" i18n>Hold Type</div>
     <div class="well-value">
       {{hold.hold_type}}
-      <!-- TODO: add part data to wide holds 
+      <!-- TODO: add part data to wide holds
       <span *ngIf="hold.hold_type == 'P'">&nbsp;-&nbsp;{{hold.part_label}}</span>
       -->
     </div>
@@ -41,18 +43,38 @@
     <div class="well-value">{{hold.pl_shortname}}</div>
     <div class="well-label" i18n>Status</div>
     <div class="well-value">
-      <ng-container [ngSwitch]="hold.hold_status">
-        <div *ngSwitchCase="-1" i18n>Unknown Error</div>
-        <div *ngSwitchCase="1" i18n>Waiting for Item</div>
-        <div *ngSwitchCase="2" i18n>Waiting for Capture</div>
-        <div *ngSwitchCase="3" i18n>In Transit</div>
-        <div *ngSwitchCase="4" i18n>Ready for Pickup</div>
-        <div *ngSwitchCase="5" i18n>Hold Shelf Delay</div>
-        <div *ngSwitchCase="6" i18n>Canceled</div>
-        <div *ngSwitchCase="7" i18n>Suspended</div>
-        <div *ngSwitchCase="8" i18n>Wrong Shelf</div>
-        <div *ngSwitchCase="9" i18n>Fulfilled</div>
-      </ng-container>
+      @switch (hold.hold_status) {
+        @case (-1) {
+          <div i18n>Unknown Error</div>
+        }
+        @case (1) {
+          <div i18n>Waiting for Item</div>
+        }
+        @case (2) {
+          <div i18n>Waiting for Capture</div>
+        }
+        @case (3) {
+          <div i18n>In Transit</div>
+        }
+        @case (4) {
+          <div i18n>Ready for Pickup</div>
+        }
+        @case (5) {
+          <div i18n>Hold Shelf Delay</div>
+        }
+        @case (6) {
+          <div i18n>Canceled</div>
+        }
+        @case (7) {
+          <div i18n>Suspended</div>
+        }
+        @case (8) {
+          <div i18n>Wrong Shelf</div>
+        }
+        @case (9) {
+          <div i18n>Fulfilled</div>
+        }
+      }
     </div>
     <div class="well-label" i18n>Behind Desk</div>
     <div class="well-value">{{hold.behind_desk === 1}}</div>
@@ -107,54 +129,64 @@
         <a role="tab" ngbNavLink i18n>Notes</a>
         <ng-template ngbNavContent>
           <button type="button" class="btn btn-outline-dark mt-3" (click)="newNote()" i18n>New Note</button>
-          <div class="mt-3" *ngFor="let note of notes">
-            <div class="d-flex">
-              <div class="fw-bold">{{note.title()}}</div>
-              <div class="flex-1"></div>
-              <div>
-                <span *ngIf="note.slip() === 't'" 
-                  class="ms-2 badge rounded-pill bg-info p-1">Print on Slip</span>
-                <span *ngIf="note.pub() === 't'" 
-                  class="ms-2 badge rounded-pill bg-warning p-1">Patron Visible</span>
-                <span *ngIf="note.staff() === 't'" 
-                  class="ms-2 badge rounded-pill bg-info p-1">Staff Create</span>
+          @for (note of notes; track note) {
+            <div class="mt-3">
+              <div class="d-flex">
+                <div class="fw-bold">{{note.title()}}</div>
+                <div class="flex-1"></div>
+                <div>
+                  @if (note.slip() === 't') {
+                    <span
+                    class="ms-2 badge rounded-pill bg-info p-1">Print on Slip</span>
+                  }
+                  @if (note.pub() === 't') {
+                    <span
+                    class="ms-2 badge rounded-pill bg-warning p-1">Patron Visible</span>
+                  }
+                  @if (note.staff() === 't') {
+                    <span
+                    class="ms-2 badge rounded-pill bg-info p-1">Staff Create</span>
+                  }
+                </div>
               </div>
-            </div>
-            <div class="well-table">
-              <div class="well-row">
-                <div class="well-value">{{note.body()}}</div>
-                <div class="well-label-no-flex">
-                  <button type="button" class="btn btn-destroy" 
+              <div class="well-table">
+                <div class="well-row">
+                  <div class="well-value">{{note.body()}}</div>
+                  <div class="well-label-no-flex">
+                    <button type="button" class="btn btn-destroy"
                     (click)="deleteNote(note)" i18n>Delete</button>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          }
         </ng-template>
       </li>
       <li role="presentation" ngbNavItem="notifications">
         <a role="tab" ngbNavLink i18n>Staff Notifications</a>
         <ng-template ngbNavContent>
-          <button type="button" class="btn btn-outline-dark mt-3" 
-            (click)="newNotify()" i18n>Add Record of Notification</button>
-          <div class="mt-3" *ngFor="let notify of notifies">
-            <div class="d-flex">
-              <div class="fw-bold">{{notify.method()}}</div>
-              <div class="flex-1"></div>
-              <div>
-                <span>{{notify.notify_time() | date:'short'}}</span>
-                <span class="ms-2" i18n>
+          <button type="button" class="btn btn-outline-dark mt-3"
+          (click)="newNotify()" i18n>Add Record of Notification</button>
+          @for (notify of notifies; track notify) {
+            <div class="mt-3">
+              <div class="d-flex">
+                <div class="fw-bold">{{notify.method()}}</div>
+                <div class="flex-1"></div>
+                <div>
+                  <span>{{notify.notify_time() | date:'short'}}</span>
+                  <span class="ms-2" i18n>
                   Created by {{notify.notify_staff().usrname()}}</span>
+                </div>
+                <div>
+                </div>
               </div>
-              <div>
+              <div class="well-table">
+                <div class="well-row">
+                  <div class="well-value">{{notify.note()}}</div>
+                </div>
               </div>
             </div>
-            <div class="well-table">
-              <div class="well-row">
-                <div class="well-value">{{notify.note()}}</div>
-              </div>
-            </div>
-          </div>
+          }
         </ng-template>
       </li>
     </ul>

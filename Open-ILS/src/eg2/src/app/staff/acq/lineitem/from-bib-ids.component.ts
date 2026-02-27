@@ -6,7 +6,8 @@ import {NetService} from '@eg/core/net.service';
 import {EventService} from '@eg/core/event.service';
 import {AuthService} from '@eg/core/auth.service';
 import {ComboboxComponent, ComboboxEntry} from '@eg/share/combobox/combobox.component';
-import { CommonModule } from '@angular/common';
+import { StaffBannerComponent } from '@eg/staff/share/staff-banner.component';
+
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -14,10 +15,10 @@ import { FormsModule } from '@angular/forms';
     selector: 'eg-lineitem-from-bib-ids',
     styleUrls: ['./from-bib-ids.component.css'],
     imports: [
-        ComboboxComponent,
-        CommonModule,
-        FormsModule
-    ]
+    ComboboxComponent,
+    FormsModule,
+    StaffBannerComponent
+]
 })
 export class LineitemFromBibIdsComponent implements OnInit {
     private router = inject(Router);

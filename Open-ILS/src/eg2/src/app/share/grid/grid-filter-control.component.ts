@@ -8,7 +8,7 @@ import {OrgSelectComponent} from '@eg/share/org-select/org-select.component';
 import {OrgService} from '@eg/core/org.service';
 import {NgbDropdown, NgbDropdownMenu, NgbDropdownToggle} from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
-import { NgClass, NgIf, NgSwitch, NgSwitchCase, NgTemplateOutlet } from '@angular/common';
+import { NgClass, NgTemplateOutlet } from '@angular/common';
 
 @Component({
     selector: 'eg-grid-filter-control',
@@ -22,9 +22,6 @@ import { NgClass, NgIf, NgSwitch, NgSwitchCase, NgTemplateOutlet } from '@angula
         NgbDropdownMenu,
         NgbDropdownToggle,
         NgClass,
-        NgIf,
-        NgSwitch,
-        NgSwitchCase,
         NgTemplateOutlet,
         OrgSelectComponent
     ]

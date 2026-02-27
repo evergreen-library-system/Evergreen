@@ -6,7 +6,7 @@ import {SckoService, ActionContext} from './scko.service';
 import {OrgService} from '@eg/core/org.service';
 import {HatchService} from '@eg/core/hatch.service';
 import {ForceReloadService} from '@eg/share/util/force-reload.service';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import { CredentialInputComponent } from '@eg/share/util/credential-input.component';
 
@@ -15,7 +15,7 @@ const FOCUS_DELAY = 50;
 @Component({
     selector: 'eg-scko-banner',
     templateUrl: 'banner.component.html',
-    imports: [CommonModule, CredentialInputComponent, FormsModule]
+    imports: [CredentialInputComponent, FormsModule]
 })
 
 export class SckoBannerComponent implements OnInit, AfterViewInit {

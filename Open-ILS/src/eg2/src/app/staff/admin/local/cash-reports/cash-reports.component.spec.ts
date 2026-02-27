@@ -12,6 +12,8 @@ import { DateSelectComponent } from '@eg/share/date-select/date-select.component
 import { NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
 import { OrgSelectComponent } from '@eg/share/org-select/org-select.component';
 import { StaffBannerComponent } from '@eg/staff/share/staff-banner.component';
+import { FormatService } from '@eg/core/format.service';
+import { PcrudService } from '@eg/core/pcrud.service';
 
 const mockIdlObject = {a: null,
     classname: null,
@@ -28,6 +30,8 @@ describe('CashReportsComponent', () => {
     it('alerts the user if end date is before start date', async () => {
         await TestBed.configureTestingModule({
             providers: [
+                {provide: FormatService, useValue: {}},
+                {provide: PcrudService, useValue: {}},
                 {provide: IdlService, useValue: {}},
                 {provide: NetService, useValue: mockNet},
                 {provide: OrgService, useValue: mockOrg},

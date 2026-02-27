@@ -84,7 +84,7 @@ describe('FormatService', () => {
             datatype: 'timestamp',
             datePlusTime: true
         });
-        expect(str).toBe('7/5/18, 12:30 PM');
+        expect(str).toBe('7/5/18, 12:30 PM');
     });
 
 
@@ -112,7 +112,7 @@ describe('FormatService', () => {
     });
     it('should transform full Angular format strings to a valid MomentJS one using Angular locale en-US', () => {
         const momentVersion = service['makeFormatParseable']('full', 'en-US');
-        expect(momentVersion).toBe('dddd, MMMM D, Y [at] h:mm:ss a [GMT]Z');
+        expect(momentVersion).toBe('dddd, MMMM D, Y, h:mm:ss a [GMT]Z');
     });
     it('should transform shortDate Angular format strings to a valid MomentJS one using Angular locale cs-CZ', () => {
         registerLocaleData(localeCs);
@@ -127,7 +127,7 @@ describe('FormatService', () => {
     it('should transform long Angular format strings to a valid MomentJS one using Angular locale ar-JO', () => {
         registerLocaleData(localeArJO);
         const momentVersion = service['makeFormatParseable']('long', 'ar-JO');
-        expect(momentVersion).toBe('D MMMM Y في h:mm:ss a [GMT]Z');
+        expect(momentVersion).toBe('D MMMM Y، h:mm:ss a [GMT]Z');
     });
     it('can create a valid Momentjs object given a valid datetime string and correct format', () => {
         const moment = service['momentize']('7/3/12, 6:06 PM', 'M/D/YY, h:mm a', 'Africa/Addis_Ababa', false);

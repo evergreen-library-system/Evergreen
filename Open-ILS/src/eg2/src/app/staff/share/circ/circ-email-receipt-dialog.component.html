@@ -7,61 +7,70 @@
       </button>
     </div>
 
-    <div class="modal-body" *ngIf="options.length === 1">
-      <div class="row">
-        <div class="col-md-12">
-          <p>
-            <ng-container i18n>Send an email receipt to</ng-container>
-            {{options[0].patron.first_given_name()}}
-            {{options[0].patron.family_name()}}?
-          </p>
+    @if (options.length === 1) {
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-12">
+            <p>
+              <ng-container i18n>Send an email receipt to</ng-container>
+              {{options[0].patron.first_given_name()}}
+              {{options[0].patron.family_name()}}?
+            </p>
+          </div>
         </div>
       </div>
-    </div>
+    }
 
-    <div class="modal-body" *ngIf="options.length > 1">
-      <div class="row">
-        <div class="col-md-12">
-          <p i18n>
+    @if (options.length > 1) {
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-12">
+            <p i18n>
             Select the patron you would like to send an email receipt to:
           </p>
+          </div>
         </div>
-      </div>
+        @for (option of options; track option) {
+          <div class="row">
+            <div class="col-md-12">
+              <input type="radio" id="email_receipt_{{option.patron.id()}}"
+                name="email_receipt_options"
+                attr.name="email_receipt_options"
+                [value]="option.patron.id()"
+                [(ngModel)]="selected.patronId"
+                [attr.disabled]="option.disabled ? '' : null">
+              <label class="ms-1" for="email_receipt_{{option.patron.id()}}">
+                {{option.patron.first_given_name()}}
+                {{option.patron.family_name()}}
+                @if (option.disabled) {
+                  (<ng-container i18n>no email address</ng-container>)
+                }
+                @if (!option.disabled) {
+                  ({{option.circIds.length}}
+                  @if (option.circIds.length === 1) {
+                    <ng-container
+                      i18n>item</ng-container
+                      >
+                      }@if (option.circIds.length !== 1) {
+                      <ng-container
+                        i18n>items</ng-container
+                        >
+                        })
+                      }
+                    </label>
+                  </div>
+                </div>
+              }
+            </div>
+          }
 
-      <div class="row" *ngFor="let option of options">
-        <div class="col-md-12">
-          <input type="radio" id="email_receipt_{{option.patron.id()}}"
-            name="email_receipt_options"
-            attr.name="email_receipt_options"
-            [value]="option.patron.id()"
-            [(ngModel)]="selected.patronId"
-            [attr.disabled]="option.disabled ? '' : null">
-          <label class="ms-1" for="email_receipt_{{option.patron.id()}}">
-            {{option.patron.first_given_name()}}
-            {{option.patron.family_name()}}
-            <ng-container *ngIf="option.disabled">
-              (<ng-container i18n>no email address</ng-container>)
-            </ng-container>
-            <ng-container *ngIf="!option.disabled">
-              ({{option.circIds.length}}
-              <ng-container *ngIf="option.circIds.length === 1"
-                i18n>item</ng-container
-              ><ng-container *ngIf="option.circIds.length !== 1"
-                i18n>items</ng-container
-              >)
-            </ng-container>
-          </label>
-        </div>
-      </div>
-    </div>
-
-    <div class="modal-footer">
-      <button type="submit" class="btn btn-success"
-        [disabled]="!selected.patronId" i18n>Send
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-success"
+              [disabled]="!selected.patronId" i18n>Send
       </button>
-      <button type="button" class="btn btn-normal"
-        (click)="close()" i18n>Cancel
+            <button type="button" class="btn btn-normal"
+              (click)="close()" i18n>Cancel
       </button>
-    </div>
-  </form>
-</ng-template>
+          </div>
+        </form>
+      </ng-template>

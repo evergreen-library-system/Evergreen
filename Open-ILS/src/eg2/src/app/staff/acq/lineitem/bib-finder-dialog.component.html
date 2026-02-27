@@ -3,7 +3,7 @@
     <div class="modal-header">
       <h3 class="modal-title" i18n>Link Line Item to Catalog</h3>
       <button type="button" class="btn-close btn-close-white"
-        i18n-aria-label aria-label="Close dialog" (click)="close()"></button>
+      i18n-aria-label aria-label="Close dialog" (click)="close()"></button>
     </div>
     <div class="modal-body">
       <h4 i18n>Line Item: {{liId}}</h4>
@@ -12,43 +12,49 @@
         <input type="text" [(ngModel)]="queryString" [ngModelOptions]="{standalone: true}"
           class="form-control" id="searchQuery">
         <button type="submit" (click)="submitSearch()" class="btn btn-primary"
-                [disabled]="doingSearch || queryString.length < 1" i18n>Submit</button>
+        [disabled]="doingSearch || queryString.length < 1" i18n>Submit</button>
       </div>
       <div class="row">
         <div class="col-12">
-          <eg-progress-inline *ngIf="doingSearch"></eg-progress-inline>
+          @if (doingSearch) {
+            <eg-progress-inline></eg-progress-inline>
+          }
         </div>
       </div>
       <div class="row mt-2">
         <div class="col-6">
           <h5 i18n>Search results</h5>
           <div class="mt-1 pt-1 border-top">
-            <div *ngFor="let rec of results" class="bib-finder-results-row row mt-1">
-              <div class="col-3">
-                <button type="button" class="btn btn-success me-1" (click)="close(rec.id)" i18n>Link</button>
-                <button type="button" class="btn btn-outline-dark me-1" (click)="bibToDisplay = rec.id" i18n>View MARC</button>
+            @for (rec of results; track rec) {
+              <div class="bib-finder-results-row row mt-1">
+                <div class="col-3">
+                  <button type="button" class="btn btn-success me-1" (click)="close(rec.id)" i18n>Link</button>
+                  <button type="button" class="btn btn-outline-dark me-1" (click)="bibToDisplay = rec.id" i18n>View MARC</button>
+                </div>
+                <div class="col-9">
+                  <span class="pe-1" i18n>Record {{rec.id}}:</span>
+                  <span class="pe-1">{{rec.display.title}}</span>
+                  <span class="pe-1">{{rec.display.author}}</span>
+                  <span class="pe-1">{{rec.display.isbn}}</span>
+                  <span class="pe-1">{{rec.display.issn}}</span>
+                  <span class="pe-1">{{rec.display.pubdate}}</span>
+                  <span class="pe-1">{{rec.display.publisher}}</span>
+                </div>
               </div>
-              <div class="col-9">
-                <span class="pe-1" i18n>Record {{rec.id}}:</span>
-                <span class="pe-1">{{rec.display.title}}</span>
-                <span class="pe-1">{{rec.display.author}}</span>
-                <span class="pe-1">{{rec.display.isbn}}</span>
-                <span class="pe-1">{{rec.display.issn}}</span>
-                <span class="pe-1">{{rec.display.pubdate}}</span>
-                <span class="pe-1">{{rec.display.publisher}}</span>
-              </div>
-            </div>
+            }
           </div>
         </div>
         <div class="col-6">
           <h5 i18n>MARC Display</h5>
-          <eg-marc-html recordType="bib" [recordId]="bibToDisplay" *ngIf="bibToDisplay"></eg-marc-html>
+          @if (bibToDisplay) {
+            <eg-marc-html recordType="bib" [recordId]="bibToDisplay"></eg-marc-html>
+          }
         </div>
       </div>
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-normal"
-        (click)="close()" i18n>Cancel</button>
+      (click)="close()" i18n>Cancel</button>
     </div>
   </form>
 </ng-template>

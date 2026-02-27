@@ -2,170 +2,186 @@
 </eg-staff-banner>
 
 <div class="row justify-content-between mb-3">
-    <div class="col-md-6">
-        <div class="form-inline hstack mb-3">
-            <label for="context-ou" class="form-label me-3" i18n>Shelving Location Groups for:</label> 
-            <eg-org-select domId="context-ou" (onChange)="orgOnChange($event)" [initialOrgId]="1"></eg-org-select>  
-        </div>
+  <div class="col-md-6">
+    <div class="form-inline hstack mb-3">
+      <label for="context-ou" class="form-label me-3" i18n>Shelving Location Groups for:</label>
+      <eg-org-select domId="context-ou" (onChange)="orgOnChange($event)" [initialOrgId]="1"></eg-org-select>
     </div>
-    <div class="col-md-6 text-end">
-        <button type="button" class="btn btn-primary ms-auto mb-3" 
-            (click)="hasPermission ? createLocationGroup() : null" 
-            [ngClass]="{'disabled': !hasPermission}" i18n>
+  </div>
+  <div class="col-md-6 text-end">
+    <button type="button" class="btn btn-primary ms-auto mb-3"
+      (click)="hasPermission ? createLocationGroup() : null"
+      [ngClass]="{'disabled': !hasPermission}" i18n>
             New Location Group                     
         </button>
-    </div>
+  </div>
 </div>
 <!--
 <pre>{{shelvingLocations | json}}</pre>
 -->
 <div class="row">
-    <div class="col-lg-6">
-        <h2 i18n>Location Groups</h2>
-        <p i18n>Location groups can be re-ordered by dragging and dropping.</p>
-    
-        <table class="table table-sm">
-            <thead>
-                <tr>
-                    <th scope="col" i18n="Shelving location groups">Name</th>
-                    <th scope="col" i18n="Shelving location groups" class="numeric">Position</th>
-                    <th scope="col" i18n="Shelving location groups">OPAC Visible?</th>
-                    <th scope="col" i18n="Shelving location groups" class="text-end">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let group of locationGroups; let dragIndex = index" 
-                    class="locationGroup" 
+  <div class="col-lg-6">
+    <h2 i18n>Location Groups</h2>
+    <p i18n>Location groups can be re-ordered by dragging and dropping.</p>
+
+    <table class="table table-sm">
+      <thead>
+        <tr>
+          <th scope="col" i18n="Shelving location groups">Name</th>
+          <th scope="col" i18n="Shelving location groups" class="numeric">Position</th>
+          <th scope="col" i18n="Shelving location groups">OPAC Visible?</th>
+          <th scope="col" i18n="Shelving location groups" class="text-end">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (group of locationGroups; track group; let dragIndex = $index) {
+          <tr
+            class="locationGroup"
                     [ngClass]="{'table-active': group.selected,
                         'drag-target': group.id() === dragTarget?.id()}"
-                    draggable="true"
-                    (dragstart)="onDragStart($event, group)"
-                    (dragenter)="onDragEnter($event, group)" 
-                    (dragover)="onDragOver($event)" 
-                    (drop)="onDragDrop($event, dragIndex)">
-                    <th scope="row" id="locationGroup-{{group.id()}}">
-                        <button type="button" class="btn btn-link text-start" title="Manage entries for {{group.name}}" i18n-title
-                        (click)="changeSelectedLocationGroup(group)">
-                            {{group.name}}
-                        </button>
-                    </th>
-                    <td class="numeric">
-                        {{group.posit}}
-                    </td>
-                    <td *ngIf="group.isVisible" class="text-success fw-bold" i18n="Shelving location groups">Visible</td>
-                    <td *ngIf="!group.isVisible" class="text-secondary" i18n="Shelving location groups">Not Visible</td>
-                    <td class="actions text-end">
-                        <div class="btn-group">
-                            <button type="button" *ngIf="hasPermission"
-                                class="btn btn-link" 
-                                attr.aria-describedby="locationGroup-{{group.id()}}"
-                                title="Edit {{group.name}}" i18n-title
-                                (click)="editLocationGroup(group)"
-                                i18n="Shelving location groups">
+            draggable="true"
+            (dragstart)="onDragStart($event, group)"
+            (dragenter)="onDragEnter($event, group)"
+            (dragover)="onDragOver($event)"
+            (drop)="onDragDrop($event, dragIndex)">
+            <th scope="row" id="locationGroup-{{group.id()}}">
+              <button type="button" class="btn btn-link text-start" title="Manage entries for {{group.name}}" i18n-title
+                (click)="changeSelectedLocationGroup(group)">
+                {{group.name}}
+              </button>
+            </th>
+            <td class="numeric">
+              {{group.posit}}
+            </td>
+            @if (group.isVisible) {
+              <td class="text-success fw-bold" i18n="Shelving location groups">Visible</td>
+            }
+            @if (!group.isVisible) {
+              <td class="text-secondary" i18n="Shelving location groups">Not Visible</td>
+            }
+            <td class="actions text-end">
+              <div class="btn-group">
+                @if (hasPermission) {
+                  <button type="button"
+                    class="btn btn-link"
+                    attr.aria-describedby="locationGroup-{{group.id()}}"
+                    title="Edit {{group.name}}" i18n-title
+                    (click)="editLocationGroup(group)"
+                    i18n="Shelving location groups">
                                 Edit
                             </button>
-                            
-                            <button type="button" *ngIf="hasPermission"
-                                class="btn btn-link text-danger" 
-                                attr.aria-describedby="locationGroup-{{group.id()}}"
-                                title="Delete {{group.name}}" i18n-title
-                                (click)="deleteLocationGroup(group)"
-                                i18n="Shelving location groups">
+                }
+                @if (hasPermission) {
+                  <button type="button"
+                    class="btn btn-link text-danger"
+                    attr.aria-describedby="locationGroup-{{group.id()}}"
+                    title="Delete {{group.name}}" i18n-title
+                    (click)="deleteLocationGroup(group)"
+                    i18n="Shelving location groups">
                                 Delete
                             </button>
+                }
+                <button type="button" class="btn btn-link btn-move text-dark"
+                  (keydown.arrowup)="moveUp($event, group, dragIndex)"
+                  (keydown.arrowdown)="moveDown($event, group, dragIndex)"
+                  attr.aria-label="Move {{group.name}}" i18n-aria-label
+                  id="moveGroup{{group.id()}}">
+                  <span class="material-icons mat-icon-in-button" aria-hidden="true"
+                  title="Move {{group.name}}" i18n-title>open_with</span>
+                </button>
+              </div>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
 
-                            <button type="button" class="btn btn-link btn-move text-dark"
-                                (keydown.arrowup)="moveUp($event, group, dragIndex)"
-                                (keydown.arrowdown)="moveDown($event, group, dragIndex)"
-                                attr.aria-label="Move {{group.name}}" i18n-aria-label
-                                id="moveGroup{{group.id()}}">
-                                <span class="material-icons mat-icon-in-button" aria-hidden="true" 
-                                    title="Move {{group.name}}" i18n-title>open_with</span>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        
-    </div>
-    <div class="col-lg-6">
-        <div class="row">
-            <div class="col-sm-6">
-                <h2>
-                    <span i18n>Shelving Locations in Group:</span>
-                    <span *ngIf="selectedLocationGroupId"> {{selectedLocationGroup.name}}</span>
-                </h2>
-                <button type="button" class="btn btn-destroy mx-auto mb-1" (click)="removeEntries()"
-                    i18n="Shelving location group entries">
+  </div>
+  <div class="col-lg-6">
+    <div class="row">
+      <div class="col-sm-6">
+        <h2>
+          <span i18n>Shelving Locations in Group:</span>
+          @if (selectedLocationGroupId) {
+            <span> {{selectedLocationGroup.name}}</span>
+          }
+        </h2>
+        <button type="button" class="btn btn-destroy mx-auto mb-1" (click)="removeEntries()"
+          i18n="Shelving location group entries">
                     Remove {{removeEntryCount()}} from group &rarr;
                 </button>
-                <ul class="list-unstyled list-striped list-border mt-4">
-                    <li *ngFor="let group of groupEntries" class="border px-2 py-1">
-                        <div class="form-check">
-                            <input
-                                type="checkbox" 
-                                class="form-check-input"
-                                [(ngModel)]="group.checked"
-                                [checked]="group.checked"
-                                id="{{group.label}}" /> 
-                            <label class="form-label form-check-label m-0" for="{{group.label}}">
-                                {{group.shortname}} &nbsp; {{group.name}}
-                            </label>
-                        </div>
-                    </li>
-                </ul>
-                <button *ngIf="groupEntries.length" type="button" class="btn btn-destroy mx-auto mb-1" (click)="removeEntries()"
-                    i18n="Shelving location group entries">
+        <ul class="list-unstyled list-striped list-border mt-4">
+          @for (group of groupEntries; track group) {
+            <li class="border px-2 py-1">
+              <div class="form-check">
+                <input
+                  type="checkbox"
+                  class="form-check-input"
+                  [(ngModel)]="group.checked"
+                  [checked]="group.checked"
+                  id="{{group.label}}" />
+                  <label class="form-label form-check-label m-0" for="{{group.label}}">
+                    {{group.shortname}} &nbsp; {{group.name}}
+                  </label>
+                </div>
+              </li>
+            }
+          </ul>
+          @if (groupEntries.length) {
+            <button type="button" class="btn btn-destroy mx-auto mb-1" (click)="removeEntries()"
+              i18n="Shelving location group entries">
                     Remove {{removeEntryCount()}} from group &rarr;
                 </button>
-            </div>
-
-            <div class="col-sm-6">
-                <h2 i18n>All Shelving Locations</h2>
-                <button type="button" class="btn btn-normal mb-1" (click)="addEntries()" 
-                    i18n="Shelving locations">
-                    &larr; Add {{addEntryCount()}} to group
-                </button>
-                <ul class="list-unstyled list-striped list-border mt-4">
-                    <li *ngFor="let location of shelvingLocations" 
-                        class="border px-2 py-1">
-                        <div class="form-check">
-                            <input
-                            type="checkbox" 
-                            class="form-check-input"
-                            [(ngModel)]="location.checked"
-                            [checked]="location.checked"
-                            id="{{location.label}}" /> 
-                            <label class="form-label form-check-label m-0" for="{{location.label}}">
-                                {{location.shortname}} &nbsp; {{location.name}}
-                            </label>
-                        </div>
-                    </li>
-                </ul>
-                <button type="button" class="btn btn-normal mb-1" (click)="addEntries()" 
-                    i18n="Shelving locations">
-                    &larr; Add {{addEntryCount()}} to group
-                </button>
-            </div>
+          }
         </div>
+
+        <div class="col-sm-6">
+          <h2 i18n>All Shelving Locations</h2>
+          <button type="button" class="btn btn-normal mb-1" (click)="addEntries()"
+            i18n="Shelving locations">
+                    &larr; Add {{addEntryCount()}} to group
+                </button>
+          <ul class="list-unstyled list-striped list-border mt-4">
+            @for (location of shelvingLocations; track location) {
+              <li
+                class="border px-2 py-1">
+              <div class="form-check">
+                <input
+                  type="checkbox"
+                  class="form-check-input"
+                  [(ngModel)]="location.checked"
+                  [checked]="location.checked"
+                  id="{{location.label}}" />
+                  <label class="form-label form-check-label m-0" for="{{location.label}}">
+                    {{location.shortname}} &nbsp; {{location.name}}
+                  </label>
+                </div>
+              </li>
+            }
+          </ul>
+          <button type="button" class="btn btn-normal mb-1" (click)="addEntries()"
+            i18n="Shelving locations">
+                    &larr; Add {{addEntryCount()}} to group
+                </button>
+        </div>
+      </div>
     </div>
-</div>
+  </div>
 
 
-<eg-fm-record-editor #editDialog hiddenFieldsList="id" idlClass="acplg" 
+  <eg-fm-record-editor #editDialog hiddenFieldsList="id" idlClass="acplg"
     readonlyFields="owner"
-    requiredFields="name,pos" [defaultNewRecord]="defaultNewRecord"></eg-fm-record-editor>
-<eg-string #editLocGroupSuccess i18n-text text="Edited Location Group"></eg-string>
-<eg-string #editLocGroupFailure i18n-text 
-    text="Error when trying to edit Location Group"></eg-string>
-<eg-string #addedGroupEntriesSuccess i18n-text text="Added to Group Entries"></eg-string>
-<eg-string #addedGroupEntriesFailure i18n-text 
-    text="Error when trying to add to Group Entries"></eg-string>
-<eg-string #removedGroupEntriesSuccess i18n-text 
-    text="Removed from Group Entries"></eg-string>
-<eg-string #removedGroupEntriesFailure i18n-text 
-    text="Error when trying to remove from Group Entries"></eg-string>
-<eg-string #changeOrderSuccess i18n-text text="Changed Location Group order"></eg-string>
-<eg-string #changeOrderFailure i18n-text 
-    text="Error when trying to change Location Group Order"></eg-string>
+  requiredFields="name,pos" [defaultNewRecord]="defaultNewRecord"></eg-fm-record-editor>
+  <eg-string #editLocGroupSuccess i18n-text text="Edited Location Group"></eg-string>
+  <eg-string #editLocGroupFailure i18n-text
+  text="Error when trying to edit Location Group"></eg-string>
+  <eg-string #addedGroupEntriesSuccess i18n-text text="Added to Group Entries"></eg-string>
+  <eg-string #addedGroupEntriesFailure i18n-text
+  text="Error when trying to add to Group Entries"></eg-string>
+  <eg-string #removedGroupEntriesSuccess i18n-text
+  text="Removed from Group Entries"></eg-string>
+  <eg-string #removedGroupEntriesFailure i18n-text
+  text="Error when trying to remove from Group Entries"></eg-string>
+  <eg-string #changeOrderSuccess i18n-text text="Changed Location Group order"></eg-string>
+  <eg-string #changeOrderFailure i18n-text
+  text="Error when trying to change Location Group Order"></eg-string>

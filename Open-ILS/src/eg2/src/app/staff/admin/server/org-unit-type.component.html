@@ -10,7 +10,7 @@
 <ng-template #errorStrTmpl i18n>Org Unit Type Update Failed</ng-template>
 <eg-string #errorString [template]="errorStrTmpl"></eg-string>
 
-<eg-confirm-dialog #delConfirm 
+<eg-confirm-dialog #delConfirm
   i18n-dialogTitle i18n-dialogBody
   dialogTitle="Confirm Delete"
   dialogBody="Delete Org Unit Type {{selected ? selected.label : ''}}?">
@@ -18,7 +18,7 @@
 
 <eg-fm-record-editor #editDialog idlClass="aout" readonlyFields="depth,parent"
   [fieldOptions]="{name:{isRequired:true},opac_label:{isRequired:true}}"
->
+  >
 </eg-fm-record-editor>
 
 <div class="row org-unit-types-row">
@@ -28,50 +28,51 @@
   </div>
   <div class="col-lg-8 org-unit-types-col-main">
     <h3 i18n class="mb-3">Selected Org Unit Type</h3>
-    <ng-container *ngIf="!selected">
+    @if (!selected) {
       <div class="alert alert-info fst-italic" i18n>
         Select an org unit type from the tree on the left.
       </div>
-    </ng-container>
-    <div *ngIf="selected" class="common-form striped-even">
-      <div class="row">
-        <div class="col-lg-3">
-          <label class="form-label" i18n>Actions for Selected: </label>
-        </div>
-        <div class="col-lg-9">
-          <button type="button" class="btn btn-info me-2" (click)="edit()" i18n>Edit</button>
-          <button type="button" class="btn btn-info me-2" (click)="addChild()" i18n>Add Child</button>
-          <button type="button" class="btn btn-destroy me-2" (click)="remove()"
+    }
+    @if (selected) {
+      <div class="common-form striped-even">
+        <div class="row">
+          <div class="col-lg-3">
+            <label class="form-label" i18n>Actions for Selected: </label>
+          </div>
+          <div class="col-lg-9">
+            <button type="button" class="btn btn-info me-2" (click)="edit()" i18n>Edit</button>
+            <button type="button" class="btn btn-info me-2" (click)="addChild()" i18n>Add Child</button>
+            <button type="button" class="btn btn-destroy me-2" (click)="remove()"
             [disabled]="selected.callerData.aout.children().length > 0 || selected.callerData.orgCount > 0" i18n>Delete</button>
+          </div>
         </div>
-      </div>
-      <div class="row">
-        <!-- TODO: use FmRecordEditPaneComponent once it exists -->
-        <div class="col-lg-4">
-          <label class="form-label" i18n>Name: </label>
+        <div class="row">
+          <!-- TODO: use FmRecordEditPaneComponent once it exists -->
+          <div class="col-lg-4">
+            <label class="form-label" i18n>Name: </label>
+          </div>
+          <div class="col-lg-8 fw-bold">
+            {{selected.callerData.aout.name()}}
+          </div>
         </div>
-        <div class="col-lg-8 fw-bold">
-          {{selected.callerData.aout.name()}}
+        <div class="row">
+          <div class="col-lg-4">
+            <label class="form-label" i18n>Label: </label>
+          </div>
+          <div class="col-lg-8 fw-bold">
+            {{selected.callerData.aout.opac_label()}}
+          </div>
         </div>
-      </div>
-      <div class="row">
-        <div class="col-lg-4">
-          <label class="form-label" i18n>Label: </label>
+        <div class="row">
+          <div class="col-lg-4">
+            <label class="form-label" i18n>Can Have Users: </label>
+          </div>
+          <div class="col-lg-8 fw-bold">
+            <!-- TODO: use <eg-bool/> once merged-->
+            {{selected.callerData.aout.can_have_users() === 't'}}
+          </div>
         </div>
-        <div class="col-lg-8 fw-bold">
-          {{selected.callerData.aout.opac_label()}}
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-lg-4">
-          <label class="form-label" i18n>Can Have Users: </label>
-        </div>
-        <div class="col-lg-8 fw-bold">
-          <!-- TODO: use <eg-bool/> once merged-->
-          {{selected.callerData.aout.can_have_users() === 't'}}
-        </div>
-      </div>
-      <div class="row">
+        <div class="row">
           <div class="col-lg-4">
             <label class="form-label" i18n>Can Have Holdings: </label>
           </div>
@@ -80,22 +81,23 @@
             {{selected.callerData.aout.can_have_vols() === 't'}}
           </div>
         </div>
-      <div class="row">
-        <div class="col-lg-4">
-          <label class="form-label" i18n>Depth: </label>
+        <div class="row">
+          <div class="col-lg-4">
+            <label class="form-label" i18n>Depth: </label>
+          </div>
+          <div class="col-lg-8 fw-bold">
+            {{selected.callerData.aout.depth()}}
+          </div>
         </div>
-        <div class="col-lg-8 fw-bold">
-          {{selected.callerData.aout.depth()}}
+        <div class="row">
+          <div class="col-lg-4">
+            <label class="form-label" i18n>Number of Org Units Of This Type: </label>
+          </div>
+          <div class="col-lg-8 fw-bold">
+            {{selected.callerData.orgCount}}
+          </div>
         </div>
       </div>
-      <div class="row">
-        <div class="col-lg-4">
-          <label class="form-label" i18n>Number of Org Units Of This Type: </label>
-        </div>
-        <div class="col-lg-8 fw-bold">
-          {{selected.callerData.orgCount}}
-        </div>
-      </div>
-    </div>
+    }
   </div>
 </div>

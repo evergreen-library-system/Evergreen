@@ -1,21 +1,25 @@
 <ng-template #dialogContent>
   <div class="modal-header">
     <h4 class="modal-title">{{dialogTitle}}</h4>
-    <button type="button" class="btn-close btn-close-white" 
-      i18n-aria-label aria-label="Close dialog" (click)="close()"></button>
+    <button type="button" class="btn-close btn-close-white"
+    i18n-aria-label aria-label="Close dialog" (click)="close()"></button>
   </div>
   <div class="modal-body">
-    <ng-container *ngIf="!dialogBodyTemplate">
+    @if (!dialogBodyTemplate) {
       <p>{{dialogBody}}</p>
-    </ng-container>
-    <ng-container *ngIf="dialogBodyTemplate">
+    }
+    @if (dialogBodyTemplate) {
       <ng-container *ngTemplateOutlet="dialogBodyTemplate"></ng-container>
-    </ng-container>
+    }
   </div>
-  <div *ngIf="!hideFooter" class="modal-footer">
-    <button type="button" class="btn btn-success" 
+  @if (!hideFooter) {
+    <div class="modal-footer">
+      <button type="button" class="btn btn-success"
       (click)="close(true)">{{confirmString}}</button>
-    <button *ngIf="!hideCancel" type="button" class="btn btn-normal" 
-      (click)="close(false)">{{cancelString}}</button>
-  </div>
+      @if (!hideCancel) {
+        <button type="button" class="btn btn-normal"
+        (click)="close(false)">{{cancelString}}</button>
+      }
+    </div>
+  }
 </ng-template>

@@ -6,7 +6,7 @@ import {StringComponent} from '@eg/share/string/string.component';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {AcqSearchTerm, AcqSearch} from './acq-search.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import { ComboboxComponent } from '@eg/share/combobox/combobox.component';
 import { OrgSelectComponent } from '@eg/share/org-select/org-select.component';
@@ -18,14 +18,13 @@ import { IntervalInputComponent } from '@eg/share/interval-input/interval-input.
     styleUrls: ['acq-search-form.component.css'],
     templateUrl: './acq-search-form.component.html',
     imports: [
-        ComboboxComponent,
-        CommonModule,
-        DateSelectComponent,
-        FormsModule,
-        IntervalInputComponent,
-        OrgSelectComponent,
-        StringComponent,
-    ]
+    ComboboxComponent,
+    DateSelectComponent,
+    FormsModule,
+    IntervalInputComponent,
+    OrgSelectComponent,
+    StringComponent
+]
 })
 
 export class AcqSearchFormComponent implements OnInit, OnChanges {

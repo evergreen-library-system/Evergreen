@@ -6,15 +6,15 @@ import {EventService} from '@eg/core/event.service';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';
-import {OrgService} from '@eg/core/org.service';
 import {StringComponent} from '@eg/share/string/string.component';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
-import {NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
+import {NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 import {BibRecordService, BibRecordSummary} from '@eg/share/catalog/bib-record.service';
 import {ComboboxComponent, ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {BillingService} from '@eg/staff/share/billing/billing.service';
-import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { CurrencyPipe, DatePipe } from '@angular/common';
+import { FormatValuePipe } from '@eg/core/format.service';
 
 /**
  * Dialog for marking items damaged and asessing related bills.
@@ -25,7 +25,9 @@ import { FormsModule } from '@angular/forms';
     templateUrl: 'mark-damaged-dialog.component.html',
     imports: [
         ComboboxComponent,
-        CommonModule,
+        CurrencyPipe,
+        DatePipe,
+        FormatValuePipe,
         FormsModule,
         StringComponent
     ]
@@ -33,12 +35,10 @@ import { FormsModule } from '@angular/forms';
 
 export class MarkDamagedDialogComponent
     extends DialogComponent {
-    private modal: NgbModal;
     private toast = inject(ToastService);
     private net = inject(NetService);
     private evt = inject(EventService);
     private pcrud = inject(PcrudService);
-    private org = inject(OrgService);
     private billing = inject(BillingService);
     private bib = inject(BibRecordService);
     private auth = inject(AuthService);
@@ -65,14 +65,6 @@ export class MarkDamagedDialogComponent
 
     // Charge data returned from the server requesting additional charge info.
     chargeResponse: any;
-
-    constructor() {
-        const modal = inject(NgbModal);
-
-        super(modal); // required for subclassing
-
-        this.modal = modal;
-    }
 
     /**
      * Fetch the item/record, then open the dialog.

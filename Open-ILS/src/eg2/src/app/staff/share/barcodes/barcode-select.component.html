@@ -4,27 +4,27 @@
     <h4 class="modal-title">
       <span i18n>Select Barcode</span>
     </h4>
-    <button type="button" class="btn-close btn-close-white" 
-      i18n-aria-label aria-label="Close dialog" (click)="close()"></button>
+    <button type="button" class="btn-close btn-close-white"
+    i18n-aria-label aria-label="Close dialog" (click)="close()"></button>
   </div>
   <div class="modal-body">
     <div class="alert alert-primary m-1 mb-3" i18n>Select the desired barcode.</div>
-	  <ng-container *ngFor="let match of matches">
-		  <div class="form-check mb-2">
-			  <input class="form-check-input" type="checkbox" value="" 
+    @for (match of matches; track match) {
+      <div class="form-check mb-2">
+        <input class="form-check-input" type="checkbox" value=""
           id="barcode-check-{{match.id}}" [(ngModel)]="inputs[match.id]"
           (ngModelChange)="selectionChanged()">
-			  <label class="form-label form-check-label" for="barcode-check-{{match.id}}">
+        <label class="form-label form-check-label" for="barcode-check-{{match.id}}">
           {{match.barcode}}
-			  </label>
-		  </div>
-    </ng-container>
+        </label>
+      </div>
+    }
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-success" [disabled]="!selected"
-      (click)="close(selected)" i18n>Select</button>
-    <button type="button" class="btn btn-normal" 
-      (click)="close()" i18n>Cancel</button>
+    (click)="close(selected)" i18n>Select</button>
+    <button type="button" class="btn btn-normal"
+    (click)="close()" i18n>Cancel</button>
   </div>
 </ng-template>
 

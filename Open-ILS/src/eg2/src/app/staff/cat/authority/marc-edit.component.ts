@@ -2,12 +2,14 @@ import { Component, AfterViewInit, Renderer2, inject } from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 import { MarcEditorComponent } from '@eg/staff/share/marc-edit/editor.component';
 import { StaffBannerComponent } from '@eg/staff/share/staff-banner.component';
+import { FormsModule } from '@angular/forms';
 
 @Component({
     templateUrl: 'marc-edit.component.html',
     imports: [
         MarcEditorComponent,
         StaffBannerComponent,
+        FormsModule
     ]
 })
 export class AuthorityMarcEditComponent implements AfterViewInit {

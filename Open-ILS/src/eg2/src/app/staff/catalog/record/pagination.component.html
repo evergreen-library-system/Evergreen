@@ -1,36 +1,38 @@
-<ul class="pagination mb-0" *ngIf="index !== null">
-  <li class="page-item" [ngClass]="{disabled : index === 0}">
-    <button type="button" class="btn btn-link page-link" 
-      (click)="firstRecord()">
-      <span i18n>Start</span>
-    </button>
-  </li>
-  <li class="page-item" [ngClass]="{disabled : index === 0}">
-    <button type="button" class="btn btn-link page-link" 
-      (click)="prevRecord()">
-      <span i18n>Previous</span>
-    </button>
-  </li>
-  <li class="page-item"
-    [ngClass]="{disabled : index >= searchContext.result.count - 1}">
-    <button type="button" class="btn btn-link page-link" 
-      (click)="nextRecord()">
-      <span i18n>Next</span>
-    </button>
-  </li>
-  <li class="page-item"
+@if (index !== null) {
+  <ul class="pagination mb-0">
+    <li class="page-item" [ngClass]="{disabled : index === 0}">
+      <button type="button" class="btn btn-link page-link"
+        (click)="firstRecord()">
+        <span i18n>Start</span>
+      </button>
+    </li>
+    <li class="page-item" [ngClass]="{disabled : index === 0}">
+      <button type="button" class="btn btn-link page-link"
+        (click)="prevRecord()">
+        <span i18n>Previous</span>
+      </button>
+    </li>
+    <li class="page-item"
       [ngClass]="{disabled : index >= searchContext.result.count - 1}">
-    <button type="button" class="btn btn-link page-link" 
-      (click)="lastRecord()">
-      <span i18n>End</span>
-    </button>
-  </li>
-  <li class="page-item">
-    <button type="button" class="btn btn-link page-link" 
-      (click)="returnToSearch()">
-      <span i18n>
+      <button type="button" class="btn btn-link page-link"
+        (click)="nextRecord()">
+        <span i18n>Next</span>
+      </button>
+    </li>
+    <li class="page-item"
+      [ngClass]="{disabled : index >= searchContext.result.count - 1}">
+      <button type="button" class="btn btn-link page-link"
+        (click)="lastRecord()">
+        <span i18n>End</span>
+      </button>
+    </li>
+    <li class="page-item">
+      <button type="button" class="btn btn-link page-link"
+        (click)="returnToSearch()">
+        <span i18n>
         Back to Results ({{index + 1}} / {{searchContext.result.count}})
       </span>
-    </button>
-  </li>
-</ul>
+      </button>
+    </li>
+  </ul>
+}

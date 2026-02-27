@@ -12,23 +12,23 @@
     <li role="presentation" ngbNavItem="checkouts">
       <a role="tab" ngbNavLink i18n>Items Checked Out ({{mainList.length}})</a>
       <ng-template ngbNavContent>
-        <ng-container *ngIf="loading">
+        @if (loading) {
           <ng-container *ngTemplateOutlet="progress"></ng-container>
-        </ng-container>
+        }
         <eg-circ-grid #checkoutsGrid [pageSize]="25" sortField="due_date"
           persistKey="circ.patron.items_out" (reloadRequested)="load()"
           [patron]="context.summary?.patron">
         </eg-circ-grid>
       </ng-template>
     </li>
-    <ng-container *ngIf="displayAltList">
+    @if (displayAltList) {
       <li role="presentation" ngbNavItem="other">
         <a role="tab" ngbNavLink i18n>Other/Special Circulations ({{altList.length}})</a>
         <ng-template ngbNavContent>
           <ng-container>
-            <ng-container *ngIf="loading">
+            @if (loading) {
               <ng-container *ngTemplateOutlet="progress"></ng-container>
-            </ng-container>
+            }
             <eg-circ-grid #otherGrid [pageSize]="25" sortField="due_date"
               persistKey="circ.patron.items_out.other"
               (reloadRequested)="load()"
@@ -37,21 +37,23 @@
           </ng-container>
         </ng-template>
       </li>
-    </ng-container>
+    }
     <li role="presentation" ngbNavItem="noncat">
       <a role="tab" ngbNavLink i18n>
-        <ng-container *ngIf="context.summary && context.summary.stats">
+        @if (context.summary && context.summary.stats) {
+
           Non-Cataloged Circulations ({{context.summary.stats.checkouts.noncat}})
-        </ng-container>
+        
+}
       </a>
       <ng-template ngbNavContent>
         <ng-container>
           <ng-container>
-            <ng-container *ngIf="loading">
+            @if (loading) {
               <ng-container *ngTemplateOutlet="progress"></ng-container>
-            </ng-container>
+            }
             <eg-circ-grid #nonCatGrid persistKey="circ.patron.items_out.noncat"
-              sortField="due_date" menuStyle="none" (reloadRequested)="load()" 
+              sortField="due_date" menuStyle="none" (reloadRequested)="load()"
               [pageSize]="25">
             </eg-circ-grid>
           </ng-container>

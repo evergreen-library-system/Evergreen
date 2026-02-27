@@ -2,7 +2,7 @@
 <eg-staff-banner i18n-bannerText bannerText="Line Items Related to Bib Record">
 </eg-staff-banner>
 
-<eg-bib-summary [recordId]="recordId"></eg-bib-summary> 
+<eg-bib-summary [recordId]="recordId"></eg-bib-summary>
 
 <eg-prompt-dialog #newPlDialog
   i18n-dialogTitle dialogTitle="New Selection List"
@@ -22,21 +22,23 @@
     </button>
   </div>
   <div class="col-lg-2 p-1">
-    <button class="btn btn-outline-dark label-with-material-icon" 
+    <button class="btn btn-outline-dark label-with-material-icon"
       (click)="addingToPl=!addingToPl" type="button">
       <span class="material-icons me-1" aria-hidden="true">add_circle</span>
       <span i18n>Add To Selection List</span>
     </button>
   </div>
   <div class="col-lg-2 p-1">
-    <div *ngIf="addingToPl" class="d-flex">
-      <eg-combobox [(ngModel)]="selectedPl" idlClass="acqpl" [asyncSupportsEmptyTermClick]="true"
+    @if (addingToPl) {
+      <div class="d-flex">
+        <eg-combobox [(ngModel)]="selectedPl" idlClass="acqpl" [asyncSupportsEmptyTermClick]="true"
         placeholder="Select List..." i18n-placeHolder></eg-combobox>
-      <button class="btn btn-outline-primary btn-sm" type="button"
-        (click)="addToPicklist(selectedPl ? selectedPl.id : null)" i18n>
+        <button class="btn btn-outline-primary btn-sm" type="button"
+          (click)="addToPicklist(selectedPl ? selectedPl.id : null)" i18n>
         Apply
       </button>
-    </div>
+      </div>
+    }
   </div>
   <div class="col-lg-2 p-1">
     <button class="btn btn-outline-dark label-with-material-icon"
@@ -46,21 +48,23 @@
     </button>
   </div>
   <div class="col-lg-2 p-1">
-    <button class="btn btn-outline-dark label-with-material-icon" 
+    <button class="btn btn-outline-dark label-with-material-icon"
       (click)="addingToPo=!addingToPo" type="button">
       <span class="material-icons me-1" aria-hidden="true">add_circle_outline</span>
       <span i18n>Add To Purchase Order</span>
     </button>
   </div>
   <div class="col-lg-2 p-1">
-    <div *ngIf="addingToPo" class="d-flex">
-      <eg-combobox [(ngModel)]="selectedPo" idlClass="acqpo" [asyncSupportsEmptyTermClick]="true"
+    @if (addingToPo) {
+      <div class="d-flex">
+        <eg-combobox [(ngModel)]="selectedPo" idlClass="acqpo" [asyncSupportsEmptyTermClick]="true"
         placeholder="Select Order..." i18n-placeHolder></eg-combobox>
-      <button class="btn btn-outline-primary btn-sm" type="button"
-        (click)="addToPo(selectedPo ? selectedPo.id : null)" i18n>
+        <button class="btn btn-outline-primary btn-sm" type="button"
+          (click)="addToPo(selectedPo ? selectedPo.id : null)" i18n>
         Apply
       </button>
-    </div>
+      </div>
+    }
   </div>
 </div>
 

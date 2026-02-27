@@ -2,32 +2,27 @@
 import { Component, OnInit, Input, ViewChild, inject } from '@angular/core';
 import {tap} from 'rxjs';
 import {NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
-import {OrgService} from '@eg/core/org.service';
 import {NetService} from '@eg/core/net.service';
-import {PcrudService} from '@eg/core/pcrud.service';
 import {AuthService} from '@eg/core/auth.service';
 import {PatronService} from '@eg/staff/share/patron/patron.service';
 import {PatronContextService} from './patron.service';
-import {CheckoutResult, CircService} from '@eg/staff/share/circ/circ.service';
-import {StoreService} from '@eg/core/store.service';
+import {CircService} from '@eg/staff/share/circ/circ.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
-import {AudioService} from '@eg/share/util/audio.service';
 import {CircGridComponent, CircGridEntry} from '@eg/staff/share/circ/grid.component';
 import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
     templateUrl: 'items.component.html',
     selector: 'eg-patron-items',
-    imports: [StaffCommonModule]
+    imports: [
+        CircGridComponent,
+        StaffCommonModule
+    ]
 })
 export class ItemsComponent implements OnInit {
-    private org = inject(OrgService);
     private net = inject(NetService);
-    private pcrud = inject(PcrudService);
     private auth = inject(AuthService);
     circ = inject(CircService);
-    private audio = inject(AudioService);
-    private store = inject(StoreService);
     private serverStore = inject(ServerStoreService);
     patronService = inject(PatronService);
     context = inject(PatronContextService);

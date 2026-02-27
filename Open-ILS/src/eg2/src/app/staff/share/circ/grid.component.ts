@@ -29,7 +29,7 @@ import {ClaimsReturnedDialogComponent} from './claims-returned-dialog.component'
 import {ToastService} from '@eg/share/toast/toast.service';
 import {AddBillingDialogComponent} from '@eg/staff/share/billing/billing-dialog.component';
 import { GridModule } from '@eg/share/grid/grid.module';
-import { CommonModule } from '@angular/common';
+
 import { RouterModule } from '@angular/router';
 
 export interface CircGridEntry extends CircDisplayInfo {
@@ -70,7 +70,6 @@ const CIRC_FLESH_FIELDS = {
     imports: [
         AddBillingDialogComponent,
         ClaimsReturnedDialogComponent,
-        CommonModule,
         ConfirmDialogComponent,
         CopyAlertsDialogComponent,
         DueDateDialogComponent,

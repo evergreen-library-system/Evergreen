@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, QueryList, ViewChild, ViewChildren, inject } from '@angular/core';
 import {Router, RouterModule} from '@angular/router';
-import {NgClass, NgIf, ViewportScroller} from '@angular/common';
+import { NgClass, ViewportScroller } from '@angular/common';
 import {Subscription} from 'rxjs';
 import {OrgService} from '@eg/core/org.service';
 import {AuthService} from '@eg/core/auth.service';
@@ -27,7 +27,6 @@ import {AccessKeyInfoComponent} from '@eg/share/accesskey/accesskey-info.compone
         NgbDropdownMenu,
         NgbDropdownToggle,
         NgClass,
-        NgIf,
         OpChangeComponent,
         RouterModule
     ]

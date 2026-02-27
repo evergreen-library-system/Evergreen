@@ -22,7 +22,6 @@ import {BibDisplayFieldComponent} from './bib-display-field.component';
         CatalogUrlService,
         UnapiService,
         BibRecordService,
-        BasketService
     ]
 })
 

@@ -5,10 +5,12 @@ import {IdlObject} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {OrgService} from '@eg/core/org.service';
 import { StaffCommonModule } from '@eg/staff/common.module';
+import { MatchSetQualityComponent } from './match-set-quality.component';
+import { MatchSetExpressionComponent } from './match-set-expression.component';
 
 @Component({
     templateUrl: 'match-set.component.html',
-    imports: [StaffCommonModule]
+    imports: [StaffCommonModule, MatchSetQualityComponent, MatchSetExpressionComponent]
 })
 export class MatchSetComponent implements OnInit {
     private router = inject(Router);

@@ -25,23 +25,23 @@
 <div class="mt-3">
 
   <ng-template #barcodeTemplate let-r="row">
-    <ng-container *ngIf="r.card()">
+    @if (r.card()) {
       <a routerLink="/staff/circ/patron/{{r.id()}}/checkout">
         {{r.card().barcode()}}
       </a>
-    </ng-container>
+    }
   </ng-template>
 
-  <eg-grid idlClass="au" #groupGrid 
+  <eg-grid idlClass="au" #groupGrid
     persistKey="circ.patron.group_members" [cellTextGenerator]="cellTextGenerator"
     [dataSource]="dataSource" [sortable]="true" [useLocalSort]="true"
     [showDeclaredFieldsOnly]="true" (onRowActivate)="onRowActivate($event)">
 
-    <eg-grid-toolbar-button label="Move Another Patron To This Group" 
+    <eg-grid-toolbar-button label="Move Another Patron To This Group"
       i18n-label (onClick)="movePatronToGroup()">
     </eg-grid-toolbar-button>
 
-    <eg-grid-toolbar-action 
+    <eg-grid-toolbar-action
       label="Register a New Group Member By Cloning Selected Patron"
       i18n-label (onClick)="cloneSelected($event)">
     </eg-grid-toolbar-action>

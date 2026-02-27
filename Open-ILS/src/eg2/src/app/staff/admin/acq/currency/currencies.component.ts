@@ -1,19 +1,10 @@
-import { Component, ViewChild, OnInit, inject } from '@angular/core';
-import {CommonModule, Location} from '@angular/common';
-import {FormatService} from '@eg/core/format.service';
+import { Component, ViewChild, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import {GridDataSource, GridCellTextGenerator} from '@eg/share/grid/grid';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {AdminPageComponent} from '@eg/staff/share/admin-page/admin-page.component';
 import {Pager} from '@eg/share/util/pager';
-import {ActivatedRoute} from '@angular/router';
-import {IdlService, IdlObject} from '@eg/core/idl.service';
-import {ToastService} from '@eg/share/toast/toast.service';
-import {PcrudService} from '@eg/core/pcrud.service';
-import {OrgService} from '@eg/core/org.service';
-import {PermService} from '@eg/core/perm.service';
-import {AuthService} from '@eg/core/auth.service';
-import {BroadcastService} from '@eg/share/util/broadcast.service';
-import {NetService} from '@eg/core/net.service';
+import {IdlObject} from '@eg/core/idl.service';
 import {ExchangeRatesDialogComponent} from './exchange-rates-dialog.component';
 import {forkJoin} from 'rxjs';
 import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
@@ -25,6 +16,7 @@ import { OrgFamilySelectComponent } from '@eg/share/org-family-select/org-family
 import { TranslateComponent } from '@eg/share/translate/translate.component';
 import { GridModule } from '@eg/share/grid/grid.module';
 import { FmRecordEditorComponent } from '@eg/share/fm-editor/fm-editor.component';
+import { FormsModule } from '@angular/forms';
 
 @Component({
     templateUrl: './currencies.component.html',
@@ -34,6 +26,7 @@ import { FmRecordEditorComponent } from '@eg/share/fm-editor/fm-editor.component
         ConfirmDialogComponent,
         ExchangeRatesDialogComponent,
         FmRecordEditorComponent,
+        FormsModule,
         GridModule,
         OrgFamilySelectComponent,
         StaffBannerComponent,
@@ -44,8 +37,6 @@ import { FmRecordEditorComponent } from '@eg/share/fm-editor/fm-editor.component
 })
 
 export class CurrenciesComponent extends AdminPageComponent implements OnInit {
-    private net = inject(NetService);
-
     idlClass = 'acqct';
     classLabel: string;
 

@@ -12,7 +12,6 @@ import {CopyAlertManagerDialogComponent
 import {BadBarcodeDialogComponent} from './bad-barcode-dialog.component';
 import {CircEmailReceiptDialogComponent} from './circ-email-receipt-dialog.component';
 import {ProgressDialogComponent} from '@eg/share/dialog/progress.component';
-import { CommonModule } from '@angular/common';
 
 /* Container component for sub-components used by circulation actions.
  *
@@ -27,13 +26,14 @@ import { CommonModule } from '@angular/common';
     imports: [
         AlertDialogComponent,
         BadBarcodeDialogComponent,
+        CircEmailReceiptDialogComponent,
         CircEventsComponent,
-        CommonModule,
         CopyAlertManagerDialogComponent,
         CopyInTransitDialogComponent,
         RouteDialogComponent,
         OpenCircDialogComponent,
         PrecatCheckoutDialogComponent,
+        ProgressDialogComponent,
         StringComponent
     ]
 })

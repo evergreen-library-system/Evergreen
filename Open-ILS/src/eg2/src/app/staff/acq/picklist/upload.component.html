@@ -1,9 +1,13 @@
-<eg-staff-banner bannerText="Load MARC Order Records" i18n-bannerText *ngIf="mode !== 'getImportParams' && !vandelayEmbed">
-</eg-staff-banner>
+@if (mode !== 'getImportParams' && !vandelayEmbed) {
+  <eg-staff-banner bannerText="Load MARC Order Records" i18n-bannerText>
+  </eg-staff-banner>
+}
 
-<div class="row" *ngIf="mode !== 'getImportParams'">
-  <div class="ms-auto me-3"><a i18n href="/eg/staff/acq/legacy/picklist/upload">Legacy Upload Interface</a></div>
-</div>
+@if (mode !== 'getImportParams') {
+  <div class="row">
+    <div class="ms-auto me-3"><a i18n href="/eg/staff/acq/legacy/picklist/upload">Legacy Upload Interface</a></div>
+  </div>
+}
 
 <eg-string #loadMarcOrderTemplateSavedString i18n-text text="Load MARC Order Record Template Saved"></eg-string>
 <eg-string #loadMarcOrderTemplateDeletedString i18n-text text="Load MARC Order Record Template Deleted"></eg-string>
@@ -16,8 +20,12 @@
 <div class="common-form striped-odd form-validated ms-3 me-3">
   <div class="row">
     <div class="col-lg-3">
-      <label class="form-label" for="template-select" i18n *ngIf="mode !== 'getImportParams'">Apply/Create Form Template</label>
-      <label class="form-label" for="template-select" i18n *ngIf="mode === 'getImportParams'">Apply Form Template</label>
+      @if (mode !== 'getImportParams') {
+        <label class="form-label" for="template-select" i18n>Apply/Create Form Template</label>
+      }
+      @if (mode === 'getImportParams') {
+        <label class="form-label" for="template-select" i18n>Apply Form Template</label>
+      }
     </div>
     <div class="col-lg-3">
       <eg-combobox #formTemplateSelector
@@ -29,51 +37,51 @@
         [entries]="formatTemplateEntries()">
       </eg-combobox>
     </div>
-    <div class="col-lg-6" *ngIf="mode !== 'getImportParams'">
-      <button type="button"  class="btn btn-success"
-        [disabled]="!selectedTemplate"
+    @if (mode !== 'getImportParams') {
+      <div class="col-lg-6">
+        <button type="button"  class="btn btn-success"
+          [disabled]="!selectedTemplate"
         (click)="saveTemplate()" i18n>Save Template</button>
-      <button type="button" class="btn btn-outline-primary ms-3"
-        [disabled]="!selectedTemplate"
+        <button type="button" class="btn btn-outline-primary ms-3"
+          [disabled]="!selectedTemplate"
         (click)="markTemplateDefault()" i18n>Mark Template as Default</button>
-      <button type="button" class="btn btn-danger ms-3"
-        [disabled]="!selectedTemplate"
+        <button type="button" class="btn btn-danger ms-3"
+          [disabled]="!selectedTemplate"
         (click)="deleteTemplate()" i18n>Delete Template</button>
-    </div>
+      </div>
+    }
   </div>
 
-  <ng-container *ngIf="mode !== 'getImportParams'">
-  <h2>Purchase Order</h2>
-  <div class="row">
-    <div class="col-lg-3">
-      <label class="form-label" for="provider-select" i18n>Provider</label>
+  @if (mode !== 'getImportParams') {
+    <h2>Purchase Order</h2>
+    <div class="row">
+      <div class="col-lg-3">
+        <label class="form-label" for="provider-select" i18n>Provider</label>
+      </div>
+      <div class="col-lg-3">
+        <eg-combobox #providerSelector
+          domId="provider-select"
+          [selectedId]="selectedProvider" (onChange)="selectedProvider = $event.id"
+          style="border-inline-start-width: 0px"
+          [required]="true"
+          [asyncSupportsEmptyTermClick]="true"
+          idlIncludeLibraryInLabel="owner"
+          [idlQueryAnd]="{active: 't'}" idlClass="acqpro">
+        </eg-combobox>
+      </div>
+      <div class="col-lg-3">
+        <label class="form-label" for="create-po" i18n>Create Purchase Order</label>
+      </div>
+      <div class="col-lg-3">
+        <input class="form-check-input" type="checkbox"
+          id="create-po"
+          [(ngModel)]="createPurchaseOrder">
+      </div>
     </div>
-
-    <div class="col-lg-3">
-      <eg-combobox #providerSelector
-        domId="provider-select"
-        [selectedId]="selectedProvider" (onChange)="selectedProvider = $event.id"
-        style="border-inline-start-width: 0px"
-        [required]="true"
-        [asyncSupportsEmptyTermClick]="true"
-        idlIncludeLibraryInLabel="owner"
-        [idlQueryAnd]="{active: 't'}" idlClass="acqpro">
-      </eg-combobox>
-    </div>
-
-    <div class="col-lg-3">
-      <label class="form-label" for="create-po" i18n>Create Purchase Order</label>
-  </div>
-  <div class="col-lg-3">
-    <input class="form-check-input" type="checkbox"
-      id="create-po"
-      [(ngModel)]="createPurchaseOrder">
-  </div>
-</div>
-  <div class="row">
-    <div class="col-lg-3">
-      <label class="form-label" for="type-select" i18n>Ordering Agency</label>
-    </div>
+    <div class="row">
+      <div class="col-lg-3">
+        <label class="form-label" for="type-select" i18n>Ordering Agency</label>
+      </div>
       <div class="col-lg-3">
         <eg-org-select
           domId="type-select"
@@ -82,271 +90,291 @@
           [limitPerms]="['CREATE_PICKLIST','CREATE_PURCHASE_ORDER']">
         </eg-org-select>
       </div>
-
       <div class="col-lg-3">
         <label class="form-label" for="activate-po" i18n>Activate Purchase Order</label>
+      </div>
+      <div class="col-lg-3">
+        <input class="form-check-input" type="checkbox"
+          id="activate-po"
+          [(ngModel)]="activatePurchaseOrder">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-3">
+        <label class="form-label" for="year-select" i18n>Fiscal Year</label>
+      </div>
+      <div class="col-lg-3">
+        <eg-combobox #fiscalYearSelector
+          id="year-select"
+          [startId]="selectedFiscalYear"
+          [entries]="formatEntries('fiscalYears')"
+          [required]="true"
+          (onChange)="selectEntry($event, 'fiscalYears')">
+        </eg-combobox>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-3">
+        <label class="form-label" for="sl-select" i18n>Add to Selection List?</label>
+      </div>
+      <div class="col-lg-3">
+        <eg-combobox #selectionListSelector
+          id="sl-select"
+          [startId]="selectedSelectionList"
+          [entries]="formatEntries('selectionLists')"
+          (onChange)="selectedSelectionList=$event" i18n-placeholder
+          [allowFreeText]="true">
+        </eg-combobox>
+      </div>
+    </div>
+    } <!-- purchase order section -->
+
+    @if (mode !== 'getImportParams') {
+      <h2>Upload Settings</h2>
+    }
+
+    <div class="row">
+      <div class="col-lg-3">
+        <label class="form-label" for="source-select" i18n>Record Source</label>
+      </div>
+      <div class="col-lg-3">
+        <eg-combobox #bibSourceSelector
+          id="source-select"
+          [entries]="formatEntries('bibSources')"
+          (onChange)="selectEntry($event, 'bibSources')"
+          [startId]="selectedBibSource">
+        </eg-combobox>
+      </div>
+      <div class="col-lg-3">
+        <label class="form-label" for="import-non-matching" i18n>Import Non-Matching Records</label>
+      </div>
+      <div class="col-lg-3">
+        <input class="form-check-input" type="checkbox"
+          id="import-non-matching"
+          [(ngModel)]="importNonMatching">
+      </div>
     </div>
 
-    <div class="col-lg-3">
-      <input class="form-check-input" type="checkbox"
-        id="activate-po"
-        [(ngModel)]="activatePurchaseOrder">
-    </div>
+    <div class="row">
+      <div class="col-lg-3">
+        <label class="form-label" for="match-set-select" i18n>Record Match Set</label>
+      </div>
+      <div class="col-lg-3">
+        <eg-combobox #matchSetSelector
+          id="match-set-select"
+          [entries]="formatEntries('matchSets')"
+          [disabled]="(selectedQueue && !selectedQueue.freetext) || importSelection()"
+          [startId]="selectedMatchSet || defaultMatchSet"
+          (onChange)="selectEntry($event, 'matchSets')">
+        </eg-combobox>
+      </div>
+      <div class="col-lg-3">
+        <label class="form-label" for="merge-on-exact" i18n>Merge On Exact Match (901c)</label>
+      </div>
+      <div class="col-lg-3">
+        <input class="form-check-input" type="checkbox"
+          id="merge-on-exact" [(ngModel)]="mergeOnExact">
+      </div>
     </div>
 
-  <div class="row">
-    <div class="col-lg-3">
-      <label class="form-label" for="year-select" i18n>Fiscal Year</label>
-    </div>
-    <div class="col-lg-3">
-      <eg-combobox #fiscalYearSelector
-        id="year-select"
-        [startId]="selectedFiscalYear"
-        [entries]="formatEntries('fiscalYears')"
-        [required]="true"
-        (onChange)="selectEntry($event, 'fiscalYears')">
-      </eg-combobox>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-lg-3">
-      <label class="form-label" for="sl-select" i18n>Add to Selection List?</label>
-    </div>
-    <div class="col-lg-3">
-      <eg-combobox #selectionListSelector
-        id="sl-select"
-        [startId]="selectedSelectionList"
-        [entries]="formatEntries('selectionLists')"
-        (onChange)="selectedSelectionList=$event" i18n-placeholder
-        [allowFreeText]="true">
-      </eg-combobox>
-    </div>
-  </div>
-  </ng-container> <!-- purchase order section -->
-
-  <h2 *ngIf="mode !== 'getImportParams'">Upload Settings</h2>
-
-  <div class="row">
-    <div class="col-lg-3">
-      <label class="form-label" for="source-select" i18n>Record Source</label>
-    </div>
-    <div class="col-lg-3">
-      <eg-combobox #bibSourceSelector
-        id="source-select"
-        [entries]="formatEntries('bibSources')"
-        (onChange)="selectEntry($event, 'bibSources')"
-        [startId]="selectedBibSource">
-      </eg-combobox>
-    </div>
-    <div class="col-lg-3">
-      <label class="form-label" for="import-non-matching" i18n>Import Non-Matching Records</label>
-  </div>
-  <div class="col-lg-3">
-    <input class="form-check-input" type="checkbox"
-      id="import-non-matching"
-      [(ngModel)]="importNonMatching">
-  </div>
-  </div>
-
-  <div class="row">
-    <div class="col-lg-3">
-      <label class="form-label" for="match-set-select" i18n>Record Match Set</label>
-    </div>
-    <div class="col-lg-3">
-      <eg-combobox #matchSetSelector
-        id="match-set-select"
-        [entries]="formatEntries('matchSets')"
-        [disabled]="(selectedQueue && !selectedQueue.freetext) || importSelection()"
-        [startId]="selectedMatchSet || defaultMatchSet"
-        (onChange)="selectEntry($event, 'matchSets')">
-      </eg-combobox>
-    </div>
-    <div class="col-lg-3">
-      <label class="form-label" for="merge-on-exact" i18n>Merge On Exact Match (901c)</label>
-  </div>
-  <div class="col-lg-3">
-    <input class="form-check-input" type="checkbox"
-      id="merge-on-exact" [(ngModel)]="mergeOnExact">
-  </div>
- </div>
-
-  <div class="row">
-    <div class="col-lg-3">
-      <label class="form-label" for="merge-profiles" i18n>Merge Profile</label>
-    </div>
-    <div class="col-lg-3">
-      <eg-combobox #mergeProfileSelector
-        id="merge-profiles"
-        [entries]="formatEntries('mergeProfiles')"
-        (onChange)="selectEntry($event, 'mergeProfiles')"
-        [startId]="selectedMergeProfile">
-      </eg-combobox>
-    </div>
-    <div class="col-lg-3">
+    <div class="row">
+      <div class="col-lg-3">
+        <label class="form-label" for="merge-profiles" i18n>Merge Profile</label>
+      </div>
+      <div class="col-lg-3">
+        <eg-combobox #mergeProfileSelector
+          id="merge-profiles"
+          [entries]="formatEntries('mergeProfiles')"
+          (onChange)="selectEntry($event, 'mergeProfiles')"
+          [startId]="selectedMergeProfile">
+        </eg-combobox>
+      </div>
+      <div class="col-lg-3">
         <label class="form-label" for="merge-on-single" i18n>Merge On Single Match</label>
+      </div>
+      <div class="col-lg-3">
+        <input class="form-check-input" type="checkbox"
+          id="merge-on-single" [(ngModel)]="mergeOnSingleMatch">
+      </div>
     </div>
-    <div class="col-lg-3">
-      <input class="form-check-input" type="checkbox"
-        id="merge-on-single" [(ngModel)]="mergeOnSingleMatch">
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-lg-3">
-      <label class="form-label" for="insuff-merge-profiles" i18n>
+    <div class="row">
+      <div class="col-lg-3">
+        <label class="form-label" for="insuff-merge-profiles" i18n>
         Insufficient Quality Fall-Through Profile
     </label>
+      </div>
+      <div class="col-lg-3">
+        <eg-combobox #fallThruMergeProfileSelector
+          id="insuff-merge-profiles"
+          [entries]="formatEntries('mergeProfiles')"
+          (onChange)="selectEntry($event, 'FallThruMergeProfile')"
+          [startId]="selectedFallThruMergeProfile">
+        </eg-combobox>
+      </div>
+      <div class="col-lg-3">
+        <label class="form-label" for="merge-on-best" i18n>Merge On Best Match</label>
+      </div>
+      <div class="col-lg-3">
+        <input class="form-check-input" type="checkbox"
+          id="merge-on-best" [(ngModel)]="mergeOnBestMatch">
+      </div>
     </div>
-    <div class="col-lg-3">
-      <eg-combobox #fallThruMergeProfileSelector
-        id="insuff-merge-profiles"
-        [entries]="formatEntries('mergeProfiles')"
-        (onChange)="selectEntry($event, 'FallThruMergeProfile')"
-        [startId]="selectedFallThruMergeProfile">
-      </eg-combobox>
-    </div>
-    <div class="col-lg-3">
-      <label class="form-label" for="merge-on-best" i18n>Merge On Best Match</label>
-    </div>
-    <div class="col-lg-3">
-      <input class="form-check-input" type="checkbox"
-        id="merge-on-best" [(ngModel)]="mergeOnBestMatch">
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-lg-3">
-      <label class="form-label" for="min-quality-ratio" i18n>
+    <div class="row">
+      <div class="col-lg-3">
+        <label class="form-label" for="min-quality-ratio" i18n>
         Best/Single Match Minimum Quality Ratio
       </label>
+      </div>
+      <div class="col-lg-3">
+        <input type="number" step="0.1" id="min-quality-ratio"
+          class="form-control" [(ngModel)]="minQualityRatio">
+      </div>
+      @if (mode !== 'getImportParams') {
+        <div class="col-lg-3">
+          <label class="form-label" for="load-items" i18n>Load Items for Imported Records</label>
+        </div>
+        <div class="col-lg-3">
+          <input class="form-check-input" type="checkbox"
+            id="load-items"
+            [(ngModel)]="loadItems">
+        </div>
+      }
     </div>
-    <div class="col-lg-3">
-      <input type="number" step="0.1" id="min-quality-ratio"
-        class="form-control" [(ngModel)]="minQualityRatio">
-    </div>
-    <ng-container *ngIf="mode !== 'getImportParams'">
-    <div class="col-lg-3">
-      <label class="form-label" for="load-items" i18n>Load Items for Imported Records</label>
-    </div>
-    <div class="col-lg-3">
-      <input class="form-check-input" type="checkbox"
-        id="load-items"
-        [(ngModel)]="loadItems">
-    </div>
-    </ng-container>
-  </div>
 
-  <h2 *ngIf="mode !== 'getImportParams'">This Upload</h2>
-  <div class="row">
-    <div class="col-lg-3">
-      <label class="form-label" for="queue-select" i18n>Select or Create a Queue</label>
+    @if (mode !== 'getImportParams') {
+      <h2>This Upload</h2>
+    }
+    <div class="row">
+      <div class="col-lg-3">
+        <label class="form-label" for="queue-select" i18n>Select or Create a Queue</label>
+      </div>
+      <div class="col-lg-3">
+        <eg-combobox [entries]="formatEntries('activeQueues')"
+          id="queue-select"
+          [startIdFiresOnChange]="true"
+          (onChange)="selectedQueue=$event" i18n-placeholder
+          [required]="true"
+          [allowFreeText]="true">
+        </eg-combobox>
+      </div>
     </div>
-    <div class="col-lg-3">
-      <eg-combobox [entries]="formatEntries('activeQueues')"
-        id="queue-select"
-        [startIdFiresOnChange]="true"
-        (onChange)="selectedQueue=$event" i18n-placeholder
-        [required]="true"
-        [allowFreeText]="true">
-      </eg-combobox>
-    </div>
-  </div>
-  <div class="row" *ngIf="!importSelection() && mode !== 'getImportParams'">
-    <div class="col-lg-3">
-      <label class="form-label" for="upload-file" i18n>File to Upload:</label>
-    </div>
-    <div class="col-lg-3">
-      <input #fileSelector (change)="fileSelected($event)"
-        id="upload-file" required class="form-control" type="file"/>
-    </div>
-    <div class="col-lg-3">
-      <label class="form-label" for="background-import" i18n>Request background import</label>
-      <div *ngIf="tooMuchForBackground()" class="small" i18n>Not available when PO or Selection List actions are requested</div>
-    </div>
-    <div class="col-lg-3">
-      <input class="form-check-input" type="checkbox"
-        id="background-import" [disabled]="tooMuchForBackground()"
-        [(ngModel)]="backgroundImportForUpload">
-    </div>
-  </div>
-  <div class="row" *ngIf="!importSelection()">
-    <div class="col-lg-6"></div>
-    <div class="col-lg-3">
-      <label class="form-label" for="background-import-email" i18n>Background Import Notification Email</label>
-    </div>
-    <div class="col-lg-3">
-      <input [disabled]="!backgroundImportForUpload"
-        class="form-control" type="email" autocomplete="email" id="background-import-email"
-        name="background-import-email" [(ngModel)]="backgroundImportEmail">
-    </div>
-  </div>
-  <div class="row" *ngIf="importSelection()">
-    <div class="col-lg-3">
-      <label class="form-label">Import Selected</label>
-    </div>
-    <div class="col-lg-3">
-      <span *ngIf="!importSelection().importQueue" i18n>
+    @if (!importSelection() && mode !== 'getImportParams') {
+      <div class="row">
+        <div class="col-lg-3">
+          <label class="form-label" for="upload-file" i18n>File to Upload:</label>
+        </div>
+        <div class="col-lg-3">
+          <input #fileSelector (change)="fileSelected($event)"
+            id="upload-file" required class="form-control" type="file"/>
+        </div>
+        <div class="col-lg-3">
+          <label class="form-label" for="background-import" i18n>Request background import</label>
+          @if (tooMuchForBackground()) {
+            <div class="small" i18n>Not available when PO or Selection List actions are requested</div>
+          }
+        </div>
+        <div class="col-lg-3">
+          <input class="form-check-input" type="checkbox"
+            id="background-import" [disabled]="tooMuchForBackground()"
+            [(ngModel)]="backgroundImportForUpload">
+        </div>
+      </div>
+    }
+    @if (!importSelection()) {
+      <div class="row">
+        <div class="col-lg-6"></div>
+        <div class="col-lg-3">
+          <label class="form-label" for="background-import-email" i18n>Background Import Notification Email</label>
+        </div>
+        <div class="col-lg-3">
+          <input [disabled]="!backgroundImportForUpload"
+            class="form-control" type="email" autocomplete="email" id="background-import-email"
+            name="background-import-email" [(ngModel)]="backgroundImportEmail">
+        </div>
+      </div>
+    }
+    @if (importSelection()) {
+      <div class="row">
+        <div class="col-lg-3">
+          <label class="form-label">Import Selected</label>
+        </div>
+        <div class="col-lg-3">
+          @if (!importSelection().importQueue) {
+            <span i18n>
         Importing {{importSelection().recordIds.length}} Record(s)</span>
-      <span *ngIf="importSelection().importQueue" i18n>
+          }
+          @if (importSelection().importQueue) {
+            <span i18n>
         Importing Queue {{importSelection().queue.name()}}</span>
-    </div>
-    <div class="col-lg-3">
-      <button type="button" class="btn btn-outline-info ms-2" (click)="clearSelection()" i18n>
+          }
+        </div>
+        <div class="col-lg-3">
+          <button type="button" class="btn btn-outline-info ms-2" (click)="clearSelection()" i18n>
         Clear Selection
       </button>
-    </div>
-  </div>
-  <div class="row" *ngIf="mode !== 'getImportParams'">
-    <div class="d-grid gap-2 col-6 mx-auto">
-      <button type="button" class="btn btn-success btn-lg fw-bold"
-        [disabled]="isUploading || (uploadComplete && !uploadError) || !hasNeededData()"
-        (click)="upload()" i18n>Upload</button>
-    </div>
-  </div>
-  <div class="row" *ngIf="mode === 'getImportParams'">
-    <div class="d-grid gap-2 col-6 mx-auto">
-      <button type="button" class="btn btn-success btn-lg fw-bold"
-        [disabled]="customActionProcessing || !hasNeededData()"
-        (click)="performCustomAction()" i18n>Submit</button>
-    </div>
-  </div>
-  <div class="row" [hidden]="!isUploading || uploadComplete">
-    <div class="col-lg-3">
-      <label class="form-label" i18n>Upload File to Server</label>
-    </div>
-    <div class="col-lg-6">
-      <eg-progress-inline #uploadProgress></eg-progress-inline>
-    </div>
-  </div>
-
-
-  <div class="col-lg-6 offset-lg-3" [hidden]="!uploadProcessing || uploadComplete">
-    <h2><label class="form-label" i18n><i>Processing...</i></label></h2>
-  </div>
-
-  <div class="row" [hidden]="!uploadComplete">
-    <ng-container *ngIf="uploadError">
-      <div class="col-lg-6 offset-lg-3">
-        <h2><label class="form-label" i18n>Upload Error!</label></h2>
-        <div class="row">
-          <div class="col alert-danger" i18n>Error {{uploadErrorCode}} ({{uploadErrorText}})</div>
         </div>
       </div>
-    </ng-container>
-    <ng-container *ngIf="!uploadError">
-      <div class="col-lg-6 offset-lg-3">
-        <h2>
-          <label *ngIf="!backgroundImportForUpload" class="form-label" i18n>Upload Complete</label>
-          <label *ngIf="backgroundImportForUpload" class="form-label" i18n>Upload Complete for Background Import</label>
-        </h2>
-        <div class="row" [hidden]="!uploadComplete">
-          <div class="col-2" >
-            <label class="form-label" i18n>Go to:</label>
+    }
+    @if (mode !== 'getImportParams') {
+      <div class="row">
+        <div class="d-grid gap-2 col-6 mx-auto">
+          <button type="button" class="btn btn-success btn-lg fw-bold"
+            [disabled]="isUploading || (uploadComplete && !uploadError) || !hasNeededData()"
+          (click)="upload()" i18n>Upload</button>
+        </div>
+      </div>
+    }
+    @if (mode === 'getImportParams') {
+      <div class="row">
+        <div class="d-grid gap-2 col-6 mx-auto">
+          <button type="button" class="btn btn-success btn-lg fw-bold"
+            [disabled]="customActionProcessing || !hasNeededData()"
+          (click)="performCustomAction()" i18n>Submit</button>
+        </div>
+      </div>
+    }
+    <div class="row" [hidden]="!isUploading || uploadComplete">
+      <div class="col-lg-3">
+        <label class="form-label" i18n>Upload File to Server</label>
+      </div>
+      <div class="col-lg-6">
+        <eg-progress-inline #uploadProgress></eg-progress-inline>
+      </div>
+    </div>
+
+
+    <div class="col-lg-6 offset-lg-3" [hidden]="!uploadProcessing || uploadComplete">
+      <h2><label class="form-label" i18n><i>Processing...</i></label></h2>
+    </div>
+
+    <div class="row" [hidden]="!uploadComplete">
+      @if (uploadError) {
+        <div class="col-lg-6 offset-lg-3">
+          <h2><label class="form-label" i18n>Upload Error!</label></h2>
+          <div class="row">
+            <div class="col alert-danger" i18n>Error {{uploadErrorCode}} ({{uploadErrorText}})</div>
           </div>
-          <div class="col-2" [hidden]="backgroundImportForUpload"><a routerLink="/staff/cat/vandelay/queue/{{recordType}}/{{activeQueueId}}" target="_blank" i18n>Queue</a></div>
-          <div class="col-2" [hidden]="backgroundImportForUpload || !selectedSelectionList"><a routerLink="/staff/acq/picklist/{{activeSelectionListId}}" target="_blank">Selection List</a></div>
-          <div class="col-2" [hidden]="backgroundImportForUpload || !createPurchaseOrder"><a routerLink="/staff/acq/po/{{newPO}}" target="_blank">Purchase Order</a></div>
-          <div class="col-4" [hidden]="!backgroundImportForUpload"><a routerLink="/staff/cat/vandelay/background-import" target="_blank" i18n>Background Import Management</a></div>
         </div>
-      </div>
-    </ng-container>
-  </div>
+      }
+      @if (!uploadError) {
+        <div class="col-lg-6 offset-lg-3">
+          <h2>
+            @if (!backgroundImportForUpload) {
+              <label class="form-label" i18n>Upload Complete</label>
+            }
+            @if (backgroundImportForUpload) {
+              <label class="form-label" i18n>Upload Complete for Background Import</label>
+            }
+          </h2>
+          <div class="row" [hidden]="!uploadComplete">
+            <div class="col-2" >
+              <label class="form-label" i18n>Go to:</label>
+            </div>
+            <div class="col-2" [hidden]="backgroundImportForUpload"><a routerLink="/staff/cat/vandelay/queue/{{recordType}}/{{activeQueueId}}" target="_blank" i18n>Queue</a></div>
+            <div class="col-2" [hidden]="backgroundImportForUpload || !selectedSelectionList"><a routerLink="/staff/acq/picklist/{{activeSelectionListId}}" target="_blank">Selection List</a></div>
+            <div class="col-2" [hidden]="backgroundImportForUpload || !createPurchaseOrder"><a routerLink="/staff/acq/po/{{newPO}}" target="_blank">Purchase Order</a></div>
+            <div class="col-4" [hidden]="!backgroundImportForUpload"><a routerLink="/staff/cat/vandelay/background-import" target="_blank" i18n>Background Import Management</a></div>
+          </div>
+        </div>
+      }
+    </div>

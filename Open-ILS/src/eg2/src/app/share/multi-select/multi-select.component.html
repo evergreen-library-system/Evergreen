@@ -1,7 +1,7 @@
 <!-- eslint-disable -->
 <div>
   <div class="row align-items-start">
-    <ng-container *ngIf="idlClass === 'acpl'">
+    @if (idlClass === 'acpl') {
       <div class="col-5">
         <eg-item-location-select (entryChange)="valueSelected($event)"
           [contextOrgId]="acplContextOrgId" [disabled]="disabled"
@@ -14,33 +14,36 @@
           [applyDefault]="true" [disabled]="disabled"
           (onChange)="acplContextOrgId = $event.id()" domId="context_library">
         </eg-org-select>
-        
         <div class="form-check">
-        <input type="checkbox"
-          id="acplIncludeDescendants"
-          [(ngModel)]="acplIncludeDescendants" [disabled]="disabled"
-          class="me-1 form-check-input">
-        <label class="form-label form-check-label" for="acplIncludeDescendants" i18n>Include descendants?</label>
+          <input type="checkbox"
+            id="acplIncludeDescendants"
+            [(ngModel)]="acplIncludeDescendants" [disabled]="disabled"
+            class="me-1 form-check-input">
+          <label class="form-label form-check-label" for="acplIncludeDescendants" i18n>Include descendants?</label>
         </div>
       </div>
-    </ng-container>
-    <div *ngIf="idlClass !== 'acpl'"  class="col-10">
-      <eg-combobox [disabled]="disabled" [idlBaseQuery]="idlBaseQuery" [idlClass]="idlClass"
-        [idlIncludeLibraryInLabel]="linkedLibraryLabel" [asyncSupportsEmptyTermClick]="true"
-        (onChange)="valueSelected($event)" [domId]="domId">
-      </eg-combobox>
-    </div>
+    }
+    @if (idlClass !== 'acpl') {
+      <div  class="col-10">
+        <eg-combobox [disabled]="disabled" [idlBaseQuery]="idlBaseQuery" [idlClass]="idlClass"
+          [idlIncludeLibraryInLabel]="linkedLibraryLabel" [asyncSupportsEmptyTermClick]="true"
+          (onChange)="valueSelected($event)" [domId]="domId">
+        </eg-combobox>
+      </div>
+    }
     <div class="col-2 ps-0">
       <button class="btn btn-outline-dark" (click)="addSelectedValue()" [disabled]="disabled || !selected" i18n>Add</button>
     </div>
   </div>
-  <div class="row py-2 ps-1 align-items-start" *ngFor="let entry of entrylist">
-    <div class="col-10">{{entry.label}}</div>
-    <div class="col-2 pe-0 text-end">
-      <button class="btn btn-sm btn-outline-danger" (click)="removeValue(entry)" i18n-aria-label [disabled]="disabled"
-        [attr.aria-label]="'Remove ' + entry.label" i18n-title [title]="'Remove ' + entry.label">
-        <span class="material-icons mat-icon-in-button" aria-hidden="true">close</span>
-      </button>
+  @for (entry of entrylist; track entry) {
+    <div class="row py-2 ps-1 align-items-start">
+      <div class="col-10">{{entry.label}}</div>
+      <div class="col-2 pe-0 text-end">
+        <button class="btn btn-sm btn-outline-danger" (click)="removeValue(entry)" i18n-aria-label [disabled]="disabled"
+          [attr.aria-label]="'Remove ' + entry.label" i18n-title [title]="'Remove ' + entry.label">
+          <span class="material-icons mat-icon-in-button" aria-hidden="true">close</span>
+        </button>
+      </div>
     </div>
-  </div>
+  }
 </div>

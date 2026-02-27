@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import {Router, ActivatedRoute, RouterModule} from '@angular/router';
-import {CommonModule, Location} from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import {from, tap} from 'rxjs';
 import {IdlObject} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
@@ -28,6 +28,7 @@ interface ReceiveResponse {
         CommonModule,
         FormsModule,
         GridModule,
+        ProgressInlineComponent,
         RouterModule,
         StaffBannerComponent,
     ]

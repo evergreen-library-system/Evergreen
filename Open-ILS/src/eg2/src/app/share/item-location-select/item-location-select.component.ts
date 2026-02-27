@@ -8,7 +8,6 @@ import {PermService} from '@eg/core/perm.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {ComboboxComponent, ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {ItemLocationService} from './item-location.service';
-import { NgIf } from '@angular/common';
 
 /**
  * Item (Copy) Location Selector.
@@ -28,8 +27,7 @@ import { NgIf } from '@angular/common';
             multi: true
         }],
     imports: [
-        ComboboxComponent,
-        NgIf
+        ComboboxComponent
     ]
 })
 export class ItemLocationSelectComponent

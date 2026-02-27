@@ -15,7 +15,10 @@ import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
     templateUrl: './trigger-edit.component.html',
-    imports: [StaffCommonModule]
+    imports: [
+        FmRecordEditorComponent,
+        StaffCommonModule
+    ]
 })
 
 export class EditEventDefinitionComponent implements OnInit {

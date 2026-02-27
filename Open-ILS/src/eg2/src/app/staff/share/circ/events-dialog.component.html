@@ -1,7 +1,7 @@
 
-<eg-string key="circ.events.mode.checkout" i18n-text text="Checkout"></eg-string> 
-<eg-string key="circ.events.mode.renew" i18n-text text="Renewal"></eg-string> 
-<eg-string key="circ.events.mode.checkin" i18n-text text="Checkin"></eg-string> 
+<eg-string key="circ.events.mode.checkout" i18n-text text="Checkout"></eg-string>
+<eg-string key="circ.events.mode.renew" i18n-text text="Renewal"></eg-string>
+<eg-string key="circ.events.mode.checkin" i18n-text text="Checkin"></eg-string>
 
 <ng-template #dialogContent>
   <div class="modal-header">
@@ -9,60 +9,61 @@
       <span i18n>Action Blocked</span>
     </h4>
     <button type="button" class="btn-close btn-close-white"
-      i18n-aria-label aria-label="Close dialog" (click)="close()"></button>
+    i18n-aria-label aria-label="Close dialog" (click)="close()"></button>
   </div>
   <div class="modal-body">
     <h5 i18n>Exceptions occurred during {{modeLabel}}.</h5>
-    <ng-container *ngFor="let evt of events">
+    @for (evt of events; track evt) {
       <div class="card mb-2">
         <div class="card-header text-danger">{{evt.textcode}}</div>
         <div class="card-body">
           <div class="fw-bold">{{copyBarcode}}</div>
           <div>{{evt.desc}}</div>
-          <ng-container *ngIf="evt.textcode === 'COPY_ALERT_MESSAGE'">
-            <ng-container *ngIf="!isArray(evt.payload)">
+          @if (evt.textcode === 'COPY_ALERT_MESSAGE') {
+            @if (!isArray(evt.payload)) {
               <!-- Traditional copy.alert_message value in payload -->
               <div class="mt-2 fw-bold">{{evt.payload}}</div>
-            </ng-container>
-            <ng-container *ngIf="isArray(evt.payload)">
+            }
+            @if (isArray(evt.payload)) {
               <!-- Array of new-style copy alerts in payload -->
-              <div class="mt-2 fw-bold" *ngFor="let alert of evt.payload">
-                <div>{{alert.alert_type().name()}}</div>
-                <div>{{alert.note()}}</div>
-              </div>
-            </ng-container>
-          </ng-container>
-          <ng-container *ngIf="evt.textcode === 'ITEM_ON_HOLDS_SHELF'">
+              @for (alert of evt.payload; track alert) {
+                <div class="mt-2 fw-bold">
+                  <div>{{alert.alert_type().name()}}</div>
+                  <div>{{alert.note()}}</div>
+                </div>
+              }
+            }
+          }
+          @if (evt.textcode === 'ITEM_ON_HOLDS_SHELF') {
             <a target="_blank" class="mt-3"
-              routerLink="/staff/circ/patron/{{patronId}}/checkout">{{patronName}}</a>.
-
+            routerLink="/staff/circ/patron/{{patronId}}/checkout">{{patronName}}</a>.
             <div class="mt-3 mb-3">
               <div class="form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" 
+                <input class="form-check-input" type="checkbox"
                   id="clear-hold-cbox" [(ngModel)]="clearHold"/>
                 <label class="form-label form-check-label" for="clear-hold-cbox" i18n>
                   Cancel this hold upon checkout?
                 </label>
               </div>
             </div>
-          </ng-container>
-          <ng-container *ngIf="evt.textcode === 'ITEM_DEPOSIT_REQUIRED'">
+          }
+          @if (evt.textcode === 'ITEM_DEPOSIT_REQUIRED') {
             <ng-container i18n>Deposit amount</ng-container>:
             {{evt.payload.deposit_amount() | currency}}
-          </ng-container>
-          <ng-container *ngIf="evt.textcode === 'ITEM_RENTAL_FEE_REQUIRED'">
+          }
+          @if (evt.textcode === 'ITEM_RENTAL_FEE_REQUIRED') {
             <ng-container i18n>Rental fee</ng-container>:
             {{evt.payload.deposit_amount() | currency}}
-          </ng-container>
+          }
         </div>
       </div>
-    </ng-container>
+    }
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-info"
       (click)="close({override: true, clearHold: clearHold})" i18n>
       Force Action?</button>
     <button type="button" class="btn btn-normal"
-      (click)="close(false)" i18n>Cancel</button>
+    (click)="close(false)" i18n>Cancel</button>
   </div>
 </ng-template>

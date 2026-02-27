@@ -2,7 +2,7 @@ import { Component, OnInit, Input, inject } from '@angular/core';
 import {Observable} from 'rxjs';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
-import { CommonModule } from '@angular/common';
+
 import { HoldManageComponent } from './manage.component';
 
 /**
@@ -13,8 +13,7 @@ import { HoldManageComponent } from './manage.component';
     selector: 'eg-hold-manage-dialog',
     templateUrl: 'manage-dialog.component.html',
     imports: [
-        CommonModule,
-        HoldManageComponent,
+        HoldManageComponent
     ]
 })
 

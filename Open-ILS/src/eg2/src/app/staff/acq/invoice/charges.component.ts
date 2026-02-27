@@ -12,17 +12,23 @@ import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 import {DisencumberChargeDialogComponent} from './disencumber-charge-dialog.component';
 import { ComboboxComponent } from '@eg/share/combobox/combobox.component';
 import { CommonModule } from '@angular/common';
+import { PoLabelComponent } from "../po/label.component";
+import { FormsModule } from '@angular/forms';
+import { FundLabelPipe } from '@eg/core/format.service';
 
 @Component({
     templateUrl: 'charges.component.html',
     styleUrls: ['charges.component.css'],
     selector: 'eg-acq-invoice-charges',
     imports: [
-        AlertDialogComponent,
-        ComboboxComponent,
-        CommonModule,
-        ConfirmDialogComponent
-    ]
+    AlertDialogComponent,
+    ComboboxComponent,
+    CommonModule,
+    ConfirmDialogComponent,
+    FormsModule,
+    FundLabelPipe,
+    PoLabelComponent
+]
 })
 export class InvoiceChargesComponent implements OnInit, OnDestroy {
     private idl = inject(IdlService);

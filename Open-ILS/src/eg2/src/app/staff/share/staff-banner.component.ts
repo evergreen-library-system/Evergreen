@@ -1,5 +1,5 @@
-import { NgClass, NgIf } from '@angular/common';
-import {Component, TemplateRef, OnInit, Input, ViewEncapsulation} from '@angular/core';
+import { CommonModule } from '@angular/common';
+import {Component, TemplateRef, Input, ViewEncapsulation} from '@angular/core';
 import { TitleComponent } from '@eg/share/title/title.component';
 
 @Component({
@@ -8,20 +8,23 @@ import { TitleComponent } from '@eg/share/title/title.component';
     <eg-title i18n-prefix [prefix]="bannerText"></eg-title>
 
     <div class="staff-banner" [ngClass]="bannerStyle">
-      <h1 id="staff-banner" tabindex="0" *ngIf="bannerText || bannerIcon">
-        <i class="material-icons align-middle text-start" aria-hidden="true" *ngIf="bannerIcon">{{bannerIcon}}</i>
-        <span i18n>{{bannerText}}</span>
-      </h1>
-      <ng-container *ngIf="bannerTemplateRef">
+      @if (bannerText || bannerIcon) {
+        <h1 id="staff-banner" tabindex="0">
+          @if (bannerIcon) {
+            <i class="material-icons align-middle text-start" aria-hidden="true">{{bannerIcon}}</i>
+          }
+          <span i18n>{{bannerText}}</span>
+        </h1>
+      }
+      @if (bannerTemplateRef) {
         <ng-container *ngTemplateOutlet="bannerTemplateRef"></ng-container>
-      </ng-container>
+      }
     </div>
     `,
     styleUrls: ['staff-banner.component.css'],
     encapsulation: ViewEncapsulation.None,
     imports: [
-        NgClass,
-        NgIf,
+        CommonModule,
         TitleComponent
     ]
 })

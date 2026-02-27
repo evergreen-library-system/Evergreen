@@ -3,7 +3,7 @@ import {AuthService} from '@eg/core/auth.service';
 import {AcqProviderSearchTerm, AcqProviderSearch} from './acq-provider-search.service';
 import {StoreService} from '@eg/core/store.service';
 import {OrgFamily, OrgFamilySelectComponent} from '@eg/share/org-family-select/org-family-select.component';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import { ComboboxComponent } from '@eg/share/combobox/combobox.component';
 
@@ -13,9 +13,8 @@ import { ComboboxComponent } from '@eg/share/combobox/combobox.component';
     templateUrl: './acq-provider-search-form.component.html',
     imports: [
         ComboboxComponent,
-        CommonModule,
         FormsModule,
-        OrgFamilySelectComponent,
+        OrgFamilySelectComponent
     ]
 })
 

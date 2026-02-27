@@ -8,14 +8,18 @@ import {AuthService} from '@eg/core/auth.service';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {StringComponent} from '@eg/share/string/string.component';
-import { CommonModule } from '@angular/common';
+import {DateTimeSelectComponent} from '@eg/share/datetime-select/datetime-select.component';
+
 
 /* Dialog for modifying circulation due dates. */
 
 @Component({
     selector: 'eg-due-date-dialog',
     templateUrl: 'due-date-dialog.component.html',
-    imports: [CommonModule, StringComponent]
+    imports: [
+        DateTimeSelectComponent,
+        StringComponent
+    ]
 })
 
 export class DueDateDialogComponent

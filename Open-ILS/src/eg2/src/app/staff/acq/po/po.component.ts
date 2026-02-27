@@ -4,16 +4,15 @@ import {PoService} from './po.service';
 import { StaffBannerComponent } from '@eg/staff/share/staff-banner.component';
 import { PoSummaryComponent } from './summary.component';
 import { PoChargesComponent } from './charges.component';
-import { CommonModule } from '@angular/common';
+
 
 @Component({
     templateUrl: 'po.component.html',
     imports: [
-        CommonModule,
         PoChargesComponent,
         PoSummaryComponent,
         RouterModule,
-        StaffBannerComponent,
+        StaffBannerComponent
     ]
 })
 export class PoComponent implements OnInit {

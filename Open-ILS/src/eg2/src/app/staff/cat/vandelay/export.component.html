@@ -4,77 +4,77 @@
 <div class="common-form striped-even form-validated">
   <div class="row">
     <div class="col-lg-6">
-     <ng-container *ngIf="exportingBasket">
+      @if (exportingBasket) {
         <div class="alert alert-info" i18n>
           Exporting {{basketRecords.length}} Records from Catalog Basket.
         </div>
         <div>
           <a routerLink="/staff/catalog/search" queryParamsHandling="merge" class="btn btn-info" i18n>Return to Catalog</a>
         </div>
-      </ng-container>
-      <ng-container *ngIf="!exportingBasket">
-          <h3 i18n>Select a Record Source</h3>
-          <div ngbAccordion [closeOthers]="true">
-            <div ngbAccordionItem [collapsed]="false"> 
-              <h4 ngbAccordionHeader><button ngbAccordionButton (click)="recordSource='csv'" i18n>CSV File</button></h4>
-              <div ngbAccordionCollapse>
-                <div ngbAccordionBody>
-                  <div class="row">
-                    <div class="col-lg-6">
-                      <label class="form-label" for="csv-input" i18n>Use Field Number</label>
-                    </div>
-                    <div class="col-lg-6">
-                      <input id='csv-input' type="number" class="form-control" 
-                        [(ngModel)]="fieldNumber"
-                        i18n-placeholder placeholder="Starts at 0..." />
-                    </div>
+      }
+      @if (!exportingBasket) {
+        <h3 i18n>Select a Record Source</h3>
+        <div ngbAccordion [closeOthers]="true">
+          <div ngbAccordionItem [collapsed]="false">
+            <h4 ngbAccordionHeader><button ngbAccordionButton (click)="recordSource='csv'" i18n>CSV File</button></h4>
+            <div ngbAccordionCollapse>
+              <div ngbAccordionBody>
+                <div class="row">
+                  <div class="col-lg-6">
+                    <label class="form-label" for="csv-input" i18n>Use Field Number</label>
                   </div>
-                  <div class="row">
-                    <div class="col-lg-6">
-                      <label class="form-label" for="use-csv-file" i18n>From CSV file</label>
-                    </div>
-                    <div class="col-lg-6">
-                      <input #fileSelector (change)="fileSelected($event)" 
-                        id="use-csv-file" class="form-control" type="file"/>
-                    </div>
+                  <div class="col-lg-6">
+                    <input id='csv-input' type="number" class="form-control"
+                      [(ngModel)]="fieldNumber"
+                      i18n-placeholder placeholder="Starts at 0..." />
                   </div>
                 </div>
-              </div>
-            </div>
-            <div ngbAccordionItem>
-              <h4 ngbAccordionHeader><button ngbAccordionButton (click)="recordSource='record-id'" i18n>Record ID</button></h4>
-              <div ngbAccordionCollapse>
-                <div ngbAccordionBody>
-                  <div class="row">
-                    <div class="col-lg-6">
-                      <label class="form-label" for="record-id-input" i18n>Record ID</label>
-                    </div>
-                    <div class="col-lg-6">
-                      <input id='record-id-input' type="number" 
-                        class="form-control" [(ngModel)]="recordId"/>
-                    </div>
+                <div class="row">
+                  <div class="col-lg-6">
+                    <label class="form-label" for="use-csv-file" i18n>From CSV file</label>
                   </div>
-                </div>
-              </div>
-            </div>
-            <div ngbAccordionItem>
-              <h4 ngbAccordionHeader><button ngbAccordionButton (click)="recordSource='bucket-id'" i18n>Bucket ID</button></h4>
-              <div ngbAccordionCollapse>
-                <div ngbAccordionBody>
-                  <div class="row">
-                    <div class="col-lg-6">
-                      <label class="form-label" for="bucket-id-input" i18n>Bucket ID</label>
-                    </div>
-                    <div class="col-lg-6">
-                      <input id='bucket-id-input' type="number" 
-                        class="form-control" [(ngModel)]="bucketId"/>
-                    </div>
+                  <div class="col-lg-6">
+                    <input #fileSelector (change)="fileSelected($event)"
+                      id="use-csv-file" class="form-control" type="file"/>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-      </ng-container>
+          <div ngbAccordionItem>
+            <h4 ngbAccordionHeader><button ngbAccordionButton (click)="recordSource='record-id'" i18n>Record ID</button></h4>
+            <div ngbAccordionCollapse>
+              <div ngbAccordionBody>
+                <div class="row">
+                  <div class="col-lg-6">
+                    <label class="form-label" for="record-id-input" i18n>Record ID</label>
+                  </div>
+                  <div class="col-lg-6">
+                    <input id='record-id-input' type="number"
+                      class="form-control" [(ngModel)]="recordId"/>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div ngbAccordionItem>
+            <h4 ngbAccordionHeader><button ngbAccordionButton (click)="recordSource='bucket-id'" i18n>Bucket ID</button></h4>
+            <div ngbAccordionCollapse>
+              <div ngbAccordionBody>
+                <div class="row">
+                  <div class="col-lg-6">
+                    <label class="form-label" for="bucket-id-input" i18n>Bucket ID</label>
+                  </div>
+                  <div class="col-lg-6">
+                    <input id='bucket-id-input' type="number"
+                      class="form-control" [(ngModel)]="bucketId"/>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
     </div><!-- col -->
 
     <div class="col-lg-6">
@@ -83,7 +83,7 @@
           <label class="form-label" for="record-type" i18n>Record Type</label>
         </div>
         <div class="col-lg-6">
-          <select class="form-select" 
+          <select class="form-select"
             [disabled]="exportingBasket"
             [(ngModel)]="recordType" id="record-type">
             <option i18n value="biblio">Bibliographic Records</option>
@@ -96,7 +96,7 @@
           <label class="form-label" for="record-format" i18n>Record Format</label>
         </div>
         <div class="col-lg-6">
-          <select class="form-select" 
+          <select class="form-select"
             [(ngModel)]="recordFormat" id="record-format">
             <option i18n value="USMARC">MARC21</option>
             <option i18n value="UNIMARC">UNIMARC</option>
@@ -110,7 +110,7 @@
           <label class="form-label" for="record-encoding" i18n>Record Encoding</label>
         </div>
         <div class="col-lg-6">
-          <select class="form-select" 
+          <select class="form-select"
             [(ngModel)]="recordEncoding" id="record-encoding">
             <option i18n value="UTF-8">UTF-8</option>
             <option i18n value="MARC8">MARC8</option>
@@ -124,15 +124,15 @@
           </label>
         </div>
         <div class="col-lg-6">
-          <input class="form-check-input" type="checkbox" 
+          <input class="form-check-input" type="checkbox"
             [(ngModel)]="includeHoldings" id="include-holdings">
         </div>
       </div>
       <div class="row">
         <div class="d-grid gap-2 col-10 mx-auto">
           <button type="button" class="btn btn-success btn-lg fw-bold"
-            [disabled]="isExporting || !hasNeededData()" 
-            (click)="exportRecords()" i18n>Export</button>
+            [disabled]="isExporting || !hasNeededData()"
+          (click)="exportRecords()" i18n>Export</button>
         </div>
       </div>
       <div class="row" [hidden]="!isExporting">

@@ -1,11 +1,11 @@
 import { Component, OnDestroy, inject } from '@angular/core';
 import {SckoService} from './scko.service';
-import { CommonModule } from '@angular/common';
+
 import { DueDatePipe } from '@eg/core/format.service';
 
 @Component({
     templateUrl: 'checkout.component.html',
-    imports: [CommonModule, DueDatePipe]
+    imports: [DueDatePipe]
 })
 
 export class SckoCheckoutComponent implements OnDestroy {

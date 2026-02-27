@@ -27,7 +27,7 @@ import {MatchSetExpressionComponent} from './match-set-expression.component';
 import {MatchSetQualityComponent} from './match-set-quality.component';
 import {MatchSetNewPointComponent} from './match-set-new-point.component';
 import {RecentImportsComponent} from './recent-imports.component';
-import { FastAddSelectorComponent } from '@eg/staff/share/marc-edit/fast-add-selector-component';
+import { FastAddSelectorComponent } from '@eg/staff/share/marc-edit/fast-add-selector.component';
 
 @NgModule({
     imports: [

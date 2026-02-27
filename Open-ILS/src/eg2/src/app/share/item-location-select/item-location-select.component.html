@@ -1,7 +1,9 @@
 
 <ng-template #displayTemplate let-r="result" i18n>
-  {{r.label}} <ng-container *ngIf="r.userdata">
-    ({{orgName(r.userdata.owning_lib())}})</ng-container>
+  {{r.label}} @if (r.userdata) {
+
+    ({{orgName(r.userdata.owning_lib())}})
+}
 </ng-template>
 
 <eg-combobox #comboBox

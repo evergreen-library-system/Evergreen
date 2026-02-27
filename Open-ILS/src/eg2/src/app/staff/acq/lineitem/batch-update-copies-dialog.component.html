@@ -14,56 +14,60 @@
     <div class="modal-header">
       <h3 class="modal-title" i18n>Batch Update Items on Selected Line Items</h3>
       <button type="button" class="btn-close btn-close-white"
-        i18n-aria-label aria-label="Close dialog" (click)="close()"></button>
+      i18n-aria-label aria-label="Close dialog" (click)="close()"></button>
     </div>
     <div class="modal-body">
       <h4 i18n>Line Item(s) selected:
-        <span *ngFor="let id of ids; last as isLast">
-          {{id}}<span *ngIf="!isLast">,</span>
+        @for (id of ids; track id; let isLast = $last) {
+<span>
+          {{id}}@if (!isLast) {
+<span>,</span>
+}
         </span>
+}
       </h4>
-      <div class="row mt-3 mb-1">
-        <div class="col-lg-12 form-inline">
+    <div class="row mt-3 mb-1">
+      <div class="col-lg-12 form-inline">
 
-          <label class="form-label ms-3" for='copy-count-input' i18n>Item Count: </label>
-          <input class="form-control-sm ms-3 small"
-            id='copy-count-input'
-            [(ngModel)]="copyCount" [ngModelOptions]="{standalone: true}" [disabled]="activatedPo" type="text"/>
+        <label class="form-label ms-3" for='copy-count-input' i18n>Item Count: </label>
+        <input class="form-control-sm ms-3 small"
+          id='copy-count-input'
+          [(ngModel)]="copyCount" [ngModelOptions]="{standalone: true}" [disabled]="activatedPo" type="text"/>
 
-          <span class="ms-3" i18n> | </span>
-          <label class="form-label ms-3" for='distrib-formula-cbox' i18n>Distribution Formulas</label>
-          <span class="ms-3">
-            <eg-combobox idlClass="acqdf" [idlQueryAnd]="formulaFilter"
-              [asyncSupportsEmptyTermClick]="true" [startsWith]="true"
-              [idlQuerySort]="{acqdf: 'name'}"
-              #distribFormCbox domId="distrib-formula-cbox"
-              [(ngModel)]="selectedFormula" [ngModelOptions]="{standalone: true}"
-              [disabled]="activatedPo">
-            </eg-combobox>
-          </span>
-        </div>
+        <span class="ms-3" i18n> | </span>
+        <label class="form-label ms-3" for='distrib-formula-cbox' i18n>Distribution Formulas</label>
+        <span class="ms-3">
+          <eg-combobox idlClass="acqdf" [idlQueryAnd]="formulaFilter"
+            [asyncSupportsEmptyTermClick]="true" [startsWith]="true"
+            [idlQuerySort]="{acqdf: 'name'}"
+            #distribFormCbox domId="distrib-formula-cbox"
+            [(ngModel)]="selectedFormula" [ngModelOptions]="{standalone: true}"
+            [disabled]="activatedPo">
+          </eg-combobox>
+        </span>
       </div>
+    </div>
 
-      <hr class="m-1 p-1"/>
-      <ng-container>
-        <ng-container
+    <hr class="m-1 p-1"/>
+    <ng-container>
+      <ng-container
           *ngTemplateOutlet="copyAttrsHeader;context:{
             moreCss:'mt-3 bg-light border border-secondary',
             hideBarcode: true
         }">
-        </ng-container>
-        <div class="pt-2 bg-light border border-secondary border-top-0 rounded-bottom">
-          <eg-lineitem-copy-attrs #copyAttributes [gatherParamsOnly]="true" [hideBarcode]="true"
-            (templateCopy)="templateCopy = $event" ></eg-lineitem-copy-attrs>
-        </div>
       </ng-container>
-    </div>
-    <div class="modal-footer">
-      <button type="button" class="btn btn-success"
-        (click)="close(compileBatchChange())" [disabled]="!canApply()" i18n>Batch Update</button>
-      <button type="button" class="btn btn-normal"
-        (click)="close()" i18n>Cancel</button>
-    </div>
-  </form>
+      <div class="pt-2 bg-light border border-secondary border-top-0 rounded-bottom">
+        <eg-lineitem-copy-attrs #copyAttributes [gatherParamsOnly]="true" [hideBarcode]="true"
+        (templateCopy)="templateCopy = $event" ></eg-lineitem-copy-attrs>
+      </div>
+    </ng-container>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-success"
+    (click)="close(compileBatchChange())" [disabled]="!canApply()" i18n>Batch Update</button>
+    <button type="button" class="btn btn-normal"
+    (click)="close()" i18n>Cancel</button>
+  </div>
+</form>
 </ng-template>
 

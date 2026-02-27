@@ -12,10 +12,12 @@ Track their labels here.
 <!-- Combobox result formatters used by [displayTemplate] -->
 <!-- id: tag/indicator/subfield number; label: human-readable name -->
 <ng-template #marcTagDisplayTemplate let-r="result">
-  <span *ngIf="r.id !== null" class="font-monospace" [ngClass]="r.userdata.class" id="{{domId}}-{{r.id}}"><b>{{r.id}}</b>: {{r.userdata?.label}}</span>
+  @if (r.id !== null) {
+    <span class="font-monospace" [ngClass]="r.userdata.class" id="{{domId}}-{{r.id}}"><b>{{r.id}}</b>: {{r.userdata?.label}}</span>
+  }
 </ng-template>
 
-<ng-container *ngIf="bigText">
+@if (bigText) {
   <textarea
     id="{{domId}}"
     class="d-inline-block text-dark text-break form-control bigtext {{moreClasses}}"
@@ -28,43 +30,45 @@ Track their labels here.
     [ngModel]="getContent()"
     (ngModelChange)="setContent($event)">
   </textarea>
-</ng-container>
+}
 
-<ng-container *ngIf="!bigText">
-
-  <eg-combobox #MARCCombo *ngIf="suggest"
-    trigger="click"
-    [domId]="domId"
-    [moreClasses]="moreClasses + ' fw-bold form-control-sm type-'+fieldType"
-    tabindex="{{tabindex}}"
-    [ariaLabel]="ariaLabel"
-    [maxLength]="maxLength"
-    [labelTrim]="false"
-    [selectOnExact]="true"
-    [startsWith]="true"
-    [clearOnAsync]="true"
-    [startId]="getContent()"
-    [icons]="false"
-    [displayTemplate]="marcTagDisplayTemplate"
-    [asyncSupportsEmptyTermClick]="true"
-    [entries]="initialEntryList()"
-    (inputBlurred)="inputBlurred()"
-    (keydown)="inputKeyDown($event)"
-    (onChange)="setContent($event)"
-    (inputFocused)="selectText()">
-  </eg-combobox>
-
-  <input *ngIf="!suggest"
-    id='{{domId}}'
-    class="form-control type-{{fieldType}} {{moreClasses}}"
-    [ngClass]="{'auth-invalid': isAuthInvalid()}"
-    tabindex="{{tabindex}}"
-    [attr.aria-label]="ariaLabel"
-    (menuItemSelected)="contextMenuChange($event.value)"
-    (keydown)="inputKeyDown($event)"
-    (focus)="selectText()"
-    (blur)="inputBlurred()"
-    [ngModel]="getContent()"
-    (ngModelChange)="setContent($event)"
-  />
-</ng-container>
+@if (!bigText) {
+  @if (suggest) {
+    <eg-combobox #MARCCombo
+      trigger="click"
+      [domId]="domId"
+      [moreClasses]="moreClasses + ' fw-bold form-control-sm type-'+fieldType"
+      tabindex="{{tabindex}}"
+      [ariaLabel]="ariaLabel"
+      [maxLength]="maxLength"
+      [labelTrim]="false"
+      [selectOnExact]="true"
+      [startsWith]="true"
+      [clearOnAsync]="true"
+      [startId]="getContent()"
+      [icons]="false"
+      [displayTemplate]="marcTagDisplayTemplate"
+      [asyncSupportsEmptyTermClick]="true"
+      [entries]="initialEntryList()"
+      (inputBlurred)="inputBlurred()"
+      (keydown)="inputKeyDown($event)"
+      (onChange)="setContent($event)"
+      (inputFocused)="selectText()">
+    </eg-combobox>
+  }
+  @if (!suggest) {
+    <input
+      id='{{domId}}'
+      class="form-control type-{{fieldType}} {{moreClasses}}"
+      [ngClass]="{'auth-invalid': isAuthInvalid()}"
+      tabindex="{{tabindex}}"
+      [attr.aria-label]="ariaLabel"
+      (menuItemSelected)="contextMenuChange($event.value)"
+      (keydown)="inputKeyDown($event)"
+      (focus)="selectText()"
+      (blur)="inputBlurred()"
+      [ngModel]="getContent()"
+      (ngModelChange)="setContent($event)"
+      />
+  }
+}

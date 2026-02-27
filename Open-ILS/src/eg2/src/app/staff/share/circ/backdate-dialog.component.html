@@ -9,28 +9,30 @@
       </span>
     </h4>
     <button type="button" class="btn-close btn-close-white"
-      i18n-aria-label aria-label="Close dialog" (click)="close()"></button>
+    i18n-aria-label aria-label="Close dialog" (click)="close()"></button>
   </div>
   <div class="modal-body">
     <h5 i18n>Backdating {{circIds.length}} circulaion(s)</h5>
     <div class="row mt-3">
       <label class="col-lg-5 col-form-label" for="effectiveDate" i18n>Effective Date:</label>
       <div class="col-lg-7">
-        <eg-date-select [required]="true" [initialIso]="backdate" 
+        <eg-date-select [required]="true" [initialIso]="backdate"
           (onChangeAsIso)="backdate = $event" domId="effectiveDate">
         </eg-date-select>
       </div>
     </div>
-    <div class="row" *ngIf="updateCount > 0">
-      <div class="col-lg-6 offset-lg-3">
-        <span i18n>Updated {{updateCount}} of {{circIds.length}}...</span>
+    @if (updateCount > 0) {
+      <div class="row">
+        <div class="col-lg-6 offset-lg-3">
+          <span i18n>Updated {{updateCount}} of {{circIds.length}}...</span>
+        </div>
       </div>
-    </div>
+    }
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-success" 
-      [disabled]="!backdate" (click)="modifyBatch()" i18n>Submit</button>
+    <button type="button" class="btn btn-success"
+    [disabled]="!backdate" (click)="modifyBatch()" i18n>Submit</button>
     <button type="button" class="btn btn-normal"
-      (click)="close()" i18n>Cancel</button>
+    (click)="close()" i18n>Cancel</button>
   </div>
 </ng-template>

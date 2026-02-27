@@ -8,22 +8,26 @@
     </h4>
     <button type="button" class="btn-close btn-close-white"
     i18n-aria-label aria-label="Close dialog" (click)="close(false)"></button>
-</div>
-<div class="modal-body">
-  <div *ngIf="!carousels.length">
-    <p i18n>There are no eligible carousels.</p>
-    <p> <a routerLink="/staff/admin/local/container/carousel" i18n>Would you like to add one?</a></p>
   </div>
-  <div class="row" *ngIf="carousels.length">
-    <label class="col-lg-3 col-form-label" for="selectedCarousel" i18n>Carousel</label>
-    <div class="col-lg-5">
-      <eg-combobox [entries]="formatCarouselEntries()" [formControl]="selectedCarousel" domId="selectedCarousel">
-      </eg-combobox>
-    </div>
+  <div class="modal-body">
+    @if (!carousels.length) {
+      <div>
+        <p i18n>There are no eligible carousels.</p>
+        <p> <a routerLink="/staff/admin/local/container/carousel" i18n>Would you like to add one?</a></p>
+      </div>
+    }
+    @if (carousels.length) {
+      <div class="row">
+        <label class="col-lg-3 col-form-label" for="selectedCarousel" i18n>Carousel</label>
+        <div class="col-lg-5">
+          <eg-combobox [entries]="formatCarouselEntries()" [formControl]="selectedCarousel" domId="selectedCarousel">
+          </eg-combobox>
+        </div>
+      </div>
+    }
   </div>
-</div>
-<div class="modal-footer">
-  <button type="button" class="btn btn-success"
-  (click)="addToCarousel()" i18n>Add to carousel</button>
-</div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-success"
+    (click)="addToCarousel()" i18n>Add to carousel</button>
+  </div>
 </ng-template>

@@ -1,280 +1,321 @@
-<div class='eg-bib-staff-view w-100' *ngIf="summary">
+@if (summary) {
+  <div class='eg-bib-staff-view w-100'>
     <div class="row"><!-- "table" -->
-
-        <!-- 1st column -->
-        <div class="col-md-4">
-
-            <!-- Col 1, Title Row -->
-            <div class="row">
-                <div class="col-sm-4 fw-bold bib-details-title" i18n>Title:</div>
-                <div class="col-sm-8 bib-details">
-                    <a *ngIf="summary.display.title" href="/eg2/staff/catalog/search?query={{summary.display.title}}&fieldClass=title&joinOp=&matchOp=contains&dateOp=is">
-                        {{summary.display.title}}
+      <!-- 1st column -->
+      <div class="col-md-4">
+        <!-- Col 1, Title Row -->
+        <div class="row">
+          <div class="col-sm-4 fw-bold bib-details-title" i18n>Title:</div>
+          <div class="col-sm-8 bib-details">
+            @if (summary.display.title) {
+              <a href="/eg2/staff/catalog/search?query={{summary.display.title}}&fieldClass=title&joinOp=&matchOp=contains&dateOp=is">
+                {{summary.display.title}}
+              </a>
+            }
+          </div>
+        </div><!-- end of Col 1, Title Row -->
+        <!-- Col 1, Series Title Row -->
+        @if (summary.display.series_title) {
+          <div class="row">
+            <div class="col-sm-4 fw-bold bib-details-title" i18n>Series Title:</div>
+            <div class="col-sm-8 bib-details">
+              <ul>
+                @for (_series of summary.display.series_title; track _series) {
+                  <li>
+                    <a href="/eg2/staff/catalog/search?query={{_series}}&fieldClass=series&joinOp=&matchOp=contains&dateOp=is">
+                      {{_series}}
                     </a>
-                </div>
-            </div><!-- end of Col 1, Title Row -->
-
-            <!-- Col 1, Series Title Row -->
-            <div *ngIf="summary.display.series_title" class="row">
-                <div class="col-sm-4 fw-bold bib-details-title" i18n>Series Title:</div>
-                <div class="col-sm-8 bib-details">
-                    <ul>
-                        <li *ngFor="let _series of summary.display.series_title">
-                            <a href="/eg2/staff/catalog/search?query={{_series}}&fieldClass=series&joinOp=&matchOp=contains&dateOp=is">
-                                {{_series}}
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div><!-- end Col 1, Series Title Row-->
-
-            <!-- Col 1, Author Row -->
+                  </li>
+                }
+              </ul>
+            </div>
+          </div>
+          }<!-- end Col 1, Series Title Row-->
+          <!-- Col 1, Author Row -->
+          <div class="row">
+            <div class="col-sm-4 fw-bold bib-details-title" i18n>Author:</div>
+            <div class="col-sm-8 bib-details">
+              @if (summary.display.author) {
+                <a href="/eg2/staff/catalog/search?query={{summary.display.author}}&fieldClass=author&joinOp=&matchOp=contains&dateOp=is">
+                  {{summary.display.author}}
+                </a>
+              }
+            </div>
+          </div><!-- end Col 1, Author Row -->
+          <!-- Col 1, Performer Row -->
+          @if (summary.display.performers) {
             <div class="row">
-                <div class="col-sm-4 fw-bold bib-details-title" i18n>Author:</div>
-                <div class="col-sm-8 bib-details">
-                    <a *ngIf="summary.display.author" href="/eg2/staff/catalog/search?query={{summary.display.author}}&fieldClass=author&joinOp=&matchOp=contains&dateOp=is">
-                        {{summary.display.author}}
-                    </a>
-                </div>
-            </div><!-- end Col 1, Author Row -->
-
-            <!-- Col 1, Performer Row -->
-            <div *ngIf="summary.display.performers" class="row">
-                <div class="col-sm-4 fw-bold bib-details-title" i18n>Performer:</div>
-                <div class="col-sm-8 bib-details">
-                    <ul>
-                        <li *ngFor="let _performer of summary.display.performers">
-                            {{_performer}}
-                        </li>
-                    </ul>
-                </div>
-            </div><!-- end of Col 1, Performer Row -->
-
+              <div class="col-sm-4 fw-bold bib-details-title" i18n>Performer:</div>
+              <div class="col-sm-8 bib-details">
+                <ul>
+                  @for (_performer of summary.display.performers; track _performer) {
+                    <li>
+                      {{_performer}}
+                    </li>
+                  }
+                </ul>
+              </div>
+            </div>
+            }<!-- end of Col 1, Performer Row -->
             <!-- Col 1, Edition Row -->
-            <div *ngIf="summary.display.edition" class="row">
+            @if (summary.display.edition) {
+              <div class="row">
                 <div class="col-sm-4 fw-bold bib-details-title" i18n>Edition:</div>
                 <div class="col-sm-8 bib-details">
-                    {{summary.display.edition}}
+                  {{summary.display.edition}}
                 </div>
-            </div><!-- end of Col 1, Edition Row -->
-
-            <!-- Col 1, Publisher Row -->
-            <div *ngIf="summary.display.publisher" class="row">
-                <div class="col-sm-4 fw-bold bib-details-title" i18n>Publisher:</div>
-                <div class="col-sm-8 bib-details">
+              </div>
+              }<!-- end of Col 1, Edition Row -->
+              <!-- Col 1, Publisher Row -->
+              @if (summary.display.publisher) {
+                <div class="row">
+                  <div class="col-sm-4 fw-bold bib-details-title" i18n>Publisher:</div>
+                  <div class="col-sm-8 bib-details">
                     {{summary.display.publisher}}
+                  </div>
                 </div>
-            </div><!-- end of Col 1, Publisher Row -->
-
-            <!-- Col 1, Production Credit Row -->
-            <div *ngIf="summary.display.production_credits" class="row">
-                <div class="col-sm-4 fw-bold bib-details-title" i18n>Production Credit:</div>
-                <div class="col-sm-8 bib-details">
-                    <ul>
-                        <li *ngFor="let _credit of summary.display.production_credits">
+                }<!-- end of Col 1, Publisher Row -->
+                <!-- Col 1, Production Credit Row -->
+                @if (summary.display.production_credits) {
+                  <div class="row">
+                    <div class="col-sm-4 fw-bold bib-details-title" i18n>Production Credit:</div>
+                    <div class="col-sm-8 bib-details">
+                      <ul>
+                        @for (_credit of summary.display.production_credits; track _credit) {
+                          <li>
                             {{_credit}}
-                        </li>
-                    </ul>
-                </div>
-            </div><!-- end of Col 1, Production Credit Row -->
-
-            <!-- Col 1, Type of Resource Row -->
-            <div *ngIf="summary.display.type_of_resource" class="row">
-                <div class="col-sm-4 fw-bold bib-details-title" i18n>Type of Resource:</div>
-                <div class="col-sm-8 bib-details">
-                    {{summary.display.type_of_resource}}
-                </div>
-            </div><!-- end of Col 1, Type of Resource Row -->
-
-            <!-- Col 1, Physical Description Row -->
-            <div *ngIf="summary.display.physical_description" class="row">
-                <div class="col-sm-4 fw-bold bib-details-title" i18n>Physical Description:</div>
-                <div class="col-sm-8 bib-details">
-                    <ul>
-                        <li *ngFor="let _desc of summary.display.physical_description">
-                            {{_desc}}
-                        </li>
-                    </ul>
-                </div>
-            </div><!-- end of Col 1, Physical Description Row -->
-
-            <!-- Col 1, ISBN Row -->
-            <div *ngIf="summary.display.isbn" class="row">
-                <div class="col-sm-4 fw-bold bib-details-title" i18n>ISBN:</div>
-                <div class="col-sm-8 bib-details">
-                    <ul>
-                        <li *ngFor="let _isbn of summary.display.isbn">
-                            <a href="/eg2/staff/catalog/search?identQuery={{_isbn}}&identQueryType=identifier%7Cisbn">
-                                {{_isbn}}
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div><!-- end of Col 1, ISBN Row -->
-
-            <!-- Col 1, ISSN Row -->
-            <div *ngIf="summary.display.issn" class="row">
-                <div class="col-sm-4 fw-bold bib-details-title" i18n>ISSN:</div>
-                <div class="col-sm-8 bib-details">
-                    <ul>
-                        <li *ngFor="let _issn of summary.display.issn">
-                            <a href="/eg2/staff/catalog/search?identQuery={{_issn}}&identQueryType=identifier%7Cissn">
-                                {{_issn}}
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div><!-- end of Col 1, ISSN Row -->
-
-            <!-- Col 1, UPC Row -->
-            <div *ngIf="summary.display.upc" class="row">
-                <div class="col-sm-4 fw-bold bib-details-title" i18n>UPC:</div>
-                <div class="col-sm-8 bib-details">
-                    <ul>
-                        <li *ngFor="let _upc of summary.display.upc">
-                            <a href="/eg2/staff/catalog/search?identQuery={{_upc}}&identQueryType=identifier%7Cupc">
-                                {{_upc}}
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div><!-- end of Col 1, UPC Row -->
-
-        </div><!-- 1st column -->
-
-        <!-- 2nd column -->
-        <div class="col-md-4">
-
-            <!-- Col 2, Abstract Row -->
-            <div *ngIf="summary.display.abstract" class="row">
-                <div class="col-sm-4 fw-bold bib-details-title" i18n>Summary:</div>
-                <div class="col-sm-8 bib-details">
-                    {{summary.display.abstract}}
-                </div>
-            </div><!-- end of Col 2, Abstract Row -->
-
-            <!-- Col 2, General Note Row -->
-            <div *ngIf="summary.display.general_note" class="row">
-                <div class="col-sm-4 fw-bold bib-details-title" i18n>General Note:</div>
-                <div class="col-sm-8 bib-details">
-                    <ul>
-                        <li *ngFor="let _note of summary.display.general_note">
-                            {{_note}}
-                        </li>
-                    </ul>
-                </div>
-            </div><!-- end of Col 2, General Note Row -->
-
-            <!-- Col 2, Bibliography Row -->
-            <div *ngIf="summary.display.bibliography" class="row">
-                <div class="col-sm-4 fw-bold bib-details-title" i18n>Bibliography:</div>
-                <div class="col-sm-8 bib-details">
-                    <ul>
-                        <li *ngFor="let _bibliography of summary.display.bibliography">
-                            {{_bibliography}}
-                        </li>
-                    </ul>
-                </div>
-            </div><!-- end of Col 2, Bibliography Row -->
-
-            <!-- Col 2, TOC Row -->
-            <div *ngIf="summary.display.toc" class="row">
-                <div class="col-sm-4 fw-bold bib-details-title" i18n>Table of Contents:</div>
-                <div class="col-sm-8 bib-details">
-                    {{summary.display.toc}}
-                </div>
-            </div><!-- end of Col 2, TOC Row -->
-
-            <!-- Col 2, Thesis Row -->
-            <div *ngIf="summary.display.thesis" class="row">
-                <div class="col-sm-4 fw-bold bib-details-title" i18n>Thesis:</div>
-                <div class="col-sm-8 bib-details">
-                    <ul>
-                        <li *ngFor="let _thesis of summary.display.thesis">
-                            {{_thesis}}
-                        </li>
-                    </ul>
-                </div>
-            </div><!-- end of Col 2, Thesis Row -->
-
-        </div><!-- 2nd column -->
-
-        <div class="col-md-4"><!-- 3rd column -->
-
-            <!-- Col 3, Hold and Copy Counts Row -->
-            <div class="row">
-                <div class="col-sm-4 fw-bold bib-details-title" i18n>Hold and Copy Counts:</div>
-                <div class="col-sm-8 bib-details">
-                    <ul>
-                        <li><span i18n>{{summary.holdCount}} hold requests</span></li>
-                        <li *ngFor="let _count of summary.holdingsSummary">
-                            <span i18n>{{_count.available}} of {{_count.count}} copies available at {{orgName(_count) | async}}.</span>
-                        </li>
-                    </ul>
-                </div>
-            </div><!-- end of Col 3, Hold and Copy Counts Row -->
-
-
-            <!-- Col 3, Subject Row -->
-            <div *ngIf="summary.display.subject" class="row">
-                <div class="col-sm-4 fw-bold bib-details-title" i18n>Subject:</div>
-                <div class="col-sm-8 bib-details">
-                    <ul>
-                        <li *ngFor="let _subj of summary.display.subject">
-                            <a href="/eg2/staff/catalog/search?query={{_subj}}&fieldClass=subject&joinOp=&matchOp=contains&dateOp=is">
-                                {{_subj}}
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div><!-- end of Col 3, Subject Row -->
-
-            <!-- Col 3, Genre Row -->
-            <div *ngIf="summary.display.genre" class="row">
-                <div class="col-sm-4 fw-bold bib-details-title" i18n>Genre:</div>
-                <div class="col-sm-8 bib-details">
-                    <ul>
-                        <li *ngFor="let _genre of summary.display.genre">
-                            <a href="/eg2/staff/catalog/search?query={{'subject:identifier|genre[' + _genre + ']'}}">
-                                {{_genre}}
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div><!-- end of Col 3, Genre Row -->
-
-            <!-- Col 3, Formats and Editions Row -->
-            <div class="row">
-                <div class="col-sm-4 fw-bold bib-details-title" i18n>Formats and Editions:</div>
-                <div class="col-sm-8 bib-details">
-                    <ul>
-                        <ng-container *ngIf="summary.staffViewMetabibAttributes.icon_format">
-                            <li *ngFor="let _x of summary.staffViewMetabibAttributes.icon_format | keyvalue">
-                                <a href="/eg2/staff/catalog/search?query=from_metarecord({{summary.staffViewMetabibId}}) icon_format({{_x.key}})">
-                                    {{_x.value.label}}
-                                </a>
-                                    {{_x.value.count}}
-                            </li>
-                        </ng-container>
-                        <ng-container *ngIf="summary.staffViewMetabibAttributes.item_lang">
-                            <li *ngFor="let _x of summary.staffViewMetabibAttributes.item_lang | keyvalue">
-                                <a href="/eg2/staff/catalog/search?query=from_metarecord({{summary.staffViewMetabibId}}) item_lang({{_x.key}})">
-                                    {{_x.value.label}}
-                                </a>
-                                    {{_x.value.count}}
-                            </li>
-                        </ng-container>
-                        <li>
-                            <a href="/eg2/staff/catalog/search?query=from_metarecord({{summary.staffViewMetabibId}})">
-                                <span i18n>View all Formats and Editions</span>
-                            </a>
-                            <span> {{summary.staffViewMetabibRecords.length}}</span>
-                        </li>
-                    </ul>
-                </div>
-            </div><!-- end of Col 3, Formats and Editions Row -->
-
-        </div><!-- 3rd column -->
-
-    </div><!-- "table" -->
-</div>
+                          </li>
+                        }
+                      </ul>
+                    </div>
+                  </div>
+                  }<!-- end of Col 1, Production Credit Row -->
+                  <!-- Col 1, Type of Resource Row -->
+                  @if (summary.display.type_of_resource) {
+                    <div class="row">
+                      <div class="col-sm-4 fw-bold bib-details-title" i18n>Type of Resource:</div>
+                      <div class="col-sm-8 bib-details">
+                        {{summary.display.type_of_resource}}
+                      </div>
+                    </div>
+                    }<!-- end of Col 1, Type of Resource Row -->
+                    <!-- Col 1, Physical Description Row -->
+                    @if (summary.display.physical_description) {
+                      <div class="row">
+                        <div class="col-sm-4 fw-bold bib-details-title" i18n>Physical Description:</div>
+                        <div class="col-sm-8 bib-details">
+                          <ul>
+                            @for (_desc of summary.display.physical_description; track _desc) {
+                              <li>
+                                {{_desc}}
+                              </li>
+                            }
+                          </ul>
+                        </div>
+                      </div>
+                      }<!-- end of Col 1, Physical Description Row -->
+                      <!-- Col 1, ISBN Row -->
+                      @if (summary.display.isbn) {
+                        <div class="row">
+                          <div class="col-sm-4 fw-bold bib-details-title" i18n>ISBN:</div>
+                          <div class="col-sm-8 bib-details">
+                            <ul>
+                              @for (_isbn of summary.display.isbn; track _isbn) {
+                                <li>
+                                  <a href="/eg2/staff/catalog/search?identQuery={{_isbn}}&identQueryType=identifier%7Cisbn">
+                                    {{_isbn}}
+                                  </a>
+                                </li>
+                              }
+                            </ul>
+                          </div>
+                        </div>
+                        }<!-- end of Col 1, ISBN Row -->
+                        <!-- Col 1, ISSN Row -->
+                        @if (summary.display.issn) {
+                          <div class="row">
+                            <div class="col-sm-4 fw-bold bib-details-title" i18n>ISSN:</div>
+                            <div class="col-sm-8 bib-details">
+                              <ul>
+                                @for (_issn of summary.display.issn; track _issn) {
+                                  <li>
+                                    <a href="/eg2/staff/catalog/search?identQuery={{_issn}}&identQueryType=identifier%7Cissn">
+                                      {{_issn}}
+                                    </a>
+                                  </li>
+                                }
+                              </ul>
+                            </div>
+                          </div>
+                          }<!-- end of Col 1, ISSN Row -->
+                          <!-- Col 1, UPC Row -->
+                          @if (summary.display.upc) {
+                            <div class="row">
+                              <div class="col-sm-4 fw-bold bib-details-title" i18n>UPC:</div>
+                              <div class="col-sm-8 bib-details">
+                                <ul>
+                                  @for (_upc of summary.display.upc; track _upc) {
+                                    <li>
+                                      <a href="/eg2/staff/catalog/search?identQuery={{_upc}}&identQueryType=identifier%7Cupc">
+                                        {{_upc}}
+                                      </a>
+                                    </li>
+                                  }
+                                </ul>
+                              </div>
+                            </div>
+                            }<!-- end of Col 1, UPC Row -->
+                          </div><!-- 1st column -->
+                          <!-- 2nd column -->
+                          <div class="col-md-4">
+                            <!-- Col 2, Abstract Row -->
+                            @if (summary.display.abstract) {
+                              <div class="row">
+                                <div class="col-sm-4 fw-bold bib-details-title" i18n>Summary:</div>
+                                <div class="col-sm-8 bib-details">
+                                  {{summary.display.abstract}}
+                                </div>
+                              </div>
+                              }<!-- end of Col 2, Abstract Row -->
+                              <!-- Col 2, General Note Row -->
+                              @if (summary.display.general_note) {
+                                <div class="row">
+                                  <div class="col-sm-4 fw-bold bib-details-title" i18n>General Note:</div>
+                                  <div class="col-sm-8 bib-details">
+                                    <ul>
+                                      @for (_note of summary.display.general_note; track _note) {
+                                        <li>
+                                          {{_note}}
+                                        </li>
+                                      }
+                                    </ul>
+                                  </div>
+                                </div>
+                                }<!-- end of Col 2, General Note Row -->
+                                <!-- Col 2, Bibliography Row -->
+                                @if (summary.display.bibliography) {
+                                  <div class="row">
+                                    <div class="col-sm-4 fw-bold bib-details-title" i18n>Bibliography:</div>
+                                    <div class="col-sm-8 bib-details">
+                                      <ul>
+                                        @for (_bibliography of summary.display.bibliography; track _bibliography) {
+                                          <li>
+                                            {{_bibliography}}
+                                          </li>
+                                        }
+                                      </ul>
+                                    </div>
+                                  </div>
+                                  }<!-- end of Col 2, Bibliography Row -->
+                                  <!-- Col 2, TOC Row -->
+                                  @if (summary.display.toc) {
+                                    <div class="row">
+                                      <div class="col-sm-4 fw-bold bib-details-title" i18n>Table of Contents:</div>
+                                      <div class="col-sm-8 bib-details">
+                                        {{summary.display.toc}}
+                                      </div>
+                                    </div>
+                                    }<!-- end of Col 2, TOC Row -->
+                                    <!-- Col 2, Thesis Row -->
+                                    @if (summary.display.thesis) {
+                                      <div class="row">
+                                        <div class="col-sm-4 fw-bold bib-details-title" i18n>Thesis:</div>
+                                        <div class="col-sm-8 bib-details">
+                                          <ul>
+                                            @for (_thesis of summary.display.thesis; track _thesis) {
+                                              <li>
+                                                {{_thesis}}
+                                              </li>
+                                            }
+                                          </ul>
+                                        </div>
+                                      </div>
+                                      }<!-- end of Col 2, Thesis Row -->
+                                    </div><!-- 2nd column -->
+                                    <div class="col-md-4"><!-- 3rd column -->
+                                      <!-- Col 3, Hold and Copy Counts Row -->
+                                      <div class="row">
+                                        <div class="col-sm-4 fw-bold bib-details-title" i18n>Hold and Copy Counts:</div>
+                                        <div class="col-sm-8 bib-details">
+                                          <ul>
+                                            <li><span i18n>{{summary.holdCount}} hold requests</span></li>
+                                            @for (_count of summary.holdingsSummary; track _count) {
+                                              <li>
+                                                <span i18n>{{_count.available}} of {{_count.count}} copies available at {{orgName(_count) | async}}.</span>
+                                              </li>
+                                            }
+                                          </ul>
+                                        </div>
+                                      </div><!-- end of Col 3, Hold and Copy Counts Row -->
+                                      <!-- Col 3, Subject Row -->
+                                      @if (summary.display.subject) {
+                                        <div class="row">
+                                          <div class="col-sm-4 fw-bold bib-details-title" i18n>Subject:</div>
+                                          <div class="col-sm-8 bib-details">
+                                            <ul>
+                                              @for (_subj of summary.display.subject; track _subj) {
+                                                <li>
+                                                  <a href="/eg2/staff/catalog/search?query={{_subj}}&fieldClass=subject&joinOp=&matchOp=contains&dateOp=is">
+                                                    {{_subj}}
+                                                  </a>
+                                                </li>
+                                              }
+                                            </ul>
+                                          </div>
+                                        </div>
+                                        }<!-- end of Col 3, Subject Row -->
+                                        <!-- Col 3, Genre Row -->
+                                        @if (summary.display.genre) {
+                                          <div class="row">
+                                            <div class="col-sm-4 fw-bold bib-details-title" i18n>Genre:</div>
+                                            <div class="col-sm-8 bib-details">
+                                              <ul>
+                                                @for (_genre of summary.display.genre; track _genre) {
+                                                  <li>
+                                                    <a href="/eg2/staff/catalog/search?query={{'subject:identifier|genre[' + _genre + ']'}}">
+                                                      {{_genre}}
+                                                    </a>
+                                                  </li>
+                                                }
+                                              </ul>
+                                            </div>
+                                          </div>
+                                          }<!-- end of Col 3, Genre Row -->
+                                          <!-- Col 3, Formats and Editions Row -->
+                                          <div class="row">
+                                            <div class="col-sm-4 fw-bold bib-details-title" i18n>Formats and Editions:</div>
+                                            <div class="col-sm-8 bib-details">
+                                              <ul>
+                                                @if (summary.staffViewMetabibAttributes.icon_format) {
+                                                  @for (_x of summary.staffViewMetabibAttributes.icon_format | keyvalue; track _x) {
+                                                    <li>
+                                                      <a href="/eg2/staff/catalog/search?query=from_metarecord({{summary.staffViewMetabibId}}) icon_format({{_x.key}})">
+                                                        {{_x.value.label}}
+                                                      </a>
+                                                      {{_x.value.count}}
+                                                    </li>
+                                                  }
+                                                }
+                                                @if (summary.staffViewMetabibAttributes.item_lang) {
+                                                  @for (_x of summary.staffViewMetabibAttributes.item_lang | keyvalue; track _x) {
+                                                    <li>
+                                                      <a href="/eg2/staff/catalog/search?query=from_metarecord({{summary.staffViewMetabibId}}) item_lang({{_x.key}})">
+                                                        {{_x.value.label}}
+                                                      </a>
+                                                      {{_x.value.count}}
+                                                    </li>
+                                                  }
+                                                }
+                                                <li>
+                                                  <a href="/eg2/staff/catalog/search?query=from_metarecord({{summary.staffViewMetabibId}})">
+                                                    <span i18n>View all Formats and Editions</span>
+                                                  </a>
+                                                  <span> {{summary.staffViewMetabibRecords.length}}</span>
+                                                </li>
+                                              </ul>
+                                            </div>
+                                          </div><!-- end of Col 3, Formats and Editions Row -->
+                                        </div><!-- 3rd column -->
+                                      </div><!-- "table" -->
+                                    </div>
+                                  }

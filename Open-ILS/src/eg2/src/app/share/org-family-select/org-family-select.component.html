@@ -1,5 +1,5 @@
 <form class="d-flex align-items-start" [formGroup]="familySelectors">
-  <eg-org-select [domId]="domId" 
+  <eg-org-select [domId]="domId"
     [ariaLabel]="ariaLabel"
     (onChange)="orgOnChange($event)"
     [limitPerms]="limitPerms"
@@ -9,20 +9,24 @@
 
   <!-- stack the checkboxes -->
   <div class="ms-2 d-flex flex-column align-items-start">
-    <div class="form-check m-0 pb-0" style="min-height:.8rem" *ngIf="!hideAncestorSelector">
-      <input type="checkbox"
-        formControlName="includeAncestors"
-        (blur)="propagateTouch()"
-        class="form-check-input" id="{{domId}}-include-ancestors">
-      <label class="form-label form-check-label" for="{{domId}}-include-ancestors" i18n>+ Ancestors</label>
-    </div>
-    <div class="form-check m-0 pt-0" style="min-height:.8rem" *ngIf="!hideDescendantSelector">
-      <input type="checkbox"
-        formControlName="includeDescendants"
-        (blur)="propagateTouch()"
-        class="form-check-input" id="{{domId}}-include-descendants">
-      <label class="form-label form-check-label" for="{{domId}}-include-descendants" i18n>+ Descendants</label>
-    </div>
+    @if (!hideAncestorSelector) {
+      <div class="form-check m-0 pb-0" style="min-height:.8rem">
+        <input type="checkbox"
+          formControlName="includeAncestors"
+          (blur)="propagateTouch()"
+          class="form-check-input" id="{{domId}}-include-ancestors">
+        <label class="form-label form-check-label" for="{{domId}}-include-ancestors" i18n>+ Ancestors</label>
+      </div>
+    }
+    @if (!hideDescendantSelector) {
+      <div class="form-check m-0 pt-0" style="min-height:.8rem">
+        <input type="checkbox"
+          formControlName="includeDescendants"
+          (blur)="propagateTouch()"
+          class="form-check-input" id="{{domId}}-include-descendants">
+        <label class="form-label form-check-label" for="{{domId}}-include-descendants" i18n>+ Descendants</label>
+      </div>
+    }
   </div>
 </form>
 

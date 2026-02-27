@@ -3,10 +3,18 @@ import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {Location} from '@angular/common';
 import {NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import { StaffCommonModule } from '@eg/staff/common.module';
+import { FundsManagerComponent } from './funds-manager.component';
+import { FundingSourcesComponent } from './funding-sources.component';
+import { AdminPageComponent } from '@eg/staff/share/admin-page/admin-page.component';
 
 @Component({
     templateUrl: './funds.component.html',
-    imports: [StaffCommonModule]
+    imports: [
+        AdminPageComponent,
+        FundingSourcesComponent,
+        FundsManagerComponent,
+        StaffCommonModule,
+    ]
 })
 export class FundsComponent implements OnInit {
     private location = inject(Location);

@@ -1,13 +1,13 @@
 import { Component, Input, inject } from '@angular/core';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 
 @Component({
     selector: 'eg-acq-export-attributes-dialog',
     templateUrl: './export-attributes-dialog.component.html',
-    imports: [CommonModule, FormsModule]
+    imports: [FormsModule]
 })
 
 export class ExportAttributesDialogComponent extends DialogComponent {

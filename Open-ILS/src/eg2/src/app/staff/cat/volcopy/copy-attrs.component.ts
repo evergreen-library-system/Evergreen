@@ -24,12 +24,20 @@ import {BatchItemAttrComponent, BatchChangeSelection
 } from '@eg/staff/share/holdings/batch-item-attr.component';
 import {ToastService} from '@eg/share/toast/toast.service';
 import { StaffCommonModule } from '@eg/staff/common.module';
+import { ItemLocationSelectComponent } from '@eg/share/item-location-select/item-location-select.component';
 
 @Component({
     selector: 'eg-copy-attrs',
     templateUrl: 'copy-attrs.component.html',
     styleUrls: ['copy-attrs.component.css'],
-    imports: [StaffCommonModule]
+    imports: [
+        StaffCommonModule,
+        BatchItemAttrComponent,
+        CopyAlertsDialogComponent,
+        CopyNotesDialogComponent,
+        CopyTagsDialogComponent,
+        ItemLocationSelectComponent,
+    ]
 })
 export class CopyAttrsComponent implements OnInit, OnDestroy, AfterViewInit {
     private idl = inject(IdlService);

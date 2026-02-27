@@ -7,7 +7,7 @@ import {AuthService} from '@eg/core/auth.service';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 import {StringComponent} from '@eg/share/string/string.component';
-import { CommonModule } from '@angular/common';
+
 
 
 /**
@@ -18,7 +18,6 @@ import { CommonModule } from '@angular/common';
     selector: 'eg-mark-missing-dialog',
     templateUrl: 'mark-missing-dialog.component.html',
     imports: [
-        CommonModule,
         StringComponent
     ]
 })

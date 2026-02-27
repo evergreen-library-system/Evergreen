@@ -9,10 +9,11 @@ import {PcrudService} from '@eg/core/pcrud.service';
 import {StringComponent} from '@eg/share/string/string.component';
 import {ToastService} from '@eg/share/toast/toast.service';
 import { StaffCommonModule } from '@eg/staff/common.module';
+import { OrgFamilySelectComponent } from '@eg/share/org-family-select/org-family-select.component';
 
 @Component({
     templateUrl: './field-documentation.component.html',
-    imports: [StaffCommonModule, FmRecordEditorComponent]
+    imports: [StaffCommonModule, FmRecordEditorComponent, OrgFamilySelectComponent]
 })
 
 export class FieldDocumentationComponent implements OnInit {

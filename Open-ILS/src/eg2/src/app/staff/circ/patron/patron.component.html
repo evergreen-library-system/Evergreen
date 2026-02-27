@@ -1,11 +1,11 @@
 
-<ng-container *ngIf="!context.summary">
+@if (!context.summary) {
   <eg-staff-banner bannerText="Manage Patrons" i18n-bannerText>
   </eg-staff-banner>
-</ng-container>
+}
 
 <eg-confirm-dialog #pendingChangesDialog
-  i18n-dialogTitle dialogTitle="Unsaved Changes Confirmation" 
+  i18n-dialogTitle dialogTitle="Unsaved Changes Confirmation"
   i18n-dialogBody  dialogBody="Unsaved changes will be lost.  Continue navigation?">
 </eg-confirm-dialog>
 
@@ -41,279 +41,283 @@
     the account to be deleted.">
 </eg-prompt-dialog>
 
-<ng-container *ngIf="context.summary">
+@if (context.summary) {
   <eg-staff-banner i18n-bannerText [bannerText]="patronTitle()">
   </eg-staff-banner>
-</ng-container>
+}
 
 <eg-circ-components></eg-circ-components>
-<eg-worklog-strings-components></eg-worklog-strings-components>                
+<eg-worklog-strings-components></eg-worklog-strings-components>
 
 
 <div id="patron-grid" [ngClass]="{'show-nav': showNav && context.summary}"
   role="region" aria-label="Account summary" i18n-aria-label>
 
-  <div id="patron-summary" *ngIf="context.summary">
-    <eg-patron-summary [summary]="context.summary"></eg-patron-summary>
-  </div>
+  @if (context.summary) {
+    <div id="patron-summary">
+      <eg-patron-summary [summary]="context.summary"></eg-patron-summary>
+    </div>
+  }
 
   <nav id="patron-nav" aria-label="Account details" i18n-aria-label>
     <button type="button" (click)="toggleNavPane()"
       class="nav-link btn btn-sm svg-icon-button patron-nav-toggle"
-      [ngClass]="{'d-none': patronTab === 'search'}" 
+      [ngClass]="{'d-none': patronTab === 'search'}"
       [title]="showNav ? 'Hide Account Navigation' : 'Show Account Navigation'" i18n-title
       [attr.aria-label]="showNav ? 'Hide Account Navigation' : 'Show Account Navigation'" i18n-aria-label>
       <!-- Our Material Icons set is missing some icons. Using SVG: -->
       <span class="mat-icon-in-button" aria-hidden="true">
         <!-- left_panel_open in SVG -->
-        <ng-container *ngIf="showNav">
+        @if (showNav) {
           <svg xmlns="http://www.w3.org/2000/svg" role="img" height="24" viewBox="0 -960 960 960" width="24">
             <path d="M500-640v320l160-160-160-160ZM200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm120-80v-560H200v560h120Zm80 0h360v-560H400v560Zm-80 0H200h120Z"/>
           </svg>
-        </ng-container>
+        }
         <!-- left_panel_close in SVG -->
-        <ng-container *ngIf="!showNav">
+        @if (!showNav) {
           <svg xmlns="http://www.w3.org/2000/svg" role="img" height="24" viewBox="0 -960 960 960" width="24">
             <path d="M660-320v-320L500-480l160 160ZM200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm120-80v-560H200v560h120Zm80 0h360v-560H400v560Zm-80 0H200h120Z"/>
           </svg>
-        </ng-container>
+        }
       </span>
     </button>
-    
-      <ul ngbNav #patronNav="ngbNav" class="nav-tabs flex-column" 
-        [keyboard]="true" [roles]="false" role="tablist"
-        [activeId]="patronTab" (navChange)="beforeTabChange($event)">
 
-        <li role="presentation" ngbNavItem="checkout" [disabled]="!context.summary">
-          <button type="button" role="tab" ngbNavLink (click)="navItemClick('checkout', $event)"
-            routerLink="/staff/circ/patron/{{patronId}}/checkout" i18n>Check Out</button>
-          <ng-template ngbNavContent>
-            <eg-title i18n-prefix [prefix]="patronTitle('Check Out Patron')"></eg-title>
-            <div class="">
-              <eg-patron-checkout></eg-patron-checkout> 
-            </div>
-          </ng-template>
-        </li>
+    <ul ngbNav #patronNav="ngbNav" class="nav-tabs flex-column"
+      [keyboard]="true" [roles]="false" role="tablist"
+      [activeId]="patronTab" (navChange)="beforeTabChange($event)">
 
-        <li role="presentation" ngbNavItem="items_out" [disabled]="!context.summary">
-          <button type="button" role="tab" ngbNavLink (click)="navItemClick('items_out', $event)"
-            attr.aria-live="polite"
-            routerLink="/staff/circ/patron/{{patronId}}/items_out" i18n>
+      <li role="presentation" ngbNavItem="checkout" [disabled]="!context.summary">
+        <button type="button" role="tab" ngbNavLink (click)="navItemClick('checkout', $event)"
+        routerLink="/staff/circ/patron/{{patronId}}/checkout" i18n>Check Out</button>
+        <ng-template ngbNavContent>
+          <eg-title i18n-prefix [prefix]="patronTitle('Check Out Patron')"></eg-title>
+          <div class="">
+            <eg-patron-checkout></eg-patron-checkout>
+          </div>
+        </ng-template>
+      </li>
+
+      <li role="presentation" ngbNavItem="items_out" [disabled]="!context.summary">
+        <button type="button" role="tab" ngbNavLink (click)="navItemClick('items_out', $event)"
+          attr.aria-live="polite"
+          routerLink="/staff/circ/patron/{{patronId}}/items_out" i18n>
             Items Out ({{counts('checkouts', 'total_out')}})
           </button>
-          <ng-template ngbNavContent>
-            <eg-title i18n-prefix [prefix]="patronTitle('Items Out ('+counts('checkouts', 'total_out')+') for Patron')"></eg-title>
-            <div class="">
-              <eg-patron-items [patronId]="patronId"></eg-patron-items>
-            </div>
-          </ng-template>
-        </li>
+        <ng-template ngbNavContent>
+          <eg-title i18n-prefix [prefix]="patronTitle('Items Out ('+counts('checkouts', 'total_out')+') for Patron')"></eg-title>
+          <div class="">
+            <eg-patron-items [patronId]="patronId"></eg-patron-items>
+          </div>
+        </ng-template>
+      </li>
 
-        <li role="presentation" ngbNavItem="holds" [disabled]="!context.summary">
-          <button type="button" role="tab" ngbNavLink (click)="navItemClick('holds', $event)"
-            attr.aria-live="polite"
-            routerLink="/staff/circ/patron/{{patronId}}/holds" i18n>
+      <li role="presentation" ngbNavItem="holds" [disabled]="!context.summary">
+        <button type="button" role="tab" ngbNavLink (click)="navItemClick('holds', $event)"
+          attr.aria-live="polite"
+          routerLink="/staff/circ/patron/{{patronId}}/holds" i18n>
             Holds ({{counts('holds', 'ready')}} / {{counts('holds', 'total')}})
           </button>
-          <ng-template ngbNavContent>
-            <eg-title i18n-prefix [prefix]="patronTitle('Holds ('+this.counts('holds', 'ready')+' / '+this.counts('holds', 'total')+') for Patron')"></eg-title>
-            <eg-patron-holds></eg-patron-holds>
-          </ng-template>
-        </li>
+        <ng-template ngbNavContent>
+          <eg-title i18n-prefix [prefix]="patronTitle('Holds ('+this.counts('holds', 'ready')+' / '+this.counts('holds', 'total')+') for Patron')"></eg-title>
+          <eg-patron-holds></eg-patron-holds>
+        </ng-template>
+      </li>
 
-        <li role="presentation" ngbNavItem="bills" [disabled]="!context.summary">
-          <button type="button" role="tab" ngbNavLink (click)="navItemClick('bills', $event)"
-            attr.aria-live="polite"
-            routerLink="/staff/circ/patron/{{patronId}}/bills" i18n>
+      <li role="presentation" ngbNavItem="bills" [disabled]="!context.summary">
+        <button type="button" role="tab" ngbNavLink (click)="navItemClick('bills', $event)"
+          attr.aria-live="polite"
+          routerLink="/staff/circ/patron/{{patronId}}/bills" i18n>
             Bills 
             <span [ngClass]="{'badge badge-danger': counts('fines', 'balance_owed') > 0}">
               ({{counts('fines', 'balance_owed') | currency}})
             </span>
           </button>
-          <ng-template ngbNavContent>
-            <eg-title i18n-prefix [prefix]="patronTitle('Patron', 'Bills')"></eg-title>
-            <ng-container *ngIf="statementXact">
-              <eg-patron-bill-statement [patronId]="patronId" [xactId]="statementXact">
-              </eg-patron-bill-statement>
-            </ng-container>
-            <ng-container *ngIf="billingHistoryTab">
-              <eg-patron-billing-history [patronId]="patronId" [tab]="billingHistoryTab">
-              </eg-patron-billing-history>
-            </ng-container>
-            <ng-container *ngIf="!statementXact && !billingHistoryTab">
-              <eg-patron-bills [patronId]="patronId"></eg-patron-bills>
-            </ng-container>
-          </ng-template>
-        </li>
+        <ng-template ngbNavContent>
+          <eg-title i18n-prefix [prefix]="patronTitle('Patron', 'Bills')"></eg-title>
+          @if (statementXact) {
+            <eg-patron-bill-statement [patronId]="patronId" [xactId]="statementXact">
+            </eg-patron-bill-statement>
+          }
+          @if (billingHistoryTab) {
+            <eg-patron-billing-history [patronId]="patronId" [tab]="billingHistoryTab">
+            </eg-patron-billing-history>
+          }
+          @if (!statementXact && !billingHistoryTab) {
+            <eg-patron-bills [patronId]="patronId"></eg-patron-bills>
+          }
+        </ng-template>
+      </li>
 
-        <li role="presentation" ngbNavItem="messages" [disabled]="!context.summary">
-          <button type="button" role="tab" ngbNavLink (click)="navItemClick('messages', $event)"
-            routerLink="/staff/circ/patron/{{patronId}}/messages" i18n>Notes ({{context.summary?.alerts?.allPenalties?.length}})</button>
-          <ng-template ngbNavContent>
-            <eg-title i18n-prefix [prefix]="patronTitle('Notes for Patron')"></eg-title>
-            <div class="">
-              <eg-patron-messages [patronId]="patronId"></eg-patron-messages>
-            </div>
-          </ng-template>
-        </li>
+      <li role="presentation" ngbNavItem="messages" [disabled]="!context.summary">
+        <button type="button" role="tab" ngbNavLink (click)="navItemClick('messages', $event)"
+        routerLink="/staff/circ/patron/{{patronId}}/messages" i18n>Notes ({{context.summary?.alerts?.allPenalties?.length}})</button>
+        <ng-template ngbNavContent>
+          <eg-title i18n-prefix [prefix]="patronTitle('Notes for Patron')"></eg-title>
+          <div class="">
+            <eg-patron-messages [patronId]="patronId"></eg-patron-messages>
+          </div>
+        </ng-template>
+      </li>
 
-        <li role="presentation" ngbNavItem="edit" [disabled]="!context.summary">
-          <button type="button" role="tab" ngbNavLink (click)="navItemClick('edit', $event)"
-            routerLink="/staff/circ/patron/{{patronId}}/edit" i18n>Edit</button>
-          <ng-template ngbNavContent>
-            <eg-title i18n-prefix [prefix]="patronTitle('Edit Patron')"></eg-title>
-            <eg-patron-edit #patronEditor [patronId]="patronId" [toolbar]="editorToolbar">
-            </eg-patron-edit> 
-          </ng-template>
-        </li>
+      <li role="presentation" ngbNavItem="edit" [disabled]="!context.summary">
+        <button type="button" role="tab" ngbNavLink (click)="navItemClick('edit', $event)"
+        routerLink="/staff/circ/patron/{{patronId}}/edit" i18n>Edit</button>
+        <ng-template ngbNavContent>
+          <eg-title i18n-prefix [prefix]="patronTitle('Edit Patron')"></eg-title>
+          <eg-patron-edit #patronEditor [patronId]="patronId" [toolbar]="editorToolbar">
+          </eg-patron-edit>
+        </ng-template>
+      </li>
 
-        <li role="presentation" ngbNavItem="triggered_events" [disabled]="true">
-          <button type="button" role="tab" ngbNavLink (click)="navItemClick('triggered_events', $event)"
-            routerLink="/staff/circ/patron/{{patronId}}/triggered_events" i18n>Triggered Events / Notifications</button>
-          <ng-template ngbNavContent>
-            <eg-title i18n-prefix [prefix]="patronTitle('Triggered Events / Notifications')"></eg-title>
-            <!-- TODO: -->
-            <div class="">Triggered Events / Notifications Panel Contents</div>
-          </ng-template>
-        </li>
+      <li role="presentation" ngbNavItem="triggered_events" [disabled]="true">
+        <button type="button" role="tab" ngbNavLink (click)="navItemClick('triggered_events', $event)"
+        routerLink="/staff/circ/patron/{{patronId}}/triggered_events" i18n>Triggered Events / Notifications</button>
+        <ng-template ngbNavContent>
+          <eg-title i18n-prefix [prefix]="patronTitle('Triggered Events / Notifications')"></eg-title>
+          <!-- TODO: -->
+          <div class="">Triggered Events / Notifications Panel Contents</div>
+        </ng-template>
+      </li>
 
-        <li role="presentation" ngbNavItem="stat_cats" [disabled]="!context.summary">
-          <button type="button" role="tab" ngbNavLink (click)="navItemClick('stat_cats', $event)"
-            routerLink="/staff/circ/patron/{{patronId}}/stat_cats" i18n>Statistical Categories</button>
-          <ng-template ngbNavContent>
-            <eg-title i18n-prefix [prefix]="patronTitle('Statistical Categories')"></eg-title>
-            <eg-patron-statcats [patronId]="patronId"></eg-patron-statcats>
-          </ng-template>
-        </li>
+      <li role="presentation" ngbNavItem="stat_cats" [disabled]="!context.summary">
+        <button type="button" role="tab" ngbNavLink (click)="navItemClick('stat_cats', $event)"
+        routerLink="/staff/circ/patron/{{patronId}}/stat_cats" i18n>Statistical Categories</button>
+        <ng-template ngbNavContent>
+          <eg-title i18n-prefix [prefix]="patronTitle('Statistical Categories')"></eg-title>
+          <eg-patron-statcats [patronId]="patronId"></eg-patron-statcats>
+        </ng-template>
+      </li>
 
-        <li role="presentation" ngbNavItem="surveys" [disabled]="!context.summary">
-          <button type="button" role="tab" ngbNavLink (click)="navItemClick('surveys', $event)"
-            routerLink="/staff/circ/patron/{{patronId}}/surveys" i18n>Surveys</button>
-          <ng-template ngbNavContent>
-            <eg-title i18n-prefix [prefix]="patronTitle('Surveys for Patron')"></eg-title>
-            <div class="">
-              <eg-patron-survey-responses [patronId]="patronId">
-              </eg-patron-survey-responses>
-            </div>
-          </ng-template>
-        </li>
+      <li role="presentation" ngbNavItem="surveys" [disabled]="!context.summary">
+        <button type="button" role="tab" ngbNavLink (click)="navItemClick('surveys', $event)"
+        routerLink="/staff/circ/patron/{{patronId}}/surveys" i18n>Surveys</button>
+        <ng-template ngbNavContent>
+          <eg-title i18n-prefix [prefix]="patronTitle('Surveys for Patron')"></eg-title>
+          <div class="">
+            <eg-patron-survey-responses [patronId]="patronId">
+            </eg-patron-survey-responses>
+          </div>
+        </ng-template>
+      </li>
 
-        <li role="presentation" ngbNavItem="group" [disabled]="!context.summary">
-          <a role="tab" ngbNavLink (click)="navItemClick('group', $event)"
-            routerLink="/staff/circ/patron/{{patronId}}/group" i18n>
+      <li role="presentation" ngbNavItem="group" [disabled]="!context.summary">
+        <a role="tab" ngbNavLink (click)="navItemClick('group', $event)"
+          routerLink="/staff/circ/patron/{{patronId}}/group" i18n>
             Group Member Details
           </a>
-          <ng-template ngbNavContent>
-            <eg-title i18n-prefix [prefix]="patronTitle('Groups for Patron')"></eg-title>
-            <eg-patron-group [patronId]="patronId"></eg-patron-group>
-          </ng-template>
-        </li>
+        <ng-template ngbNavContent>
+          <eg-title i18n-prefix [prefix]="patronTitle('Groups for Patron')"></eg-title>
+          <eg-patron-group [patronId]="patronId"></eg-patron-group>
+        </ng-template>
+      </li>
 
-        <li role="presentation" ngbNavItem="perms" [disabled]="!context.summary">
-          <a role="tab" ngbNavLink (click)="navItemClick('perms', $event)"
-            routerLink="/staff/circ/patron/{{patronId}}/perms" i18n>
+      <li role="presentation" ngbNavItem="perms" [disabled]="!context.summary">
+        <a role="tab" ngbNavLink (click)="navItemClick('perms', $event)"
+          routerLink="/staff/circ/patron/{{patronId}}/perms" i18n>
             User Permission Editor
           </a>
-          <ng-template ngbNavContent>
-            <eg-title i18n-prefix [prefix]="patronTitle('Permissions for Patron')"></eg-title>
-            <eg-patron-perms [patronId]="patronId"></eg-patron-perms>
-          </ng-template>
-        </li>
+        <ng-template ngbNavContent>
+          <eg-title i18n-prefix [prefix]="patronTitle('Permissions for Patron')"></eg-title>
+          <eg-patron-perms [patronId]="patronId"></eg-patron-perms>
+        </ng-template>
+      </li>
 
-        <li role="presentation" ngbNavItem="credentials" [disabled]="!context.summary">
-          <button role="tab" ngbNavLink (click)="navItemClick('credentials', $event)" type="button"
-            routerLink="/staff/circ/patron/{{patronId}}/credentials" i18n>Test Password</button>
-          <ng-template ngbNavContent>
-            <eg-title i18n-prefix [prefix]="patronTitle('Test Password for Patron')"></eg-title>
-            <div class="">
-              <eg-patron-test-password></eg-patron-test-password>
-            </div>
-          </ng-template>
-        </li>
+      <li role="presentation" ngbNavItem="credentials" [disabled]="!context.summary">
+        <button role="tab" ngbNavLink (click)="navItemClick('credentials', $event)" type="button"
+        routerLink="/staff/circ/patron/{{patronId}}/credentials" i18n>Test Password</button>
+        <ng-template ngbNavContent>
+          <eg-title i18n-prefix [prefix]="patronTitle('Test Password for Patron')"></eg-title>
+          <div class="">
+            <eg-patron-test-password></eg-patron-test-password>
+          </div>
+        </ng-template>
+      </li>
 
-        <li role="presentation" class="nav-item">
-          <a class="nav-link" target="_top" i18n
-            [ngClass]="{'disabled': !context.summary}"
-            href="/eg/staff/acq/requests/user/{{patronId}}" >
+      <li role="presentation" class="nav-item">
+        <a class="nav-link" target="_top" i18n
+          [ngClass]="{'disabled': !context.summary}"
+          href="/eg/staff/acq/requests/user/{{patronId}}" >
             Acquisition Patron Requests
           </a>
-        </li>
-        
-        <li role="presentation" class="nav-item">
-          <a class="nav-link" target="_top" i18n
-            [ngClass]="{'disabled': !context.summary}"
-            routerLink="/staff/booking/manage_reservations/by_patron/{{patronId}}">
+      </li>
+
+      <li role="presentation" class="nav-item">
+        <a class="nav-link" target="_top" i18n
+          [ngClass]="{'disabled': !context.summary}"
+          routerLink="/staff/booking/manage_reservations/by_patron/{{patronId}}">
             Booking: Manage Reservations
           </a>
-        </li>
+      </li>
 
-        <li role="presentation" class="nav-item">
-          <a class="nav-link" target="_top" i18n
-            [ngClass]="{'disabled': !context.summary}"
-            routerLink="/staff/booking/create_reservation/for_patron/{{patronId}}">
+      <li role="presentation" class="nav-item">
+        <a class="nav-link" target="_top" i18n
+          [ngClass]="{'disabled': !context.summary}"
+          routerLink="/staff/booking/create_reservation/for_patron/{{patronId}}">
             Booking: Create Reservations
           </a>
-        </li>
+      </li>
 
-        <li role="presentation" class="nav-item">
-          <a class="nav-link" target="_top" i18n
-            [ngClass]="{'disabled': !context.summary}"
-            routerLink="/staff/booking/pickup/by_patron/{{patronId}}">
+      <li role="presentation" class="nav-item">
+        <a class="nav-link" target="_top" i18n
+          [ngClass]="{'disabled': !context.summary}"
+          routerLink="/staff/booking/pickup/by_patron/{{patronId}}">
             Booking: Pick Up Reservations
           </a>
-        </li>
+      </li>
 
-        <li role="presentation" class="nav-item">
-          <a class="nav-link" target="_top" i18n
-            [ngClass]="{'disabled': !context.summary}"
-            routerLink="/staff/booking/return/by_patron/{{patronId}}">
+      <li role="presentation" class="nav-item">
+        <a class="nav-link" target="_top" i18n
+          [ngClass]="{'disabled': !context.summary}"
+          routerLink="/staff/booking/return/by_patron/{{patronId}}">
             Booking: Return Reservations
           </a>
-        </li>
+      </li>
 
-        <li role="presentation" ngbNavItem="purge" [disabled]="!context.summary">
-          <button type="button" (click)="purgeAccount(); false"
-              [disabled]="disablePurge()"
-              ngbNavLink i18n>Completely Purge Account</button>
-        </li>
-
-
-        <li role="presentation" ngbNavItem="search">
-          <a role="tab" ngbNavLink (click)="navItemClick('search', $event)"
-            routerLink="/staff/circ/patron/search">
-
-            <span i18n>New Search</span>
-          </a>
-          <ng-template ngbNavContent>
-            <div>
-              <eg-patron-search
-                [patronIds]="recentPatronIds()"
-                [startWithSearch]="context.lastPatronSearch"
-                (searchFired)="patronSearchFired($event)"
-                (formCleared)="patronSearchCleared()"
-                (selectionChange)="patronSelectionChange($event)"
-                (patronsActivated)="patronsActivated($event)">
-              </eg-patron-search> 
-            </div>
-          </ng-template>
-        </li>
-            
-      </ul>
-    </nav>  
+      <li role="presentation" ngbNavItem="purge" [disabled]="!context.summary">
+        <button type="button" (click)="purgeAccount(); false"
+          [disabled]="disablePurge()"
+        ngbNavLink i18n>Completely Purge Account</button>
+      </li>
 
 
-    <div id="patron-tabs" [ngClass]="{'pt-5': showSummaryPane && patronTab !== 'search'}">
-      
-      <ng-container *ngIf="patronTab === 'edit'">
-        <!-- put the editor toolbar up here in the sticky section -->
-        <eg-patron-edit-toolbar #editorToolbar [patronId]="patronId">
-        </eg-patron-edit-toolbar>
-      </ng-container>
-      
-      <div *ngIf="!loading">
+      <li role="presentation" ngbNavItem="search">
+        <a role="tab" ngbNavLink (click)="navItemClick('search', $event)"
+          routerLink="/staff/circ/patron/search">
+
+          <span i18n>New Search</span>
+        </a>
+        <ng-template ngbNavContent>
+          <div>
+            <eg-patron-search
+              [patronIds]="recentPatronIds()"
+              [startWithSearch]="context.lastPatronSearch"
+              (searchFired)="patronSearchFired($event)"
+              (formCleared)="patronSearchCleared()"
+              (selectionChange)="patronSelectionChange($event)"
+              (patronsActivated)="patronsActivated($event)">
+            </eg-patron-search>
+          </div>
+        </ng-template>
+      </li>
+
+    </ul>
+  </nav>
+
+
+  <div id="patron-tabs" [ngClass]="{'pt-5': showSummaryPane && patronTab !== 'search'}">
+
+    @if (patronTab === 'edit') {
+      <!-- put the editor toolbar up here in the sticky section -->
+      <eg-patron-edit-toolbar #editorToolbar [patronId]="patronId">
+      </eg-patron-edit-toolbar>
+    }
+
+    @if (!loading) {
+      <div>
         <div [ngbNavOutlet]="patronNav"></div>
       </div>
-    </div>
-  
-  </div> <!-- #patron-grid -->
+    }
+  </div>
+
+</div> <!-- #patron-grid -->
 

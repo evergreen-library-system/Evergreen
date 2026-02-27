@@ -11,9 +11,6 @@ import {StringService} from '@eg/share/string/string.service';
     ],
     exports: [
         StringComponent
-    ],
-    providers: [
-        StringService
     ]
 })
 

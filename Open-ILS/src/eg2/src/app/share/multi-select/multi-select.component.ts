@@ -11,7 +11,7 @@ import { ComboboxComponent, ComboboxEntry } from '@eg/share/combobox/combobox.co
 import { ItemLocationSelectComponent } from '../item-location-select/item-location-select.component';
 import { OrgSelectComponent } from '../org-select/org-select.component';
 import { FormsModule } from '@angular/forms';
-import { NgFor, NgIf } from '@angular/common';
+
 
 @Component({
     selector: 'eg-multi-select',
@@ -24,9 +24,7 @@ import { NgFor, NgIf } from '@angular/common';
         ComboboxComponent,
         FormsModule,
         ItemLocationSelectComponent,
-        NgFor,
-        NgIf,
-        OrgSelectComponent,
+        OrgSelectComponent
     ]
 })
 export class MultiSelectComponent implements OnInit {

@@ -3,7 +3,7 @@ import {Observable} from 'rxjs';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {GridColumn, GridColumnSet, GridContext} from './grid';
 import {NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
-import { NgFor, NgIf } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -11,9 +11,7 @@ import { FormsModule } from '@angular/forms';
     templateUrl: './grid-column-config.component.html',
     styleUrls: ['./grid-column-config.component.css'],
     imports: [
-        FormsModule,
-        NgFor,
-        NgIf,
+        FormsModule
     ]
 })
 

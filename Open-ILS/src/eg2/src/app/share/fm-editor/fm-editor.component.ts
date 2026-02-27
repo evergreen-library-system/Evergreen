@@ -8,19 +8,18 @@ import {OrgService} from '@eg/core/org.service';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {StringComponent} from '@eg/share/string/string.component';
-import {NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
+import {NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 import {ComboboxComponent, ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {FormatService} from '@eg/core/format.service';
 import {TranslateComponent} from '@eg/share/translate/translate.component';
 import {FmRecordEditorActionComponent} from './fm-editor-action.component';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
-import { NgClass, NgFor, NgIf, NgSwitch, NgSwitchCase, NgTemplateOutlet } from '@angular/common';
+import { CurrencyPipe, NgClass, NgTemplateOutlet } from '@angular/common';
 import { ProgressInlineComponent } from '../dialog/progress-inline.component';
 import { EgHelpPopoverComponent } from '../eg-help-popover/eg-help-popover.component';
 import { DateSelectComponent } from '../date-select/date-select.component';
 import { DateTimeSelectComponent } from '../datetime-select/datetime-select.component';
 import { OrgSelectComponent } from '../org-select/org-select.component';
-import { MaxValidatorDirective, MinValidatorDirective } from './validators.directive';
 import { DatesInOrderValidatorDirective } from '../validators/dates_in_order_validator.directive';
 import { BooleanSelectComponent } from '../boolean-select/boolean-select.component';
 
@@ -108,31 +107,25 @@ export interface FmFieldOptions {
     templateUrl: './fm-editor.component.html',
     styleUrls: ['fm-editor.component.css'],
     imports: [
-        BooleanSelectComponent,
-        ComboboxComponent,
-        ConfirmDialogComponent,
-        DateSelectComponent,
-        DatesInOrderValidatorDirective,
-        DateTimeSelectComponent,
-        EgHelpPopoverComponent,
-        MinValidatorDirective,
-        MaxValidatorDirective,
-        FormsModule,
-        NgClass,
-        NgFor,
-        NgIf,
-        NgSwitch,
-        NgSwitchCase,
-        NgTemplateOutlet,
-        OrgSelectComponent,
-        ProgressInlineComponent,
-        StringComponent,
-        TranslateComponent
-    ]
+    BooleanSelectComponent,
+    ComboboxComponent,
+    ConfirmDialogComponent,
+    CurrencyPipe,
+    DateSelectComponent,
+    DatesInOrderValidatorDirective,
+    DateTimeSelectComponent,
+    EgHelpPopoverComponent,
+    FormsModule,
+    NgClass,
+    NgTemplateOutlet,
+    OrgSelectComponent,
+    ProgressInlineComponent,
+    StringComponent,
+    TranslateComponent
+]
 })
 export class FmRecordEditorComponent
     extends DialogComponent implements OnInit {
-    private modal: NgbModal;
     private idl = inject(IdlService);
     private toast = inject(ToastService);
     private format = inject(FormatService);
@@ -301,14 +294,6 @@ export class FmRecordEditorComponent
 
     // When true, show a delete button and support delete operations.
     @Input() showDelete: boolean;
-
-    constructor() {
-        const modal = inject(NgbModal);
-
-        super(modal);
-    
-        this.modal = modal;
-    }
 
     // Avoid fetching data on init since that may lead to unnecessary
     // data retrieval.

@@ -12,6 +12,7 @@ import {PermService} from '@eg/core/perm.service';
 import { ComboboxComponent } from '@eg/share/combobox/combobox.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { FundLabelPipe } from '@eg/core/format.service';
 
 
 @Component({
@@ -21,7 +22,8 @@ import { FormsModule } from '@angular/forms';
         ComboboxComponent,
         CommonModule,
         DisencumberChargeDialogComponent,
-        FormsModule
+        FormsModule,
+        FundLabelPipe
     ]
 })
 export class PoChargesComponent implements OnInit, OnDestroy {
@@ -30,7 +32,6 @@ export class PoChargesComponent implements OnInit, OnDestroy {
     private evt = inject(EventService);
     private auth = inject(AuthService);
     private pcrud = inject(PcrudService);
-    private org = inject(OrgService);
     poService = inject(PoService);
     private perm = inject(PermService);
 

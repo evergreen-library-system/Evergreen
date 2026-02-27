@@ -9,7 +9,7 @@
       <div ngbAccordionCollapse>
         <div ngbAccordionBody>
           <ng-template>
-            <ng-container *ngFor="let f of fields; index as idx">
+            @for (f of fields; track f; let idx = $index) {
               <eg-sr-field
                 [field]=f
                 [withAlias]=true
@@ -20,9 +20,9 @@
                 (fieldChange)="updateField($event)"
                 (upEvent)="moveDisplayUp(idx)"
                 (downEvent)="moveDisplayDown(idx)"
-              >
+                >
               </eg-sr-field>
-            </ng-container>
+            }
           </ng-template>
         </div>
       </div>
@@ -37,7 +37,7 @@
       <div ngbAccordionCollapse>
         <div ngbAccordionBody>
           <ng-template>
-            <ng-container *ngFor="let f of fieldsInOrderByOrder(); index as idx">
+            @for (f of fieldsInOrderByOrder(); track f; let idx = $index) {
               <eg-sr-field
                 [field]=f
                 [withAlias]=true
@@ -49,9 +49,9 @@
                 (fieldChange)="updateField($event)"
                 (upEvent)="moveOrderUp(idx)"
                 (downEvent)="moveOrderDown(idx)"
-              >
+                >
               </eg-sr-field>
-            </ng-container>
+            }
           </ng-template>
         </div>
       </div>

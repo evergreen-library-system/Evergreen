@@ -1,145 +1,168 @@
 <!-- eslint-disable @angular-eslint/template/button-has-type -->
 <div class="chooser-row">
 
-  <div ngbAccordion *ngIf="editorMode !== 'definition'">
-    <div ngbAccordionItem *ngIf="fieldType === 'filter' && hasFilterSuggestions()" id="suggested_filters" [collapsed]="false">
-      <h3 ngbAccordionHeader>
-        <button ngbAccordionButton i18n>Suggested Filters</button>
-      </h3>
-      <div ngbAccordionCollapse>
-        <div ngbAccordionBody>
-          <ng-template>
-            <ng-container *ngFor="let f of allFields">
-              <eg-reporter-field
-                *ngIf="f.suggest_filter"
-                [field]=f
-                [withSelect]=true
-                [selected]="fieldIsSelected(f)"
-                (selectEvent)="toggleSelect(f)"
-              >
-              </eg-reporter-field>
-            </ng-container>
-          </ng-template>
-        </div>
-      </div>
-    </div>
-
-    <div ngbAccordionItem *ngFor="let g of fieldGroups" id="{{g.name}}">
-      <h3 ngbAccordionHeader>
-        <button ngbAccordionButton>{{g.label}}</button>
-      </h3>
-      <div ngbAccordionCollapse>
-        <div ngbAccordionBody>
-          <ng-template>
-            <ng-container *ngFor="let f of g.members">
-              <eg-reporter-field
-                *ngIf="!hideField(f)"
-                [field]=f
-                [editorMode]="'none'"
-                [withSelect]=true
-                [selected]="fieldIsSelected(f)"
-                (selectEvent)="toggleSelect(f)"
-              >
-              </eg-reporter-field>
-            </ng-container>
-          </ng-template>
-        </div>
-      </div>
-    </div>
-
-    <div ngbAccordionItem *ngIf="allFields.length > 0" id="all" [collapsed]="false">
-      <h3 ngbAccordionHeader>
-        <button ngbAccordionButton i18n>All Fields</button>
-      </h3>
-      <div ngbAccordionCollapse>
-        <div ngbAccordionBody>
-          <ng-template>
-            <ng-container *ngFor="let f of allFields">
-              <eg-reporter-field
-                *ngIf="!hideField(f) && !f.virtual"
-                [field]=f
-                [editorMode]="'none'"
-                [withHint]=false
-                [withSelect]=true
-                [selected]="fieldIsSelected(f)"
-                (selectEvent)="toggleSelect(f)"
-              >
-              </eg-reporter-field>
-            </ng-container>
-          </ng-template>
-        </div>
-      </div>
-    </div>
-  </div>
-
-
-<div ngbAccordion class="col-md-9">
-  <div ngbAccordionItem id="display-field-list" *ngIf="fieldType === 'filter' && listFields.length > 0" [collapsed]="false">
-    <h3 ngbAccordionHeader>
-      <button ngbAccordionButton i18n>Fields Selected for Display</button>
-    </h3>
-    <div ngbAccordionCollapse>
-      <div ngbAccordionBody>
-        <ng-template>
-          <span *ngFor="let f of listFields; index as idx" class="reporter-chooser-display-list">
-            {{f.alias}}{{f.field_doc ? ' (' + f.field_doc + ')' : ''}}{{idx === (listFields.length - 1) ? '' : ', '}}
-          </span>
-        </ng-template>
-      </div>
-    </div>
-  </div>
-
-  <div ngbAccordionItem id="sort-field-list" [collapsed]="false">
-    <h3 ngbAccordionHeader>
-      <button ngbAccordionButton>
-        <span *ngIf="fieldType === 'display'" i18n>Field Display Order</span>
-        <span *ngIf="fieldType === 'filter'" i18n>Filter Fields and Values</span>
-      </button>
-    </h3>
-    <div ngbAccordionCollapse>
-      <div ngbAccordionBody>
-        <ng-template>
-          <div *ngIf="fieldType === 'display'" id="field-display">
-            <ng-container *ngFor="let f of selectedFields; index as idx">
-              <eg-reporter-field
-                *ngIf="!hideField(f)"
-                [field]=f
-                [editorMode]="'none'"
-                [withDeselect]=true
-                [withAlias]=true
-                [withTransforms]=true
-                [withUpDown]=true
-                [disableUp]="idx === 0"
-                [disableDown]="idx === (selectedFields.length - 1)"
-                (fieldChange)="updateField($event)"
-                (deselectEvent)="toggleSelect(f)"
-                (upEvent)="moveUp(idx)"
-                (downEvent)="moveDown(idx)"
-              >
-              </eg-reporter-field>
-            </ng-container>
+  @if (editorMode !== 'definition') {
+    <div ngbAccordion>
+      @if (fieldType === 'filter' && hasFilterSuggestions()) {
+        <div ngbAccordionItem id="suggested_filters" [collapsed]="false">
+          <h3 ngbAccordionHeader>
+            <button ngbAccordionButton i18n>Suggested Filters</button>
+          </h3>
+          <div ngbAccordionCollapse>
+            <div ngbAccordionBody>
+              <ng-template>
+                @for (f of allFields; track f) {
+                  @if (f.suggest_filter) {
+                    <eg-reporter-field
+                      [field]=f
+                      [withSelect]=true
+                      [selected]="fieldIsSelected(f)"
+                      (selectEvent)="toggleSelect(f)"
+                      >
+                    </eg-reporter-field>
+                  }
+                }
+              </ng-template>
+            </div>
           </div>
-    
-          <div *ngIf="fieldType === 'filter'" id="field-filters">
-            <ng-container *ngFor="let f of selectedFields; index as idx">
-              <eg-reporter-field
-                *ngIf="!hideField(f)"
-                [field]=f
-                [editorMode]="editorMode"
-                [withDeselect]=true
-                [withTransforms]=true
-                [withOperators]=true
-                [withValueInput]="editorMode === 'report'"
-                (fieldChange)="updateField($event)"
-                (deselectEvent)="toggleSelect(f)"
-              >
-              </eg-reporter-field>
-            </ng-container>
+        </div>
+      }
+      @for (g of fieldGroups; track g) {
+        <div ngbAccordionItem id="{{g.name}}">
+          <h3 ngbAccordionHeader>
+            <button ngbAccordionButton>{{g.label}}</button>
+          </h3>
+          <div ngbAccordionCollapse>
+            <div ngbAccordionBody>
+              <ng-template>
+                @for (f of g.members; track f) {
+                  @if (!hideField(f)) {
+                    <eg-reporter-field
+                      [field]=f
+                      [editorMode]="'none'"
+                      [withSelect]=true
+                      [selected]="fieldIsSelected(f)"
+                      (selectEvent)="toggleSelect(f)"
+                      >
+                    </eg-reporter-field>
+                  }
+                }
+              </ng-template>
+            </div>
           </div>
-        </ng-template>
+        </div>
+      }
+      @if (allFields.length > 0) {
+        <div ngbAccordionItem id="all" [collapsed]="false">
+          <h3 ngbAccordionHeader>
+            <button ngbAccordionButton i18n>All Fields</button>
+          </h3>
+          <div ngbAccordionCollapse>
+            <div ngbAccordionBody>
+              <ng-template>
+                @for (f of allFields; track f) {
+                  @if (!hideField(f) && !f.virtual) {
+                    <eg-reporter-field
+                      [field]=f
+                      [editorMode]="'none'"
+                      [withHint]=false
+                      [withSelect]=true
+                      [selected]="fieldIsSelected(f)"
+                      (selectEvent)="toggleSelect(f)"
+                      >
+                    </eg-reporter-field>
+                  }
+                }
+              </ng-template>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  }
+
+
+  <div ngbAccordion class="col-md-9">
+    @if (fieldType === 'filter' && listFields.length > 0) {
+      <div ngbAccordionItem id="display-field-list" [collapsed]="false">
+        <h3 ngbAccordionHeader>
+          <button ngbAccordionButton i18n>Fields Selected for Display</button>
+        </h3>
+        <div ngbAccordionCollapse>
+          <div ngbAccordionBody>
+            <ng-template>
+              @for (f of listFields; track f; let idx = $index) {
+                <span class="reporter-chooser-display-list">
+                  {{f.alias}}{{f.field_doc ? ' (' + f.field_doc + ')' : ''}}{{idx === (listFields.length - 1) ? '' : ', '}}
+                </span>
+              }
+            </ng-template>
+          </div>
+        </div>
+      </div>
+    }
+
+    <div ngbAccordionItem id="sort-field-list" [collapsed]="false">
+      <h3 ngbAccordionHeader>
+        <button ngbAccordionButton>
+          @if (fieldType === 'display') {
+            <span i18n>Field Display Order</span>
+          }
+          @if (fieldType === 'filter') {
+            <span i18n>Filter Fields and Values</span>
+          }
+        </button>
+      </h3>
+      <div ngbAccordionCollapse>
+        <div ngbAccordionBody>
+          <ng-template>
+            @if (fieldType === 'display') {
+              <div id="field-display">
+                @for (f of selectedFields; track f; let idx = $index) {
+                  @if (!hideField(f)) {
+                    <eg-reporter-field
+                      [field]=f
+                      [editorMode]="'none'"
+                      [withDeselect]=true
+                      [withAlias]=true
+                      [withTransforms]=true
+                      [withUpDown]=true
+                      [disableUp]="idx === 0"
+                      [disableDown]="idx === (selectedFields.length - 1)"
+                      (fieldChange)="updateField($event)"
+                      (deselectEvent)="toggleSelect(f)"
+                      (upEvent)="moveUp(idx)"
+                      (downEvent)="moveDown(idx)"
+                      >
+                    </eg-reporter-field>
+                  }
+                }
+              </div>
+            }
+
+            @if (fieldType === 'filter') {
+              <div id="field-filters">
+                @for (f of selectedFields; track f; let idx = $index) {
+                  @if (!hideField(f)) {
+                    <eg-reporter-field
+                      [field]=f
+                      [editorMode]="editorMode"
+                      [withDeselect]=true
+                      [withTransforms]=true
+                      [withOperators]=true
+                      [withValueInput]="editorMode === 'report'"
+                      (fieldChange)="updateField($event)"
+                      (deselectEvent)="toggleSelect(f)"
+                      >
+                    </eg-reporter-field>
+                  }
+                }
+              </div>
+            }
+          </ng-template>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
 </div>

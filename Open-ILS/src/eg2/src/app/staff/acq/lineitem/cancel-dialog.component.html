@@ -1,28 +1,40 @@
 <ng-template #dialogContent>
   <form class="form-validated">
     <div class="modal-header">
-      <h3 class="modal-title" *ngIf="recordType === 'po'" i18n>Confirm Order Cancellation</h3>
-      <h3 class="modal-title" *ngIf="recordType === 'li'" i18n>Confirm Line Item Cancellation</h3>
-      <h3 class="modal-title" *ngIf="recordType === 'lid'" i18n>Confirm Item Cancellation</h3>
+      @if (recordType === 'po') {
+        <h3 class="modal-title" i18n>Confirm Order Cancellation</h3>
+      }
+      @if (recordType === 'li') {
+        <h3 class="modal-title" i18n>Confirm Line Item Cancellation</h3>
+      }
+      @if (recordType === 'lid') {
+        <h3 class="modal-title" i18n>Confirm Item Cancellation</h3>
+      }
       <button type="button" class="btn-close btn-close-white"
-        i18n-aria-label aria-label="Close dialog" (click)="close()"></button>
+      i18n-aria-label aria-label="Close dialog" (click)="close()"></button>
     </div>
     <div class="modal-body">
-      <h4 *ngIf="recordType === 'po'" i18n>Please select a cancel reason and click "Apply" to cancel the order,
+      @if (recordType === 'po') {
+        <h4 i18n>Please select a cancel reason and click "Apply" to cancel the order,
         or "Exit Dialog" to exit without cancelling the order.</h4>
-      <h4 *ngIf="recordType === 'li'" i18n>Please select a cancel reason and click "Apply" to cancel the line item,
+      }
+      @if (recordType === 'li') {
+        <h4 i18n>Please select a cancel reason and click "Apply" to cancel the line item,
         or "Exit Dialog" to exit without cancelling the line item.</h4>
-      <h4 *ngIf="recordType === 'lid'" i18n>Please select a cancel reason and click "Apply" to cancel the item,
+      }
+      @if (recordType === 'lid') {
+        <h4 i18n>Please select a cancel reason and click "Apply" to cancel the item,
         or "Exit Dialog" to exit without cancelling the item.</h4>
-      <eg-combobox domId="acq-cancel-dialog" name="acq-cancel-dialog" 
+      }
+      <eg-combobox domId="acq-cancel-dialog" name="acq-cancel-dialog"
         [asyncSupportsEmptyTermClick]="true"
-        idlClass="acqcr" [(ngModel)]="cancelReason"></eg-combobox>
+      idlClass="acqcr" [(ngModel)]="cancelReason"></eg-combobox>
     </div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-success" [disabled]="!cancelReason" 
-        (click)="close(cancelReason.id)" i18n>Apply</button>
+      <button type="button" class="btn btn-success" [disabled]="!cancelReason"
+      (click)="close(cancelReason.id)" i18n>Apply</button>
       <button type="button" class="btn btn-normal"
-        (click)="close()" i18n>Exit Dialog</button>
+      (click)="close()" i18n>Exit Dialog</button>
     </div>
   </form>
 </ng-template>

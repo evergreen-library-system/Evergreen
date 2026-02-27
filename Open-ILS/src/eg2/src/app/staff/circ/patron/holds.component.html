@@ -5,7 +5,7 @@
   <li role="presentation" ngbNavItem>
     <a role="tab" ngbNavLink i18n>Open Hold Requests</a>
     <ng-template ngbNavContent>
-      <eg-holds-grid 
+      <eg-holds-grid
         printTemplate="holds_for_patron"
         persistKey="circ.patron.holds"
         (placeHoldRequested)="newHold()"
@@ -15,14 +15,14 @@
         [showPlaceHoldButton]="true"
         [hidePickupLibFilter]="true"
         [defaultSort]="[{name:'request_time',dir:'asc'}]"
-        [patronId]="context.summary.patron.id()"></eg-holds-grid>
+      [patronId]="context.summary.patron.id()"></eg-holds-grid>
     </ng-template>
   </li>
 
   <li role="presentation" ngbNavItem>
     <a role="tab" ngbNavLink i18n>Recently Canceled Holds</a>
     <ng-template ngbNavContent>
-      <eg-holds-grid 
+      <eg-holds-grid
         printTemplate="holds_for_patron"
         persistKey="circ.patron.holds"
         [hideHoldsCount]="true"
@@ -31,11 +31,11 @@
         [hidePickupLibFilter]="true"
         [showRecentlyCanceled]="true"
         [defaultSort]="[{name:'cancel_time',dir:'desc'}]"
-        [patronId]="context.summary.patron.id()"></eg-holds-grid>
+      [patronId]="context.summary.patron.id()"></eg-holds-grid>
     </ng-template>
   </li>
 </ul>
 
-<ng-container *ngIf="context.summary">
+@if (context.summary) {
   <div [ngbNavOutlet]="holdsNav"></div>
-</ng-container>
+}

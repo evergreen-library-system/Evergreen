@@ -11,23 +11,23 @@ import {ToastService} from '@eg/share/toast/toast.service';
 import {NetService} from '@eg/core/net.service';
 import {PatronBarcodeValidator} from '@eg/share/validators/patron_barcode_validator.directive';
 import {BookingResourceBarcodeValidator} from './booking_resource_validator.directive';
-import {OrgFamily} from '@eg/share/org-family-select/org-family-select.component';
+import {OrgFamily, OrgFamilySelectComponent} from '@eg/share/org-family-select/org-family-select.component';
 import { StaffBannerComponent } from '../share/staff-banner.component';
 import { TitleComponent } from '@eg/share/title/title.component';
 import { ComboboxComponent } from '@eg/share/combobox/combobox.component';
-import { CommonModule } from '@angular/common';
+
 
 @Component({
     selector: 'eg-manage-reservations',
     templateUrl: './manage-reservations.component.html',
     imports: [
-        CommonModule,
         ComboboxComponent,
         NgbNavModule,
+        OrgFamilySelectComponent,
         ReactiveFormsModule,
         ReservationsGridComponent,
         StaffBannerComponent,
-        TitleComponent,
+        TitleComponent
     ]
 })
 export class ManageReservationsComponent implements OnInit, OnDestroy {

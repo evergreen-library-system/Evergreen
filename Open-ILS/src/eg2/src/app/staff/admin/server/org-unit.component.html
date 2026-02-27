@@ -7,17 +7,19 @@
 <ng-template #errorStrTmpl i18n>Update Failed</ng-template>
 <eg-string #errorString [template]="errorStrTmpl"></eg-string>
 
-<eg-confirm-dialog #delConfirm 
+<eg-confirm-dialog #delConfirm
   i18n-dialogTitle i18n-dialogBody
   dialogTitle="Confirm Delete"
   dialogBody="Delete Org Unit {{selected ? selected.label : ''}}?">
 </eg-confirm-dialog>
 
 <ng-template #treeNodeLabelTmpl let-org="org">
-  <span *ngIf="org" i18n>{{org.name()}} -- {{org.shortname()}}</span>
+  @if (org) {
+    <span i18n>{{org.name()}} -- {{org.shortname()}}</span>
+  }
 </ng-template>
-<eg-string #treeNodeLabel key='admin.server.org_unit.treenode' 
-  [template]="treeNodeLabelTmpl"></eg-string>
+<eg-string #treeNodeLabel key='admin.server.org_unit.treenode'
+[template]="treeNodeLabelTmpl"></eg-string>
 
 <div class="row org-unit-types-row">
   <div class="col-lg-4 org-unit-types-col-aside">
@@ -28,126 +30,157 @@
   </div>
   <div class="col-lg-8 org-unit-types-col-main">
     <div class="alert alert-info">
-      <div *ngIf="currentOrg()">
-        <span *ngIf="currentOrg().name()" i18n>
+      @if (currentOrg()) {
+        <div>
+          @if (currentOrg().name()) {
+            <span i18n>
           {{currentOrg().name()}} ({{currentOrg().shortname()}})
         </span>
-        <span *ngIf="!currentOrg().name()" class="fst-italic" i18n>
+          }
+          @if (!currentOrg().name()) {
+            <span class="fst-italic" i18n>
           Add Name
         </span>
-      </div>
+          }
+        </div>
+      }
     </div>
 
-    <div class="ngbNav-wrapper" *ngIf="currentOrg()"> 
-    <ul ngbNav #rootTabs="ngbNav" [(activeId)]="orgUnitTab" (navChange)="navChanged($event)" [disabled]="currentOrg().isnew()" [keyboard]="true" [roles]="false" role="tablist" class="nav-tabs">
-      <li role="presentation" [ngbNavItem]="'main'">
-        <a i18n ngbNavLink role="tab">Main Settings</a>
-        <ng-template ngbNavContent>
-          <div class="mt-2">
-            <eg-fm-record-editor *ngIf="currentOrg()" #editDialog idlClass="aou" 
-              [mode]="currentOrg().isnew() ? 'create': 'update'" [hideBanner]="true" 
-              (recordSaved)="orgSaved($event)" displayMode="inline" 
-              (recordDeleted)="orgDeleted()"
-              readonlyFields="parent,parent_ou,id" [preloadLinkedValues]="true"
-              [fieldOptions]="{ou_type: {customValues: orgTypeOptions()}}"
-              [record]="currentOrg().isnew() ? currentOrg() : null"
-              [recordId]="currentOrg().isnew() ? null : currentOrg().id()"
-              [showDelete]="!orgHasChildren()"
-              fieldOrder="parent_ou,ou_type,name,shortname,id,phone,email,opac_visible,staff_catalog_visible,fiscal_calendar"
-              hiddenFields="billing_address,mailing_address,holds_address,ill_address">
-              <eg-fm-record-editor-action label="Add Child" i18n-label 
-                [disabled]="orgChildTypes().length === 0 || currentOrg().isnew()"
-                buttonCss="btn-outline-info"
-                (actionClick)="addChild()"></eg-fm-record-editor-action>
-            </eg-fm-record-editor>
-          </div>
-        </ng-template>
-      </li>
-      <li role="presentation" [ngbNavItem]="'hours'">
-        <a i18n ngbNavLink role="tab">Hours of Operation</a>
-        <ng-template ngbNavContent>
-          <div class="mt-2 common-form striped-even">
-            <div class="row fw-bold mb-2">
-              <div class="col-lg-3 offset-lg-2" i18n>Open Time</div>
-              <div class="col-lg-3" i18n>Close Time</div>
-            </div>
-            <div class="row mb-2" *ngFor="let dow of [0,1,2,3,4,5,6]">
-              <div class="col-lg-2" [ngSwitch]="dow">
-                <span *ngSwitchCase="0" i18n>Monday</span>
-                <span *ngSwitchCase="1" i18n>Tuesday</span>
-                <span *ngSwitchCase="2" i18n>Wednesday</span>
-                <span *ngSwitchCase="3" i18n>Thursday</span>
-                <span *ngSwitchCase="4" i18n>Friday</span>
-                <span *ngSwitchCase="5" i18n>Saturday</span>
-                <span *ngSwitchCase="6" i18n>Sunday</span>
+    @if (currentOrg()) {
+      <div class="ngbNav-wrapper">
+        <ul ngbNav #rootTabs="ngbNav" [(activeId)]="orgUnitTab" (navChange)="navChanged($event)" [disabled]="currentOrg().isnew()" [keyboard]="true" [roles]="false" role="tablist" class="nav-tabs">
+          <li role="presentation" [ngbNavItem]="'main'">
+            <a i18n ngbNavLink role="tab">Main Settings</a>
+            <ng-template ngbNavContent>
+              <div class="mt-2">
+                @if (currentOrg()) {
+                  <eg-fm-record-editor #editDialog idlClass="aou"
+                    [mode]="currentOrg().isnew() ? 'create': 'update'" [hideBanner]="true"
+                    (recordSaved)="orgSaved($event)" displayMode="inline"
+                    (recordDeleted)="orgDeleted()"
+                    readonlyFields="parent,parent_ou,id" [preloadLinkedValues]="true"
+                    [fieldOptions]="{ou_type: {customValues: orgTypeOptions()}}"
+                    [record]="currentOrg().isnew() ? currentOrg() : null"
+                    [recordId]="currentOrg().isnew() ? null : currentOrg().id()"
+                    [showDelete]="!orgHasChildren()"
+                    fieldOrder="parent_ou,ou_type,name,shortname,id,phone,email,opac_visible,staff_catalog_visible,fiscal_calendar"
+                    hiddenFields="billing_address,mailing_address,holds_address,ill_address">
+                    <eg-fm-record-editor-action label="Add Child" i18n-label
+                      [disabled]="orgChildTypes().length === 0 || currentOrg().isnew()"
+                      buttonCss="btn-outline-info"
+                    (actionClick)="addChild()"></eg-fm-record-editor-action>
+                  </eg-fm-record-editor>
+                }
               </div>
-              <div class="col-lg-3">
-                <input class="form-control" type='time' step="60" 
-                  [ngModel]="hours(dow, 'open')" min="00:00:00" max="23:59:59"
-                  (ngModelChange)="hours(dow, 'open', $event)"/>
-              </div>
-              <div class="col-lg-3">
-                <input  class="form-control" type='time' step="60"
-                  [ngModel]="hours(dow, 'close')" min="00:00:00" max="23:59:59"
-                  (ngModelChange)="hours(dow, 'close', $event)"/>
-              </div>
-              <div class="col-lg-2">
-                <button type="button" class="btn btn-outline-dark" (click)="closedOn(dow)" 
-                  [disabled]="isClosed(dow)" i18n>Closed</button>
-              </div>
-              <div class="col-lg-6 offset-lg-2">
-                <div class="input-group mt-1">
-                  <label class="form-label input-group-text" for="org-unit-edit-note-{{dow}}" i18n>Note (optional)</label>
-                  <input class="form-control" type='text'
-                    id="org-unit-edit-note-{{dow}}"
-                    [ngModel]="getNote(dow)" 
-                    (ngModelChange)="setNote(dow, $event)"
-                    placeholder="e.g. 'Closed for lunch from Noon to 1PM'" i18n-placeholder />
+            </ng-template>
+          </li>
+          <li role="presentation" [ngbNavItem]="'hours'">
+            <a i18n ngbNavLink role="tab">Hours of Operation</a>
+            <ng-template ngbNavContent>
+              <div class="mt-2 common-form striped-even">
+                <div class="row fw-bold mb-2">
+                  <div class="col-lg-3 offset-lg-2" i18n>Open Time</div>
+                  <div class="col-lg-3" i18n>Close Time</div>
                 </div>
-              </div>
-            </div>
-            <div class="row d-flex justify-content-end">
-              <div class="alert alert-warning me-2 p-1" 
-                *ngIf="currentOrg().hours_of_operation().isnew()">
-                Hours of Operation Have Not Yet Been Saved.
-              </div>
-              <div class="alert alert-warning me-2 p-1"
-                *ngIf="allClosed() && hasClosedDatePerms">
-                <span i18n>
+                @for (dow of [0,1,2,3,4,5,6]; track dow) {
+                  <div class="row mb-2">
+                    <div class="col-lg-2">
+                      @switch (dow) {
+                        @case (0) {
+                          <span i18n>Monday</span>
+                        }
+                        @case (1) {
+                          <span i18n>Tuesday</span>
+                        }
+                        @case (2) {
+                          <span i18n>Wednesday</span>
+                        }
+                        @case (3) {
+                          <span i18n>Thursday</span>
+                        }
+                        @case (4) {
+                          <span i18n>Friday</span>
+                        }
+                        @case (5) {
+                          <span i18n>Saturday</span>
+                        }
+                        @case (6) {
+                          <span i18n>Sunday</span>
+                        }
+                      }
+                    </div>
+                    <div class="col-lg-3">
+                      <input class="form-control" type='time' step="60"
+                        [ngModel]="hours(dow, 'open')" min="00:00:00" max="23:59:59"
+                        (ngModelChange)="hours(dow, 'open', $event)"/>
+                    </div>
+                    <div class="col-lg-3">
+                      <input  class="form-control" type='time' step="60"
+                        [ngModel]="hours(dow, 'close')" min="00:00:00" max="23:59:59"
+                        (ngModelChange)="hours(dow, 'close', $event)"/>
+                    </div>
+                    <div class="col-lg-2">
+                      <button type="button" class="btn btn-outline-dark" (click)="closedOn(dow)"
+                      [disabled]="isClosed(dow)" i18n>Closed</button>
+                    </div>
+                    <div class="col-lg-6 offset-lg-2">
+                      <div class="input-group mt-1">
+                        <label class="form-label input-group-text" for="org-unit-edit-note-{{dow}}" i18n>Note (optional)</label>
+                        <input class="form-control" type='text'
+                          id="org-unit-edit-note-{{dow}}"
+                          [ngModel]="getNote(dow)"
+                          (ngModelChange)="setNote(dow, $event)"
+                          placeholder="e.g. 'Closed for lunch from Noon to 1PM'" i18n-placeholder />
+                      </div>
+                    </div>
+                  </div>
+                }
+                <div class="row d-flex justify-content-end">
+                  @if (currentOrg().hours_of_operation().isnew()) {
+                    <div class="alert alert-warning me-2 p-1"
+                      >
+                      Hours of Operation Have Not Yet Been Saved.
+                    </div>
+                  }
+                  @if (allClosed() && hasClosedDatePerms) {
+                    <div class="alert alert-warning me-2 p-1"
+                      >
+                      <span i18n>
                   These hours mean {{currentOrg().name()}} is never open! Some functions may not work as expected. Did you mean to 
                 </span>
-                <a href="/eg/staff/admin/local/actor/closed_dates" i18n>
+                      <a href="/eg/staff/admin/local/actor/closed_dates" i18n>
                   add a closure?
                 </a>
-              </div>
-              <div class="me-2">
-                <button type="button" class="btn btn-destroy" (click)="deleteHours()" i18n>
+                    </div>
+                  }
+                  <div class="me-2">
+                    <button type="button" class="btn btn-destroy" (click)="deleteHours()" i18n>
                   Clear Hours of Operation
                 </button>
-              </div>
-              <div>
-                <button type="button" class="btn btn-info" (click)="saveHours()" i18n>
+                  </div>
+                  <div>
+                    <button type="button" class="btn btn-info" (click)="saveHours()" i18n>
                   Apply Changes
                 </button>
+                  </div>
+                  <div class="col-lg-2"><!-- alignment --></div>
+                </div>
               </div>
-              <div class="col-lg-2"><!-- alignment --></div>
-            </div>
-          </div>
-        </ng-template>
-      </li>
-      <li role="presentation" [ngbNavItem]="'addresses'" [disabled]="currentOrg().isnew()">
-        <a i18n ngbNavLink role="tab">Addresses</a>
-        <ng-template ngbNavContent>
-          <div class="mt-2">
-            <eg-admin-org-address [orgId]="currentOrg().id()" (addrChange)="addressChanged($event)">
-            </eg-admin-org-address>
-          </div>
-        </ng-template>
-      </li>
-    </ul>
-
-    <div [ngbNavOutlet]="rootTabs" class="mt-2"></div>
-    </div>
+            </ng-template>
+          </li>
+          <li role="presentation" [ngbNavItem]="'addresses'" [disabled]="currentOrg().isnew()">
+            <a i18n ngbNavLink role="tab">Addresses</a>
+            <ng-template ngbNavContent>
+              <div class="mt-2">
+                <eg-admin-org-address [orgId]="currentOrg().id()" (addrChange)="addressChanged($event)">
+                </eg-admin-org-address>
+              </div>
+            </ng-template>
+          </li>
+        </ul>
+        <div [ngbNavOutlet]="rootTabs" class="mt-2"></div>
+      </div>
+    }
 
   </div>
 </div>

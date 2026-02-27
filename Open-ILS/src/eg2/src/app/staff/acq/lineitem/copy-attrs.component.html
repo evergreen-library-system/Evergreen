@@ -1,29 +1,30 @@
-<!-- Flex values are set to align with lineitem copies UI 
-    and the batch copy editor component -->
+<!-- Flex values are set to align with lineitem copies UI
+and the batch copy editor component -->
 
-<div class="div d-flex batch-copy-row" *ngIf="copy">
+@if (copy) {
+  <div class="div d-flex batch-copy-row">
     <div class="pe-1 pt-2 text-secondary">
-      <ng-container *ngIf="batchMode">
+      @if (batchMode) {
         <span class="invisible">00</span>
-      </ng-container>
-      <ng-container *ngIf="!batchMode">
-        <!-- ensure the rowIndex for the first 100 copies vertically 
-            aligns with an invisible 0 for 1..9 -->
-        {{rowIndex}}<span *ngIf="rowIndex < 10" class="invisible">0</span>
-      </ng-container>
-      
-    </div>
-  
+      }
+      @if (!batchMode) {
+        <!-- ensure the rowIndex for the first 100 copies vertically
+        aligns with an invisible 0 for 1..9 -->
+        {{rowIndex}}@if (rowIndex < 10) {
+        <span class="invisible">0</span>
+      }
+    }
+  </div>
   <ng-content></ng-content>
   <div class="flex-1 p-1">
-    <eg-org-select #owningLibSelect placeholder="Owning Branch..." 
+    <eg-org-select #owningLibSelect placeholder="Owning Branch..."
       i18n-placeholder [readOnly]="fieldIsDisabled('owning_lib')"
       ariaLabel="Owning Branch" i18n-ariaLabel
       [applyOrgId]="copy.owning_lib()"
       [limitPerms]="['CREATE_PICKLIST','CREATE_PURCHASE_ORDER']"
       (onChange)="valueChange('owning_lib', $event)">
     </eg-org-select>
-  </div>  
+  </div>
   <div class="flex-1 p-1">
     @if(fieldIsDisabled('location')) {
       <eg-basic-item-location-display [locationId]="copy.location()"></eg-basic-item-location-display>
@@ -37,15 +38,15 @@
     }
   </div>
   <div class="flex-1 p-1">
-    <ng-container *ngIf="fieldIsDisabled('collection_code')">
+    @if (fieldIsDisabled('collection_code')) {
       <span>{{copy.collection_code()}}</span>
-    </ng-container>
-    <ng-container *ngIf="!fieldIsDisabled('collection_code')">
-      <input type="text" class="form-control" 
-        placeholder="Collection Code..." i18n-placeholder 
+    }
+    @if (!fieldIsDisabled('collection_code')) {
+      <input type="text" class="form-control"
+        placeholder="Collection Code..." i18n-placeholder
         (ngModelChange)="valueChange('collection_code', $event)"
         [ngModel]="copy.collection_code()"/>
-    </ng-container>
+    }
   </div>
   <div class="flex-1 p-1">
     <eg-combobox idlClass="acqf" placeholder="Fund..." i18n-placeholder
@@ -67,87 +68,95 @@
       (onChange)="valueChange('circ_modifier', $event)">
     </eg-combobox>
   </div>
-  <div class="flex-1 p-1" *ngIf="!batchAdd && !gatherParamsOnly">
-    <ng-container *ngIf="fieldIsDisabled('cn_label')">
-      <span>{{copy.cn_label()}}</span>
-    </ng-container>
-    <ng-container *ngIf="!fieldIsDisabled('cn_label')">
-      <input type="text" class="form-control" 
-        placeholder="Call Number..." i18n-placeholder
-        [ngModel]="copy.cn_label()" 
-        (ngModelChange)="valueChange('cn_label', $event)">
-    </ng-container>
-  </div>
-  <div class="flex-1 p-1" *ngIf="!hideBarcode">
-    <ng-container *ngIf="!batchMode && !batchAdd && !gatherParamsOnly">
-      <ng-container *ngIf="fieldIsDisabled('barcode')">
-        <span>{{copy.barcode()}}</span>
-      </ng-container>
-      <ng-container *ngIf="!fieldIsDisabled('barcode')">
-        <input type="text" class="form-control" 
-          [disabled]="fieldIsDisabled('barcode')" [ngModel]="copy.barcode()" 
-          placeholder="Barcode..." i18n-placeholder
-          (ngModelChange)="valueChange('barcode', $event)">
-      </ng-container>
-    </ng-container>
-  </div>
+  @if (!batchAdd && !gatherParamsOnly) {
+    <div class="flex-1 p-1">
+      @if (fieldIsDisabled('cn_label')) {
+        <span>{{copy.cn_label()}}</span>
+      }
+      @if (!fieldIsDisabled('cn_label')) {
+        <input type="text" class="form-control"
+          placeholder="Call Number..." i18n-placeholder
+          [ngModel]="copy.cn_label()"
+          (ngModelChange)="valueChange('cn_label', $event)">
+      }
+    </div>
+  }
+  @if (!hideBarcode) {
+    <div class="flex-1 p-1">
+      @if (!batchMode && !batchAdd && !gatherParamsOnly) {
+        @if (fieldIsDisabled('barcode')) {
+          <span>{{copy.barcode()}}</span>
+        }
+        @if (!fieldIsDisabled('barcode')) {
+          <input type="text" class="form-control"
+            [disabled]="fieldIsDisabled('barcode')" [ngModel]="copy.barcode()"
+            placeholder="Barcode..." i18n-placeholder
+            (ngModelChange)="valueChange('barcode', $event)">
+        }
+      }
+    </div>
+  }
   <div class="flex-2 p-1">
-    <ng-container *ngIf="fieldIsDisabled('note'); else enabledNote">
+    @if (fieldIsDisabled('note')) {
       <span>{{copy.note()}}</span>
-    </ng-container>
-    <ng-template #enabledNote>
-      <input type="text" class="form-control" 
-      [ngModel]="copy.note()" (ngModelChange)="valueChange('note', $event)"
-      placeholder="Note..." i18n-placeholder/>
-    </ng-template>
+    } @else {
+      <input type="text" class="form-control"
+        [ngModel]="copy.note()" (ngModelChange)="valueChange('note', $event)"
+        placeholder="Note..." i18n-placeholder/>
+    }
   </div>
-  <div class="flex-1 p-1" *ngIf="showReceiver">
-    {{copy.receiver()?.usrname()}}
-  </div>
-  <div class="flex-1 p-1" *ngIf="showReceivedTime">
-    {{copy.recv_time() | date:'short'}}
-  </div>
-  <ng-container *ngIf="!embedded && !gatherParamsOnly">
+  @if (showReceiver) {
+    <div class="flex-1 p-1">
+      {{copy.receiver()?.usrname()}}
+    </div>
+  }
+  @if (showReceivedTime) {
+    <div class="flex-1 p-1">
+      {{copy.recv_time() | date:'short'}}
+    </div>
+  }
+  @if (!embedded && !gatherParamsOnly) {
     <div class="flex-2 p-1 pe-2 ps-2">
-      <ng-container *ngIf="!batchMode">
-        <ng-container *ngIf="disposition() === 'pre-order'">
+      @if (!batchMode) {
+        @if (disposition() === 'pre-order') {
           <button type="button"
             class="btn btn-outline-danger material-icon-button"
             (click)="deleteRequested.emit(copy)" title="Delete Item" i18n-title
             aria-label="Delete Item" i18n-aria-label>
             <span class="material-icons" aria-hidden="true">delete</span>
           </button>
-        </ng-container>
-        <ng-container *ngIf="disposition() === 'on-order' || disposition() === 'delayed'">
+        }
+        @if (disposition() === 'on-order' || disposition() === 'delayed') {
           <button type="button" class="btn btn-link" (click)="receiveRequested.emit(copy)" i18n>Mark Received</button>
-        </ng-container>
-        <ng-container *ngIf="disposition() === 'received'">
+        }
+        @if (disposition() === 'received') {
           <button type="button" class="btn btn-link" (click)="unReceiveRequested.emit(copy)" i18n>Un-Receive</button>
-        </ng-container>
-        <ng-container *ngIf="disposition() === 'on-order'">
+        }
+        @if (disposition() === 'on-order') {
           <button type="button" class="btn btn-link" class="ms-2" (click)="cancelRequested.emit(copy)" i18n>Cancel</button>
-        </ng-container>
-        <ng-container *ngIf="disposition() === 'delayed'">
+        }
+        @if (disposition() === 'delayed') {
           &nbsp;<button type="button" class="btn btn-link" (click)="cancelRequested.emit(copy)" i18n>Cancel</button>
-        </ng-container>
-        <ng-container *ngIf="disposition() === 'delayed'">
+        }
+        @if (disposition() === 'delayed') {
           <span class="fst-italic ms-2" title="{{copy.cancel_reason().description()}}">
             {{copy.cancel_reason().label()}}
           </span>
-        </ng-container>
-        <ng-container *ngIf="disposition() === 'canceled'">
+        }
+        @if (disposition() === 'canceled') {
           <span class="fst-italic" title="{{copy.cancel_reason().description()}}">
             {{copy.cancel_reason().label()}}
           </span>
-        </ng-container>
-      </ng-container>
-      <ng-container *ngIf="batchMode">
-        <button type="button" class="btn btn-outline-dark" 
-          (click)="batchApplyRequested.emit(copy)" i18n>Batch Update</button>
-      </ng-container>
+        }
+      }
+      @if (batchMode) {
+        <button type="button" class="btn btn-outline-dark"
+        (click)="batchApplyRequested.emit(copy)" i18n>Batch Update</button>
+      }
     </div>
-  </ng-container>
+  }
 </div>
+}
 
 <ng-template #fundTmpl let-r="result" i18n>
   <span [ngClass]="{'fund-balance-state-stop': checkFundBalance(r.fm.id()) === 'stop',

@@ -2,18 +2,22 @@
 </eg-staff-banner>
 
 <div class="col-lg-4 offset-lg-4" [hidden]="!initDone">
-  <div *ngIf="lineitems.length || origLiCount">
-    <span i18n>Creating for {{lineitems.length}} line items.</span>
-    <span i18n *ngIf="lineitems.length !== origLiCount" class="alert-warning">
+  @if (lineitems.length || origLiCount) {
+    <div>
+      <span i18n>Creating for {{lineitems.length}} line items.</span>
+      @if (lineitems.length !== origLiCount) {
+        <span i18n class="alert-warning">
       (There were {{origLiCount}} selected, but not all were in a valid state
        to be added to a purchase order.)
     </span>
-    <hr class="p-1" />
-  </div>
+      }
+      <hr class="p-1" />
+    </div>
+  }
   <div class="form-group mb-3">
     <label class="form-label" for="order-agency-input" i18n>Ordering Agency</label>
     <eg-org-select (onChange)="orgChange($event)" domId="order-agency-input"
-    [limitPerms]="['CREATE_PURCHASE_ORDER']">
+      [limitPerms]="['CREATE_PURCHASE_ORDER']">
     </eg-org-select>
   </div>
   <div class="form-group mb-3">
@@ -21,16 +25,18 @@
     <input id="name-input" class="form-control" type="text" [ngModel]="poName"
       (ngModelChange)="poName = $event; checkDuplicatePoName()"
       aria-describedby="name-dupe-error name-auto-number"
-    />
+      />
     <p class="form-text" id="name-auto-number">
-      You may enter a name for this PO for future reference. 
+      You may enter a name for this PO for future reference.
       POs without a name will be referenced by number.
     </p>
   </div>
-  <div *ngIf="dupeResults.dupeFound" id="name-dupe-error" class="alert alert-warning" i18n>
+  @if (dupeResults.dupeFound) {
+    <div id="name-dupe-error" class="alert alert-warning" i18n>
     This name is already in used by another PO: 
     <a target="_blank" routerLink="/staff/acq/po/{{dupeResults.dupePoId}}">View PO</a>
   </div>
+  }
   <div class="form-group mb-3">
     <label class="form-label" for="name-input" i18n>Provider</label>
     <eg-combobox domId="provider-input" [(ngModel)]="provider"
@@ -40,20 +46,22 @@
     </eg-combobox>
   </div>
   <div class="form-group form-check mb-3">
-    <input type="checkbox" class="form-check-input" 
+    <input type="checkbox" class="form-check-input"
       [(ngModel)]="prepaymentRequired" id="prepayment-required">
     <label class="form-label form-check-label" for="prepayment-required" i18n>
       Prepayment Required
     </label>
   </div>
-  <div class="form-group form-check mb-3" *ngIf="lineitems.length">
-    <input type="checkbox" class="form-check-input" 
-      [(ngModel)]="createAssets" id="create-assets">
-    <label class="form-label form-check-label" for="create-assets" i18n>
+  @if (lineitems.length) {
+    <div class="form-group form-check mb-3">
+      <input type="checkbox" class="form-check-input"
+        [(ngModel)]="createAssets" id="create-assets">
+      <label class="form-label form-check-label" for="create-assets" i18n>
       Import Bibs and Create Copies
     </label>
-  </div>
+    </div>
+  }
   <hr class="p-1" />
-  <button [disabled]="!canCreate()" (click)="create()" 
-    type="submit" class="btn btn-primary" i18n>Create</button>
+  <button [disabled]="!canCreate()" (click)="create()"
+  type="submit" class="btn btn-primary" i18n>Create</button>
 </div>

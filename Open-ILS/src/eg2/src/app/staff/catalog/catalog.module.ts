@@ -38,7 +38,7 @@ import {WorkLogModule} from '@eg/staff/share/worklog/worklog.module';
 import {VolCopyModule} from '@eg/staff/cat/volcopy/volcopy.module';
 import { SortOrderSelectComponent } from './sort-order-select/sort-order-select.component';
 import { CatalogOrgSelectComponent } from './catalog-org-select/catalog-org-select.component';
-import { FastAddSelectorComponent } from '../share/marc-edit/fast-add-selector-component';
+import { FastAddSelectorComponent } from '../share/marc-edit/fast-add-selector.component';
 import { MakeBookableDialogComponent } from '../share/booking/make-bookable-dialog.component';
 
 @NgModule({

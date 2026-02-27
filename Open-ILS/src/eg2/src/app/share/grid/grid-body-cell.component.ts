@@ -1,6 +1,6 @@
 import {Component, Input} from '@angular/core';
 import {GridContext, GridColumn} from './grid';
-import { NgIf, NgTemplateOutlet } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 import { BoolDisplayComponent } from '../util/bool.component';
 
@@ -11,9 +11,8 @@ import { BoolDisplayComponent } from '../util/bool.component';
     styles: ['.eg-grid-body-row.selected .user-favorite { text-shadow: 0 0 1em var(--bs-primary), 0 0 0.2em var(--bs-primary); -webkit-text-stroke: 1px var(--star-stroke); }'],
     imports: [
         BoolDisplayComponent,
-        NgIf,
         NgTemplateOutlet,
-        NgbTooltip,
+        NgbTooltip
     ]
 })
 

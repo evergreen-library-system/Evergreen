@@ -1,5 +1,4 @@
-import { Component, Input, Directive, HostBinding, inject } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component, Directive, inject } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastService } from '@eg/share/toast/toast.service';
 import { IdlObject, IdlService } from '@eg/core/idl.service';
@@ -7,7 +6,7 @@ import { PcrudService } from '@eg/core/pcrud.service';
 import { OrgService } from '@eg/core/org.service';
 import { AuthService } from '@eg/core/auth.service';
 import { ServerStoreService } from '@eg/core/server-store.service';
-import {FormsModule, AbstractControl, NG_VALIDATORS, ValidationErrors, Validator, Validators, ValidatorFn} from '@angular/forms';
+import {FormsModule, AbstractControl, NG_VALIDATORS, Validator, ValidatorFn} from '@angular/forms';
 import { ComboboxComponent, ComboboxEntry } from '@eg/share/combobox/combobox.component';
 import {VolCopyContext} from '@eg/staff/cat/volcopy/volcopy';
 import {
@@ -18,6 +17,7 @@ import {
 } from './copy-things-dialog.component';
 import { StringComponent } from '@eg/share/string/string.component';
 import { CopyThingsDialogWrapperComponent } from './copy-things-dialog-wrapper.component';
+import { DatePipe } from '@angular/common';
 
 export interface ICopyAlert extends IThingObject {
     alert_type(val?: number): number;
@@ -46,6 +46,7 @@ export interface ICopyAlertChanges extends IThingChanges<ICopyAlert> {
     imports: [
         ComboboxComponent,
         CopyThingsDialogWrapperComponent,
+        DatePipe,
         FormsModule,
         StringComponent
     ]

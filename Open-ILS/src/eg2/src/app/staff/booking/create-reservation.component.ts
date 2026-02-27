@@ -21,7 +21,7 @@ import {ScheduleGridService, ScheduleRow} from './schedule-grid.service';
 import {NoTimezoneSetComponent} from './no-timezone-set.component';
 
 import moment from 'moment-timezone';
-import { CommonModule } from '@angular/common';
+
 import { DateSelectComponent } from '@eg/share/date-select/date-select.component';
 import { OrgFamilySelectComponent } from '@eg/share/org-family-select/org-family-select.component';
 import { GridModule } from '@eg/share/grid/grid.module';
@@ -41,7 +41,6 @@ const startOfDayIsBeforeEndOfDayValidator: ValidatorFn = (fg: FormGroup): Valida
     templateUrl: './create-reservation.component.html',
     styles: ['#ideal-resource-barcode {min-width: 300px;}'],
     imports: [
-        CommonModule,
         CreateReservationDialogComponent,
         DateSelectComponent,
         DateRangeSelectComponent,
@@ -52,7 +51,7 @@ const startOfDayIsBeforeEndOfDayValidator: ValidatorFn = (fg: FormGroup): Valida
         NoTimezoneSetComponent,
         OrgFamilySelectComponent,
         ReactiveFormsModule,
-        StaffCommonModule,
+        StaffCommonModule
     ]
 })
 export class CreateReservationComponent implements OnInit, AfterViewInit, OnDestroy {

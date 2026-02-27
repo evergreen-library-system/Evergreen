@@ -14,7 +14,7 @@ import {Pager} from '@eg/share/util/pager';
 import { StaffBannerComponent } from '../share/staff-banner.component';
 import { TitleComponent } from '@eg/share/title/title.component';
 import { GridModule } from '@eg/share/grid/grid.module';
-import { CommonModule } from '@angular/common';
+
 import { OrgSelectComponent } from '@eg/share/org-select/org-select.component';
 
 // The data that comes from the API, along with some fleshing
@@ -31,12 +31,11 @@ interface PullListRow {
     templateUrl: './pull-list.component.html',
     imports: [
         CancelReservationDialogComponent,
-        CommonModule,
         GridModule,
         OrgSelectComponent,
         ReactiveFormsModule,
         StaffBannerComponent,
-        TitleComponent,
+        TitleComponent
     ]
 })
 

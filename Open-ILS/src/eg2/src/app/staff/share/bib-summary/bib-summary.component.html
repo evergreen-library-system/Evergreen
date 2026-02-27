@@ -1,144 +1,168 @@
 
-<div class='eg-bib-summary card tight-card w-100' *ngIf="summary">
-  <div class="card-header d-flex">
-    <div id="bib-record-summary" class="fw-bold">
-      <h2 class="record-summary" i18n>Record Summary</h2>
-      <ng-container *ngIf="summary.record.deleted() === 't'">
-        <span class="text-danger" i18n>(Deleted)</span>
-      </ng-container>
-      <ng-container *ngIf="summary.attributes.icon_format && summary.attributes.icon_format[0]">
-        <ng-container *ngFor="let icon of summary.attributes.icon_format">
-          <span class="pe-1 ps-2">
-            <img class="pe-1" alt=""
-              src="/images/format_icons/icon_format/{{icon}}.png"/>
-            <span class="fw-normal">{{iconFormatLabel(icon)}}</span>
-          </span>
-        </ng-container>
-      </ng-container>
-    </div>
-    <div class="flex-1"></div>
-    <div>
-      <button class="with-material-icon btn btn-link" type="button"
-        title="Show More" i18n-title
-        *ngIf="!expand" (click)="expand=true">
-        <span class="material-icons" aria-hidden="true">expand_more</span>
-      </button>
-      <button class="with-material-icon btn btn-link" type="button"
-        title="Show Less" i18n-title aria-label="Show Less" i18n-aria-label
-        *ngIf="expand" (click)="expand=false">
-        <span class="material-icons" aria-hidden="true">expand_less</span>
-      </button>
-    </div>
-  </div>
-  <div class="row">
-
-    <!-- in expanded display, show the jacket image along the left -->
-    <ng-container *ngIf="expand">
-      <div class="col-lg-1 pe-0">
-        <a href="/opac/extras/ac/jacket/large/r/{{summary.id}}" target="_blank">
-          <img class="jacket jacket-medium"
-            alt="Jacket Image" i18n-alt
-            src="/opac/extras/ac/jacket/medium/r/{{summary.id}}"/>
-        </a>
+@if (summary) {
+  <div class='eg-bib-summary card tight-card w-100'>
+    <div class="card-header d-flex">
+      <div id="bib-record-summary" class="fw-bold">
+        <h2 class="record-summary" i18n>Record Summary</h2>
+        @if (summary.record.deleted() === 't') {
+          <span class="text-danger" i18n>(Deleted)</span>
+        }
+        @if (summary.attributes.icon_format && summary.attributes.icon_format[0]) {
+          @for (icon of summary.attributes.icon_format; track icon) {
+            <span class="pe-1 ps-2">
+              <img class="pe-1" alt=""
+                src="/images/format_icons/icon_format/{{icon}}.png"/>
+              <span class="fw-normal">{{iconFormatLabel(icon)}}</span>
+            </span>
+          }
+        }
       </div>
-    </ng-container>
-
-    <!-- make room for the jacket image when expanded -->
-    <div [ngClass]="{'col-lg-11 ps-0': expand, 'col-lg-12': !expand}">
-      <div class="card-body">
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item">
-            <div class="d-flex">
-              <div class="flex-1 fw-bold" i18n>Title:</div>
-              <div class="flex-3">
-                <a routerLink="/staff/catalog/record/{{summary.id}}" target="_blank">
-                  <eg-bib-display-field [summary]="summary" field="title"></eg-bib-display-field>
-                </a>
-              </div>
-              <div class="flex-1 fw-bold ps-1" i18n>Edition:</div>
-              <div class="flex-1">{{summary.display.edition}}</div>
-              <div class="flex-1 fw-bold" i18n>TCN:</div>
-              <div class="flex-1">{{summary.record.tcn_value()}}</div>
-              <div class="flex-1 fw-bold ps-1" i18n>Created By:</div>
-              <div class="flex-1" *ngIf="summary.record.creator().usrname">
-                <a href="/eg/staff/circ/patron/{{summary.record.creator().id()}}/checkout" target="_blank">
-                  {{summary.record.creator().usrname()}}
-                </a>
-              </div>
-            </div>
-          </li>
-          <li class="list-group-item" *ngIf="expand">
-            <div class="d-flex">
-              <div class="flex-1 fw-bold" i18n>Author:</div>
-              <div class="flex-3">{{summary.display.author}}</div>
-              <div class="flex-1 fw-bold ps-1" i18n>Pubdate:</div>
-              <div class="flex-1">{{summary.display.pubdate}}</div>
-              <div class="flex-1 fw-bold" i18n>Database ID:</div>
-              <div class="flex-1">{{summary.id}}</div>
-              <div class="flex-1 fw-bold ps-1" i18n>Last Edited By:</div>
-              <div class="flex-1" *ngIf="summary.record.editor().usrname">
-                <a href="/eg/staff/circ/patron/{{summary.record.editor().id()}}/checkout" target="_blank">
-                  {{summary.record.editor().usrname()}}
-                </a>
-              </div>
-            </div>
-          </li>
-          <li class="list-group-item" *ngIf="expand">
-            <div class="d-flex">
-              <div class="flex-1 fw-bold" i18n>Bib Call #:</div>
-              <div class="flex-3">{{summary.bibCallNumber}}</div>
-              <div class="flex-1 fw-bold" i18n>Record Owner:</div>
-              <div class="flex-1">{{orgName(summary.record.owner())}}</div>
-              <div class="flex-1 fw-bold ps-1" i18n>Created On:</div>
-              <div class="flex-1">{{summary.record.create_date() | date:'short'}}</div>
-              <div class="flex-1 fw-bold ps-1" i18n>Last Edited On:</div>
-              <div class="flex-1">{{summary.record.edit_date() | date:'short'}}</div>
-            </div>
-          </li>
-          <ng-container *ngIf="expand && hasCourse">
+      <div class="flex-1"></div>
+      <div>
+        @if (!expand) {
+          <button class="with-material-icon btn btn-link" type="button"
+            title="Show More" i18n-title
+            (click)="expand=true">
+            <span class="material-icons" aria-hidden="true">expand_more</span>
+          </button>
+        }
+        @if (expand) {
+          <button class="with-material-icon btn btn-link" type="button"
+            title="Show Less" i18n-title aria-label="Show Less" i18n-aria-label
+            (click)="expand=false">
+            <span class="material-icons" aria-hidden="true">expand_less</span>
+          </button>
+        }
+      </div>
+    </div>
+    <div class="row">
+      <!-- in expanded display, show the jacket image along the left -->
+      @if (expand) {
+        <div class="col-lg-1 pe-0">
+          <a href="/opac/extras/ac/jacket/large/r/{{summary.id}}" target="_blank">
+            <img class="jacket jacket-medium"
+              alt="Jacket Image" i18n-alt
+              src="/opac/extras/ac/jacket/medium/r/{{summary.id}}"/>
+          </a>
+        </div>
+      }
+      <!-- make room for the jacket image when expanded -->
+      <div [ngClass]="{'col-lg-11 ps-0': expand, 'col-lg-12': !expand}">
+        <div class="card-body">
+          <ul class="list-group list-group-flush">
             <li class="list-group-item">
               <div class="d-flex">
-                <div class="flex-1 fw-bold" i18n>Associated Courses</div>
-              </div>
-            </li>
-            <li class="list-group-item" *ngFor="let course of courses">
-              <div class="d-flex">
-                <div class="flex-1 fw-bold" i18n>Course Name:</div>
+                <div class="flex-1 fw-bold" i18n>Title:</div>
                 <div class="flex-3">
-                  <a routerLink="/staff/admin/local/asset/course_list/{{course.id()}}" target="_blank">
-                    {{course.name()}}
+                  <a routerLink="/staff/catalog/record/{{summary.id}}" target="_blank">
+                    <eg-bib-display-field [summary]="summary" field="title"></eg-bib-display-field>
                   </a>
                 </div>
-                <div class="flex-1 fw-bold" i18n>Course Number:</div>
-                <div class="flex-1">{{course.course_number()}}</div>
-                <div class="flex-1 fw-bold" i18n>Section Number:</div>
-                <div class="flex-1">{{course.section_number()}}</div>
-                <div class="flex-1 fw-bold" i18n>Owning Library:</div>
-                <div class="flex-1">{{this.org.get(course.owning_lib()).shortname()}}</div>
+                <div class="flex-1 fw-bold ps-1" i18n>Edition:</div>
+                <div class="flex-1">{{summary.display.edition}}</div>
+                <div class="flex-1 fw-bold" i18n>TCN:</div>
+                <div class="flex-1">{{summary.record.tcn_value()}}</div>
+                <div class="flex-1 fw-bold ps-1" i18n>Created By:</div>
+                @if (summary.record.creator().usrname) {
+                  <div class="flex-1">
+                    <a href="/eg/staff/circ/patron/{{summary.record.creator().id()}}/checkout" target="_blank">
+                      {{summary.record.creator().usrname()}}
+                    </a>
+                  </div>
+                }
               </div>
             </li>
-          </ng-container>
-          <ng-container *ngIf="expand && summary.eResourceUrls.length">
-            <li class="list-group-item" *ngFor="let url of summary.eResourceUrls">
-              <div class="d-flex">
-                <div class="flex-1 fw-bold">
-                  <ng-container [ngSwitch]="url.ind2">
-                    <ng-container *ngSwitchCase="'0'" i18n>Resource:</ng-container>
-                    <ng-container *ngSwitchCase="'1'" i18n>Version of Resource:</ng-container>
-                    <ng-container *ngSwitchCase="'2'" i18n>Related Resource:</ng-container>
-                    <ng-container *ngSwitchDefault i18n></ng-container>
-                  </ng-container>
+            @if (expand) {
+              <li class="list-group-item">
+                <div class="d-flex">
+                  <div class="flex-1 fw-bold" i18n>Author:</div>
+                  <div class="flex-3">{{summary.display.author}}</div>
+                  <div class="flex-1 fw-bold ps-1" i18n>Pubdate:</div>
+                  <div class="flex-1">{{summary.display.pubdate}}</div>
+                  <div class="flex-1 fw-bold" i18n>Database ID:</div>
+                  <div class="flex-1">{{summary.id}}</div>
+                  <div class="flex-1 fw-bold ps-1" i18n>Last Edited By:</div>
+                  @if (summary.record.editor().usrname) {
+                    <div class="flex-1">
+                      <a href="/eg/staff/circ/patron/{{summary.record.editor().id()}}/checkout" target="_blank">
+                        {{summary.record.editor().usrname()}}
+                      </a>
+                    </div>
+                  }
                 </div>
-                <div class="flex-5">
-                  <div><a href="{{url.href}}" target="_blank">{{url.label}}</a></div>
-                  <div class="pt-1">{{url.note}}</div>
+              </li>
+            }
+            @if (expand) {
+              <li class="list-group-item">
+                <div class="d-flex">
+                  <div class="flex-1 fw-bold" i18n>Bib Call #:</div>
+                  <div class="flex-3">{{summary.bibCallNumber}}</div>
+                  <div class="flex-1 fw-bold" i18n>Record Owner:</div>
+                  <div class="flex-1">{{orgName(summary.record.owner())}}</div>
+                  <div class="flex-1 fw-bold ps-1" i18n>Created On:</div>
+                  <div class="flex-1">{{summary.record.create_date() | date:'short'}}</div>
+                  <div class="flex-1 fw-bold ps-1" i18n>Last Edited On:</div>
+                  <div class="flex-1">{{summary.record.edit_date() | date:'short'}}</div>
                 </div>
-              </div>
-            </li>
-          </ng-container>
-        </ul>
-      </div>
-    </div><!-- col -->
-  </div><!-- row -->
-</div>
+              </li>
+            }
+            @if (expand && hasCourse) {
+              <li class="list-group-item">
+                <div class="d-flex">
+                  <div class="flex-1 fw-bold" i18n>Associated Courses</div>
+                </div>
+              </li>
+              @for (course of courses; track course) {
+                <li class="list-group-item">
+                  <div class="d-flex">
+                    <div class="flex-1 fw-bold" i18n>Course Name:</div>
+                    <div class="flex-3">
+                      <a routerLink="/staff/admin/local/asset/course_list/{{course.id()}}" target="_blank">
+                        {{course.name()}}
+                      </a>
+                    </div>
+                    <div class="flex-1 fw-bold" i18n>Course Number:</div>
+                    <div class="flex-1">{{course.course_number()}}</div>
+                    <div class="flex-1 fw-bold" i18n>Section Number:</div>
+                    <div class="flex-1">{{course.section_number()}}</div>
+                    <div class="flex-1 fw-bold" i18n>Owning Library:</div>
+                    <div class="flex-1">{{this.org.get(course.owning_lib()).shortname()}}</div>
+                  </div>
+                </li>
+              }
+            }
+            @if (expand && summary.eResourceUrls.length) {
+              @for (url of summary.eResourceUrls; track url) {
+                <li class="list-group-item">
+                  <div class="d-flex">
+                    <div class="flex-1 fw-bold">
+                      @switch (url.ind2) {
+                        @case ('0') {
+                          <ng-container i18n>Resource:</ng-container>
+                        }
+                        @case ('1') {
+                          <ng-container i18n>Version of Resource:</ng-container>
+                        }
+                        @case ('2') {
+                          <ng-container i18n>Related Resource:</ng-container>
+                        }
+                        @default {
+                          <ng-container i18n></ng-container>
+                        }
+                      }
+                    </div>
+                    <div class="flex-5">
+                      <div><a href="{{url.href}}" target="_blank">{{url.label}}</a></div>
+                      <div class="pt-1">{{url.note}}</div>
+                    </div>
+                  </div>
+                </li>
+              }
+            }
+          </ul>
+        </div>
+      </div><!-- col -->
+    </div><!-- row -->
+  </div>
+}
 

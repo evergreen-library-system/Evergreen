@@ -15,8 +15,9 @@ import {
 } from './copy-things-dialog.component';
 import {FormsModule} from '@angular/forms';
 import { StringComponent } from '@eg/share/string/string.component';
-import { CommonModule } from '@angular/common';
+
 import { CopyThingsDialogWrapperComponent } from './copy-things-dialog-wrapper.component';
+import { DatePipe } from '@angular/common';
 
 export interface ICopyNote extends IThingObject {
     title(val?: string): string;
@@ -41,8 +42,8 @@ export interface ICopyNoteChanges extends IThingChanges<ICopyNote> {
     templateUrl: 'copy-notes-dialog.component.html',
     styleUrls: ['./copy-notes-dialog.component.css'],
     imports: [
-        CommonModule,
         CopyThingsDialogWrapperComponent,
+        DatePipe,
         FormsModule,
         StringComponent
     ]

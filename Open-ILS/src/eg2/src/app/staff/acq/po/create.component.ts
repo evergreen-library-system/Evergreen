@@ -1,16 +1,12 @@
 import { Component, OnInit, inject } from '@angular/core';
-import {Router, ActivatedRoute, ParamMap} from '@angular/router';
+import {Router, ActivatedRoute, ParamMap, RouterModule} from '@angular/router';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
-import {OrgService} from '@eg/core/org.service';
-import {PcrudService} from '@eg/core/pcrud.service';
-import {ServerStoreService} from '@eg/core/server-store.service';
 import {ComboboxComponent, ComboboxEntry} from '@eg/share/combobox/combobox.component';
-import {EventService} from '@eg/core/event.service';
 import {PoService} from './po.service';
 import {LineitemService} from '../lineitem/lineitem.service';
-import { CommonModule } from '@angular/common';
+
 import { StaffBannerComponent } from '@eg/staff/share/staff-banner.component';
 import { FormsModule } from '@angular/forms';
 import { OrgSelectComponent } from '@eg/share/org-select/org-select.component';
@@ -27,22 +23,18 @@ const VALID_PRE_PO_LI_STATES = [
     selector: 'eg-acq-po-create',
     imports: [
         ComboboxComponent,
-        CommonModule,
         FormsModule,
         OrgSelectComponent,
-        StaffBannerComponent,
+        RouterModule,
+        StaffBannerComponent
     ]
 })
 export class PoCreateComponent implements OnInit {
     private router = inject(Router);
     private route = inject(ActivatedRoute);
-    private evt = inject(EventService);
     private idl = inject(IdlService);
     private net = inject(NetService);
-    private org = inject(OrgService);
-    private pcrud = inject(PcrudService);
     private auth = inject(AuthService);
-    private store = inject(ServerStoreService);
     private liService = inject(LineitemService);
     private poService = inject(PoService);
 

@@ -7,7 +7,10 @@ import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
     templateUrl: 'event-log.component.html',
-    imports: [StaffCommonModule]
+    imports: [
+        StaffCommonModule,
+        ItemEventGridComponent
+    ]
 })
 
 export class ItemEventLogComponent implements OnInit {

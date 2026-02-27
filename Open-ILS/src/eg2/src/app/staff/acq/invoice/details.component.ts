@@ -12,6 +12,7 @@ import {InvoiceService} from './invoice.service';
 import { ConfirmDialogComponent } from '@eg/share/dialog/confirm.component';
 import { CommonModule } from '@angular/common';
 import { ComboboxComponent } from '@eg/share/combobox/combobox.component';
+import { FormsModule } from '@angular/forms';
 
 @Component({
     templateUrl: 'details.component.html',
@@ -22,7 +23,8 @@ import { ComboboxComponent } from '@eg/share/combobox/combobox.component';
         ComboboxComponent,
         CommonModule,
         ConfirmDialogComponent,
-        FmRecordEditorComponent
+        FmRecordEditorComponent,
+        FormsModule
     ]
 })
 export class InvoiceDetailsComponent implements OnInit, OnDestroy {

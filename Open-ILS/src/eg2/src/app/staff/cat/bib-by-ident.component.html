@@ -1,12 +1,12 @@
-<ng-container *ngIf="identType === 'id'">
+@if (identType === 'id') {
   <eg-staff-banner bannerText="Search by Record ID" i18n-bannerText>
   </eg-staff-banner>
-</ng-container>
+}
 
-<ng-container *ngIf="identType === 'tcn'">
+@if (identType === 'tcn') {
   <eg-staff-banner bannerText="Search by Record TCN" i18n-bannerText>
   </eg-staff-banner>
-</ng-container>
+}
 
 
 <form class="mt-3">
@@ -15,42 +15,58 @@
       Retrieve record by
     </label>
 
-    <select class="form-select w-auto mx-2" id="bib-ident-type" 
+    <select class="form-select w-auto mx-2" id="bib-ident-type"
       [(ngModel)]="identType" (ngModelChange)="resetQuery()" formControlName="bibIdentType">
       <option value="id">ID</option>
       <option value="tcn">TCN</option>
     </select>
 
     <label class="form-label mx-2" for="bib-ident-value">
-      <ng-container *ngIf="identType === 'id'" i18n>ID:</ng-container>
-      <ng-container *ngIf="identType === 'tcn'" i18n>TCN:</ng-container>
+      @if (identType === 'id') {
+        <ng-container i18n>ID:</ng-container>
+      }
+      @if (identType === 'tcn') {
+        <ng-container i18n>TCN:</ng-container>
+      }
     </label>
-    <input id="bib-ident-value" type="text" required 
+    <input id="bib-ident-value" type="text" required
       (keyup.enter)="search()" [(ngModel)]="identValue" formControlName="bibIdentValue"
       class="form-control mx-2 w-auto" aria-describedby="bib-ident-status" />
 
     <button class="btn btn-primary" [disabled]="searchInProgress" (click)="search()" type="submit">
-      <span *ngIf="!searchInProgress" i18n>Search</span>
-      <span *ngIf="searchInProgress" i18n>Searching...</span>
+      @if (!searchInProgress) {
+        <span i18n>Search</span>
+      }
+      @if (searchInProgress) {
+        <span i18n>Searching...</span>
+      }
     </button>
 
-    <div *ngIf="searchInProgress" role="status">
-      <span class="visually-hidden">Searching...</span>
-    </div>
+    @if (searchInProgress) {
+      <div role="status">
+        <span class="visually-hidden">Searching...</span>
+      </div>
+    }
 
   </div>
 
   <div role="status" id="bib-ident-status">
     <div class="invalid-feedback d-block fs-4">
-      <div *ngIf="notFound && !multiRecordsFound" i18n>
+      @if (notFound && !multiRecordsFound) {
+        <div i18n>
         Record not found: {{identValue}}
       </div>
-      <div *ngIf="multiRecordsFound" i18n>
+      }
+      @if (multiRecordsFound) {
+        <div i18n>
         More than one Bib Record found with TCN: {{identValue}}
       </div>
-      <div *ngIf="queryError" i18n>
+      }
+      @if (queryError) {
+        <div i18n>
         The server encountered an error. Please try a different search.
       </div>
+      }
     </div>
   </div>
 </form>

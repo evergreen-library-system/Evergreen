@@ -4,16 +4,14 @@ import {LocaleService} from '@eg/core/locale.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import { NgFor, NgIf } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 
 @Component({
     selector: 'eg-translate',
     templateUrl: 'translate.component.html',
     imports: [
-        FormsModule,
-        NgFor,
-        NgIf
+        FormsModule
     ]
 })
 

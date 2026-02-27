@@ -6,13 +6,13 @@ import {
 import { ServerStoreService } from '@eg/core/server-store.service';
 import { StaffCatalogService } from '@eg/staff/catalog/catalog.service';
 import { ScriptService } from '@eg/share/util/script.service';
-import { NgIf } from '@angular/common';
+
 
 @Component({
     selector: 'eg-catalog-added-content',
     templateUrl: './added-content.component.html',
     styleUrls: ['./added-content.component.css'],
-    imports: [NgIf]
+    imports: []
 })
 export class AddedContentComponent implements OnInit {
     private bib = inject(BibRecordService);

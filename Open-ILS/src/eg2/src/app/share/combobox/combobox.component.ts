@@ -9,11 +9,11 @@ import { Component, OnInit, Input, Output, ViewChild, Directive, ViewChildren, Q
 import {ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR} from '@angular/forms';
 import {EMPTY, Observable, of, Subject} from 'rxjs';
 import {map, mergeMap, mapTo, debounceTime, distinctUntilChanged, merge, filter, mergeWith} from 'rxjs/operators';
-import {NgbTypeahead, NgbTypeaheadSelectItemEvent} from '@ng-bootstrap/ng-bootstrap';
+import {NgbTypeahead, NgbTypeaheadModule, NgbTypeaheadSelectItemEvent} from '@ng-bootstrap/ng-bootstrap';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {OrgService} from '@eg/core/org.service';
-import { NgClass, NgIf } from '@angular/common';
+import { CommonModule } from '@angular/common';
 
 export interface ComboboxEntry {
   id: any;
@@ -48,11 +48,10 @@ export class IdlClassTemplateDirective {
             multi: true
         }],
         imports: [
-            FormsModule,
-            NgClass,
-            NgIf,
-            NgbTypeahead
-        ]
+    CommonModule,
+    FormsModule,
+    NgbTypeaheadModule
+]
 })
 export class ComboboxComponent
 implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
@@ -506,7 +505,7 @@ implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
         if (!this.controller)
             return;
 
-        const listbox = document.getElementById(this.controller.getAttribute('aria-owns'));
+        const listbox = document.getElementById(this.controller.getAttribute('aria-controls'));
         // console.debug("Listbox: ", listbox);
 
         const activeItem = document.getElementById(this.controller.getAttribute('aria-activedescendant'));

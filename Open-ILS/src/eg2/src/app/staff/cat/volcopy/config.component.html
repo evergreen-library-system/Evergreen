@@ -15,8 +15,8 @@
           <ul class="list-group list-group-flush">
             <li class="list-group-item">
               <div class="form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" 
-                  id="hide-classification-column" 
+                <input class="form-check-input" type="checkbox"
+                  id="hide-classification-column"
                   [(ngModel)]="volcopy.defaults.hidden.classification">
                 <label class="form-label form-check-label" for="hide-classification-column" i18n>
                   Hide Call Number Classification Column
@@ -25,8 +25,8 @@
             </li>
             <li class="list-group-item">
               <div class="form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" 
-                  id="hide-prefix-column" 
+                <input class="form-check-input" type="checkbox"
+                  id="hide-prefix-column"
                   [(ngModel)]="volcopy.defaults.hidden.prefix">
                 <label class="form-label form-check-label" for="hide-prefix-column" i18n>
                   Hide Call Number Prefix Column
@@ -35,8 +35,8 @@
             </li>
             <li class="list-group-item">
               <div class="form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" 
-                  id="hide-suffix-column" 
+                <input class="form-check-input" type="checkbox"
+                  id="hide-suffix-column"
                   [(ngModel)]="volcopy.defaults.hidden.suffix">
                 <label class="form-label form-check-label" for="hide-suffix-column" i18n>
                   Hide Call Number Suffix Column
@@ -45,8 +45,8 @@
             </li>
             <li class="list-group-item">
               <div class="form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" 
-                  id="hide-generate_barcodes-column" 
+                <input class="form-check-input" type="checkbox"
+                  id="hide-generate_barcodes-column"
                   [(ngModel)]="volcopy.defaults.hidden.generate_barcodes">
                 <label class="form-label form-check-label" for="hide-generate_barcodes-column" i18n>
                   Hide Generate Barcodes
@@ -55,8 +55,8 @@
             </li>
             <li class="list-group-item">
               <div class="form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" 
-                  id="hide-use_checkdigit-column" 
+                <input class="form-check-input" type="checkbox"
+                  id="hide-use_checkdigit-column"
                   [(ngModel)]="volcopy.defaults.hidden.use_checkdigit">
                 <label class="form-label form-check-label" for="hide-use_checkdigit-column" i18n>
                   Hide Use Checkdigit
@@ -65,12 +65,12 @@
             </li>
             <li class="list-group-item">
               <!--
-                Copy_number_vc distinguishes from copy_number so the field
-                can appear in the volcopy UI and/or attr editor independently.
+              Copy_number_vc distinguishes from copy_number so the field
+              can appear in the volcopy UI and/or attr editor independently.
               -->
               <div class="form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" 
-                  id="hide-copy_number_vc-column" 
+                <input class="form-check-input" type="checkbox"
+                  id="hide-copy_number_vc-column"
                   [(ngModel)]="volcopy.defaults.hidden.copy_number_vc">
                 <label class="form-label form-check-label" for="hide-copy_number_vc-column" i18n>
                   Hide Item Number
@@ -79,7 +79,7 @@
             </li>
             <li class="list-group-item">
               <div class="form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" id="hide-copy_part-column" 
+                <input class="form-check-input" type="checkbox" id="hide-copy_part-column"
                   [(ngModel)]="volcopy.defaults.hidden.copy_part">
                 <label class="form-label form-check-label" for="hide-copy_part-column" i18n>
                   Hide Item Part
@@ -88,8 +88,8 @@
             </li>
             <li class="list-group-item">
               <div class="form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" 
-                  id="volcopy-unified-interface" 
+                <input class="form-check-input" type="checkbox"
+                  id="volcopy-unified-interface"
                   [(ngModel)]="volcopy.defaults.values.unified_display">
                 <label class="form-label form-check-label" for="volcopy-unified-interface" i18n>
                   Unified Holdings and Item Attributes Display
@@ -120,9 +120,11 @@
                     [selectedId]="volcopy.defaults.values.classification || 1"
                     [smallFormControl]="true"
                     (onChange)="volcopy.defaults.values.classification = $event ? $event.id : null">
-                    <eg-combobox-entry *ngFor="let cls of volcopy.commonData.acn_class"
-                      [entryId]="cls.id()" [entryLabel]="cls.name()">
-                    </eg-combobox-entry>
+                    @for (cls of volcopy.commonData.acn_class; track cls) {
+                      <eg-combobox-entry
+                        [entryId]="cls.id()" [entryLabel]="cls.name()">
+                      </eg-combobox-entry>
+                    }
                   </eg-combobox>
                 </div>
               </div>
@@ -138,12 +140,14 @@
                     [smallFormControl]="true"
                     [startId]="volcopy.defaults.values.prefix || -1"
                     (onChange)="volcopy.defaults.values.prefix = $event ? $event.id : null">
-                    <eg-combobox-entry 
+                    <eg-combobox-entry
                       entryLabel="<None>" i18n-entryLabel [entryId]="-1">
                     </eg-combobox-entry>
-                    <eg-combobox-entry *ngFor="let pfx of volcopy.commonData.acn_prefix"
-                      [entryId]="pfx.id()" [entryLabel]="pfx.label()">
-                    </eg-combobox-entry>
+                    @for (pfx of volcopy.commonData.acn_prefix; track pfx) {
+                      <eg-combobox-entry
+                        [entryId]="pfx.id()" [entryLabel]="pfx.label()">
+                      </eg-combobox-entry>
+                    }
                   </eg-combobox>
                 </div>
               </div>
@@ -159,12 +163,14 @@
                     [selectedId]="volcopy.defaults.values.suffix || -1"
                     [smallFormControl]="true"
                     (onChange)="volcopy.defaults.values.suffix = $event ? $event.id : null">
-                    <eg-combobox-entry 
+                    <eg-combobox-entry
                       entryLabel="<None>" i18n-entryLabel [entryId]="-1">
                     </eg-combobox-entry>
-                    <eg-combobox-entry *ngFor="let sfx of volcopy.commonData.acn_suffix"
-                      [entryId]="sfx.id()" [entryLabel]="sfx.label()">
-                    </eg-combobox-entry>
+                    @for (sfx of volcopy.commonData.acn_suffix; track sfx) {
+                      <eg-combobox-entry
+                        [entryId]="sfx.id()" [entryLabel]="sfx.label()">
+                      </eg-combobox-entry>
+                    }
                   </eg-combobox>
                 </div>
               </div>
@@ -188,10 +194,10 @@
       <ul class="list-group list-group-flush">
         <li class="list-group-item">
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" 
-              id="circ_lib_mod_with_owning_lib-column" 
+            <input class="form-check-input" type="checkbox"
+              id="circ_lib_mod_with_owning_lib-column"
               [(ngModel)]="volcopy.defaults.values.circ_lib_mod_with_owning_lib">
-            <label class="form-label form-check-label" 
+            <label class="form-label form-check-label"
               for="circ_lib_mod_with_owning_lib-column" i18n>
               Change Circ Lib When Owning Lib Changes
             </label>
@@ -249,8 +255,8 @@
       <ul class="list-group list-group-flush">
         <li class="list-group-item">
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" 
-              id="show-status-attr" 
+            <input class="form-check-input" type="checkbox"
+              id="show-status-attr"
               [(ngModel)]="volcopy.defaults.hidden.status">
             <label class="form-label form-check-label" for="show-status-attr" i18n>
               Status
@@ -259,8 +265,8 @@
         </li>
         <li class="list-group-item">
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" 
-              id="show-barcode-attr" 
+            <input class="form-check-input" type="checkbox"
+              id="show-barcode-attr"
               [(ngModel)]="volcopy.defaults.hidden.barcode">
             <label class="form-label form-check-label" for="show-barcode-attr" i18n>
               Barcode
@@ -269,8 +275,8 @@
         </li>
         <li class="list-group-item">
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" 
-              id="show-create_date-attr" 
+            <input class="form-check-input" type="checkbox"
+              id="show-create_date-attr"
               [(ngModel)]="volcopy.defaults.hidden.create_date">
             <label class="form-label form-check-label" for="show-create_date-attr" i18n>
               Creation Date
@@ -279,8 +285,8 @@
         </li>
         <li class="list-group-item">
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" 
-              id="show-active_date-attr" 
+            <input class="form-check-input" type="checkbox"
+              id="show-active_date-attr"
               [(ngModel)]="volcopy.defaults.hidden.active_date">
             <label class="form-label form-check-label" for="show-active_date-attr" i18n>
               Activation Date
@@ -289,8 +295,8 @@
         </li>
         <li class="list-group-item">
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" 
-              id="show-creator-attr" 
+            <input class="form-check-input" type="checkbox"
+              id="show-creator-attr"
               [(ngModel)]="volcopy.defaults.hidden.creator">
             <label class="form-label form-check-label" for="show-creator-attr" i18n>
               Creator
@@ -299,8 +305,8 @@
         </li>
         <li class="list-group-item">
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" 
-              id="show-edit_date-attr" 
+            <input class="form-check-input" type="checkbox"
+              id="show-edit_date-attr"
               [(ngModel)]="volcopy.defaults.hidden.edit_date">
             <label class="form-label form-check-label" for="show-edit_date-attr" i18n>
               Last Edit Date
@@ -309,8 +315,8 @@
         </li>
         <li class="list-group-item">
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" 
-              id="show-editor-attr" 
+            <input class="form-check-input" type="checkbox"
+              id="show-editor-attr"
               [(ngModel)]="volcopy.defaults.hidden.editor">
             <label class="form-label form-check-label" for="show-editor-attr" i18n>
               Last Editor
@@ -330,8 +336,8 @@
       <ul class="list-group list-group-flush">
         <li class="list-group-item">
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" 
-              id="show-location-attr" 
+            <input class="form-check-input" type="checkbox"
+              id="show-location-attr"
               [(ngModel)]="volcopy.defaults.hidden.location">
             <label class="form-label form-check-label" for="show-location-attr" i18n>
               Location
@@ -340,8 +346,8 @@
         </li>
         <li class="list-group-item">
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" 
-              id="show-circ_lib-attr" 
+            <input class="form-check-input" type="checkbox"
+              id="show-circ_lib-attr"
               [(ngModel)]="volcopy.defaults.hidden.circ_lib">
             <label class="form-label form-check-label" for="show-circ_lib-attr" i18n>
               Circulating Library
@@ -350,8 +356,8 @@
         </li>
         <li class="list-group-item">
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" 
-              id="show-owning_lib-attr" 
+            <input class="form-check-input" type="checkbox"
+              id="show-owning_lib-attr"
               [(ngModel)]="volcopy.defaults.hidden.owning_lib">
             <label class="form-label form-check-label" for="show-owning_lib-attr" i18n>
               Owning Library
@@ -360,8 +366,8 @@
         </li>
         <li class="list-group-item">
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" 
-              id="show-copy_number-attr" 
+            <input class="form-check-input" type="checkbox"
+              id="show-copy_number-attr"
               [(ngModel)]="volcopy.defaults.hidden.copy_number">
             <label class="form-label form-check-label" for="show-copy_number-attr" i18n>
               Copy Number 
@@ -382,8 +388,8 @@
       <ul class="list-group list-group-flush">
         <li class="list-group-item">
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" 
-              id="show-circulate-attr" 
+            <input class="form-check-input" type="checkbox"
+              id="show-circulate-attr"
               [(ngModel)]="volcopy.defaults.hidden.circulate">
             <label class="form-label form-check-label" for="show-circulate-attr" i18n>
               Circulate
@@ -392,8 +398,8 @@
         </li>
         <li class="list-group-item">
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" 
-              id="show-holdable-attr" 
+            <input class="form-check-input" type="checkbox"
+              id="show-holdable-attr"
               [(ngModel)]="volcopy.defaults.hidden.holdable">
             <label class="form-label form-check-label" for="show-holdable-attr" i18n>
               Holdable
@@ -402,8 +408,8 @@
         </li>
         <li class="list-group-item">
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" 
-              id="show-age_protect-attr" 
+            <input class="form-check-input" type="checkbox"
+              id="show-age_protect-attr"
               [(ngModel)]="volcopy.defaults.hidden.age_protect">
             <label class="form-label form-check-label" for="show-age_protect-attr" i18n>
               Aged-Based Hold Protection
@@ -412,8 +418,8 @@
         </li>
         <li class="list-group-item">
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" 
-              id="show-floating-attr" 
+            <input class="form-check-input" type="checkbox"
+              id="show-floating-attr"
               [(ngModel)]="volcopy.defaults.hidden.floating">
             <label class="form-label form-check-label" for="show-floating-attr" i18n>
               Floating
@@ -422,8 +428,8 @@
         </li>
         <li class="list-group-item">
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" 
-              id="show-loan_duration-attr" 
+            <input class="form-check-input" type="checkbox"
+              id="show-loan_duration-attr"
               [(ngModel)]="volcopy.defaults.hidden.loan_duration">
             <label class="form-label form-check-label" for="show-loan_duration-attr" i18n>
               Loan Duration
@@ -432,8 +438,8 @@
         </li>
         <li class="list-group-item">
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" 
-              id="show-fine_level-attr" 
+            <input class="form-check-input" type="checkbox"
+              id="show-fine_level-attr"
               [(ngModel)]="volcopy.defaults.hidden.fine_level">
             <label class="form-label form-check-label" for="show-fine_level-attr" i18n>
               Fine Level
@@ -442,8 +448,8 @@
         </li>
         <li class="list-group-item">
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" 
-              id="show-circ_as_type-attr" 
+            <input class="form-check-input" type="checkbox"
+              id="show-circ_as_type-attr"
               [(ngModel)]="volcopy.defaults.hidden.circ_as_type">
             <label class="form-label form-check-label" for="show-circ_as_type-attr" i18n>
               Circulate As Type
@@ -452,8 +458,8 @@
         </li>
         <li class="list-group-item">
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" 
-              id="show-circ_modifier-attr" 
+            <input class="form-check-input" type="checkbox"
+              id="show-circ_modifier-attr"
               [(ngModel)]="volcopy.defaults.hidden.circ_modifier">
             <label class="form-label form-check-label" for="show-circ_modifier-attr" i18n>
               Circulation Modifier
@@ -462,8 +468,8 @@
         </li>
         <li class="list-group-item">
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" 
-              id="show-opac_visible-attr" 
+            <input class="form-check-input" type="checkbox"
+              id="show-opac_visible-attr"
               [(ngModel)]="volcopy.defaults.hidden.opac_visible">
             <label class="form-label form-check-label" for="show-opac_visible-attr" i18n>
               OPAC Visible
@@ -472,8 +478,8 @@
         </li>
         <li class="list-group-item">
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" 
-              id="show-ref-attr" 
+            <input class="form-check-input" type="checkbox"
+              id="show-ref-attr"
               [(ngModel)]="volcopy.defaults.hidden.ref">
             <label class="form-label form-check-label" for="show-ref-attr" i18n>
               Reference
@@ -494,8 +500,8 @@
       <ul class="list-group list-group-flush">
         <li class="list-group-item">
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" 
-              id="show-deposit-attr" 
+            <input class="form-check-input" type="checkbox"
+              id="show-deposit-attr"
               [(ngModel)]="volcopy.defaults.hidden.deposit">
             <label class="form-label form-check-label" for="show-deposit-attr" i18n>
               Deposit
@@ -504,8 +510,8 @@
         </li>
         <li class="list-group-item">
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" 
-              id="show-deposit_amount-attr" 
+            <input class="form-check-input" type="checkbox"
+              id="show-deposit_amount-attr"
               [(ngModel)]="volcopy.defaults.hidden.deposit_amount">
             <label class="form-label form-check-label" for="show-deposit_amount-attr" i18n>
               Deposit Amount
@@ -514,8 +520,8 @@
         </li>
         <li class="list-group-item">
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" 
-              id="show-price-attr" 
+            <input class="form-check-input" type="checkbox"
+              id="show-price-attr"
               [(ngModel)]="volcopy.defaults.hidden.price">
             <label class="form-label form-check-label" for="show-price-attr" i18n>
               Price
@@ -524,8 +530,8 @@
         </li>
         <li class="list-group-item">
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" 
-              id="show-cost-attr" 
+            <input class="form-check-input" type="checkbox"
+              id="show-cost-attr"
               [(ngModel)]="volcopy.defaults.hidden.cost">
             <label class="form-label form-check-label" for="show-cost-attr" i18n>
               Cost 
@@ -534,8 +540,8 @@
         </li>
         <li class="list-group-item">
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" 
-              id="show-mint_condition-attr" 
+            <input class="form-check-input" type="checkbox"
+              id="show-mint_condition-attr"
               [(ngModel)]="volcopy.defaults.hidden.mint_condition">
             <label class="form-label form-check-label" for="show-mint_condition-attr" i18n>
               Quality
@@ -556,8 +562,8 @@
       <ul class="list-group list-group-flush">
         <li class="list-group-item">
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" 
-              id="show-copy_alerts-attr" 
+            <input class="form-check-input" type="checkbox"
+              id="show-copy_alerts-attr"
               [(ngModel)]="volcopy.defaults.hidden.copy_alerts">
             <label class="form-label form-check-label" for="show-copy_alerts-attr" i18n>
               Item Alerts
@@ -566,8 +572,8 @@
         </li>
         <li class="list-group-item">
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" 
-              id="show-copy_tags-attr" 
+            <input class="form-check-input" type="checkbox"
+              id="show-copy_tags-attr"
               [(ngModel)]="volcopy.defaults.hidden.copy_tags">
             <label class="form-label form-check-label" for="show-copy_tags-attr" i18n>
               Item Tags
@@ -576,8 +582,8 @@
         </li>
         <li class="list-group-item">
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" 
-              id="show-copy_notes-attr" 
+            <input class="form-check-input" type="checkbox"
+              id="show-copy_notes-attr"
               [(ngModel)]="volcopy.defaults.hidden.copy_notes">
             <label class="form-label form-check-label" for="show-copy_notes-attr" i18n>
               Item Notes
@@ -586,8 +592,8 @@
         </li>
         <li class="list-group-item">
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" 
-              id="show-statcat_filter-attr" 
+            <input class="form-check-input" type="checkbox"
+              id="show-statcat_filter-attr"
               [(ngModel)]="volcopy.defaults.hidden.statcat_filter">
             <label class="form-label form-check-label" for="show-statcat_filter-attr" i18n>
               Stat Cat Filter
@@ -596,8 +602,8 @@
         </li>
         <li class="list-group-item">
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" 
-              id="show-statcats-attr" 
+            <input class="form-check-input" type="checkbox"
+              id="show-statcats-attr"
               [(ngModel)]="volcopy.defaults.hidden.statcats">
             <label class="form-label form-check-label" for="show-statcats-attr" i18n>
               Statistical Categories

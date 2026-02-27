@@ -1,6 +1,4 @@
-import { enableProdMode, importProvidersFrom } from '@angular/core';
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
-
+import { enableProdMode, importProvidersFrom, provideZoneChangeDetection } from '@angular/core';
 
 import { environment } from './environments/environment';
 import { EgCommonModule } from './app/common.module';
@@ -15,6 +13,9 @@ if (environment.production) {
 }
 
 bootstrapApplication(BaseComponent, {
-    providers: [importProvidersFrom(EgCommonModule.forRoot(), BaseRoutingModule, BrowserModule, NgbModule, CookieModule.forRoot())]
+    providers: [
+        provideZoneChangeDetection(),
+        importProvidersFrom(EgCommonModule.forRoot(), BaseRoutingModule, BrowserModule, NgbModule, CookieModule.forRoot())
+    ]
 })
     .catch(err => console.log(err));

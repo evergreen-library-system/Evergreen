@@ -17,16 +17,18 @@ import {Pager} from '@eg/share/util/pager';
 import {StoreService} from '@eg/core/store.service';
 import {Z3950SearchService} from './z3950.service';
 import {EventService} from '@eg/core/event.service';
+import {HoldingsModule} from '@eg/staff/share/holdings/holdings.module';
 import {HoldingsService} from '@eg/staff/share/holdings/holdings.service';
 import {ComboboxEntry, ComboboxComponent} from '@eg/share/combobox/combobox.component';
 import {ProgressInlineComponent} from '@eg/share/dialog/progress-inline.component';
 import { StaffBannerComponent } from '../staff-banner.component';
 import { TitleComponent } from '@eg/share/title/title.component';
 import { MarcEditorComponent } from '../marc-edit/editor.component';
-import { CommonModule } from '@angular/common';
+
 import { OrgSelectComponent } from '@eg/share/org-select/org-select.component';
 import { GridModule } from '@eg/share/grid/grid.module';
 import { MarcHtmlComponent } from '@eg/share/catalog/marc-html.component';
+import { FastAddSelectorComponent } from '../marc-edit/fast-add-selector.component';
 
 @Directive({
     selector: '[egautofocus]'
@@ -48,10 +50,11 @@ export class AutofocusDirective implements OnInit {
     imports: [
         AutofocusDirective,
         ComboboxComponent,
-        CommonModule,
         ConfirmDialogComponent,
+        FastAddSelectorComponent,
         FormsModule,
         GridModule,
+        HoldingsModule,
         MarcEditorComponent,
         MarcHtmlComponent,
         OrgSelectComponent,

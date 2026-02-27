@@ -45,67 +45,99 @@
 ></eg-prompt-dialog>
 
 <ng-template #outputDebugTmpl let-rpt="row">
-  <ul *ngIf="!rpt.error_code" class="list-group list-group-horizontal">
-    <li class="list-group-item">
-      <a href="{{outputPath(rpt, 'report-data.html.debug.html')}}" target="_blank" i18n>
+  @if (!rpt.error_code) {
+    <ul class="list-group list-group-horizontal">
+      <li class="list-group-item">
+        <a href="{{outputPath(rpt, 'report-data.html.debug.html')}}" target="_blank" i18n>
         Debug Output
       </a>
-    </li>
-  </ul>
-  <span *ngIf="rpt.error_code" i18n>
+      </li>
+    </ul>
+  }
+  @if (rpt.error_code) {
+    <span i18n>
     Error running report
   </span>
+  }
 </ng-template>
 
 <ng-template #outputTmpl let-rpt="row">
-  <ul *ngIf="!rpt.error_code" class="list-group list-group-horizontal">
-    <li *ngIf="rpt._rs.html_format() === 't'" class="list-group-item">
-      <a href="{{outputPath(rpt, 'report-data.html.raw.html')}}" target="_blank" i18n>
+  @if (!rpt.error_code) {
+    <ul class="list-group list-group-horizontal">
+      @if (rpt._rs.html_format() === 't') {
+        <li class="list-group-item">
+          <a href="{{outputPath(rpt, 'report-data.html.raw.html')}}" target="_blank" i18n>
         HTML
       </a>
-    </li>
-    <li *ngIf="rpt._rs.csv_format() === 't'" class="list-group-item">
-      <a href="{{outputPath(rpt, 'report-data.csv')}}" i18n>
+        </li>
+      }
+      @if (rpt._rs.csv_format() === 't') {
+        <li class="list-group-item">
+          <a href="{{outputPath(rpt, 'report-data.csv')}}" i18n>
         CSV
       </a>
-    </li>
-    <li *ngIf="rpt._rs.excel_format() === 't'" class="list-group-item">
-      <a href="{{outputPath(rpt, 'report-data.xlsx')}}" i18n>
+        </li>
+      }
+      @if (rpt._rs.excel_format() === 't') {
+        <li class="list-group-item">
+          <a href="{{outputPath(rpt, 'report-data.xlsx')}}" i18n>
         Excel
       </a>
-    </li>
-    <li *ngIf="rpt._rs.chart_line() === 't'" class="list-group-item">
-      <a href="{{outputPath(rpt, 'report-data.html.line.gif')}}" target="_blank" i18n>
+        </li>
+      }
+      @if (rpt._rs.chart_line() === 't') {
+        <li class="list-group-item">
+          <a href="{{outputPath(rpt, 'report-data.html.line.gif')}}" target="_blank" i18n>
         Line Chart
       </a>
-    </li>
-    <li *ngIf="rpt._rs.chart_bar() === 't'" class="list-group-item">
-      <a href="{{outputPath(rpt, 'report-data.html.bar.gif')}}" target="_blank" i18n>
+        </li>
+      }
+      @if (rpt._rs.chart_bar() === 't') {
+        <li class="list-group-item">
+          <a href="{{outputPath(rpt, 'report-data.html.bar.gif')}}" target="_blank" i18n>
         Bar Chart
       </a>
-    </li>
-  </ul>
-  <span *ngIf="rpt.error_code" i18n>
+        </li>
+      }
+    </ul>
+  }
+  @if (rpt.error_code) {
+    <span i18n>
     Error running report
   </span>
+  }
 </ng-template>
 
-<div *ngIf="currentFolder" class="mt-2"><h2 i18n>Output in folder: </h2> {{currentFolder.name()}}</div>
-<div *ngIf="searchReport" class="mt-2"><h2 i18n>Output based on: </h2> {{searchReport.name()}}</div>
+@if (currentFolder) {
+  <div class="mt-2"><h2 i18n>Output in folder: </h2> {{currentFolder.name()}}</div>
+}
+@if (searchReport) {
+  <div class="mt-2"><h2 i18n>Output based on: </h2> {{searchReport.name()}}</div>
+}
 
 <div class="mt-2">
   <button type="button" i18n class="btn btn-outline-dark m-1" (click)="refreshBothGrids()">Refresh Grids</button>
-  <button type="button" i18n class="btn btn-outline-dark m-1"
-    *ngIf="currentFolder && RSvc.folderIsMine(currentFolder)" (click)="renameFolder()">Rename Folder</button>
-  <button type="button" i18n class="btn btn-outline-dark m-1"
-    *ngIf="currentFolder && RSvc.folderIsMine(currentFolder)" (click)="deleteFolder()"
+  @if (currentFolder && RSvc.folderIsMine(currentFolder)) {
+    <button type="button" i18n class="btn btn-outline-dark m-1"
+    (click)="renameFolder()">Rename Folder</button>
+  }
+  @if (currentFolder && RSvc.folderIsMine(currentFolder)) {
+    <button type="button" i18n class="btn btn-outline-dark m-1"
+      (click)="deleteFolder()"
     [disabled]="!RSvc.canDeleteFolder(currentFolder,pendingGridSource) || !RSvc.canDeleteFolder(currentFolder,completeGridSource)">Delete Folder</button>
-  <button type="button" i18n class="btn btn-outline-dark m-1"
-    *ngIf="currentFolder && RSvc.folderIsMine(currentFolder)" (click)="newSubfolder()">Add Subfolder</button>
-  <button type="button" i18n class="btn btn-outline-dark m-1"
-	*ngIf="RSvc.globalCanShare && currentFolder && RSvc.folderIsMine(currentFolder) && currentFolder.shared() === 'f'" (click)="shareFolder()">Share Folder</button>
-  <button type="button" i18n class="btn btn-outline-dark m-1"
-	*ngIf="currentFolder && RSvc.folderIsMine(currentFolder) && currentFolder.shared() === 't'" (click)="unshareFolder()">Unshare Folder</button>
+  }
+  @if (currentFolder && RSvc.folderIsMine(currentFolder)) {
+    <button type="button" i18n class="btn btn-outline-dark m-1"
+    (click)="newSubfolder()">Add Subfolder</button>
+  }
+  @if (RSvc.globalCanShare && currentFolder && RSvc.folderIsMine(currentFolder) && currentFolder.shared() === 'f') {
+    <button type="button" i18n class="btn btn-outline-dark m-1"
+    (click)="shareFolder()">Share Folder</button>
+  }
+  @if (currentFolder && RSvc.folderIsMine(currentFolder) && currentFolder.shared() === 't') {
+    <button type="button" i18n class="btn btn-outline-dark m-1"
+    (click)="unshareFolder()">Unshare Folder</button>
+  }
 </div>
 
 <hr/>
@@ -160,15 +192,19 @@
       (onClick)="refreshCompleteGrid($event)">
     </eg-grid-toolbar-button>
 
-    <eg-grid-toolbar-action label="Delete Selected" i18n-label
-      (onClick)="deleteOutputs($event)" *ngIf="currentFolder && RSvc.folderIsMine(currentFolder)"
-      [disableOnRows]="zeroSelectedRows">
-    </eg-grid-toolbar-action>
+    @if (currentFolder && RSvc.folderIsMine(currentFolder)) {
+      <eg-grid-toolbar-action label="Delete Selected" i18n-label
+        (onClick)="deleteOutputs($event)"
+        [disableOnRows]="zeroSelectedRows">
+      </eg-grid-toolbar-action>
+    }
 
-    <eg-grid-toolbar-action label="Move Selected" i18n-label
-      (onClick)="moveSelected($event)" *ngIf="currentFolder && RSvc.folderIsMine(currentFolder)"
-      [disableOnRows]="zeroSelectedRows">
-    </eg-grid-toolbar-action>
+    @if (currentFolder && RSvc.folderIsMine(currentFolder)) {
+      <eg-grid-toolbar-action label="Move Selected" i18n-label
+        (onClick)="moveSelected($event)"
+        [disableOnRows]="zeroSelectedRows">
+      </eg-grid-toolbar-action>
+    }
 
     <eg-grid-toolbar-action label="Clone Report" i18n-label
       (onClick)="cloneSelected($event)"

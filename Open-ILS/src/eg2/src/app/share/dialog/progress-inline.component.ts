@@ -1,4 +1,4 @@
-import { NgIf } from '@angular/common';
+
 import {Component, Input} from '@angular/core';
 
 /**
@@ -37,7 +37,7 @@ import {Component, Input} from '@angular/core';
     selector: 'eg-progress-inline',
     templateUrl: './progress-inline.component.html',
     styleUrls: ['progress-inline.component.css'],
-    imports: [NgIf]
+    imports: []
 })
 export class ProgressInlineComponent {
 

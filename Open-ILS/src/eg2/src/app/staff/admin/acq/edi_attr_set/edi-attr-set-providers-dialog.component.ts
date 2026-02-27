@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, Input, inject } from '@angular/core';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
@@ -8,7 +8,6 @@ import { EdiAttrSetProvidersComponent } from './edi-attr-set-providers.component
     selector: 'eg-edi-attr-set-providers-dialog',
     templateUrl: './edi-attr-set-providers-dialog.component.html',
     imports: [
-        CommonModule,
         EdiAttrSetProvidersComponent
     ]
 })

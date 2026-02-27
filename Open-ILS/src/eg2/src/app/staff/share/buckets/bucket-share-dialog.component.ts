@@ -20,13 +20,16 @@ import {ToastService} from '@eg/share/toast/toast.service';
 import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 import { StaffCommonModule } from '@eg/staff/common.module';
+import { TreeComponent } from '@eg/share/tree/tree.component';
 
 @Component({
     selector: 'eg-bucket-share-dialog',
     templateUrl: './bucket-share-dialog.component.html',
     imports: [
         PatronSearchDialogComponent,
-        StaffCommonModule
+        StaffCommonModule,
+        BucketUserShareComponent,
+        TreeComponent
     ]
 })
 

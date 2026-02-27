@@ -1,19 +1,27 @@
 <ng-template #dialogContent>
   <div class="modal-header">
-    <h4 class="modal-title" *ngIf="isExport" i18n>Export</h4>
-    <h4 class="modal-title" *ngIf="!isExport" i18n>Import</h4>
+    @if (isExport) {
+      <h4 class="modal-title" i18n>Export</h4>
+    }
+    @if (!isExport) {
+      <h4 class="modal-title" i18n>Import</h4>
+    }
     <button type="button" class="btn-close btn-close-white"
-      i18n-aria-label aria-label="Close dialog" (click)="close()"></button>
+    i18n-aria-label aria-label="Close dialog" (click)="close()"></button>
   </div>
   <div class="modal-body">
     <div class="row">
       <div class="col-md-12">
-        <span *ngIf="isExport" i18n>
+        @if (isExport) {
+          <span i18n>
           Copy this to your clipboard and save it to a file to export the settings.
         </span>
-        <span *ngIf="!isExport" i18n>
+        }
+        @if (!isExport) {
+          <span i18n>
           Paste in your exported settings.
         </span>
+        }
       </div>
     </div>
     <div class="row mt-3">
@@ -21,10 +29,12 @@
         <textarea class="form-control" [(ngModel)]="jsonData" rows="4"></textarea>
       </div>
     </div>
-    <div class="row mt-3" *ngIf="!isExport">
-      <div class="col-md-3">
-        <button type="button" class="btn btn-outline-dark" i18n (click)="update()">Submit</button>
+    @if (!isExport) {
+      <div class="row mt-3">
+        <div class="col-md-3">
+          <button type="button" class="btn btn-outline-dark" i18n (click)="update()">Submit</button>
+        </div>
       </div>
-    </div>
+    }
   </div>
 </ng-template>

@@ -15,11 +15,18 @@ import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {CourseService} from '@eg/staff/share/course.service';
 import { StaffCommonModule } from '@eg/staff/common.module';
+import { ItemLocationSelectComponent } from '@eg/share/item-location-select/item-location-select.component';
+import { MarcSimplifiedEditorModule } from '@eg/staff/share/marc-edit/simplified-editor/simplified-editor.module';
 
 @Component({
     selector: 'eg-course-associate-material-dialog',
     templateUrl: './course-associate-material.component.html',
-    imports: [FmRecordEditorComponent, StaffCommonModule]
+    imports: [
+        FmRecordEditorComponent,
+        ItemLocationSelectComponent,
+        MarcSimplifiedEditorModule,
+        StaffCommonModule
+    ]
 })
 
 export class CourseAssociateMaterialComponent extends DialogComponent implements OnInit {
@@ -29,7 +36,6 @@ export class CourseAssociateMaterialComponent extends DialogComponent implements
     private pcrud = inject(PcrudService);
     private toast = inject(ToastService);
     private perm = inject(PermService);
-    private modal: NgbModal;
 
     @Input() currentCourse: IdlObject;
     @Input() courseId: any;
@@ -54,7 +60,7 @@ export class CourseAssociateMaterialComponent extends DialogComponent implements
         materialAddDifferentLibraryString: StringComponent;
     @ViewChild('confirmOtherLibraryDialog') confirmOtherLibraryDialog: DialogComponent;
     @ViewChild('otherLibraryNoPermissionsAlert') otherLibraryNoPermissionsAlert: DialogComponent;
-    materialsDataSource: GridDataSource;
+    materialsDataSource: GridDataSource = new GridDataSource();
     @Input() barcodeInput: string;
     @Input() relationshipInput: string;
     @Input() tempCallNumber: string;
@@ -72,14 +78,7 @@ export class CourseAssociateMaterialComponent extends DialogComponent implements
     associateBriefRecord: (newRecord: string) => void;
     associateElectronicBibRecord: () => void;
 
-    constructor() {
-        const modal = inject(NgbModal);
-
-        super(modal);
-        this.modal = modal;
-
-        this.materialsDataSource = new GridDataSource();
-
+    ngOnInit() {
         this.materialsDataSource.getRows = (pager: Pager, sort: any[]) => {
             return this.net.request(
                 'open-ils.courses',
@@ -87,9 +86,6 @@ export class CourseAssociateMaterialComponent extends DialogComponent implements
                 {course: this.courseId}
             );
         };
-    }
-
-    ngOnInit() {
         this.associateBriefRecord = (newRecord: string) => {
             return this.net.request(
                 'open-ils.courses',

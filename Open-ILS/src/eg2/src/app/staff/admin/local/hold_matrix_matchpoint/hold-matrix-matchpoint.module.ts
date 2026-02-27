@@ -8,11 +8,11 @@ import {HoldMatrixMatchpointDialogComponent} from './hold-matrix-matchpoint-dial
 
 @NgModule({
     declarations: [
-        HoldMatrixMatchpointComponent,
-        HoldMatrixMatchpointDialogComponent
     ],
     imports: [
         AdminCommonModule,
+        HoldMatrixMatchpointComponent,
+        HoldMatrixMatchpointDialogComponent,
         HoldMatrixMatchpointRoutingModule,
         TreeModule
     ],

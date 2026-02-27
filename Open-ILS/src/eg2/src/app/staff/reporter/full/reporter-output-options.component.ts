@@ -1,21 +1,20 @@
 /* eslint-disable */
 import { Component, Input, OnInit, inject } from '@angular/core';
-import {IdlService} from '@eg/core/idl.service';
 import {ReporterService, SRTemplate} from '../share/reporter.service';
 import {Tree} from '@eg/share/tree/tree';
 import moment from 'moment-timezone';
 import { AuthService } from '@eg/core/auth.service';
 import { StaffCommonModule } from '@eg/staff/common.module';
+import { TreeComponent } from '@eg/share/tree/tree.component';
 
 @Component({
     selector: 'eg-reporter-output-options',
     templateUrl: './reporter-output-options.component.html',
-    imports: [StaffCommonModule]
+    imports: [StaffCommonModule, TreeComponent]
 })
 
 export class ReporterOutputOptionsComponent implements OnInit {
     private auth = inject(AuthService);
-    private idl = inject(IdlService);
     RSvc = inject(ReporterService);
 
 

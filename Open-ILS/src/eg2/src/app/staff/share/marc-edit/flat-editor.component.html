@@ -1,8 +1,10 @@
 
-<div *ngIf="record" class="flat-editor-container">
-  <textarea class="form-control flat-editor-content" 
-    (change)="textChanged()"
-    (blur)="record.absorbBreakerChanges()"
-    [(ngModel)]="record.breakerText" rows="{{rowCount()}}" spellcheck="false">
-  </textarea>
-</div>
+@if (record) {
+  <div class="flat-editor-container">
+    <textarea class="form-control flat-editor-content"
+      (change)="textChanged()"
+      (blur)="record.absorbBreakerChanges()"
+      [(ngModel)]="record.breakerText" rows="{{rowCount()}}" spellcheck="false">
+    </textarea>
+  </div>
+}
