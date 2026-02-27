@@ -2,7 +2,7 @@
   <div class="col-lg-6">
     <div class="input-group">
       <span class="input-group-text" i18n>Show Sessions Since: </span>
-      <eg-date-select 
+      <eg-date-select
         [initialIso]="sinceDate"
         (onChangeAsIso)="dateFilterChange($event)">
       </eg-date-select>
@@ -10,17 +10,20 @@
   </div>
 </div>
 
-<div *ngIf="trackers.length === 0">
+@if (trackers.length === 0) {
+  <div>
     <div class="row">
-        <div class="col-lg-6">
-            <div class="alert alert-info">
-                <span i18n>No Import Sessions To Display</span>
-            </div>
+      <div class="col-lg-6">
+        <div class="alert alert-info">
+          <span i18n>No Import Sessions To Display</span>
         </div>
+      </div>
     </div>
-</div>
+  </div>
+}
 
-  <div class="row mb-4" *ngFor="let tracker of trackers">
+@for (tracker of trackers; track tracker) {
+  <div class="row mb-4">
     <div class="col-lg-12">
       <div class="card tight-card">
         <div class="card-header">
@@ -35,32 +38,47 @@
           <div class="row">
             <div class="col-lg-6">
               <!-- ensure the progress shows 100% when complete -->
-              <eg-progress-inline 
+              <eg-progress-inline
                 [max]="tracker.state() === 'complete' ? tracker.actions_performed() : tracker.total_actions() || null"
                 [value]="tracker.actions_performed()">
               </eg-progress-inline>
             </div>
             <div class="col-lg-6">
               <!-- .id (not .id()) check to see if it's fleshed yet -->
-              <span i18n *ngIf="tracker.queue().id">
+              @if (tracker.queue().id) {
+                <span i18n>
                 <a class="fw-bold"
                   routerLink="/staff/cat/vandelay/queue/{{tracker.record_type()}}/{{tracker.queue().id()}}">
                   Queue {{tracker.queue().name()}}
                 </a>
               </span>
-              <span class="ps-2" *ngIf="tracker.action_type() === 'enqueue'" i18n>Enqueuing... </span>
-              <span class="ps-2" *ngIf="tracker.action_type() === 'import'" i18n>Importing... </span>
-              <span *ngIf="tracker.state() === 'active'" i18n>Active</span>
-              <span *ngIf="tracker.state() === 'complete'" i18n>Complete</span>
-              <span *ngIf="tracker.state() === 'error'" i18n>Error</span>
-              <span class='ps-3' *ngIf="tracker.state() === 'complete'">
-                <span class="material-icons text-success" aria-hidden="true">thumb_up</span>
-                <span class="visually-hidden" i18n>Success</span>
-              </span>
+              }
+              @if (tracker.action_type() === 'enqueue') {
+                <span class="ps-2" i18n>Enqueuing... </span>
+              }
+              @if (tracker.action_type() === 'import') {
+                <span class="ps-2" i18n>Importing... </span>
+              }
+              @if (tracker.state() === 'active') {
+                <span i18n>Active</span>
+              }
+              @if (tracker.state() === 'complete') {
+                <span i18n>Complete</span>
+              }
+              @if (tracker.state() === 'error') {
+                <span i18n>Error</span>
+              }
+              @if (tracker.state() === 'complete') {
+                <span class='ps-3'>
+                  <span class="material-icons text-success" aria-hidden="true">thumb_up</span>
+                  <span class="visually-hidden" i18n>Success</span>
+                </span>
+              }
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
+}
 

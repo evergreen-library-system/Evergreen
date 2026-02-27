@@ -29,7 +29,8 @@
     </span>
   </h3>
     
-  <ng-container *ngIf="recordType === 'biblio'">
+  @if (recordType === 'biblio') {
+
     <div class="me-2">
       <eg-combobox #sourceSelector
         idlClass="cbs"
@@ -40,55 +41,70 @@
         i18n-placeholder>
       </eg-combobox>
     </div>
-  </ng-container>
+  
+}
 
   <div class="pe-3 me-3 border-end">
     <button type="button" class="btn btn-success" (click)="saveRecord()"
       [disabled]="record && (record.deleted || record.id === -1)" i18n>Save Changes</button>
   </div>
 
-  <ng-container *ngIf="record && record.id">
+  @if (record && record.id) {
+
     <div>
-      <button type="button" *ngIf="!record.deleted && record.id !== -1" class="btn btn-destroy"
+      @if (!record.deleted && record.id !== -1) {
+<button type="button" class="btn btn-destroy"
         [disabled]="inPlaceMode" (click)="deleteRecord()" i18n>Delete Record</button>
-      <button type="button" *ngIf="record.deleted" class="btn btn-info" 
+}
+      @if (record.deleted) {
+<button type="button" class="btn btn-info" 
         [disabled]="inPlaceMode" (click)="undeleteRecord()" i18n>Undelete Record</button>
+}
     </div>
-  </ng-container>
+  
+}
 </div>
 
-<ng-container *ngIf="dataSaving">
+@if (dataSaving) {
+
   <div class="row mt-5">
     <div class="offset-lg-3 col-lg-6">
       <eg-progress-inline></eg-progress-inline>
     </div>
   </div>
-</ng-container>
 
-<div *ngIf="!dataSaving" class="row">
+}
+
+@if (!dataSaving) {
+<div class="row">
   <div class="col-lg-12">
     <ul ngbNav #editorNav="ngbNav" class="nav-tabs" [keyboard]="true" [roles]="false" role="tablist"
       [activeId]="editorTab" (navChange)="tabChange($event)">
       <li role="presentation" [ngbNavItem]="'rich'">
         <a role="tab" ngbNavLink i18n>Enhanced MARC Editor</a>
         <ng-template ngbNavContent>
-          <ng-container *ngIf="context && context.record">
+          @if (context && context.record) {
+
             <eg-marc-rich-editor [context]="context"></eg-marc-rich-editor>
-          </ng-container>
+          
+}
         </ng-template>
       </li>
       <li role="presentation" ngbNavItem="flat">
         <a role="tab" ngbNavLink i18n>Flat Text Editor</a>
         <ng-template ngbNavContent>
-          <ng-container *ngIf="context && context.record">
+          @if (context && context.record) {
+
             <eg-marc-flat-editor [context]="context"></eg-marc-flat-editor>
-          </ng-container>
+          
+}
         </ng-template>
       </li>
     </ul>
     <div [ngbNavOutlet]="editorNav"></div>
   </div>
 </div>
+}
 
 <div class="row p-2 m-2 text-end">
   <div>

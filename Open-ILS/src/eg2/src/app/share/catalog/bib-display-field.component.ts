@@ -1,4 +1,4 @@
-import { NgFor, NgIf } from '@angular/common';
+
 import {Component, Input, ViewEncapsulation} from '@angular/core';
 import { RouterModule } from '@angular/router';
 import {BibRecordSummary} from '@eg/share/catalog/bib-record.service';
@@ -20,8 +20,6 @@ const PAD_SPACE = ' '; // U+2007
     encapsulation: ViewEncapsulation.None // required for search highlighting
     ,
     imports: [
-        NgFor,
-        NgIf,
         RouterModule
     ]
 })

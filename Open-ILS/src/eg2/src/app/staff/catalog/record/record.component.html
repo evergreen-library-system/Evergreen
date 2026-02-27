@@ -1,11 +1,11 @@
 
-<ng-container *ngIf="summary">
+@if (summary) {
   <eg-title i18n-prefix prefix="Bib {{summary.record.tcn_value()}} - {{summary.display.title}}">
   </eg-title>
-</ng-container>
+}
 
 <eg-confirm-dialog #pendingChangesDialog
-  i18n-dialogTitle dialogTitle="Unsaved Changes Confirmation" 
+  i18n-dialogTitle dialogTitle="Unsaved Changes Confirmation"
   i18n-dialogBody  dialogBody="Unsaved changes will be lost.  Continue navigation?">
 </eg-confirm-dialog>
 
@@ -36,8 +36,8 @@
     <div class="w-100">
       <div class="text-end">
         <button type="button" class="btn btn-secondary btn-sm"
-            [disabled]="recordTab === defaultTab"
-            (click)="setDefaultTab()" i18n>Set Default View</button>
+          [disabled]="recordTab === defaultTab"
+        (click)="setDefaultTab()" i18n>Set Default View</button>
       </div>
     </div>
     <ul ngbNav #recordTabs="ngbNav" [(activeId)]="recordTab" [destroyOnHide]="false"
@@ -52,24 +52,26 @@
 
       <!-- ADDED CONTENT -->
       <!-- This tab must not be destroyed on hide. It calls external
-              scripts that determine whether added content is available -->
+      scripts that determine whether added content is available -->
       <li role="presentation" [destroyOnHide]="false" [ngbNavItem]="'added-content'" [hidden]="!added_content_activated">
         <h2><a ngbNavLink role="tab">
           <span id="added-content-data" style="display: none;">
             <span i18n>Added Content</span>
             <span class="material-icons tab-icon text-warning" aria-hidden="true">star</span>
           </span>
-      
+
           <span id="added-content-no-data" style="display: inline;">
             <span i18n>No Added Content</span>
             <span class="material-icons tab-icon text-muted" aria-hidden="true">star_outline</span>
           </span>
         </a></h2>
         <ng-template ngbNavContent>
-          <div class="mt-2" *ngIf="summary">
-            <eg-catalog-added-content [bibSummary]="summary">
-            </eg-catalog-added-content>
-          </div>
+          @if (summary) {
+            <div class="mt-2">
+              <eg-catalog-added-content [bibSummary]="summary">
+              </eg-catalog-added-content>
+            </div>
+          }
         </ng-template>
       </li>
 
@@ -84,78 +86,79 @@
         <h2><a i18n ngbNavLink role="tab">MARC Edit</a></h2>
         <ng-template ngbNavContent>
           <div id="marcEditor">
-            <eg-marc-editor #marcEditor (recordSaved)="handleMarcRecordSaved()" 
+            <eg-marc-editor #marcEditor (recordSaved)="handleMarcRecordSaved()"
               [recordId]="recordId"><eg-fast-add-selector></eg-fast-add-selector></eg-marc-editor>
-          </div>
-        </ng-template>
-      </li>
-      <li role="presentation" [ngbNavItem]="'marc_html'" [destroyOnHide]="true">
-        <h2><a i18n ngbNavLink role="tab">MARC View</a></h2>
-        <ng-template ngbNavContent>
-          <eg-marc-html [recordId]="recordId" recordType="bib"></eg-marc-html>
-        </ng-template>
-      </li>
-      <li role="presentation" [ngbNavItem]="'bibnotes'" [destroyOnHide]="true">
-        <h2>
-          <a ngbNavLink role="tab" *ngIf="summary?.recordNoteCount; else noRecordNotes">
-            <span i18n>Record Notes</span>&nbsp;
-            <span class="badge text-bg-primary fw-bold">({{summary.recordNoteCount}})</span>
-          </a>
-          <ng-template #noRecordNotes>
-            <a i18n ngbNavLink role="tab">Record Notes</a>
-          </ng-template>
-        </h2>
-        <ng-template ngbNavContent>
-          <eg-catalog-record-notes [recordId]="recordId"
-            (noteCountUpdated)="summary.recordNoteCount = $event">
-          </eg-catalog-record-notes>
-        </ng-template>
-      </li>
-      <li role="presentation" [ngbNavItem]="'holds'" [destroyOnHide]="true">
-        <h2><a i18n ngbNavLink role="tab">View Holds</a></h2>
-        <ng-template ngbNavContent>
-          <eg-holds-grid [recordId]="recordId"
-            preFetchSetting="catalog.record.holds.prefetch"
-            printTemplate="holds_for_bib"
-            persistKey="cat.catalog.wide_holds"
-            [defaultSort]="[{name:'request_time',dir:'asc'}]"
-            [initialPickupLib]="currentSearchOrg()"></eg-holds-grid>
-        </ng-template>
-      </li>
-      <li role="presentation" [ngbNavItem]="'monoparts'" [destroyOnHide]="true">
-        <h2><a i18n ngbNavLink role="tab">Monograph Parts</a></h2>
-        <ng-template ngbNavContent>
-          <eg-catalog-record-parts [recordId]="recordId">
-          </eg-catalog-record-parts>
-        </ng-template>
-      </li>
-      <li role="presentation" [ngbNavItem]="'holdings'" [destroyOnHide]="true">
-        <h2><a i18n ngbNavLink role="tab">Holdings View</a></h2>
-        <ng-template ngbNavContent>
-          <eg-holdings-maintenance #holdingsMaint [recordId]="recordId">
-          </eg-holdings-maintenance>
-        </ng-template>
-      </li>
-      <li role="presentation" [ngbNavItem]="'conjoined'" [destroyOnHide]="true">
-        <h2><a i18n ngbNavLink role="tab">Conjoined Items</a></h2>
-        <ng-template ngbNavContent>
-          <eg-catalog-record-conjoined [recordId]="recordId">
-          </eg-catalog-record-conjoined>
-        </ng-template>
-      </li>
-      <li role="presentation" [ngbNavItem]="'cnbrowse'" [destroyOnHide]="true">
-        <h2><a i18n ngbNavLink role="tab">Shelf Browse</a></h2>
-        <ng-template ngbNavContent>
-          <ng-container *ngIf="summary">
-            <div class="mt-2">
-              <eg-catalog-cn-browse-results [bibSummary]="summary">
-              </eg-catalog-cn-browse-results>
             </div>
-          </ng-container>
-        </ng-template>
-      </li>
-    </ul>
+          </ng-template>
+        </li>
+        <li role="presentation" [ngbNavItem]="'marc_html'" [destroyOnHide]="true">
+          <h2><a i18n ngbNavLink role="tab">MARC View</a></h2>
+          <ng-template ngbNavContent>
+            <eg-marc-html [recordId]="recordId" recordType="bib"></eg-marc-html>
+          </ng-template>
+        </li>
+        <li role="presentation" [ngbNavItem]="'bibnotes'" [destroyOnHide]="true">
+          <h2>
+            @if (summary?.recordNoteCount) {
+              <a ngbNavLink role="tab">
+                <span i18n>Record Notes</span>&nbsp;
+                <span class="badge text-bg-primary fw-bold">({{summary.recordNoteCount}})</span>
+              </a>
+            } @else {
+              <a i18n ngbNavLink role="tab">Record Notes</a>
+            }
+          </h2>
+          <ng-template ngbNavContent>
+            <eg-catalog-record-notes [recordId]="recordId"
+              (noteCountUpdated)="summary.recordNoteCount = $event">
+            </eg-catalog-record-notes>
+          </ng-template>
+        </li>
+        <li role="presentation" [ngbNavItem]="'holds'" [destroyOnHide]="true">
+          <h2><a i18n ngbNavLink role="tab">View Holds</a></h2>
+          <ng-template ngbNavContent>
+            <eg-holds-grid [recordId]="recordId"
+              preFetchSetting="catalog.record.holds.prefetch"
+              printTemplate="holds_for_bib"
+              persistKey="cat.catalog.wide_holds"
+              [defaultSort]="[{name:'request_time',dir:'asc'}]"
+            [initialPickupLib]="currentSearchOrg()"></eg-holds-grid>
+          </ng-template>
+        </li>
+        <li role="presentation" [ngbNavItem]="'monoparts'" [destroyOnHide]="true">
+          <h2><a i18n ngbNavLink role="tab">Monograph Parts</a></h2>
+          <ng-template ngbNavContent>
+            <eg-catalog-record-parts [recordId]="recordId">
+            </eg-catalog-record-parts>
+          </ng-template>
+        </li>
+        <li role="presentation" [ngbNavItem]="'holdings'" [destroyOnHide]="true">
+          <h2><a i18n ngbNavLink role="tab">Holdings View</a></h2>
+          <ng-template ngbNavContent>
+            <eg-holdings-maintenance #holdingsMaint [recordId]="recordId">
+            </eg-holdings-maintenance>
+          </ng-template>
+        </li>
+        <li role="presentation" [ngbNavItem]="'conjoined'" [destroyOnHide]="true">
+          <h2><a i18n ngbNavLink role="tab">Conjoined Items</a></h2>
+          <ng-template ngbNavContent>
+            <eg-catalog-record-conjoined [recordId]="recordId">
+            </eg-catalog-record-conjoined>
+          </ng-template>
+        </li>
+        <li role="presentation" [ngbNavItem]="'cnbrowse'" [destroyOnHide]="true">
+          <h2><a i18n ngbNavLink role="tab">Shelf Browse</a></h2>
+          <ng-template ngbNavContent>
+            @if (summary) {
+              <div class="mt-2">
+                <eg-catalog-cn-browse-results [bibSummary]="summary">
+                </eg-catalog-cn-browse-results>
+              </div>
+            }
+          </ng-template>
+        </li>
+      </ul>
 
-    <div [ngbNavOutlet]="recordTabs" class="p-0"></div>
+      <div [ngbNavOutlet]="recordTabs" class="p-0"></div>
+    </div>
   </div>
-</div>

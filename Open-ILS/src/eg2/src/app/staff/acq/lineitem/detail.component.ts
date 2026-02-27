@@ -3,7 +3,7 @@ import {ActivatedRoute, ParamMap} from '@angular/router';
 import {tap} from 'rxjs';
 import {IdlObject} from '@eg/core/idl.service';
 import {LineitemService} from './lineitem.service';
-import { CommonModule } from '@angular/common';
+
 import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 import { MarcHtmlComponent } from '@eg/share/catalog/marc-html.component';
 import { MarcEditorComponent } from '@eg/staff/share/marc-edit/editor.component';
@@ -11,10 +11,9 @@ import { MarcEditorComponent } from '@eg/staff/share/marc-edit/editor.component'
 @Component({
     templateUrl: 'detail.component.html',
     imports: [
-        CommonModule,
         MarcEditorComponent,
         MarcHtmlComponent,
-        NgbNavModule,
+        NgbNavModule
     ]
 })
 export class LineitemDetailComponent implements OnInit {

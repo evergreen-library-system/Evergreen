@@ -1,28 +1,31 @@
 <ng-template #showValues let-key="key" let-displayAs="displayAs">
   <div class="term">
-    <ng-container *ngIf="displayAs === 'bool'">
-      <ng-container *ngIf="valueIsUnset(key); else defaultBool">
+    @if (displayAs === 'bool') {
+      @if (valueIsUnset(key)) {
         <span class="value" i18n>&lt;Unset&gt;</span>
-      </ng-container>
-      <ng-template #defaultBool>
-        <span class="value" *ngIf="key === 't'" i18n>Yes</span>
-        <span class="value" *ngIf="key === 'f'" i18n>No</span>
-      </ng-template>
-    </ng-container>
-    <ng-container *ngIf="displayAs === 'currency'">
-      <ng-container 
-        *ngIf="valueIsUnset(key); else defaultCurrency">
+      } @else {
+        @if (key === 't') {
+          <span class="value" i18n>Yes</span>
+        }
+        @if (key === 'f') {
+          <span class="value" i18n>No</span>
+        }
+      }
+    }
+    @if (displayAs === 'currency') {
+      @if (valueIsUnset(key)) {
         <span class="value" i18n>&lt;Unset&gt;</span>
-      </ng-container>
-      <ng-template #defaultCurrency>{{key | currency}}</ng-template>
-    </ng-container>
-    <ng-container *ngIf="displayAs !== 'bool' && displayAs !== 'currency'">
-      <ng-container 
-        *ngIf="valueIsUnset(key); else default">
+      } @else {
+        {{key | currency}}
+      }
+    }
+    @if (displayAs !== 'bool' && displayAs !== 'currency') {
+      @if (valueIsUnset(key)) {
         <span class="value" i18n>&lt;Unset&gt;</span>
-      </ng-container>
-      <ng-template #default><span  class="value">{{key}}</span></ng-template>
-    </ng-container>
+      } @else {
+        <span  class="value">{{key}}</span>
+      }
+    }
   </div>
 </ng-template>
 
@@ -36,104 +39,132 @@
     'unset': !!aValueIsUnset
 }" (click)="(readOnly || editing) ? null : enterEditMode()">
   <div class="card-header">
-    <h5 id="label-{{editInputDomId}}" *ngIf="readOnly || editing" class="readonly field-heading">
-      {{label}}
-      <button *ngIf="selectOnly && !editing" type="button"
-        class="btn-link edit-toggle d-block"
-        (click)="enterFilterMode()" i18n>Select Subset to Edit
+    @if (readOnly || editing) {
+      <h5 id="label-{{editInputDomId}}" class="readonly field-heading">
+        {{label}}
+        @if (selectOnly && !editing) {
+          <button type="button"
+            class="btn-link edit-toggle d-block"
+            (click)="enterFilterMode()" i18n>Select Subset to Edit
       </button>
-    </h5>
-    <h5 id="label-{{editInputDomId}}" class="field-heading" *ngIf="!readOnly && !editing">
-      <button type="button" class="btn-link edit-toggle" (click)="enterEditMode()" i18n>
+        }
+      </h5>
+    }
+    @if (!readOnly && !editing) {
+      <h5 id="label-{{editInputDomId}}" class="field-heading">
+        <button type="button" class="btn-link edit-toggle" (click)="enterEditMode()" i18n>
         {{label}}
       </button>
-    </h5>
+      </h5>
+    }
   </div>
-  <div class="card-body" *ngIf="editing">
-    <fieldset *ngIf="multiValue()" [attr.aria-labelledby]="'label-'+editInputDomId">
-      <ul class="list-unstyled">
-        <li *ngFor="let count of labelCounts | keyvalue; let idx = index" class="form-check">
-          <input type="checkbox" class="form-check-input" id="{{editInputDomId}}-{{count.key}}"
-              [(ngModel)]="editValues[count.key]" />
-          <label for="{{editInputDomId}}-{{count.key}}">
+  @if (editing) {
+    <div class="card-body">
+      @if (multiValue()) {
+        <fieldset [attr.aria-labelledby]="'label-'+editInputDomId">
+          <ul class="list-unstyled">
+            @for (count of labelCounts | keyvalue; track count; let idx = $index) {
+              <li class="form-check">
+                <input type="checkbox" class="form-check-input" id="{{editInputDomId}}-{{count.key}}"
+                  [(ngModel)]="editValues[count.key]" />
+                <label for="{{editInputDomId}}-{{count.key}}">
+                  <ng-container *ngTemplateOutlet="showValues; context: {key: count.key, displayAs: displayAs}">
+                  </ng-container>
+                  @if (!templateOnlyMode && multiValue()) {
+                    <div class="def numeric">
+                      ({{count.value}})
+                    </div>
+                  }
+                </label>
+              </li>
+            }
+          </ul>
+        </fieldset>
+      }
+      <ng-container *ngTemplateOutlet="editTemplate"></ng-container>
+      @if (!readOnly) {
+        <div class="edit-buttons">
+          <button type="submit" class="btn btn-sm btn-primary" (click)="save($event)" i18n>Apply</button>
+          <button type="button" class="btn btn-sm btn-normal ms-1" (click)="cancel($event)" i18n>Cancel</button>
+          <button type="button" class="btn btn-sm btn-destroy ms-auto"
+            [disabled]="!templateOnlyMode && !canUnset"
+          (click)="unset($event)" i18n>Clear</button>
+          <!-- Temporarily Remove Reset Button -->
+          <!-- (pending further discussion and feedback)
+          <button type="button" class="btn btn-sm btn-destroy ms-1"
+            *ngIf="!templateOnlyMode"
+          (click)="clear($event)" i18n>Reset</button> -->
+        </div>
+      }
+      @if (selectOnly) {
+        <div class="edit-buttons">
+          <button type="submit" class="btn btn-sm btn-primary" (click)="applyFilter($event)" i18n>Apply Filter</button>
+          <button type="button" class="btn btn-sm btn-normal ms-1" (click)="selectAllForFilter($event)" i18n>Select All</button>
+          <button type="button" class="btn btn-sm btn-normal ms-1" (click)="selectNoneForFilter($event)" i18n>Select None</button>
+        </div>
+      }
+    </div>
+  }
+  @if (!editing && !selectOnly) {
+    <div class="card-body">
+      <div class="dl-grid">
+        @for (count of labelCounts | keyvalue; track count; let idx = $index) {
+          @if (expanded || idx < defaultDisplayCount) {
             <ng-container *ngTemplateOutlet="showValues; context: {key: count.key, displayAs: displayAs}">
             </ng-container>
-            <div *ngIf="!templateOnlyMode && multiValue()" class="def numeric">
-              ({{count.value}})
-            </div>
-          </label>
-        </li>
-      </ul>
-    </fieldset>
-
-    <ng-container *ngTemplateOutlet="editTemplate"></ng-container>
-    
-    <div *ngIf="!readOnly" class="edit-buttons">
-      <button type="submit" class="btn btn-sm btn-primary" (click)="save($event)" i18n>Apply</button>
-      <button type="button" class="btn btn-sm btn-normal ms-1" (click)="cancel($event)" i18n>Cancel</button>
-      <button type="button" class="btn btn-sm btn-destroy ms-auto"
-        [disabled]="!templateOnlyMode && !canUnset"
-        (click)="unset($event)" i18n>Clear</button>
-      <!-- Temporarily Remove Reset Button -->
-      <!-- (pending further discussion and feedback)
-      <button type="button" class="btn btn-sm btn-destroy ms-1"
-        *ngIf="!templateOnlyMode"
-        (click)="clear($event)" i18n>Reset</button> -->
-    </div>
-
-    <div *ngIf="selectOnly" class="edit-buttons">
-      <button type="submit" class="btn btn-sm btn-primary" (click)="applyFilter($event)" i18n>Apply Filter</button>
-      <button type="button" class="btn btn-sm btn-normal ms-1" (click)="selectAllForFilter($event)" i18n>Select All</button>
-      <button type="button" class="btn btn-sm btn-normal ms-1" (click)="selectNoneForFilter($event)" i18n>Select None</button>
-    </div>
-
-  </div>
-  <div class="card-body" *ngIf="!editing && !selectOnly">
-    <div class="dl-grid">
-    <ng-container *ngFor="let count of labelCounts | keyvalue; let idx = index">
-      <ng-container *ngIf="expanded || idx < defaultDisplayCount">
-        
-        
-          <ng-container *ngTemplateOutlet="showValues; context: {key: count.key, displayAs: displayAs}">
-          </ng-container>
-          <div *ngIf="!templateOnlyMode && multiValue()" class="def numeric">
-            {{count.value}}
-          </div>
-        
-      </ng-container>
-    </ng-container>
-    </div>
-    <div class="ms-auto text-end" *ngIf="bulky()">
-      <button (click)="expanded = true" *ngIf="!expanded" type="button" class="btn-link" i18n>
+            @if (!templateOnlyMode && multiValue()) {
+              <div class="def numeric">
+                {{count.value}}
+              </div>
+            }
+          }
+        }
+      </div>
+      @if (bulky()) {
+        <div class="ms-auto text-end">
+          @if (!expanded) {
+            <button (click)="expanded = true" type="button" class="btn-link" i18n>
         Show all
       </button>
-      <button (click)="expanded = false" *ngIf="expanded" type="button" class="btn-link" i18n>
+          }
+          @if (expanded) {
+            <button (click)="expanded = false" type="button" class="btn-link" i18n>
         Show less
       </button>
+          }
+        </div>
+      }
     </div>
-  </div>
-  <div class="card-body" *ngIf="!editing && selectOnly">
-    <div class="dl-grid">
-    <ng-container *ngFor="let count of filteredLabelCounts | keyvalue; let idx = index">
-      <ng-container *ngIf="expanded || idx < defaultDisplayCount">
-        
-        
-          <ng-container *ngTemplateOutlet="showValues; context: {key: count.key, displayAs: displayAs}">
-          </ng-container>
-          <div *ngIf="!templateOnlyMode && multiValue()" class="def numeric">
-            {{count.value}}
-          </div>
-        
-      </ng-container>
-    </ng-container>
-    </div>
-    <div class="ms-auto text-end" *ngIf="bulky()">
-      <button (click)="expanded = true" *ngIf="!expanded" type="button" class="btn-link" i18n>
+  }
+  @if (!editing && selectOnly) {
+    <div class="card-body">
+      <div class="dl-grid">
+        @for (count of filteredLabelCounts | keyvalue; track count; let idx = $index) {
+          @if (expanded || idx < defaultDisplayCount) {
+            <ng-container *ngTemplateOutlet="showValues; context: {key: count.key, displayAs: displayAs}">
+            </ng-container>
+            @if (!templateOnlyMode && multiValue()) {
+              <div class="def numeric">
+                {{count.value}}
+              </div>
+            }
+          }
+        }
+      </div>
+      @if (bulky()) {
+        <div class="ms-auto text-end">
+          @if (!expanded) {
+            <button (click)="expanded = true" type="button" class="btn-link" i18n>
         Show all
       </button>
-      <button (click)="expanded = false" *ngIf="expanded" type="button" class="btn-link" i18n>
+          }
+          @if (expanded) {
+            <button (click)="expanded = false" type="button" class="btn-link" i18n>
         Show less
       </button>
+          }
+        </div>
+      }
     </div>
-  </div>
+  }
 </div>

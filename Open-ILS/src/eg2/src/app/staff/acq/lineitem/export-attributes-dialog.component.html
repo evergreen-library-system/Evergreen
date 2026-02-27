@@ -3,34 +3,38 @@
     <div class="modal-header">
       <h3 class="modal-title" i18n>Export Single Attribute List for Selected Line Items</h3>
       <button type="button" class="btn-close btn-close-white"
-        i18n-aria-label aria-label="Close dialog" (click)="close()"></button>
+      i18n-aria-label aria-label="Close dialog" (click)="close()"></button>
     </div>
     <div class="modal-body">
       <h4 i18n>Line Item(s) selected:
-        <span *ngFor="let id of ids; last as isLast">
-          {{id}}<span *ngIf="!isLast">,</span>
+        @for (id of ids; track id; let isLast = $last) {
+<span>
+          {{id}}@if (!isLast) {
+<span>,</span>
+}
         </span>
+}
       </h4>
-      <h4 i18n>Download a text file of ISBN, ISSN, or UPC
+    <h4 i18n>Download a text file of ISBN, ISSN, or UPC
         values for selected line item(s).
       </h4>
-      <div class="form-group form-inline">
-        <label for="export-attr-select" class="form-label form-check-label me-1">Filter by:</label>
-        <select name="export-attr-select" id="export-attr-select"
-          [(ngModel)]="selectedAttr"
-          class="form-control">
-          <option value="isbn" i18n>ISBN</option>
-          <option value="issn" i18n>ISSN</option>
-          <option value="upc"  i18n>UPC</option>
-        </select> 
-      </div>
+    <div class="form-group form-inline">
+      <label for="export-attr-select" class="form-label form-check-label me-1">Filter by:</label>
+      <select name="export-attr-select" id="export-attr-select"
+        [(ngModel)]="selectedAttr"
+        class="form-control">
+        <option value="isbn" i18n>ISBN</option>
+        <option value="issn" i18n>ISSN</option>
+        <option value="upc"  i18n>UPC</option>
+      </select>
     </div>
-    <div class="modal-footer">
-      <button type="button" class="btn btn-success"
-        (click)="close(selectedAttr)" i18n>Download</button>
-      <button type="button" class="btn btn-normal"
-        (click)="close()" i18n>Cancel</button>
-    </div>
-  </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-success"
+    (click)="close(selectedAttr)" i18n>Download</button>
+    <button type="button" class="btn btn-normal"
+    (click)="close()" i18n>Cancel</button>
+  </div>
+</form>
 </ng-template>
 

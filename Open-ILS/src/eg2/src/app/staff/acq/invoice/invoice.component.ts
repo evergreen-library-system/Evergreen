@@ -1,6 +1,6 @@
 /* eslint-disable */
 import { Component, OnInit, OnDestroy, QueryList, ViewChild, ViewChildren, inject } from '@angular/core';
-import {ActivatedRoute, ParamMap, Router} from '@angular/router';
+import {ActivatedRoute, ParamMap, Router, RouterModule} from '@angular/router';
 import {CanComponentDeactivate} from '@eg/share/util/can-deactivate.guard';
 import {NgbNav, NgbNavChangeEvent, NgbNavModule} from '@ng-bootstrap/ng-bootstrap';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
@@ -18,16 +18,30 @@ import {firstValueFrom, Subscription} from 'rxjs';
 import { ServerStoreService } from '@eg/core/server-store.service';
 import { StaffBannerComponent } from '@eg/staff/share/staff-banner.component';
 import { CommonModule } from '@angular/common';
+import { HoldingsService } from '@eg/staff/share/holdings/holdings.service';
+import { InvoiceBatchReceiveComponent } from './batch_receive.component';
+import { PrintComponent } from './print.component';
+import { PoLabelComponent } from "../po/label.component";
+import { FormsModule } from '@angular/forms';
 
 @Component({
     templateUrl: 'invoice.component.html',
     styleUrls: ['invoice.component.css'],
     imports: [
-        InvoiceDetailsComponent,
-        CommonModule,
-        NgbNavModule,
-        StaffBannerComponent
-    ]
+    CommonModule,
+    FormsModule,
+    InvoiceBatchReceiveComponent,
+    InvoiceChargesComponent,
+    InvoiceDetailsComponent,
+    LineitemListComponent,
+    LineitemResultsComponent,
+    NgbNavModule,
+    PrintComponent,
+    RouterModule,
+    StaffBannerComponent,
+    PoLabelComponent
+],
+    providers: [HoldingsService]
 })
 export class InvoiceComponent implements OnInit, OnDestroy, CanComponentDeactivate {
     private route = inject(ActivatedRoute);

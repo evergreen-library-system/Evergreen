@@ -6,6 +6,7 @@ import {StringService} from '@eg/share/string/string.service';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { StringComponent } from '@eg/share/string/string.component';
+import { FormsModule } from '@angular/forms';
 
 /*
  * Prompt to confirm overriding circulation events.
@@ -16,12 +17,12 @@ import { StringComponent } from '@eg/share/string/string.component';
     selector: 'eg-circ-events-dialog',
     imports: [
         CommonModule,
+        FormsModule,
         RouterModule,
         StringComponent
     ]
 })
 export class CircEventsComponent extends DialogComponent implements OnInit {
-    private modal: NgbModal;
     private strings = inject(StringService);
 
 
@@ -32,12 +33,6 @@ export class CircEventsComponent extends DialogComponent implements OnInit {
     patronId: number = null;
     patronName: string;
     copyBarcode: string;
-
-    constructor() {
-        const modal = inject(NgbModal);
-        super(modal);
-        this.modal = modal;
-    }
 
     ngOnInit() {
         this.onOpen$.subscribe(_ => {

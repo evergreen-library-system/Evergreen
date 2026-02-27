@@ -1,23 +1,16 @@
 import { Component, Input, ViewChild, OnInit, AfterViewInit, inject } from '@angular/core';
-import {Location} from '@angular/common';
-import {FormatService} from '@eg/core/format.service';
 import {GridDataSource, GridCellTextGenerator} from '@eg/share/grid/grid';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {AdminPageComponent} from '@eg/staff/share/admin-page/admin-page.component';
 import {Pager} from '@eg/share/util/pager';
-import {ActivatedRoute} from '@angular/router';
-import {IdlService, IdlObject} from '@eg/core/idl.service';
-import {ToastService} from '@eg/share/toast/toast.service';
-import {PcrudService} from '@eg/core/pcrud.service';
-import {OrgService} from '@eg/core/org.service';
+import {IdlObject} from '@eg/core/idl.service';
 import {PermService} from '@eg/core/perm.service';
-import {AuthService} from '@eg/core/auth.service';
-import {BroadcastService} from '@eg/share/util/broadcast.service';
 import {FundDetailsDialogComponent} from './fund-details-dialog.component';
 import {FundRolloverDialogComponent} from './fund-rollover-dialog.component';
 import { StaffCommonModule } from '@eg/staff/common.module';
 import { TranslateComponent } from '@eg/share/translate/translate.component';
 import { FmRecordEditorComponent } from '@eg/share/fm-editor/fm-editor.component';
+import { OrgFamilySelectComponent } from '@eg/share/org-family-select/org-family-select.component';
 
 @Component({
     selector: 'eg-funds-manager',
@@ -26,6 +19,7 @@ import { FmRecordEditorComponent } from '@eg/share/fm-editor/fm-editor.component
         FmRecordEditorComponent,
         FundDetailsDialogComponent,
         FundRolloverDialogComponent,
+        OrgFamilySelectComponent,
         StaffCommonModule,
         TranslateComponent
     ]

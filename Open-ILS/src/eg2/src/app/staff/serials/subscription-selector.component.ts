@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, Input, OnInit, Output, EventEmitter, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '@eg/core/auth.service';
@@ -14,7 +14,7 @@ interface SsubWhereClause {
 }
 
 @Component({
-    imports: [OrgFamilySelectModule, FormsModule, CommonModule],
+    imports: [OrgFamilySelectModule, FormsModule],
     selector: 'eg-subscription-selector',
     templateUrl: './subscription-selector.component.html'
 })

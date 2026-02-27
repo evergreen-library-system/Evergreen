@@ -11,6 +11,7 @@ import {GridDataSource, GridCellTextGenerator} from '@eg/share/grid/grid';
 import {AcqSearchService, AcqSearchTerm, AcqSearch} from './acq-search.service';
 import {AcqSearchFormComponent} from './acq-search-form.component';
 import { GridModule } from '@eg/share/grid/grid.module';
+import { CurrencyPipe } from '@angular/common';
 
 @Component({
     selector: 'eg-invoice-results',
@@ -18,6 +19,7 @@ import { GridModule } from '@eg/share/grid/grid.module';
     imports: [
         AcqSearchFormComponent,
         AlertDialogComponent,
+        CurrencyPipe,
         GridModule,
         RouterModule,
     ]

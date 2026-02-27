@@ -1,19 +1,15 @@
 import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {NetService} from '@eg/core/net.service';
-import {AuthService} from '@eg/core/auth.service';
 import {EventGridComponent} from './event-grid.component';
 import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
     templateUrl: 'event-log.component.html',
-    imports: [StaffCommonModule]
+    imports: [StaffCommonModule, EventGridComponent]
 })
 
 export class EventLogComponent implements OnInit {
     private route = inject(ActivatedRoute);
-    private net = inject(NetService);
-    private auth = inject(AuthService);
 
     patronId: number;
 

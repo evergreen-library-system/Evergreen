@@ -3,18 +3,19 @@ import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
-import {OrgService} from '@eg/core/org.service';
 import {Tree, TreeNode} from '@eg/share/tree/tree';
 import {StringService} from '@eg/share/string/string.service';
 import {MatchSetNewPointComponent} from './match-set-new-point.component';
 import { StaffCommonModule } from '@eg/staff/common.module';
+import { TreeComponent } from '@eg/share/tree/tree.component';
 
 @Component({
     selector: 'eg-match-set-expression',
     templateUrl: 'match-set-expression.component.html',
     imports: [
         MatchSetNewPointComponent,
-        StaffCommonModule
+        StaffCommonModule,
+        TreeComponent
     ]
 })
 export class MatchSetExpressionComponent {
@@ -22,7 +23,6 @@ export class MatchSetExpressionComponent {
     private pcrud = inject(PcrudService);
     private net = inject(NetService);
     private auth = inject(AuthService);
-    private org = inject(OrgService);
     private strings = inject(StringService);
 
 

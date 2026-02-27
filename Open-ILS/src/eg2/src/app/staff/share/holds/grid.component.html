@@ -26,212 +26,240 @@
 ></eg-confirm-dialog>
 
 <ng-template #statusTemplate let-hold="row">
-  <ng-container [ngSwitch]="hold.hold_status">
-    <div *ngSwitchCase="-1" i18n>Unknown Error</div>
-    <div *ngSwitchCase="1" i18n>Waiting for Item</div>
-    <div *ngSwitchCase="2" i18n>Waiting for Capture</div>
-    <div *ngSwitchCase="3" i18n>In Transit</div>
-    <div *ngSwitchCase="4" i18n>Ready for Pickup</div>
-    <div *ngSwitchCase="5" i18n>Hold Shelf Delay</div>
-    <div *ngSwitchCase="6" i18n>Canceled</div>
-    <div *ngSwitchCase="7" i18n>Suspended</div>
-    <div *ngSwitchCase="8" i18n>Wrong Shelf</div>
-    <div *ngSwitchCase="9" i18n>Fulfilled</div>
-  </ng-container>
+  @switch (hold.hold_status) {
+    @case (-1) {
+      <div i18n>Unknown Error</div>
+    }
+    @case (1) {
+      <div i18n>Waiting for Item</div>
+    }
+    @case (2) {
+      <div i18n>Waiting for Capture</div>
+    }
+    @case (3) {
+      <div i18n>In Transit</div>
+    }
+    @case (4) {
+      <div i18n>Ready for Pickup</div>
+    }
+    @case (5) {
+      <div i18n>Hold Shelf Delay</div>
+    }
+    @case (6) {
+      <div i18n>Canceled</div>
+    }
+    @case (7) {
+      <div i18n>Suspended</div>
+    }
+    @case (8) {
+      <div i18n>Wrong Shelf</div>
+    }
+    @case (9) {
+      <div i18n>Fulfilled</div>
+    }
+  }
 </ng-template>
 
 <div class='eg-holds w-100 mt-3'>
 
-  <ng-container *ngIf="mode === 'detail'">
-    <eg-hold-detail [wideHold]="detailHold" (onShowList)="mode='list'" 
-      [showRecordSummary]="showRecordSummary"></eg-hold-detail>
-  </ng-container>
+  @if (mode === 'detail') {
+    <eg-hold-detail [wideHold]="detailHold" (onShowList)="mode='list'"
+    [showRecordSummary]="showRecordSummary"></eg-hold-detail>
+  }
 
-  <ng-container *ngIf="mode === 'list' && initComplete()">
-
-    <h4 *ngIf="!hideHoldsCount" i18n>Holds Count: {{holdsCount}}</h4>
-
-    <div class="row" *ngIf="!hidePickupLibFilter">
-      <div class="col-lg-5">
-        <div class="input-group">
-          <label class="input-group-text form-control" for="pickupLibSelect" i18n>Pickup Library</label>
-          <eg-org-select 
-            domId="pickupLibSelect"
-            [persistKey]="persistKey" 
-            [fallbackOrg]="pickupLib"
-            (componentLoaded)="plCompLoaded = true" 
-            (onChange)="pickupLibChanged($event)">
-          </eg-org-select>
+  @if (mode === 'list' && initComplete()) {
+    @if (!hideHoldsCount) {
+      <h4 i18n>Holds Count: {{holdsCount}}</h4>
+    }
+    @if (!hidePickupLibFilter) {
+      <div class="row">
+        <div class="col-lg-5">
+          <div class="input-group">
+            <label class="input-group-text form-control" for="pickupLibSelect" i18n>Pickup Library</label>
+            <eg-org-select
+              domId="pickupLibSelect"
+              [persistKey]="persistKey"
+              [fallbackOrg]="pickupLib"
+              (componentLoaded)="plCompLoaded = true"
+              (onChange)="pickupLibChanged($event)">
+            </eg-org-select>
+          </div>
         </div>
       </div>
-    </div>
-
-    <div class="row" *ngIf="pullListOrg">
-      <div class="col-lg-3 mb-2">
-        <div class="input-group">
-          <label class="input-group-text form-label" for="pullListOrgSelect" i18n>View Pull List For:</label>
-          <eg-org-select 
-            domId="pullListOrgSelect"
-            [initialOrgId]="pullListOrg"
-            (onChange)="pullListOrgChanged($event)">
-          </eg-org-select>
+    }
+    @if (pullListOrg) {
+      <div class="row">
+        <div class="col-lg-3 mb-2">
+          <div class="input-group">
+            <label class="input-group-text form-label" for="pullListOrgSelect" i18n>View Pull List For:</label>
+            <eg-org-select
+              domId="pullListOrgSelect"
+              [initialOrgId]="pullListOrg"
+              (onChange)="pullListOrgChanged($event)">
+            </eg-org-select>
+          </div>
         </div>
-      </div>
-      <div class="col-lg-3 mb-2" *ngIf="pullListSettingsLoaded()">
-        <div class="input-group">
-          <label for="pull-pickup-lib-filter" class="form-label input-group-text"
-            i18n>Pickup Library:
-          </label>
-          <eg-org-select domId="pull-pickup-lib-filter"
-            #pullPickupLibFilter [initialOrg]="pickupLib"
-            (componentLoaded)="pullPickupLibLoaded()"
-            (onChange)="pullPickupLibChanged($event)">
-          </eg-org-select>
-          <button type="button" class="btn btn-outline-dark"
-            [ngClass]="{disabled: !pickupLib}"
-            (click)="resetPullPickupLibFilter()" i18n>Clear
-          </button>
-        </div>
-      </div>
-      <div class="col-lg-6 mb-2">
-        <div class="row">
-          <div class="col-lg-6">
+        @if (pullListSettingsLoaded()) {
+          <div class="col-lg-3 mb-2">
             <div class="input-group">
-              <label for="copy-locations-filter-btn" class="input-group-text"
-                style="cursor: pointer" i18n>Shelving Locations:
-              </label>
-              <button type="button" class="form-control" 
-              (click)="openCopyLocationsDialog()" i18n>Click to Select
-              </button>
+              <label for="pull-pickup-lib-filter" class="form-label input-group-text"
+                i18n>Pickup Library:
+          </label>
+              <eg-org-select domId="pull-pickup-lib-filter"
+                #pullPickupLibFilter [initialOrg]="pickupLib"
+                (componentLoaded)="pullPickupLibLoaded()"
+                (onChange)="pullPickupLibChanged($event)">
+              </eg-org-select>
               <button type="button" class="btn btn-outline-dark"
-                [ngClass]="{disabled: !this.copyLocationEntries.length}"
-                (click)="clearCopyLocations()" i18n>Clear
+                [ngClass]="{disabled: !pickupLib}"
+                (click)="resetPullPickupLibFilter()" i18n>Clear
+          </button>
+            </div>
+          </div>
+        }
+        <div class="col-lg-6 mb-2">
+          <div class="row">
+            <div class="col-lg-6">
+              <div class="input-group">
+                <label for="copy-locations-filter-btn" class="input-group-text"
+                  style="cursor: pointer" i18n>Shelving Locations:
+              </label>
+                <button type="button" class="form-control"
+                  (click)="openCopyLocationsDialog()" i18n>Click to Select
               </button>
+                <button type="button" class="btn btn-outline-dark"
+                  [ngClass]="{disabled: !this.copyLocationEntries.length}"
+                  (click)="clearCopyLocations()" i18n>Clear
+              </button>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="row mt-2" *ngIf="copyLocationEntries.length">
-          <div class="col">
-            <div class="border rounded p-2" style="clear: both">
-              <h3 class="lh-base m-1 float-start"
-              style="font-size: inherit;">
-              <ng-container *ngIf="copyLocationClass === 'acpl'"
-                i18n>Shelving Locations:
+          @if (copyLocationEntries.length) {
+            <div class="row mt-2">
+              <div class="col">
+                <div class="border rounded p-2" style="clear: both">
+                  <h3 class="lh-base m-1 float-start"
+                    style="font-size: inherit;">
+                    @if (copyLocationClass === 'acpl') {
+                      <ng-container
+                        i18n>Shelving Locations:
               </ng-container>
-              <ng-container *ngIf="copyLocationClass === 'acplg'"
-                i18n>Shelving Location Groups:
+                    }
+                    @if (copyLocationClass === 'acplg') {
+                      <ng-container
+                        i18n>Shelving Location Groups:
               </ng-container>
-            </h3>
-            <ul class="list-unstyled mb-0">
-              <li class="d-inline-block text-nowrap m-1"
-                *ngFor="let entry of copyLocationEntries as entries; let i = index">
-                {{entry.label}}
-                <ng-container *ngIf="i < entries.length - 1">,</ng-container>
-              </li>
-            </ul>
+                    }
+                  </h3>
+                  <ul class="list-unstyled mb-0">
+                    @for (entry of copyLocationEntries; track entry; let i = $index) {
+                    <li class="d-inline-block text-nowrap m-1">
+                      {{entry.label}}
+                      @if (i < copyLocationEntries.length - 1) {
+                        ,
+                      }
+                    </li>
+                    }
+                  </ul>
+                </div>
+              </div>
             </div>
-          </div>
+          }
         </div>
       </div>
-    </div>
-
+    }
     <eg-grid #holdsGrid [dataSource]="gridDataSource" [sortable]="true"
       [useLocalSort]="enablePreFetch" [cellTextGenerator]="cellTextGenerator"
       [showFields]="showFields"
       [multiSortable]="true" [persistKey]="persistKey"
       (onRowActivate)="showDetail($event)">
-
-      <eg-grid-toolbar-button *ngIf="pullListOrg" 
-        (onClick)="printHolds()" i18n-label label="Print Full List">
-      </eg-grid-toolbar-button>
-
-      <eg-grid-toolbar-checkbox
-        (onChange)="preFetchHolds($event)" *ngIf="!hopeless && preFetchSetting"
-        [initialValue]="enablePreFetch" i18n-label label="Pre-Fetch All Holds">
-      </eg-grid-toolbar-checkbox>
-
-      <ng-container *ngIf="showPlaceHoldButton">
+      @if (pullListOrg) {
+        <eg-grid-toolbar-button
+          (onClick)="printHolds()" i18n-label label="Print Full List">
+        </eg-grid-toolbar-button>
+      }
+      @if (!hopeless && preFetchSetting) {
+        <eg-grid-toolbar-checkbox
+          (onChange)="preFetchHolds($event)"
+          [initialValue]="enablePreFetch" i18n-label label="Pre-Fetch All Holds">
+        </eg-grid-toolbar-checkbox>
+      }
+      @if (showPlaceHoldButton) {
         <eg-grid-toolbar-button
           i18n-label label="Place Hold" (onClick)="placeHoldRequested.emit()">
         </eg-grid-toolbar-button>
-      </ng-container>
-
+      }
       <eg-grid-toolbar-action
         i18n-label label="Show Hold Details" i18n-group group="Hold"
-        (onClick)="showDetails($event)"></eg-grid-toolbar-action>
-
+      (onClick)="showDetails($event)"></eg-grid-toolbar-action>
       <eg-grid-toolbar-action
         i18n-label label="Modify Hold(s)" group="Hold" i18n-group
         (onClick)="showManageDialog($event)">
       </eg-grid-toolbar-action>
-
       <eg-grid-toolbar-action
         i18n-label label="Show Last Few Circulations" group="Item" i18n-group
-        (onClick)="showRecentCircs($event)"></eg-grid-toolbar-action>
-
-      <eg-grid-toolbar-action *ngIf="!patronFocused"
-        i18n-label label="Retrieve Patron" group="Patron" i18n-group
-        (onClick)="showPatron($event)">
-      </eg-grid-toolbar-action>
-
+      (onClick)="showRecentCircs($event)"></eg-grid-toolbar-action>
+      @if (!patronFocused) {
+        <eg-grid-toolbar-action
+          i18n-label label="Retrieve Patron" group="Patron" i18n-group
+          (onClick)="showPatron($event)">
+        </eg-grid-toolbar-action>
+      }
       <eg-grid-toolbar-action
         i18n-group group="Hold" i18n-label label="Transfer To Marked Title"
         [disableOnRows]="nonTitleHoldsSelected"
         (onClick)="showTransferDialog($event)">
       </eg-grid-toolbar-action>
-
       <eg-grid-toolbar-action
         group="Item" i18n-group i18n-label label="Mark Item Damaged"
-        (onClick)="showMarkDamagedDialog($event)"></eg-grid-toolbar-action>
-
+      (onClick)="showMarkDamagedDialog($event)"></eg-grid-toolbar-action>
       <eg-grid-toolbar-action
         i18n-group group="Item" i18n-label label="Mark Item Missing"
         (onClick)="showMarkMissingDialog($event)">
       </eg-grid-toolbar-action>
-
       <eg-grid-toolbar-action
         i18n-group group="Item" i18n-label label="Mark Item Discard/Weed"
         (onClick)="showMarkDiscardDialog($event)">
       </eg-grid-toolbar-action>
-
       <eg-grid-toolbar-action
         i18n-group group="Hold" i18n-label label="Find Another Target"
-        (onClick)="showRetargetDialog($event)"></eg-grid-toolbar-action>
-
-      <eg-grid-toolbar-action *ngIf="!showRecentlyCanceled"
-        i18-group group="Hold" i18n-label label="Cancel Hold"
+      (onClick)="showRetargetDialog($event)"></eg-grid-toolbar-action>
+      @if (!showRecentlyCanceled) {
+        <eg-grid-toolbar-action
+          i18-group group="Hold" i18n-label label="Cancel Hold"
         (onClick)="showCancelDialog($event)"></eg-grid-toolbar-action>
-
-      <eg-grid-toolbar-action *ngIf="showRecentlyCanceled"
-        i18n-label label="Un-Cancel Hold(s)" group="Hold" i18n-group
-        (onClick)="showUncancelDialog($event)">
-      </eg-grid-toolbar-action>
-
+      }
+      @if (showRecentlyCanceled) {
+        <eg-grid-toolbar-action
+          i18n-label label="Un-Cancel Hold(s)" group="Hold" i18n-group
+          (onClick)="showUncancelDialog($event)">
+        </eg-grid-toolbar-action>
+      }
       <eg-grid-toolbar-action
         i18-group group="Hold" i18n-label label="Print Holds"
-        (onClick)="printHolds()"></eg-grid-toolbar-action>
-
-      <eg-grid-toolbar-action *ngIf="hopeless"
-        i18-group group="Item" i18n-label label="View/Place Orders"
-        [disableOnRows]="metaRecordHoldsSelected"
+      (onClick)="printHolds()"></eg-grid-toolbar-action>
+      @if (hopeless) {
+        <eg-grid-toolbar-action
+          i18-group group="Item" i18n-label label="View/Place Orders"
+          [disableOnRows]="metaRecordHoldsSelected"
         (onClick)="showOrder($event)"></eg-grid-toolbar-action>
-
-      <eg-grid-toolbar-action *ngIf="hopeless"
-        i18-group group="Item" i18n-label label="Add Holdings"
-        [disableOnRows]="metaRecordHoldsSelected"
+      }
+      @if (hopeless) {
+        <eg-grid-toolbar-action
+          i18-group group="Item" i18n-label label="Add Holdings"
+          [disableOnRows]="metaRecordHoldsSelected"
         (onClick)="addVolume($event)"></eg-grid-toolbar-action>
-
-      <eg-grid-toolbar-action *ngIf="hopeless"
-        i18-group group="Item" i18n-label label="Show in Catalog"
+      }
+      @if (hopeless) {
+        <eg-grid-toolbar-action
+          i18-group group="Item" i18n-label label="Show in Catalog"
         (onClick)="showTitle($event)"></eg-grid-toolbar-action>
-
+      }
       <eg-grid-toolbar-action
         i18n-label label="Show Holds For Title" i18n-group group="Show"
-        (onClick)="showHoldsForTitle($event)"></eg-grid-toolbar-action>
-
+      (onClick)="showHoldsForTitle($event)"></eg-grid-toolbar-action>
       <eg-grid-column i18n-label label="Hold ID" path='id' [index]="true" datatype="id">
       </eg-grid-column>
-
       <eg-grid-column i18n-label label="Shelving Location" path='acpl_name' [hidden]="true"></eg-grid-column>
       <eg-grid-column i18n-label label="CN Full label" path='cn_full_label' [hidden]="true"></eg-grid-column>
       <eg-grid-column i18n-label label="Part label" path='p_label' [hidden]="true"></eg-grid-column>
@@ -243,16 +271,16 @@
         </a>
       </ng-template>
       <eg-grid-column i18n-label label="Title" [hidden]="true" name='title'
-        [cellTemplate]="titleTmpl"></eg-grid-column>
+      [cellTemplate]="titleTmpl"></eg-grid-column>
       <eg-grid-column i18n-label label="Publication Year" path='pubdate' [hidden]="true"></eg-grid-column>
       <ng-template #barcodeTmpl let-hold="row" let-col="col">
         <a href="/eg/staff/cat/item/{{hold.cp_id}}/summary" target="_blank">
-          <ng-container *ngIf="col.name === 'current_item' && hold.current_copy">
+          @if (col.name === 'current_item' && hold.current_copy) {
             {{hold.cp_barcode}}
-          </ng-container>
-          <ng-container *ngIf="col.name === 'requested_item' && isCopyHold(hold)">
+          }
+          @if (col.name === 'requested_item' && isCopyHold(hold)) {
             {{hold.cp_barcode}}
-          </ng-container>
+          }
         </a>
       </ng-template>
       <eg-grid-column i18n-label label="Current Item" name='current_item'
@@ -265,44 +293,37 @@
       <eg-grid-column i18n-label label="Hold Type" path='hold_type'></eg-grid-column>
       <eg-grid-column i18n-label label="Potential Items" path='potentials' datatype="int">
       </eg-grid-column>
-      <eg-grid-column i18n-label label="Request Date" path='request_time' 
-        datatype="timestamp" [datePlusTime]="true"></eg-grid-column>
-
+      <eg-grid-column i18n-label label="Request Date" path='request_time'
+      datatype="timestamp" [datePlusTime]="true"></eg-grid-column>
       <ng-template #userBarcodeTmpl let-hold="row">
         <a href="/eg/staff/circ/patron/{{hold.usr_id}}/checkout" target="_blank">
           {{hold.ucard_barcode}}
         </a>
       </ng-template>
       <eg-grid-column i18n-label label="Patron Barcode" path="ucard_barcode"
-        [cellTemplate]="userBarcodeTmpl" [hidden]="true"></eg-grid-column>
-
+      [cellTemplate]="userBarcodeTmpl" [hidden]="true"></eg-grid-column>
       <eg-grid-column i18n-label label="Patron Home Library" path="ul_shortname" [hidden]="true"></eg-grid-column>
       <eg-grid-column i18n-label label="Patron Alias" path="usr_alias"></eg-grid-column>
       <eg-grid-column i18n-label label="Capture Date" path='capture_time'
-          datatype="timestamp" [datePlusTime]="true"></eg-grid-column>
+      datatype="timestamp" [datePlusTime]="true"></eg-grid-column>
       <eg-grid-column i18n-label label="Available Date" path='shelf_time'
-          datatype="timestamp" [datePlusTime]="true"></eg-grid-column>
-
+      datatype="timestamp" [datePlusTime]="true"></eg-grid-column>
       <eg-grid-column i18n-label label="Hold Status" [cellTemplate]="statusTemplate" name="status_string"
         [sortable]="false" [multiSortable]="false">
       </eg-grid-column>
       <eg-grid-column i18n-label label="Relative Queue Position"
-          path='relative_queue_position' [hidden]="true" datatype="int"></eg-grid-column>
+      path='relative_queue_position' [hidden]="true" datatype="int"></eg-grid-column>
       <eg-grid-column i18n-label label="Global Queue Position"
-          path='global_queue_position' [hidden]="true" datatype="int"></eg-grid-column>
+      path='global_queue_position' [hidden]="true" datatype="int"></eg-grid-column>
       <eg-grid-column path='usr_id' i18n-label label="User ID" [hidden]="true"></eg-grid-column>
       <eg-grid-column path='usr_usrname' i18n-label label="Username" [hidden]="true"></eg-grid-column>
-
       <eg-grid-column path='usr_first_given_name' i18n-label label="First Name" [hidden]="true"></eg-grid-column>
       <eg-grid-column path='usr_family_name' i18n-label label="Last Name" [hidden]="true"></eg-grid-column>
       <eg-grid-column path='rusr_id' i18n-label label="Requestor ID" [hidden]="true"></eg-grid-column>
       <eg-grid-column path='rusr_usrname' i18n-label label="Requestor Username" [hidden]="true"></eg-grid-column>
-
-     <eg-grid-column i18n-label label="Item Status" path="cs_name" [hidden]="true"></eg-grid-column>
-
+      <eg-grid-column i18n-label label="Item Status" path="cs_name" [hidden]="true"></eg-grid-column>
       <eg-grid-column path='ancp_label' i18n-label label="CN Prefix" [hidden]="true"></eg-grid-column>
       <eg-grid-column path='ancs_label' i18n-label label="CN Suffix" [hidden]="true"></eg-grid-column>
-
       <eg-grid-column i18n-label label="Fulfillment Date/Time" path='fulfillment_time' datatype="timestamp" [datePlusTime]="true" [hidden]="true"></eg-grid-column>
       <eg-grid-column i18n-label label="Checkin Time" path='checkin_time' datatype="timestamp" [datePlusTime]="true" [hidden]="true"></eg-grid-column>
       <eg-grid-column i18n-label label="Return Time" path='return_time' datatype="timestamp" [datePlusTime]="true" [hidden]="true"></eg-grid-column>
@@ -407,10 +428,8 @@
       <eg-grid-column i18n-label label="Total Wait Time" path='total_wait_time' [hidden]="true"></eg-grid-column>
       <eg-grid-column i18n-label label="Notify Count" path='notification_count' [hidden]="true"></eg-grid-column>
       <eg-grid-column i18n-label label="Last Notify Time" path='last_notification_time' datatype="timestamp" [datePlusTime]="true" [hidden]="true"></eg-grid-column>
-
     </eg-grid>
-
-  </ng-container>
+  }
 
 </div>
 

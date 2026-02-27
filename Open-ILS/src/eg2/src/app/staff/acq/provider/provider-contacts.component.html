@@ -52,13 +52,13 @@
   <eg-grid-column [filterable]="false" [sortable]="false" i18n-label label="Is Primary?" path="_is_primary" datatype="bool"></eg-grid-column>
 </eg-grid>
 
-<ng-container *ngIf="selectedContact">
+@if (selectedContact) {
   <hr><h3 i18n>Addresses for: {{selectedContact.name()}}</h3>
   <eg-provider-contact-addresses
     #providerContactAddresses
     [contactId]="selectedContact.id()">
   </eg-provider-contact-addresses>
-</ng-container>
+}
 
 <eg-fm-record-editor #editDialog
   idlClass="acqpc"

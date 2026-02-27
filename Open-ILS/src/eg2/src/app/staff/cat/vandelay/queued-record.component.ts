@@ -4,9 +4,11 @@ import {NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {IdlObject} from '@eg/core/idl.service';
 import { StaffCommonModule } from '@eg/staff/common.module';
-import { FastAddSelectorComponent } from '@eg/staff/share/marc-edit/fast-add-selector-component';
+import { FastAddSelectorComponent } from '@eg/staff/share/marc-edit/fast-add-selector.component';
 import { MarcEditorComponent } from '@eg/staff/share/marc-edit/editor.component';
 import { MarcHtmlComponent } from '@eg/share/catalog/marc-html.component';
+import { QueuedRecordMatchesComponent } from './queued-record-matches.component';
+import { RecordItemsComponent } from './record-items.component';
 
 @Component({
     templateUrl: 'queued-record.component.html',
@@ -14,7 +16,9 @@ import { MarcHtmlComponent } from '@eg/share/catalog/marc-html.component';
         MarcEditorComponent,
         MarcHtmlComponent,
         StaffCommonModule,
-        FastAddSelectorComponent
+        FastAddSelectorComponent,
+        QueuedRecordMatchesComponent,
+        RecordItemsComponent
     ]
 })
 export class QueuedRecordComponent {

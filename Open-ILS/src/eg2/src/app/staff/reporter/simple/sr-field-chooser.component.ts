@@ -2,12 +2,13 @@ import { Component, Input, Output, EventEmitter, ViewChild, inject } from '@angu
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {ReporterService} from '../share/reporter.service';
 import { StaffCommonModule } from '@eg/staff/common.module';
+import { SRFieldComponent } from './sr-field.component';
 
 @Component({
     selector: 'eg-sr-field-chooser',
     styleUrls: ['./sr-field-chooser.component.css'],
     templateUrl: './sr-field-chooser.component.html',
-    imports: [StaffCommonModule]
+    imports: [StaffCommonModule, SRFieldComponent]
 })
 
 export class SRFieldChooserComponent {

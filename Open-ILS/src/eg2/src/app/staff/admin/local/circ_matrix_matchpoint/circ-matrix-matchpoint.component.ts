@@ -14,7 +14,7 @@ import {ToastService} from '@eg/share/toast/toast.service';
 import {AuthService} from '@eg/core/auth.service';
 import {PermService} from '@eg/core/perm.service';
 import {OrgService} from '@eg/core/org.service';
-import {OrgFamily} from '@eg/share/org-family-select/org-family-select.component';
+import {OrgFamily, OrgFamilySelectComponent} from '@eg/share/org-family-select/org-family-select.component';
 import { StaffCommonModule } from '@eg/staff/common.module';
 
   @Component({
@@ -23,6 +23,7 @@ import { StaffCommonModule } from '@eg/staff/common.module';
           CircMatrixMatchpointDialogComponent,
           FmRecordEditorComponent,
           LinkedCircLimitSetsComponent,
+          OrgFamilySelectComponent,
           StaffCommonModule
       ]
   })

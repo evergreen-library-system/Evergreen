@@ -3,7 +3,7 @@ import {IdlObject} from '@eg/core/idl.service';
 import { PcrudService } from '@eg/core/pcrud.service';
 import { memoizeRetrieveByKeyFn } from '../memoize';
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class ItemLocationService {
     getById = memoizeRetrieveByKeyFn((id: number) => this.pcrud.retrieve('acpl', id));
 

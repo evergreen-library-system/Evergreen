@@ -33,7 +33,7 @@
   dialogBody="Delete carousel?">
 </eg-confirm-dialog>
 
-<ng-container *ngIf="orgField">
+@if (orgField) {
   <eg-org-family-select
     ariaLabel="Org Unit" i18n-ariaLabel
     [limitPerms]="viewPerms"
@@ -42,20 +42,20 @@
     (ngModelChange)="grid.reload()">
   </eg-org-family-select>
   <hr/>
-</ng-container>
+}
 
 <!-- idlObject and fieldName applied programmatically -->
 <eg-translate #translator></eg-translate>
 
-<eg-grid #grid idlClass="{{idlClass}}" [dataSource]="dataSource" 
-    [sortable]="true" persistKey="{{persistKey}}"
-    [cellTextGenerator]="cellTextGenerator"
-    (onRowActivate)="showEditDialog($event)"
-    [stickyHeader]="true">
-  <eg-grid-toolbar-button [disabled]="!canCreate" 
+<eg-grid #grid idlClass="{{idlClass}}" [dataSource]="dataSource"
+  [sortable]="true" persistKey="{{persistKey}}"
+  [cellTextGenerator]="cellTextGenerator"
+  (onRowActivate)="showEditDialog($event)"
+  [stickyHeader]="true">
+  <eg-grid-toolbar-button [disabled]="!canCreate"
     label="New {{idlClassDef.label}}" i18n-label [action]="createNew">
   </eg-grid-toolbar-button>
-  <eg-grid-toolbar-button [disabled]="translatableFields.length === 0" 
+  <eg-grid-toolbar-button [disabled]="translatableFields.length === 0"
     label="Apply Translations" i18n-label [action]="translate">
   </eg-grid-toolbar-button>
   <eg-grid-toolbar-action label="Edit Selected" i18n-label [action]="editSelected">
@@ -66,7 +66,7 @@
   </eg-grid-toolbar-action>
   <ng-template #recordBucketTmpl let-carousel="row">
     <a href="/eg2/staff/cat/bucket/record/view/{{carousel.bucket().id()}}" target="_blank">
-        {{carousel.bucket().name()}}
+      {{carousel.bucket().name()}}
     </a>
   </ng-template>
   <eg-grid-column path="bucket" i18n-label label="Bucket" [cellTemplate]="recordBucketTmpl"></eg-grid-column>
@@ -81,34 +81,38 @@
 </eg-grid>
 
 <ng-template #bucketTemplate
-    let-field="field" let-record="record">
-  <span *ngIf="record[field.name]()">
-    <a href="/eg2/staff/cat/bucket/record/view/{{record[field.name]()}}" target="_blank" i18n>Link to bucket</a>
-    <span *ngIf="record['type']() !== 1" i18n style="font-style: italic"> (Note: changes to bucket contents may be overwritten by the next carousel update.)</span>
-  </span>
+  let-field="field" let-record="record">
+  @if (record[field.name]()) {
+    <span>
+      <a href="/eg2/staff/cat/bucket/record/view/{{record[field.name]()}}" target="_blank" i18n>Link to bucket</a>
+      @if (record['type']() !== 1) {
+        <span i18n style="font-style: italic"> (Note: changes to bucket contents may be overwritten by the next carousel update.)</span>
+      }
+    </span>
+  }
 </ng-template>
 
 <ng-template #locationTemplate
-    let-field="field" let-record="record">
+  let-field="field" let-record="record">
   <eg-multi-select idlClass="acpl" linkedLibraryLabel="owning_lib" domId="{{field.idlClass}}-{{field.name}}"
-                   [startValue]="record['copy_location_filter']()"
-                   (onChange)="record['copy_location_filter']($event)">
+    [startValue]="record['copy_location_filter']()"
+    (onChange)="record['copy_location_filter']($event)">
   </eg-multi-select>
 </ng-template>
 <ng-template #orgTemplate
-    let-field="field" let-record="record">
+  let-field="field" let-record="record">
   <eg-multi-select idlClass="aou" domId="{{field.idlClass}}-{{field.name}}"
-                   [startValue]="record['owning_lib_filter']()"
-                   (onChange)="record['owning_lib_filter']($event)">
+    [startValue]="record['owning_lib_filter']()"
+    (onChange)="record['owning_lib_filter']($event)">
   </eg-multi-select>
 </ng-template>
 
-<eg-fm-record-editor #editDialog idlClass="{{idlClass}}" 
-    [preloadLinkedValues]="true"
-    fieldOrder="owner,name,type,age_filter,max_items,owning_lib_filter,copy_location_filter,active,id,bucket,last_refresh_time,creator,create_time,editor,edit_time"
-    hiddenFieldsList="creator,editor,create_time,edit_time"
-    [preSave]="mungeCarousel" (recordSaved)="postSave($event)"
-    readonlyFields="last_refresh_time"
-    [fieldOptions]="{bucket:{customTemplate:{template:bucketTemplate}},copy_location_filter:{customTemplate:{template:locationTemplate}},owning_lib_filter:{customTemplate:{template:orgTemplate}}}"
+<eg-fm-record-editor #editDialog idlClass="{{idlClass}}"
+  [preloadLinkedValues]="true"
+  fieldOrder="owner,name,type,age_filter,max_items,owning_lib_filter,copy_location_filter,active,id,bucket,last_refresh_time,creator,create_time,editor,edit_time"
+  hiddenFieldsList="creator,editor,create_time,edit_time"
+  [preSave]="mungeCarousel" (recordSaved)="postSave($event)"
+  readonlyFields="last_refresh_time"
+  [fieldOptions]="{bucket:{customTemplate:{template:bucketTemplate}},copy_location_filter:{customTemplate:{template:locationTemplate}},owning_lib_filter:{customTemplate:{template:orgTemplate}}}"
 ></eg-fm-record-editor>
 

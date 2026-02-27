@@ -1,28 +1,31 @@
 <!-- Copy To Clipboard is only displayed when using a row-specific
-     context menu as the entry point. -->
-<button *ngIf="viaContextMenu" class="dropdown-item"
-  (click)="openCopyToClipboard()" type="button">
-  <div i18n>Copy to Clipboard</div>
-  <div class="dropdown-divider"></div>
-</button>
+context menu as the entry point. -->
+@if (viaContextMenu) {
+  <button class="dropdown-item"
+    (click)="openCopyToClipboard()" type="button">
+    <div i18n>Copy to Clipboard</div>
+    <div class="dropdown-divider"></div>
+  </button>
+}
 
 <eg-clipboard-dialog #clipboardDialog></eg-clipboard-dialog>
 
-<ng-container 
-  *ngFor="let action of gridContext.toolbarActions; let idx = index">
-  <button ngbDropdownItem class="dropdown-item" *ngIf="!action.hidden"
-    [disabled]="shouldDisable(action)"
-    [attr.aria-describedby]="action.describedbySelectionCount ? gridContext.gridDomId + '-selection-count' : null"
-    (click)="performAction(action)" type="button">
-    <ng-container *ngIf="action.isGroup">
-      <span class="fw-bold fst-italic">{{action.label}}</span>
-    </ng-container>
-    <ng-container *ngIf="action.isSeparator">
-      <div class="dropdown-divider"></div>
-    </ng-container>
-    <ng-container *ngIf="!action.isGroup && !action.isSeparator">
-      <!-- grouped entries are left paddded for group indentation -->        
-      <span [ngClass]="{'ms-2': action.group}">{{action.label}}</span>
-    </ng-container>
-  </button>
-</ng-container>
+@for (action of gridContext.toolbarActions; track action; let idx = $index) {
+  @if (!action.hidden) {
+    <button ngbDropdownItem class="dropdown-item"
+      [disabled]="shouldDisable(action)"
+      [attr.aria-describedby]="action.describedbySelectionCount ? gridContext.gridDomId + '-selection-count' : null"
+      (click)="performAction(action)" type="button">
+      @if (action.isGroup) {
+        <span class="fw-bold fst-italic">{{action.label}}</span>
+      }
+      @if (action.isSeparator) {
+        <div class="dropdown-divider"></div>
+      }
+      @if (!action.isGroup && !action.isSeparator) {
+        <!-- grouped entries are left paddded for group indentation -->
+        <span [ngClass]="{'ms-2': action.group}">{{action.label}}</span>
+      }
+    </button>
+  }
+}

@@ -1,10 +1,9 @@
 
 import {Pager} from '@eg/share/util/pager';
-import {Component, OnInit, AfterViewInit, Input, ViewChild, ElementRef} from '@angular/core';
+import {Component, OnInit, Input, ViewChild, inject} from '@angular/core';
 import {GridComponent} from '@eg/share/grid/grid.component';
-import {GridDataSource, GridColumn, GridRowFlairEntry} from '@eg/share/grid/grid';
+import {GridDataSource} from '@eg/share/grid/grid';
 import {ActivatedRoute} from '@angular/router';
-import {Location} from '@angular/common';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
 import {HoldMatrixMatchpointDialogComponent} from './hold-matrix-matchpoint-dialog.component';
@@ -14,10 +13,31 @@ import {ToastService} from '@eg/share/toast/toast.service';
 import {AuthService} from '@eg/core/auth.service';
 import {PermService} from '@eg/core/perm.service';
 import {OrgService} from '@eg/core/org.service';
-import {OrgFamily} from '@eg/share/org-family-select/org-family-select.component';
+import {OrgFamily, OrgFamilySelectComponent} from '@eg/share/org-family-select/org-family-select.component';
+import { TitleComponent } from '@eg/share/title/title.component';
+import { StaffBannerComponent } from '@eg/staff/share/staff-banner.component';
+import { CommonModule } from '@angular/common';
+import { ComboboxComponent } from '@eg/share/combobox/combobox.component';
+import { ComboboxEntryComponent } from '@eg/share/combobox/combobox-entry.component';
+import { GridModule } from '@eg/share/grid/grid.module';
+import { FormsModule } from '@angular/forms';
 
   @Component({
-      templateUrl: './hold-matrix-matchpoint.component.html'
+      templateUrl: './hold-matrix-matchpoint.component.html',
+      imports: [
+          ComboboxComponent,
+          ComboboxEntryComponent,
+          CommonModule,
+          FmRecordEditorComponent,
+          FormsModule,
+          GridModule,
+          HoldMatrixMatchpointComponent,
+          HoldMatrixMatchpointDialogComponent,
+          OrgFamilySelectComponent,
+          TitleComponent,
+          StaffBannerComponent,
+          StringComponent,
+      ]
   })
 export class HoldMatrixMatchpointComponent implements OnInit {
     recId: number;
@@ -54,15 +74,13 @@ export class HoldMatrixMatchpointComponent implements OnInit {
     viewPerms: string;
     canCreate: boolean;
 
-    constructor(
-        private route: ActivatedRoute,
-        private pcrud: PcrudService,
-        private toast: ToastService,
-        public idl: IdlService,
-        private org: OrgService,
-        public auth: AuthService,
-        private perm: PermService
-    ) {}
+    private route = inject(ActivatedRoute);
+    private pcrud = inject(PcrudService);
+    private toast = inject(ToastService);
+    public idl = inject(IdlService);
+    private org = inject(OrgService);
+    public auth = inject(AuthService);
+    private perm = inject(PermService);
 
     ngOnInit() {
         this.initDone = true;

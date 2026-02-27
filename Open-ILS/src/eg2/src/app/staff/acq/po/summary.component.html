@@ -14,253 +14,258 @@
 </eg-confirm-dialog>
 
 
-<div *ngIf="po()" class="p-1 border border-secondary rounded">
-
-  <div class="row">
-    <div class="col-lg-9">
-
-      <div class="row">
-        <div class="col-lg-4 d-flex">
-          <div class="flex-2" i18n>PO ID:</div>
-          <div class="flex-4">{{poId}}</div>
-        </div>
-        <div class="col-lg-8 d-flex">
-          <div class="flex-1" i18n>Status:</div>
-          <div class="flex-6">
-            <div class="w-50" *ngIf="canActivate === null">
-              <eg-progress-inline></eg-progress-inline>
-            </div>
-
-            <span *ngIf="po().state() === 'on-order'" i18n>On Order</span>
-            <span *ngIf="po().state() === 'received'" i18n>Received</span>
-            <ng-container *ngIf="canActivate">
-              <span *ngIf="!activationEvent" i18n>Pending / Activatable</span>
-              <span *ngIf="activationEvent" i18n>
+@if (po()) {
+  <div class="p-1 border border-secondary rounded">
+    <div class="row">
+      <div class="col-lg-9">
+        <div class="row">
+          <div class="col-lg-4 d-flex">
+            <div class="flex-2" i18n>PO ID:</div>
+            <div class="flex-4">{{poId}}</div>
+          </div>
+          <div class="col-lg-8 d-flex">
+            <div class="flex-1" i18n>Status:</div>
+            <div class="flex-6">
+              @if (canActivate === null) {
+                <div class="w-50">
+                  <eg-progress-inline></eg-progress-inline>
+                </div>
+              }
+              @if (po().state() === 'on-order') {
+                <span i18n>On Order</span>
+              }
+              @if (po().state() === 'received') {
+                <span i18n>Received</span>
+              }
+              @if (canActivate) {
+                @if (!activationEvent) {
+                  <span i18n>Pending / Activatable</span>
+                }
+                @if (activationEvent) {
+                  <span i18n>
                 Activation Error: {{activationEvent.textcode}} {{activationEvent.desc}}
               </span>
-            </ng-container>
-
-            <!-- canceled -->
-            <ng-container *ngIf="po().cancel_reason()">
-              <span class="text-danger" i18n>
+                }
+              }
+              <!-- canceled -->
+              @if (po().cancel_reason()) {
+                <span class="text-danger" i18n>
                 {{po().cancel_reason().label()}} =&gt; {{po().cancel_reason().description()}}
               </span>
-            </ng-container>
-
-            <!-- activation warnings -->
-            <ng-container *ngIf='activationWarnings.length'>
-              <span i18n> (Warning: </span>
-              <ng-container *ngFor="let evt of activationWarnings">
-                <ng-container 
-                 *ngIf="evt.textcode === 'ACQ_FUND_EXCEEDS_WARN_PERCENT'">
-                  <span class="bg-warning" i18n>
+              }
+              <!-- activation warnings -->
+              @if (activationWarnings.length) {
+                <span i18n> (Warning: </span>
+                @for (evt of activationWarnings; track evt) {
+                  @if (evt.textcode === 'ACQ_FUND_EXCEEDS_WARN_PERCENT') {
+                    <span class="bg-warning" i18n>
                     Fund exceeds warning percent: 
                     {{evt.payload.fund.code()}} ({{evt.payload.fund.year()}}).
                   </span>
-                </ng-container>
-              </ng-container>
-              <span i18n>)</span>
-            </ng-container>
-
-            <!-- activation blocks -->
-            <div class="text-danger" *ngFor="let evt of activationBlocks">
-              <ng-container 
-                *ngIf="evt.textcode === 'ACQ_FUND_EXCEEDS_STOP_PERCENT'; else noPrice">
-                <span i18n>
+                  }
+                }
+                <span i18n>)</span>
+              }
+              <!-- activation blocks -->
+              @for (evt of activationBlocks; track evt) {
+                <div class="text-danger">
+                  @if (evt.textcode === 'ACQ_FUND_EXCEEDS_STOP_PERCENT') {
+                    <span i18n>
                   Fund exceeds stop percent: 
                   {{evt.payload.fund.code()}} ({{evt.payload.fund.year()}}).
                 </span>
-              </ng-container>
-              <ng-template #noPrice>
-                <ng-container 
-                  *ngIf="evt.textcode === 'ACQ_LINEITEM_NO_PRICE'; else noCopies">
-                  <span i18n>One or more line items have no price.</span>
-                </ng-container>
-              </ng-template>
-              <ng-template #noCopies>
-                <ng-container 
-                  *ngIf="evt.textcode === 'ACQ_LINEITEM_NO_COPIES'; else noOwner">
-                  <span i18n>One or more line items have no items attached.</span>
-                </ng-container>
-              </ng-template>
-              <ng-template #noOwner>
-                <ng-container 
-                  *ngIf="evt.textcode === 'ACQ_COPY_NO_OWNING_LIB'; else otherBlock">
-                  <span i18n>One or more items have no owning lib.</span>
-                </ng-container>
-              </ng-template>
-              <ng-template #otherBlock>
-                <span i18n>{{evt.textcode}} : {{evt.desc}}</span>
-              </ng-template>
+                  } @else {
+                    @if (evt.textcode === 'ACQ_LINEITEM_NO_PRICE') {
+                      <span i18n>One or more line items have no price.</span>
+                    } @else {
+                      @if (evt.textcode === 'ACQ_LINEITEM_NO_COPIES') {
+                        <span i18n>One or more line items have no items attached.</span>
+                      } @else {
+                        @if (evt.textcode === 'ACQ_COPY_NO_OWNING_LIB') {
+                          <span i18n>One or more items have no owning lib.</span>
+                        } @else {
+                          <span i18n>{{evt.textcode}} : {{evt.desc}}</span>
+                        }
+                      }
+                    }
+                  }
+                </div>
+              }
             </div>
           </div>
         </div>
-      </div>
-
-      <div class="row">
-        <div class="col-lg-4 d-flex">
-          <div class="flex-2" i18n>PO Name:</div>
-          <div class="flex-4">
-            <ng-container *ngIf="editPoName">
-              <input id='ps-name-input' type="text" class="form-control"
-                [ngModel]="newPoName" (ngModelChange)="newPoName = $event; checkDuplicatePoName()"
-                (keyup.enter)="toggleNameEdit(true)" 
-                (blur)="toggleNameEdit()"/>
-            </ng-container>
-            <ng-container *ngIf="!editPoName">
-              <a (click)="toggleNameEdit()" href='javascript:;'
+        <div class="row">
+          <div class="col-lg-4 d-flex">
+            <div class="flex-2" i18n>PO Name:</div>
+            <div class="flex-4">
+              @if (editPoName) {
+                <input id='ps-name-input' type="text" class="form-control"
+                  [ngModel]="newPoName" (ngModelChange)="newPoName = $event; checkDuplicatePoName()"
+                  (keyup.enter)="toggleNameEdit(true)"
+                  (blur)="toggleNameEdit()"/>
+              }
+              @if (!editPoName) {
+                <a (click)="toggleNameEdit()" href='javascript:;'
                 class='fw-bold'>{{po().name()}}</a>
-            </ng-container>
-            <div *ngIf="dupeResults.dupeFound" class="alert alert-warning" i18n>
+              }
+              @if (dupeResults.dupeFound) {
+                <div class="alert alert-warning" i18n>
               This name is already in used by another PO: 
               <a target="_blank" routerLink="/staff/acq/po/{{dupeResults.dupePoId}}">View PO</a>
             </div>
-          </div> 
-        </div>
-        <div class="col-lg-8 d-flex">
-          <div class="flex-1" i18n>Activated:</div>
-          <div class="flex-6">
-            <span *ngIf="po().order_date()">{{po().order_date() | date:'short'}}</span>
-            <span *ngIf="!po().order_date()" i18n>N/A</span>
+              }
+            </div>
+          </div>
+          <div class="col-lg-8 d-flex">
+            <div class="flex-1" i18n>Activated:</div>
+            <div class="flex-6">
+              @if (po().order_date()) {
+                <span>{{po().order_date() | date:'short'}}</span>
+              }
+              @if (!po().order_date()) {
+                <span i18n>N/A</span>
+              }
+            </div>
           </div>
         </div>
-      </div>
-
-      <div class="row">
-        <div class="col-lg-4 d-flex">
-          <div class="flex-2" i18n>Provider:</div>
-          <div class="flex-4">
-            <a routerLink="/staff/acq/provider/{{po().provider().id()}}/details" target="_blank" i18n>
+        <div class="row">
+          <div class="col-lg-4 d-flex">
+            <div class="flex-2" i18n>Provider:</div>
+            <div class="flex-4">
+              <a routerLink="/staff/acq/provider/{{po().provider().id()}}/details" target="_blank" i18n>
               {{po().provider().name()}} ({{po().provider().code()}})
             </a>
+            </div>
+          </div>
+          <div class="col-lg-8 d-flex">
           </div>
         </div>
-        <div class="col-lg-8 d-flex">
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-lg-4 d-flex">
-          <div class="flex-2" i18n>Line Items:</div>
-          <div class="flex-4">{{po().lineitem_count()}}</div>
-        </div>
-        <div class="col-lg-8 d-flex">
-          <div class="form-check form-check-inline" *ngIf="po().state() === 'new' || po().state() === 'pending'">
-            <input class="ms-0 form-check-input" type="checkbox" (change)="setCanActivate()"
-              id="zero-copy-cbox" [(ngModel)]="zeroCopyActivate"/>
-            <label class="form-label form-check-label" for="zero-copy-cbox" i18n>
+        <div class="row">
+          <div class="col-lg-4 d-flex">
+            <div class="flex-2" i18n>Line Items:</div>
+            <div class="flex-4">{{po().lineitem_count()}}</div>
+          </div>
+          <div class="col-lg-8 d-flex">
+            @if (po().state() === 'new' || po().state() === 'pending') {
+              <div class="form-check form-check-inline">
+                <input class="ms-0 form-check-input" type="checkbox" (change)="setCanActivate()"
+                  id="zero-copy-cbox" [(ngModel)]="zeroCopyActivate"/>
+                <label class="form-label form-check-label" for="zero-copy-cbox" i18n>
               Allow Activation with Zero-Item Line Items?
             </label>
+              </div>
+            }
           </div>
         </div>
       </div>
-
-    </div>
-    <div class="col-lg-3">
-      <div class="row">
-        <div class="col-lg-8" i18n>Estimated Amount:</div>
-        <div class="col-lg-4">{{po().amount_estimated() | currency}}</div>
-      </div>
-      <div class="row">
-        <div class="col-lg-8" i18n>Encumbered Amount:</div>
-        <div class="col-lg-4">{{po().amount_encumbered() | currency}}</div>
-      </div>
-      <div class="row">
-        <div class="col-lg-8" i18n>Spent Amount:</div>
-        <div class="col-lg-4">{{po().amount_spent() | currency}}</div>
-      </div>
-      <div class="row">
-        <div class="col-lg-8" i18n>Prepayment Required?</div>
-        <div class="col-lg-4">
-          <eg-bool [value]="po().prepayment_required()"></eg-bool>
+      <div class="col-lg-3">
+        <div class="row">
+          <div class="col-lg-8" i18n>Estimated Amount:</div>
+          <div class="col-lg-4">{{po().amount_estimated() | currency}}</div>
+        </div>
+        <div class="row">
+          <div class="col-lg-8" i18n>Encumbered Amount:</div>
+          <div class="col-lg-4">{{po().amount_encumbered() | currency}}</div>
+        </div>
+        <div class="row">
+          <div class="col-lg-8" i18n>Spent Amount:</div>
+          <div class="col-lg-4">{{po().amount_spent() | currency}}</div>
+        </div>
+        <div class="row">
+          <div class="col-lg-8" i18n>Prepayment Required?</div>
+          <div class="col-lg-4">
+            <eg-bool [value]="po().prepayment_required()"></eg-bool>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  <hr class="p-0 m-0 mt-1"/>
-  <div class="row mt-1">
-    <div class="col-lg-12">
-      <button type="button" class="btn btn-link label-with-material-icon"
-        (click)="showNotes=!showNotes">
-        <span class="material-icons small me-1" aria-hidden="true">event_note</span>
-        <span>Notes ({{po().notes().length}})</span>
-      </button>
-      <ng-container *ngIf="po().order_date()"> <!-- show invoice actions only if order was activated -->
-      <span class="ps-2 pe-2" i18n> | </span>
-      <a [queryParams]="{f: 'acqpo:id', val1: poId}" class="label-with-material-icon"
-        routerLink="/staff/acq/search/invoices">
-          <span class="material-icons small me-1" aria-hidden="true">list</span>
-          <span i18n>Invoices ({{invoiceCount}})</span>
-      </a>
-      <span class="ps-2 pe-2" i18n> | </span>
-      <a routerLink="/staff/acq/invoice/create" [queryParams]="{ attach_po: poId }"
-        class="label-with-material-icon">
-        <span class="material-icons small me-1" aria-hidden="true">receipt</span>
-        <span i18n>Create Invoice</span>
-      </a>
-      <span class="ps-2 pe-2" i18n> | </span>
-      <a routerLink="/staff/acq/invoice/create" [queryParams]="{ attach_po: poId, po_prices: 1 }"
-        class="label-with-material-icon">
-        <span class="material-icons small me-1">receipt</span>
-        <span i18n>Create Invoice with PO prices</span>
-      </a>
-      <ng-container *ngIf="showLegacyLinks">
-        <span class="ps-2 pe-2" i18n> | </span>
-        <a href="/eg/staff/acq/legacy/invoice/view?create=1&attach_po={{poId}}"
-          class="label-with-material-icon">
-          <span class="material-icons small me-1">receipt</span>
-          <span i18n>Legacy Create Invoice</span>
-        </a>
-      </ng-container>
-      <span class="ps-2 pe-2" i18n> | </span>
-      <button type="button" (click)="linkInvoiceFromPo()"
-        class="btn btn-link label-with-material-icon">
-        <span class="material-icons small me-1" aria-hidden="true">receipt</span>
-        <span i18n>Link Invoice</span>
-      </button>
-      </ng-container> <!-- show invoice actions -->
-      <span class="ps-2 pe-2" i18n> | </span>
-      <a routerLink="./edi" i18n>EDI Messages ({{ediMessageCount}})</a>
-      <span class="ps-2 pe-2" i18n> | </span>
-      <a routerLink="./history" i18n>History</a>
-      <span class="ps-2 pe-2" i18n> | </span>
-      <a routerLink="./printer" class="label-with-material-icon">
-        <span class="material-icons small me-1" aria-hidden="true">print</span>
-        <span i18n>Print</span>
-      </a>
-      <ng-container *ngIf="po().state() === 'on-order'">
-        <span class="ps-2 pe-2" i18n> | </span>
-        <button type="button" class="btn btn-sm btn-danger" (click)="cancelPo()" i18n>Cancel Order</button>
-      </ng-container>
-      <ng-container *ngIf="canActivate === true">
-        <span class="ps-2 pe-2" i18n> | </span>
-        <button type="button" class="btn btn-sm btn-primary" (click)="activatePo(true)" [disabled]="doingActivation" i18n>Activate Without Loading Items</button>
-      </ng-container>
-      <ng-container *ngIf="canActivate === true">
-        <span class="ps-2 pe-2" i18n> | </span>
-        <button type="button" class="btn btn-sm btn-success" (click)="activatePo()" [disabled]="doingActivation" i18n>Activate Order</button>
-      </ng-container>
-      <ng-container *ngIf="canFinalize">
-        <span class="ps-2 pe-2" i18n> | </span>
-        <button type="button" (click)="finalizePo()" class="btn btn-link label-with-material-icon">
-          <span class="material-icons small me-1" aria-hidden="true">check_circle</span>
-          <span i18n>Finalize Blanket Order</span>
+    <hr class="p-0 m-0 mt-1"/>
+    <div class="row mt-1">
+      <div class="col-lg-12">
+        <button type="button" class="btn btn-link label-with-material-icon"
+          (click)="showNotes=!showNotes">
+          <span class="material-icons small me-1" aria-hidden="true">event_note</span>
+          <span>Notes ({{po().notes().length}})</span>
         </button>
-      </ng-container>
-      <ng-container *ngIf="showLegacyLinks">
-        <span class="ps-2 pe-2" i18n> | </span>
-        <a href="/eg/staff/acq/legacy/po/view/{{poId}}" target="_blank">
-          Show PO in Legacy Interface
-        </a>
-      </ng-container>
+        @if (po().order_date()) {
+          <!-- show invoice actions only if order was activated -->
+          <span class="ps-2 pe-2" i18n> | </span>
+          <a [queryParams]="{f: 'acqpo:id', val1: poId}" class="label-with-material-icon"
+            routerLink="/staff/acq/search/invoices">
+            <span class="material-icons small me-1" aria-hidden="true">list</span>
+            <span i18n>Invoices ({{invoiceCount}})</span>
+          </a>
+          <span class="ps-2 pe-2" i18n> | </span>
+          <a routerLink="/staff/acq/invoice/create" [queryParams]="{ attach_po: poId }"
+            class="label-with-material-icon">
+            <span class="material-icons small me-1" aria-hidden="true">receipt</span>
+            <span i18n>Create Invoice</span>
+          </a>
+          <span class="ps-2 pe-2" i18n> | </span>
+          <a routerLink="/staff/acq/invoice/create" [queryParams]="{ attach_po: poId, po_prices: 1 }"
+            class="label-with-material-icon">
+            <span class="material-icons small me-1">receipt</span>
+            <span i18n>Create Invoice with PO prices</span>
+          </a>
+          @if (showLegacyLinks) {
+            <span class="ps-2 pe-2" i18n> | </span>
+            <a href="/eg/staff/acq/legacy/invoice/view?create=1&attach_po={{poId}}"
+              class="label-with-material-icon">
+              <span class="material-icons small me-1">receipt</span>
+              <span i18n>Legacy Create Invoice</span>
+            </a>
+          }
+          <span class="ps-2 pe-2" i18n> | </span>
+          <button type="button" (click)="linkInvoiceFromPo()"
+            class="btn btn-link label-with-material-icon">
+            <span class="material-icons small me-1" aria-hidden="true">receipt</span>
+            <span i18n>Link Invoice</span>
+          </button>
+          } <!-- show invoice actions -->
+          <span class="ps-2 pe-2" i18n> | </span>
+          <a routerLink="./edi" i18n>EDI Messages ({{ediMessageCount}})</a>
+          <span class="ps-2 pe-2" i18n> | </span>
+          <a routerLink="./history" i18n>History</a>
+          <span class="ps-2 pe-2" i18n> | </span>
+          <a routerLink="./printer" class="label-with-material-icon">
+            <span class="material-icons small me-1" aria-hidden="true">print</span>
+            <span i18n>Print</span>
+          </a>
+          @if (po().state() === 'on-order') {
+            <span class="ps-2 pe-2" i18n> | </span>
+            <button type="button" class="btn btn-sm btn-danger" (click)="cancelPo()" i18n>Cancel Order</button>
+          }
+          @if (canActivate === true) {
+            <span class="ps-2 pe-2" i18n> | </span>
+            <button type="button" class="btn btn-sm btn-primary" (click)="activatePo(true)" [disabled]="doingActivation" i18n>Activate Without Loading Items</button>
+          }
+          @if (canActivate === true) {
+            <span class="ps-2 pe-2" i18n> | </span>
+            <button type="button" class="btn btn-sm btn-success" (click)="activatePo()" [disabled]="doingActivation" i18n>Activate Order</button>
+          }
+          @if (canFinalize) {
+            <span class="ps-2 pe-2" i18n> | </span>
+            <button type="button" (click)="finalizePo()" class="btn btn-link label-with-material-icon">
+              <span class="material-icons small me-1" aria-hidden="true">check_circle</span>
+              <span i18n>Finalize Blanket Order</span>
+            </button>
+          }
+          @if (showLegacyLinks) {
+            <span class="ps-2 pe-2" i18n> | </span>
+            <a href="/eg/staff/acq/legacy/po/view/{{poId}}" target="_blank">
+              Show PO in Legacy Interface
+            </a>
+          }
+        </div>
+      </div>
+      @if (showNotes) {
+        <div class="row">
+          <div class="col-lg-10 offset-lg-1 p-2 mt-2 shadow">
+            <eg-po-notes [po]="po()" (closeRequested)="showNotes = false">
+            </eg-po-notes>
+          </div>
+        </div>
+      }
     </div>
-  </div>
-
-  <div class="row" *ngIf="showNotes">
-    <div class="col-lg-10 offset-lg-1 p-2 mt-2 shadow">
-      <eg-po-notes [po]="po()" (closeRequested)="showNotes = false">
-      </eg-po-notes>
-    </div>
-  </div>
-</div>
+  }
 

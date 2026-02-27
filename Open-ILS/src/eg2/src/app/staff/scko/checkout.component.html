@@ -20,25 +20,37 @@
       </tr>
     </thead>
     <tbody id='oils-selfck-circ-out-tbody' class='oils-selfck-item-table'>
-	    <tr *ngFor="let co of scko.sessionCheckouts">
-        <td>
-          <ng-container *ngIf="co.circ">
-            <img i18n-alt alt="Jacket Image"
-              src="/opac/extras/ac/jacket/small/r/{{co.circ.target_copy().call_number().record().id()}}"/>
-          </ng-container>
-        </td>
-        <td><span *ngIf="co.circ">{{co.circ.target_copy().barcode()}}</span></td>
-        <td>{{scko.getCircTitle(co.circ)}}</td>
-        <td>{{scko.getCircAuthor(co.circ)}}</td>
-        <td><span *ngIf="co.circ">{{co.circ | egDueDate}}</span></td>
-        <td><span *ngIf="co.circ">{{co.circ.renewal_remaining()}}</span></td>
-        <td>
-          <ng-container *ngIf="co.circ">
-            <span *ngIf="co.circ.parent_circ()" i18n>Renewal</span>
-            <span *ngIf="!co.circ.parent_circ()" i18n>Checkout</span>
-          </ng-container>
-        </td>
-      </tr>
+      @for (co of scko.sessionCheckouts; track co) {
+        <tr>
+          <td>
+            @if (co.circ) {
+              <img i18n-alt alt="Jacket Image"
+                src="/opac/extras/ac/jacket/small/r/{{co.circ.target_copy().call_number().record().id()}}"/>
+            }
+          </td>
+          <td>@if (co.circ) {
+            <span>{{co.circ.target_copy().barcode()}}</span>
+          }</td>
+          <td>{{scko.getCircTitle(co.circ)}}</td>
+          <td>{{scko.getCircAuthor(co.circ)}}</td>
+          <td>@if (co.circ) {
+            <span>{{co.circ | egDueDate}}</span>
+          }</td>
+          <td>@if (co.circ) {
+            <span>{{co.circ.renewal_remaining()}}</span>
+          }</td>
+          <td>
+            @if (co.circ) {
+              @if (co.circ.parent_circ()) {
+                <span i18n>Renewal</span>
+              }
+              @if (!co.circ.parent_circ()) {
+                <span i18n>Checkout</span>
+              }
+            }
+          </td>
+        </tr>
+      }
     </tbody>
   </table>
 </div>

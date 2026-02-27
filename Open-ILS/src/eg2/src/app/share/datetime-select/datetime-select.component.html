@@ -1,4 +1,6 @@
-<span class="material-icons" *ngIf="controlDir && !controlDir.control.valid">error</span>
+@if (controlDir && !controlDir.control.valid) {
+  <span class="material-icons">error</span>
+}
 <form
   [formGroup]="dateTimeForm"
   class="input-group"
@@ -6,7 +8,7 @@
   [autoClose]="'outside'"
   #dt="ngbDropdown">
   <input type="datetime"
-    [attr.id]="domId.length ? domId : null" 
+    [attr.id]="domId.length ? domId : null"
     aria-label="Enter date and time"
     i18n-aria-label
     name="{{fieldName}}"
@@ -16,32 +18,38 @@
     [attr.disabled]="readOnly ? true : null"
     [required]="required"
     (touch)="onTouched()">
-  
-    <button class="input-group-text" ngbDropdownToggle
-      type="button"
-      title="Select date and time" i18n-title
-      aria-label="Select date and time" i18n-aria-label>
-      <span class="material-icons mat-icon-in-button" aria-hidden="true">event</span>
-    </button>
+
+  <button class="input-group-text" ngbDropdownToggle
+    type="button"
+    title="Select date and time" i18n-title
+    aria-label="Select date and time" i18n-aria-label>
+    <span class="material-icons mat-icon-in-button" aria-hidden="true">event</span>
+  </button>
   <div ngbDropdownMenu>
-    <div i18n *ngIf="readOnly">
+    @if (readOnly) {
+      <div i18n>
       Cannot edit this date or time.
     </div>
-    <div *ngIf="!readOnly">
-      <div *ngIf="controlDir && controlDir.control.errors"
-        role="alert"
-        class="alert alert-danger">
-        <span class="material-icons">error</span>
-        {{firstError(controlDir.control.errors)}}
+    }
+    @if (!readOnly) {
+      <div>
+        @if (controlDir && controlDir.control.errors) {
+          <div
+            role="alert"
+            class="alert alert-danger">
+            <span class="material-icons">error</span>
+            {{firstError(controlDir.control.errors)}}
+          </div>
+        }
+        <ngb-datepicker #datePicker
+          [minDate]="minDate"
+          [maxDate]="maxDate"
+          formControlName="date"
+          [footerTemplate]="time"
+          (touch)="onTouched()">
+        </ngb-datepicker>
       </div>
-      <ngb-datepicker #datePicker
-        [minDate]="minDate"
-        [maxDate]="maxDate"
-        formControlName="date"
-        [footerTemplate]="time"
-        (touch)="onTouched()">
-      </ngb-datepicker>
-    </div>
+    }
   </div>
 
   <ng-template #time>
@@ -53,8 +61,12 @@
       [minuteStep]="minuteStep || 30"
       (touch)="onTouched()">
     </ngb-timepicker>
-    <span *ngIf="showTZ && timezone" class="badge badge-info">{{ timezone }}</span>
-    <span *ngIf="showTZ && !timezone" class="badge badge-warning" i18n>Timezone not set</span>
+    @if (showTZ && timezone) {
+      <span class="badge badge-info">{{ timezone }}</span>
+    }
+    @if (showTZ && !timezone) {
+      <span class="badge badge-warning" i18n>Timezone not set</span>
+    }
     <button type="button" i18n class="btn btn-success" (click)="dt.close()">Choose time</button>
   </ng-template>
 

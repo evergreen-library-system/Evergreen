@@ -1,10 +1,10 @@
 import { Component, Input, OnInit, inject } from '@angular/core';
-import {IdlService, IdlObject} from '@eg/core/idl.service';
+import {IdlObject} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
-import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+
 
 /**
  * 007 Physical Characteristics Dialog
@@ -17,13 +17,11 @@ import { CommonModule } from '@angular/common';
 @Component({
     selector: 'eg-phys-char-dialog',
     templateUrl: './phys-char-dialog.component.html',
-    imports: [CommonModule]
+    imports: [FormsModule]
 })
 
 export class PhysCharDialogComponent
     extends DialogComponent implements OnInit {
-    private modal: NgbModal;
-    private idl = inject(IdlService);
     private pcrud = inject(PcrudService);
 
 
@@ -53,14 +51,6 @@ export class PhysCharDialogComponent
     // active position
     slotOffset = 0;
     slotSize = 1;
-
-    constructor() {
-        const modal = inject(NgbModal);
-
-        super(modal);
-
-        this.modal = modal;
-    }
 
     ngOnInit() {
         this.onOpen$.subscribe(_ => {

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild, inject } from '@angular/core';
+import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {StringComponent} from '@eg/share/string/string.component';
@@ -8,10 +8,16 @@ import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {IdlService } from '@eg/core/idl.service';
 import {NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import { StaffCommonModule } from '@eg/staff/common.module';
+import { ItemLocationSelectComponent } from '@eg/share/item-location-select/item-location-select.component';
+import { FmRecordEditorComponent } from '@eg/share/fm-editor/fm-editor.component';
 
 @Component({
     templateUrl: './circ_limit_set_edit.component.html',
-    imports: [StaffCommonModule]
+    imports: [
+        FmRecordEditorComponent,
+        ItemLocationSelectComponent,
+        StaffCommonModule
+    ]
 })
 
 export class CircLimitSetEditComponent  implements OnInit {

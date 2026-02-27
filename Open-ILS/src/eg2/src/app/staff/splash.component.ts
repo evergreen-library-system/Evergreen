@@ -6,7 +6,7 @@ import {ToastService} from '@eg/share/toast/toast.service';
 import {StringComponent} from '@eg/share/string/string.component';
 import {Router} from '@angular/router';
 import { TitleComponent } from '@eg/share/title/title.component';
-import { NgFor, NgIf } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -14,8 +14,6 @@ import { FormsModule } from '@angular/forms';
     styleUrls: ['./splash.component.css'],
     imports: [
         FormsModule,
-        NgFor,
-        NgIf,
         StringComponent,
         TitleComponent
     ]

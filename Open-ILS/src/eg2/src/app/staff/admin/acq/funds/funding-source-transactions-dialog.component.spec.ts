@@ -8,6 +8,7 @@ import { ToastService } from '@eg/share/toast/toast.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MockGenerators } from 'test_data/mock_generators';
 import { FundingSourceTransactionsDialogComponent } from './funding-source-transactions-dialog.component';
+import { LocaleService } from '@eg/core/locale.service';
 
 let component: FundingSourceTransactionsDialogComponent;
 
@@ -15,8 +16,9 @@ describe('FundingSourceTransactionsDialogComponent', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({providers: [
             {provide: AuthService, useValue: null},
-            {provide: FormatService, useValue: null},
+            {provide: FormatService, useValue: {wsOrgTimezone: 'America/Vancouver'}},
             {provide: IdlService, useValue: MockGenerators.idlService({acqfs: [{name: 'fund'}]})},
+            {provide: LocaleService, useValue: null},
             NgbModal,
             {provide: OrgService, useValue: null},
             {provide: PcrudService, useValue: MockGenerators.pcrudService({})},

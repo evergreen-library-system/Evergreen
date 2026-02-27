@@ -26,10 +26,12 @@
         <button type="button" class="btn btn-primary" (click)="searchForData()" [disabled]="!criteria.valid">Submit</button>
       </div>
     </div>
-    <div role="alert" class="alert alert-danger" id="dateOutOfOrderAlert" *ngIf="criteria.errors?.['datesOutOfOrder'] && (criteria.touched || criteria.dirty)">
-      <span class="material-icons" aria-hidden="true">error</span>
-      <span i18n>Start date must be before end date</span>
-    </div>
+    @if (criteria.errors?.['datesOutOfOrder'] && (criteria.touched || criteria.dirty)) {
+      <div role="alert" class="alert alert-danger" id="dateOutOfOrderAlert">
+        <span class="material-icons" aria-hidden="true">error</span>
+        <span i18n>Start date must be before end date</span>
+      </div>
+    }
   </form>
 </div>
 
@@ -140,131 +142,134 @@
 <ng-template #deskPrintTmpl>
   <style>
     .print-table {
-      border-collapse: collapse;
-    }
-    .print-totals {
-      margin-bottom: 15px;
-    }
-    .print-table th,
-    .print-table td {
-      border: 1px solid #aaa;
-      padding: 2px 4px;
-    }
-  </style>
+    border-collapse: collapse;
+  }
+  .print-totals {
+  margin-bottom: 15px;
+}
+.print-table th,
+.print-table td {
+border: 1px solid #aaa;
+padding: 2px 4px;
+}
+</style>
 
-  <table class="print-table print-totals">
-    <thead>
-      <tr>
-        <th colspan="2">
-          {{loadedRange.org}} <ng-container i18n>Desk Payments</ng-container>:
-          {{loadedRange.start | date:'shortDate'}} - {{loadedRange.end | date:'shortDate'}}
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td i18n>Total Cash Payments</td>
-        <td>{{deskTotals.cash_payment | currency}}</td>
-      </tr>
-      <tr>
-        <td i18n>Total Check Payments</td>
-        <td>{{deskTotals.check_payment | currency}}</td>
-      </tr>
-      <tr>
-        <td i18n>Total Credit Card Payments</td>
-        <td>{{deskTotals.credit_card_payment | currency}}</td>
-      </tr>
-      <tr>
-        <td i18n>Total Debit Card Payments</td>
-        <td>{{deskTotals.debit_card_payment | currency}}</td>
-      </tr>
-    </tbody>
-  </table>
+<table class="print-table print-totals">
+  <thead>
+    <tr>
+      <th colspan="2">
+        {{loadedRange.org}} <ng-container i18n>Desk Payments</ng-container>:
+        {{loadedRange.start | date:'shortDate'}} - {{loadedRange.end | date:'shortDate'}}
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td i18n>Total Cash Payments</td>
+      <td>{{deskTotals.cash_payment | currency}}</td>
+    </tr>
+    <tr>
+      <td i18n>Total Check Payments</td>
+      <td>{{deskTotals.check_payment | currency}}</td>
+    </tr>
+    <tr>
+      <td i18n>Total Credit Card Payments</td>
+      <td>{{deskTotals.credit_card_payment | currency}}</td>
+    </tr>
+    <tr>
+      <td i18n>Total Debit Card Payments</td>
+      <td>{{deskTotals.debit_card_payment | currency}}</td>
+    </tr>
+  </tbody>
+</table>
 
-  <table class="print-table">
-    <thead>
+<table class="print-table">
+  <thead>
+    <tr>
+      <th i18n>Workstation</th>
+      <th i18n>Cash Payment</th>
+      <th i18n>Check Payment</th>
+      <th i18n>Credit Card Payment</th>
+      <th i18n>Debit Card Payment</th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (mwps of deskPaymentDataSource.data; track mwps) {
       <tr>
-        <th i18n>Workstation</th>
-        <th i18n>Cash Payment</th>
-        <th i18n>Check Payment</th>
-        <th i18n>Credit Card Payment</th>
-        <th i18n>Debit Card Payment</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let mwps of deskPaymentDataSource.data">
         <td>{{mwps.workstation()}}</td>
         <td>{{mwps.cash_payment() | currency}}</td>
         <td>{{mwps.check_payment() | currency}}</td>
         <td>{{mwps.credit_card_payment() | currency}}</td>
         <td>{{mwps.debit_card_payment() | currency}}</td>
       </tr>
-    </tbody>
-  </table>
+    }
+  </tbody>
+</table>
 </ng-template>
 
 <ng-template #userPrintTmpl>
   <style>
     .print-table {
-      border-collapse: collapse;
-      margin-bottom: 15px;
-    }
-    .print-totals {
-      margin-bottom: 15px;
-    }
-    .print-table th,
-    .print-table td {
-      border: 1px solid #aaa;
-      padding: 2px 4px;
-    }
-  </style>
+    border-collapse: collapse;
+    margin-bottom: 15px;
+  }
+  .print-totals {
+  margin-bottom: 15px;
+}
+.print-table th,
+.print-table td {
+border: 1px solid #aaa;
+padding: 2px 4px;
+}
+</style>
 
-  <table class="print-table print-totals">
-    <thead>
-      <tr>
-        <th colspan="2">
-          {{loadedRange.org}} <ng-container i18n>Staff User Payments</ng-container>:
-          {{loadedRange.start | date:'shortDate'}} - {{loadedRange.end | date:'shortDate'}}
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td i18n>Total Patron Credit</td>
-        <td>{{userTotals.credit_payment | currency}}</td>
-      </tr>
-      <tr>
-        <td i18n>Total Forgive Payments</td>
-        <td>{{userTotals.forgive_payment | currency}}</td>
-      </tr>
-      <tr>
-        <td i18n>Total Work Payments</td>
-        <td>{{userTotals.work_payment | currency}}</td>
-      </tr>
-      <tr>
-        <td i18n>Total Goods Payments</td>
-        <td>{{userTotals.goods_payment | currency}}</td>
-      </tr>
-    </tbody>
-  </table>
+<table class="print-table print-totals">
+  <thead>
+    <tr>
+      <th colspan="2">
+        {{loadedRange.org}} <ng-container i18n>Staff User Payments</ng-container>:
+        {{loadedRange.start | date:'shortDate'}} - {{loadedRange.end | date:'shortDate'}}
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td i18n>Total Patron Credit</td>
+      <td>{{userTotals.credit_payment | currency}}</td>
+    </tr>
+    <tr>
+      <td i18n>Total Forgive Payments</td>
+      <td>{{userTotals.forgive_payment | currency}}</td>
+    </tr>
+    <tr>
+      <td i18n>Total Work Payments</td>
+      <td>{{userTotals.work_payment | currency}}</td>
+    </tr>
+    <tr>
+      <td i18n>Total Goods Payments</td>
+      <td>{{userTotals.goods_payment | currency}}</td>
+    </tr>
+  </tbody>
+</table>
 
-  <table class="print-table">
-    <thead>
+<table class="print-table">
+  <thead>
+    <tr>
+      <th i18n>User</th>
+      <th i18n>Credit Payment</th>
+      <th i18n>Forgive Payment</th>
+      <th i18n>Work Payment</th>
+      <th i18n>Goods Payment</th>
+      <th i18n>Staff Card</th>
+      <th i18n>Staff Email</th>
+      <th i18n>Staff First Name</th>
+      <th i18n>Staff Family Name</th>
+      <th i18n>Staff Home OU</th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (mups of userPaymentDataSource.data; track mups) {
       <tr>
-        <th i18n>User</th>
-        <th i18n>Credit Payment</th>
-        <th i18n>Forgive Payment</th>
-        <th i18n>Work Payment</th>
-        <th i18n>Goods Payment</th>
-        <th i18n>Staff Card</th>
-        <th i18n>Staff Email</th>
-        <th i18n>Staff First Name</th>
-        <th i18n>Staff Family Name</th>
-        <th i18n>Staff Home OU</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let mups of userPaymentDataSource.data">
         <td>{{mups.usr()}}</td>
         <td>{{mups.credit_payment() | currency}}</td>
         <td>{{mups.forgive_payment() | currency}}</td>
@@ -276,6 +281,7 @@
         <td>{{mups.user.family_name()}}</td>
         <td>{{mups.user.home_ou()}}</td>
       </tr>
-    </tbody>
-  </table>
+    }
+  </tbody>
+</table>
 </ng-template>

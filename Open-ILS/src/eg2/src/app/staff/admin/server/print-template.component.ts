@@ -16,7 +16,7 @@ import {OrgFamily, OrgFamilySelectComponent} from '@eg/share/org-family-select/o
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 import { TitleComponent } from '@eg/share/title/title.component';
 import { StaffBannerComponent } from '@eg/staff/share/staff-banner.component';
-import { CommonModule } from '@angular/common';
+
 import { ComboboxEntryComponent } from '@eg/share/combobox/combobox-entry.component';
 import { FormsModule } from '@angular/forms';
 
@@ -29,7 +29,6 @@ import { FormsModule } from '@angular/forms';
     imports: [
         ComboboxComponent,
         ComboboxEntryComponent,
-        CommonModule,
         ConfirmDialogComponent,
         FmRecordEditorComponent,
         FormsModule,

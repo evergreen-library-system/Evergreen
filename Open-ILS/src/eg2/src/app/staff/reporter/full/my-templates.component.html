@@ -51,12 +51,16 @@
 ></eg-prompt-dialog>
 
 <ng-template #docURLTmpl let-row="row">
-  <div *ngIf="row.documentation?.match('^\s*https?:')">
-    <a href="{{row.documentation}}" target="_blank"><kbd>{{row.documentation}}</kbd></a>
-  </div>
-  <span *ngIf="!row.documentation?.match('^\s*https?:')">
-    {{row.documentation}}
-  </span>
+  @if (row.documentation?.match('^\s*https?:')) {
+    <div>
+      <a href="{{row.documentation}}" target="_blank"><kbd>{{row.documentation}}</kbd></a>
+    </div>
+  }
+  @if (!row.documentation?.match('^\s*https?:')) {
+    <span>
+      {{row.documentation}}
+    </span>
+  }
 </ng-template>
 
 <div class="mt-2" [ngClass]="currentFolder ? 'template-folders' : 'template-search-results'">
@@ -71,30 +75,42 @@
     [cellTextGenerator]="cellTextGenerator"
     [showDeclaredFieldsOnly]="true"
     (onRowActivate)="newReport([$event])">
-  
-    <eg-grid-toolbar-button label="New Template" i18n-label *ngIf="currentFolder && RSvc.folderIsMine(currentFolder)"
-      (onClick)="newTemplate($event)">
-    </eg-grid-toolbar-button>
 
-    <eg-grid-toolbar-button label="Rename Folder" i18n-label *ngIf="currentFolder && RSvc.folderIsMine(currentFolder)"
-      (onClick)="renameFolder($event)">
-    </eg-grid-toolbar-button>
+    @if (currentFolder && RSvc.folderIsMine(currentFolder)) {
+      <eg-grid-toolbar-button label="New Template" i18n-label
+        (onClick)="newTemplate($event)">
+      </eg-grid-toolbar-button>
+    }
 
-    <eg-grid-toolbar-button label="Delete Folder" i18n-label *ngIf="currentFolder && RSvc.folderIsMine(currentFolder)"
-      (onClick)="deleteFolder(currentFolder)">
-    </eg-grid-toolbar-button>
-  
-    <eg-grid-toolbar-button label="Add Subfolder" i18n-label *ngIf="currentFolder && RSvc.folderIsMine(currentFolder)"
-      (onClick)="newSubfolder($event)">
-    </eg-grid-toolbar-button>
-  
-    <eg-grid-toolbar-button label="Share Folder" i18n-label *ngIf="RSvc.globalCanShare && currentFolder && RSvc.folderIsMine(currentFolder) && currentFolder.shared() === 'f'"
-      #share (onClick)="shareFolder(share)">
-    </eg-grid-toolbar-button>
+    @if (currentFolder && RSvc.folderIsMine(currentFolder)) {
+      <eg-grid-toolbar-button label="Rename Folder" i18n-label
+        (onClick)="renameFolder($event)">
+      </eg-grid-toolbar-button>
+    }
 
-    <eg-grid-toolbar-button label="Unshare Folder" i18n-label *ngIf="currentFolder && RSvc.folderIsMine(currentFolder) && currentFolder.shared() === 't'"
-      #unshare (onClick)="unshareFolder(unshare)">
-    </eg-grid-toolbar-button>
+    @if (currentFolder && RSvc.folderIsMine(currentFolder)) {
+      <eg-grid-toolbar-button label="Delete Folder" i18n-label
+        (onClick)="deleteFolder(currentFolder)">
+      </eg-grid-toolbar-button>
+    }
+
+    @if (currentFolder && RSvc.folderIsMine(currentFolder)) {
+      <eg-grid-toolbar-button label="Add Subfolder" i18n-label
+        (onClick)="newSubfolder($event)">
+      </eg-grid-toolbar-button>
+    }
+
+    @if (RSvc.globalCanShare && currentFolder && RSvc.folderIsMine(currentFolder) && currentFolder.shared() === 'f') {
+      <eg-grid-toolbar-button label="Share Folder" i18n-label
+        #share (onClick)="shareFolder(share)">
+      </eg-grid-toolbar-button>
+    }
+
+    @if (currentFolder && RSvc.folderIsMine(currentFolder) && currentFolder.shared() === 't') {
+      <eg-grid-toolbar-button label="Unshare Folder" i18n-label
+        #unshare (onClick)="unshareFolder(unshare)">
+      </eg-grid-toolbar-button>
+    }
 
     <eg-grid-toolbar-action label="New Report" i18n-label
       (onClick)="newReport($event)"
@@ -106,15 +122,19 @@
       [disableOnRows]="notOneSelectedRow">
     </eg-grid-toolbar-action>
 
-    <eg-grid-toolbar-action label="Delete Selected" i18n-label
-      (onClick)="deleteSelected($event)" *ngIf="currentFolder && RSvc.folderIsMine(currentFolder)"
-      [disableOnRows]="zeroSelectedRows">
-    </eg-grid-toolbar-action>
+    @if (currentFolder && RSvc.folderIsMine(currentFolder)) {
+      <eg-grid-toolbar-action label="Delete Selected" i18n-label
+        (onClick)="deleteSelected($event)"
+        [disableOnRows]="zeroSelectedRows">
+      </eg-grid-toolbar-action>
+    }
 
-    <eg-grid-toolbar-action label="Move Selected" i18n-label
-      (onClick)="moveSelected($event)" *ngIf="currentFolder && RSvc.folderIsMine(currentFolder)"
-      [disableOnRows]="zeroSelectedRows">
-    </eg-grid-toolbar-action>
+    @if (currentFolder && RSvc.folderIsMine(currentFolder)) {
+      <eg-grid-toolbar-action label="Move Selected" i18n-label
+        (onClick)="moveSelected($event)"
+        [disableOnRows]="zeroSelectedRows">
+      </eg-grid-toolbar-action>
+    }
 
     <eg-grid-toolbar-action label="Clone Template" i18n-label
       (onClick)="cloneSelected($event)"
@@ -127,16 +147,16 @@
       [disableOnRows]="notOneSelectedRow">
     </eg-grid-toolbar-action>
     -->
-  
+
     <eg-grid-column path="rt_id" i18n-label label="Template ID" [hidden]="true" [index]="true" [filterable]="false" [sortable]="false"></eg-grid-column>
     <eg-grid-column path="folder" i18n-label [hidden]="!!currentFolder" label="Folder"></eg-grid-column>
     <eg-grid-column path="name" i18n-label label="Name"></eg-grid-column>
     <eg-grid-column path="description" i18n-label label="Description"></eg-grid-column>
     <eg-grid-column path="documentation" [cellTemplate]="docURLTmpl" i18n-label label="Documentation"
-                    [sortable]="false" [filterable]="false" [disableTooltip]="true"></eg-grid-column>
+    [sortable]="false" [filterable]="false" [disableTooltip]="true"></eg-grid-column>
     <eg-grid-column path="create_time" i18n-label label="Date Created" datatype="timestamp" [datePlusTime]="true"></eg-grid-column>
     <eg-grid-column path="owner" i18n-label [filterable]="false" [sortable]="false" [disableTooltip]="true" label="Owner"></eg-grid-column>
     <eg-grid-column path="version" i18n-label [hidden]="true" [filterable]="false" [sortable]="false" [disableTooltip]="true" label="Version"></eg-grid-column>
-  
+
   </eg-grid>
-<div>
+  <div>

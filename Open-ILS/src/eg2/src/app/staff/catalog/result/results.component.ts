@@ -15,6 +15,7 @@ import { CommonModule } from '@angular/common';
 import { TitleComponent } from '@eg/share/title/title.component';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
+import { BrowsePagerComponent } from './browse-pager.component';
 
 /* eslint-disable no-magic-numbers */
 const resultsCols = [10,12];
@@ -32,7 +33,8 @@ const mobileWidth = 992;
         ResultFacetsComponent,
         ResultRecordComponent,
         ResultPaginationComponent,
-        TitleComponent
+        TitleComponent,
+        BrowsePagerComponent
     ]
 })
 export class ResultsComponent implements OnInit, OnDestroy {

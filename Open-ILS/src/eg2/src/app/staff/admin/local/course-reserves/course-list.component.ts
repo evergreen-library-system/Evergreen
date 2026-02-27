@@ -11,20 +11,23 @@ import {StringComponent} from '@eg/share/string/string.component';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {AuthService} from '@eg/core/auth.service';
 import {OrgService} from '@eg/core/org.service';
-import {OrgFamily} from '@eg/share/org-family-select/org-family-select.component';
+import {OrgFamily, OrgFamilySelectComponent} from '@eg/share/org-family-select/org-family-select.component';
+import { StaffCommonModule } from '@eg/staff/common.module';
+import { AdminPageComponent } from '@eg/staff/share/admin-page/admin-page.component';
+import { TermListComponent } from './course-term-grid.component';
 
 export const WINDOW = new InjectionToken<Window>('Browser window', {  providedIn: 'root',  factory: () => window});
-import {CourseAssociateMaterialComponent
-} from './course-associate-material.component';
-
-import {CourseAssociateUsersComponent
-} from './course-associate-users.component';
-import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
     templateUrl: './course-list.component.html',
     styleUrls: ['./course-page.component.css'],
-    imports: [FmRecordEditorComponent, StaffCommonModule]
+    imports: [
+        AdminPageComponent,
+        FmRecordEditorComponent,
+        OrgFamilySelectComponent,
+        StaffCommonModule,
+        TermListComponent
+    ]
 })
 
 export class CourseListComponent implements OnInit, AfterViewInit {

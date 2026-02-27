@@ -6,13 +6,13 @@ import {NetService} from '@eg/core/net.service';
 import {IdlObject} from '@eg/core/idl.service';
 import {SckoService, ActionContext} from './scko.service';
 import {PrintService} from '@eg/share/print/print.service';
-import { CommonModule } from '@angular/common';
+
 import { DueDatePipe } from '@eg/core/format.service';
 import { FormsModule } from '@angular/forms';
 
 @Component({
     templateUrl: 'items.component.html',
-    imports: [CommonModule, DueDatePipe, FormsModule]
+    imports: [DueDatePipe, FormsModule]
 })
 
 export class SckoItemsComponent implements OnInit {

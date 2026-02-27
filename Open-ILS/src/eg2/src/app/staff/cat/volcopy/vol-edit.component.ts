@@ -10,12 +10,13 @@ import {ComboboxComponent, ComboboxEntry} from '@eg/share/combobox/combobox.comp
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 import {VolCopyService} from './volcopy.service';
 import { StaffCommonModule } from '@eg/staff/common.module';
+import { VolEditPartDedupePipe } from './vol-edit-part-dedupe.pipe';
 
 @Component({
     selector: 'eg-vol-edit',
     templateUrl: 'vol-edit.component.html',
     styleUrls: ['vol-edit.component.css'],
-    imports: [StaffCommonModule]
+    imports: [StaffCommonModule, VolEditPartDedupePipe]
 })
 
 

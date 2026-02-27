@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild, Renderer2, inject } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, inject } from '@angular/core';
 import {throwError, switchMap} from 'rxjs';
 import {NetService} from '@eg/core/net.service';
 import {IdlService} from '@eg/core/idl.service';
@@ -6,12 +6,14 @@ import {EventService} from '@eg/core/event.service';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {AuthService} from '@eg/core/auth.service';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
-import {NgbModal, NgbNav, NgbNavContent, NgbNavItem, NgbNavLink, NgbNavOutlet} from '@ng-bootstrap/ng-bootstrap';
+import {NgbNav, NgbNavContent, NgbNavItem, NgbNavLink, NgbNavOutlet} from '@ng-bootstrap/ng-bootstrap';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
-import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
+import {ComboboxComponent, ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {StringComponent} from '@eg/share/string/string.component';
 import {BucketService} from '@eg/staff/share/buckets/bucket.service';
-import { NgIf } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { BucketUserShareComponent } from './bucket-user-share.component';
+
 
 /**
  * Dialog for adding bib records to new and existing record buckets.
@@ -21,20 +23,19 @@ import { NgIf } from '@angular/common';
     selector: 'eg-bucket-dialog',
     templateUrl: 'bucket-dialog.component.html',
     imports: [
+        ComboboxComponent,
         ConfirmDialogComponent,
+        FormsModule,
         NgbNav,
         NgbNavContent,
         NgbNavItem,
         NgbNavLink,
         NgbNavOutlet,
-        NgIf,
         StringComponent
     ]
 })
 
 export class BucketDialogComponent extends DialogComponent implements OnInit {
-    private modal: NgbModal;
-    private renderer = inject(Renderer2);
     private toast = inject(ToastService);
     private idl = inject(IdlService);
     private net = inject(NetService);
@@ -49,17 +50,17 @@ export class BucketDialogComponent extends DialogComponent implements OnInit {
     sharedBucketName: string;
     newBucketName: string;
     newBucketDesc: string;
-    buckets: any[];
+    buckets: any[] = [];
     showExistingBuckets = true;
 
     @Input() bucketClass: 'biblio' | 'user' | 'callnumber' | 'copy';
     @Input() bucketType: string; // e.g. staff_client
 
     // ID's of items to add to the bucket
-    @Input() itemIds: number[];
+    @Input() itemIds: number[] = [];
 
     // If set, itemIds will be derived from the records in a bib queue
-    @Input() fromBibQueue: number;
+    @Input() fromBibQueue: number = null;
 
     // bucket item classes are these plus a following 'i'.
     bucketFmClass: 'ccb' | 'ccnb' | 'cbreb' | 'cub';
@@ -67,17 +68,6 @@ export class BucketDialogComponent extends DialogComponent implements OnInit {
 
     @ViewChild('confirmAddToShared') confirmAddToShared: ConfirmDialogComponent;
     @ViewChild('successString') successString: StringComponent;
-
-    constructor() {
-        const modal = inject(NgbModal);
-
-        super(modal);
-        this.modal = modal;
-        // required for subclassing
-        this.buckets = [];
-        this.itemIds = [];
-        this.fromBibQueue = null;
-    }
 
     ngOnInit() {
         this.onOpen$.subscribe(ok => {

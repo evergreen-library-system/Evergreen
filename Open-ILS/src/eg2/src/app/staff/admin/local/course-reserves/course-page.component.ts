@@ -8,11 +8,19 @@ import {CourseService} from '@eg/staff/share/course.service';
 import {CourseAssociateUsersComponent} from './course-associate-users.component';
 import {CourseAssociateMaterialComponent} from './course-associate-material.component';
 import { StaffCommonModule } from '@eg/staff/common.module';
+import { FmRecordEditorComponent } from '@eg/share/fm-editor/fm-editor.component';
+import { CourseTermMapGridComponent } from './course-term-map-grid.component';
 
 @Component({
     selector: 'eg-course-page',
     templateUrl: './course-page.component.html',
-    imports: [StaffCommonModule]
+    imports: [
+        CourseAssociateMaterialComponent,
+        CourseAssociateUsersComponent,
+        CourseTermMapGridComponent,
+        FmRecordEditorComponent,
+        StaffCommonModule
+    ]
 })
 
 export class CoursePageComponent implements OnInit {

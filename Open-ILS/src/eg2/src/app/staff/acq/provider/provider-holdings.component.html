@@ -8,34 +8,58 @@
 <eg-string #updateFailedTagString i18n-text text="Provider Holdings Subfield Update Failed"></eg-string>
 
 <ng-template #nameCellTemplate let-row="row">
-  <ng-container [ngSwitch]="row.name()">
-    <ng-container *ngSwitchCase="'barcode'" i18n>Barcode</ng-container>
-    <ng-container *ngSwitchCase="'call_number'" i18n>Call Number</ng-container>
-    <ng-container *ngSwitchCase="'circ_modifier'" i18n>Circulation Modifier</ng-container>
-    <ng-container *ngSwitchCase="'collection_code'" i18n>Collection Code</ng-container>
-    <ng-container *ngSwitchCase="'estimated_price'" i18n>Estimated Price</ng-container>
-    <ng-container *ngSwitchCase="'fund_code'" i18n>Fund Code</ng-container>
-    <ng-container *ngSwitchCase="'note'" i18n>Note</ng-container>
-    <ng-container *ngSwitchCase="'owning_lib'" i18n>Owning Library</ng-container>
-    <ng-container *ngSwitchCase="'quantity'" i18n>Quantity</ng-container>
-    <ng-container *ngSwitchCase="'copy_location'" i18n>Shelving Location</ng-container>
-    <ng-container *ngSwitchDefault i18n>{{row.name()}}</ng-container>
-  </ng-container>
+  @switch (row.name()) {
+    @case ('barcode') {
+      <ng-container i18n>Barcode</ng-container>
+    }
+    @case ('call_number') {
+      <ng-container i18n>Call Number</ng-container>
+    }
+    @case ('circ_modifier') {
+      <ng-container i18n>Circulation Modifier</ng-container>
+    }
+    @case ('collection_code') {
+      <ng-container i18n>Collection Code</ng-container>
+    }
+    @case ('estimated_price') {
+      <ng-container i18n>Estimated Price</ng-container>
+    }
+    @case ('fund_code') {
+      <ng-container i18n>Fund Code</ng-container>
+    }
+    @case ('note') {
+      <ng-container i18n>Note</ng-container>
+    }
+    @case ('owning_lib') {
+      <ng-container i18n>Owning Library</ng-container>
+    }
+    @case ('quantity') {
+      <ng-container i18n>Quantity</ng-container>
+    }
+    @case ('copy_location') {
+      <ng-container i18n>Shelving Location</ng-container>
+    }
+    @default {
+      <ng-container i18n>{{row.name()}}</ng-container>
+    }
+  }
 </ng-template>
 
-<form *ngIf="provider" #holdingTagForm="ngForm">
-  <div class="form-group row">
-    <label for="holdings-tag" class="form-label col-auto col-form-label" i18n>Holdings Tag</label>
-    <div class="col-auto">
-      <input id="holdings-tag" type="text" [(ngModel)]="provider._holding_tag" name="holding_tag" class="form-control" />
-    </div>
-    <div class="col-auto">
-      <button type="submit" class="btn btn-info"
-        (click)="updateProvider($event) && holdingTagForm.markAsPristine()" 
+@if (provider) {
+  <form #holdingTagForm="ngForm">
+    <div class="form-group row">
+      <label for="holdings-tag" class="form-label col-auto col-form-label" i18n>Holdings Tag</label>
+      <div class="col-auto">
+        <input id="holdings-tag" type="text" [(ngModel)]="provider._holding_tag" name="holding_tag" class="form-control" />
+      </div>
+      <div class="col-auto">
+        <button type="submit" class="btn btn-info"
+          (click)="updateProvider($event) && holdingTagForm.markAsPristine()"
         [disabled]="!holdingTagForm.dirty || (provider && provider._holding_tag === provider.holding_tag())" i18n>Save</button>
+      </div>
     </div>
-  </div>
-</form>
+  </form>
+}
 
 <eg-grid #acqProviderHoldingsGrid
   persistKey="acq.provider.holdings"
@@ -45,7 +69,7 @@
   [cellTextGenerator]="cellTextGenerator">
 
   <eg-grid-toolbar-button label="New Holdings Subfield" i18n-label (onClick)="createNew()"
-    [disabled]="!(provider && provider.holding_tag())"></eg-grid-toolbar-button>
+  [disabled]="!(provider && provider.holding_tag())"></eg-grid-toolbar-button>
   <eg-grid-toolbar-action label="Edit Selected" i18n-label (onClick)="editSelected($event)"></eg-grid-toolbar-action>
   <eg-grid-toolbar-action label="Delete Selected" i18n-label (onClick)="deleteSelected($event)"></eg-grid-toolbar-action>
 

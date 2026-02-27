@@ -7,7 +7,7 @@ import {StringComponent} from '@eg/share/string/string.component';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 import {ProviderRecord, ProviderRecordService} from './provider-record.service';
-import { CommonModule } from '@angular/common';
+
 import { BoolDisplayComponent } from '@eg/share/util/bool.component';
 
 @Component({
@@ -16,7 +16,6 @@ import { BoolDisplayComponent } from '@eg/share/util/bool.component';
     templateUrl: './summary-pane.component.html',
     imports: [
         BoolDisplayComponent,
-        CommonModule,
         ConfirmDialogComponent,
         StringComponent
     ]

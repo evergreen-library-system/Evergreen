@@ -6,14 +6,13 @@ import {EventService} from '@eg/core/event.service';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import { CommonModule } from '@angular/common';
+
 
 @Component({
     selector: 'eg-picklist-delete-dialog',
     templateUrl: './picklist-delete-dialog.component.html',
     imports: [
-        AlertDialogComponent,
-        CommonModule
+        AlertDialogComponent
     ]
 })
 

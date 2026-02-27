@@ -19,7 +19,7 @@
   [sortable]="true"
   hideFields="provider"
   [cellTextGenerator]="cellTextGenerator">
-  <eg-grid-toolbar-button 
+  <eg-grid-toolbar-button
     label="New EDI Account" i18n-label (onClick)="createNew()">
   </eg-grid-toolbar-button>
   <eg-grid-toolbar-button
@@ -36,7 +36,7 @@
   <eg-grid-column [filterable]="false" [sortable]="false" i18n-label label="Is Default?" path="_is_default" datatype="bool"></eg-grid-column>
 </eg-grid>
 
-<ng-container *ngIf="viewEdiMessages">
+@if (viewEdiMessages) {
   <h2 i18n>EDI messages for account {{selectedEdiAccountLabel}}</h2>
   <eg-grid #acqProviderEdiMessagesGrid
     persistKey="acq.provider.edi_messages"
@@ -44,7 +44,7 @@
     [sortable]="true"
     [filterable]="true">
   </eg-grid>
-</ng-container>
+}
 
 <eg-string #hostHelpStr text="EDI FTP or SCP server, including protocol. For example, ftp://ftp.example.org." i18n-text></eg-string>
 <eg-string #usernameHelpStr text="Username supplied by provider."></eg-string>

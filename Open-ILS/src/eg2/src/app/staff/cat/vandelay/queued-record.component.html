@@ -21,15 +21,21 @@
   <li role="presentation" [ngbNavItem]="'edit'">
     <a i18n ngbNavLink role="tab">Edit Record</a>
     <ng-template ngbNavContent>
-      <ng-container *ngIf="queuedRecord">
-        <eg-marc-editor [inPlaceMode]="true" [recordXml]="queuedRecord.marc()"
+      @if (queuedRecord) {
+
+        @if (queueType === 'bib') {
+<eg-marc-editor [inPlaceMode]="true" [recordXml]="queuedRecord.marc()"
           [recordSource]="queuedRecord.bib_source()"
           (recordSaved)="handleMarcRecordSaved($event)"
-          *ngIf="queueType === 'bib'"><eg-fast-add-selector></eg-fast-add-selector></eg-marc-editor>
-        <eg-marc-editor [inPlaceMode]="true" [recordXml]="queuedRecord.marc()"
+         ><eg-fast-add-selector></eg-fast-add-selector></eg-marc-editor>
+}
+        @if (queueType !== 'bib') {
+<eg-marc-editor [inPlaceMode]="true" [recordXml]="queuedRecord.marc()"
           (recordSaved)="handleMarcRecordSaved($event)"
-          *ngIf="queueType !== 'bib'"></eg-marc-editor>
-      </ng-container>
+         ></eg-marc-editor>
+}
+      
+}
     </ng-template>
   </li>
   <li role="presentation" [ngbNavItem]="'matches'">

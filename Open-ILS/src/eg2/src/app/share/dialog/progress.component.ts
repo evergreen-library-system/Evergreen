@@ -1,4 +1,4 @@
-import { NgIf } from '@angular/common';
+
 import {Component} from '@angular/core';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 
@@ -6,7 +6,7 @@ import {DialogComponent} from '@eg/share/dialog/dialog.component';
     selector: 'eg-progress-dialog',
     templateUrl: './progress.component.html',
     styleUrls: ['progress.component.css'],
-    imports: [NgIf]
+    imports: []
 })
 
 /**

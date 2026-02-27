@@ -5,7 +5,7 @@ import {PcrudService} from '@eg/core/pcrud.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {StringComponent} from '@eg/share/string/string.component';
 import {PermService} from '@eg/core/perm.service';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -13,7 +13,6 @@ import { FormsModule } from '@angular/forms';
     templateUrl: './exchange-rates-dialog.component.html',
     imports: [
         StringComponent,
-        CommonModule,
         FormsModule
     ]
 })

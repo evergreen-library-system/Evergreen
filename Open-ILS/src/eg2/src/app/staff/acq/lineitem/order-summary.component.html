@@ -1,4 +1,4 @@
-<ng-container *ngIf="li">
+@if (li) {
   <span i18n>{{li.order_summary().item_count()}} Items</span>
   <span class="ms-1 me-1" i18n> | </span>
   <span i18n>{{li.order_summary().recv_count()}} Received</span>
@@ -16,5 +16,5 @@
   <span [ngClass]="{'fw-bold text-danger': paidOff()}" i18n>
     {{li.order_summary().paid_amount() | currency}} Paid
   </span>
-</ng-container>
+}
 

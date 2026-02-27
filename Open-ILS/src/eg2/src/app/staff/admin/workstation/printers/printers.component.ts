@@ -12,6 +12,7 @@ import {PrintService, PrintRequest} from '@eg/share/print/print.service';
 import {NgbNavChangeEvent, NgbNavModule} from '@ng-bootstrap/ng-bootstrap';
 import {StringComponent} from '@eg/share/string/string.component';
 import { CommonModule } from '@angular/common';
+import { StaffCommonModule } from '@eg/staff/common.module';
 import { FormsModule } from '@angular/forms';
 import { StaffBannerComponent } from '@eg/staff/share/staff-banner.component';
 
@@ -19,6 +20,7 @@ import { StaffBannerComponent } from '@eg/staff/share/staff-banner.component';
     templateUrl: 'printers.component.html',
     imports: [
         CommonModule,
+        StaffCommonModule,
         FormsModule,
         NgbNavModule,
         StaffBannerComponent,

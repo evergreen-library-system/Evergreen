@@ -4,7 +4,7 @@ import {OrgService} from '@eg/core/org.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
 import {MarcRecord} from './marcrecord';
 import {MarcEditContext} from './editor-context';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 
 /**
@@ -15,7 +15,7 @@ import { FormsModule } from '@angular/forms';
     selector: 'eg-marc-flat-editor',
     templateUrl: './flat-editor.component.html',
     styleUrls: ['flat-editor.component.css'],
-    imports: [CommonModule, FormsModule]
+    imports: [FormsModule]
 })
 
 export class MarcFlatEditorComponent implements OnInit {

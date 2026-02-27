@@ -18,6 +18,7 @@ import { ComboboxComponent, ComboboxEntry } from '@eg/share/combobox/combobox.co
 import { TagMapListComponent } from './tag-map-list.component';
 import { StringComponent } from '@eg/share/string/string.component';
 import { CopyThingsDialogWrapperComponent } from './copy-things-dialog-wrapper.component';
+import { FormsModule } from '@angular/forms';
 
 // Interface for tag maps with the composite match functionality
 export interface ICopyTagMap extends IThingObject {
@@ -48,6 +49,7 @@ export interface ICopyTagMapChanges extends IThingChanges<ICopyTagMap> {
     imports: [
         ComboboxComponent,
         CopyThingsDialogWrapperComponent,
+        FormsModule,
         StringComponent,
         TagMapListComponent,
     ]

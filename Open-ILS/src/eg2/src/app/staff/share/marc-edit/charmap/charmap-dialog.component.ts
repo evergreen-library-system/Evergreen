@@ -2,7 +2,7 @@ import { Component, HostListener, OnInit, ViewChild, TemplateRef, inject } from 
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {NgbModal, NgbNav, NgbNavChangeEvent, NgbNavModule} from '@ng-bootstrap/ng-bootstrap';
 import {ServerStoreService} from '@eg/core/server-store.service';
-import { CommonModule } from '@angular/common';
+
 import { CharsCanadianComponent } from './chars-canadian.component';
 import { CharsLatinComponent } from './chars-latin.component';
 import { CharsPunctuationComponent } from './chars-punctuation.component';
@@ -19,8 +19,7 @@ import { CharsPunctuationComponent } from './chars-punctuation.component';
         CharsCanadianComponent,
         CharsLatinComponent,
         CharsPunctuationComponent,
-        CommonModule,
-        NgbNavModule,
+        NgbNavModule
     ]
 })
 

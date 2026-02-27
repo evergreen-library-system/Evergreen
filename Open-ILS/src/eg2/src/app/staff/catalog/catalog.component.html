@@ -1,7 +1,7 @@
 <eg-staff-banner bannerText="Staff Catalog" i18n-bannerText>
 </eg-staff-banner>
 
-<ng-container *ngIf="holdForUser()">
+@if (holdForUser()) {
   <div class="row border border-info mb-2 pt-1 pb-1">
     <div class="col-lg-10 offset-lg-1 d-flex justify-content-center">
       <span class="mt-2" i18n>
@@ -13,11 +13,11 @@
       </span>
     </div>
     <div class="col-lg-1">
-      <button type="button" class="btn btn-info btn-sm" 
-        (click)="clearHoldPatron()" i18n>Clear</button>
+      <button type="button" class="btn btn-info btn-sm"
+      (click)="clearHoldPatron()" i18n>Clear</button>
     </div>
   </div>
-</ng-container>
+}
 
 <!-- search form sits atop every catalog page -->
 <eg-catalog-search-form></eg-catalog-search-form>

@@ -20,6 +20,7 @@ import { StringComponent } from '@eg/share/string/string.component';
 import { DeleteGroupDialogComponent } from './delete-group-dialog.component';
 import { CommonModule } from '@angular/common';
 import { GridModule } from '@eg/share/grid/grid.module';
+import { FormsModule } from '@angular/forms';
 
 @Component({
     templateUrl: './account.component.html',
@@ -28,6 +29,7 @@ import { GridModule } from '@eg/share/grid/grid.module';
         CommonModule,
         DeleteGroupDialogComponent,
         FmRecordEditorComponent,
+        FormsModule,
         GridModule,
         PromptDialogComponent,
         RouterModule,

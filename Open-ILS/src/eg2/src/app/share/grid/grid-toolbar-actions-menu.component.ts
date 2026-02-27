@@ -1,7 +1,7 @@
 import {Component, Input, ViewChild} from '@angular/core';
 import {GridToolbarAction, GridContext} from '@eg/share/grid/grid';
 import {ClipboardDialogComponent} from '@eg/share/clipboard/clipboard-dialog.component';
-import { NgClass, NgFor, NgIf } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 
 /** Models a list of toolbar action menu entries */
@@ -12,9 +12,7 @@ import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
     imports: [
         ClipboardDialogComponent,
         NgbDropdownModule,
-        NgClass,
-        NgFor,
-        NgIf
+        NgClass
     ]
 })
 

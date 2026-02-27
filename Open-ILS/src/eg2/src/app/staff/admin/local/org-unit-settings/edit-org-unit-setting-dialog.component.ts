@@ -1,45 +1,31 @@
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {IdlObject} from '@eg/core/idl.service';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import { TimezoneSelectComponent } from './timezone-select/timezone-select.component';
 import { OrgSelectComponent } from '@eg/share/org-select/org-select.component';
 import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+
+import { ItemLocationSelectComponent } from '@eg/share/item-location-select/item-location-select.component';
+import { ComboboxComponent } from '@eg/share/combobox/combobox.component';
 
 @Component({
     selector: 'eg-admin-edit-org-unit-setting-dialog',
     templateUrl: './edit-org-unit-setting-dialog.component.html',
     imports: [
-        CommonModule,
         FormsModule,
+        ItemLocationSelectComponent,
         OrgSelectComponent,
-        TimezoneSelectComponent
+        TimezoneSelectComponent,
+        ComboboxComponent
     ]
 })
 
 export class EditOuSettingDialogComponent extends DialogComponent {
-    private modal: NgbModal;
-
-
     // What OU Setting we're editing
     entry: any = {};
-    entryValue: any;
-    entryContext: IdlObject;
-    linkedFieldOptions: IdlObject[];
-
-    constructor() {
-        const modal = inject(NgbModal);
-
-        super(modal);
-        this.modal = modal;
-
-        if (!this.entry) {
-            this.entryValue = null;
-            this.entryContext = null;
-            this.linkedFieldOptions = null;
-        }
-    }
+    entryValue: any = null;
+    entryContext: IdlObject = null;
+    linkedFieldOptions: IdlObject[] = null;
 
     inputType() {
         if (this.entry.name === 'lib.timezone') {

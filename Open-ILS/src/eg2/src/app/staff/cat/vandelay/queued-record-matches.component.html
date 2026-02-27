@@ -6,14 +6,14 @@
 </ng-template>
 
 <ng-template #targetTemplate let-row="row">
-  <ng-container *ngIf="isOverlayTarget(row.id)">
-    <span i18n-title title="Selected Merge Target" 
-      class="material-icons" aria-hidden="true">check_circle</span>
+  @if (isOverlayTarget(row.id)) {
+    <span i18n-title title="Selected Merge Target"
+    class="material-icons" aria-hidden="true">check_circle</span>
     <span class="visually-hidden" i18n>Selected Merge Target</span>
-  </ng-container>
+  }
 </ng-template>
 
-<ng-container *ngIf="queueType === 'bib'">
+@if (queueType === 'bib') {
   <eg-grid #bibGrid [dataSource]="bibDataSource" persistKey="cat.vandelay.queue.bib.record_matches"
     (onRowClick)="matchRowClick($event)"
     [cellTextGenerator]="cellTextGenerator"
@@ -23,7 +23,7 @@
       [action]="markOverlayTarget">
     </eg-grid-toolbar-action>
     -->
-    <eg-grid-column name="id" [index]="true" [hidden]="true" 
+    <eg-grid-column name="id" [index]="true" [hidden]="true"
       i18n-label label="Match ID">
     </eg-grid-column>
     <eg-grid-column name="selected" i18n-label label="Merge Target"
@@ -40,27 +40,27 @@
     </eg-grid-column>
     <eg-grid-column path="bib_summary.display.title" i18n-label label="Title">
     </eg-grid-column>
-    <eg-grid-column path="bib_summary.record.creator.usrname" 
+    <eg-grid-column path="bib_summary.record.creator.usrname"
       i18n-label label="Creator">
     </eg-grid-column>
     <eg-grid-column path="bib_summary.record.create_date" datatype="timestamp"
       i18n-label label="Create Date">
     </eg-grid-column>
-    <eg-grid-column path="bib_summary.record.editor.usrname" 
+    <eg-grid-column path="bib_summary.record.editor.usrname"
       i18n-label label="Editor">
     </eg-grid-column>
     <eg-grid-column path="bib_summary.record.edit_date" datatype="timestamp"
       i18n-label label="Edit Date">
     </eg-grid-column>
   </eg-grid>
-</ng-container>
-<ng-container *ngIf="queueType === 'authority'">
+}
+@if (queueType === 'authority') {
   <eg-grid #authGrid [dataSource]="authDataSource">
-    <eg-grid-column name="id" [index]="true" [hidden]="true" 
+    <eg-grid-column name="id" [index]="true" [hidden]="true"
       i18n-label label="Match ID">
     </eg-grid-column>
   </eg-grid>
-</ng-container>
+}
 
 
 <!--

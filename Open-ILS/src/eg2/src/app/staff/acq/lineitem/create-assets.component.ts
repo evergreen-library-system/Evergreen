@@ -5,7 +5,7 @@ import {EventService, EgEvent} from '@eg/core/event.service';
 import {AuthService} from '@eg/core/auth.service';
 import { UploadComponent } from '../picklist/upload.component';
 import { ProgressInlineComponent } from '@eg/share/dialog/progress-inline.component';
-import { CommonModule } from '@angular/common';
+
 
 
 interface AssetCreationResponse {
@@ -20,9 +20,8 @@ interface AssetCreationResponse {
 @Component({
     templateUrl: 'create-assets.component.html',
     imports: [
-        CommonModule,
         ProgressInlineComponent,
-        UploadComponent,
+        UploadComponent
     ]
 })
 export class CreateAssetsComponent implements OnInit {

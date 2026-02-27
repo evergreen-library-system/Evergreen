@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { TreeComboboxComponent } from '@eg/share/tree-combobox/tree-combobox.component';
 import { Tree, TreeNode } from '@eg/share/tree/tree';
 import { EnhancedOrgTree } from '@eg/share/tree/enhanced-org-tree';
@@ -8,7 +8,7 @@ import { ServerStoreService } from '@eg/core/server-store.service';
 
 @Component({
     selector: 'eg-catalog-org-select',
-    imports: [CommonModule, TreeComboboxComponent],
+    imports: [TreeComboboxComponent],
     templateUrl: './catalog-org-select.component.html'
 })
 export class CatalogOrgSelectComponent implements OnInit {

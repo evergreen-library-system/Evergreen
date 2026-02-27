@@ -11,7 +11,8 @@ import {StringComponent} from '@eg/share/string/string.component';
 import {ComboboxComponent, ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {WorkLogService, WorkLogEntry} from '@eg/staff/share/worklog/worklog.service';
 import { WorkLogStringsComponent } from '../worklog/strings.component';
-import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+
 
 /**
  * Dialog for canceling hold requests.
@@ -22,7 +23,7 @@ import { CommonModule } from '@angular/common';
     templateUrl: 'cancel-dialog.component.html',
     imports: [
         ComboboxComponent,
-        CommonModule,
+        FormsModule,
         StringComponent,
         WorkLogStringsComponent
     ]
@@ -30,7 +31,6 @@ import { CommonModule } from '@angular/common';
 
 export class HoldCancelDialogComponent
     extends DialogComponent {
-    private modal: NgbModal;
     private toast = inject(ToastService);
     private net = inject(NetService);
     private evt = inject(EventService);
@@ -47,17 +47,8 @@ export class HoldCancelDialogComponent
     numSucceeded: number;
     numFailed: number;
     cancelReason: number;
-    cancelReasons: ComboboxEntry[];
+    cancelReasons: ComboboxEntry[] = [];
     cancelNote: string;
-
-    constructor() {
-        const modal = inject(NgbModal);
-
-        super(modal);
-        this.modal = modal;
-        // required for subclassing
-        this.cancelReasons = [];
-    }
 
     // Avoid fetching cancel reasons in ngOnInit becaues that causes
     // them to load regardless of whether the dialog is ever used.

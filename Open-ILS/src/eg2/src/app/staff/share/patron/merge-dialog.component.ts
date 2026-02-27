@@ -6,7 +6,7 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {PatronService, PatronSummary} from './patron.service';
 import { ProgressInlineComponent } from '@eg/share/dialog/progress-inline.component';
-import { NgIf } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import { PatronSummaryComponent } from './summary.component';
 
@@ -37,7 +37,6 @@ const PATRON_FLESH_FIELDS = [
     templateUrl: 'merge-dialog.component.html',
     imports: [
         FormsModule,
-        NgIf,
         PatronSummaryComponent,
         ProgressInlineComponent
     ]

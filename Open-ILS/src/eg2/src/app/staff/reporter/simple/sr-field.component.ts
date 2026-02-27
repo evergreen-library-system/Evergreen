@@ -4,12 +4,22 @@ import {OrgService} from '@eg/core/org.service';
 import {AuthService} from '@eg/core/auth.service';
 import {ReporterService} from '../share/reporter.service';
 import { StaffCommonModule } from '@eg/staff/common.module';
+import { OrgFamilySelectComponent } from '@eg/share/org-family-select/org-family-select.component';
+import { MultiSelectComponent } from '@eg/share/multi-select/multi-select.component';
+import { TextMultiSelectComponent } from '@eg/share/text-multi-select/text-multi-select.component';
+import { IntervalInputComponent } from '@eg/share/interval-input/interval-input.component';
 
 @Component({
     selector: 'eg-sr-field',
     templateUrl: './sr-field.component.html',
     styleUrls: ['./sr-field.component.css'],
-    imports: [StaffCommonModule]
+    imports: [
+        IntervalInputComponent,
+        MultiSelectComponent,
+        OrgFamilySelectComponent,
+        StaffCommonModule,
+        TextMultiSelectComponent,
+    ]
 })
 export class SRFieldComponent implements OnInit {
     private org = inject(OrgService);

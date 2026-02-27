@@ -7,7 +7,7 @@ import {NgbModal, NgbTypeahead, NgbTypeaheadSelectItemEvent} from '@ng-bootstrap
 import {FormArray, FormBuilder, ReactiveFormsModule} from '@angular/forms';
 import {catchError, debounceTime, distinctUntilChanged, exhaustMap, map, takeUntil, tap, toArray,
     Observable, Subject, of, OperatorFunction} from 'rxjs';
-import { CommonModule } from '@angular/common';
+
 
 interface PermEntry { id: number; label: string; }
 
@@ -15,7 +15,6 @@ interface PermEntry { id: number; label: string; }
     selector: 'eg-perm-group-map-dialog',
     templateUrl: './perm-group-map-dialog.component.html',
     imports: [
-        CommonModule,
         NgbTypeahead,
         ReactiveFormsModule
     ]

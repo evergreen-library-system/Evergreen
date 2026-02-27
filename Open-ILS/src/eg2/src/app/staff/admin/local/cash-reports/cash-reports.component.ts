@@ -14,6 +14,7 @@ import { NgbDatepickerModule, NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 import { StaffBannerComponent } from '@eg/staff/share/staff-banner.component';
 import { OrgSelectComponent } from '@eg/share/org-select/org-select.component';
 import { CommonModule } from '@angular/common';
+import { GridModule } from '@eg/share/grid/grid.module';
 
 class DeskTotals {
     cash_payment = 0;
@@ -36,6 +37,7 @@ class UserTotals {
         DateSelectComponent,
         DatesInOrderValidatorDirective,
         FormsModule,
+        GridModule,
         NgbDatepickerModule,
         NgbNavModule,
         OrgSelectComponent,

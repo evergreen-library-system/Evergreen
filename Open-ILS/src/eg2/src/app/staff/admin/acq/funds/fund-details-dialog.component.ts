@@ -15,12 +15,14 @@ import {ToastService} from '@eg/share/toast/toast.service';
 import {FundTransferDialogComponent} from './fund-transfer-dialog.component';
 import {mergeMap, Observable, of} from 'rxjs';
 import { StaffCommonModule } from '@eg/staff/common.module';
+import { FundTagsComponent } from './fund-tags.component';
 
 @Component({
     selector: 'eg-fund-details-dialog',
     templateUrl: './fund-details-dialog.component.html',
     imports: [
         FmRecordEditorComponent,
+        FundTagsComponent,
         FundTransferDialogComponent,
         StaffCommonModule
     ]

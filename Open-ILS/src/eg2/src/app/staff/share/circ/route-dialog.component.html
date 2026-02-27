@@ -1,33 +1,41 @@
 
-<!-- 
-  Two separate dialogs are defined within, one for the holds slip
-  and one for hold and non-hold transits.  They share a number of
-  sub-templates.
+<!--
+Two separate dialogs are defined within, one for the holds slip
+and one for hold and non-hold transits.  They share a number of
+sub-templates.
 -->
 
 <ng-template #patronSummary>
-  <div *ngIf="checkin.patron.alias()">
-    Hold for patron {{checkin.patron.alias()}}
-  </div>
-  <div *ngIf="!checkin.patron.alias()" i18n>
+  @if (checkin.patron.alias()) {
+    <div>
+      Hold for patron {{checkin.patron.alias()}}
+    </div>
+  }
+  @if (!checkin.patron.alias()) {
+    <div i18n>
     Hold for patron {{checkin.patron.family_name()}}, 
     {{checkin.patron.first_given_name()}} {{checkin.patron.second_given_name()}}
   </div>
-  <div *ngIf="!checkin.patron.alias()">
-    <div *ngIf="checkin.patron.pref_family_name() 
-      || checkin.patron.pref_first_given_name() 
-      || checkin.patron.pref_second_given_name()">
-      Preferred name: 
-        {{checkin.patron.pref_family_name() || checkin.patron.family_name()}},
-        {{checkin.patron.pref_first_given_name() || checkin.patron.first_given_name()}}
-        {{checkin.patron.pref_second_given_name()}}
+  }
+  @if (!checkin.patron.alias()) {
+    <div>
+      @if (checkin.patron.pref_family_name()
+        || checkin.patron.pref_first_given_name()
+        || checkin.patron.pref_second_given_name()) {
+        <div>
+          Preferred name:
+          {{checkin.patron.pref_family_name() || checkin.patron.family_name()}},
+          {{checkin.patron.pref_first_given_name() || checkin.patron.first_given_name()}}
+          {{checkin.patron.pref_second_given_name()}}
+        </div>
+      }
     </div>
-  </div>
+  }
   <div>
     <span class="me-2" i18n>Patron Barcode:</span>
-    <ng-container *ngIf="checkin.patron.card()">
+    @if (checkin.patron.card()) {
       <span>{{checkin.patron.card().barcode()}}</span>
-    </ng-container>
+    }
   </div>
 </ng-template>
 
@@ -44,11 +52,13 @@
     <span class="me-2" i18n>Author:</span>
     <span>{{checkin.author}}</span>
   </div>
-  <div *ngIf="checkin.volume">
-    <span class="me-2" i18n>Call Number:</span>
-    <span>{{checkin.volume.prefix().label()}}&nbsp;{{
-			checkin.volume.label()}}&nbsp;{{checkin.volume.suffix().label()}}</span>
-  </div>
+  @if (checkin.volume) {
+    <div>
+      <span class="me-2" i18n>Call Number:</span>
+      <span>{{checkin.volume.prefix().label()}}&nbsp;{{
+      checkin.volume.label()}}&nbsp;{{checkin.volume.suffix().label()}}</span>
+    </div>
+  }
 </ng-template>
 
 <ng-template #holdSummary>
@@ -56,33 +66,49 @@
     <span class="me-2" i18n>Request Date:</span>
     <span>{{checkin.hold.request_time() | date:'short'}}</span>
   </div>
-  <div *ngIf="checkin.hold.notes().length > 0">
-    <span class="me-2" i18n>Request Notes:</span>
-    <ul>
-      <li *ngFor="let note of checkin.hold.notes()">
-        <strong>{{note.title()}}</strong>: {{note.body()}}
-        <span *ngIf="note.slip() ==='t' || note.pub() === 't'" i18n>[Patron-visible]</span>
-      </li>
-    </ul>
-  </div>
+  @if (checkin.hold.notes().length > 0) {
+    <div>
+      <span class="me-2" i18n>Request Notes:</span>
+      <ul>
+        @for (note of checkin.hold.notes(); track note) {
+          <li>
+            <strong>{{note.title()}}</strong>: {{note.body()}}
+            @if (note.slip() ==='t' || note.pub() === 't') {
+              <span i18n>[Patron-visible]</span>
+            }
+          </li>
+        }
+      </ul>
+    </div>
+  }
 </ng-template>
 
 <ng-template #holdShelfTmpl>
-  <div *ngIf="checkin.hold.behind_desk() === 't'" i18n>
+  @if (checkin.hold.behind_desk() === 't') {
+    <div i18n>
     This item should be routed to the <strong>Private Holds Shelf</strong>
   </div>
-  <div *ngIf="checkin.hold.behind_desk() === 'f'" i18n>
+  }
+  @if (checkin.hold.behind_desk() === 'f') {
+    <div i18n>
     This item should be routed to the <strong>Public Holds Shelf</strong>
   </div>
+  }
   <br/>
 
   <ng-container *ngTemplateOutlet="itemSummary"></ng-container><br/>
   <ng-container *ngTemplateOutlet="patronSummary"></ng-container><br/>
 
   <!-- in hold shelf mode, we need to specify the notification prefs -->
-  <div *ngIf="checkin.hold.phone_notify()" i18n>Notify by phone: {{checkin.hold.phone_notify()}}</div>
-  <div *ngIf="checkin.hold.sms_notify()" i18n>Notify by text: {{checkin.hold.sms_notify()}}</div>
-  <div *ngIf="checkin.hold.email_notify() === 't'" i18n>Notify by email: {{checkin.patron.email()}}</div>
+  @if (checkin.hold.phone_notify()) {
+    <div i18n>Notify by phone: {{checkin.hold.phone_notify()}}</div>
+  }
+  @if (checkin.hold.sms_notify()) {
+    <div i18n>Notify by text: {{checkin.hold.sms_notify()}}</div>
+  }
+  @if (checkin.hold.email_notify() === 't') {
+    <div i18n>Notify by email: {{checkin.patron.email()}}</div>
+  }
 
   <ng-container *ngTemplateOutlet="holdSummary"></ng-container>
   <br/>
@@ -97,30 +123,38 @@
     <span class="me-2" i18n>Destination</span>
     <strong>{{checkin.destOrg.shortname()}}</strong>
   </div>
-  <div *ngIf="checkin.destCourierCode">{{checkin.destCourierCode}} </div>
+  @if (checkin.destCourierCode) {
+    <div>{{checkin.destCourierCode}} </div>
+  }
   <br/>
   <div>
     <address>
       <strong>{{checkin.destOrg.name()}}</strong><br>
-      <span *ngIf="checkin.destAddress">
-        {{checkin.destAddress.street1()}} {{checkin.destAddress.street2()}}<br/>
-        {{checkin.destAddress.city()}}, {{checkin.destAddress.state()}} {{checkin.destAddress.post_code()}}
-      </span>
-      <span *ngIf="!checkin.destAddress" i18n>
+      @if (checkin.destAddress) {
+        <span>
+          {{checkin.destAddress.street1()}} {{checkin.destAddress.street2()}}<br/>
+          {{checkin.destAddress.city()}}, {{checkin.destAddress.state()}} {{checkin.destAddress.post_code()}}
+        </span>
+      }
+      @if (!checkin.destAddress) {
+        <span i18n>
         We do not have a holds address for this library.
       </span>
+      }
       <br/>
       <abbr title="Phone">P:</abbr> {{checkin.destOrg.phone()}}
     </address>
   </div>
   <ng-container *ngTemplateOutlet="itemSummary"></ng-container>
   <br/>
-  <div *ngIf="checkin.hold">
-    <ng-container *ngTemplateOutlet="patronSummary"></ng-container>
-    <br/>
-    <ng-container *ngTemplateOutlet="holdSummary"></ng-container>
-    <br/>
-  </div>
+  @if (checkin.hold) {
+    <div>
+      <ng-container *ngTemplateOutlet="patronSummary"></ng-container>
+      <br/>
+      <ng-container *ngTemplateOutlet="holdSummary"></ng-container>
+      <br/>
+    </div>
+  }
   <div>
     <span class="me-2" i18n>Slip Date:</span>
     <span>{{today | date:'short'}}</span>
@@ -130,25 +164,25 @@
 <ng-template #dialogContent>
   <div class="modal-header">
     <h4>
-      <ng-container *ngIf="slip === 'hold_shelf_slip'">
+      @if (slip === 'hold_shelf_slip') {
         <strong i18n>Hold Slip</strong><br/>
         <img class="p-2" src="/images/portal/holds.png" i18n-alt alt=""/>
-      </ng-container>
-      <ng-container *ngIf="slip !== 'hold_shelf_slip'">
+      }
+      @if (slip !== 'hold_shelf_slip') {
         <strong i18n>Transit Slip</strong><br/>
         <img class="p-2" src="/images/transit.png" i18n-alt alt=""/>
-      </ng-container>
+      }
     </h4>
     <button type="button" class="btn-close btn-close-white"
-      i18n-aria-label aria-label="Close dialog" (click)="close()"></button>
+    i18n-aria-label aria-label="Close dialog" (click)="close()"></button>
   </div>
   <div class="modal-body">
-    <ng-container *ngIf="slip === 'hold_shelf_slip'">
+    @if (slip === 'hold_shelf_slip') {
       <ng-container *ngTemplateOutlet="holdShelfTmpl"></ng-container>
-    </ng-container>
-    <ng-container *ngIf="slip !== 'hold_shelf_slip'">
+    }
+    @if (slip !== 'hold_shelf_slip') {
       <ng-container *ngTemplateOutlet="transitTmpl"></ng-container>
-    </ng-container>
+    }
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-success" (click)="print()" i18n>Print</button>

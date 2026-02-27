@@ -7,7 +7,6 @@ import {PcrudService} from '@eg/core/pcrud.service';
 import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
 import {GridDataSource, GridCellTextGenerator} from '@eg/share/grid/grid';
 import {Pager} from '@eg/share/util/pager';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {StringComponent} from '@eg/share/string/string.component';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {GridComponent} from '@eg/share/grid/grid.component';
@@ -31,8 +30,6 @@ export class FundingSourceTransactionsDialogComponent
     private org = inject(OrgService);
     private format = inject(FormatService);
     private toast = inject(ToastService);
-    private modal: NgbModal;
-
 
     @Input() fundingSourceId: number;
     @Input() activeTab = 'credits';
@@ -47,14 +44,6 @@ export class FundingSourceTransactionsDialogComponent
     @ViewChild('allocateToFundDialog', { static: true }) allocateToFundDialog: FmRecordEditorComponent;
     @ViewChild('successString', { static: true }) successString: StringComponent;
     @ViewChild('updateFailedString', { static: false }) updateFailedString: StringComponent;
-
-    constructor() {
-        const modal = inject(NgbModal);
-
-        super(modal);
-
-        this.modal = modal;
-    }
 
     ngOnInit() {
         this.cellTextGenerator = {

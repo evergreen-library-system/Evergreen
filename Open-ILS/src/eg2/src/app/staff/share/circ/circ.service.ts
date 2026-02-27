@@ -230,7 +230,6 @@ export class CircService {
     private auth = inject(AuthService);
     private holdings = inject(HoldingsService);
     private worklog = inject(WorkLogService);
-    private bib = inject(BibRecordService);
     private loc = inject(ItemLocationService);
 
     static resultIndex = 0;

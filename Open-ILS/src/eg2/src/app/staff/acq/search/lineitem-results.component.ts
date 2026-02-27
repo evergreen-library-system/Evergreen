@@ -25,29 +25,30 @@ import {LinkInvoiceDialogComponent} from '../lineitem/link-invoice-dialog.compon
 import {LineitemAlertDialogComponent} from '../lineitem/lineitem-alert-dialog.component';
 import {ComboboxComponent, ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {EventService} from '@eg/core/event.service';
-import { CommonModule } from '@angular/common';
+
 import { GridModule } from '@eg/share/grid/grid.module';
+import { FormsModule } from '@angular/forms';
 
 @Component({
     selector: 'eg-lineitem-results',
     templateUrl: 'lineitem-results.component.html',
     imports: [
-        AcqSearchFormComponent,
-        AddToPoDialogComponent,
-        AlertDialogComponent,
-        CancelDialogComponent,
-        ClaimPolicyDialogComponent,
-        ComboboxComponent,
-        CommonModule,
-        ConfirmDialogComponent,
-        DeleteLineitemsDialogComponent,
-        ExportAttributesDialogComponent,
-        GridModule,
-        LineitemAlertDialogComponent,
-        LinkInvoiceDialogComponent,
-        RouterModule,
-        StringComponent,
-    ]
+    AcqSearchFormComponent,
+    AddToPoDialogComponent,
+    AlertDialogComponent,
+    CancelDialogComponent,
+    ClaimPolicyDialogComponent,
+    ComboboxComponent,
+    ConfirmDialogComponent,
+    DeleteLineitemsDialogComponent,
+    ExportAttributesDialogComponent,
+    FormsModule,
+    GridModule,
+    LineitemAlertDialogComponent,
+    LinkInvoiceDialogComponent,
+    RouterModule,
+    StringComponent
+]
 })
 export class LineitemResultsComponent implements OnInit, OnDestroy {
     private idl = inject(IdlService);

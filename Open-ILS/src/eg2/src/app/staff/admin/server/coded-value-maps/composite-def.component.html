@@ -9,64 +9,81 @@
 <h5>Record Attribute: &nbsp;&nbsp; {{attribute}}</h5>
 <h5>Coded Value: &nbsp;&nbsp; {{code}} / {{value}}</h5>
 
-<div *ngIf="tree">
-  <h3 class="text-center mt-4">Composite Data Expression</h3>
-  <div class="p-2 text-white bg-dark rounded col-lg-8 offset-lg-2">
-    {{expressionAsString()}}
+@if (tree) {
+  <div>
+    <h3 class="text-center mt-4">Composite Data Expression</h3>
+    <div class="p-2 text-white bg-dark rounded col-lg-8 offset-lg-2">
+      {{expressionAsString()}}
+    </div>
   </div>
-</div>
+}
 <h3 class="mt-4">Composite Data Tree</h3>
 <div class="row">
   <div class="col-lg-6">
-    <div class="d-flex mb-4" *ngIf="tree">
-      <button type="button" class="btn btn-destroy me-2" (click)="deleteNode()"
-        [disabled]="!hasSelectedNode()" i18n>
+    @if (tree) {
+      <div class="d-flex mb-4">
+        <button type="button" class="btn btn-destroy me-2" (click)="deleteNode()"
+          [disabled]="!hasSelectedNode()" i18n>
         Remove Selected Node
       </button>
-      <button type="button" class="btn btn-success me-1" (click)="saveTree()"
-        [disabled]="!changesMade" i18n>
+        <button type="button" class="btn btn-success me-1" (click)="saveTree()"
+          [disabled]="!changesMade" i18n>
         Save Changes
       </button>
-    </div>
+      </div>
+    }
     <div>
-      <eg-tree [tree]="tree" (nodeClicked)="nodeClicked($event)" *ngIf="tree">
-      </eg-tree>
-      <p *ngIf="!tree" class="fst-italic mt-4 ms-3">No tree</p>
+      @if (tree) {
+        <eg-tree [tree]="tree" (nodeClicked)="nodeClicked($event)">
+        </eg-tree>
+      }
+      @if (!tree) {
+        <p class="fst-italic mt-4 ms-3">No tree</p>
+      }
     </div>
-    <button type="button" class="btn btn-danger mt-4" (click)="deleteTree()" i18n *ngIf="tree">
+    @if (tree) {
+      <button type="button" class="btn btn-danger mt-4" (click)="deleteTree()" i18n>
       Delete Tree
     </button>
+    }
   </div>
   <div class="col-lg-6">
     <div class="d-flex">
-      <button type="button" class="btn btn-outline-dark me-3" 
-        (click)="newPointType='bool'" i18n>Add New Boolean Operator</button>
+      <button type="button" class="btn btn-outline-dark me-3"
+      (click)="newPointType='bool'" i18n>Add New Boolean Operator</button>
       <button type="button" class="btn btn-outline-dark"
-        (click)="newPointType='attr'" i18n>Add New Record Attribute</button>
+      (click)="newPointType='attr'" i18n>Add New Record Attribute</button>
     </div>
-    
+
     <eg-composite-new-point #newPoint [pointType]="newPointType"></eg-composite-new-point>
-    
-    <div class="row mt-2 ms-2 fst-italic" *ngIf="newPointType && tree">
-      <ol i18n>
+
+    @if (newPointType && tree) {
+      <div class="row mt-2 ms-2 fst-italic">
+        <ol i18n>
         <li>Define a new node using the above fields.</li>
         <li>Select a boolean node in the tree.</li>
         <li>Click the "Add..." button to add the new node
           as a child of the selected node.</li>
       </ol>
-      <p><b>Note</b> - A NOT boolean node can only have one child: a record attribute, or an 
+        <p><b>Note</b> - A NOT boolean node can only have one child: a record attribute, or an
       AND / OR boolean node with its own children.</p>
     </div>
-    <div *ngIf="!tree" class="row mt-2 ms-2 fst-italic">To start a new tree add a boolean operator
-      or record attribute and click "New Tree".</div>
-    <div class="row ms-2 mt-2" *ngIf="!tree">
+  }
+  @if (!tree) {
+    <div class="row mt-2 ms-2 fst-italic">To start a new tree add a boolean operator
+    or record attribute and click "New Tree".</div>
+  }
+  @if (!tree) {
+    <div class="row ms-2 mt-2">
       <button type="button" class="btn btn-success" (click)="createNewTree()" i18n
         [disabled]="newTreeButtonDisabled()">
         New tree
       </button>
     </div>
-    <div class="row ms-2" *ngIf="newPointType && tree">
-      <button type="button" class="btn btn-success" (click)="addChildNode()" 
+  }
+  @if (newPointType && tree) {
+    <div class="row ms-2">
+      <button type="button" class="btn btn-success" (click)="addChildNode()"
         [disabled]="addButtonDisabled()" i18n>
         Add To Selected Node
       </button>
@@ -75,7 +92,8 @@
         Replace Selected Node
       </button>
     </div>
-  </div>
+  }
+</div>
 </div>
 
 <eg-string #saveSuccess i18n-text text="Saved Composite Data Tree"></eg-string>

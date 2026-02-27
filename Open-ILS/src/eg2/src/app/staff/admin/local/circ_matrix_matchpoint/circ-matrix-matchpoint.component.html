@@ -5,29 +5,29 @@
 <eg-string #successString i18n-text text="Circulation Policy Update Succeeded"></eg-string>
 <eg-string #createString i18n-text text="Circulation Policy Creation Succeeded"></eg-string>
 
-<ng-container *ngIf="orgField || gridFilters">
+@if (orgField || gridFilters) {
   <div class="row">
     <div class="col-lg-6">
-      <ng-container *ngIf="orgField">
+      @if (orgField) {
         <eg-org-family-select
-          [limitPerms]="viewPerms" 
+          [limitPerms]="viewPerms"
           [selectedOrgId]="contextOrg.id()"
           [(ngModel)]="searchOrgs"
           (ngModelChange)="grid.reload()">
         </eg-org-family-select>
-      </ng-container>
+      }
     </div>
     <div class="col-lg-6 hstack">
       <div class="flex-1"></div><!-- push right -->
-      <ng-container *ngIf="gridFilters">
+      @if (gridFilters) {
         <span i18n>Filters Applied: {{gridFilters | json}}</span>
-        <a class="ps-2 fst-italic" 
-          [attr.href]="clearGridFiltersUrl()" i18n>Clear Filters</a>
-      </ng-container>
+        <a class="ps-2 fst-italic"
+        [attr.href]="clearGridFiltersUrl()" i18n>Clear Filters</a>
+      }
     </div>
   </div>
   <hr/>
-</ng-container>
+}
 
 <eg-grid #grid idlClass="ccmm"
   [dataSource]="dataSource"
@@ -36,7 +36,7 @@
   persistKey="admin.config.circ_matrix_matchpoint"
   (onRowActivate)="editSelected([$event])"
   [showFields]='"is_renewal,active,org_unit,copy_circ_lib,copy_owning_lib,user_home_ou"'>
-  <eg-grid-toolbar-button 
+  <eg-grid-toolbar-button
     label="New Circulation Policy" i18n-label (onClick)="createNew()">
   </eg-grid-toolbar-button>
   <eg-grid-toolbar-action
@@ -59,20 +59,22 @@
         #circLimitSets
         (outputLinkedLimitSet)="setLimitSets($event)">
       </eg-linked-circ-limit-sets>
-      <div class="row" *ngIf="cloneMode">
-        <div class="col-lg-4">
-          <div id="clone-linked-limit-set" i18n>Clone Linked Limit Sets?</div>
-        </div>
-        <div class="col-lg-2">
-          <div class="d-flex justify-content-center">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              attr.aria-labelledby="clone-linked-limit-set"
-              [(ngModel)]="cloneLS"/>
+      @if (cloneMode) {
+        <div class="row">
+          <div class="col-lg-4">
+            <div id="clone-linked-limit-set" i18n>Clone Linked Limit Sets?</div>
+          </div>
+          <div class="col-lg-2">
+            <div class="d-flex justify-content-center">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                attr.aria-labelledby="clone-linked-limit-set"
+                [(ngModel)]="cloneLS"/>
+            </div>
           </div>
         </div>
-      </div>
+      }
       <hr/>
     </ng-container>
   </div>

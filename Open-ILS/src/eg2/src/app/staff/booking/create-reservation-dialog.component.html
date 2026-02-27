@@ -5,18 +5,18 @@
     <h3 class="modal-title" i18n>Confirm Reservation Details</h3>
     <button type="button" class="btn-close btn-close-white"
       i18n-aria-label aria-label="Close dialog"
-      (click)="dismiss('cross_click')"></button>
+    (click)="dismiss('cross_click')"></button>
   </div>
   <form class="modal-body form-common" [formGroup]="create">
     <div class="form-group row">
       <label class="form-label col-form-label col-lg-4 text-end fw-bold"
-        i18n for="create-patron-barcode">Patron barcode</label>
+      i18n for="create-patron-barcode">Patron barcode</label>
       <div class="col-lg-7">
         <input type="text" id="create-patron-barcode"
-        class="form-control " formControlName="patronBarcode" [disabled]="patronId">
+          class="form-control " formControlName="patronBarcode" [disabled]="patronId">
         <button type="button" class="btn btn-outline-dark btn-sm" (click)="searchPatrons()">
           <span class="material-icons mat-icon-in-button align-middle"
-            aria-hidden="true">search</span>
+          aria-hidden="true">search</span>
           <span class="align-middle" i18n>Search for Patron</span>
         </button>
       </div>
@@ -28,27 +28,29 @@
     </div>
     <div class="form-group row">
       <label class="form-label col-form-label col-lg-4 text-end fw-bold"
-        i18n for="create-end-time">Start time</label>
-        <div class="col-lg-8">
-          <eg-datetime-select
-            formControlName="startTime"
-            [timezone]="timezone">
-          </eg-datetime-select>
-        </div>
+      i18n for="create-end-time">Start time</label>
+      <div class="col-lg-8">
+        <eg-datetime-select
+          formControlName="startTime"
+          [timezone]="timezone">
+        </eg-datetime-select>
+      </div>
     </div>
     <div class="form-group row">
       <label class="form-label col-form-label col-lg-4 text-end fw-bold"
-        i18n for="create-end-time">End time</label>
+      i18n for="create-end-time">End time</label>
       <div class="col-lg-8">
         <eg-datetime-select
           formControlName="endTime"
           [timezone]="timezone">
         </eg-datetime-select>
       </div>
-      <div role="alert" class="alert alert-danger offset-lg-4" *ngIf="create.errors?.datesOutOfOrder">
-        <span class="material-icons" aria-hidden="true">error</span>
-        <span i18n>Start time must be before end time</span>
-      </div>
+      @if (create.errors?.datesOutOfOrder) {
+        <div role="alert" class="alert alert-danger offset-lg-4">
+          <span class="material-icons" aria-hidden="true">error</span>
+          <span i18n>Start time must be before end time</span>
+        </div>
+      }
     </div>
     <div class="form-group row">
       <label for="create-pickup-library" class="form-label col-form-label col-lg-4 text-end fw-bold" i18n>
@@ -62,39 +64,46 @@
         <eg-help-popover helpText="The library where the resource is picked up or used" i18n-helpText></eg-help-popover>
       </div>
     </div>
-    <div *ngIf="pickupLibraryUsesDifferentTz"
-      role="alert"
-      class="alert alert-info">
-      <span class="material-icons" aria-hidden="true">access_time</span>
-      <span i18n>Reservation location is in the {{timezone}} timezone</span>
-    </div>
+    @if (pickupLibraryUsesDifferentTz) {
+      <div
+        role="alert"
+        class="alert alert-info">
+        <span class="material-icons" aria-hidden="true">access_time</span>
+        <span i18n>Reservation location is in the {{timezone}} timezone</span>
+      </div>
+    }
     <div class="form-group row">
       <label class="form-label col-form-label col-lg-4 text-end fw-bold"
-        i18n for="create-resource">Resource</label>
+      i18n for="create-resource">Resource</label>
       <div class="col-lg-8">
-        <input *ngIf="targetResource && targetResourceBarcode" id="create-resource" value="{{targetResourceBarcode}}" disabled>
-        <eg-combobox
-          formControlName="resourceList"
-          *ngIf="!(targetResource && targetResourceBarcode)"
-          startId="any">
-          <eg-combobox-entry entryId="any" entryLabel="Any resource"
+        @if (targetResource && targetResourceBarcode) {
+          <input id="create-resource" value="{{targetResourceBarcode}}" disabled>
+        }
+        @if (!(targetResource && targetResourceBarcode)) {
+          <eg-combobox
+            formControlName="resourceList"
+            startId="any">
+            <eg-combobox-entry entryId="any" entryLabel="Any resource"
             i18n-entryLabel></eg-combobox-entry>
-          <eg-combobox-entry *ngFor="let r of resources" entryId="{{r.id()}}" entryLabel="{{r.barcode()}}">
-          </eg-combobox-entry>
-        </eg-combobox>
+            @for (r of resources; track r) {
+              <eg-combobox-entry entryId="{{r.id()}}" entryLabel="{{r.barcode()}}">
+              </eg-combobox-entry>
+            }
+          </eg-combobox>
+        }
       </div>
     </div>
     <div class="form-group row">
       <label class="form-label col-form-label col-lg-4 text-end fw-bold"
-        i18n for="create-email-notify">Notify by email?</label>
-        <div class="col-lg-8">
-          <input type="checkbox" formControlName="emailNotify">
-        </div>
-      
+      i18n for="create-email-notify">Notify by email?</label>
+      <div class="col-lg-8">
+        <input type="checkbox" formControlName="emailNotify">
+      </div>
+
     </div>
     <div class="form-group row">
       <label class="form-label col-form-label col-lg-4 text-end fw-bold"
-        i18n for="create-note">Note</label>
+      i18n for="create-note">Note</label>
       <div class="col-lg-8">
         <input type="text" id="create-note"
           class="form-control" formControlName="note">

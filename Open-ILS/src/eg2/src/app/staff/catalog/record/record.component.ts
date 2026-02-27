@@ -24,6 +24,7 @@ import { HoldsGridComponent } from '@eg/staff/share/holds/grid.component';
 import { PartsComponent } from './parts.component';
 import { ConjoinedComponent } from './conjoined.component';
 import { CnBrowseResultsComponent } from '../cnbrowse/results.component';
+import { FastAddSelectorComponent } from '@eg/staff/share/marc-edit/fast-add-selector.component';
 
 @Component({
     selector: 'eg-catalog-record',
@@ -36,6 +37,7 @@ import { CnBrowseResultsComponent } from '../cnbrowse/results.component';
         ConjoinedComponent,
         CopiesComponent,
         ConfirmDialogComponent,
+        FastAddSelectorComponent,
         HoldsGridComponent,
         HoldingsMaintenanceComponent,
         MarcEditorComponent,

@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
-import {ActivatedRoute, ParamMap} from '@angular/router';
+import {ActivatedRoute, ParamMap, RouterModule} from '@angular/router';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';
@@ -23,7 +23,6 @@ import {WorkLogService} from '@eg/staff/share/worklog/worklog.service';
 import {getI18nString} from '@eg/share/util/i18ns';
 import {StoreService} from '@eg/core/store.service';
 import {firstValueFrom, lastValueFrom, tap, toArray} from 'rxjs';
-import { StaffCommonModule } from '@eg/staff/common.module';
 import { WorkLogStringsComponent } from '@eg/staff/share/worklog/strings.component';
 import { OrgSelectComponent } from '@eg/share/org-select/org-select.component';
 import { CommonModule } from '@angular/common';
@@ -122,6 +121,7 @@ class HoldContext {
         FormsModule,
         OrgSelectComponent,
         PatronSearchDialogComponent,
+        RouterModule,
         WorkLogStringsComponent,
     ]
 })

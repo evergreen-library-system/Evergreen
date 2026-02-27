@@ -3,13 +3,11 @@ import {Observable, of, from, Subscription, tap, catchError, switchMap} from 'rx
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
 import {PermService} from '@eg/core/perm.service';
-import {ServerStoreService} from '@eg/core/server-store.service';
 import {AuthService} from '@eg/core/auth.service';
 import {NetService} from '@eg/core/net.service';
 import {EventService} from '@eg/core/event.service';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {PcrudService} from '@eg/core/pcrud.service';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {StringComponent} from '@eg/share/string/string.component';
 import {ComboboxComponent, ComboboxEntry} from '@eg/share/combobox/combobox.component';
@@ -17,6 +15,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { DepthSelectComponent } from '@eg/share/depth-select/depth-select.component';
 import { FormatValuePipe } from '@eg/core/format.service';
+import { ProgressInlineComponent } from '@eg/share/dialog/progress-inline.component';
 
 /**
  * Dialog container for patron note (penalty/message) application
@@ -31,20 +30,19 @@ import { FormatValuePipe } from '@eg/core/format.service';
     imports: [
         ComboboxComponent,
         CommonModule,
+        DepthSelectComponent,
         FormatValuePipe,
         FormsModule,
-        DepthSelectComponent,
+        ProgressInlineComponent,
         StringComponent
     ]
 })
 
 export class PatronNoteDialogComponent
     extends DialogComponent implements OnInit, OnDestroy {
-    private modal: NgbModal;
     private idl = inject(IdlService);
     private org = inject(OrgService);
     private net = inject(NetService);
-    private store = inject(ServerStoreService);
     private evt = inject(EventService);
     private toast = inject(ToastService);
     private auth = inject(AuthService);
@@ -90,14 +88,6 @@ export class PatronNoteDialogComponent
 
     @ViewChild('successMsg', {static: false}) successMsg: StringComponent;
     @ViewChild('errorMsg', {static: false}) errorMsg: StringComponent;
-
-    constructor() {
-        const modal = inject(NgbModal);
-
-        super(modal);
-
-        this.modal = modal;
-    }
 
     private subscription: Subscription;
 

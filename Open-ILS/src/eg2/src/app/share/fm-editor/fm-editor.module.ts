@@ -6,7 +6,6 @@ import {StringModule} from '@eg/share/string/string.module';
 import {FmRecordEditorComponent} from './fm-editor.component';
 import {FmRecordEditorActionComponent} from './fm-editor-action.component';
 import { TranslateComponent } from '../translate/translate.component';
-import { MaxValidatorDirective, MinValidatorDirective } from './validators.directive';
 
 
 @NgModule({
@@ -14,8 +13,6 @@ import { MaxValidatorDirective, MinValidatorDirective } from './validators.direc
         EgCommonModule,
         FmRecordEditorComponent,
         FmRecordEditorActionComponent,
-        MaxValidatorDirective,
-        MinValidatorDirective,
         StaffCommonModule,
         StringModule,
         TranslateComponent,

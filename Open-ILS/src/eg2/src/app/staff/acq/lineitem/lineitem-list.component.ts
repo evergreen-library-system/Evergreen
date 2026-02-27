@@ -37,6 +37,8 @@ import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { LineitemCopyAttrsComponent } from './copy-attrs.component';
+import { LineitemOrderSummaryComponent } from './order-summary.component';
+import { LineitemNotesComponent } from './notes.component';
 
 const DELETABLE_STATES = [
     'new', 'selector-ready', 'order-ready', 'approved', 'pending-order'
@@ -80,6 +82,8 @@ const SORT_ORDER_MAP = {
         FormsModule,
         LineitemAlertDialogComponent,
         LineitemCopyAttrsComponent,
+        LineitemNotesComponent,
+        LineitemOrderSummaryComponent,
         LinkInvoiceDialogComponent,
         ManageClaimsDialogComponent,
         NgbDropdownModule,

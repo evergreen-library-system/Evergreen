@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild, inject } from '@angular/core';
-import {CommonModule, Location} from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import {Observable, Observer, of, from, concatMap} from 'rxjs';
 import {IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
@@ -30,6 +30,7 @@ import {HoldCopyLocationsDialogComponent} from './copy-locations-dialog.componen
 import { GridModule } from '@eg/share/grid/grid.module';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { HoldDetailComponent } from './detail.component';
 
 /** Holds grid with access to detail page and other actions */
 
@@ -42,6 +43,7 @@ import { RouterModule } from '@angular/router';
         ConfirmDialogComponent,
         FormsModule,
         GridModule,
+        HoldDetailComponent,
         HoldCancelDialogComponent,
         HoldCopyLocationsDialogComponent,
         HoldManageDialogComponent,

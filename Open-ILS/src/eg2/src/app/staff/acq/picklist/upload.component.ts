@@ -1,6 +1,6 @@
 /* eslint-disable */
 import { Component, AfterViewInit, Input, ViewChild, OnDestroy, inject } from '@angular/core';
-import {Router, ActivatedRoute} from '@angular/router';
+import {Router, ActivatedRoute, RouterModule} from '@angular/router';
 import {tap} from 'rxjs/operators';
 import {IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
@@ -21,8 +21,9 @@ import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
 import {ServerStoreService} from '@eg/core/server-store.service';
 import {PicklistUploadService} from './upload.service';
 import { StaffBannerComponent } from '@eg/staff/share/staff-banner.component';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
+import { OrgSelectComponent } from '@eg/share/org-select/org-select.component';
 
 
 const TEMPLATE_SETTING_NAME = 'eg.acq.picklist.upload.templates';
@@ -65,14 +66,15 @@ const ORG_SETTINGS = [
     selector: 'eg-acq-upload',
     templateUrl: './upload.component.html',
     imports: [
-        AlertDialogComponent,
-        ComboboxComponent,
-        CommonModule,
-        FormsModule,
-        ProgressInlineComponent,
-        StaffBannerComponent,
-        StringComponent
-    ]
+    AlertDialogComponent,
+    ComboboxComponent,
+    FormsModule,
+    OrgSelectComponent,
+    ProgressInlineComponent,
+    RouterModule,
+    StaffBannerComponent,
+    StringComponent
+]
 })
 export class UploadComponent implements AfterViewInit, OnDestroy {
     private http = inject(HttpClient);

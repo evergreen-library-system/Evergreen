@@ -1,56 +1,52 @@
 
 <div id="scko-banner" class="pb-2">
-	<header id="scko-logo-div">
-		<img src="/images/self_eg_logo.png" alt="Evergreen self-checkout"/>
+  <header id="scko-logo-div">
+    <img src="/images/self_eg_logo.png" alt="Evergreen self-checkout"/>
   </header>
   <div class="scko-scan-container mt-3">
-    <main *ngIf="scko.auth.user() && !scko.patronSummary">
-      <div id="scko-scan-input-text" i18n>
+    @if (scko.auth.user() && !scko.patronSummary) {
+      <main>
+        <div id="scko-scan-input-text" i18n>
         Please log in with your username or library barcode.
       </div>
-      <div class="d-flex mt-3 mb-3">
-        <div class="flex-1"></div>
-        <div>
-          <form (ngSubmit)="submitPatronLogin()" #patronLoginForm="ngForm"
-            autocomplete="off" class="form-validated">
-
-            <label class="visually-hidden" for="patron-username" i18n>Username</label>
-
-            <input type="text" class="form-control border border-dark shadow-rounded mb-3" 
-              (keyup.enter)="submitPatronLogin()"
-              autocomplete="off" id="patron-username" required 
-              [(ngModel)]="patronUsername" name="patron-username"
-              placeholder="Username or Barcode" i18n-placeholder>
-
-            <ng-container *ngIf="scko.patronPasswordRequired">
-              <label class="visually-hidden" for="patron-password" i18n>Password</label>
-              <eg-credential-input domId="patron-password"
-                name="patron-password"
-                [(ngModel)]="patronPassword"
-                (keyup.enter)="submitPatronLogin()">
-              </eg-credential-input>
-            </ng-container>
-          </form>
+        <div class="d-flex mt-3 mb-3">
+          <div class="flex-1"></div>
+          <div>
+            <form (ngSubmit)="submitPatronLogin()" #patronLoginForm="ngForm"
+              autocomplete="off" class="form-validated">
+              <label class="visually-hidden" for="patron-username" i18n>Username</label>
+              <input type="text" class="form-control border border-dark shadow-rounded mb-3"
+                (keyup.enter)="submitPatronLogin()"
+                autocomplete="off" id="patron-username" required
+                [(ngModel)]="patronUsername" name="patron-username"
+                placeholder="Username or Barcode" i18n-placeholder>
+              @if (scko.patronPasswordRequired) {
+                <label class="visually-hidden" for="patron-password" i18n>Password</label>
+                <eg-credential-input domId="patron-password"
+                  name="patron-password"
+                  [(ngModel)]="patronPassword"
+                  (keyup.enter)="submitPatronLogin()">
+                </eg-credential-input>
+              }
+            </form>
+          </div>
+          <div class="flex-1"></div>
         </div>
-        <div class="flex-1"></div>
-      </div>
-    </main>
+      </main>
+    }
 
-    <ng-container *ngIf="scko.patronSummary">
+    @if (scko.patronSummary) {
       <div id="scko-scan-input-text" i18n>Please enter an item barcode</div>
       <div class="d-flex mt-3 mb-3">
         <div class="flex-1"></div>
         <div>
           <form (ngSubmit)="submitItemBarcode()" #barcodeForm="ngForm"
             autocomplete="off" class="form-validated form-inline">
-
             <label class="visually-hidden" for="item-barcode" i18n>Item Barcode</label>
-
-            <input type="text" class="form-control border border-dark shadow-rounded" 
-              autocomplete="off" id="item-barcode" required 
+            <input type="text" class="form-control border border-dark shadow-rounded"
+              autocomplete="off" id="item-barcode" required
               [(ngModel)]="itemBarcode" name="item-barcode"
               placeholder="Item Barcode..." i18n-placeholder>
-
           </form>
         </div>
         <div class="flex-1 d-flex">
@@ -61,76 +57,81 @@
           </div>
         </div>
       </div>
-    </ng-container>
+    }
 
   </div>
 </div>
 
-<main *ngIf="!scko.auth.user()" class="container mt-3">
-
-  <div class="col-lg-6 offset-lg-3">
-    <fieldset>
-      <legend class="mb-0" i18n><h1>Self-Checkout Staff Login</h1></legend>
-      <hr class="mt-1"/>
-      <form (ngSubmit)="submitStaffLogin()" #staffLoginForm="ngForm" class="form-validated">
-
-        <div class="form-group row p-0 g-0">
-          <label class="col-lg-4 text-end fw-bold" 
+@if (!scko.auth.user()) {
+  <main class="container mt-3">
+    <div class="col-lg-6 offset-lg-3">
+      <fieldset>
+        <legend class="mb-0" i18n><h1>Self-Checkout Staff Login</h1></legend>
+        <hr class="mt-1"/>
+        <form (ngSubmit)="submitStaffLogin()" #staffLoginForm="ngForm" class="form-validated">
+          <div class="form-group row p-0 g-0">
+            <label class="col-lg-4 text-end fw-bold"
             for="staff-username" i18n>Username</label>
-          <input 
-            type="text" 
-            class="form-control col-lg-8"
-            id="staff-username" 
-            name="staff-username"
-            required
-            autocomplete="username"
-            i18n-placeholder
-            placeholder="Staff Username" 
-            [(ngModel)]="staffUsername"/>
-        </div>
-
-        <div class="form-group row mt-3">
-          <label class="col-lg-4 text-end fw-bold" 
-            for="staff-password" i18n>Password</label>
-          <eg-credential-input domId="staff-password" name="staff-password"
-            [(ngModel)]="staffPassword"></eg-credential-input>
-        </div>
-
-        <div class="form-group row p-0 g-0 mt-3" *ngIf="workstations && workstations.length">
-          <label class="col-lg-4 text-end fw-bold" 
-            for="workstation" i18n>Workstation</label>
-          <select 
-            class="form-control col-lg-8" 
-            id="workstation" 
-            name="workstation"
-            required
-            [(ngModel)]="staffWorkstation">
-            <option *ngFor="let ws of workstations" [value]="ws.name">
-              {{ws.name}}
-            </option>
-          </select>
-        </div>
-
-        <div class="row mt-3">
-          <div class="col-lg-2 offset-lg-4 ps-0">
-            <button type="submit" class="btn btn-outline-dark" i18n>Log in</button>
+            <input
+              type="text"
+              class="form-control col-lg-8"
+              id="staff-username"
+              name="staff-username"
+              required
+              autocomplete="username"
+              i18n-placeholder
+              placeholder="Staff Username"
+              [(ngModel)]="staffUsername"/>
           </div>
-          <div class="col-lg-3">
-            <a href="/eg/staff/admin/workstation/workstations" i18n>
+          <div class="form-group row mt-3">
+            <label class="col-lg-4 text-end fw-bold"
+            for="staff-password" i18n>Password</label>
+            <eg-credential-input domId="staff-password" name="staff-password"
+            [(ngModel)]="staffPassword"></eg-credential-input>
+          </div>
+          @if (workstations && workstations.length) {
+            <div class="form-group row p-0 g-0 mt-3">
+              <label class="col-lg-4 text-end fw-bold"
+              for="workstation" i18n>Workstation</label>
+              <select
+                class="form-control col-lg-8"
+                id="workstation"
+                name="workstation"
+                required
+                [(ngModel)]="staffWorkstation">
+                @for (ws of workstations; track ws) {
+                  <option [value]="ws.name">
+                    {{ws.name}}
+                  </option>
+                }
+              </select>
+            </div>
+          }
+          <div class="row mt-3">
+            <div class="col-lg-2 offset-lg-4 ps-0">
+              <button type="submit" class="btn btn-outline-dark" i18n>Log in</button>
+            </div>
+            <div class="col-lg-3">
+              <a href="/eg/staff/admin/workstation/workstations" i18n>
               Manage Workstations
             </a>
-          </div>
-          <div class="col-lg-3">
-            <div *ngIf="staffLoginFailed" class="badge badge-warning p-2" i18n>Login Failed</div>
-            <div *ngIf="missingRequiredWorkstation">
-              <span i18n>Workstations are required.</span>
-              <a href="/eg/staff/admin/workstation/workstations" i18n>
+            </div>
+            <div class="col-lg-3">
+              @if (staffLoginFailed) {
+                <div class="badge badge-warning p-2" i18n>Login Failed</div>
+              }
+              @if (missingRequiredWorkstation) {
+                <div>
+                  <span i18n>Workstations are required.</span>
+                  <a href="/eg/staff/admin/workstation/workstations" i18n>
                 Please configure a workstation.
               </a>
+                </div>
+              }
             </div>
           </div>
-        </div>
-      </form>
-    </fieldset>
-  </div>
-</main>
+        </form>
+      </fieldset>
+    </div>
+  </main>
+}

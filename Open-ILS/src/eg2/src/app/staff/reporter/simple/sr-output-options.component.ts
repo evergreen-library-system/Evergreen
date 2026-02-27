@@ -1,20 +1,16 @@
-import { Component, Input, inject } from '@angular/core';
-import {IdlService} from '@eg/core/idl.service';
-import {ReporterService, SRTemplate} from '../share/reporter.service';
+import { Component, Input } from '@angular/core';
+import {SRTemplate} from '../share/reporter.service';
 import moment from 'moment-timezone';
 import { StaffCommonModule } from '@eg/staff/common.module';
+import { TreeModule } from '@eg/share/tree/tree.module';
 
 @Component({
     selector: 'eg-sr-output-options',
     templateUrl: './sr-output-options.component.html',
-    imports: [StaffCommonModule]
+    imports: [StaffCommonModule, TreeModule]
 })
 
 export class SROutputOptionsComponent {
-    private idl = inject(IdlService);
-    private srSvc = inject(ReporterService);
-
-
     @Input() templ: SRTemplate;
     @Input() readyToSchedule: () => boolean;
     @Input() saveTemplate: (args: any) => void;

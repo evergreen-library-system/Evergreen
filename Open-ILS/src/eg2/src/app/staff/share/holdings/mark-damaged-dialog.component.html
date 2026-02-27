@@ -6,29 +6,30 @@
     <h4 class="modal-title">
       <span i18n>Mark Item Damaged</span>
     </h4>
-    <button type="button" class="btn-close btn-close-white" 
-      i18n-aria-label aria-label="Close dialog" (click)="close(false)"> </button>
+    <button type="button" class="btn-close btn-close-white"
+    i18n-aria-label aria-label="Close dialog" (click)="close(false)"> </button>
   </div>
   <div class="modal-body">
     <div class="row">
-        <div class="col-lg-1" i18n>Barcode:</div>
-        <div class="col-lg-11 fw-bold">{{copy.barcode()}}</div>
+      <div class="col-lg-1" i18n>Barcode:</div>
+      <div class="col-lg-11 fw-bold">{{copy.barcode()}}</div>
     </div>
     <div class="row">
       <div class="col-lg-1" i18n>Title:</div>
       <div class="col-lg-11">{{bibSummary.display.title}}</div>
     </div>
     <div class="row">
-        <div class="col-lg-1" i18n>Author:</div>
-        <div class="col-lg-11">{{bibSummary.display.author}}</div>
+      <div class="col-lg-1" i18n>Author:</div>
+      <div class="col-lg-11">{{bibSummary.display.author}}</div>
     </div>
-    <div class="card mt-3" *ngIf="chargeResponse">
-      <div class="card-header" i18n>
+    @if (chargeResponse) {
+      <div class="card mt-3">
+        <div class="card-header" i18n>
         Item was previously checked out
       </div>
-      <div class="card-body">
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item" i18n>
+        <div class="card-body">
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item" i18n>
             Item was last checked out by patron
             <a href="/eg/staff/circ/patron/{{chargeResponse.circ.usr().id()}}/checkout">
               {{chargeResponse.circ.usr().family_name()}},
@@ -36,71 +37,72 @@
               ({{chargeResponse.circ.usr().usrname()}})
             </a>.
           </li>
-          <li class="list-group-item" i18n>
+            <li class="list-group-item" i18n>
             Item was due
             {{chargeResponse.circ.due_date() | formatValue:'timestamp'}} 
             and returned 
             {{chargeResponse.circ.checkin_time() | date:'MM/dd/yy H:mm a'}}.
           </li>
-          <li class="list-group-item">
-            <span i18n>
+            <li class="list-group-item">
+              <span i18n>
               Calculated fine amount is 
               <span class="badge badge-danger fs-6">
                 {{chargeResponse.charge | currency}}
               </span>
             </span>
-          </li>
-          <ng-container *ngIf="amountChangeRequested">
-            <li class="list-group-item">
-              <div class="row">
-                <label class="col-lg-3 col-form-label" for="billingType" i18n>Billing Type</label>
-                <div class="col-lg-6">
-                  <eg-combobox 
-                    placeholder="Billing Type..." i18n-placeholder
-                    (onChange)="newBtype = $event.id" domId="billingType"
+            </li>
+            @if (amountChangeRequested) {
+              <li class="list-group-item">
+                <div class="row">
+                  <label class="col-lg-3 col-form-label" for="billingType" i18n>Billing Type</label>
+                  <div class="col-lg-6">
+                    <eg-combobox
+                      placeholder="Billing Type..." i18n-placeholder
+                      (onChange)="newBtype = $event.id" domId="billingType"
                     [entries]="billingTypes"></eg-combobox>
+                  </div>
                 </div>
-              </div>  
-            </li>
-            <li class="list-group-item">
-              <div class="row">
-                <label class="col-lg-3 col-form-label" for="newCharge" i18n>Charge Amount</label>
-                <div class="col-lg-6">
-                  <input class="form-control" type="number" step="0.01" min="0"
-                  [(ngModel)]="newCharge"/>
+              </li>
+              <li class="list-group-item">
+                <div class="row">
+                  <label class="col-lg-3 col-form-label" for="newCharge" i18n>Charge Amount</label>
+                  <div class="col-lg-6">
+                    <input class="form-control" type="number" step="0.01" min="0"
+                      [(ngModel)]="newCharge"/>
+                  </div>
                 </div>
-              </div>  
-            </li>
-            <li class="list-group-item">
-              <div class="row">
-                <label class="col-lg-3 col-form-label" for="newNote" i18n>Note</label>
-                <div class="col-lg-6">
-                  <textarea class="form-control" rows="3"
+              </li>
+              <li class="list-group-item">
+                <div class="row">
+                  <label class="col-lg-3 col-form-label" for="newNote" i18n>Note</label>
+                  <div class="col-lg-6">
+                    <textarea class="form-control" rows="3"
                     [(ngModel)]="newNote" id="newNote"></textarea>
+                  </div>
                 </div>
-              </div>  
-            </li>
-          </ng-container><!-- amount change requested -->
-        </ul>
-      </div>
+              </li>
+              }<!-- amount change requested -->
+            </ul>
+          </div>
+        </div>
+      }
     </div>
-  </div>
-  <div class="modal-footer">
-    <ng-container *ngIf="!chargeResponse">
-      <button type="button" class="btn btn-normal" 
+    <div class="modal-footer">
+      @if (!chargeResponse) {
+        <button type="button" class="btn btn-normal"
         (click)="close(false)" i18n>Cancel</button>
-      <button type="button" class="btn btn-success" 
+        <button type="button" class="btn btn-success"
         (click)="markDamaged({})" i18n>Mark Damaged</button>
-    </ng-container>
-    <ng-container *ngIf="chargeResponse">
-      <button type="button" class="btn btn-normal" 
+      }
+      @if (chargeResponse) {
+        <button type="button" class="btn btn-normal"
         (click)="close(false)" i18n>Cancel</button>
-      <button type="button" class="btn btn-info me-2" 
+        <button type="button" class="btn btn-info me-2"
         (click)="amountChangeRequested = true" i18n>Change Amount</button>
-      <button type="button" class="btn btn-secondary me-2" 
+        <button type="button" class="btn btn-secondary me-2"
         (click)="markDamaged({apply_fines:'noapply'})" i18n>No Charge</button>
-      <button type="button" class="btn btn-success me-2" 
+        <button type="button" class="btn btn-success me-2"
         (click)="markDamaged({apply_fines:'apply'})" i18n>OK</button>
-    </ng-container>
-  </div>
-</ng-template>
+      }
+    </div>
+  </ng-template>

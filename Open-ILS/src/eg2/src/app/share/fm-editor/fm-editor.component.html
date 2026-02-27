@@ -10,257 +10,265 @@
 </eg-confirm-dialog>
 
 <ng-template #dialogContent>
-  <div class="modal-header" *ngIf="!hideBanner">
-    <h4 class="modal-title" i18n>Record Editor: {{recordLabel}}</h4>
-    <ng-container *ngIf="isDialog()">
-      <button type="button" class="btn-close btn-close-white" 
-        i18n-title title="Close"
+  @if (!hideBanner) {
+    <div class="modal-header">
+      <h4 class="modal-title" i18n>Record Editor: {{recordLabel}}</h4>
+      @if (isDialog()) {
+        <button type="button" class="btn-close btn-close-white"
+          i18n-title title="Close"
         i18n-aria-label aria-label="Close dialog" (click)="closeEditor()"></button>
-    </ng-container>
-  </div>
+      }
+    </div>
+  }
   <div class="modal-body">
     <form #fmEditForm="ngForm" [ngClass]="idlClass"
-          class="form-validated common-form striped-odd"
-          [egDateFieldOrderList]="dateFieldOrderList">
-      <ng-container *ngIf="!record">
+      class="form-validated common-form striped-odd"
+      [egDateFieldOrderList]="dateFieldOrderList">
+      @if (!record) {
         <!-- display a progress dialog while the editor
-            fetches the needed data -->
+        fetches the needed data -->
         <eg-progress-inline></eg-progress-inline>
-      </ng-container>
-      <ng-container *ngIf="record">
-      <div role="alert" class="alert alert-danger" *ngIf="fmEditForm.errors?.['datesOutOfOrder'] && (fmEditForm.touched || fmEditForm.dirty)">
-        <span class="material-icons" aria-hidden="true">error</span>
-        <span i18n class="visually-hidden">Error: </span>
-        <span i18n>Dates must be in the correct order</span>
-      </div>
-
-      <ng-container *ngFor="let field of fields">
-      <div class="form-group row" [ngClass]="field.name">
-        <div class="col-lg-3">
-
-          <label *ngIf="inputType(field) !== 'template'" class="form-label" for="{{idPrefix}}-{{field.name}}">{{field.label}}</label>
-          <label *ngIf="inputType(field) === 'template'" class="form-label" for="{{field.idlClass}}-{{field.name}}">{{field.label}}</label>
-          <eg-help-popover placement="end" *ngIf="field.helpText" helpText="{{field.helpTextValue}}"></eg-help-popover>
-        </div>
-        <div class="col-lg-9 pe-0">
-          <div class="fm-form-input-and-help">
-            <div class="form-text" id="{{idPrefix}}-{{field.name}}-help" *ngIf="field.helpText">
-              {{field.helpTextValue}}
+      }
+      @if (record) {
+        @if (fmEditForm.errors?.['datesOutOfOrder'] && (fmEditForm.touched || fmEditForm.dirty)) {
+          <div role="alert" class="alert alert-danger">
+            <span class="material-icons" aria-hidden="true">error</span>
+            <span i18n class="visually-hidden">Error: </span>
+            <span i18n>Dates must be in the correct order</span>
+          </div>
+        }
+        @for (field of fields; track field) {
+          <div class="form-group row" [ngClass]="field.name">
+            <div class="col-lg-3">
+              @if (inputType(field) !== 'template') {
+                <label class="form-label" for="{{idPrefix}}-{{field.name}}">{{field.label}}</label>
+              }
+              @if (inputType(field) === 'template') {
+                <label class="form-label" for="{{field.idlClass}}-{{field.name}}">{{field.label}}</label>
+              }
+              @if (field.helpText) {
+                <eg-help-popover placement="end" helpText="{{field.helpTextValue}}"></eg-help-popover>
+              }
             </div>
-            <div class="fm-form-input">
-              <ng-container [ngSwitch]="inputType(field)">
-
-                <ng-container *ngSwitchCase="'template'">
-                  <ng-container
-                    *ngTemplateOutlet="field.template; context:customTemplateFieldContext(field)">
-                  </ng-container>
-                </ng-container>
-
-                <ng-container *ngSwitchCase="'readonly'">
-                  <span>{{record[field.name]()}}</span>
-                </ng-container>
-
-                <ng-container *ngSwitchCase="'readonly-money'">
-                  <span>{{record[field.name]() | currency}}</span>
-                </ng-container>
-
-                <ng-container *ngSwitchCase="'readonly-list'">
-                  <ng-container *ngIf="field.linkedValues && field.linkedValues[0]?.label">
-                    <span>{{field.linkedValues[0].label}}</span>
-                  </ng-container>
-                </ng-container>
-
-                <ng-container *ngSwitchCase="'timestamp'">
-                  <eg-date-select
-                    domId="{{idPrefix}}-{{field.name}}"
-                    [attr.aria-describedby]="field.helpText ? idPrefix+'-'+field.name+'-help' : null"
-                    [readOnly]="field.readOnly"
-                    [required]="field.isRequired()"
-                    [ngModel]="record[field.name]()"
-                    name="{{field.name}}"
-                    (onChangeAsIso)="record[field.name]($event)"
-                    initialIso="{{record[field.name]()}}">
-                  </eg-date-select>
-                </ng-container>
-
-                <ng-container *ngSwitchCase="'timestamp-timepicker'">
-                  <eg-datetime-select
-                    [showTZ]="timezone"
-                    [timezone]="timezone"
-                    domId="{{idPrefix}}-{{field.name}}"
-                    [attr.aria-describedby]="field.helpText ? idPrefix+'-'+field.name+'-help' : null"
-                    (onChangeAsIso)="record[field.name]($event)"
-                    i18n-validatorError
-                    [readOnly]="field.readOnly"
-                    [required]="field.isRequired()"
-                    [ngModel]="record[field.name]()"
-                    name="{{field.name}}"
-                    initialIso="{{record[field.name]()}}">
-                  </eg-datetime-select>
-                </ng-container>
-
-                <ng-container *ngSwitchCase="'org_unit'">
-                  <eg-org-select
-                    [domId]="idPrefix+'-'+field.name"
-                    [attr.aria-describedby]="field.helpText ? idPrefix+'-'+field.name+'-help' : null"
-                    persistKey="{{field.persistKey}}"
-                    [limitPerms]="modePerms[mode]"
-                    [readOnly]="field.readOnly"
-                    [required]="field.isRequired()"
-                    [applyDefault]="field.orgDefaultAllowed"
-                    [applyOrgId]="record[field.name]()"
-                    (onChange)="record[field.name]($event)">
-                  </eg-org-select>
-                </ng-container>
-
-                <ng-container *ngSwitchCase="'money'">
-                  <input
-                    class="form-control"
-                    type="number" step="0.1"
-                    name="{{field.name}}"
-                    id="{{idPrefix}}-{{field.name}}"
-                    [attr.aria-describedby]="field.helpText ? idPrefix+'-'+field.name+'-help' : null"
-                    [readonly]="field.readOnly"
-                    [required]="field.isRequired()"
-                    [ngModel]="record[field.name]()"
-                    (ngModelChange)="record[field.name]($event)"/>
-                </ng-container>
-
-                <ng-container *ngSwitchCase="'int'">
-                  <input
-                    class="form-control"
-                    type="number"
-                    name="{{field.name}}"
-                    id="{{idPrefix}}-{{field.name}}"
-                    [attr.aria-describedby]="field.helpText ? idPrefix+'-'+field.name+'-help' : null"
-                    [required]="field.isRequired()"
-                    egMin="{{field.min}}"
-                    egMax="{{field.max}}"
-                    [ngModel]="record[field.name]()"
-                    (ngModelChange)="record[field.name]($event)"/>
-                </ng-container>
-
-                <ng-container *ngSwitchCase="'float'">
-                  <input
-                    class="form-control"
-                    type="number" step="0.1"
-                    name="{{field.name}}"
-                    id="{{idPrefix}}-{{field.name}}"
-                    [attr.aria-describedby]="field.helpText ? idPrefix+'-'+field.name+'-help' : null"
-                    [required]="field.isRequired()"
-                    [ngModel]="record[field.name]()"
-                    (ngModelChange)="record[field.name]($event)"/>
-                </ng-container>
-
-                <ng-container *ngSwitchCase="'text'">
-                  <div class="input-group">
-                  <input
-                    class="form-control"
-                    id="{{idPrefix}}-{{field.name}}" name="{{field.name}}"
-                    [attr.aria-describedby]="field.helpText ? idPrefix+'-'+field.name+'-help' : null"
-                    type="text" pattern="[\s\S]*\S[\s\S]*"
-                    [required]="field.isRequired()"
-                    [ngModel]="record[field.name]()"
-                    (ngModelChange)="record[field.name]($event)"/>
-                    <button type="button" *ngIf="field.i18n && !field.readOnly" 
-                      [ngClass]="(field.i18n && !field.readOnly) ? 'input-group-text' : null"
-                      (click)="openTranslator(field.name)"
-                      i18n-title title="Translate" i18n-aria-label aria-label="Translate">
-                      <span class="material-icons text-info" aria-hidden="true">translate</span>
+            <div class="col-lg-9 pe-0">
+              <div class="fm-form-input-and-help">
+                @if (field.helpText) {
+                  <div class="form-text" id="{{idPrefix}}-{{field.name}}-help">
+                    {{field.helpTextValue}}
+                  </div>
+                }
+                <div class="fm-form-input">
+                  @switch (inputType(field)) {
+                    @case ('template') {
+                      <ng-container
+                        *ngTemplateOutlet="field.template; context:customTemplateFieldContext(field)">
+                      </ng-container>
+                    }
+                    @case ('readonly') {
+                      <span>{{record[field.name]()}}</span>
+                    }
+                    @case ('readonly-money') {
+                      <span>{{record[field.name]() | currency}}</span>
+                    }
+                    @case ('readonly-list') {
+                      @if (field.linkedValues && field.linkedValues[0]?.label) {
+                        <span>{{field.linkedValues[0].label}}</span>
+                      }
+                    }
+                    @case ('timestamp') {
+                      <eg-date-select
+                        domId="{{idPrefix}}-{{field.name}}"
+                        [attr.aria-describedby]="field.helpText ? idPrefix+'-'+field.name+'-help' : null"
+                        [readOnly]="field.readOnly"
+                        [required]="field.isRequired()"
+                        [ngModel]="record[field.name]()"
+                        name="{{field.name}}"
+                        (onChangeAsIso)="record[field.name]($event)"
+                        initialIso="{{record[field.name]()}}">
+                      </eg-date-select>
+                    }
+                    @case ('timestamp-timepicker') {
+                      <eg-datetime-select
+                        [showTZ]="timezone"
+                        [timezone]="timezone"
+                        domId="{{idPrefix}}-{{field.name}}"
+                        [attr.aria-describedby]="field.helpText ? idPrefix+'-'+field.name+'-help' : null"
+                        (onChangeAsIso)="record[field.name]($event)"
+                        i18n-validatorError
+                        [readOnly]="field.readOnly"
+                        [required]="field.isRequired()"
+                        [ngModel]="record[field.name]()"
+                        name="{{field.name}}"
+                        initialIso="{{record[field.name]()}}">
+                      </eg-datetime-select>
+                    }
+                    @case ('org_unit') {
+                      <eg-org-select
+                        [domId]="idPrefix+'-'+field.name"
+                        [attr.aria-describedby]="field.helpText ? idPrefix+'-'+field.name+'-help' : null"
+                        persistKey="{{field.persistKey}}"
+                        [limitPerms]="modePerms[mode]"
+                        [readOnly]="field.readOnly"
+                        [required]="field.isRequired()"
+                        [applyDefault]="field.orgDefaultAllowed"
+                        [applyOrgId]="record[field.name]()"
+                        (onChange)="record[field.name]($event)">
+                      </eg-org-select>
+                    }
+                    @case ('money') {
+                      <input
+                        class="form-control"
+                        type="number" step="0.1"
+                        name="{{field.name}}"
+                        id="{{idPrefix}}-{{field.name}}"
+                        [attr.aria-describedby]="field.helpText ? idPrefix+'-'+field.name+'-help' : null"
+                        [readonly]="field.readOnly"
+                        [required]="field.isRequired()"
+                        [ngModel]="record[field.name]()"
+                        (ngModelChange)="record[field.name]($event)"/>
+                    }
+                    @case ('int') {
+                      <input
+                        class="form-control"
+                        type="number"
+                        name="{{field.name}}"
+                        id="{{idPrefix}}-{{field.name}}"
+                        [attr.aria-describedby]="field.helpText ? idPrefix+'-'+field.name+'-help' : null"
+                        [required]="field.isRequired()"
+                        min="{{field.min}}"
+                        max="{{field.max}}"
+                        [ngModel]="record[field.name]()"
+                        (ngModelChange)="record[field.name]($event)"/>
+                    }
+                    @case ('float') {
+                      <input
+                        class="form-control"
+                        type="number" step="0.1"
+                        name="{{field.name}}"
+                        id="{{idPrefix}}-{{field.name}}"
+                        [attr.aria-describedby]="field.helpText ? idPrefix+'-'+field.name+'-help' : null"
+                        [required]="field.isRequired()"
+                        [ngModel]="record[field.name]()"
+                        (ngModelChange)="record[field.name]($event)"/>
+                    }
+                    @case ('text') {
+                      <div class="input-group">
+                        <input
+                          class="form-control"
+                          id="{{idPrefix}}-{{field.name}}" name="{{field.name}}"
+                          [attr.aria-describedby]="field.helpText ? idPrefix+'-'+field.name+'-help' : null"
+                          type="text" pattern="[\s\S]*\S[\s\S]*"
+                          [required]="field.isRequired()"
+                          [ngModel]="record[field.name]()"
+                          (ngModelChange)="record[field.name]($event)"/>
+                        @if (field.i18n && !field.readOnly) {
+                          <button type="button"
+                            [ngClass]="(field.i18n && !field.readOnly) ? 'input-group-text' : null"
+                            (click)="openTranslator(field.name)"
+                            i18n-title title="Translate" i18n-aria-label aria-label="Translate">
+                            <span class="material-icons text-info" aria-hidden="true">translate</span>
+                          </button>
+                        }
+                      </div>
+                    }
+                    @case ('bool') {
+                      <eg-bool-select
+                        name="{{field.name}}"
+                        id="{{idPrefix}}-{{field.name}}"
+                        [attr.aria-describedby]="field.helpText ? idPrefix+'-'+field.name+'-help' : null"
+                        [disabled]="field.readOnly"
+                        [ngModel]="record[field.name]()"
+                        (ngModelChange)="record[field.name]($event)"/>
+                    }
+                    @case ('readonly-au') {
+                      @if (field.linkedValues) {
+                        <a href="/eg/staff/circ/patron/{{field.linkedValues[0].id}}/checkout"
+                          target="_blank" i18n-title title="Open user record in new tab"
+                        i18n-aria-label aria-label="Open user record in new tab">{{field.linkedValues[0].label}}</a>
+                      }
+                    }
+                    @case ('link') {
+                      <eg-combobox
+                        domId="{{idPrefix}}-{{field.name}}" name="{{field.name}}"
+                        [attr.aria-describedby]="field.helpText ? idPrefix+'-'+field.name+'-help' : null"
+                        [required]="field.isRequired()"
+                        [idlClass]="field.class" [asyncSupportsEmptyTermClick]="true"
+                        [idlBaseQuery]="field.idlBaseQuery"
+                        [idlField]="field.selector"
+                        [selectedId]="record[field.name]()"
+                        (onChange)="record[field.name]($event ? $event.id : null)">
+                      </eg-combobox>
+                    }
+                    @case ('list') {
+                      <eg-combobox
+                        domId="{{idPrefix}}-{{field.name}}" name="{{field.name}}"
+                        [attr.aria-describedby]="field.helpText ? idPrefix+'-'+field.name+'-help' : null"
+                        [required]="field.isRequired()"
+                        [entries]="field.linkedValues"
+                        [asyncDataSource]="field.linkedValuesSource"
+                        [selectedId]="record[field.name]()"
+                        (onChange)="record[field.name]($event ? $event.id : null)">
+                      </eg-combobox>
+                    }
+                  }
+                  <!-- switch -->
+                </div>
+                @if (isSafeToNull(field)) {
+                  <div class="fm-form-unset">
+                    <button (click)="setToNull(field)" type="button"
+                      class="btn btn-destroy px-2" title="Unset value of {{field.label}}">
+                      <span class="material-icons" aria-hidden="true">close</span>
+                      <span class="visually-hidden" i18n>Unset value of {{field.label}}</span>
                     </button>
                   </div>
-                </ng-container>
-
-                <ng-container *ngSwitchCase="'bool'">
-                  <eg-bool-select
-                    name="{{field.name}}"
-                    id="{{idPrefix}}-{{field.name}}"
-                    [attr.aria-describedby]="field.helpText ? idPrefix+'-'+field.name+'-help' : null"
-                    [disabled]="field.readOnly"
-                    [ngModel]="record[field.name]()"
-                    (ngModelChange)="record[field.name]($event)"/>
-                </ng-container>
-
-                <ng-container *ngSwitchCase="'readonly-au'">
-                  <ng-container *ngIf="field.linkedValues">
-                    <a href="/eg/staff/circ/patron/{{field.linkedValues[0].id}}/checkout" 
-                    target="_blank" i18n-title title="Open user record in new tab"
-                    i18n-aria-label aria-label="Open user record in new tab">{{field.linkedValues[0].label}}</a>
-                  </ng-container>
-                </ng-container>
-
-                <ng-container *ngSwitchCase="'link'">
-                  <eg-combobox
-                    domId="{{idPrefix}}-{{field.name}}" name="{{field.name}}"
-                    [attr.aria-describedby]="field.helpText ? idPrefix+'-'+field.name+'-help' : null"
-                    [required]="field.isRequired()"
-                    [idlClass]="field.class" [asyncSupportsEmptyTermClick]="true"
-                    [idlBaseQuery]="field.idlBaseQuery"
-                    [idlField]="field.selector"
-                    [selectedId]="record[field.name]()"
-                    (onChange)="record[field.name]($event ? $event.id : null)">
-                  </eg-combobox>
-                </ng-container>
-
-                <ng-container *ngSwitchCase="'list'">
-                  <eg-combobox
-                    domId="{{idPrefix}}-{{field.name}}" name="{{field.name}}"
-                    [attr.aria-describedby]="field.helpText ? idPrefix+'-'+field.name+'-help' : null"
-                    [required]="field.isRequired()"
-                    [entries]="field.linkedValues"
-                    [asyncDataSource]="field.linkedValuesSource"
-                    [selectedId]="record[field.name]()"
-                    (onChange)="record[field.name]($event ? $event.id : null)">
-                  </eg-combobox>
-                </ng-container>
-              </ng-container> <!-- switch -->
-            </div>
-            <div class="fm-form-unset" *ngIf="isSafeToNull(field)">
-              <button (click)="setToNull(field)" type="button" 
-                  class="btn btn-destroy px-2" title="Unset value of {{field.label}}">
-                <span class="material-icons" aria-hidden="true">close</span>
-                <span class="visually-hidden" i18n>Unset value of {{field.label}}</span>
-              </button>
+                }
+              </div>
             </div>
           </div>
-        </div>
-      </div>
-        <ng-container *ngIf="field.append_template">
-          <ng-container
-            *ngTemplateOutlet="field.append_template; context:appendTemplateFieldContext(field)">
-          </ng-container> 
-        </ng-container> 
-      </ng-container>
-      </ng-container>
+          @if (field.append_template) {
+            <ng-container
+              *ngTemplateOutlet="field.append_template; context:appendTemplateFieldContext(field)">
+            </ng-container>
+          }
+        }
+      }
     </form>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn {{action.buttonCss}}"
-      *ngFor="let action of actions" [disabled]="action.disabled"
-      (click)="action.actionClick.emit({action: action.key, record: record})">
-      {{action.label}}
-    </button>
-    <ng-container *ngIf="isDialog()">
-      <button type="button" class="btn btn-success" *ngIf="mode === 'view'"
+    @for (action of actions; track action) {
+      <button type="button" class="btn {{action.buttonCss}}"
+        [disabled]="action.disabled"
+        (click)="action.actionClick.emit({action: action.key, record: record})">
+        {{action.label}}
+      </button>
+    }
+    @if (isDialog()) {
+      @if (mode === 'view') {
+        <button type="button" class="btn btn-success"
         (click)="closeEditor()" i18n>Close</button>
-      <button type="button" class="btn btn-normal ms-2" *ngIf="mode !== 'view'"
+      }
+      @if (mode !== 'view') {
+        <button type="button" class="btn btn-normal ms-2"
         (click)="cancel()" i18n>Cancel</button>
-    </ng-container>
+      }
+    }
 
-    <ng-container *ngIf="showDelete && mode !== 'view'">
+    @if (showDelete && mode !== 'view') {
       <button type="button" class="btn btn-destroy" (click)="remove()"
-        [disabled]="record && record.isnew()" i18n>Delete</button>
-    </ng-container>
+      [disabled]="record && record.isnew()" i18n>Delete</button>
+    }
 
-    <button type="button" class="btn btn-info"
-      [disabled]="fmEditForm.invalid" *ngIf="mode !== 'view' && !hideSave"
+    @if (mode !== 'view' && !hideSave) {
+      <button type="button" class="btn btn-info"
+        [disabled]="fmEditForm.invalid"
       (click)="save()" i18n>Save</button>
+    }
   </div>
 </ng-template>
 
-<ng-container *ngIf="!isDialog()">
+@if (!isDialog()) {
   <!-- in "inline" mode, render the editor pane right here -->
   <ng-container *ngTemplateOutlet="dialogContent">
   </ng-container>
-</ng-container>
+}
 

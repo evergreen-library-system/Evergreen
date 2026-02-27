@@ -5,10 +5,10 @@
 <eg-string #successString i18n-text text="Hold Policy Update Succeeded"></eg-string>
 <eg-string #createString i18n-text text="Hold Policy Creation Succeeded"></eg-string>
 
-<ng-container *ngIf="orgField || gridFilters">
+@if (orgField || gridFilters) {
   <div class="row" [hidden]="true">
     <div class="col-lg-6">
-      <ng-container *ngIf="orgField">
+      @if (orgField) {
         <div class="row">
           <div class="col-md-6">
             <eg-combobox (onChange)="orgField = $event.id">
@@ -21,29 +21,29 @@
           </div>
           <div class="col-md-6">
             <eg-org-family-select
-              [limitPerms]="viewPerms" 
+              [limitPerms]="viewPerms"
               [(ngModel)]="searchOrgs"
               (ngModelChange)="grid.reload()">
             </eg-org-family-select>
           </div>
         </div>
-      </ng-container>
+      }
     </div>
     <div class="col-lg-6 hstack">
       <div class="flex-1"></div><!-- push right -->
-      <ng-container *ngIf="gridFilters">
+      @if (gridFilters) {
         <span i18n>Filters Applied: {{gridFilters | json}}</span>
-        <a class="ps-2 fst-italic" 
-          [attr.href]="clearGridFiltersUrl()" i18n>Clear URL Filters</a>
-      </ng-container>
-      <ng-container *ngIf="searchOrgs">
-        <a class="ps-2 fst-italic" 
-          [attr.href]="applyOrgValues(null)" i18n>Clear Org Filters</a>
-      </ng-container>
+        <a class="ps-2 fst-italic"
+        [attr.href]="clearGridFiltersUrl()" i18n>Clear URL Filters</a>
+      }
+      @if (searchOrgs) {
+        <a class="ps-2 fst-italic"
+        [attr.href]="applyOrgValues(null)" i18n>Clear Org Filters</a>
+      }
     </div>
   </div>
   <hr/>
-</ng-container>
+}
 
 <eg-grid #grid idlClass="chmm"
   [dataSource]="dataSource"
@@ -52,7 +52,7 @@
   persistKey="admin.config.hold_matrix_matchpoint"
   (onRowActivate)="editSelected([$event])"
   [showFields]='"active,pickup_ou,pickup_lasso,item_circ_ou,item_circ_lasso,item_owning_ou,item_owning_lasso,user_home_ou,user_home_lasso"'>
-  <eg-grid-toolbar-button 
+  <eg-grid-toolbar-button
     label="New Hold Policy" i18n-label (onClick)="createNew()">
   </eg-grid-toolbar-button>
   <eg-grid-toolbar-action

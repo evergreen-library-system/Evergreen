@@ -4,7 +4,7 @@ import {OrgService} from '@eg/core/org.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {ComboboxComponent, ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {HoldsService} from './holds.service';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import { OrgSelectComponent } from '@eg/share/org-select/org-select.component';
 import { DateSelectComponent } from '@eg/share/date-select/date-select.component';
@@ -16,7 +16,6 @@ import { DateSelectComponent } from '@eg/share/date-select/date-select.component
     templateUrl: 'manage.component.html',
     imports: [
         ComboboxComponent,
-        CommonModule,
         DateSelectComponent,
         FormsModule,
         OrgSelectComponent

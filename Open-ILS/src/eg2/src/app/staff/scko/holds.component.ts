@@ -6,11 +6,11 @@ import {NetService} from '@eg/core/net.service';
 import {IdlObject} from '@eg/core/idl.service';
 import {SckoService} from './scko.service';
 import {PrintService} from '@eg/share/print/print.service';
-import { CommonModule } from '@angular/common';
+
 
 @Component({
     templateUrl: 'holds.component.html',
-    imports: [CommonModule]
+    imports: []
 })
 
 export class SckoHoldsComponent implements OnInit {

@@ -28,23 +28,34 @@ import { ItemsComponent } from './items.component';
 import { PatronMessagesComponent } from './messages.component';
 import { PatronSurveyResponsesComponent } from './surveys.component';
 import { PatronStatCatsComponent } from './statcats.component';
+import { PatronGroupComponent } from './group.component';
+import { PatronPermsComponent } from './perms.component';
+import { TestPatronPasswordComponent } from './test-password.component';
+import { BillStatementComponent } from './bill-statement.component';
+import { BillingHistoryComponent } from './billing-history.component';
 
 @Component({
     templateUrl: 'patron.component.html',
     styleUrls: ['patron.component.css'],
     imports: [
         BillsComponent,
+        BillStatementComponent,
+        BillingHistoryComponent,
         CheckoutComponent,
         CircComponentsComponent,
         EditComponent,
         HoldsComponent,
         ItemsComponent,
+        EditToolbarComponent,
+        PatronGroupComponent,
         PatronMessagesComponent,
+        PatronPermsComponent,
         PatronSearchComponent,
         PatronStatCatsComponent,
         PatronSummaryComponent,
         PatronSurveyResponsesComponent,
         StaffCommonModule,
+        TestPatronPasswordComponent,
         WorkLogStringsComponent
     ]
 })

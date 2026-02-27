@@ -3,7 +3,7 @@ import {IdlObject} from '@eg/core/idl.service';
 import {MarcRecord} from './marcrecord';
 import {MarcEditContext} from './editor-context';
 import {Subject, takeUntil} from 'rxjs';
-import { CommonModule } from '@angular/common';
+
 import { EditableContentComponent } from './editable-content.component';
 
 /**
@@ -14,7 +14,6 @@ import { EditableContentComponent } from './editable-content.component';
     selector: 'eg-fixed-field',
     templateUrl: './fixed-field.component.html',
     imports: [
-        CommonModule,
         EditableContentComponent
     ]
 })

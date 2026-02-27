@@ -2,7 +2,7 @@
 /* eslint-disable rxjs/no-implicit-any-catch, rxjs/no-nested-subscribe */
 import { Component, Input, OnInit, TemplateRef, ViewChild, inject } from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {CommonModule, Location} from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {FormatService} from '@eg/core/format.service';
 import {GridDataSource, GridColumn} from '@eg/share/grid/grid';
@@ -21,6 +21,7 @@ import {FmRecordEditorComponent, FmFieldOptions
 import {StringComponent} from '@eg/share/string/string.component';
 import {OrgFamily, OrgFamilySelectComponent} from '@eg/share/org-family-select/org-family-select.component';
 import { GridModule } from '@eg/share/grid/grid.module';
+import { FormsModule } from '@angular/forms';
 
 /**
  * General purpose CRUD interface for IDL objects
@@ -35,6 +36,7 @@ import { GridModule } from '@eg/share/grid/grid.module';
         CommonModule,
         ConfirmDialogComponent,
         FmRecordEditorComponent,
+        FormsModule,
         GridModule,
         OrgFamilySelectComponent,
         StringComponent,

@@ -1,32 +1,27 @@
 /* eslint-disable */
 import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
-import {Location} from '@angular/common';
 import {of} from 'rxjs';
 import {NgbNav} from '@ng-bootstrap/ng-bootstrap';
-import {EventService} from '@eg/core/event.service';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
-import {IdlService, IdlObject} from '@eg/core/idl.service';
-import {PcrudService} from '@eg/core/pcrud.service';
+import {IdlObject} from '@eg/core/idl.service';
 import {StringComponent} from '@eg/share/string/string.component';
 import {ReporterService, SRTemplate} from '../share/reporter.service';
 import { StaffCommonModule } from '@eg/staff/common.module';
+import { ReporterFieldComponent } from './reporter-field.component';
+import { ReporterOutputOptionsComponent } from './reporter-output-options.component';
 
 @Component({
     templateUrl: './definition.component.html',
     styleUrls: ['./definition.component.css'],
-    imports: [StaffCommonModule]
+    imports: [StaffCommonModule, ReporterFieldComponent, ReporterOutputOptionsComponent]
 })
 
 export class FullReporterDefinitionComponent implements OnInit {
     private route = inject(ActivatedRoute);
     private router = inject(Router);
-    private location = inject(Location);
     private toast = inject(ToastService);
-    private evt = inject(EventService);
-    private idl = inject(IdlService);
-    private pcrud = inject(PcrudService);
     private RSvc = inject(ReporterService);
 
 

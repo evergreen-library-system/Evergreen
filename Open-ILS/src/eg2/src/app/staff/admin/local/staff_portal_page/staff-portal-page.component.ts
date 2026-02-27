@@ -1,16 +1,6 @@
 import { Component, ViewChild, OnInit, inject } from '@angular/core';
-import {Location} from '@angular/common';
-import {FormatService} from '@eg/core/format.service';
 import {AdminPageComponent} from '@eg/staff/share/admin-page/admin-page.component';
-import {ActivatedRoute} from '@angular/router';
-import {IdlService, IdlObject} from '@eg/core/idl.service';
-import {ToastService} from '@eg/share/toast/toast.service';
-import {PcrudService} from '@eg/core/pcrud.service';
-import {OrgService} from '@eg/core/org.service';
-import {PermService} from '@eg/core/perm.service';
-import {AuthService} from '@eg/core/auth.service';
-import {BroadcastService} from '@eg/share/util/broadcast.service';
-import {NetService} from '@eg/core/net.service';
+import {IdlObject} from '@eg/core/idl.service';
 import {GridCellTextGenerator} from '@eg/share/grid/grid';
 import {StringComponent} from '@eg/share/string/string.component';
 import {ClonePortalEntriesDialogComponent} from './clone-portal-entries-dialog.component';
@@ -19,16 +9,20 @@ import {merge, EMPTY} from 'rxjs';
 import { StaffCommonModule } from '@eg/staff/common.module';
 import { FmRecordEditorComponent } from '@eg/share/fm-editor/fm-editor.component';
 import { TranslateComponent } from '@eg/share/translate/translate.component';
+import { OrgFamilySelectComponent } from '@eg/share/org-family-select/org-family-select.component';
 
 @Component({
     templateUrl: './staff-portal-page.component.html',
-    imports: [StaffCommonModule, ClonePortalEntriesDialogComponent, FmRecordEditorComponent, TranslateComponent]
+    imports: [
+        StaffCommonModule,
+        ClonePortalEntriesDialogComponent,
+        FmRecordEditorComponent,
+        TranslateComponent,
+        OrgFamilySelectComponent
+    ]
 })
 
 export class AdminStaffPortalPageComponent extends AdminPageComponent implements OnInit {
-    private net = inject(NetService);
-
-
     idlClass = 'cusppe';
     fieldOrder = 'label,entry_type,target_url,url_newtab,entry_text,image_url,page_col,col_pos,owner,id';
     classLabel: string;

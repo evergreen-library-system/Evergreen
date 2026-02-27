@@ -1,16 +1,16 @@
 <ng-template #dialogContent>
-    <div class="modal-header">
-      <ng-container *ngIf="holdIds.length === 1">
-        <h4 class="modal-title" i18n>Modify Hold (#{{holdIds[0]}})</h4>
-      </ng-container>
-      <ng-container *ngIf="holdIds.length > 1">
-        <h4 class="modal-title">Batch Modify {{holdIds.length}} Holds</h4>
-      </ng-container>
-      <button type="button" class="btn-close btn-close-white"
-        i18n-aria-label aria-label="Close dialog" (click)="close()"> </button>
-    </div>
-    <div class="modal-body">
-      <eg-hold-manage [holdIds]="holdIds" (onComplete)="onComplete($event)">
-      </eg-hold-manage>
-    </div>
-  </ng-template>
+  <div class="modal-header">
+    @if (holdIds.length === 1) {
+      <h4 class="modal-title" i18n>Modify Hold (#{{holdIds[0]}})</h4>
+    }
+    @if (holdIds.length > 1) {
+      <h4 class="modal-title">Batch Modify {{holdIds.length}} Holds</h4>
+    }
+    <button type="button" class="btn-close btn-close-white"
+    i18n-aria-label aria-label="Close dialog" (click)="close()"> </button>
+  </div>
+  <div class="modal-body">
+    <eg-hold-manage [holdIds]="holdIds" (onComplete)="onComplete($event)">
+    </eg-hold-manage>
+  </div>
+</ng-template>

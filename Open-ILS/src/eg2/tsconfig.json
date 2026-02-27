@@ -17,10 +17,6 @@
     },
     "typeRoots": [
       "node_modules/@types"
-    ],
-    "lib": [
-      "ES2021",
-      "dom"
     ]
   }
 }

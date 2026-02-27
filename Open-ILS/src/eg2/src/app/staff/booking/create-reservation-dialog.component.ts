@@ -19,7 +19,7 @@ import {ComboboxComponent, ComboboxEntry} from '@eg/share/combobox/combobox.comp
 import moment from 'moment-timezone';
 import { datesInOrderValidator } from '@eg/share/validators/dates_in_order_validator.directive';
 import { DateTimeSelectComponent } from '@eg/share/datetime-select/datetime-select.component';
-import { CommonModule, NgIf } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { OrgSelectComponent } from '@eg/share/org-select/org-select.component';
 import { EgHelpPopoverComponent } from '@eg/share/eg-help-popover/eg-help-popover.component';
 import { ComboboxEntryComponent } from '@eg/share/combobox/combobox-entry.component';

@@ -2,19 +2,21 @@
 <eg-string #updateFailedString i18n-text text="Fund Transfer Failed"></eg-string>
 
 <ng-template #dialogContent>
-  <div class="modal-header" *ngIf="doneLoading">
-    <h3 class="modal-title" i18n>Transfer from Fund {{sourceFund?.name()}} ({{sourceFund?.code()}} ({{sourceFund?.year()}}) ({{sourceFund?.org().shortname()}}))</h3>
-    <button type="button" class="btn-close btn-close-white"
+  @if (doneLoading) {
+    <div class="modal-header">
+      <h3 class="modal-title" i18n>Transfer from Fund {{sourceFund?.name()}} ({{sourceFund?.code()}} ({{sourceFund?.year()}}) ({{sourceFund?.org().shortname()}}))</h3>
+      <button type="button" class="btn-close btn-close-white"
       i18n-aria-label aria-label="Close dialog" (click)="close()"></button>
-  </div>
+    </div>
+  }
   <div class="modal-body" [hidden]="!doneLoading">
     <form #xfrForm="ngForm" role="form" class="form-validated common-form striped-odd">
       <div class="form-group row mt-2">
         <label for="dest-fund" class="form-label col-sm-4 col-form-label" i18n>Destination Fund</label>
         <div class="col-sm-8">
           <eg-combobox #fundSelector [asyncSupportsEmptyTermClick]="true"
-          name="dest_fund" id="dest-fund" [mandatory]="true"
-          [(ngModel)]="destFund" [asyncDataSource]="fundDataSource"
+            name="dest_fund" id="dest-fund" [mandatory]="true"
+            [(ngModel)]="destFund" [asyncDataSource]="fundDataSource"
           i18n-placeholder placeholder="Select fund..."></eg-combobox>
         </div>
       </div>
@@ -41,8 +43,8 @@
   <div class="modal-footer">
     <button type="button" class="btn btn-info"
       [disabled]="!destFund || (sourceAmount <= 0)"
-      (click)="transfer()" i18n>Transfer</button>
+    (click)="transfer()" i18n>Transfer</button>
     <button type="button" class="btn btn-normal"
-      (click)="close()" i18n>Close</button>
+    (click)="close()" i18n>Close</button>
   </div>
 </ng-template>

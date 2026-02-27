@@ -12,7 +12,7 @@ interface PendingInterpolation {
     reject: (string) => any;
 }
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class StringService {
 
     strings: {[key: string]: StringAssignment} = {};

@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { NgClass, NgFor } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { Component, ChangeDetectorRef, forwardRef, OnInit, Input, Output, inject } from '@angular/core';
 import {ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR} from '@angular/forms';
 
@@ -14,7 +14,7 @@ import {ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR} from '@angular/for
             multi: true
         }
     ],
-    imports: [NgClass, NgFor, FormsModule]
+    imports: [NgClass, FormsModule]
 })
 
 export class BooleanSelectComponent implements ControlValueAccessor {

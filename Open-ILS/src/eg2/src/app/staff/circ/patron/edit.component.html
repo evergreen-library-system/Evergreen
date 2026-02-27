@@ -1,17 +1,17 @@
-<eg-string key="circ.patron.edit.test_notify.success" 
-  i18n-text text="Test Notification Sent"></eg-string>
-<eg-string key="circ.patron.edit.test_notify.fail" 
-  i18n-text text="Test Notification Failed to Send"></eg-string>
-<eg-string key="circ.patron.edit.invalidate.success" 
-  i18n-text text="Field Invalidation Succeeded"></eg-string>
-<eg-string key="circ.patron.edit.invalidate.fail" 
-  i18n-text text="Failed to Invalidate Field"></eg-string>
-<eg-string key="circ.patron.edit.grplink.success" 
-  i18n-text text="Group Link Succeeded"></eg-string>
-<eg-string key="circ.patron.edit.grplink.fail" 
-  i18n-text text="Group Link Failed"></eg-string>
+<eg-string key="circ.patron.edit.test_notify.success"
+i18n-text text="Test Notification Sent"></eg-string>
+<eg-string key="circ.patron.edit.test_notify.fail"
+i18n-text text="Test Notification Failed to Send"></eg-string>
+<eg-string key="circ.patron.edit.invalidate.success"
+i18n-text text="Field Invalidation Succeeded"></eg-string>
+<eg-string key="circ.patron.edit.invalidate.fail"
+i18n-text text="Failed to Invalidate Field"></eg-string>
+<eg-string key="circ.patron.edit.grplink.success"
+i18n-text text="Group Link Succeeded"></eg-string>
+<eg-string key="circ.patron.edit.grplink.fail"
+i18n-text text="Group Link Failed"></eg-string>
 <eg-string key="circ.patron.edit.default_addr_type"
-  i18n-text text="Mailing"></eg-string>
+i18n-text text="Mailing"></eg-string>
 
 <eg-patron-secondary-groups [secondaryGroups]="secondaryGroups" #secondaryGroupsDialog>
 </eg-patron-secondary-groups>
@@ -35,23 +35,29 @@
 <eg-hold-notify-update-dialog #holdNotifyUpdateDialog>
 </eg-hold-notify-update-dialog>
 
-<div class="row" *ngIf="!showForm">
-  <div class="col-lg-6 offset-lg-3">
-    <eg-progress-inline></eg-progress-inline>
+@if (!showForm) {
+  <div class="row">
+    <div class="col-lg-6 offset-lg-3">
+      <eg-progress-inline></eg-progress-inline>
+    </div>
   </div>
-</div>
+}
 
 <ng-template #fieldExample let-args="args">
-  <span class="ms-2" *ngIf="exampleText(args.cls, args.field)" i18n>
+  @if (exampleText(args.cls, args.field)) {
+    <span class="ms-2" i18n>
     Example: {{exampleText(args.cls, args.field)}}
   </span>
+  }
 </ng-template>
 
 <ng-template #userSettingExample let-args="args">
-  <span *ngIf="exampleText('aus', args.field)"
-    [id]="args.field+'_example'" class="ms-2"
-    i18n>Example: {{exampleText('aus', args.field)}}
+  @if (exampleText('aus', args.field)) {
+    <span
+      [id]="args.field+'_example'" class="ms-2"
+      i18n>Example: {{exampleText('aus', args.field)}}
   </span>
+  }
 </ng-template>
 
 <!-- IDL-generated field labels.  Override with args.overrideLabel -->
@@ -60,10 +66,12 @@
     <label class="form-label" for="{{getClass(args.cls)}}-{{args.field}}-input">
       {{getFieldLabel(getClass(args.cls), args.field, args.overrideLabel)}}
     </label>
-    <eg-help-popover *ngIf="getFieldDoc(args.cls, args.field)"
-      buttonClass="btn-sm text-info p-0 m-0"
-      placement="end" [helpText]="getFieldDoc(args.cls, args.field)">
-    </eg-help-popover>
+    @if (getFieldDoc(args.cls, args.field)) {
+      <eg-help-popover
+        buttonClass="btn-sm text-info p-0 m-0"
+        placement="end" [helpText]="getFieldDoc(args.cls, args.field)">
+      </eg-help-popover>
+    }
   </div>
 </ng-template>
 
@@ -78,9 +86,9 @@
 <!-- text / number / email inputs -->
 <ng-template #fieldInput let-args="args">
   <div class="col-lg-{{args.columns || 3}}">
-    <input 
+    <input
       type="{{args.type || 'text'}}"
-      class="form-control" 
+      class="form-control"
       name="{{getClass(args.cls)}}-{{args.field}}-input"
       id="{{getClass(args.cls)}}-{{args.field}}-input"
       [ngModel]="objectFromPath(args.path, args.index)[args.field]()"
@@ -90,14 +98,14 @@
       [pattern]="fieldPattern(getClass(args.cls), args.field)"
       [disabled]="args.disabled"
       spellcheck="false"
-    />
+      />
   </div>
 </ng-template>
 
 <!-- checkbox inputs -->
 <ng-template #fieldCheckbox let-args="args">
   <div class="col-lg-{{args.columns || 3}}">
-    <input 
+    <input
       type="checkbox"
       class="form-check-input ms-0"
       name="{{getClass(args.cls)}}-{{args.field}}-input"
@@ -107,7 +115,7 @@
       (change)="afterFieldChange(args.path, args.index, args.field)"
       [pattern]="fieldPattern(getClass(args.cls), args.field)"
       [disabled]="disabled"
-    />
+      />
   </div>
 </ng-template>
 
@@ -133,7 +141,7 @@
     <ng-container *ngTemplateOutlet="userSettingLabel; context: {args: args}">
     </ng-container>
     <div class="col-lg-{{args.columns || 3}}">
-      <input 
+      <input
         type="checkbox"
         class="form-check-input ms-0"
         name="cust-{{args.settingName}}-input"
@@ -141,14 +149,14 @@
         [ngModel]="userSettings[args.settingName]"
         (ngModelChange)="userSettingChange(args.settingName, $event)"
         [disabled]="args.disabled"
-      />
+        />
     </div>
   </div>
 </ng-template>
 
 <ng-template #userSettingInput let-args="args">
   <div class="col-lg-{{args.columns || 3}}">
-    <input 
+    <input
       type="{{args.type || 'text'}}"
       class="form-control"
       name="cust-{{args.settingName}}-input"
@@ -161,7 +169,7 @@
       [attr.aria-describedby]="exampleText('aus', args.field)
         ? args.field+'_example' : null"
       spellcheck="false"
-    />
+      />
   </div>
 </ng-template>
 
@@ -181,77 +189,85 @@
 </ng-template>
 
 
-<!-- One row of label + field.  
-    Used when a field requires no additional toggles. -->
+<!-- One row of label + field.
+Used when a field requires no additional toggles. -->
 <ng-template #fieldRow let-args="args">
-  <div class="row pt-1 pb-1 mt-1" *ngIf="showField(getClass(args.cls) + '.' + args.field)">
-    <ng-container *ngTemplateOutlet="fieldLabel; context: {args: args}">
-    </ng-container>
-    <ng-container *ngTemplateOutlet="args.template; context: {args: args}">
-    </ng-container>
-    <ng-container *ngTemplateOutlet="fieldExample; context: {args: args}">
-    </ng-container>
-  </div>
+  @if (showField(getClass(args.cls) + '.' + args.field)) {
+    <div class="row pt-1 pb-1 mt-1">
+      <ng-container *ngTemplateOutlet="fieldLabel; context: {args: args}">
+      </ng-container>
+      <ng-container *ngTemplateOutlet="args.template; context: {args: args}">
+      </ng-container>
+      <ng-container *ngTemplateOutlet="fieldExample; context: {args: args}">
+      </ng-container>
+    </div>
+  }
 </ng-template>
 
 
 <!-- The List O' Fields -->
 
-<div class="mt-3 striped-rows-even patron-edit-container form-validated" *ngIf="patron && showForm">
-  <h2 class="visually-hidden" i18n>Edit Patron</h2>
-  <div class="row pt-1 pb-1 mt-1" *ngIf="showField('ac.barcode')">
+@if (patron && showForm) {
+  <div class="mt-3 striped-rows-even patron-edit-container form-validated">
+    <h2 class="visually-hidden" i18n>Edit Patron</h2>
+    @if (showField('ac.barcode')) {
+      <div class="row pt-1 pb-1 mt-1">
     <ng-container *ngTemplateOutlet="fieldLabel; 
       context: {args: {cls: 'ac', path: 'card', field: 'barcode'}}">
-    </ng-container>
+        </ng-container>
     <ng-container *ngTemplateOutlet="fieldInput; context: {args: 
       {cls: 'ac', path: 'card', field: 'barcode', disabled: !patron.card().isnew()}}">
-    </ng-container>
-    <div class="col-lg-6">
-      <ng-container *ngIf="!patron.isnew()">
-        <button type="button" [disabled]="replaceBarcodeUsed" class="btn btn-outline-dark" 
-          (click)="replaceBarcode()" i18n>
+        </ng-container>
+        <div class="col-lg-6">
+          @if (!patron.isnew()) {
+            <button type="button" [disabled]="replaceBarcodeUsed" class="btn btn-outline-dark"
+              (click)="replaceBarcode()" i18n>
           Replace Barcode
         </button>
-        <button type="button" class="btn btn-outline-dark ms-2" (click)="barcodesDialog.open()" i18n>
+            <button type="button" class="btn btn-outline-dark ms-2" (click)="barcodesDialog.open()" i18n>
           See All
         </button>
-      </ng-container>
-      <span *ngIf="dupeBarcode" class="alert alert-danger fw-bold ms-2" i18n>
+          }
+          @if (dupeBarcode) {
+            <span class="alert alert-danger fw-bold ms-2" i18n>
         Barcode is already in use
       </span>
-    </div>
-  </div>
-
-  <div class="row pt-1 pb-1 mt-1" *ngIf="showField('au.usrname')">
-    <ng-container *ngTemplateOutlet="fieldLabel; context: {args: {field: 'usrname'}}">
-    </ng-container>
-    <ng-container *ngTemplateOutlet="fieldInput; context: {args: {field: 'usrname'}}">
-    </ng-container>
-    <div class="col-lg-6">
-      <span *ngIf="dupeUsername" class="alert alert-danger fw-bold ms-2" i18n>
+          }
+        </div>
+      </div>
+    }
+    @if (showField('au.usrname')) {
+      <div class="row pt-1 pb-1 mt-1">
+        <ng-container *ngTemplateOutlet="fieldLabel; context: {args: {field: 'usrname'}}">
+        </ng-container>
+        <ng-container *ngTemplateOutlet="fieldInput; context: {args: {field: 'usrname'}}">
+        </ng-container>
+        <div class="col-lg-6">
+          @if (dupeUsername) {
+            <span class="alert alert-danger fw-bold ms-2" i18n>
         Username is already in use
       </span>
-    </div>
-  </div>
-
-  <div class="row pt-1 pb-1 mt-1">
-    <ng-container *ngTemplateOutlet="fieldLabel; context: {args: {field: 'passwd'}}">
-    </ng-container>
-    <ng-container 
-      *ngTemplateOutlet="fieldInput; context: {args: {field: 'passwd'}}">
-    </ng-container>
-    <div class="col-lg-3">
-      <button type="button" class="btn btn-outline-dark" (click)="generatePassword()" i18n>
+          }
+        </div>
+      </div>
+    }
+    <div class="row pt-1 pb-1 mt-1">
+      <ng-container *ngTemplateOutlet="fieldLabel; context: {args: {field: 'passwd'}}">
+      </ng-container>
+      <ng-container
+        *ngTemplateOutlet="fieldInput; context: {args: {field: 'passwd'}}">
+      </ng-container>
+      <div class="col-lg-3">
+        <button type="button" class="btn btn-outline-dark" (click)="generatePassword()" i18n>
         Generate Password
       </button>
-    </div>
-  </div>
-
-  <div class="row pt-1 pb-1 mt-1">
-    <div class="col-lg-6">
-      <div class="alert alert-success pt-2 pb-2 mt-3 mb-3 d-flex">
-        <h4 i18n>Primary Name</h4>
       </div>
+    </div>
+    <div class="row pt-1 pb-1 mt-1">
+      <div class="col-lg-6">
+        <div class="alert alert-success pt-2 pb-2 mt-3 mb-3 d-flex">
+          <h4 i18n>Primary Name</h4>
+        </div>
         <ng-container *ngTemplateOutlet="fieldRow; context: 
           {args: {template: fieldInput, field: 'prefix', columns: 6}}">
         </ng-container>
@@ -267,11 +283,11 @@
         <ng-container *ngTemplateOutlet="fieldRow; context: 
           {args: {template: fieldInput, field: 'suffix', columns: 6}}">
         </ng-container>
-    </div>
-    <div class="col-lg-6">
-      <div class="alert alert-success pt-2 pb-2 mt-3 mb-3 d-flex">
-        <h4 i18n>Preferred Name</h4>
       </div>
+      <div class="col-lg-6">
+        <div class="alert alert-success pt-2 pb-2 mt-3 mb-3 d-flex">
+          <h4 i18n>Preferred Name</h4>
+        </div>
         <ng-container *ngTemplateOutlet="fieldRow; context: 
           {args: {template: fieldInput, field: 'pref_prefix', columns: 6}}">
         </ng-container>
@@ -287,510 +303,514 @@
         <ng-container *ngTemplateOutlet="fieldRow; context: 
           {args: {template: fieldInput, field: 'pref_suffix', columns: 6}}">
         </ng-container>
+      </div>
     </div>
-  </div>
-  <div class="row pt-1 pb-1 mt-1" *ngIf="showField('au.name_keywords')">
-    <ng-container 
-      *ngTemplateOutlet="fieldLabel; context: {args: {field: 'name_keywords'}}">
-    </ng-container>
-    <div class="col-lg-3">
-      <textarea
-        class="form-control" 
-        name="au-name_keywords-input"
-        id="au-name_keywords-input"
-        [ngModel]="objectFromPath(null, null)['name_keywords']()"
-        (ngModelChange)="fieldValueChange(null, null, 'name_keywords', $event)"
-        (change)="afterFieldChange(null, args.index, 'name_keywords')"
-        [required]="fieldRequired('au.name_keywords')"
-        [pattern]="fieldPattern('au', 'name_keywords')"
-        spellcheck="false">
-      </textarea>
-    </div>
-  </div>
-
-  <!-- example of overriding a field label -->
-  <eg-string #holdAliasString i18n-text text="Holds Alias"></eg-string>
+    @if (showField('au.name_keywords')) {
+      <div class="row pt-1 pb-1 mt-1">
+        <ng-container
+          *ngTemplateOutlet="fieldLabel; context: {args: {field: 'name_keywords'}}">
+        </ng-container>
+        <div class="col-lg-3">
+          <textarea
+            class="form-control"
+            name="au-name_keywords-input"
+            id="au-name_keywords-input"
+            [ngModel]="objectFromPath(null, null)['name_keywords']()"
+            (ngModelChange)="fieldValueChange(null, null, 'name_keywords', $event)"
+            (change)="afterFieldChange(null, args.index, 'name_keywords')"
+            [required]="fieldRequired('au.name_keywords')"
+            [pattern]="fieldPattern('au', 'name_keywords')"
+            spellcheck="false">
+          </textarea>
+        </div>
+      </div>
+    }
+    <!-- example of overriding a field label -->
+    <eg-string #holdAliasString i18n-text text="Holds Alias"></eg-string>
   <ng-container *ngTemplateOutlet="fieldRow; context: 
     {args: {template: fieldInput, field: 'alias', overrideLabel: holdAliasString.text}}">
-  </ng-container>
-
-  <div class="row pt-1 pb-1 mt-1" *ngIf="showField('au.dob')">
-    <ng-container 
-      *ngTemplateOutlet="fieldLabel; context: {args: {field: 'dob'}}">
     </ng-container>
-    <div class="col-lg-3">
-      <eg-date-select
-        domId="au-dob-input"
-        fieldName="au-dob-input"
-        [noMaxWidth]="true"
-        [initialYmd]="patron.dob()"
+    @if (showField('au.dob')) {
+      <div class="row pt-1 pb-1 mt-1">
+        <ng-container
+          *ngTemplateOutlet="fieldLabel; context: {args: {field: 'dob'}}">
+        </ng-container>
+        <div class="col-lg-3">
+          <eg-date-select
+            domId="au-dob-input"
+            fieldName="au-dob-input"
+            [noMaxWidth]="true"
+            [initialYmd]="patron.dob()"
         (onChangeAsYmd)="
           fieldValueChange(null, null, 'dob', $event); 
           afterFieldChange(null, null, 'dob')"
-        [required]="fieldRequired('au.dob')">
-      </eg-date-select>
-    </div>
-  </div>
+            [required]="fieldRequired('au.dob')">
+          </eg-date-select>
+        </div>
+      </div>
+    }
   <ng-container *ngTemplateOutlet="fieldRow; context: 
     {args: {template: fieldCheckbox, field: 'juvenile'}}">
-  </ng-container>
+    </ng-container>
   <ng-container *ngTemplateOutlet="fieldRow; context: 
     {args: {template: fieldInput, field: 'guardian'}}">
-  </ng-container>
+    </ng-container>
   <ng-container *ngTemplateOutlet="fieldRow; context: 
     {args: {template: fieldInput, field: 'guardian_email'}}">
-  </ng-container>
+    </ng-container>
   <ng-container *ngTemplateOutlet="fieldRow; context: 
     {args: {template: fieldCombobox, field: 'ident_type', entries: identTypes}}">
-  </ng-container>
+    </ng-container>
   <ng-container *ngTemplateOutlet="fieldRow; context: 
     {args: {template: fieldInput, field: 'ident_value'}}">
-  </ng-container>
+    </ng-container>
   <ng-container *ngTemplateOutlet="fieldRow; context: 
     {args: {template: fieldCombobox, field: 'ident_type2', entries: identTypes}}">
-  </ng-container>
+    </ng-container>
   <ng-container *ngTemplateOutlet="fieldRow; context: 
     {args: {template: fieldInput, field: 'ident_value2'}}">
-  </ng-container>
-
-  <div class="row pt-1 pb-1 mt-1">
-    <ng-container 
-      *ngTemplateOutlet="fieldLabel; context: {args: {field: 'email'}}">
     </ng-container>
-    <ng-container 
-      *ngTemplateOutlet="fieldInput; context: {args: {field: 'email', type: 'email'}}">
-    </ng-container>
-    <div class="col-lg-6">
-      <ng-container *ngIf="patron.email()">
-        <button type="button" class="btn btn-outline-dark" 
-          (click)="sendTestMessage('au.email.test')" i18n>
+    <div class="row pt-1 pb-1 mt-1">
+      <ng-container
+        *ngTemplateOutlet="fieldLabel; context: {args: {field: 'email'}}">
+      </ng-container>
+      <ng-container
+        *ngTemplateOutlet="fieldInput; context: {args: {field: 'email', type: 'email'}}">
+      </ng-container>
+      <div class="col-lg-6">
+        @if (patron.email()) {
+          <button type="button" class="btn btn-outline-dark"
+            (click)="sendTestMessage('au.email.test')" i18n>
           Send Test Email
         </button>
-        <ng-container *ngIf="!patron.isnew()">
-         <button type="button" class="btn btn-outline-dark ms-2" 
-           (click)="invalidateField('email')" i18n>Invalidate</button>
-        </ng-container>
-      </ng-container>
+          @if (!patron.isnew()) {
+            <button type="button" class="btn btn-outline-dark ms-2"
+            (click)="invalidateField('email')" i18n>Invalidate</button>
+          }
+        }
+      </div>
     </div>
-  </div>
-
-  <div class="row pt-1 pb-1 mt-1">
-    <ng-container 
-      *ngTemplateOutlet="fieldLabel; context: {args: {field: 'day_phone'}}">
-    </ng-container>
-    <ng-container 
-      *ngTemplateOutlet="fieldInput; context: {args: {field: 'day_phone'}}">
-    </ng-container>
-    <div class="col-lg-6">
-      <ng-container *ngIf="patron.day_phone() && !patron.isnew()">
-        <button type="button" class="btn btn-outline-dark" 
+    <div class="row pt-1 pb-1 mt-1">
+      <ng-container
+        *ngTemplateOutlet="fieldLabel; context: {args: {field: 'day_phone'}}">
+      </ng-container>
+      <ng-container
+        *ngTemplateOutlet="fieldInput; context: {args: {field: 'day_phone'}}">
+      </ng-container>
+      <div class="col-lg-6">
+        @if (patron.day_phone() && !patron.isnew()) {
+          <button type="button" class="btn btn-outline-dark"
           (click)="invalidateField('day_phone')" i18n>Invalidate</button>
-      </ng-container>
-      <ng-container *ngTemplateOutlet="fieldExample; context: {args: {field: 'day_phone'}}">
-      </ng-container>
+        }
+        <ng-container *ngTemplateOutlet="fieldExample; context: {args: {field: 'day_phone'}}">
+        </ng-container>
+      </div>
     </div>
-  </div>
-
-  <div class="row pt-1 pb-1 mt-1">
-    <ng-container 
-      *ngTemplateOutlet="fieldLabel; context: {args: {field: 'evening_phone'}}">
-    </ng-container>
-    <ng-container 
-      *ngTemplateOutlet="fieldInput; context: {args: {field: 'evening_phone'}}">
-    </ng-container>
-    <div class="col-lg-6">
-      <ng-container *ngIf="patron.evening_phone() && !patron.isnew()">
-        <button type="button" class="btn btn-outline-dark" 
+    <div class="row pt-1 pb-1 mt-1">
+      <ng-container
+        *ngTemplateOutlet="fieldLabel; context: {args: {field: 'evening_phone'}}">
+      </ng-container>
+      <ng-container
+        *ngTemplateOutlet="fieldInput; context: {args: {field: 'evening_phone'}}">
+      </ng-container>
+      <div class="col-lg-6">
+        @if (patron.evening_phone() && !patron.isnew()) {
+          <button type="button" class="btn btn-outline-dark"
           (click)="invalidateField('evening_phone')" i18n>Invalidate</button>
-      </ng-container>
-      <ng-container *ngTemplateOutlet="fieldExample; context: {args: {field: 'evening_phone'}}">
-      </ng-container>
+        }
+        <ng-container *ngTemplateOutlet="fieldExample; context: {args: {field: 'evening_phone'}}">
+        </ng-container>
+      </div>
     </div>
-  </div>
-
-  <div class="row pt-1 pb-1 mt-1">
-    <ng-container 
-      *ngTemplateOutlet="fieldLabel; context: {args: {field: 'other_phone'}}">
-    </ng-container>
-    <ng-container 
-      *ngTemplateOutlet="fieldInput; context: {args: {field: 'other_phone'}}">
-    </ng-container>
-    <div class="col-lg-6">
-      <ng-container *ngIf="patron.other_phone() && !patron.isnew()">
-        <button type="button" class="btn btn-outline-dark" 
+    <div class="row pt-1 pb-1 mt-1">
+      <ng-container
+        *ngTemplateOutlet="fieldLabel; context: {args: {field: 'other_phone'}}">
+      </ng-container>
+      <ng-container
+        *ngTemplateOutlet="fieldInput; context: {args: {field: 'other_phone'}}">
+      </ng-container>
+      <div class="col-lg-6">
+        @if (patron.other_phone() && !patron.isnew()) {
+          <button type="button" class="btn btn-outline-dark"
           (click)="invalidateField('other_phone')" i18n>Invalidate</button>
-      </ng-container>
-      <ng-container *ngTemplateOutlet="fieldExample; context: {args: {field: 'other_phone'}}">
-      </ng-container>
+        }
+        <ng-container *ngTemplateOutlet="fieldExample; context: {args: {field: 'other_phone'}}">
+        </ng-container>
+      </div>
     </div>
-  </div>
-
-  <div class="row pt-1 pb-1 mt-1" *ngIf="showField('au.home_ou')">
-    <ng-container 
-      *ngTemplateOutlet="fieldLabel; context: {args: {field: 'home_ou'}}">
-    </ng-container>
-    <div class="col-lg-3">
-      <eg-org-select
-        domId="au-home_ou-input"
-        fieldName="au-home_ou-input"
-        [initialOrgId]="patron.home_ou()"
-        [disableOrgs]="cannotHaveUsersOrgs()"
-        [required]="true"
+    @if (showField('au.home_ou')) {
+      <div class="row pt-1 pb-1 mt-1">
+        <ng-container
+          *ngTemplateOutlet="fieldLabel; context: {args: {field: 'home_ou'}}">
+        </ng-container>
+        <div class="col-lg-3">
+          <eg-org-select
+            domId="au-home_ou-input"
+            fieldName="au-home_ou-input"
+            [initialOrgId]="patron.home_ou()"
+            [disableOrgs]="cannotHaveUsersOrgs()"
+            [required]="true"
         (onChange)="
           fieldValueChange(null, null, 'home_ou', $event ? $event.id() : null); 
           afterFieldChange(null, null, 'home_ou')">
-      </eg-org-select>
-    </div>
-  </div>
-
-  <div class="row pt-1 pb-1 mt-1" *ngIf="showField('au.profile')">
-    <ng-container 
-      *ngTemplateOutlet="fieldLabel; context: {args: {field: 'profile'}}">
-    </ng-container>
-    <div class="col-lg-3">
-      <eg-profile-select #profileSelect 
-        [useDisplayEntries]="true"
-        [initialGroupId]="patron.profile()" 
-        [required]="true"
+          </eg-org-select>
+        </div>
+      </div>
+    }
+    @if (showField('au.profile')) {
+      <div class="row pt-1 pb-1 mt-1">
+        <ng-container
+          *ngTemplateOutlet="fieldLabel; context: {args: {field: 'profile'}}">
+        </ng-container>
+        <div class="col-lg-3">
+          <eg-profile-select #profileSelect
+            [useDisplayEntries]="true"
+            [initialGroupId]="patron.profile()"
+            [required]="true"
         (profileChange)="
           fieldValueChange(null, null, 'profile', $event ? $event.id() : null); 
           afterFieldChange(null, null, 'profile')">
-      </eg-profile-select>
-    </div>
-    <div class="col-lg-6">
-      <button type="button" class="btn btn-outline-dark" 
-        *ngIf="hasPerm.CREATE_USER_GROUP_LINK"
-        (click)="openGroupsDialog()" i18n>Secondary Groups</button>
-    </div>
-  </div>
-
-  <div class="row pt-1 pb-1 mt-1" *ngIf="showField('au.expire_date')">
-    <ng-container 
-      *ngTemplateOutlet="fieldLabel; context: {args: {field: 'expire_date'}}">
-    </ng-container>
-    <div class="col-lg-3">
-      <eg-date-select
-        domId="au-expire_date-input"
-        fieldName="au-expire_date-input"
-        [required]="fieldRequired('au.expire_date')"
+          </eg-profile-select>
+        </div>
+        <div class="col-lg-6">
+          @if (hasPerm.CREATE_USER_GROUP_LINK) {
+            <button type="button" class="btn btn-outline-dark"
+            (click)="openGroupsDialog()" i18n>Secondary Groups</button>
+          }
+        </div>
+      </div>
+    }
+    @if (showField('au.expire_date')) {
+      <div class="row pt-1 pb-1 mt-1">
+        <ng-container
+          *ngTemplateOutlet="fieldLabel; context: {args: {field: 'expire_date'}}">
+        </ng-container>
+        <div class="col-lg-3">
+          <eg-date-select
+            domId="au-expire_date-input"
+            fieldName="au-expire_date-input"
+            [required]="fieldRequired('au.expire_date')"
         (onChangeAsIso)="
           fieldValueChange(null, null, 'expire_date', $event); 
           afterFieldChange(null, null, 'expire_date')"
-        [(ngModel)]="expireDate">
-      </eg-date-select>
-    </div>
-    <div class="col-lg-6">
-      <button type="button" class="btn btn-outline-dark" (click)="setExpireDate()" i18n>
+            [(ngModel)]="expireDate">
+          </eg-date-select>
+        </div>
+        <div class="col-lg-6">
+          <button type="button" class="btn btn-outline-dark" (click)="setExpireDate()" i18n>
         Update Expire Date
       </button>
-    </div>
-  </div>
+        </div>
+      </div>
+    }
   <ng-container *ngTemplateOutlet="fieldRow; context: 
     {args: {template: fieldCombobox, field: 'net_access_level', entries: inetLevels}}">
-  </ng-container>
+    </ng-container>
   <ng-container *ngTemplateOutlet="fieldRow; context: 
     {args: {template: fieldCheckbox, field: 'active'}}">
-  </ng-container>
+    </ng-container>
   <ng-container *ngTemplateOutlet="fieldRow; context: 
     {args: {template: fieldCheckbox, field: 'barred'}}">
-  </ng-container>
+    </ng-container>
   <ng-container *ngTemplateOutlet="fieldRow; context: 
     {args: {template: fieldCheckbox, field: 'master_account'}}">
-  </ng-container>
+    </ng-container>
   <ng-container *ngTemplateOutlet="fieldRow; context: 
     {args: {template: fieldInput, field: 'claims_returned_count', 
       type: 'number', disabled: !hasPerm.UPDATE_PATRON_CLAIM_RETURN_COUNT}}">
-  </ng-container>
+    </ng-container>
   <ng-container *ngTemplateOutlet="fieldRow; context: 
     {args: {template: fieldInput, field: 'claims_never_checked_out_count', 
       type: 'number', disabled: !hasPerm.UPDATE_PATRON_CLAIM_NEVER_CHECKED_OUT_COUNT}}">
-  </ng-container>
-
-  <div class="alert alert-success pt-2 pb-2 mt-3 mb-3 d-flex">
-    <h4 class="m-auto" i18n>User Settings</h4>
-  </div>
-
+    </ng-container>
+    <div class="alert alert-success pt-2 pb-2 mt-3 mb-3 d-flex">
+      <h4 class="m-auto" i18n>User Settings</h4>
+    </div>
   <ng-container *ngTemplateOutlet="userSettingInputRow; context: 
     {args: {cls: 'aus', field: 'default_phone', settingName: 'opac.default_phone'}}">
-  </ng-container>
-
-  <div class="row pt-1 pb-1 mt-1" *ngIf="showField('au.home_ou')">
+    </ng-container>
+    @if (showField('au.home_ou')) {
+      <div class="row pt-1 pb-1 mt-1">
     <ng-container *ngTemplateOutlet="userSettingLabel; 
       context: {args: {settingName: 'opac.default_pickup_location'}}">
-    </ng-container>
-    <div class="col-lg-3">
-      <eg-org-select
-        domId="cust-opac.default_pickup_location-input"
-        fieldName="cust-opac.default_pickup_location-input"
-        [initialOrgId]="userSettings['opac.default_pickup_location']"
-        [disableOrgs]="cannotHaveVolsOrgs()"
+        </ng-container>
+        <div class="col-lg-3">
+          <eg-org-select
+            domId="cust-opac.default_pickup_location-input"
+            fieldName="cust-opac.default_pickup_location-input"
+            [initialOrgId]="userSettings['opac.default_pickup_location']"
+            [disableOrgs]="cannotHaveVolsOrgs()"
         (onChange)="userSettingChange(
           'opac.default_pickup_location', $event ? $event.id() : null)">
-      </eg-org-select>
-    </div>
-  </div>
-
-  <div class="row pt-1 pb-1 mt-1">
+          </eg-org-select>
+        </div>
+      </div>
+    }
+    <div class="row pt-1 pb-1 mt-1">
     <ng-container *ngTemplateOutlet="userSettingLabel; 
       context: {args: {settingName: 'opac.hold_notify'}}">
-    </ng-container>
-    <div class="col-lg-3">
-      <div class="form-check form-check-inline me-2">
-        <input class="form-check-input" type="checkbox" name="hold-notify-phone-usersetting" 
-          id="hold-notify-phone-usersetting" [(ngModel)]="holdNotifyTypes.phone"
-          (ngModelChange)="emitSaveState()"/>
-        <label class="form-label form-check-label" for="hold-notify-phone-usersetting" i18n>Phone</label>
-      </div>
-      <div class="form-check form-check-inline me-2">
-        <input class="form-check-input" type="checkbox" name="hold-notify-email-usersetting" 
-          id="hold-notify-email-usersetting" [(ngModel)]="holdNotifyTypes.email"
-          (ngModelChange)="emitSaveState()"/>
-        <label class="form-label form-check-label" for="hold-notify-email-usersetting" i18n>Email</label>
-      </div>
-      <div class="form-check form-check-inline me-2" 
-        *ngIf="context.settingsCache['sms.enable']">
-        <input class="form-check-input" type="checkbox" name="hold-notify-sms-usersetting" 
-          id="hold-notify-sms-usersetting" [(ngModel)]="holdNotifyTypes.sms"
-          (ngModelChange)="emitSaveState()"/>
-        <label class="form-label form-check-label" for="hold-notify-sms-usersetting" i18n>SMS</label>
+      </ng-container>
+      <div class="col-lg-3">
+        <div class="form-check form-check-inline me-2">
+          <input class="form-check-input" type="checkbox" name="hold-notify-phone-usersetting"
+            id="hold-notify-phone-usersetting" [(ngModel)]="holdNotifyTypes.phone"
+            (ngModelChange)="emitSaveState()"/>
+          <label class="form-label form-check-label" for="hold-notify-phone-usersetting" i18n>Phone</label>
+        </div>
+        <div class="form-check form-check-inline me-2">
+          <input class="form-check-input" type="checkbox" name="hold-notify-email-usersetting"
+            id="hold-notify-email-usersetting" [(ngModel)]="holdNotifyTypes.email"
+            (ngModelChange)="emitSaveState()"/>
+          <label class="form-label form-check-label" for="hold-notify-email-usersetting" i18n>Email</label>
+        </div>
+        @if (context.settingsCache['sms.enable']) {
+          <div class="form-check form-check-inline me-2"
+            >
+            <input class="form-check-input" type="checkbox" name="hold-notify-sms-usersetting"
+              id="hold-notify-sms-usersetting" [(ngModel)]="holdNotifyTypes.sms"
+              (ngModelChange)="emitSaveState()"/>
+            <label class="form-label form-check-label" for="hold-notify-sms-usersetting" i18n>SMS</label>
+          </div>
+        }
       </div>
     </div>
-  </div>
-
-  <ng-container *ngIf="context.settingsCache['sms.enable']">
-
-    <div class="row pt-1 pb-1 mt-1">
+    @if (context.settingsCache['sms.enable']) {
+      <div class="row pt-1 pb-1 mt-1">
       <ng-container *ngTemplateOutlet="userSettingLabel; 
         context: {args: {settingName: 'opac.default_sms_notify'}}">
-      </ng-container>
+        </ng-container>
       <ng-container *ngTemplateOutlet="userSettingInput;
         context: {args: {field: 'default_sms_notify',
         settingName: 'opac.default_sms_notify'}}">
-      </ng-container>
-      <div class="col-lg-6">
-        <ng-container *ngIf="userSettings['opac.default_sms_notify'] && 
-          userSettings['opac.default_sms_carrier']">
-          <button type="button" class="btn btn-outline-dark" 
-            (click)="sendTestMessage('au.sms_text.test')" i18n>
+        </ng-container>
+        <div class="col-lg-6">
+          @if (userSettings['opac.default_sms_notify'] &&
+            userSettings['opac.default_sms_carrier']) {
+            <button type="button" class="btn btn-outline-dark"
+              (click)="sendTestMessage('au.sms_text.test')" i18n>
             Send Test Text
           </button>
-        </ng-container>
+          }
         <ng-container *ngTemplateOutlet="userSettingExample;
           context: {args: {field: 'default_sms_notify'}}">
-        </ng-container>
+          </ng-container>
+        </div>
       </div>
-    </div>
-
-    <div class="row pt-1 pb-1 mt-1">
+      <div class="row pt-1 pb-1 mt-1">
       <ng-container *ngTemplateOutlet="userSettingLabel; 
         context: {args: {settingName: 'opac.default_sms_carrier'}}">
-      </ng-container>
-      <div class="col-lg-3">
-        <eg-combobox [entries]="smsCarriers"
-          name="cust-opac.default_sms_carrier-input"
-          domId="cust-opac.default_sms_carrier-input"
-          [selectedId]="userSettings['opac.default_sms_carrier']"
-          [required]="settingFieldRequired('opac.default_sms_carrier')"
+        </ng-container>
+        <div class="col-lg-3">
+          <eg-combobox [entries]="smsCarriers"
+            name="cust-opac.default_sms_carrier-input"
+            domId="cust-opac.default_sms_carrier-input"
+            [selectedId]="userSettings['opac.default_sms_carrier']"
+            [required]="settingFieldRequired('opac.default_sms_carrier')"
           (onChange)="userSettingChange(
             'opac.default_sms_carrier', $event ? $event.id : null)">
-        </eg-combobox>
+          </eg-combobox>
+        </div>
       </div>
-    </div>
-  </ng-container>
-
-  <ng-container *ngFor="let set of optInSettingTypes | keyvalue">
+    }
+    @for (set of optInSettingTypes | keyvalue; track set) {
     <ng-container *ngTemplateOutlet="userSettingsCheckboxRow;
       context: {args: {settingName: set.key}}">
-    </ng-container>
-  </ng-container>
-
-  <ng-container *ngIf="context.settingsCache['circ.privacy_waiver']">
-    <div class="row pt-1 pb-1 mt-1" 
-      *ngFor="let waiver of patron.waiver_entries(); let index = index">
-      <div class="col-lg-3">
-        <span *ngIf="index === 0" i18n>Allow others to use my account</span>
-      </div>
-      <div class="col-lg-3">
-        <input type="text" class="form-control" [ngModel]="waiver.name()"
-          [disabled]="waiver.isdeleted()"
-          (ngModelChange)="fieldValueChange('waiver_entries', index, 'name', $event)"
-          (change)="afterFieldChange('waiver_entries', index, 'name')"
-          i18n-placeholder placeholder="Enter Name..." spellcheck="false"/>
-      </div>
-      <div class="col-lg-6 d-flex">
-        <div>
-          <div class="form-inline">
-            <input class="form-check-input" type="checkbox" 
-              [disabled]="waiver.isdeleted()"
-              id="waiver-holds-{{waiver.id()}}" [ngModel]="waiver.place_holds() === 't'"
-              (ngModelChange)="fieldValueChange('waiver_entries', index, 'place_holds', $event)"
-              (change)="afterFieldChange('waiver_entries', index, 'place_holds')"/>
-            <label class="form-label form-check-label"
-              for="waiver-holds-{{waiver.id()}}" i18n>Place Holds?</label>
+      </ng-container>
+    }
+    @if (context.settingsCache['circ.privacy_waiver']) {
+      @for (waiver of patron.waiver_entries(); track waiver; let index = $index) {
+        <div class="row pt-1 pb-1 mt-1"
+          >
+          <div class="col-lg-3">
+            @if (index === 0) {
+              <span i18n>Allow others to use my account</span>
+            }
           </div>
-          <div class="form-inline">
-            <input class="form-check-input" type="checkbox" 
+          <div class="col-lg-3">
+            <input type="text" class="form-control" [ngModel]="waiver.name()"
               [disabled]="waiver.isdeleted()"
-              id="waiver-history-{{waiver.id()}}" [ngModel]="waiver.view_history() === 't'"
-              (ngModelChange)="fieldValueChange('waiver_entries', index, 'view_history', $event)"
-              (change)="afterFieldChange('waiver_entries', index, 'view_history')"/>
-            <label class="form-label form-check-label"
-              for="waiver-history-{{waiver.id()}}" i18n>Obtain Circulation Information?</label>
+              (ngModelChange)="fieldValueChange('waiver_entries', index, 'name', $event)"
+              (change)="afterFieldChange('waiver_entries', index, 'name')"
+              i18n-placeholder placeholder="Enter Name..." spellcheck="false"/>
+          </div>
+          <div class="col-lg-6 d-flex">
+            <div>
+              <div class="form-inline">
+                <input class="form-check-input" type="checkbox"
+                  [disabled]="waiver.isdeleted()"
+                  id="waiver-holds-{{waiver.id()}}" [ngModel]="waiver.place_holds() === 't'"
+                  (ngModelChange)="fieldValueChange('waiver_entries', index, 'place_holds', $event)"
+                  (change)="afterFieldChange('waiver_entries', index, 'place_holds')"/>
+                <label class="form-label form-check-label"
+                for="waiver-holds-{{waiver.id()}}" i18n>Place Holds?</label>
+              </div>
+              <div class="form-inline">
+                <input class="form-check-input" type="checkbox"
+                  [disabled]="waiver.isdeleted()"
+                  id="waiver-history-{{waiver.id()}}" [ngModel]="waiver.view_history() === 't'"
+                  (ngModelChange)="fieldValueChange('waiver_entries', index, 'view_history', $event)"
+                  (change)="afterFieldChange('waiver_entries', index, 'view_history')"/>
+                <label class="form-label form-check-label"
+                for="waiver-history-{{waiver.id()}}" i18n>Obtain Circulation Information?</label>
+              </div>
+            </div>
+            <div class="ms-3">
+              <div class="form-inline">
+                <input class="form-check-input" type="checkbox"
+                  [disabled]="waiver.isdeleted()"
+                  id="waiver-pickup-{{waiver.id()}}" [ngModel]="waiver.pickup_holds() === 't'"
+                  (ngModelChange)="fieldValueChange('waiver_entries', index, 'pickup_hold', $event)"
+                  (change)="afterFieldChange('waiver_entries', index, 'pickup_hold')"/>
+                <label class="form-label form-check-label"
+                for="waiver-pickup-{{waiver.id()}}" i18n>Pick Up Holds?</label>
+              </div>
+              <div class="form-inline">
+                <input class="form-check-input" type="checkbox"
+                  [disabled]="waiver.isdeleted()"
+                  id="waiver-checkout-{{waiver.id()}}" [ngModel]="waiver.checkout_items() === 't'"
+                  (ngModelChange)="fieldValueChange('waiver_entries', index, 'checkout_items', $event)"
+                  (change)="afterFieldChange('waiver_entries', index, 'checkout_items')"/>
+                <label class="form-label form-check-label"
+                for="waiver-checkout-{{waiver.id()}}" i18n>Check Out Items?</label>
+              </div>
+            </div>
+            <div class="ms-3">
+              <button type="button" class="btn btn-destroy material-icon-button"
+                [ngClass]="{'invisible': waiver.isdeleted()}"
+                (click)="removeWaiver(waiver)" type="button"
+                i18n-aria-label aria-label="Remove Privacy Waiver"
+                i18n-title title="Remove Privacy Waiver">
+                <span class="material-icons" aria-hidden="true">delete</span>
+              </button>
+            </div>
+            @if (index === patron.waiver_entries().length - 1) {
+              <div class="ms-2">
+                <button type="button" class="btn btn-success material-icon-button"
+                  (click)="addWaiver()" type="button"
+                  i18n-aria-label aria-label="Add Privacy Waiver"
+                  i18n-title title="Add Privacy Waiver">
+                  <span class="text-success material-icons" aria-hidden="true">add</span>
+                </button>
+              </div>
+            }
           </div>
         </div>
-        <div class="ms-3">
-          <div class="form-inline">
-            <input class="form-check-input" type="checkbox" 
-              [disabled]="waiver.isdeleted()"
-              id="waiver-pickup-{{waiver.id()}}" [ngModel]="waiver.pickup_holds() === 't'"
-              (ngModelChange)="fieldValueChange('waiver_entries', index, 'pickup_hold', $event)"
-              (change)="afterFieldChange('waiver_entries', index, 'pickup_hold')"/>
-            <label class="form-label form-check-label"
-              for="waiver-pickup-{{waiver.id()}}" i18n>Pick Up Holds?</label>
-          </div>
-          <div class="form-inline">
-            <input class="form-check-input" type="checkbox" 
-              [disabled]="waiver.isdeleted()"
-              id="waiver-checkout-{{waiver.id()}}" [ngModel]="waiver.checkout_items() === 't'"
-              (ngModelChange)="fieldValueChange('waiver_entries', index, 'checkout_items', $event)"
-              (change)="afterFieldChange('waiver_entries', index, 'checkout_items')"/>
-            <label class="form-label form-check-label"
-              for="waiver-checkout-{{waiver.id()}}" i18n>Check Out Items?</label>
-          </div>
-        </div>
-        <div class="ms-3">
-          <button type="button" class="btn btn-destroy material-icon-button" 
-            [ngClass]="{'invisible': waiver.isdeleted()}"
-            (click)="removeWaiver(waiver)" type="button"
-            i18n-aria-label aria-label="Remove Privacy Waiver"
-            i18n-title title="Remove Privacy Waiver">
-            <span class="material-icons" aria-hidden="true">delete</span>
-          </button>
-        </div>
-        <div class="ms-2" *ngIf="index === patron.waiver_entries().length - 1">
-          <button type="button" class="btn btn-success material-icon-button" 
-            (click)="addWaiver()" type="button"
-            i18n-aria-label aria-label="Add Privacy Waiver"
-            i18n-title title="Add Privacy Waiver">
-            <span class="text-success material-icons" aria-hidden="true">add</span>
-          </button>
-        </div>
-      </div>
+      }
+    }
+    <div class="alert alert-success pt-2 pb-2 mt-3 mb-3 d-flex">
+      <h4 class="m-auto" i18n>Addresses</h4>
     </div>
-  </ng-container>
-
-  <div class="alert alert-success pt-2 pb-2 mt-3 mb-3 d-flex">
-    <h4 class="m-auto" i18n>Addresses</h4>
-  </div>
-
-  <ng-container *ngFor="let addr of patron.addresses(); let index = index">
-    <div class="mb-2 address-row" *ngIf="!addr.isdeleted()">
-      <div class="row">
-        <div class="col-lg-3">
-          <h5 i18n="Patron edit form address heading">Address #{{index + 1}}</h5>
-        </div>
-        <div class="col-lg-9">
-          <div class="form-check form-check-inline me-2">
-            <input class="form-check-input" type="checkbox" 
-              name="addr-{{addr.id()}}-mailing" id="addr-{{addr.id()}}-mailing" 
-              [ngModel]="patron.mailing_address() && addr.id() === patron.mailing_address().id()"
-              (ngModelChange)="setAddrType('mailing', addr, $event)"/>
-            <label class="form-label form-check-label" 
-              for="addr-{{addr.id()}}-mailing" i18n>Mailing</label>
+    @for (addr of patron.addresses(); track addr; let index = $index) {
+      @if (!addr.isdeleted()) {
+        <div class="mb-2 address-row">
+          <div class="row">
+            <div class="col-lg-3">
+              <h5 i18n="Patron edit form address heading">Address #{{index + 1}}</h5>
+            </div>
+            <div class="col-lg-9">
+              <div class="form-check form-check-inline me-2">
+                <input class="form-check-input" type="checkbox"
+                  name="addr-{{addr.id()}}-mailing" id="addr-{{addr.id()}}-mailing"
+                  [ngModel]="patron.mailing_address() && addr.id() === patron.mailing_address().id()"
+                  (ngModelChange)="setAddrType('mailing', addr, $event)"/>
+                <label class="form-label form-check-label"
+                for="addr-{{addr.id()}}-mailing" i18n>Mailing</label>
+              </div>
+              <div class="form-check form-check-inline me-2">
+                <input class="form-check-input" type="checkbox"
+                  name="addr-{{addr.id()}}-billing" id="addr-{{addr.id()}}-billing"
+                  [ngModel]="patron.billing_address() && addr.id() === patron.billing_address().id()"
+                  (ngModelChange)="setAddrType('billing', addr, $event)"/>
+                <label class="form-label form-check-label"
+                for="addr-{{addr.id()}}-billing" i18n>Physical</label>
+              </div>
+              <button type="button" class="btn btn-destroy" (click)="deleteAddr(addr)" i18n>Delete</button>
+            </div>
           </div>
-          <div class="form-check form-check-inline me-2">
-            <input class="form-check-input" type="checkbox" 
-              name="addr-{{addr.id()}}-billing" id="addr-{{addr.id()}}-billing" 
-              [ngModel]="patron.billing_address() && addr.id() === patron.billing_address().id()"
-              (ngModelChange)="setAddrType('billing', addr, $event)"/>
-            <label class="form-label form-check-label" 
-              for="addr-{{addr.id()}}-billing" i18n>Physical</label>
-          </div>
-          <button type="button" class="btn btn-destroy" (click)="deleteAddr(addr)" i18n>Delete</button>
-        </div>
-      </div>
       <ng-container *ngTemplateOutlet="fieldRow; context: {args: {template: 
         fieldInput, field: 'address_type', cls: 'aua', path: 'addresses', index: index}}">
-      </ng-container>
+          </ng-container>
       <ng-container *ngTemplateOutlet="fieldRow; context: {args: {template: 
         fieldInput, field: 'post_code', cls: 'aua', path: 'addresses', index: index}}">
-      </ng-container>
+          </ng-container>
       <ng-container *ngTemplateOutlet="fieldRow; context: {args: {template: 
         fieldInput, field: 'street1', cls: 'aua', path: 'addresses', index: index}}">
-      </ng-container>
+          </ng-container>
       <ng-container *ngTemplateOutlet="fieldRow; context: {args: {template: 
         fieldInput, field: 'street2', cls: 'aua', path: 'addresses', index: index}}">
-      </ng-container>
+          </ng-container>
       <ng-container *ngTemplateOutlet="fieldRow; context: {args: {template: 
         fieldInput, field: 'city', cls: 'aua', path: 'addresses', index: index}}">
-      </ng-container>
+          </ng-container>
       <ng-container *ngTemplateOutlet="fieldRow; context: {args: {template: 
         fieldInput, field: 'county', cls: 'aua', path: 'addresses', index: index}}">
-      </ng-container>
+          </ng-container>
       <ng-container *ngTemplateOutlet="fieldRow; context: {args: {template: 
         fieldInput, field: 'state', cls: 'aua', path: 'addresses', index: index}}">
-      </ng-container>
+          </ng-container>
       <ng-container *ngTemplateOutlet="fieldRow; context: {args: {template: 
         fieldInput, field: 'country', cls: 'aua', path: 'addresses', index: index}}">
-      </ng-container>
+          </ng-container>
       <ng-container *ngTemplateOutlet="fieldRow; context: {args: {template: 
         fieldCheckbox, field: 'valid', cls: 'aua', path: 'addresses', index: index}}">
-      </ng-container>
+          </ng-container>
       <ng-container *ngTemplateOutlet="fieldRow; context: {args: {template: 
         fieldCheckbox, field: 'within_city_limits', cls: 'aua', path: 'addresses', index: index}}">
-      </ng-container>
-    </div>
-  </ng-container>
-
-  <button type="button" class="btn btn-success" (click)="newAddr()" i18n>New Address</button>
-
-  <ng-container *ngIf="showField('stat_cats') && statCats.length > 0">
-    <div class="alert alert-success pt-2 pb-2 mt-3 mb-3 d-flex">
-      <h4 class="m-auto" i18n>Statistical Categories</h4>
-    </div>
-
-    <div class="row pt-1 pb-1 mt-1" *ngFor="let stat of statCats">
-     <div class="col-lg-3 field-label">
-      <label class="form-label" for="asc-{{stat.cat.id()}}-input">{{stat.cat.name()}}</label>
-     </div>
-     <div class="col-lg-3">
-      <eg-combobox
-        domId="asc-{{stat.cat.id()}}-input"
-        name="asc-{{stat.cat.id()}}-input"
-        [entries]="stat.entries"
-        [required]="stat.cat.required() === 1"
-        [allowFreeText]="stat.cat.allow_freetext() === 1"
-        [(ngModel)]="userStatCats[stat.cat.id()]"
-        (onChange)="userStatCatChange(stat.cat, $event)">
-      </eg-combobox>
-     </div>
-    </div>
-  </ng-container>
-
-
-  <ng-container *ngIf="showField('surveys') && surveys.length > 0">
-    <div class="alert alert-success pt-2 pb-2 mt-2 mb-2 d-flex">
-      <h4 class="m-auto" i18n>Surveys</h4>
-    </div>
-    <div class="card pt-1 pb-1 mt-1" *ngFor="let survey of surveys">
-      <div class="card-header">{{survey.name()}}</div>
-      <div class="card-body">
-        <div class="row pt-1 pb-1 mt-1" *ngFor="let question of survey.questions()">
+          </ng-container>
+        </div>
+      }
+    }
+    <button type="button" class="btn btn-success" (click)="newAddr()" i18n>New Address</button>
+    @if (showField('stat_cats') && statCats.length > 0) {
+      <div class="alert alert-success pt-2 pb-2 mt-3 mb-3 d-flex">
+        <h4 class="m-auto" i18n>Statistical Categories</h4>
+      </div>
+      @for (stat of statCats; track stat) {
+        <div class="row pt-1 pb-1 mt-1">
           <div class="col-lg-3 field-label">
-            <label class="form-label" for="asvq-{{question.id()}}-input">{{question.question()}}</label>
+            <label class="form-label" for="asc-{{stat.cat.id()}}-input">{{stat.cat.name()}}</label>
           </div>
           <div class="col-lg-3">
             <eg-combobox
-              domId="asvq-{{question.id()}}-input"
-              name="asvq-{{question.id()}}-input"
-              [entries]="surveyQuestionAnswers(question)"
-              (onChange)="applySurveyResponse(question, $event)">
+              domId="asc-{{stat.cat.id()}}-input"
+              name="asc-{{stat.cat.id()}}-input"
+              [entries]="stat.entries"
+              [required]="stat.cat.required() === 1"
+              [allowFreeText]="stat.cat.allow_freetext() === 1"
+              [(ngModel)]="userStatCats[stat.cat.id()]"
+              (onChange)="userStatCatChange(stat.cat, $event)">
             </eg-combobox>
           </div>
         </div>
+      }
+    }
+    @if (showField('surveys') && surveys.length > 0) {
+      <div class="alert alert-success pt-2 pb-2 mt-2 mb-2 d-flex">
+        <h4 class="m-auto" i18n>Surveys</h4>
       </div>
-    </div>
-  </ng-container>
-
-</div>
+      @for (survey of surveys; track survey) {
+        <div class="card pt-1 pb-1 mt-1">
+          <div class="card-header">{{survey.name()}}</div>
+          <div class="card-body">
+            @for (question of survey.questions(); track question) {
+              <div class="row pt-1 pb-1 mt-1">
+                <div class="col-lg-3 field-label">
+                  <label class="form-label" for="asvq-{{question.id()}}-input">{{question.question()}}</label>
+                </div>
+                <div class="col-lg-3">
+                  <eg-combobox
+                    domId="asvq-{{question.id()}}-input"
+                    name="asvq-{{question.id()}}-input"
+                    [entries]="surveyQuestionAnswers(question)"
+                    (onChange)="applySurveyResponse(question, $event)">
+                  </eg-combobox>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      }
+    }
+  </div>
+}
 

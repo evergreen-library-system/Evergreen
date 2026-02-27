@@ -6,25 +6,31 @@
     <div>
       <style>
         .grid-print-table {
-          border-collapse: collapse;
-          margin: 1px;
-        }
-        .grid-print-table td {
-          padding: 2px;
-          border: 1px solid var(--border-print);
-        }
-      </style>
-      <table class="grid-print-table">
-        <thead>
-          <tr><th *ngFor="let col of context.columns">{{col.label}}</th></tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let row of context.rows; trackBy: index">
-            <!-- item values have already been filtered, etc. -->
-            <td *ngFor="let col of context.columns"><span>{{row[col.name]}}</span></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </ng-template>
+        border-collapse: collapse;
+        margin: 1px;
+      }
+      .grid-print-table td {
+      padding: 2px;
+      border: 1px solid var(--border-print);
+    }
+  </style>
+  <table class="grid-print-table">
+    <thead>
+      <tr>@for (col of context.columns; track col) {
+        <th>{{col.label}}</th>
+      }</tr>
+    </thead>
+    <tbody>
+      @for (row of context.rows; track row) {
+        <tr>
+          <!-- item values have already been filtered, etc. -->
+          @for (col of context.columns; track col) {
+            <td><span>{{row[col.name]}}</span></td>
+          }
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>
+</ng-template>
 </ng-container>

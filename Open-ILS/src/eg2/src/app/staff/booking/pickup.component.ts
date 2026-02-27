@@ -11,13 +11,12 @@ import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/
 import {PatronBarcodeValidator} from '@eg/share/validators/patron_barcode_validator.directive';
 import { StaffBannerComponent } from '../share/staff-banner.component';
 import { TitleComponent } from '@eg/share/title/title.component';
-import { CommonModule } from '@angular/common';
+
 
 
 @Component({
     templateUrl: './pickup.component.html',
     imports: [
-        CommonModule,
         ReactiveFormsModule,
         ReservationsGridComponent,
         StaffBannerComponent,

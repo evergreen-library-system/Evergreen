@@ -16,7 +16,7 @@ import {LocaleService} from '@eg/core/locale.service';
 import { FormsModule } from '@angular/forms';
 import { ProfileSelectComponent } from './profile-select.component';
 import { OrgSelectComponent } from '@eg/share/org-select/org-select.component';
-import { NgClass, NgIf } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { GridModule } from '@eg/share/grid/grid.module';
 
 const DEFAULT_SORT = [
@@ -61,7 +61,6 @@ export interface PatronSearch {
         FormsModule,
         GridModule,
         NgClass,
-        NgIf,
         OrgSelectComponent,
         PatronMergeDialogComponent,
         ProfileSelectComponent,

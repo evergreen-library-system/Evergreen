@@ -5,7 +5,7 @@ import {AbstractControl, ControlValueAccessor, FormControl, FormGroup, FormsModu
 import {DatetimeValidator} from '@eg/share/validators/datetime_validator.directive';
 import moment from 'moment-timezone';
 import {DateUtil} from '@eg/share/util/date';
-import { NgbDatepicker, NgbDropdown, NgbTimepicker } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDatepicker, NgbDropdownModule, NgbTimepicker } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'eg-datetime-select',
@@ -13,7 +13,7 @@ import { NgbDatepicker, NgbDropdown, NgbTimepicker } from '@ng-bootstrap/ng-boot
     imports: [
         FormsModule,
         NgbDatepicker,
-        NgbDropdown,
+        NgbDropdownModule,
         NgbTimepicker,
         ReactiveFormsModule
     ]

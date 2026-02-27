@@ -1,98 +1,100 @@
 <eg-staff-banner bannerText="Survey ID # {{surveyId}}" i18n-bannerText
-                class="mb-3"></eg-staff-banner>
+class="mb-3"></eg-staff-banner>
 <ul ngbNav #surveyTabs="ngbNav" [(activeId)]="surveyTab" (navChange)="onNavChange($event)" [keyboard]="true" [roles]="false" role="tablist" class="mb-3 nav-tabs">
-    <li role="presentation" [ngbNavItem]="'edit'">
-        <a i18n ngbNavLink role="tab">Edit Survey</a>
-        <ng-template ngbNavContent>
-            <div class="col-lg-6 offset-lg-3 mt-3">
-                <div style="text-align: center;">
-                    <button type="button" class="p-2 mb-3 btn btn-danger btn-lg"
-                    (click)="endSurvey()" i18n>
+  <li role="presentation" [ngbNavItem]="'edit'">
+    <a i18n ngbNavLink role="tab">Edit Survey</a>
+    <ng-template ngbNavContent>
+      <div class="col-lg-6 offset-lg-3 mt-3">
+        <div style="text-align: center;">
+          <button type="button" class="p-2 mb-3 btn btn-danger btn-lg"
+            (click)="endSurvey()" i18n>
                         End Survey Now
                     </button>
-                </div>
-                <eg-fm-record-editor displayMode="inline"
-                    hiddenFieldsList="id"
-                    datetimeFieldsList="start_date,end_date"
-                    dateFieldOrderList="start_date,end_date"
-                    fieldOrder="name,description,owner,start_date,end_date,opac,poll,required,usr_summary"
-                    idlClass="asv"
-                    mode="update"
-                    [record]="surveyObj">
-                </eg-fm-record-editor>
-            </div>
-        </ng-template>
-    </li>
-    <li role="presentation" [ngbNavItem]="'qanda'">
-        <a i18n ngbNavLink role="tab">Questions and Answers</a>
-        <ng-template ngbNavContent>
-            <div class="col-lg-8 offset-lg-2 mt-3">
-                <eg-staff-banner bannerText="Questions & Answers" i18n-bannerText>
-                    </eg-staff-banner>
-                <div *ngFor="let question of localArray; let questionIndex = index;">
-                    <div class="mb-2 mt-5 input-group align-items-start">
-                        <label class="form-label fw-bold input-group-text" for="question-{{questionIndex}}">Question {{questionIndex+1}}.</label>
-                        <input type="text" [(ngModel)]="question.words" class="form-control"
-                            name="question-{{questionIndex}}" id="question-{{questionIndex}}">
-                        
-                            <button type="button" class="fw-bold input-group-text"
-                                (click)="updateQuestion(question)" i18n>
+        </div>
+        <eg-fm-record-editor displayMode="inline"
+          hiddenFieldsList="id"
+          datetimeFieldsList="start_date,end_date"
+          dateFieldOrderList="start_date,end_date"
+          fieldOrder="name,description,owner,start_date,end_date,opac,poll,required,usr_summary"
+          idlClass="asv"
+          mode="update"
+          [record]="surveyObj">
+        </eg-fm-record-editor>
+      </div>
+    </ng-template>
+  </li>
+  <li role="presentation" [ngbNavItem]="'qanda'">
+    <a i18n ngbNavLink role="tab">Questions and Answers</a>
+    <ng-template ngbNavContent>
+      <div class="col-lg-8 offset-lg-2 mt-3">
+        <eg-staff-banner bannerText="Questions & Answers" i18n-bannerText>
+        </eg-staff-banner>
+        @for (question of localArray; track question; let questionIndex = $index) {
+          <div>
+            <div class="mb-2 mt-5 input-group align-items-start">
+              <label class="form-label fw-bold input-group-text" for="question-{{questionIndex}}">Question {{questionIndex+1}}.</label>
+              <input type="text" [(ngModel)]="question.words" class="form-control"
+                name="question-{{questionIndex}}" id="question-{{questionIndex}}">
+              <button type="button" class="fw-bold input-group-text"
+                (click)="updateQuestion(question)" i18n>
                                 Save
                             </button>
-                            <button type="button" class="text-danger fw-bold input-group-text"
-                                (click)="deleteQuestion(question)" i18n>
+              <button type="button" class="text-danger fw-bold input-group-text"
+                (click)="deleteQuestion(question)" i18n>
                                 Delete Question & Answers
                             </button>
-                    </div>
-                    <h3 i18n>Answers for question #{{questionIndex+1}}:</h3>
-                    <div *ngFor="let answer of question.answers; let answerIndex = index;"
-                        class="mb-2 input-group">
-                        <label class="input-group-text" for="answer-{{questionIndex}}-{{answerIndex}}">{{answerIndex+1}}.</label>
-                        <input class="form-control" type="text"
-                            [(ngModel)]="answer.words"
-                            id="answer-{{questionIndex}}-{{answerIndex}}"
-                            name="answer-{{questionIndex}}-{{answerIndex}}">
-                        
-                            <button type="button" class="input-group-text"
-                                (click)="updateAnswer(answer, question, questionIndex, answerIndex)"
-                                i18n>
+            </div>
+            <h3 i18n>Answers for question #{{questionIndex+1}}:</h3>
+            @for (answer of question.answers; track answer; let answerIndex = $index) {
+              <div
+                class="mb-2 input-group">
+                <label class="input-group-text" for="answer-{{questionIndex}}-{{answerIndex}}">{{answerIndex+1}}.</label>
+                <input class="form-control" type="text"
+                  [(ngModel)]="answer.words"
+                  id="answer-{{questionIndex}}-{{answerIndex}}"
+                  name="answer-{{questionIndex}}-{{answerIndex}}">
+                <button type="button" class="input-group-text"
+                  (click)="updateAnswer(answer, question, questionIndex, answerIndex)"
+                  i18n>
                                 Save
                             </button>
-                            <button type="button" class="text-danger input-group-text" (click)="deleteAnswer(answer)"
-                                i18n>
+                <button type="button" class="text-danger input-group-text" (click)="deleteAnswer(answer)"
+                  i18n>
                                 Delete
                             </button>
-                    </div>
-                    <div class="mb-2 input-group">
-                        <label class="input-group-text" for="newAnswer-{{questionIndex}}" i18n>New</label>
-                        <input class="form-control" type="text" id="newAnswer-{{questionIndex}}"
-                            [(ngModel)]="newAnswerArray[questionIndex].inputText"
-                                value="">
-                        
-                            <button type="button" class="input-group-text"
-                                (click)="createAnswer(newAnswerArray[questionIndex].inputText, question)"
-                                i18n>
+              </div>
+            }
+            <div class="mb-2 input-group">
+              <label class="input-group-text" for="newAnswer-{{questionIndex}}" i18n>New</label>
+              <input class="form-control" type="text" id="newAnswer-{{questionIndex}}"
+                [(ngModel)]="newAnswerArray[questionIndex].inputText"
+                value="">
+              <button type="button" class="input-group-text"
+                (click)="createAnswer(newAnswerArray[questionIndex].inputText, question)"
+                i18n>
                                 Add Answer
                             </button>
-                    </div>
-                </div>
-                <div class="mb-2 mt-5 input-group align-items-start">
-                    <label class="form-label fw-bold input-group-text" for="newQuestion" i18n>New Question</label>
-                    <input #newQuestionInput
-                        id="newQuestion"
-                        class="form-control"
-                        type="text"
-                        [(ngModel)]="newQuestionText"
-                        name="question-new" value="">
-                    
-                        <button type="button" class="fw-bold input-group-text"
-                            (click)="createQuestion(newQuestionText)" i18n>
+            </div>
+          </div>
+        }
+        <div class="mb-2 mt-5 input-group align-items-start">
+          <label class="form-label fw-bold input-group-text" for="newQuestion" i18n>New Question</label>
+          <input #newQuestionInput
+            id="newQuestion"
+            class="form-control"
+            type="text"
+            [(ngModel)]="newQuestionText"
+            name="question-new" value="">
+
+          <button type="button" class="fw-bold input-group-text"
+            (click)="createQuestion(newQuestionText)" i18n>
                             Save Question & Add Answer
                         </button>
-                </div>
-            </div>
-        </ng-template>
-    </li>
+        </div>
+      </div>
+    </ng-template>
+  </li>
 </ul>
 
 <div [ngbNavOutlet]="surveyTabs" class="mt-2"></div>
+

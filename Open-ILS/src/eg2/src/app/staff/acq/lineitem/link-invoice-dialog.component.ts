@@ -2,7 +2,7 @@ import { Component, Input, inject } from '@angular/core';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {ComboboxComponent, ComboboxEntry} from '@eg/share/combobox/combobox.component';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -10,7 +10,6 @@ import { FormsModule } from '@angular/forms';
     templateUrl: './link-invoice-dialog.component.html',
     imports: [
         ComboboxComponent,
-        CommonModule,
         FormsModule
     ]
 })

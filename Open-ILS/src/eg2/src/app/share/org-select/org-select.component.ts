@@ -8,7 +8,7 @@ import {IdlObject} from '@eg/core/idl.service';
 import {PermService} from '@eg/core/perm.service';
 import {NgbTypeahead, NgbTypeaheadSelectItemEvent} from '@ng-bootstrap/ng-bootstrap';
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule} from '@angular/forms';
-import { NgIf } from '@angular/common';
+
 
 /** Org unit selector
  *
@@ -37,7 +37,7 @@ interface OrgDisplay {
 @Component({
     selector: 'eg-org-select',
     templateUrl: './org-select.component.html',
-    imports: [NgIf, NgbTypeahead, FormsModule, ReactiveFormsModule]
+    imports: [NgbTypeahead, FormsModule, ReactiveFormsModule]
 })
 export class OrgSelectComponent implements OnInit, AfterViewInit {
     private auth = inject(AuthService);
@@ -426,7 +426,7 @@ export class OrgSelectComponent implements OnInit, AfterViewInit {
         // adapted from https://github.com/ng-bootstrap/ng-bootstrap/issues/4789
         if (!this.controller) {return;}
 
-        const listbox = document.getElementById(this.controller.getAttribute('aria-owns'));
+        const listbox = document.getElementById(this.controller.getAttribute('aria-controls'));
         // console.debug("Listbox: ", listbox);
 
         const activeItem = document.getElementById(this.controller.getAttribute('aria-activedescendant'));
@@ -444,7 +444,7 @@ export class OrgSelectComponent implements OnInit, AfterViewInit {
     applyDisableStyle() {
         // DOM nodes may be reused when filtering, so clear styles first
         const listbox = document.getElementById(
-            this.instance?.['_nativeElement']?.getAttribute('aria-owns')
+            this.instance?.['_nativeElement']?.getAttribute('aria-controls')
         );
         if (listbox) {
             const buttons = listbox.querySelectorAll('button.disabled');

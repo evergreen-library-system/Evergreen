@@ -6,10 +6,11 @@ import {EventService} from '@eg/core/event.service';
 import {NetService} from '@eg/core/net.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {ToastService} from '@eg/share/toast/toast.service';
-import {NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
+import {NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {StringComponent} from '@eg/share/string/string.component';
-import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+
 
 
 /**
@@ -20,14 +21,13 @@ import { CommonModule } from '@angular/common';
     selector: 'eg-replace-barcode-dialog',
     templateUrl: 'replace-barcode-dialog.component.html',
     imports: [
-        CommonModule,
+        FormsModule,
         StringComponent
     ]
 })
 
 export class ReplaceBarcodeDialogComponent
     extends DialogComponent {
-    private modal: NgbModal;
     private toast = inject(ToastService);
     private auth = inject(AuthService);
     private net = inject(NetService);
@@ -51,14 +51,6 @@ export class ReplaceBarcodeDialogComponent
 
     @ViewChild('errorMsg', { static: true })
     private errorMsg: StringComponent;
-
-    constructor() {
-        const modal = inject(NgbModal);
-
-        super(modal); // required for subclassing
-
-        this.modal = modal;
-    }
 
     open(args: NgbModalOptions): Observable<boolean> {
         this.ids = [].concat(this.copyIds);

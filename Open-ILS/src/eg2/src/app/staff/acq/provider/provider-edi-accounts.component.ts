@@ -13,7 +13,7 @@ import {ToastService} from '@eg/share/toast/toast.service';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 import {PcrudService} from '@eg/core/pcrud.service';
 import { GridColumnComponent } from '@eg/share/grid/grid-column.component';
-import { NgIf } from '@angular/common';
+
 import { GridToolbarButtonComponent } from '@eg/share/grid/grid-toolbar-button.component';
 import { GridToolbarActionComponent } from '@eg/share/grid/grid-toolbar-action.component';
 
@@ -27,8 +27,7 @@ import { GridToolbarActionComponent } from '@eg/share/grid/grid-toolbar-action.c
         GridComponent,
         GridToolbarButtonComponent,
         GridToolbarActionComponent,
-        NgIf,
-        StringComponent,
+        StringComponent
     ]
 })
 export class ProviderEdiAccountsComponent implements OnInit, AfterViewInit, OnDestroy {

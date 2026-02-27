@@ -11,36 +11,50 @@
 ></eg-confirm-dialog>
 
 <ng-template #outputTmpl let-rpt="row">
-  <ul *ngIf="!rpt.error_code" class="list-group list-group-horizontal">
-    <li *ngIf="rpt._rs.html_format() === 't'" class="list-group-item">
-      <a href="{{outputPath(rpt, 'report-data.html.raw.html')}}" target="_blank" i18n>
+  @if (!rpt.error_code) {
+    <ul class="list-group list-group-horizontal">
+      @if (rpt._rs.html_format() === 't') {
+        <li class="list-group-item">
+          <a href="{{outputPath(rpt, 'report-data.html.raw.html')}}" target="_blank" i18n>
         HTML
       </a>
-    </li>
-    <li *ngIf="rpt._rs.csv_format() === 't'" class="list-group-item">
-      <a href="{{outputPath(rpt, 'report-data.csv')}}" i18n>
+        </li>
+      }
+      @if (rpt._rs.csv_format() === 't') {
+        <li class="list-group-item">
+          <a href="{{outputPath(rpt, 'report-data.csv')}}" i18n>
         CSV
       </a>
-    </li>
-    <li *ngIf="rpt._rs.excel_format() === 't'" class="list-group-item">
-      <a href="{{outputPath(rpt, 'report-data.xlsx')}}" i18n>
+        </li>
+      }
+      @if (rpt._rs.excel_format() === 't') {
+        <li class="list-group-item">
+          <a href="{{outputPath(rpt, 'report-data.xlsx')}}" i18n>
         Excel
       </a>
-    </li>
-    <li *ngIf="rpt._rs.chart_line() === 't'" class="list-group-item">
-      <a href="{{outputPath(rpt, 'report-data.html.line.gif')}}" target="_blank" i18n>
+        </li>
+      }
+      @if (rpt._rs.chart_line() === 't') {
+        <li class="list-group-item">
+          <a href="{{outputPath(rpt, 'report-data.html.line.gif')}}" target="_blank" i18n>
         Line Chart
       </a>
-    </li>
-    <li *ngIf="rpt._rs.chart_bar() === 't'" class="list-group-item">
-      <a href="{{outputPath(rpt, 'report-data.html.bar.gif')}}" target="_blank" i18n>
+        </li>
+      }
+      @if (rpt._rs.chart_bar() === 't') {
+        <li class="list-group-item">
+          <a href="{{outputPath(rpt, 'report-data.html.bar.gif')}}" target="_blank" i18n>
         Bar Chart
       </a>
-    </li>
-  </ul>
-  <span *ngIf="rpt.error_code" i18n>
+        </li>
+      }
+    </ul>
+  }
+  @if (rpt.error_code) {
+    <span i18n>
     Error running report
   </span>
+  }
 </ng-template>
 
 <div class="mt-2">

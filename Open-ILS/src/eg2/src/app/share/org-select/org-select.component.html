@@ -4,32 +4,33 @@
   <span id="{{domId}}-{{r.id}}" class="{{orgClassCallback(r.id)}}">{{r.label}}</span>
 </ng-template>
 
-<ng-container *ngIf="readOnly && selected">
+@if (readOnly && selected) {
   <span>{{selected.label}}</span>
-</ng-container>
+}
 
-<ng-container *ngIf="!readOnly" [formGroup]="orgSelectGroup">
-  <input type="text" 
-    class="form-control {{moreClasses}}"
-    id="{{domId}}"
-    [name]="name"
-    [attr.aria-label]="ariaLabel"
-    [attr.aria-describedby]="ariaDescribedby"
-    [attr.ngbAutofocus]="ngbAutofocus"
-    [placeholder]="placeholder"
-    [disabled]="disabled"
-    [required]="required"
-    [(ngModel)]="selected" 
-    [ngbTypeahead]="filter"
-    [resultTemplate]="displayTemplate"
-    [inputFormatter]="formatter"
-    (orgSelectEnter)="onEnter()"
-    (blur)="handleBlur()"
-    (click)="click$.next($event.target.value)"
-    (selectItem)="orgChanged($event)"
-    container="body"
-    #instance="ngbTypeahead"
-    formControlName="orgSelect"
-  />
-
-</ng-container>
+@if (!readOnly) {
+  <ng-container [formGroup]="orgSelectGroup">
+    <input type="text"
+      class="form-control {{moreClasses}}"
+      id="{{domId}}"
+      [name]="name"
+      [attr.aria-label]="ariaLabel"
+      [attr.aria-describedby]="ariaDescribedby"
+      [attr.ngbAutofocus]="ngbAutofocus"
+      [placeholder]="placeholder"
+      [disabled]="disabled"
+      [required]="required"
+      [(ngModel)]="selected"
+      [ngbTypeahead]="filter"
+      [resultTemplate]="displayTemplate"
+      [inputFormatter]="formatter"
+      (orgSelectEnter)="onEnter()"
+      (blur)="handleBlur()"
+      (click)="click$.next($event.target.value)"
+      (selectItem)="orgChanged($event)"
+      container="body"
+      #instance="ngbTypeahead"
+      formControlName="orgSelect"
+      />
+  </ng-container>
+}

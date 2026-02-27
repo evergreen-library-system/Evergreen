@@ -13,14 +13,14 @@
   </span>
 </ng-template>
 
-<ng-container *ngIf="readOnly && selected">
+@if (readOnly && selected) {
   <ng-container *ngTemplateOutlet="getResultTemplate();context:{result: selected}">
   </ng-container>
-</ng-container>
+}
 
-<ng-container *ngIf="!readOnly">
+@if (!readOnly) {
   <div class="input-group">
-    <input type="text" 
+    <input type="text"
       class="form-control {{moreClasses}}"
       [tabindex]="tabindex"
       [maxlength]="maxLength"
@@ -38,7 +38,7 @@
       [selectOnExact]="selectOnExact"
       [required]="isRequired"
       [editable]="isEditable"
-      [(ngModel)]="selected" 
+      [(ngModel)]="selected"
       [ngbTypeahead]="filter"
       [resultTemplate]="getResultTemplate()"
       [inputFormatter]="formatDisplayString"
@@ -49,9 +49,11 @@
       (selectItem)="selectorChanged($event)"
       [attr.ngbAutofocus]="ngbAutofocus"
       #instance="ngbTypeahead"/>
-    <button *ngIf="icons" type="button" class="input-group-text" (click)="openMe($event)"
-      aria-label="Open" i18n-aria-label title="Open" i18n-title>
-      <span class="material-icons" aria-hidden="true">unfold_more</span>
-    </button>
+    @if (icons) {
+      <button type="button" class="input-group-text" (click)="openMe($event)"
+        aria-label="Open" i18n-aria-label title="Open" i18n-title>
+        <span class="material-icons" aria-hidden="true">unfold_more</span>
+      </button>
+    }
   </div>
-</ng-container>
+}

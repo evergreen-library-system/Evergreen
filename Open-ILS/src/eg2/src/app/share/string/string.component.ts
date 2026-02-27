@@ -7,7 +7,7 @@
  * this.helloStr.currrent().then(s => console.log(s));
  *
  */
-import { NgIf, NgTemplateOutlet } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import { Component, Input, OnInit, ElementRef, TemplateRef, inject } from '@angular/core';
 import {StringService} from '@eg/share/string/string.service';
 
@@ -15,15 +15,15 @@ import {StringService} from '@eg/share/string/string.service';
     selector: 'eg-string',
     template: `
     <span style='display:none'>
-      <ng-container *ngIf="template">
+      @if (template) {
         <ng-container *ngTemplateOutlet="template; context:ctx"></ng-container>
-      </ng-container>
-      <ng-container *ngIf="!template">
+      }
+      @if (!template) {
         <span>{{text}}</span>
-      </ng-container>
+      }
     </span>
-  `,
-    imports: [NgIf, NgTemplateOutlet]
+    `,
+    imports: [NgTemplateOutlet]
 })
 
 export class StringComponent implements OnInit {

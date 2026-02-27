@@ -32,7 +32,7 @@ import {CircEmailReceiptDialogComponent} from './circ-email-receipt-dialog.compo
         CancelTransitDialogComponent,
         BadBarcodeDialogComponent,
         OpenCircDialogComponent,
-        CircEmailReceiptDialogComponent
+        CircEmailReceiptDialogComponent,
         StaffCommonModule,
         HoldingsModule,
         BillingModule,

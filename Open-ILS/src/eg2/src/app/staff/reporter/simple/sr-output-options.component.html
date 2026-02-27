@@ -1,52 +1,52 @@
 <form #srOutputOptionsForm="ngForm" role="form" class="form-validated common-form">
   <div class="form-group row">
-        <legend class="col-form-label col-sm-1 pt-0" i18n>Choose your output format(s)</legend>
-        <div class="col-sm-10">
-          <div class="form-check">
-            <input class="form-check-input" type="checkbox" id="srExcelOutput" name="srExcelOutput" [(ngModel)]="templ.excelOutput">
-            <label class="form-label form-check-label" for="srExcelOutput" i18n>Excel Output</label>
+    <legend class="col-form-label col-sm-1 pt-0" i18n>Choose your output format(s)</legend>
+    <div class="col-sm-10">
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" id="srExcelOutput" name="srExcelOutput" [(ngModel)]="templ.excelOutput">
+        <label class="form-label form-check-label" for="srExcelOutput" i18n>Excel Output</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" id="srCsvOutput" name="srCsvOutput" [(ngModel)]="templ.csvOutput">
+        <label class="form-label form-check-label" for="srCsvOutput" i18n>CSV Output</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" id="srHtmlOutput" name="srHtmlOutput" [(ngModel)]="templ.htmlOutput">
+        <label class="form-label form-check-label" for="srHtmlOutput" i18n>HTML Output</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" id="srBarCharts" name="srBarCharts" [(ngModel)]="templ.barCharts">
+        <label class="form-label form-check-label" for="srBarCharts" i18n>Bar Chart</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" id="srLineCharts" name="srLineCharts" [(ngModel)]="templ.lineCharts">
+        <label class="form-label form-check-label" for="srLineCharts" i18n>Line Chart</label>
+      </div>
+      <div class="form">
+        <label class="form-label" i18n>Bibliographic Record Bucket Options</label>
+        <div class="row"><div class="col-sm-10">
+          <div class="form-text">
+            <div></div>
+            <div>
+              <label class="form-label form-text-label" for="srBibColumnNumber" i18n>Column number for bib id</label>
+              <input class="form-text-input" type="text" id="srBibColumnNumber" name="srBibColumnNumber" [(ngModel)]="templ.bibColumnNumber">
+            </div>
           </div>
           <div class="form-check">
-            <input class="form-check-input" type="checkbox" id="srCsvOutput" name="srCsvOutput" [(ngModel)]="templ.csvOutput">
-            <label class="form-label form-check-label" for="srCsvOutput" i18n>CSV Output</label>
+            <input class="form-check-input" type="checkbox" id="srNewRecordBucket" name="srNewRecordBucket" [(ngModel)]="templ.newRecordBucket">
+            <label class="form-label form-check-label" for="srNewRecordBucket" i18n>New Record Bucket</label>
           </div>
           <div class="form-check">
-            <input class="form-check-input" type="checkbox" id="srHtmlOutput" name="srHtmlOutput" [(ngModel)]="templ.htmlOutput">
-            <label class="form-label form-check-label" for="srHtmlOutput" i18n>HTML Output</label>
+            <input class="form-check-input" type="checkbox" id="srExistingRecordBucket" name="srExistingRecordBucket" [(ngModel)]="templ.existingRecordBucket">
+            <label class="form-label form-check-label" for="srExistingRecordBucket" i18n>Existing Record Bucket</label>
+            <div class="form-text">
+              <label class="form-label form-text-label" for="srRecordBucket" i18n>Destination Record Bucket Id</label>
+              <input class="form-text-input" type="text" id="srRecordBucket" name="srRecordBucket" [(ngModel)]="templ.recordBucket">
+            </div>
           </div>
-          <div class="form-check">
-            <input class="form-check-input" type="checkbox" id="srBarCharts" name="srBarCharts" [(ngModel)]="templ.barCharts">
-            <label class="form-label form-check-label" for="srBarCharts" i18n>Bar Chart</label>
-          </div>
-          <div class="form-check">
-            <input class="form-check-input" type="checkbox" id="srLineCharts" name="srLineCharts" [(ngModel)]="templ.lineCharts">
-            <label class="form-label form-check-label" for="srLineCharts" i18n>Line Chart</label>
-          </div>
-          <div class="form">
-            <label class="form-label" i18n>Bibliographic Record Bucket Options</label>
-            <div class="row"><div class="col-sm-10">
-              <div class="form-text">
-                <div></div>
-                <div>
-                    <label class="form-label form-text-label" for="srBibColumnNumber" i18n>Column number for bib id</label>
-                    <input class="form-text-input" type="text" id="srBibColumnNumber" name="srBibColumnNumber" [(ngModel)]="templ.bibColumnNumber">
-                </div>
-              </div>
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="srNewRecordBucket" name="srNewRecordBucket" [(ngModel)]="templ.newRecordBucket">
-                <label class="form-label form-check-label" for="srNewRecordBucket" i18n>New Record Bucket</label>
-              </div>
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="srExistingRecordBucket" name="srExistingRecordBucket" [(ngModel)]="templ.existingRecordBucket">
-                <label class="form-label form-check-label" for="srExistingRecordBucket" i18n>Existing Record Bucket</label>
-                  <div class="form-text">
-                    <label class="form-label form-text-label" for="srRecordBucket" i18n>Destination Record Bucket Id</label>
-                    <input class="form-text-input" type="text" id="srRecordBucket" name="srRecordBucket" [(ngModel)]="templ.recordBucket">
-                  </div>
-              </div>
-            </div></div>
-          </div>
-        </div>
+        </div></div>
+      </div>
+    </div>
   </div>
   <div class="form-group row">
     <legend class="col-form-label col-sm-1 pt-0" i18n>Recurrence</legend>
@@ -55,9 +55,13 @@
         <input class="form-check-input" type="checkbox" id="srRecurring" name="srRecurring" [(ngModel)]="templ.recurring">
         <label class="form-label form-check-label" for="srRecurring" i18n>Recurring Report?</label>
       </div>
-      <label *ngIf="templ.recurring" class="form-label me-sm-2" for="srRecurrenceInterval">Recurrence Interval</label>
-      <eg-interval-input *ngIf="templ.recurring" [(ngModel)]="templ.recurrence" id="srRecurrenceInterval" name="srRecurrenceInterval">
-      </eg-interval-input>
+      @if (templ.recurring) {
+        <label class="form-label me-sm-2" for="srRecurrenceInterval">Recurrence Interval</label>
+      }
+      @if (templ.recurring) {
+        <eg-interval-input [(ngModel)]="templ.recurrence" id="srRecurrenceInterval" name="srRecurrenceInterval">
+        </eg-interval-input>
+      }
     </div>
   </div>
   <div class="form-group row">{{ '' // Can't use form-inline here because it breaks the calendar display }}
@@ -72,7 +76,9 @@
         <label class="form-label form-check-label" for="srScheduleLater" i18n>Schedule Report For Later</label>
       </div>
       <div class="col-sm-3">
-        <eg-datetime-select *ngIf="templ.runNow === 'later'" [(ngModel)]="templ.runTime" name="srRunTime"></eg-datetime-select>
+        @if (templ.runNow === 'later') {
+          <eg-datetime-select [(ngModel)]="templ.runTime" name="srRunTime"></eg-datetime-select>
+        }
       </div>
     </div>
   </div>

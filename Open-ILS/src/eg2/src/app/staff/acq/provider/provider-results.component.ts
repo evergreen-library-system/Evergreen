@@ -5,7 +5,7 @@ import {GridDataSource, GridCellTextGenerator} from '@eg/share/grid/grid';
 import {AcqProviderSearchService, AcqProviderSearch} from './acq-provider-search.service';
 import {AcqProviderSearchFormComponent} from './acq-provider-search-form.component';
 import { GridModule } from '@eg/share/grid/grid.module';
-import { CommonModule } from '@angular/common';
+
 
 @Component({
     selector: 'eg-provider-results',
@@ -13,7 +13,6 @@ import { CommonModule } from '@angular/common';
     providers: [AcqProviderSearchService],
     imports: [
         AcqProviderSearchFormComponent,
-        CommonModule,
         GridModule
     ]
 })

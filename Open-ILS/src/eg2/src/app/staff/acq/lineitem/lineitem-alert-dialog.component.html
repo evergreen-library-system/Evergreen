@@ -3,9 +3,11 @@
   dialogTitle="Confirm Alert" [dialogBodyTemplate]="confirmAlertsMsg">
 </eg-confirm-dialog>
 <ng-template #confirmAlertsMsg>
-  <div *ngIf="numAlerts > 0" class="alert alert-warning" i18n>
+  @if (numAlerts > 0) {
+    <div class="alert alert-warning" i18n>
     Alert {{alertIndex}} out of {{numAlerts}}
   </div>
+  }
   <div i18n>An alert has been placed on line item {{liId}} ({{title}})</div>
   <div class="mt-2">{{alertText.code()}}</div>
   <div>{{alertText.description()}}</div>

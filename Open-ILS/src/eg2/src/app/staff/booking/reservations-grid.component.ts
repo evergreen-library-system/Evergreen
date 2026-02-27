@@ -20,8 +20,9 @@ import moment from 'moment-timezone';
 import { GridToolbarActionComponent } from '@eg/share/grid/grid-toolbar-action.component';
 import { GridToolbarButtonComponent } from '@eg/share/grid/grid-toolbar-button.component';
 import { GridColumnComponent } from '@eg/share/grid/grid-column.component';
-import { NgIf } from '@angular/common';
+
 import { DateTimeSelectComponent } from '@eg/share/datetime-select/datetime-select.component';
+import { NotBeforeMomentValidatorDirective } from '@eg/share/validators/not_before_moment_validator.directive';
 
 // A filterable grid of reservations used in various booking interfaces
 
@@ -36,8 +37,8 @@ import { DateTimeSelectComponent } from '@eg/share/datetime-select/datetime-sele
         GridComponent,
         GridToolbarActionComponent,
         GridToolbarButtonComponent,
-        NgIf,
         NoTimezoneSetComponent,
+        NotBeforeMomentValidatorDirective
     ]
 })
 export class ReservationsGridComponent implements OnChanges, OnInit {

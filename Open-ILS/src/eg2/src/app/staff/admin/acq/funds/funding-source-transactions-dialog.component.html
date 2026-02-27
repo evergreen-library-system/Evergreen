@@ -15,64 +15,64 @@
   <div class="modal-header">
     <h3 class="modal-title" i18n>Funding Source: {{fundingSource?.name()}}</h3>
     <button type="button" class="btn-close btn-close-white"
-      i18n-aria-label aria-label="Close dialog" (click)="close()"></button>
+    i18n-aria-label aria-label="Close dialog" (click)="close()"></button>
   </div>
-  <div class="modal-body" *ngIf="fundingSource">
-    <ul ngbNav #fundingSourceTransactionsNav="ngbNav" [(activeId)]="activeTab" class="nav-tabs" [keyboard]="true" [roles]="false" role="tablist">
-      <li role="presentation" [ngbNavItem]="'credits'">
-        <a role="tab" ngbNavLink i18n>Credits</a>
-        <ng-template ngbNavContent>
-           <div class="mt-2">
-            <eg-grid #creditsGrid idlClass="acqfscred" [dataSource]="acqfscredDataSource"
+  @if (fundingSource) {
+    <div class="modal-body">
+      <ul ngbNav #fundingSourceTransactionsNav="ngbNav" [(activeId)]="activeTab" class="nav-tabs" [keyboard]="true" [roles]="false" role="tablist">
+        <li role="presentation" [ngbNavItem]="'credits'">
+          <a role="tab" ngbNavLink i18n>Credits</a>
+          <ng-template ngbNavContent>
+            <div class="mt-2">
+              <eg-grid #creditsGrid idlClass="acqfscred" [dataSource]="acqfscredDataSource"
                 [sortable]="true" persistKey="acq.funding_source.credit"
                 [filterable]="true" [stickyHeader]="true">
-
-              <eg-grid-toolbar-button label="Apply Credits" i18n-label
-                [disabled]="fundingSource?.active() !== 't'" (onClick)="createCredit(creditsGrid)">
-              </eg-grid-toolbar-button>
-              <eg-grid-column path="amount"></eg-grid-column>
-              <eg-grid-column path="effective_date" [datePlusTime]="true"></eg-grid-column>
-              <eg-grid-column path="deadline_date" [datePlusTime]="true"></eg-grid-column>
-              <eg-grid-column path="note"></eg-grid-column>
-              <eg-grid-column path="id" [hidden]="true"></eg-grid-column>
-              <eg-grid-column path="funding_source" [hidden]="true" [filterable]="false"></eg-grid-column>
-            </eg-grid>
-          </div>
-        </ng-template>
-      </li>
-      <li role="presentation" [ngbNavItem]="'allocations'">
-        <a role="tab" ngbNavLink i18n>Allocations</a>
-        <ng-template ngbNavContent>
-          <div class="mt-2">
-            <eg-grid #allocationsGrid idlClass="acqfa" [dataSource]="acqfaDataSource"
+                <eg-grid-toolbar-button label="Apply Credits" i18n-label
+                  [disabled]="fundingSource?.active() !== 't'" (onClick)="createCredit(creditsGrid)">
+                </eg-grid-toolbar-button>
+                <eg-grid-column path="amount"></eg-grid-column>
+                <eg-grid-column path="effective_date" [datePlusTime]="true"></eg-grid-column>
+                <eg-grid-column path="deadline_date" [datePlusTime]="true"></eg-grid-column>
+                <eg-grid-column path="note"></eg-grid-column>
+                <eg-grid-column path="id" [hidden]="true"></eg-grid-column>
+                <eg-grid-column path="funding_source" [hidden]="true" [filterable]="false"></eg-grid-column>
+              </eg-grid>
+            </div>
+          </ng-template>
+        </li>
+        <li role="presentation" [ngbNavItem]="'allocations'">
+          <a role="tab" ngbNavLink i18n>Allocations</a>
+          <ng-template ngbNavContent>
+            <div class="mt-2">
+              <eg-grid #allocationsGrid idlClass="acqfa" [dataSource]="acqfaDataSource"
                 [sortable]="true" persistKey="acq.funding_source.fund_allocation"
                 [filterable]="true" [stickyHeader]="true" [cellTextGenerator]="cellTextGenerator">
-
-              <eg-grid-toolbar-button label="Allocate to Fund" i18n-label
-                [disabled]="fundingSource?.active() !== 't'" (onClick)="allocateToFund(allocationsGrid)">
-              </eg-grid-toolbar-button>
-              <ng-template #fundTmpl let-row="row">
-                <a href="/eg2/staff/admin/acq/funds/fund/{{row.fund().id()}}" target="_blank">
-                  {{row.fund().code()}} ({{row.fund().year()}}) ({{getOrgShortname(row.fund().org())}})
-                </a>
-              </ng-template>
-              <eg-grid-column path="fund" [cellTemplate]="fundTmpl"></eg-grid-column>
-              <eg-grid-column path="amount"></eg-grid-column>
-              <eg-grid-column path="create_time" [datePlusTime]="true"></eg-grid-column>
-              <eg-grid-column path="allocator"></eg-grid-column>
-              <eg-grid-column path="note"></eg-grid-column>
-              <eg-grid-column path="id" [hidden]="true"></eg-grid-column>
-              <eg-grid-column path="funding_source" [hidden]="true" [filterable]="false"></eg-grid-column>
-            </eg-grid>
-          </div>
-        </ng-template>
-      </li>
-    </ul>
-    <div [ngbNavOutlet]="fundingSourceTransactionsNav"></div>
-  </div>
+                <eg-grid-toolbar-button label="Allocate to Fund" i18n-label
+                  [disabled]="fundingSource?.active() !== 't'" (onClick)="allocateToFund(allocationsGrid)">
+                </eg-grid-toolbar-button>
+                <ng-template #fundTmpl let-row="row">
+                  <a href="/eg2/staff/admin/acq/funds/fund/{{row.fund().id()}}" target="_blank">
+                    {{row.fund().code()}} ({{row.fund().year()}}) ({{getOrgShortname(row.fund().org())}})
+                  </a>
+                </ng-template>
+                <eg-grid-column path="fund" [cellTemplate]="fundTmpl"></eg-grid-column>
+                <eg-grid-column path="amount"></eg-grid-column>
+                <eg-grid-column path="create_time" [datePlusTime]="true"></eg-grid-column>
+                <eg-grid-column path="allocator"></eg-grid-column>
+                <eg-grid-column path="note"></eg-grid-column>
+                <eg-grid-column path="id" [hidden]="true"></eg-grid-column>
+                <eg-grid-column path="funding_source" [hidden]="true" [filterable]="false"></eg-grid-column>
+              </eg-grid>
+            </div>
+          </ng-template>
+        </li>
+      </ul>
+      <div [ngbNavOutlet]="fundingSourceTransactionsNav"></div>
+    </div>
+  }
   <div class="modal-footer">
     <button type="button" class="btn btn-normal"
-      (click)="close()" i18n>Close</button>
+    (click)="close()" i18n>Close</button>
   </div>
 </ng-template>
 

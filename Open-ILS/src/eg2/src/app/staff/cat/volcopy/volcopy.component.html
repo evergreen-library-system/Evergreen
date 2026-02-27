@@ -1,7 +1,7 @@
 <eg-staff-banner bannerText="Holdings Editor" i18n-bannerText></eg-staff-banner>
 
 <eg-confirm-dialog #pendingChangesDialog
-  i18n-dialogTitle dialogTitle="Unsaved Changes Confirmation" 
+  i18n-dialogTitle dialogTitle="Unsaved Changes Confirmation"
   i18n-dialogBody  dialogBody="Unsaved changes will be lost.  Continue navigation?">
 </eg-confirm-dialog>
 
@@ -9,17 +9,21 @@
   i18n-dialogTitle dialogTitle="Uneditable Items"
   i18n-dialogBody dialogBody="Just a reminder, these items were not edited for lack of an adequately scoped UPDATE_COPY permission.">
   <ul>
-    <li *ngFor="let node of not_allowed_vols">
-      <div class="ps-2 fw-bold">
-        {{cnPrefixName(node.target.prefix())}}
-        {{node.target.label()}}
-        {{cnSuffixName(node.target.suffix())}}
-        &#64; {{orgName(node.target.owning_lib())}}
-      </div>
-      <ul>
-        <li *ngFor="let child of node.children">{{ child.target.barcode() }} &#64; {{orgName(child.target.circ_lib())}}</li>
-      </ul>
-    </li>
+    @for (node of not_allowed_vols; track node) {
+      <li>
+        <div class="ps-2 fw-bold">
+          {{cnPrefixName(node.target.prefix())}}
+          {{node.target.label()}}
+          {{cnSuffixName(node.target.suffix())}}
+          &#64; {{orgName(node.target.owning_lib())}}
+        </div>
+        <ul>
+          @for (child of node.children; track child) {
+            <li>{{ child.target.barcode() }} &#64; {{orgName(child.target.circ_lib())}}</li>
+          }
+        </ul>
+      </li>
+    }
   </ul>
 </eg-alert-dialog>
 
@@ -32,21 +36,24 @@
   successMessage="Operator Change Succeeded">
 </eg-op-change>
 
-<div class="row" *ngIf="sessionExpired">
-  <div class="col-lg-6 mt-4 offset-lg-3 alert alert-danger justify-content-center" role="text">
-    <span i18n>Holdings data is no longer available; it may have changed in another browser tab.</span>
-    <span *ngIf="recordId" i18n>
+@if (sessionExpired) {
+  <div class="row">
+    <div class="col-lg-6 mt-4 offset-lg-3 alert alert-danger justify-content-center" role="text">
+      <span i18n>Holdings data is no longer available; it may have changed in another browser tab.</span>
+      @if (recordId) {
+        <span i18n>
       You can <a class="alert-link" href="/staff/catalog/record/{{recordId}}/">revisit the record page</a> to start a new editing session.
     </span>
+      }
+    </div>
   </div>
-</div>
+}
 
-<ng-container *ngIf="!sessionExpired && !loading">
-
-  <eg-bib-summary *ngIf="context.recordId" [recordId]="context.recordId"></eg-bib-summary>
-
+@if (!sessionExpired && !loading) {
+  @if (context.recordId) {
+    <eg-bib-summary [recordId]="context.recordId"></eg-bib-summary>
+  }
   <div class="mt-3"> </div>
-
   <ul ngbNav #holdingsNav="ngbNav" class="nav-tabs" [keyboard]="true" [roles]="false" role="tablist"
     [activeId]="tab" (navChange)="beforeTabChange($event)">
     <li role="presentation" ngbNavItem="holdings">
@@ -55,28 +62,28 @@
         <h3 class="visually-hidden" i18n>Holdings</h3>
         <div class="mt-2">
           <eg-vol-edit [context]="context"
-            (canSaveChange)="volsCanSaveChange($event)" [itemRequirePartsMap]="itemRequirePartsMap"></eg-vol-edit>
+          (canSaveChange)="volsCanSaveChange($event)" [itemRequirePartsMap]="itemRequirePartsMap"></eg-vol-edit>
         </div>
-        <ng-container *ngIf="volcopy.defaults.values.unified_display">
+        @if (volcopy.defaults.values.unified_display) {
           <div class="mt-2">
             <eg-copy-attrs [context]="context" [contextChanged]="contextChange.asObservable()" #copyAttrs
-              (clearChanges)="clearChangesReaction($event)" (canSaveChange)="attrsCanSaveChange($event)"></eg-copy-attrs>
+            (clearChanges)="clearChangesReaction($event)" (canSaveChange)="attrsCanSaveChange($event)"></eg-copy-attrs>
           </div>
-        </ng-container>
+        }
       </ng-template>
     </li>
-    <ng-container *ngIf="!volcopy.defaults.values.unified_display">
+    @if (!volcopy.defaults.values.unified_display) {
       <li role="presentation" ngbNavItem="attrs">
         <a role="tab" ngbNavLink i18n>Item Attributes</a>
         <ng-template ngbNavContent>
           <h3 class="visually-hidden" i18n>Item Attributes</h3>
           <div class="mt-2">
             <eg-copy-attrs [context]="context" [contextChanged]="contextChange.asObservable()" #copyAttrs
-              (clearChanges)="clearChangesReaction($event)" (canSaveChange)="attrsCanSaveChange($event)"></eg-copy-attrs>
+            (clearChanges)="clearChangesReaction($event)" (canSaveChange)="attrsCanSaveChange($event)"></eg-copy-attrs>
           </div>
         </ng-template>
       </li>
-    </ng-container>
+    }
     <li role="presentation" ngbNavItem="config">
       <a role="tab" ngbNavLink i18n>Preferences</a>
       <ng-template ngbNavContent>
@@ -95,73 +102,81 @@
     </li>
   </ul>
   <div [ngbNavOutlet]="holdingsNav"></div>
-
-  <ng-container *ngIf="tab === 'holdings' || tab === 'attrs'">
-    <hr class="m-2"/>   
+  @if (tab === 'holdings' || tab === 'attrs') {
+    <hr class="m-2"/>
     <div class="row">
-      <p *ngIf="changesPendingForStatusBar" class="col-12 alert alert-warning text-center" i18n>Changes Pending</p>
-      <p *ngIf="barcodeNeeded()" class="col-12 alert alert-warning text-center" i18n>At least one barcoded item needed for current changes.</p>
-      <p *ngIf="partNeeded()" class="col-12 alert alert-warning text-center">
-        <ng-container *ngIf="missingPartsCount === 1" i18n>1 item requires a part.</ng-container>
-        <ng-container *ngIf="missingPartsCount > 1" i18n>{{missingPartsCount}} items require a part.</ng-container>
-      </p>
-    </div>                                                       
+      @if (changesPendingForStatusBar) {
+        <p class="col-12 alert alert-warning text-center" i18n>Changes Pending</p>
+      }
+      @if (barcodeNeeded()) {
+        <p class="col-12 alert alert-warning text-center" i18n>At least one barcoded item needed for current changes.</p>
+      }
+      @if (partNeeded()) {
+        <p class="col-12 alert alert-warning text-center">
+          @if (missingPartsCount === 1) {
+            <ng-container i18n>1 item requires a part.</ng-container>
+          }
+          @if (missingPartsCount > 1) {
+            <ng-container i18n>{{missingPartsCount}} items require a part.</ng-container>
+          }
+        </p>
+      }
+    </div>
     <div class="row">
       <div class="col-lg-12 d-flex align-items-start volcopy-actions">
-
-        <div class="form-check form-check-inline ms-2">                            
-          <input class="form-check-input" id='use-labels-cbox' type="checkbox"     
+        <div class="form-check form-check-inline ms-2">
+          <input class="form-check-input" id='use-labels-cbox' type="checkbox"
             [ngModel]="volcopy.defaults.values.print_labels"
             (change)="toggleCheckbox('print_labels')">
-          <label class="form-label form-check-label" for='use-labels-cbox'                    
-            i18n>Print Labels?</label>                                             
+          <label class="form-label form-check-label" for='use-labels-cbox'
+          i18n>Print Labels?</label>
         </div>
-
-        <ng-container *ngIf="tab === 'holdings'">
-          <!-- 
-            These actions could cause confusion or unintended
-            consequences if visible on any other tabs
+        @if (tab === 'holdings') {
+          <!--
+          These actions could cause confusion or unintended
+          consequences if visible on any other tabs
           -->
-          <ng-container *ngIf="volcopy.defaults.hidden.use_checkdigit !== true">
+          @if (volcopy.defaults.hidden.use_checkdigit !== true) {
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="checkbox" id="use-checkdigit" 
+              <input class="form-check-input" type="checkbox" id="use-checkdigit"
                 (change)="toggleCheckbox('use_checkdigit')"
                 [ngModel]="volcopy.defaults.values.use_checkdigit"/>
               <label class="form-label form-check-label" for="use-checkdigit" i18n>
                 Use Checkdigit
               </label>
             </div>
-          </ng-container>
-          <ng-container *ngIf="volcopy.defaults.hidden.generate_barcodes !== true">
+          }
+          @if (volcopy.defaults.hidden.generate_barcodes !== true) {
             <button type="button" class="btn btn-sm btn-outline-dark label-with-material-icon"
               (click)="volcopy.genBarcodesRequested.emit()">
               <span i18n>Generate Barcodes</span>
               <span class="material-icons" aria-hidden="true">refresh</span>
             </button>
-          </ng-container>
-        </ng-container>
-
+          }
+        }
         <div class="flex-1"> </div>
-        
         <button type="button" class="btn btn-outline-primary" (click)="save(false, true)" [disabled]="isNotSaveable()">
-          <span class="material-icons" aria-hidden="true" *ngIf="isNotSaveable()">warning</span>
+          @if (isNotSaveable()) {
+            <span class="material-icons" aria-hidden="true">warning</span>
+          }
           <span i18n>Apply All &amp; Save</span>
         </button>
         <button type="button" class="btn btn-primary" (click)="save(true, true)" [disabled]="isNotSaveable()">
-          <span class="material-icons" aria-hidden="true" *ngIf="isNotSaveable()">warning</span>
+          @if (isNotSaveable()) {
+            <span class="material-icons" aria-hidden="true">warning</span>
+          }
           <span i18n>Apply All, Save &amp; Exit</span>
         </button>
       </div>
     </div>
-  </ng-container>
+  }
+}
 
-</ng-container>
-
-<ng-container *ngIf="loading">
+@if (loading) {
   <div class="row">
     <div class="col-lg-6 offset-lg-3">
       <eg-progress-inline></eg-progress-inline>
     </div>
   </div>
-</ng-container>
+}
 

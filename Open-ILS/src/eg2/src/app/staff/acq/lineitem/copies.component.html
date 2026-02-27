@@ -1,4 +1,6 @@
-<h3 *ngIf="mode !== 'multiAdd'" class="mt-3" i18n>Items for Line Item {{lineitem?.id()}} ({{getTitle(lineitem)}})</h3>
+@if (mode !== 'multiAdd') {
+  <h3 class="mt-3" i18n>Items for Line Item {{lineitem?.id()}} ({{getTitle(lineitem)}})</h3>
+}
 
 <eg-confirm-dialog #leaveConfirm
   i18n-dialogTitle i18n-dialogBody
@@ -10,18 +12,18 @@
   <div class="d-flex align-items-baseline justify-content-between">
 
     <label class="form-label" for='copy-count-input' i18n>Item Count: </label>
-    <input class="form-control form-control-sm ms-3 small" 
+    <input class="form-control form-control-sm ms-3 small"
       id='copy-count-input' [disabled]="liLocked"
       [(ngModel)]="copyCount" type="text" (keyup.enter)="applyCount()"/>
 
-    <button type="button" class="btn btn-sm btn-outline-dark ms-3" 
-      [disabled]="liLocked" (click)="applyCount()" i18n>Apply</button>
+    <button type="button" class="btn btn-sm btn-outline-dark ms-3"
+    [disabled]="liLocked" (click)="applyCount()" i18n>Apply</button>
 
     <span class="ms-3" i18n> | </span>
 
     <label class="form-label ms-3" for='distrib-formula-cbox' i18n>Distribution Formulas</label>
     <span class="ms-3 flex-2">
-      <eg-combobox idlClass="acqdf" [idlQueryAnd]="formulaFilter" 
+      <eg-combobox idlClass="acqdf" [idlQueryAnd]="formulaFilter"
         [asyncSupportsEmptyTermClick]="true" [startsWith]="true"
         [idlQuerySort]="{acqdf: 'name'}"
         [disabled]="liLocked"
@@ -29,48 +31,54 @@
         #distribFormCbox domId="distrib-formula-cbox">
       </eg-combobox>
     </span>
-    <button type="button" class="btn btn-sm btn-outline-dark ms-3" 
+    <button type="button" class="btn btn-sm btn-outline-dark ms-3"
       [disabled]="!distribFormCbox?.selectedId || liLocked"
-      (click)="applyFormula(distribFormCbox.selectedId)" i18n>Apply</button>
+    (click)="applyFormula(distribFormCbox.selectedId)" i18n>Apply</button>
 
-    <button type="button" class="btn btn-sm btn-success ms-3" [disabled]="liLocked && !dirty" *ngIf="mode !== 'multiAdd'"
+    @if (mode !== 'multiAdd') {
+      <button type="button" class="btn btn-sm btn-success ms-3" [disabled]="liLocked && !dirty"
       (click)="save()" i18n>Save Changes</button>
+    }
 
   </div>
 </div>
 
-<div class="col-lg-6 offset-lg-3" *ngIf="saving">
-  <eg-progress-inline [max]="progressMax" [value]="progressValue">
-  </eg-progress-inline>
-</div>
+@if (saving) {
+  <div class="col-lg-6 offset-lg-3">
+    <eg-progress-inline [max]="progressMax" [value]="progressValue">
+    </eg-progress-inline>
+  </div>
+}
 
-<ng-container *ngIf="lineitem && !saving">
-
-  <div class="card tight-card" *ngIf="lineitem.distribution_formulas().length && mode !== 'multiAdd'">
-    <div class="card-header" i18n>Distribution formulas applied to this lineitem</div>
-    <div class="card-body">
-      <ul class="p-0 m-0">
-        <li class="list-group-item p-0 m-0 border-0" 
-          *ngFor="let formula of lineitem.distribution_formulas()">
-          <div class="d-flex">
-            <button type="button" class="btn btn-outline-danger material-icon-button p-0 m-0"
-              (click)="deleteFormula(formula)" title="Delete {{formula.formula().name()}}" i18n-title
-              aria-label="Delete {{formula.formula().name()}}" i18n-aria-label>
-              <span class="material-icons" aria-hidden="true">delete</span>
-            </button>
-            <div class="ms-2">{{formula.create_time() | date:'short'}}</div>
-            <div class="ms-2">{{formula.creator().usrname()}}</div>
-            <div class="ms-2 flex-1">{{formula.formula().name()}}</div>
-          </div>
-        </li>
-      </ul>
+@if (lineitem && !saving) {
+  @if (lineitem.distribution_formulas().length && mode !== 'multiAdd') {
+    <div class="card tight-card">
+      <div class="card-header" i18n>Distribution formulas applied to this lineitem</div>
+      <div class="card-body">
+        <ul class="p-0 m-0">
+          @for (formula of lineitem.distribution_formulas(); track formula) {
+            <li class="list-group-item p-0 m-0 border-0"
+              >
+              <div class="d-flex">
+                <button type="button" class="btn btn-outline-danger material-icon-button p-0 m-0"
+                  (click)="deleteFormula(formula)" title="Delete {{formula.formula().name()}}" i18n-title
+                  aria-label="Delete {{formula.formula().name()}}" i18n-aria-label>
+                  <span class="material-icons" aria-hidden="true">delete</span>
+                </button>
+                <div class="ms-2">{{formula.create_time() | date:'short'}}</div>
+                <div class="ms-2">{{formula.creator().usrname()}}</div>
+                <div class="ms-2 flex-1">{{formula.formula().name()}}</div>
+              </div>
+            </li>
+          }
+        </ul>
+      </div>
     </div>
-  </div>
-
+  }
   <eg-lineitem-batch-copies
     [lineitem]="lineitem" [batchAdd]="mode === 'multiAdd'"
     (becameDirty)="dirty = true" [hideBarcode]="mode === 'multiAdd'">
   ></eg-lineitem-batch-copies>
-</ng-container>
+}
 
 

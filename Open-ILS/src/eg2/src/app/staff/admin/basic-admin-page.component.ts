@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, OnInit, inject } from '@angular/core';
 import {ActivatedRoute, ParamMap} from '@angular/router';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
@@ -13,35 +13,34 @@ import { AdminPageComponent } from '../share/admin-page/admin-page.component';
 
 @Component({
     template: `
-      <ng-container *ngIf="idlClass">
-      <eg-title i18n-prefix prefix="{{ recordTitle || recordLabel || classLabel}} Administration">
-      </eg-title>
-      <eg-staff-banner bannerText="{{ recordTitle || recordLabel || classLabel}}" i18n-bannerText>
-      </eg-staff-banner>
-      <eg-admin-page persistKeyPfx="{{persistKeyPfx}}" idlClass="{{idlClass}}"
-        configLinkBasePath="{{configLinkBasePath}}"
-        fieldOrder="{{fieldOrder}}"
-        [fieldOptions]="fieldOptions"
-        readonlyFields="{{readonlyFields}}"
-        recordLabel="{{recordLabel}}"
-        orgDefaultAllowed="{{orgDefaultAllowed}}"
-        orgFieldsDefaultingToContextOrg="{{orgFieldsDefaultingToContextOrg}}"
-        contextOrgSelectorPersistKey="{{contextOrgSelectorPersistKey}}"
-        [hideClearFilters]="hideClearFilters"
-        [initialFilterValues]="initialFilterValues"
-        [defaultNewRecord]="defaultNewRecordIdl"
-        [enableUndelete]="enableUndelete"
-        [disableDelete]="disableDelete"
-        [deleteConfirmation]="deleteConfirmation"
-        [disableEdit]="disableEdit"
+      @if (idlClass) {
+        <eg-title i18n-prefix prefix="{{ recordTitle || recordLabel || classLabel}} Administration">
+        </eg-title>
+        <eg-staff-banner bannerText="{{ recordTitle || recordLabel || classLabel}}" i18n-bannerText>
+        </eg-staff-banner>
+        <eg-admin-page persistKeyPfx="{{persistKeyPfx}}" idlClass="{{idlClass}}"
+          configLinkBasePath="{{configLinkBasePath}}"
+          fieldOrder="{{fieldOrder}}"
+          [fieldOptions]="fieldOptions"
+          readonlyFields="{{readonlyFields}}"
+          recordLabel="{{recordLabel}}"
+          orgDefaultAllowed="{{orgDefaultAllowed}}"
+          orgFieldsDefaultingToContextOrg="{{orgFieldsDefaultingToContextOrg}}"
+          contextOrgSelectorPersistKey="{{contextOrgSelectorPersistKey}}"
+          [hideClearFilters]="hideClearFilters"
+          [initialFilterValues]="initialFilterValues"
+          [defaultNewRecord]="defaultNewRecordIdl"
+          [enableUndelete]="enableUndelete"
+          [disableDelete]="disableDelete"
+          [deleteConfirmation]="deleteConfirmation"
+          [disableEdit]="disableEdit"
         [disableOrgFilter]="disableOrgFilter"></eg-admin-page>
-      </ng-container>
-    `,
+      }
+      `,
     imports: [
         AdminPageComponent,
-        CommonModule,
         StaffBannerComponent,
-        TitleComponent,
+        TitleComponent
     ]
 })
 

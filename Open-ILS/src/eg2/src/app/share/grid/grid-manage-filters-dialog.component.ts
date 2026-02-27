@@ -8,15 +8,14 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
 import {Subject, Subscription, debounceTime, distinctUntilChanged} from 'rxjs';
-import { NgIf } from '@angular/common';
+
 
 @Component({
     selector: 'eg-grid-manage-filters-dialog',
     templateUrl: './grid-manage-filters-dialog.component.html',
     imports: [
         ComboboxComponent,
-        FormsModule,
-        NgIf
+        FormsModule
     ]
 })
 

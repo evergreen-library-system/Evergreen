@@ -20,15 +20,17 @@
 
 
 <ng-template #titleTemplate let-r="row">
-  <ng-container *ngIf="r.record">
+  @if (r.record) {
     <a routerLink="/staff/catalog/record/{{r.record.id()}}">{{r.title}}</a>
-  </ng-container>
-  <ng-container *ngIf="!r.record">{{r.title}}</ng-container>
+  }
+  @if (!r.record) {
+    {{r.title}}
+  }
 </ng-template>
 <ng-template #barcodeTemplate let-r="row">
-  <ng-container *ngIf="r.copy">
+  @if (r.copy) {
     <a href="/eg/staff/cat/item/{{r.copy.id()}}">{{r.copy.barcode()}}</a>
-  </ng-container>
+  }
 </ng-template>
 
 
@@ -37,113 +39,96 @@
   [rowClassCallback]="rowClass" [persistKey]="persistKey"
   [useLocalSort]="true" [cellTextGenerator]="cellTextGenerator">
 
-  <ng-container *ngIf="menuStyle === 'full'">
-
+  @if (menuStyle === 'full') {
     <eg-grid-toolbar-action
       i18n-label label="Print Item Receipt(s)" (onClick)="printReceipts($event)">
     </eg-grid-toolbar-action>
-
     <eg-grid-toolbar-action [disabled]="!patron?.email()"
       i18n-label label="Email Item Receipt(s)" (onClick)="emailReceipts($event)">
     </eg-grid-toolbar-action>
-
     <eg-grid-toolbar-action
       i18n-group group="Add" i18n-label label="Add Item Alerts"
       (onClick)="openItemAlerts($event, 'create')">
     </eg-grid-toolbar-action>
-
     <eg-grid-toolbar-action
       i18n-group group="Add" i18n-label label="Manage Item Alerts"
       (onClick)="openItemAlerts($event, 'manage')">
     </eg-grid-toolbar-action>
-
     <eg-grid-toolbar-action
       i18n-group group="Add" i18n-label label="Add Billing"
       (onClick)="openBillingDialog($event)">
     </eg-grid-toolbar-action>
-
     <eg-grid-toolbar-action
       i18n-group group="Circulation" i18n-label label="Edit Due Date"
       (onClick)="editDueDate($event)">
     </eg-grid-toolbar-action>
-
     <eg-grid-toolbar-action
       group="Mark" i18n-group i18n-label label="Mark Item Damaged"
-      (onClick)="markDamaged($event)"></eg-grid-toolbar-action>
-
+    (onClick)="markDamaged($event)"></eg-grid-toolbar-action>
     <eg-grid-toolbar-action
       group="Mark" i18n-group i18n-label label="Mark Claims Returned"
-      (onClick)="claimsReturned($event)"></eg-grid-toolbar-action>
-
+    (onClick)="claimsReturned($event)"></eg-grid-toolbar-action>
     <eg-grid-toolbar-action
       group="Mark" i18n-group i18n-label label="Mark Claims Never Checked Out"
-      (onClick)="claimsNeverCheckedOut($event)"></eg-grid-toolbar-action>
-
+    (onClick)="claimsNeverCheckedOut($event)"></eg-grid-toolbar-action>
     <eg-grid-toolbar-action
       group="Mark" i18n-group i18n-label label="Mark Lost (By Patron)"
-      (onClick)="markLost($event)"></eg-grid-toolbar-action>
-
+    (onClick)="markLost($event)"></eg-grid-toolbar-action>
     <!-- .subscribe() nudges the observable to run -->
-    <eg-grid-toolbar-action 
-      group="Circulation" i18n-group i18n-label label="Check In" 
+    <eg-grid-toolbar-action
+      group="Circulation" i18n-group i18n-label label="Check In"
       (onClick)="checkin($event).subscribe()">
     </eg-grid-toolbar-action>
-
-    <eg-grid-toolbar-action group="Circulation" i18n-group 
+    <eg-grid-toolbar-action group="Circulation" i18n-group
       i18n-label label="Renew" (onClick)="renew($event)">
     </eg-grid-toolbar-action>
-
-    <eg-grid-toolbar-action group="Circulation" i18n-group 
+    <eg-grid-toolbar-action group="Circulation" i18n-group
       i18n-label label="Renew All" (onClick)="renewAll()">
     </eg-grid-toolbar-action>
-
-    <eg-grid-toolbar-action group="Circulation" i18n-group 
+    <eg-grid-toolbar-action group="Circulation" i18n-group
       i18n-label label="Renew With Specific Due Date"
       (onClick)="renewWithDate($event)">
     </eg-grid-toolbar-action>
-
-    <eg-grid-toolbar-action group="Show" i18n-group 
+    <eg-grid-toolbar-action group="Show" i18n-group
       i18n-label label="Show Last Few Circulation" (onClick)="showRecentCircs($event)">
     </eg-grid-toolbar-action>
-
-    <eg-grid-toolbar-action group="Show" i18n-group 
+    <eg-grid-toolbar-action group="Show" i18n-group
       i18n-label label="Show Triggered Events" (onClick)="showTriggeredEvents($event)">
     </eg-grid-toolbar-action>
-
-  </ng-container>
+  }
 
   <!-- Columns =========================================== -->
 
   <eg-grid-column [index]="true" path="index" [hidden]="true"
-    label="Row Index" i18n-label></eg-grid-column>
+  label="Row Index" i18n-label></eg-grid-column>
 
-  <eg-grid-column path="circ.id" 
-    label="Circ ID" i18n-label></eg-grid-column>
+  <eg-grid-column path="circ.id"
+  label="Circ ID" i18n-label></eg-grid-column>
 
   <eg-grid-column path="dueDate" label="Due Date" i18n-label
     timezoneContextOrg="circ.circ_lib" dateOnlyIntervalField="circ.duration"
-    datatype="timestamp"></eg-grid-column>
+  datatype="timestamp"></eg-grid-column>
 
   <eg-grid-column path="copy.barcode" label="Barcode" i18n-label
-    [cellTemplate]="barcodeTemplate"></eg-grid-column>
+  [cellTemplate]="barcodeTemplate"></eg-grid-column>
 
-  <eg-grid-column path="title" label="Title" i18n-label 
-    [cellTemplate]="titleTemplate"></eg-grid-column>
+  <eg-grid-column path="title" label="Title" i18n-label
+  [cellTemplate]="titleTemplate"></eg-grid-column>
 
   <eg-grid-column path="circ.stop_fines" label="Fines Stopped"
-    i18n-label></eg-grid-column>
+  i18n-label></eg-grid-column>
 
   <eg-grid-column path="circ.renewal_remaining" label="Renewals Remaining"
-    i18n-label></eg-grid-column>
+  i18n-label></eg-grid-column>
 
   <eg-grid-column path="circ.circ_lib.shortname" label="Checkout / Renewal Library"
-    i18n-label></eg-grid-column>
+  i18n-label></eg-grid-column>
 
   <eg-grid-column path="circ.checkin_workstation.name" label="Checkin Workstation"
-    i18n-label></eg-grid-column>
+  i18n-label></eg-grid-column>
 
   <eg-grid-column path="circ.workstation.name" label="Checkout Workstation"
-    i18n-label></eg-grid-column>
+  i18n-label></eg-grid-column>
 
   <eg-grid-column path="author" label="Author" i18n-label></eg-grid-column>
 
@@ -152,7 +137,7 @@
   <eg-grid-column path="lastNotice" label="Last Notice" i18n-label></eg-grid-column>
 
   <eg-grid-column path="nonCatCount" label="Non-Cataloged Count"
-    [hidden]="true" i18n-label></eg-grid-column>
+  [hidden]="true" i18n-label></eg-grid-column>
 
   <eg-grid-column path="circ.*" idlClass="circ" [hidden]="true"></eg-grid-column>
 

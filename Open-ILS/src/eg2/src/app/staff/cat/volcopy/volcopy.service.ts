@@ -14,6 +14,7 @@ import {ServerStoreService} from '@eg/core/server-store.service';
 import {StoreService} from '@eg/core/store.service';
 import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import { ItemLocationService } from '@eg/share/item-location-select/item-location.service';
+import { EventService } from '@eg/core/event.service';
 
 /* Managing volcopy data */
 

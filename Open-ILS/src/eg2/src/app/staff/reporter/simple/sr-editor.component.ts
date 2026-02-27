@@ -12,12 +12,16 @@ import {StringComponent} from '@eg/share/string/string.component';
 import {ReporterService, SRTemplate} from '../share/reporter.service';
 import { StaffCommonModule } from '@eg/staff/common.module';
 import { SRFieldChooserComponent } from './sr-field-chooser.component';
+import { SRSortOrderComponent } from './sr-sort-order.component';
+import { SROutputOptionsComponent } from './sr-output-options.component';
 
 @Component({
     templateUrl: './sr-editor.component.html',
     styleUrls: ['./sr-editor.component.css'],
     imports: [
+        SROutputOptionsComponent,
         SRFieldChooserComponent,
+        SRSortOrderComponent,
         StaffCommonModule
     ]
 })

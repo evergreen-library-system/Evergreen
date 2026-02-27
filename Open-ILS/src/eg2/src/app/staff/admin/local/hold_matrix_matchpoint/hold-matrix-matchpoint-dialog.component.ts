@@ -1,13 +1,15 @@
 /* eslint-disable */
-import {Component, OnInit, Input,
+import {Component, OnInit,
     Output, EventEmitter} from '@angular/core';
 import {NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 import {Observable} from 'rxjs';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
+import { CommonModule } from '@angular/common';
 
 @Component({
     selector: 'eg-hold-matrix-matchpoint-dialog',
-    templateUrl: './hold-matrix-matchpoint-dialog.component.html'
+    templateUrl: './hold-matrix-matchpoint-dialog.component.html',
+    imports: [CommonModule]
 })
 export class HoldMatrixMatchpointDialogComponent extends DialogComponent implements OnInit {
 

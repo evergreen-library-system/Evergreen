@@ -4,13 +4,13 @@ import {AuthService} from '@eg/core/auth.service';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {NetRequest, NetService} from '@eg/core/net.service';
-import { NgIf } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 
 @Component({
     selector: 'eg-op-change',
     templateUrl: 'op-change.component.html',
-    imports: [NgIf, FormsModule]
+    imports: [FormsModule]
 })
 
 export class OpChangeComponent

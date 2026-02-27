@@ -3,7 +3,7 @@ import {IdlObject} from '@eg/core/idl.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {PatronSearchComponent} from './search.component';
-import { NgIf } from '@angular/common';
+
 
 /**
  * Dialog container for patron search component
@@ -16,8 +16,7 @@ import { NgIf } from '@angular/common';
     selector: 'eg-patron-search-dialog',
     templateUrl: 'search-dialog.component.html',
     imports: [
-        NgIf,
-        PatronSearchComponent,
+        PatronSearchComponent
     ]
 })
 

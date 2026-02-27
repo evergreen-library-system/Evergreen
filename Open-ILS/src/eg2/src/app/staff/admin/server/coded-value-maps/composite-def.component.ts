@@ -8,12 +8,14 @@ import {PcrudService} from '@eg/core/pcrud.service';
 import {CompositeNewPointComponent} from './composite-new.component';
 import {StringComponent} from '@eg/share/string/string.component';
 import { StaffCommonModule } from '@eg/staff/common.module';
+import { TreeComponent } from '@eg/share/tree/tree.component';
 
 @Component({
     templateUrl: './composite-def.component.html',
     imports: [
         CompositeNewPointComponent,
-        StaffCommonModule
+        StaffCommonModule,
+        TreeComponent
     ]
 })
 
