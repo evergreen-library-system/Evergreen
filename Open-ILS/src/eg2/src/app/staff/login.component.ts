@@ -95,7 +95,9 @@ export class StaffLoginComponent implements OnInit {
     redirectToSSO(type = 'login') {
         let url = `/eg/opac/staff/sso/${type}?ws=${this.args.workstation}`;
         if (this.routeTo) {
-            url = url + '&redirect_to=' + encodeURIComponent(this.routeTo);
+            url = url + '&redirect_to=' + encodeURIComponent(
+                this.ngLocation.prepareExternalUrl(this.routeTo)
+            );
         }
         if (this.activeLogout) {
             url = url + '&active_logout=1';
