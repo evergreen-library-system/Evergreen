@@ -13,6 +13,8 @@ import { FmRecordEditorModule } from '@eg/share/fm-editor/fm-editor.module';
 import { GridModule } from '@eg/share/grid/grid.module';
 import { StaffCommonModule } from '@eg/staff/common.module';
 
+const DAYS_IN_WEEK = 7;
+
 @Component({
     templateUrl: './survey.component.html',
     standalone: true,
@@ -35,7 +37,6 @@ export class SurveyComponent implements OnInit {
     @Input() idlClass = 'asv';
     @Input() dialogSize: 'sm' | 'lg' = 'lg';
 
-    DAYS_IN_WEEK = 7;
 
     constructor(
         private auth: AuthService,
@@ -77,7 +78,7 @@ export class SurveyComponent implements OnInit {
         this.defaultNewRecord = this.idl.create('asv');
         const now = new Date();
         const nextWeek = new Date();
-        nextWeek.setDate(nextWeek.getDate() + this.DAYS_IN_WEEK);
+        nextWeek.setDate(nextWeek.getDate() + DAYS_IN_WEEK);
         this.defaultNewRecord.start_date(now.toISOString());
         this.defaultNewRecord.end_date(nextWeek.toISOString());
     }
