@@ -28,6 +28,7 @@ import {MatchSetQualityComponent} from './match-set-quality.component';
 import {MatchSetNewPointComponent} from './match-set-new-point.component';
 import {RecentImportsComponent} from './recent-imports.component';
 import {MarcEditModule} from '@eg/staff/share/marc-edit/marc-edit.module';
+import { FastAddSelectorComponent } from '@eg/staff/share/marc-edit/fast-add-selector-component';
 
 @NgModule({
     declarations: [
@@ -53,6 +54,7 @@ import {MarcEditModule} from '@eg/staff/share/marc-edit/marc-edit.module';
     ],
     imports: [
         AcqCommonModule,
+        FastAddSelectorComponent,
         TreeModule,
         StaffCommonModule,
         FmRecordEditorModule,

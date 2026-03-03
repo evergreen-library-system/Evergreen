@@ -19,24 +19,7 @@
 
 <div class="row gx-1 row-cols-auto p-3" id="marc-edit">
 
-  <ng-container *ngIf="recordType === 'biblio'">
-    <div class="form-check">
-      <input class="form-check-input" type="checkbox"
-        [(ngModel)]="showFastAdd" id="fast-add-item"/>
-      <label class="form-label form-check-label" for="fast-add-item">
-        Add Item
-      </label>
-    </div>
-  </ng-container>
-
-  <ng-container *ngIf="showFastAdd">
-    <div class="form-inline">
-      <input type="text" class="form-control ms-2" 
-        [(ngModel)]="fastItemLabel" placeholder="Call Number" i18n-placeholder/>
-      <input type="text" class="form-control ms-2" 
-        [(ngModel)]="fastItemBarcode" placeholder="Barcode" i18n-placeholder/>
-    </div>
-  </ng-container>
+  <ng-content select="eg-fast-add-selector"></ng-content>
 
   <div class="flex-1"></div>
 

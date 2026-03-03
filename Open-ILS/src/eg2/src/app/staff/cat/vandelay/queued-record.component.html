@@ -25,7 +25,7 @@
         <eg-marc-editor [inPlaceMode]="true" [recordXml]="queuedRecord.marc()"
           [recordSource]="queuedRecord.bib_source()"
           (recordSaved)="handleMarcRecordSaved($event)"
-          *ngIf="queueType === 'bib'"></eg-marc-editor>
+          *ngIf="queueType === 'bib'"><eg-fast-add-selector></eg-fast-add-selector></eg-marc-editor>
         <eg-marc-editor [inPlaceMode]="true" [recordXml]="queuedRecord.marc()"
           (recordSaved)="handleMarcRecordSaved($event)"
           *ngIf="queueType !== 'bib'"></eg-marc-editor>

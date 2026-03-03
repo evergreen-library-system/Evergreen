@@ -7,6 +7,10 @@
   </div>
   <div class="modal-body">
     <eg-marc-editor #marcEditor (recordSaved)="handleRecordSaved($event)" 
-      [recordType]="recordType" [recordXml]="recordXml"></eg-marc-editor>
+      [recordType]="recordType" [recordXml]="recordXml">
+      @if(recordType === 'biblio') {
+        <eg-fast-add-selector></eg-fast-add-selector>
+      }
+    </eg-marc-editor>
   </div>
 </ng-template>
