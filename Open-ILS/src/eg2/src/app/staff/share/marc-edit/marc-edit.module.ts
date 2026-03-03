@@ -16,6 +16,7 @@ import {HoldingsModule} from '@eg/staff/share/holdings/holdings.module';
 import { CharsCanadianComponent } from './charmap/chars-canadian.component';
 import { CharsLatinComponent } from './charmap/chars-latin.component';
 import { CharsPunctuationComponent } from './charmap/chars-punctuation.component';
+import { FastAddSelectorComponent } from './fast-add-selector-component';
 
 @NgModule({
     declarations: [
@@ -36,7 +37,8 @@ import { CharsPunctuationComponent } from './charmap/chars-punctuation.component
     imports: [
         StaffCommonModule,
         CommonWidgetsModule,
-        HoldingsModule
+        HoldingsModule,
+        FastAddSelectorComponent
     ],
     exports: [
         MarcEditorComponent

@@ -27,7 +27,10 @@
     [inPlaceMode]="true"
     [recordXml]="currentEditRecord.marcxml"
     (recordSaved)="updateCurrentEditRecord($event)"
-  />
+  >@if(searchMode !== 'acq') {
+    <eg-fast-add-selector></eg-fast-add-selector>
+  }
+</eg-marc-editor>
 </ng-template>
 
 <eg-confirm-dialog #editMARCdlg

@@ -40,6 +40,7 @@ import {WorkLogModule} from '@eg/staff/share/worklog/worklog.module';
 import {VolCopyModule} from '@eg/staff/cat/volcopy/volcopy.module';
 import { SortOrderSelectComponent } from './sort-order-select/sort-order-select.component';
 import { CatalogOrgSelectComponent } from './catalog-org-select/catalog-org-select.component';
+import { FastAddSelectorComponent } from '../share/marc-edit/fast-add-selector-component';
 
 @NgModule({
     declarations: [
@@ -73,6 +74,7 @@ import { CatalogOrgSelectComponent } from './catalog-org-select/catalog-org-sele
     ],
     imports: [
         StaffCommonModule,
+        FastAddSelectorComponent,
         FmRecordEditorModule,
         CatalogRoutingModule,
         HoldsModule,
