@@ -95,42 +95,49 @@
     <eg-grid-toolbar-action
         label="Remove Selected Records from Bucket" i18n-label
         [disabled]="noSelectedRows"
+        group="Bucket Actions"
         (onClick)="removeFromBucket($event)">
     </eg-grid-toolbar-action>
 
     <eg-grid-toolbar-action
         label="Add Selected Records to a Different Bucket" i18n-label
         [disabled]="noSelectedRows"
+        group="Bucket Actions"
         (onClick)="openAddToBucketDialog($event)">
     </eg-grid-toolbar-action>
 
     <eg-grid-toolbar-action
         label="Move Selected Records to a Different Bucket" i18n-label
         [disabled]="noSelectedRows"
+        group="Bucket Actions"
         (onClick)="moveToBucket($event)">
     </eg-grid-toolbar-action>
 
     <eg-grid-toolbar-action
         label="Delete Selected Records from Catalog" i18n-label
         [disabled]="noSelectedRows"
+        group="Record Actions"
         (onClick)="deleteFromCatalog($event)">
     </eg-grid-toolbar-action>
 
     <eg-grid-toolbar-action
         label="Transfer Title Holds" i18n-label
         [disabled]="noSelectedRows"
+        group="Record Actions"
         (onClick)="transferTitleHolds($event)">
     </eg-grid-toolbar-action>
 
     <eg-grid-toolbar-action
         label="Merge Selected Records" i18n-label
         [disabled]="noSelectedRows || oneSelectedRow"
+        group="Record Actions"
         (onClick)="mergeRecords($event)">
     </eg-grid-toolbar-action>
 
     <eg-grid-toolbar-action
         label="Export Selected Records" i18n-label
         [disabled]="noSelectedRows"
+        group="Record Actions"
         (onClick)="exportRecords($event)">
     </eg-grid-toolbar-action>
 
