@@ -74,9 +74,11 @@
       <button type="button" class="btn btn-sm btn-destroy ms-auto"
         [disabled]="!templateOnlyMode && !canUnset"
         (click)="unset($event)" i18n>Clear</button>
+      <!-- Temporarily Remove Reset Button -->
+      <!-- (pending further discussion and feedback)
       <button type="button" class="btn btn-sm btn-destroy ms-1"
         *ngIf="!templateOnlyMode"
-        (click)="clear($event)" i18n>Reset</button>
+        (click)="clear($event)" i18n>Reset</button> -->
     </div>
 
     <div *ngIf="selectOnly" class="edit-buttons">
