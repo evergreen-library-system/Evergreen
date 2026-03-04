@@ -302,7 +302,7 @@ export class InvoiceService {
         return result;
     }
 
-    _touchInvoiceInDb(invoice: IdlObject, items: IdlObject[], entries: IdlObject[], finalizablePoIds: number[] = [], setCurrentInvoice = true, dry_run = false, override = false): Promise<boolean> {
+    private _touchInvoiceInDb(invoice: IdlObject, items: IdlObject[], entries: IdlObject[], finalizablePoIds: number[] = [], setCurrentInvoice = true, dry_run = false, override = false): Promise<boolean> {
 
         console.debug('InvoiceService, _touchInvoiceInDb(...)',
             'invoice', invoice,
@@ -370,12 +370,11 @@ export class InvoiceService {
         });
     }
 
-    _createInvoice() {
+    private _createInvoice() {
         this.currentInvoice = this.idl.create('acqinv');
         this.currentInvoice.isnew(true);
         this.currentInvoice.recv_method('PPR');
         this.currentInvoice.recv_date(moment().toDate().toISOString());
-        this.currentInvoice.receiver(this.auth.user().ws_ou());
     }
 
     async attachLiIdsAndPoItems(lineitem_ids: number[], po_items: IdlObject[], use_po_prices = false): Promise<void> {
@@ -413,7 +412,7 @@ export class InvoiceService {
         }
     }
 
-    async _attachLiIds(lineitem_ids: number[], use_po_prices = false): Promise<IdlObject[]> {
+    private async _attachLiIds(lineitem_ids: number[], use_po_prices = false): Promise<IdlObject[]> {
         console.debug('invoice.service, _attachLiIds', lineitem_ids, use_po_prices);
         const lineitemSet = new Set(lineitem_ids);
         const lineitemsObservable = this.liService.getFleshedLineitems(Array.from(lineitemSet));

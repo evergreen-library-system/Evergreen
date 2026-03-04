@@ -7,11 +7,12 @@ import { PermService } from '@eg/core/perm.service';
 import { ServerStoreService } from '@eg/core/server-store.service';
 import { StoreService } from '@eg/core/store.service';
 import { CatalogSearchContext } from '@eg/share/catalog/search-context';
+import { BatchLineitemStruct, FleshCacheParams, LineitemService } from '@eg/staff/acq/lineitem/lineitem.service';
 import { StaffCatalogService } from '@eg/staff/catalog/catalog.service';
 import { SerialsService } from '@eg/staff/serials/serials.service';
 import { HoldsService } from '@eg/staff/share/holds/holds.service';
 import { PatronService } from '@eg/staff/share/patron/patron.service';
-import { EMPTY, from, of } from 'rxjs';
+import { EMPTY, from, Observable, of } from 'rxjs';
 
 // Convenience functions that generate mock data for use in automated tests
 export class MockGenerators {
@@ -81,6 +82,12 @@ export class MockGenerators {
         });
         service.sortIdlFields.and.callFake((fields, _desiredOrder) => fields);
         return service;
+    }
+
+    static lineItemService(): LineitemService {
+        return {
+            getFleshedLineitems: (_ids: number[], _params?: FleshCacheParams): Observable<BatchLineitemStruct> => EMPTY
+        } as LineitemService;
     }
 
     static localeService(returnValues = {}): LocaleService {
