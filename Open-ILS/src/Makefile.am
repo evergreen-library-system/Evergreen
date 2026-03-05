@@ -89,8 +89,7 @@ core_scripts =   $(examples)/oils_ctl.sh \
 		 $(supportscr)/edi_order_pusher.pl \
 		 $(supportscr)/edi_pusher.pl \
 		 $(supportscr)/purge_hold_reset_reason_entries.srfsh \
-		 $(supportscr)/api_ctl \
-		 $(supportscr)/openapi_server
+		 $(supportscr)/api_ctl
 
 installautojs = $(autojsbinscripts)
 
@@ -135,7 +134,8 @@ gen_scripts = \
 	$(supportscr)/marc_export \
 	$(supportscr)/marc_stream_importer.pl \
 	$(supportscr)/offline-blocked-list.pl \
-	$(supportscr)/patron_loader.pl
+	$(supportscr)/patron_loader.pl \
+	$(supportscr)/openapi_server
 
 # config files that are generated from *.in files and can
 # be deleted by a make clean
@@ -246,6 +246,10 @@ $(supportscr)/offline-blocked-list.pl: Makefile $(supportscr)/offline-blocked-li
 
 $(supportscr)/patron_loader.pl: Makefile $(supportscr)/patron_loader.pl.in
 	$(do_subst) $(supportscr)/patron_loader.pl.in > "$@"
+	chmod 755 "$@"
+
+$(supportscr)/openapi_server: Makefile $(supportscr)/openapi_server.in
+	$(do_subst) $(supportscr)/openapi_server.in > "$@"
 	chmod 755 "$@"
 
 $(examples)/apache_24/eg_startup: Makefile $(examples)/apache_24/eg_startup.in
