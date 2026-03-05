@@ -98,36 +98,6 @@ sub build_invoice_impl {
 
     $finalize_pos ||= [];
 
-    # for comparing with updated fund totals right before the $do_commit check,
-    # so we can do stop/warn threshold checks
-    my %orig_fund_totals = ();
-    # if invoice is new, we won't have initial totals
-    # also, this is an uber method, so only do these fund checks with update.fleshed
-    # dojo acq uses ordinary update without the .fleshed
-    if ($fund_check) {
-        if ($invoice->isnew) {
-                $logger->info("fund check: for invoice save, pre-business logic: new invoice");
-        } else {
-            $logger->info("fund check: for invoice save, pre-business logic: existing invoice");
-            my $orig_fund_summary = amounts_spent_per_fund($e, $invoice->id, $e->authtoken);
-            use Data::Dumper;
-            $Data::Dumper::Indent = 0;  # No newlines and default indentation
-            $Data::Dumper::Terse  = 1;  # No variable names where feasible
-            $logger->info("fund check: pre, summary = " . Dumper($orig_fund_summary));
-
-            # Loop through each hash in the array
-            foreach my $fund_entry (@$orig_fund_summary) {
-                # Extract the fund ID and total
-                my $fund_id = $fund_entry->{'fund'}->{'id'};
-                my $total   = $fund_entry->{'total'};
-
-                $logger->info("fund check: for invoice save, pre-business logic: fund $fund_id total $total");
-                # Add to our hash
-                $orig_fund_totals{$fund_id} = $total;
-            }
-        }
-    }
-
     my $inv_closing = 0;
     my $inv_reopening = 0;
 
@@ -397,15 +367,8 @@ sub build_invoice_impl {
                 return $e->die_event;
             }
 
-            my $amount_to_test = $total;
-
-            # Test against our fund totals
-            my $original_amount = $orig_fund_totals{$fund_id};
-
-            # if there was an original amount, we want to test the difference between old and new
-            if ($original_amount) {
-                $amount_to_test -= $original_amount;
-            }
+            # Testing with a debit_amount of 0 because our modified $fund already has all the debits taken out of it, so we'd be counting double.
+            my $amount_to_test = 0;
             my $stop_test = OpenILS::Application::Acq::Order->fund_exceeds_balance_percent_wrapper(
                     $fund, $amount_to_test, $e, 'stop');
             $logger->info("fund check: stop_test = $stop_test");
