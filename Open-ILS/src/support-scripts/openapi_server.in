@@ -60,7 +60,7 @@ use Data::Dumper;
 #-------------------------------------------------
 # globals and setup
 
-my $osrf_config = '/openils/conf/opensrf_core.xml';
+my $osrf_config = '@sysconfdir@/opensrf_core.xml';
 my $rev_proxy_levels = $ENV{EG_REV_PROXY_LEVELS} // 1;
 
 OpenSRF::System->bootstrap_client(config_file => $osrf_config);
