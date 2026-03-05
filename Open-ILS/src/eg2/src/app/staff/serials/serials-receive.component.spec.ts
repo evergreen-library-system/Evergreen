@@ -10,6 +10,7 @@ import { PrintService } from '@eg/share/print/print.service';
 import { ToastService } from '@eg/share/toast/toast.service';
 import { MockGenerators } from 'test_data/mock_generators';
 import { SerialsService } from './serials.service';
+import { ItemLocationService } from '@eg/share/item-location-select/item-location.service';
 
 const template = MockGenerators.idlObject({
     circ_modifier: 'DEFAULT',
@@ -46,6 +47,7 @@ describe('SerialsReceiveComponent', () => {
                 {provide: OrgService, useValue: jasmine.createSpyObj<OrgService>(['ancestors'])},
                 {provide: AuthService, useValue: MockGenerators.authService()},
                 {provide: PermService, useValue: null},
+                {provide: ItemLocationService, useValue: null},
                 {provide: PrintService, useValue: jasmine.createSpyObj<PrintService>(['print'])},
                 {provide: ToastService, useValue: jasmine.createSpyObj<ToastService>(['success'])},
                 {provide: SerialsService, useValue: MockGenerators.serialsService()},

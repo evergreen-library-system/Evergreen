@@ -7,6 +7,7 @@ import { PermService } from '@eg/core/perm.service';
 import { ServerStoreService } from '@eg/core/server-store.service';
 import { StoreService } from '@eg/core/store.service';
 import { CatalogSearchContext } from '@eg/share/catalog/search-context';
+import { ItemLocationService } from '@eg/share/item-location-select/item-location.service';
 import { BatchLineitemStruct, FleshCacheParams, LineitemService } from '@eg/staff/acq/lineitem/lineitem.service';
 import { StaffCatalogService } from '@eg/staff/catalog/catalog.service';
 import { SerialsService } from '@eg/staff/serials/serials.service';
@@ -82,6 +83,12 @@ export class MockGenerators {
         });
         service.sortIdlFields.and.callFake((fields, _desiredOrder) => fields);
         return service;
+    }
+
+    static itemLocationService(): ItemLocationService {
+        return {
+            getById: (_id: number) => of(this.idlObject({owning_lib: 4, name: 'Romance fiction'}))
+        } as ItemLocationService;
     }
 
     static lineItemService(): LineitemService {

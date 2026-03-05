@@ -5,7 +5,7 @@ import { OrgService } from '@eg/core/org.service';
 import { AuthService } from '@eg/core/auth.service';
 import { PermService } from '@eg/core/perm.service';
 import { PcrudService } from '@eg/core/pcrud.service';
-import { ItemLocationService } from './item-location-select.service';
+import { ItemLocationService } from './item-location.service';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonWidgetsModule } from '../common-widgets.module';
 import { MockGenerators } from 'test_data/mock_generators';

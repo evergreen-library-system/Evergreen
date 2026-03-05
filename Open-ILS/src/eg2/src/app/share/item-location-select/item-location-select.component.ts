@@ -1,14 +1,14 @@
 import {Component, OnInit, AfterViewInit, Input, Output, ViewChild,
     EventEmitter, forwardRef} from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
-import {Observable, from, of, map, switchMap} from 'rxjs';
+import {Observable, from, of, map, switchMap, firstValueFrom} from 'rxjs';
 import {IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
 import {AuthService} from '@eg/core/auth.service';
 import {PermService} from '@eg/core/perm.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {ComboboxComponent, ComboboxEntry} from '@eg/share/combobox/combobox.component';
-import {ItemLocationService} from './item-location-select.service';
+import {ItemLocationService} from './item-location.service';
 
 /**
  * Item (Copy) Location Selector.
@@ -268,9 +268,7 @@ implements OnInit, AfterViewInit, ControlValueAccessor {
     getOneLocation(id: number) {
         if (!id) { return Promise.resolve(); }
 
-        const promise = this.loc.locationCache[id] ?
-            Promise.resolve(this.loc.locationCache[id]) :
-            this.pcrud.retrieve('acpl', id).toPromise();
+        const promise = firstValueFrom(this.loc.getById(id));
 
         return promise.then(loc => {
 

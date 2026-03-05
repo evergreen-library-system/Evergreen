@@ -1,12 +1,11 @@
 /* eslint-disable max-len, no-prototype-builtins */
-import {Injectable, EventEmitter, OnDestroy} from '@angular/core';
-import {Subject, tap, takeUntil, toArray, lastValueFrom, Observable, Subscription} from 'rxjs';
+import {Injectable, EventEmitter, OnDestroy, inject} from '@angular/core';
+import {Subject, tap, takeUntil, toArray, lastValueFrom, firstValueFrom} from 'rxjs';
 import {SafeUrl} from '@angular/platform-browser';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {OrgService} from '@eg/core/org.service';
 import {PcrudService} from '@eg/core/pcrud.service';
-import {EventService} from '@eg/core/event.service';
 import {AuthService} from '@eg/core/auth.service';
 import {VolCopyContext} from './volcopy';
 import {HoldingsService} from '@eg/staff/share/holdings/holdings.service';
@@ -14,6 +13,7 @@ import {FileExportService} from '@eg/share/util/file-export.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
 import {StoreService} from '@eg/core/store.service';
 import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
+import { ItemLocationService } from '@eg/share/item-location-select/item-location.service';
 
 /* Managing volcopy data */
 
@@ -65,7 +65,6 @@ export class VolCopyService implements OnDestroy {
     genBarcodesRequested: EventEmitter<void> = new EventEmitter<void>();
 
     constructor(
-        private evt: EventService,
         private net: NetService,
         private idl: IdlService,
         private org: OrgService,
@@ -85,6 +84,8 @@ export class VolCopyService implements OnDestroy {
                 });
             });
     }
+
+    private loc = inject(ItemLocationService);
 
     ngOnDestroy() {
         this.destroy$.next();
@@ -186,12 +187,7 @@ export class VolCopyService implements OnDestroy {
             return Promise.resolve(this.copyLocationMap[id]);
         }
 
-        return this.pcrud.retrieve('acpl', id)
-            .pipe(tap(loc => {
-                console.debug(`getLocation(${id})`,loc);
-                this.copyLocationMap[loc.id()] = loc;
-            }))
-            .toPromise();
+        return firstValueFrom(this.loc.getById(id));
     }
 
     fetchTemplates(): Promise<any> {

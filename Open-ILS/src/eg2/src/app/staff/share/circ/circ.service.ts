@@ -1,19 +1,19 @@
 /* eslint-disable no-case-declarations, no-magic-numbers */
-import {Injectable} from '@angular/core';
-import {Observable, empty, from, concatMap} from 'rxjs';
+import {inject, Injectable} from '@angular/core';
+import {Observable, empty, from, concatMap, firstValueFrom} from 'rxjs';
 import {IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {OrgService} from '@eg/core/org.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {EventService, EgEvent} from '@eg/core/event.service';
 import {AuthService} from '@eg/core/auth.service';
-import {BibRecordService} from '@eg/share/catalog/bib-record.service';
 import {AudioService} from '@eg/share/util/audio.service';
 import {CircComponentsComponent} from './components.component';
 import {StringService} from '@eg/share/string/string.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
 import {HoldingsService} from '@eg/staff/share/holdings/holdings.service';
 import {WorkLogService, WorkLogEntry} from '@eg/staff/share/worklog/worklog.service';
+import { ItemLocationService } from '@eg/share/item-location-select/item-location.service';
 
 export interface CircDisplayInfo {
     title?: string;
@@ -230,9 +230,10 @@ export class CircService {
         private strings: StringService,
         private auth: AuthService,
         private holdings: HoldingsService,
-        private worklog: WorkLogService,
-        private bib: BibRecordService
+        private worklog: WorkLogService
     ) {}
+
+    private loc = inject(ItemLocationService);
 
     applySettings(): Promise<any> {
         return this.serverStore.getItemBatch([
@@ -861,11 +862,8 @@ export class CircService {
                 copy.location(this.copyLocationCache[copy.location()]);
             } else {
                 promise = promise.then(_ => {
-                    return this.pcrud.retrieve('acpl', copy.location())
-                        .toPromise().then(loc => {
-                            copy.location(loc);
-                            this.copyLocationCache[loc.id()] = loc;
-                        });
+                    return firstValueFrom(this.loc.getById(copy.location()))
+                        .then(loc => copy.location(loc));
                 });
             }
 

@@ -1,13 +1,10 @@
-import {Component, OnInit, AfterViewInit, ViewChild, Input, Output, EventEmitter} from '@angular/core';
-import {tap} from 'rxjs';
-import {Pager} from '@eg/share/util/pager';
+import {Component, OnInit, ViewChild, Input, Output, EventEmitter} from '@angular/core';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
 import {OrgService} from '@eg/core/org.service';
 import {LineitemService, COPY_ORDER_DISPOSITION} from './lineitem.service';
 import {ComboboxComponent, ComboboxEntry} from '@eg/share/combobox/combobox.component';
-import {ItemLocationService} from '@eg/share/item-location-select/item-location-select.service';
 import {ItemLocationSelectComponent} from '@eg/share/item-location-select/item-location-select.component';
 import {PermService} from '@eg/core/perm.service';
 
@@ -78,7 +75,6 @@ export class LineitemCopyAttrsComponent implements OnInit {
         private net: NetService,
         private auth: AuthService,
         private org: OrgService,
-        private loc: ItemLocationService,
         private liService: LineitemService,
         private perm: PermService
     ) {}

@@ -32,6 +32,7 @@ import {LineitemAlertDialogComponent} from './lineitem-alert-dialog.component';
 import {AddExtraItemsForOrderDialogComponent} from './add-extra-items-for-order-dialog.component';
 import {MarcEditModule} from '@eg/staff/share/marc-edit/marc-edit.module';
 import {AcqCommonModule} from '../acq-common.module';
+import { BasicItemLocationDisplayComponent } from '@eg/share/item-location-select/basic-item-location-display-component';
 
 @NgModule({
     declarations: [
@@ -79,7 +80,8 @@ import {AcqCommonModule} from '../acq-common.module';
         ItemLocationSelectModule,
         MarcEditModule,
         HttpClientModule,
-        AcqCommonModule
+        AcqCommonModule,
+        BasicItemLocationDisplayComponent
     ],
     providers: [
         LineitemService,
