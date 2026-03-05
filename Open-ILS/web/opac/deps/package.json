@@ -15,7 +15,7 @@
   "devDependencies": {
     "eslint": "^8.36.0",
     "jasmine": "^4.6.0",
-    "jsdom": "^21.1.1"
+    "jsdom": "^28.1.0"
   },
   "scripts": {
     "lint": "eslint ../tests/*.spec.module.js ../../js/ui/default/opac/*.module.js",
