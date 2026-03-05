@@ -4,12 +4,10 @@ import {ActivatedRoute, ParamMap} from '@angular/router';
 import {Observable, of, tap, map} from 'rxjs';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
-import {NetService} from '@eg/core/net.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {AuthService} from '@eg/core/auth.service';
 import {LineitemService, FleshCacheParams} from './lineitem.service';
 import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
-import {ItemLocationService} from '@eg/share/item-location-select/item-location-select.service';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 
 const FORMULA_FIELDS = [
@@ -66,10 +64,8 @@ export class LineitemCopiesComponent implements OnInit, AfterViewInit {
         private route: ActivatedRoute,
         private idl: IdlService,
         private org: OrgService,
-        private net: NetService,
         private pcrud: PcrudService,
         private auth: AuthService,
-        private loc: ItemLocationService,
         private liService: LineitemService
     ) {}
 

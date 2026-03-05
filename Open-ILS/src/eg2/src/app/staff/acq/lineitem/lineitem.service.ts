@@ -5,7 +5,7 @@ import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
-import {ItemLocationService} from '@eg/share/item-location-select/item-location-select.service';
+import {ItemLocationService} from '@eg/share/item-location-select/item-location.service';
 import {saveAs} from 'file-saver';
 import {LineitemAlertDialogComponent} from './lineitem-alert-dialog.component';
 
