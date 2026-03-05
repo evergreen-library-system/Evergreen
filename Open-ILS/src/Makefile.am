@@ -88,7 +88,9 @@ core_scripts =   $(examples)/oils_ctl.sh \
 		 $(supportscr)/edi_fetcher.pl \
 		 $(supportscr)/edi_order_pusher.pl \
 		 $(supportscr)/edi_pusher.pl \
-		 $(supportscr)/purge_hold_reset_reason_entries.srfsh
+		 $(supportscr)/purge_hold_reset_reason_entries.srfsh \
+		 $(supportscr)/api_ctl \
+		 $(supportscr)/openapi_server
 
 installautojs = $(autojsbinscripts)
 
