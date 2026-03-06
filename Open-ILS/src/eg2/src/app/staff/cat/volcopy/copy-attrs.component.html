@@ -789,6 +789,7 @@
             [valueRequired]="cat.required() === 't'"
             [editTemplate]="statCatTemplate"
             [labelCounts]="statCatCounts(cat.id())"
+            [canUnset]="cat.required() !== 't'"
             (valueUnset)="statCatChanged(cat.id(), true)"
             (valueCleared)="valueClearedForStatCat(cat.id())"
             (changesSaved)="statCatChanged(cat.id())">

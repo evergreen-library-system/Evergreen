@@ -760,6 +760,7 @@ export class CopyAttrsComponent implements OnInit, OnDestroy, AfterViewInit {
         catId = Number(catId);
 
         const entryId = this.statCatValues[catId];
+        if (entryId === null || entryId === undefined) { clear = true; }
 
         if (!clear && (!entryId || !this.volcopy.statCatEntryMap[entryId])) {
             console.warn(
