@@ -413,7 +413,7 @@ implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
         });
         if (!firstTime) {
             if ('selectedId' in changes) {
-                if (!changes.selectedId.currentValue) {
+                if (changes.selectedId.currentValue === null || changes.selectedId.currentValue === undefined) {
 
                     // In allowFreeText mode, selectedId will be null even
                     // though a freetext value may be present in the combobox.
