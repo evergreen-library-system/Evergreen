@@ -110,14 +110,14 @@ export class FullReporterDefinitionComponent implements OnInit {
     }
 
     setOrHasLength (x: any) {
-        if (x === null) {
+        if (x === null || x === undefined) {
             return false;
         } else if (Array.isArray(x)) {
             return x.length > 0;
         } else if (typeof x === 'object') {
             return Object.keys(x).length > 0;
         }
-        return !!x;
+        return x !== '' && x !== false;
     }
 
     filtersWithoutValues () {
