@@ -955,18 +955,28 @@ sub update_addresses {
     my $user = $ctx->{user};
 
     my $physical_addr = Fieldmapper::actor::user_address->new;
-    $physical_addr->id($user->billing_address->id);
+    if (defined $user->billing_address) {
+        $physical_addr->id($user->billing_address->id);
+        $physical_addr->within_city_limits($user->billing_address->within_city_limits);
+    } else {
+        $physical_addr->id(-1);
+        $physical_addr->within_city_limits('f');
+    }
     $physical_addr->usr($user->id);
     $physical_addr->address_type('PHYSICAL');
-    $physical_addr->within_city_limits($user->billing_address->within_city_limits);
     $physical_addr->valid('t');
     $physical_addr->pending('f');
 
     my $mailing_addr = Fieldmapper::actor::user_address->new;
-    $mailing_addr->id($user->mailing_address->id);
+    if (defined $user->mailing_address) {
+        $mailing_addr->id($user->mailing_address->id);
+        $mailing_addr->within_city_limits($user->mailing_address->within_city_limits);
+    } else {
+        $mailing_addr->id(-2);
+        $mailing_addr->within_city_limits('f');
+    }
     $mailing_addr->usr($user->id);
     $mailing_addr->address_type('MAILING');
-    $mailing_addr->within_city_limits($user->mailing_address->within_city_limits);
     $mailing_addr->valid('t');
     $mailing_addr->pending('f');
 
@@ -996,7 +1006,24 @@ sub update_addresses {
     }
 
     # Determine what exactly to do with addresses
-    if ($physical_addr->id eq $mailing_addr->id && $physical_addr->street1 eq $mailing_addr->street1) {
+    if (($physical_addr->id < 0) || ($mailing_addr->id < 0)) {
+        # patron didn't start off with both addresses set, so just
+        # add or update as needed without trying to deduplicate
+        if ($physical_addr->id < 0) {
+            $physical_addr->isnew(1);
+            $physical_addr->ischanged(0);
+        } else {
+            $physical_addr->isnew(0);
+            $physical_addr->ischanged(1);
+        }
+        if ($mailing_addr->id < 0) {
+            $mailing_addr->isnew(1);
+            $mailing_addr->ischanged(0);
+        } else {
+            $mailing_addr->isnew(0);
+            $mailing_addr->ischanged(1);
+        }
+    } elsif ($physical_addr->id eq $mailing_addr->id && $physical_addr->street1 eq $mailing_addr->street1) {
         # if one address & stays at one address, just update it (don't need to do both physical & mailing)
         $mailing_addr->isnew(0);
         $mailing_addr->ischanged(1);
