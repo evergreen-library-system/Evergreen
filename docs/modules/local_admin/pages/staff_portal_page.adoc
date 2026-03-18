@@ -110,14 +110,15 @@ or marked up text. See below for a list of acceptable markup. The Entry
 Label text will show as a non-hyperlinked heading above any text or HTML
 entered in Entry Text. Entry Label can be blank for this Entry Type, if
 you choose.
-* _Entry Target URL_ - this is a text field to specify a target URL for
-the Entry Types _Link_ or _Menu Item_. This field is ignored by other
-Entry Types.
 ** For Entry Type _Link_, external URLs must include the full path
 ** For Entry Type _Menu Item_, use relative URLs. Typically these will
 start with /eg/staff or /eg2/staff. Make sure to omit any localization
 indicators in the path (such as en-US) if you use more than one
 interface language in the staff client.
+* _Entry Target URL_ - this is a text field to specify a target URL for
+the Entry Types _Link_ or _Menu Item_. This field is ignored by other
+Entry Types.
+* _URL Opens in New Tab_ - Select _Yes_ if the link should open in a new tab in your browser. Select _No_ if the link should open in the same tab.
 * _Entry Text_ - this is a free text field used by the Entry Type _Text
 and/or HTML_. This field is ignored by other Entry Types.
 ** Basic HTML is acceptable in this field
