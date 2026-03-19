@@ -116,7 +116,7 @@ We would like to thank the following individuals who contributed code, testing, 
 
 === Sponsors ===
 
-The following organizations sponsored development in the 3.16.1 release of Evergreen:
+The following organizations sponsored development in the 3.16.5 release of Evergreen:
 
 * PaILS
 
