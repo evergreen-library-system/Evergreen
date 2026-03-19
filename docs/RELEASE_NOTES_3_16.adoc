@@ -55,8 +55,6 @@ WHERE   stop_fines = 'CLAIMSRETURNED'
         AND checkin_scan_time IS NOT NULL;
 ----
 
-==== Miscellaneous Release Notes ====
-
 === Acquisitions ===
 
 * Stop incorrectly defaulting the receiver field on a new invoice to the current workstation library. (https://bugs.launchpad.net/evergreen/+bug/2093280[Bug 2093280])
