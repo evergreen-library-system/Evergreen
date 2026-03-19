@@ -86,8 +86,8 @@ msgstr ""
 msgid "%1 "
 msgstr ""
 
-#. (copy.label, copy_org.name)
 #. (title, hold.hold.part.label)
+#. (copy.label, copy_org.name)
 #. (title, part.label)
 #. (lang.label, lang.source_bibs.size)
 #: ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds.tt2:171 ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds/edit.tt2:27 ../../Open-ILS/src/templates-bootstrap/opac/myopac/lists.tt2:347 ../../Open-ILS/src/templates-bootstrap/opac/parts/anon_list.tt2:83 ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold_result.tt2:56 ../../Open-ILS/src/templates-bootstrap/opac/parts/record/summary.tt2:316
