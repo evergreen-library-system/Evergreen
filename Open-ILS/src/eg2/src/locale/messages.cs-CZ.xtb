@@ -92,7 +92,7 @@
   <translation id="4857165350943180829">Zobrazit možnosti mřížky</translation>
   <translation id="1277762430200481678">Nastavit sloupce</translation>
   <translation id="6572456633428118045">Nastavit šířku sloupců</translation>
-  <translation id="2714883857996832452">Uložit nastavení mřížky</translation>
+  <translation id="2714883857996832452">Uložit nastavení sloupců</translation>
   <translation id="8813319038780713083">Resetovat sloupce</translation>
   <translation id="1860943177098963128">Stáhnout plnė CSV</translation>
   <translation id="4376870235971438878">Vytisknout mříž,ku</translation>
@@ -6471,7 +6471,38 @@ Zkopírováno <ph name="INTERPOLATION"/></translation>
   <translation id="5037165785819501241"> -&gt; [Požadován levý] </translation>
   <translation id="3090621596232753763"> Poznámka pro čtenáře <ph name="START_BOLD_TEXT"/> <ph name="INTERPOLATION"/>, <ph name="INTERPOLATION_1"/> <ph name="CLOSE_BOLD_TEXT"/></translation>
   <translation id="4620307130066356153">Iniciály personálu</translation>
+  <translation id="3429232767760651025">Nebyla nastavena hodnota pro <ph name="INTERPOLATION"/></translation>
+  <translation id="4866902980317299562">Historie změn uživatele</translation>
+  <translation id="6590683197755474032">Správa typů upozornění k jednotkám</translation>
+  <translation id="864873885354894742">Jakákoliv událost</translation>
+  <translation id="4597114698359189924">k dispozici pouze pro události vrácení</translation>
+  <translation id="7996429338693343213">Typy upozornění k jednotce</translation>
+  <translation id="4301463093657844544">Nastavení témat dětského OPACu</translation>
+  <translation id="9206137533408106108">Dočasný interval vypršení registrace uživatele: </translation>
+  <translation id="3164987926442912790">Je povoleno online prodloužení platnosti registrace?: </translation>
+  <translation id="7219214441284377758">1 položka vyžaduje část.</translation>
+  <translation id="185020344895019182"><ph name="INTERPOLATION"/> položka vyžaduje část.</translation>
+  <translation id="6115678333313902026"> Zadat rezervaci pro tuto rezervační skupinu: </translation>
+  <translation id="3440558483332337347">Překonat pokud možno všechny podmínky, které blokují rezervaci?</translation>
+  <translation id="7569325454023772679">(<ph name="INTERPOLATION"/> dostupné)</translation>
+  <translation id="8298575750030110834"><ph name="INTERPOLATION"/> z <ph name="INTERPOLATION_1"/> zadaných rezervací</translation>
+  <translation id="2863575589938968540">Přidat <ph name="INTERPOLATION"/></translation>
+  <translation id="1006791918114566987">Zcela nerefundovatelné</translation>
+  <translation id="3512693837864117308">Refundovatelné</translation>
+  <translation id="7947393881942840046">Přihlaste se znovu</translation>
+  <translation id="6912605882053304525"><ph name="START_HEADING_LEVEL1"/>Přihlásit<ph name="CLOSE_HEADING_LEVEL1"/></translation>
+  <translation id="2336550011721758066">Přihlásit</translation>
+  <translation id="7137797864787327759">Přihlásit se pomocí Evergreenu</translation>
+  <translation id="1323385474079117517">Přihlásit se pomocí jednotného přihlašování</translation>
+  <translation id="6360866402485758559">Aktivuj rozbalení kombinovaných polí</translation>
+  <translation id="1056725106110906396">E-mail zákonného zástupce</translation>
   <translation id="5640217348405780223">Klasifikace pro signaturu</translation>
   <translation id="561998273195635812">Relativní pozice ve frontě</translation>
   <translation id="3949492330113173426">Celková pozice ve frontě</translation>
+  <translation id="5591989979573150669">Přijato</translation>
+  <translation id="773494596403405672">Items Lost</translation>
+  <translation id="4698299184961617039">First 5 Characters</translation>
+  <translation id="7729181123707636273">First Contiguous Non-space String</translation>
+  <translation id="1989998323775948358">Username, Email, ID, Date of Birth</translation>
+  <translation id="3556428434026296622"> <ph name="INTERPOLATION"/> (<ph name="INTERPOLATION_1"/>) </translation>
 </translationbundle>
