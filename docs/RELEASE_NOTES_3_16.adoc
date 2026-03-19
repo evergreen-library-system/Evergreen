@@ -101,11 +101,14 @@ We would like to thank the following individuals who contributed code, testing, 
 * Dan Briem
 * Elizabeth Davis
 * Galen Charlton
+* Gina Monti
 * Ian Skelskey
 * IanSkelskey
 * Jane Sandberg
 * Jason Stephenson
 * Llewellyn Marshall
+* Martha Driscoll
+* Michele Morgan
 * Steven Mayo
 * Susan Morrison
 * Terran McCanna
