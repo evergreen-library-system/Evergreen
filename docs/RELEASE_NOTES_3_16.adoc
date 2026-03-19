@@ -3,6 +3,120 @@
 :numbered:
 :toclevels: 3
 
+== Evergreen 3.16.5 ==
+
+This release contains bug fixes and documentation fixes improving on Evergreen 3.16.5.
+
+=== Changes With Upgrade Implications ===
+
+==== New Library Setting for Address Checks When Offering E-Renewal  ====
+
+A new library setting, "Number of valid addresses needed to offer patron
+account e-renewal via Quipu", is added to specify the number of valid
+addresses that a patron record must have in order to be eligible for
+e-renewal.
+
+This setting takes a value of 0, 1, or 2:
+
+ * 0: Do not consider the patron's addresses when checking whether to
+   offer e-renewal
+ * 1: Either the mailing address or the billing/physical address must
+   be set and marked as valid for e-renewal to be offered.
+ * 2: Both the mailing address and the billing/physical address must be
+   set and marked as valid.
+
+If the library setting is not set, the default value used is 2, following
+the behavior before the setting was added.
+
+==== Mark Claims Returned Circs Finished Upon Subsequent Checkout ====
+
+Before this change, circulations with a stop fines of
+CLAIMSRETURNED would remain in the "Other/Special Circulations"
+section of Items Out after the claimed-returned item is subsequently
+checked out to another patron.
+
+This approach assumes the item was, in fact, returned and avoids
+charging additional fines to the original patron.  The old circ is
+marked with a stop fines reason of "CHECKIN" at the time of the new
+checkout.
+
+If you want to apply this change retroactively to affected circulations,
+refer your system administrator to the following SQL (edit to suit):
+
+[source,sql]
+----
+UPDATE  action.circulation
+SET     xact_finish = checkin_time,
+        stop_fines_time = checkin_time,
+        stop_fines = 'CHECKIN'
+WHERE   stop_fines = 'CLAIMSRETURNED'
+        AND xact_finish IS NULL
+        AND checkin_time IS NOT NULL
+        AND checkin_scan_time IS NOT NULL;
+----
+
+==== Miscellaneous Release Notes ====
+
+=== Acquisitions ===
+
+* Stop incorrectly defaulting the receiver field on a new invoice to the current workstation library. (https://bugs.launchpad.net/evergreen/+bug/2093280[Bug 2093280])
+
+=== Circulation ===
+
+* Prevent failures of loans and renewals that could occur at certain times near a transition to Daylight Savings Time (https://bugs.launchpad.net/evergreen/+bug/2142518[Bug 2142518])
+* Fix issues with saving and editing surveys. (https://bugs.launchpad.net/evergreen/+bug/2084088[Bug 2084088])
+* Fix styles of required date pickers in forms. (https://bugs.launchpad.net/evergreen/+bug/2142171[Bug 2142171])
+* Fix issue where using the Reset button on the staff hold placement form can prevent a hold from being placed. (https://bugs.launchpad.net/evergreen/+bug/2142317[Bug 2142317])
+
+=== Staff Interface ===
+
+* Fix print colors when user uses dark mode. (https://bugs.launchpad.net/evergreen/+bug/2136877[Bug 2136877])
+* Increases visibility for staff catalog search - more filters. (https://bugs.launchpad.net/evergreen/+bug/2055061[Bug 2055061])
+* Fix a bug with the workstation "Use Now" feature. (https://bugs.launchpad.net/evergreen/+bug/2142163[Bug 2142163])
+* Allows selection of "Available" copy status and other falsy values as filter options in the Angular Reporter (https://bugs.launchpad.net/evergreen/+bug/2143924[Bug 2143924])
+* Add headings to the Record Buckets actions menu (https://bugs.launchpad.net/evergreen/+bug/2141961[Bug 2141961])
+
+=== Documentation ===
+
+* Adds eRENEW elements to Quipu and penalties docs.
+* Adds image files & corrects a few links in permissions docs (https://bugs.launchpad.net/evergreen/+bug/2131106[Bug 2131106])
+* Updates to the "Describing Your People" section of Admin Initial Setup docs
+
+=== Miscellaneous ===
+
+* Address deprecation warnings for functions in the libdbi library. (https://bugs.launchpad.net/evergreen/+bug/1325054[Bug 1325054])
+* Fixes C compiler warnings when building Evergreen. (https://bugs.launchpad.net/evergreen/+bug/2142241[Bug 2142241])
+* Updates patron notes documentation to remove references to the deprecated Message Center. (https://bugs.launchpad.net/evergreen/+bug/2138323[Bug 2138323])
+* Automatically install the api_ctl and openapi_server programs for the RESTful API integration. (https://bugs.launchpad.net/evergreen/+bug/2141458[Bug 2141458])
+* Remove hard coded configuration path in openapi_server. (https://bugs.launchpad.net/evergreen/+bug/2141458[Bug 2141458])
+* Fix installation issue that could prevent the MFA service from running. (https://bugs.launchpad.net/evergreen/+bug/2142485[Bug 2142485])
+
+=== Acknowledgements ===
+
+We would like to thank the following individuals who contributed code, testing, documentation, and patches to the 3.16.5 point release of Evergreen:
+
+* Andrea Buntz Neiman
+* Chris Sharp
+* Christine Morgan
+* Dan Briem
+* Elizabeth Davis
+* Galen Charlton
+* Ian Skelskey
+* IanSkelskey
+* Jane Sandberg
+* Jason Stephenson
+* Llewellyn Marshall
+* Steven Mayo
+* Susan Morrison
+* Terran McCanna
+* Tiffany Little
+
+=== Sponsors ===
+
+The following organizations sponsored development in the 3.16.1 release of Evergreen:
+
+* PaILS
+
 == Evergreen 3.16.4 ==
 
 This release contains bug fixes and documentation fixes improving on Evergreen 3.16.3.
