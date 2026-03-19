@@ -7,54 +7,6 @@
 
 This release contains bug fixes and documentation fixes improving on Evergreen 3.16.4.
 
-=== Changes With Upgrade Implications ===
-
-==== New Library Setting for Address Checks When Offering E-Renewal  ====
-
-A new library setting, "Number of valid addresses needed to offer patron
-account e-renewal via Quipu", is added to specify the number of valid
-addresses that a patron record must have in order to be eligible for
-e-renewal.
-
-This setting takes a value of 0, 1, or 2:
-
- * 0: Do not consider the patron's addresses when checking whether to
-   offer e-renewal
- * 1: Either the mailing address or the billing/physical address must
-   be set and marked as valid for e-renewal to be offered.
- * 2: Both the mailing address and the billing/physical address must be
-   set and marked as valid.
-
-If the library setting is not set, the default value used is 2, following
-the behavior before the setting was added.
-
-==== Mark Claims Returned Circs Finished Upon Subsequent Checkout ====
-
-Before this change, circulations with a stop fines of
-CLAIMSRETURNED would remain in the "Other/Special Circulations"
-section of Items Out after the claimed-returned item is subsequently
-checked out to another patron.
-
-This approach assumes the item was, in fact, returned and avoids
-charging additional fines to the original patron.  The old circ is
-marked with a stop fines reason of "CHECKIN" at the time of the new
-checkout.
-
-If you want to apply this change retroactively to affected circulations,
-refer your system administrator to the following SQL (edit to suit):
-
-[source,sql]
-----
-UPDATE  action.circulation
-SET     xact_finish = checkin_time,
-        stop_fines_time = checkin_time,
-        stop_fines = 'CHECKIN'
-WHERE   stop_fines = 'CLAIMSRETURNED'
-        AND xact_finish IS NULL
-        AND checkin_time IS NOT NULL
-        AND checkin_scan_time IS NOT NULL;
-----
-
 === Acquisitions ===
 
 * Stop incorrectly defaulting the receiver field on a new invoice to the current workstation library. (https://bugs.launchpad.net/evergreen/+bug/2093280[Bug 2093280])
