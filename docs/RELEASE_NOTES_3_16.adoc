@@ -5,7 +5,7 @@
 
 == Evergreen 3.16.5 ==
 
-This release contains bug fixes and documentation fixes improving on Evergreen 3.16.5.
+This release contains bug fixes and documentation fixes improving on Evergreen 3.16.4.
 
 === Changes With Upgrade Implications ===
 
