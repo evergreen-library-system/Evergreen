@@ -3,6 +3,57 @@
 :numbered:
 :toclevels: 3
 
+== Evergreen 3.15.11 ==
+
+This release contains bug fixes and documentation fixes improving on Evergreen 3.15.10
+
+=== Circulation ===
+
+* Prevent failures of loans and renewals that could occur at certain times near a transition to Daylight Savings Time (https://bugs.launchpad.net/evergreen/+bug/2142518[Bug 2142518])
+* Fix styles of required date pickers in forms. (https://bugs.launchpad.net/evergreen/+bug/2142171[Bug 2142171])
+
+=== Staff Interface ===
+
+* Fix print colors when user uses dark mode. (https://bugs.launchpad.net/evergreen/+bug/2136877[Bug 2136877])
+* Increases visibility for staff catalog search - more filters. (https://bugs.launchpad.net/evergreen/+bug/2055061[Bug 2055061])
+
+=== Miscellaneous ===
+
+* Address deprecation warnings for functions in the libdbi library. (https://bugs.launchpad.net/evergreen/+bug/1325054[Bug 1325054])
+* Updates patron notes documentation to remove references to the deprecated Message Center. (https://bugs.launchpad.net/evergreen/+bug/2138323[Bug 2138323])
+* Automatically install the api_ctl and openapi_server programs for the RESTful API integration. (https://bugs.launchpad.net/evergreen/+bug/2141458[Bug 2141458])
+* Remove hard coded configuration path in openapi_server. (https://bugs.launchpad.net/evergreen/+bug/2141458[Bug 2141458])
+* Fix installation issue that could prevent the MFA service from running. (https://bugs.launchpad.net/evergreen/+bug/2142485[Bug 2142485])
+
+=== Acknowledgements ===
+
+We would like to thank the following individuals who contributed code, testing, documentation, and patches to the 3.16.5 point release of Evergreen:
+
+* Andrea Buntz Neiman
+* Chris Sharp
+* Christine Morgan
+* Dan Briem
+* Elizabeth Davis
+* Galen Charlton
+* Gina Monti
+* Ian Skelskey
+* IanSkelskey
+* Jane Sandberg
+* Jason Stephenson
+* Llewellyn Marshall
+* Martha Driscoll
+* Michele Morgan
+* Steven Mayo
+* Susan Morrison
+* Terran McCanna
+* Tiffany Little
+
+=== Sponsors ===
+
+The following organizations sponsored development in the 3.15.11 release of Evergreen:
+
+* PaILS
+
 == Evergreen 3.15.10 ==
 
 This release contains bug fixes and documentation fixes improving on Evergreen 3.15.9.
