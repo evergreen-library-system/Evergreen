@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2025-11-19 19:30+0000\n"
-"PO-Revision-Date: 2026-02-16 14:28+0000\n"
+"PO-Revision-Date: 2026-02-23 13:15+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2026-02-17 08:13+0000\n"
-"X-Generator: Launchpad (build 357f4dbcf6d55b96276140b48d9caf6c75ab8067)\n"
+"X-Launchpad-Export-Date: 2026-02-24 08:42+0000\n"
+"X-Generator: Launchpad (build 0cf96b78d7bf002eaf2ceebea991267c53522f61)\n"
 
 #. ("{{pendingXacts | date:\"short\"}}")
 #: ../../Open-ILS/src/templates/staff/t_login.tt2:62
@@ -4094,7 +4094,7 @@ msgstr "E-mailové potvrzení"
 
 #: ../../Open-ILS/src/templates/staff/circ/share/circ_strings.tt2:16
 msgid "Emailed checkout receipt"
-msgstr "E-mailem zaslaný výpis výpůjček"
+msgstr "Bylo odesláno e-mailové potvrzení výpůjček"
 
 #: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:26
 msgid "Enable Hatch Printing."
@@ -7611,7 +7611,7 @@ msgstr "Změna operátora se nezdařila"
 
 #: ../../Open-ILS/src/templates/staff/base_js.tt2:138
 msgid "Operator Change Succeeded"
-msgstr "Změna přihlášení proběhla úspěšně"
+msgstr "Změna přihlášení úspěšně proběhla"
 
 #: ../../Open-ILS/src/templates/staff/circ/patron/t_cc_payment_dialog.tt2:56
 msgid "Optional Fields"
@@ -10487,7 +10487,7 @@ msgstr "Vytvořit poplatek"
 
 #: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:62
 msgid "Submitted request for password reset link to be sent via email."
-msgstr "Potvrzená žádost o obnovu hesla k odeslání e-mailem."
+msgstr "Byl zadán požadavek na odeslání e-mailu s odkazem na obnovení hesla."
 
 #. ("{{ssub.id}}", "{{ssub.owning_lib.shortname()}}", "{{ssub.start_date | date:\"shortDate\"}}", "{{ssub.end_date | date:\"shortDate\"}}")
 #: ../../Open-ILS/src/templates/staff/serials/t_sub_selector.tt2:11
@@ -10702,7 +10702,7 @@ msgstr "Nepodařilo se odeslat testovací oznámení"
 
 #: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:90
 msgid "Test Notification sent"
-msgstr "Testovací oznámení bylo odesláno"
+msgstr "Testovací e-mail byl odeslán"
 
 #: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:229
 msgid "Test Password"
