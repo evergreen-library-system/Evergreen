@@ -129,7 +129,35 @@ that is not in the default patron record.
 Date_ button will work, since the permission group determines the expiration date.
 ============================================================================
 
-=== Photo URL field ===
+=== Group Member Details ===
+
+If a new patron is cloned from another patron (e.g., a child's card is cloned from a parent's card), the accounts are automatically grouped together. You may also manually group different patrons together.
+
+==== Viewing a Group ====
+
+. Open a patron's account.
+. Click *Other* > *Group Member Details*.
+. The list of people in the group will appear.
+
+==== Adding a Patron to a Group ====
+
+. Open one patron's account.
+. Click *Other* > *Group Member Details*.
+. Check the box next to the patron's name.
+. Click *Actions*.
+. Click *Move Another Patron To This Group*.
+. Enter the second patron's barcode number.
+. Click *OK*.
+
+==== Removing a Patron from a Group ====
+
+. Open the account of a patron who is in the group, but who is not the member you wish to remove.
+. Click *Other* > *Group Member Details*.
+. Check the box next to the patron you wish to remove.
+. Click *Actions*.
+. Click *Remove Selected From Group*.
+
+=== Photo URL Field ===
 
 As of 3.8, a staff user with the `UPDATE_USER_PHOTO_URL` permission can add or edit a URL that will pull in a patron photo image from an external server. Only https links are supported in this field.
 
