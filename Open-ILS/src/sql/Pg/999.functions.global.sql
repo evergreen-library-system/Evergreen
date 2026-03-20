@@ -548,6 +548,29 @@ BEGIN
 	-- necessary, but it does no harm.
 	UPDATE actor.usr_address SET replaces = NULL
 		WHERE usr = src_usr AND replaces IS NOT NULL;
+
+	-- LP#885270: Addresses owned by src_usr that are referenced by other
+	-- users (as billing_address or mailing_address) cannot be deleted.
+	-- Reassign ownership of those addresses to one of the referencing
+	-- users so the address is preserved for them.
+	UPDATE actor.usr_address addr SET usr = sub.new_owner
+	FROM (
+		SELECT a.id, (
+			SELECT u.id FROM actor.usr u
+			WHERE (u.billing_address = a.id OR u.mailing_address = a.id)
+				AND u.id != src_usr
+			LIMIT 1
+		) AS new_owner
+		FROM actor.usr_address a
+		WHERE a.usr = src_usr
+			AND EXISTS (
+				SELECT 1 FROM actor.usr u
+				WHERE (u.billing_address = a.id OR u.mailing_address = a.id)
+					AND u.id != src_usr
+			)
+	) sub
+	WHERE addr.id = sub.id;
+
 	DELETE FROM actor.usr_address WHERE usr = src_usr;
 	DELETE FROM actor.usr_org_unit_opt_in WHERE usr = src_usr;
 	UPDATE actor.usr_org_unit_opt_in SET staff = dest_usr WHERE staff = src_usr;
