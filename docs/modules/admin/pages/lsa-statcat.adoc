@@ -161,10 +161,7 @@ Stat cats can be deleted by clicking on the category, clicking the *Actions* ico
 
 image::lsa-statcat/statcat_actions.png[Stat cat actions menu] 
 
-[NOTE]
-========================
-*NOTE* Due to a known bug, individual entries for stat cats cannot be edited or deleted in the web client. 
-========================
+To edit or delete the individual entries for a stat cat, click on the *Entries* link to open the Entries table and follow the same steps as editing or deleting the statistical category.
 
 == Permissions ==
 
