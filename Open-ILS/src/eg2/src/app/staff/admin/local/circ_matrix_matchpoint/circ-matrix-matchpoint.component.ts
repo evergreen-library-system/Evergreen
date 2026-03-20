@@ -249,8 +249,8 @@ export class CircMatrixMatchpointComponent implements OnInit {
     }
 
     idFromMaybeObject(thing: any): any {
-        if (!thing) return null;
-        if (typeof thing === 'number' || typeof thing === 'string') return thing;
+        if (!thing) { return null; }
+        if (typeof thing === 'number' || typeof thing === 'string') { return thing; }
         return thing.id();
     }
 
@@ -348,14 +348,7 @@ export class CircMatrixMatchpointComponent implements OnInit {
     getLimitSets(id) {
         this.clearLinkedCircLimitSets();
         this.pcrud.search('ccmlsm', {matchpoint:id}).subscribe((res) => {
-            /**
-             * If the limit set's matchpoint equals the matchpoint given
-             * by the user, then add that to the set limit list
-             */
-            //this.limitSetsComponent.usedSetLimitList[res.limit_set()] = res.id();
-            //if (res.matchpoint() === id) {
-                this.limitSetsComponent.createFilledLimitSetObject(res);
-            //}
+            this.limitSetsComponent.createFilledLimitSetObject(res);
         });
         /**
          * Retrives all limit set names

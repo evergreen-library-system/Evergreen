@@ -221,8 +221,8 @@ export class HoldMatrixMatchpointComponent implements OnInit {
     }
 
     idFromMaybeObject(thing: any): any {
-        if (!thing) return null;
-        if (typeof thing === 'number' || typeof thing === 'string') return thing;
+        if (!thing) { return null; }
+        if (typeof thing === 'number' || typeof thing === 'string') { return thing; }
         return thing.id();
     }
 
