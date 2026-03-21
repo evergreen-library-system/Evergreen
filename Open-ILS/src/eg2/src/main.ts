@@ -7,6 +7,7 @@ import { BrowserModule, bootstrapApplication } from '@angular/platform-browser';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CookieModule } from 'ngx-cookie';
 import { BaseComponent } from './app/app.component';
+import { provideHttpClient } from '@angular/common/http';
 
 if (environment.production) {
     enableProdMode();
@@ -15,6 +16,7 @@ if (environment.production) {
 bootstrapApplication(BaseComponent, {
     providers: [
         provideZoneChangeDetection(),
+        provideHttpClient(),
         importProvidersFrom(EgCommonModule.forRoot(), BaseRoutingModule, BrowserModule, NgbModule, CookieModule.forRoot())
     ]
 })

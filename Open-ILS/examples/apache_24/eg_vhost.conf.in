@@ -827,6 +827,13 @@ RewriteRule ^/openurl$ ${openurl:%1} [NE,PT]
     Require all granted 
 </Location>
 
+<Location /print_template_cache_clear>
+    SetHandler perl-script
+    PerlHandler OpenILS::WWW::PrintTemplateCacheClear
+    PerlSendHeader On
+    Require all granted
+</Location>
+
 
 <Location /IDL2js>
 
