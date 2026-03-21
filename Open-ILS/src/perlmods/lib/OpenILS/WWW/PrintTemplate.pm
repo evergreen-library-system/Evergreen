@@ -15,15 +15,19 @@ use OpenILS::Utils::CStoreEditor q/:funcs/;
 use OpenSRF::Utils::Logger q/$logger/;
 use OpenILS::Application::AppUtils;
 use OpenILS::Utils::DateTime qw/:datetime/;
+use OpenILS::WWW::PrintTemplate::TemplateCache;
 
 my $U = 'OpenILS::Application::AppUtils';
 my $helpers;
 
 my $bs_config;
 my $enable_cache; # Enable process-level template caching
+my $template_cache;
 sub import {
+    my $_self = shift;
     $bs_config = shift;
     $enable_cache = shift;
+    return;
 }
 
 my $init_complete = 0;
@@ -32,6 +36,7 @@ sub child_init {
 
     OpenSRF::System->bootstrap_client(config_file => $bs_config);
     OpenILS::Utils::CStoreEditor->init;
+    $template_cache = OpenILS::WWW::PrintTemplate::TemplateCache->new;
     return Apache2::Const::OK;
 }
 
@@ -148,7 +153,6 @@ sub get_org_timezone {
 
 
 # Find the template closest to the specific org unit owner.
-my %template_cache;
 sub find_template {
     my ($e, $template_id, $name, $locale, $owner) = @_;
 
@@ -158,11 +162,8 @@ sub find_template {
         return $e->retrieve_config_print_template($template_id);
     }
 
-    return  $template_cache{$owner}{$name}{$locale}
-        if  $enable_cache &&
-            $template_cache{$owner} && 
-            $template_cache{$owner}{$name} &&
-            $template_cache{$owner}{$name}{$locale};
+    my $in_cache = $template_cache->get_template($owner, $name, $locale);
+    return $in_cache if $in_cache;
 
     while ($owner) {
         my ($org) = $U->fetch_org_unit($owner); # cached in AppUtils
@@ -177,10 +178,12 @@ sub find_template {
         if ($template) {
 
             if ($enable_cache) {
-                $template_cache{$owner} = {} unless $template_cache{$owner};
-                $template_cache{$owner}{$name} = {} 
-                    unless $template_cache{$owner}{$name};
-                $template_cache{$owner}{$name}{$locale} = $template;
+                $template_cache->set_template(
+                    $owner,
+                    $name,
+                    $locale,
+                    $template
+                );
             }
 
             return $template;

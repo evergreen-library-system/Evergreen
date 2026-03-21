@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, inject } from '@angular/core';
-import {Observable, map} from 'rxjs';
+import {Observable, firstValueFrom, map} from 'rxjs';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {AuthService} from '@eg/core/auth.service';
@@ -359,7 +359,8 @@ export class PrintTemplateComponent implements OnInit {
 
     applyChanges() {
         this.container().innerHTML = '';
-        this.pcrud.update(this.template).toPromise()
+        firstValueFrom(this.pcrud.update(this.template))
+            .then(() => firstValueFrom(this.printer.clearPrintTemplateCache(this.template.owner())))
             .then(() => this.refreshPreview());
     }
 
