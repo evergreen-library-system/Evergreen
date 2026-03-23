@@ -14,7 +14,7 @@ import {MarcEditContext, MARC_RECORD_TYPE} from './editor-context';
 import {NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import {HoldingsService} from '@eg/staff/share/holdings/holdings.service';
 import { FastAddItem, FastAddSelectorComponent } from './fast-add-selector-component';
-import { Maybe } from '@eg/share/maybe';
+import { Maybe, None } from '@eg/share/maybe';
 
 
 export interface MarcSavedEvent {
@@ -99,7 +99,7 @@ export class MarcEditorComponent implements OnInit, AfterContentInit {
     @ContentChild(FastAddSelectorComponent) fastAddSelector: FastAddSelectorComponent;
 
     initCalled = false;
-    private fastAddIntent: Maybe<FastAddItem>;
+    private fastAddIntent: Maybe<FastAddItem> = new None();
 
     constructor(
         private evt: EventService,
