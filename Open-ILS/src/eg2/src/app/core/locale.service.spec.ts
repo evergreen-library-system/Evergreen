@@ -11,7 +11,7 @@ describe('LocaleService', () => {
             beforeEach(() => environment.production = false);
             afterEach(() => environment.production = orignalProductionState);
             it('only retrieves en-US from the pcrud service', async () => {
-                const pcrudMock = MockGenerators.pcrudService({search: MockGenerators.idlObject({code: 'en-US'})});
+                const pcrudMock = MockGenerators.pcrudService({search: [MockGenerators.idlObject({code: 'en-US'})]});
                 const service = new LocaleService(null, null, pcrudMock);
 
                 await firstValueFrom(service.supportedLocales());
@@ -24,7 +24,7 @@ describe('LocaleService', () => {
             beforeEach(() => environment.production = true);
             afterEach(() => environment.production = orignalProductionState);
             it('retrieves any staff_catalog=true locale from the pcrud service', async () => {
-                const pcrudMock = MockGenerators.pcrudService({search: MockGenerators.idlObject({code: 'en-US'})});
+                const pcrudMock = MockGenerators.pcrudService({search: [MockGenerators.idlObject({code: 'en-US'})]});
                 const service = new LocaleService(null, null, pcrudMock);
 
                 await firstValueFrom(service.supportedLocales());

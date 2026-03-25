@@ -97,13 +97,13 @@ export class MockGenerators {
         } as LineitemService;
     }
 
-    static localeService(returnValues = {}): LocaleService {
+    static localeService(returnValues = {}): Partial<LocaleService> {
         return {
             currentLocaleCode: () => returnValues['currentLocaleCode'] || 'en-US',
             setLocale: (code: string) => {},
             supportedLocaleCodes: () => returnValues['supportedLocaleCodes'] || ['en-US'],
             supportedLocales: () => of(returnValues['supportedLocales'] || MockGenerators.idlObject({code: 'en-US'})),
-        } as LocaleService;
+        } as Partial<LocaleService>;
     }
 
     // Use the method response map to say which OpenSRF methods
