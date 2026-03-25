@@ -33,8 +33,8 @@
         (ngModelChange)="old = t.field; t.field = $event"
         (change)="clearSearchTerm(t, old)">
         <option disabled="disabled" i18n>Select Search Field</option>
-        <optgroup *ngFor="let g of hints" label="{{availableSearchFields[g]['__label']}}" i18n-label>
-          <option *ngFor="let o of availableSearchFields[g]['__fields']" value="{{g}}:{{o}}" i18n>
+        <optgroup *ngFor="let g of hints" label="{{availableSearchFields[g]['__label']}}">
+          <option *ngFor="let o of availableSearchFields[g]['__fields']" value="{{g}}:{{o}}">
             {{availableSearchFields[g]['__label']}} - {{availableSearchFields[g][o].label}}
           </option>
         </optgroup>
