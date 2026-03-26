@@ -139,14 +139,14 @@
   }
 </eg-grid>
 
-<eg-fm-record-editor #editDialog idlClass="{{idlEditClass || idlClass}}"
-  [recordLabel]="recordLabel"
-  [fieldOptions]="fieldOptions"
-  [fieldOrder]="fieldOrder"
-  [defaultNewRecord]="defaultNewRecord"
-  [preloadLinkedValues]="true"
-  [orgDefaultAllowed]="orgDefaultAllowed"
-  [readonlyFields]="readonlyFields">
-</eg-fm-record-editor>
-
-
+<ng-content select="eg-fm-record-editor">
+  <eg-fm-record-editor #editDialog idlClass="{{idlEditClass || idlClass}}"
+    [recordLabel]="recordLabel"
+    [fieldOptions]="fieldOptions"
+    [fieldOrder]="fieldOrder"
+    [defaultNewRecord]="defaultNewRecord"
+    [preloadLinkedValues]="true"
+    [orgDefaultAllowed]="orgDefaultAllowed"
+    [readonlyFields]="readonlyFields">
+  </eg-fm-record-editor>
+</ng-content>

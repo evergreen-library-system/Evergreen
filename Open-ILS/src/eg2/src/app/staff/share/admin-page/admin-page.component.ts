@@ -1,6 +1,6 @@
 /* eslint-disable */
 /* eslint-disable rxjs/no-implicit-any-catch, rxjs/no-nested-subscribe */
-import { Component, Input, OnInit, TemplateRef, ViewChild, inject, viewChild } from '@angular/core';
+import { Component, Input, OnInit, TemplateRef, computed, contentChild, inject, viewChild } from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import { CommonModule, Location } from '@angular/common';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
@@ -180,7 +180,6 @@ export class AdminPageComponent implements OnInit {
     @Input() customButtons: TemplateAction[];
 
     grid = viewChild.required<GridComponent>('grid');
-    protected editDialog = viewChild.required<FmRecordEditorComponent>('editDialog')
     protected successString = viewChild.required<StringComponent>('successString')
     protected createString = viewChild.required<StringComponent>('createString')
     protected createErrString = viewChild.required<StringComponent>('createErrString')
@@ -191,6 +190,10 @@ export class AdminPageComponent implements OnInit {
     protected undeleteSuccessString = viewChild.required<StringComponent>('undeleteSuccessString')
     protected translator = viewChild.required<TranslateComponent>('translator')
     private deleteConfirmDialog = viewChild.required<ConfirmDialogComponent>('deleteConfirmDialog');
+
+    protected editDialog = computed(() => this.customEditDialog() || this.defaultEditDialog());
+    private defaultEditDialog = viewChild<FmRecordEditorComponent>('editDialog');
+    private customEditDialog = contentChild<FmRecordEditorComponent>('editDialog');
 
     idlClassDef: any;
     idlEditClassDef: any;

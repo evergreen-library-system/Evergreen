@@ -7,6 +7,7 @@ import {CustomOrgUnitTreesComponent} from './custom-org-unit-trees.component';
 import {PrintTemplateComponent} from './print-template.component';
 import {PermGroupTreeComponent} from './perm-group-tree.component';
 import {CallNumberClassComponent} from '@eg/staff/admin/server/call-number-class/call-number-class.component';
+import { CircModifierComponent } from './circ-modifier.component';
 
 const routes: Routes = [{
     path: 'splash',
@@ -33,6 +34,9 @@ const routes: Routes = [{
     path: 'config/floating_group',
     loadChildren: () =>
         import('./floating-group/floating-group.module').then(m => m.FloatingGroupModule)
+}, {
+    path: 'config/circ_modifier',
+    component: CircModifierComponent
 }, {
     path: 'config/hard_due_date',
     component: BasicAdminPageComponent,
