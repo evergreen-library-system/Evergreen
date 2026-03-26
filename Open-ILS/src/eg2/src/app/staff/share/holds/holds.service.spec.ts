@@ -46,6 +46,7 @@ describe('HoldsService', () => {
                     phone_notify: null,
                     thaw_date: undefined,
                     frozen: undefined,
+                    expire_time: undefined,
                     sms_notify: undefined,
                     sms_carrier: undefined,
                     holdable_formats_map: undefined
@@ -88,6 +89,7 @@ describe('HoldsService', () => {
                     phone_notify: null,
                     thaw_date: undefined,
                     frozen: undefined,
+                    expire_time: undefined,
                     sms_notify: undefined,
                     sms_carrier: undefined,
                     holdable_formats_map: undefined
