@@ -61,6 +61,15 @@ export class PatronSummaryComponent implements OnInit {
         }
     }
 
+    legalName(): string {
+        if (!this.p()) { return ''; }
+        return [
+            this.p().first_given_name(),
+            this.p().second_given_name(),
+            this.p().family_name()
+        ].filter(Boolean).join(' ');
+    }
+
     penaltyLabel(pen: IdlObject): string {
         if (pen.usr_message()) {
             // They don't often have titles, but defaulting to
