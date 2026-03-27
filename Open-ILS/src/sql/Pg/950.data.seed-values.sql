@@ -3978,15 +3978,6 @@ INSERT into config.org_unit_setting_type
         'coust', 'description'),
     'interval', null)
 
-,( 'circ.holds.target_holds_by_org_unit_weight', 'holds',
-    oils_i18n_gettext('circ.holds.target_holds_by_org_unit_weight',
-        'Use weight-based hold targeting',
-        'coust', 'label'),
-    oils_i18n_gettext('circ.holds.target_holds_by_org_unit_weight',
-        'Use library weight based hold targeting',
-        'coust', 'description'),
-    'bool', null)
-
 ,( 'circ.holds.target_skip_me', 'holds',
     oils_i18n_gettext('circ.holds.target_skip_me',
         'Skip For Hold Targeting',
