@@ -396,6 +396,7 @@ xref:#_settings_overview[Return to Settings Overview]
 |Soft stalling interval|For this amount of time, holds will not be opportunistically captured at non-pickup branches.|Duration|
 For multiple branch libraries
 |Use Active Date for age protection|When calculating age protection rules use the Active date instead of the Creation Date.|True/False|Default TRUE
+|Use calculated proximity for age-protection check|When checking whether a copy is viable for a hold based on transit distance, use calculated proximity with adjustments rather than baseline Org Unit proximity.|True/False|Default FALSE
 |=====
 
 xref:#_settings_overview[Return to Settings Overview]
