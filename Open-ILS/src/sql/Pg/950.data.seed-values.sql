@@ -21451,7 +21451,7 @@ INSERT INTO config.org_unit_setting_type
 
 INSERT into config.org_unit_setting_type
 ( name, grp, label, description, datatype, fm_class ) VALUES
-( 'circ.holds.calculated_age_proximity', 'circ',
+( 'circ.holds.calculated_age_proximity', 'holds',
     oils_i18n_gettext('circ.holds.calculated_age_proximity',
         'Use calculated proximity for age-protection check',
         'coust', 'label'),
