@@ -395,7 +395,6 @@ xref:#_settings_overview[Return to Settings Overview]
 |Soft stalling interval|For this amount of time, holds will not be opportunistically captured at non-pickup branches.|Duration|
 For multiple branch libraries
 |Use Active Date for age protection|When calculating age protection rules use the Active date instead of the Creation Date.|True/False|Default TRUE
-|Use weight-based hold targeting|Use library weight based hold targeting|True/False|
 |=====
 
 xref:#_settings_overview[Return to Settings Overview]
