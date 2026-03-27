@@ -87,7 +87,8 @@ export class CopiesComponent implements OnInit {
             callnumber: row => (`${row.call_number_prefix_label} ` +
                 `${row.call_number_label} ${row.call_number_suffix_label}`).trim(),
             holdable: row => this.copyContext.holdable(row),
-            barcode: row => row.barcode
+            barcode: row => row.barcode,
+            age_protect: row => row.age_protect_label
         };
 
         this.broadcaster.listen('eg.holdings.update').subscribe(data => {
