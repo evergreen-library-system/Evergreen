@@ -828,6 +828,11 @@ export class EditComponent implements OnInit {
         patron.mailing_address(addr);
         patron.addresses([addr]);
 
+        const cnal = this.context.settingsCache[
+            'ui.patron.default_inet_access_level'
+        ];
+        if (cnal) { patron.net_access_level(cnal); }
+
         this.strings.interpolate('circ.patron.edit.default_addr_type')
             .then(msg => addr.address_type(msg));
 
