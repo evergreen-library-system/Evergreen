@@ -2,7 +2,7 @@ BEGIN;
 
 -- Add Stackmap library settings
 
--- SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1517', :eg_version);
 
 INSERT into config.org_unit_setting_type
     (name, grp, label, description, datatype)
