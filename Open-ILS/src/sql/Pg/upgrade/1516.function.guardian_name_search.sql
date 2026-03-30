@@ -1,6 +1,6 @@
 BEGIN;
 
--- SELECT evergreen.upgrade_deps_block_check('XXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1516', :eg_version);
 
 CREATE OR REPLACE FUNCTION actor.user_ingest_name_keywords()
     RETURNS TRIGGER AS $func$
