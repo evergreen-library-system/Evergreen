@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('xxxx', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1515', :eg_version);
 
 INSERT INTO action_trigger.hook (key, core_type, description, passive)
 VALUES (
