@@ -1,6 +1,0 @@
-== Ability to enable Stackmap added content ==
-
-Creates two library settings to allow easier management of added content from Stackmap.
-
-  - Stackmap: Enable (true/false)
-  - Stackmap: Identifier (account code provided by Stackmap)
