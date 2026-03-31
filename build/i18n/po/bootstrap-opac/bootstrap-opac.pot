@@ -111,12 +111,12 @@ msgid "%1 OpenSearch"
 msgstr ""
 
 #. (fcount)
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/searchbar.tt2:171
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/searchbar.tt2:169
 msgid "%1 filter applied"
 msgstr ""
 
 #. (fcount)
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/searchbar.tt2:177
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/searchbar.tt2:175
 msgid "%1 filters applied"
 msgstr ""
 
@@ -352,7 +352,7 @@ msgstr ""
 msgid "A registration error has occurred"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:375
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:379
 msgid "A suspended hold will retain its place in the queue, but will not be fulfilled until it has been activated."
 msgstr ""
 
@@ -433,7 +433,7 @@ msgstr ""
 msgid "Activate hold for item %1"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:388
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:389
 msgid "Activate on"
 msgstr ""
 
@@ -542,7 +542,7 @@ msgstr ""
 msgid "Adjacency"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:407
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:419
 msgid "Advanced Hold Options"
 msgstr ""
 
@@ -859,7 +859,7 @@ msgstr ""
 msgid "Barcode:"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:413
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:425
 msgid "Basic Hold Options"
 msgstr ""
 
@@ -1073,7 +1073,7 @@ msgstr ""
 msgid "Camera operator"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/mylist/clear.tt2:17 ../../Open-ILS/src/templates-bootstrap/opac/mylist/email.tt2:24 ../../Open-ILS/src/templates-bootstrap/opac/mylist/print.tt2:22 ../../Open-ILS/src/templates-bootstrap/opac/myopac/generic_payment_form.tt2:126 ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds.tt2:261 ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds.tt2:28 ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds_curbside.tt2:148 ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds_curbside.tt2:158 ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds_curbside.tt2:168 ../../Open-ILS/src/templates-bootstrap/opac/myopac/last_chance_form.tt2:11 ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_settings.tt2:19 ../../Open-ILS/src/templates-bootstrap/opac/myopac/smartpay_payment_form.tt2:3 ../../Open-ILS/src/templates-bootstrap/opac/myopac/stripe_payment_form.tt2:99 ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:423 ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold_result.tt2:153
+#: ../../Open-ILS/src/templates-bootstrap/opac/mylist/clear.tt2:17 ../../Open-ILS/src/templates-bootstrap/opac/mylist/email.tt2:24 ../../Open-ILS/src/templates-bootstrap/opac/mylist/print.tt2:22 ../../Open-ILS/src/templates-bootstrap/opac/myopac/generic_payment_form.tt2:126 ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds.tt2:261 ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds.tt2:28 ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds_curbside.tt2:148 ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds_curbside.tt2:158 ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds_curbside.tt2:168 ../../Open-ILS/src/templates-bootstrap/opac/myopac/last_chance_form.tt2:11 ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_settings.tt2:19 ../../Open-ILS/src/templates-bootstrap/opac/myopac/smartpay_payment_form.tt2:3 ../../Open-ILS/src/templates-bootstrap/opac/myopac/stripe_payment_form.tt2:99 ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:435 ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold_result.tt2:153
 msgid "Cancel"
 msgstr ""
 
@@ -1090,7 +1090,7 @@ msgstr ""
 msgid "Cancel if not filled by"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds/edit.tt2:62
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds/edit.tt2:62 ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:399
 msgid "Cancel unless filled by"
 msgstr ""
 
@@ -1126,7 +1126,7 @@ msgstr ""
 msgid "Catalog Browse Controls"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/searchbar.tt2:204
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/searchbar.tt2:202
 msgid "Catalog Home"
 msgstr ""
 
@@ -1262,7 +1262,7 @@ msgstr ""
 msgid "Clear basket"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:397
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:409
 msgid "Clear basket after holds are requested?"
 msgstr ""
 
@@ -1790,7 +1790,7 @@ msgstr ""
 msgid "Did you mean %1?"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/result/lowhits.tt2:35 ../../Open-ILS/src/templates-bootstrap/opac/parts/searchbar.tt2:189
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/result/lowhits.tt2:35 ../../Open-ILS/src/templates-bootstrap/opac/parts/searchbar.tt2:187
 msgid "Did you mean: "
 msgstr ""
 
@@ -2283,7 +2283,7 @@ msgstr ""
 msgid "Filmmaker"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/searchbar.tt2:178
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/searchbar.tt2:176
 msgid "Filtered by:"
 msgstr ""
 
@@ -2324,7 +2324,7 @@ msgstr ""
 msgid "Format:"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/searchbar.tt2:79 ../../Open-ILS/src/templates-bootstrap/opac/record/email_preview.tt2:33 ../../Open-ILS/src/templates-bootstrap/opac/record/print_preview.tt2:21
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/searchbar.tt2:77 ../../Open-ILS/src/templates-bootstrap/opac/record/email_preview.tt2:33 ../../Open-ILS/src/templates-bootstrap/opac/record/print_preview.tt2:21
 msgid "Format: "
 msgstr ""
 
@@ -2570,6 +2570,10 @@ msgstr ""
 msgid "Hours"
 msgstr ""
 
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:318
+msgid "How do you wish to be notified when your hold is ready for pickup?"
+msgstr ""
+
 #: ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:349
 msgid "I have checked this item out before"
 msgstr ""
@@ -2616,6 +2620,10 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates-bootstrap/opac/parts/login/timeout_dialog.tt2:23
 msgid "If you need more time, please click \"Continue Session.\""
+msgstr ""
+
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:395
+msgid "If you will you no longer need this hold after a certain date, set a hold cancellation date below."
 msgstr ""
 
 #: ../../Open-ILS/src/templates-bootstrap/opac/parts/relators.tt2:2
@@ -2922,7 +2930,7 @@ msgstr ""
 msgid "Library web site"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/searchbar.tt2:101
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/searchbar.tt2:99
 msgid "Library: "
 msgstr ""
 
@@ -3484,19 +3492,15 @@ msgid "Notify by Text by default when a hold is ready for pickup?"
 msgstr ""
 
 #: ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:322
-msgid "Notify by email:"
+msgid "Notify by email"
 msgstr ""
 
 #: ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:340
 msgid "Notify by phone"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:356
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:357
 msgid "Notify by text message"
-msgstr ""
-
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:318
-msgid "Notify when hold is ready for pickup?"
 msgstr ""
 
 #: ../../Open-ILS/src/templates-bootstrap/opac/myopac/generic_payment_form.tt2:102
@@ -3819,12 +3823,8 @@ msgstr ""
 msgid "Pickup library"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/reservations.tt2:14 ../../Open-ILS/src/templates-bootstrap/opac/myopac/reservations.tt2:22
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/reservations.tt2:14 ../../Open-ILS/src/templates-bootstrap/opac/myopac/reservations.tt2:22 ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:303
 msgid "Pickup location"
-msgstr ""
-
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:303
-msgid "Pickup location:"
 msgstr ""
 
 #: ../../Open-ILS/src/templates-bootstrap/opac/parts/anon_list.tt2:13 ../../Open-ILS/src/templates-bootstrap/opac/parts/ebook_api/base_js.tt2:16 ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:134 ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold_result.tt2:18 ../../Open-ILS/src/templates-bootstrap/opac/parts/record/summary.tt2:355 ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:392 ../../Open-ILS/src/templates-bootstrap/opac/place_hold.tt2:1
@@ -4587,7 +4587,7 @@ msgstr ""
 msgid "Sculptor"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/course_search.tt2:75 ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/expert.tt2:73 ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/numeric.tt2:35 ../../Open-ILS/src/templates-bootstrap/opac/parts/searchbar.tt2:115
+#: ../../Open-ILS/src/templates-bootstrap/opac/course_search.tt2:75 ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/expert.tt2:73 ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/numeric.tt2:35 ../../Open-ILS/src/templates-bootstrap/opac/parts/searchbar.tt2:113
 msgid "Search"
 msgstr ""
 
@@ -4599,7 +4599,7 @@ msgstr ""
 msgid "Search Filters"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/searchbar.tt2:121
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/searchbar.tt2:119
 msgid "Search In Progress"
 msgstr ""
 
@@ -4671,7 +4671,7 @@ msgstr ""
 msgid "Search in progress icon"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/searchbar.tt2:130
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/searchbar.tt2:128
 msgid "Search only within the chosen list"
 msgstr ""
 
@@ -4814,7 +4814,7 @@ msgstr ""
 msgid "Select scoping restrictions"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/searchbar.tt2:103
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/searchbar.tt2:101
 msgid "Select search library"
 msgstr ""
 
@@ -4866,7 +4866,7 @@ msgstr ""
 msgid "Session Timeout"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:14 ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:385
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:14 ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:386
 msgid "Set activation date"
 msgstr ""
 
@@ -5161,7 +5161,7 @@ msgstr ""
 msgid "Subjects"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/smartpay_payment_form.tt2:2 ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:205 ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:43 ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:421 ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold_result.tt2:147 ../../Open-ILS/src/templates-bootstrap/opac/password_reset.tt2:46 ../../Open-ILS/src/templates-bootstrap/opac/password_reset.tt2:70 ../../Open-ILS/src/templates-bootstrap/opac/sms_cn.tt2:38 ../../Open-ILS/src/templates-bootstrap/opac/sms_cn.tt2:39 ../../Open-ILS/src/templates-bootstrap/opac/sms_cn.tt2:40
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/smartpay_payment_form.tt2:2 ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:205 ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:43 ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:433 ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold_result.tt2:147 ../../Open-ILS/src/templates-bootstrap/opac/password_reset.tt2:46 ../../Open-ILS/src/templates-bootstrap/opac/password_reset.tt2:70 ../../Open-ILS/src/templates-bootstrap/opac/sms_cn.tt2:38 ../../Open-ILS/src/templates-bootstrap/opac/sms_cn.tt2:39 ../../Open-ILS/src/templates-bootstrap/opac/sms_cn.tt2:40
 msgid "Submit"
 msgstr ""
 
@@ -5219,11 +5219,11 @@ msgstr ""
 msgid "Suspend hold for item %1"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:370
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:374
 msgid "Suspend these holds?"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:370
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:374
 msgid "Suspend this hold?"
 msgstr ""
 
@@ -5531,7 +5531,7 @@ msgstr ""
 msgid "Type of Report and Period Covered Note: "
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/searchbar.tt2:67
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/searchbar.tt2:65
 msgid "Type: "
 msgstr ""
 
@@ -5709,7 +5709,7 @@ msgstr ""
 msgid "Wednesday"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:375
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:379
 msgid "What is a suspended hold?"
 msgstr ""
 
