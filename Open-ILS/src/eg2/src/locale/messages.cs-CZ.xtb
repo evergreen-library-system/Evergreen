@@ -92,7 +92,7 @@
   <translation id="4857165350943180829">Zobrazit možnosti mřížky</translation>
   <translation id="1277762430200481678">Nastavit sloupce</translation>
   <translation id="6572456633428118045">Nastavit šířku sloupců</translation>
-  <translation id="2714883857996832452">Uložit nastavení mřížky</translation>
+  <translation id="2714883857996832452">Uložit nastavení sloupců</translation>
   <translation id="8813319038780713083">Resetovat sloupce</translation>
   <translation id="1860943177098963128">Stáhnout plnė CSV</translation>
   <translation id="4376870235971438878">Vytisknout mříž,ku</translation>
@@ -6496,8 +6496,71 @@ Zkopírováno <ph name="INTERPOLATION"/></translation>
   <translation id="1323385474079117517">Přihlásit se pomocí jednotného přihlašování</translation>
   <translation id="6360866402485758559">Aktivuj rozbalení kombinovaných polí</translation>
   <translation id="1056725106110906396">E-mail zákonného zástupce</translation>
-  <translation id="5640217348405780223">Call Number Classification</translation>
-  <translation id="561998273195635812">Relative Queue Position</translation>
-  <translation id="3949492330113173426">Global Queue Position</translation>
-  <translation id="5591989979573150669">Received On</translation>
+  <translation id="5640217348405780223">Klasifikace pro signaturu</translation>
+  <translation id="561998273195635812">Relativní pozice ve frontě</translation>
+  <translation id="3949492330113173426">Celková pozice ve frontě</translation>
+  <translation id="5591989979573150669">Přijato</translation>
+  <translation id="773494596403405672">Items Lost</translation>
+  <translation id="4698299184961617039">First 5 Characters</translation>
+  <translation id="7729181123707636273">First Contiguous Non-space String</translation>
+  <translation id="1989998323775948358">Username, Email, ID, Date of Birth</translation>
+  <translation id="3556428434026296622"> <ph name="INTERPOLATION"/> (<ph name="INTERPOLATION_1"/>) </translation>
+  <translation id="2439048338951564121">Contains (case-sensitive)</translation>
+  <translation id="535103204919284255">Age-based Hold Protection</translation>
+  <translation id="4948327341213349873">Search for records matching</translation>
+  <translation id="7126464771610287155">all</translation>
+  <translation id="2296681895307893686">any</translation>
+  <translation id="4424577588560362856">of the following terms:</translation>
+  <translation id="1032030949116117675">Clone Linked Limit Sets?</translation>
+  <translation id="8120884648739945463">Hold Policy Configuration</translation>
+  <translation id="3969632533752927875">Hold Policy Update Succeeded</translation>
+  <translation id="2046963588625832885">Hold Policy Creation Succeeded</translation>
+  <translation id="6907966584355836895">Item Circ Library</translation>
+  <translation id="8721369609165593039">User Home Library</translation>
+  <translation id="59556924600159167">Clear URL Filters</translation>
+  <translation id="6703551310168931115">Clear Org Filters</translation>
+  <translation id="6117449020348464536">New Hold Policy</translation>
+  <translation id="5645227763312035323">Request-level Hold Policy Matchpoints</translation>
+  <translation id="956660207067969742">Item-level Hold Policy Matchpoints</translation>
+  <translation id="360626330698378267">Hold Policy Effects</translation>
+  <translation id="7929060004172403288">{VAR_PLURAL, plural, =0 {No alerts} =1 {1 alert} other {<ph name="INTERPOLATION"/> alerts}}</translation>
+  <translation id="7715231050904909759"><ph name="ICU"/> </translation>
+  <translation id="3159220406792452378"> <ph name="ICU"/> </translation>
+  <translation id="7049103459989038676">{VAR_PLURAL, plural, =0 {No tags} =1 {1 tag} other {<ph name="INTERPOLATION"/> tags}}</translation>
+  <translation id="760024042867848802"> <ph name="ICU"/> </translation>
+  <translation id="2707336624017553768">{VAR_PLURAL, plural, =0 {No notes} =1 {1 note} other {<ph name="INTERPOLATION"/> notes}}</translation>
+  <translation id="1392006472617471414">Cancel if not filled by:</translation>
+  <translation id="3947767263395998206">Barcode deletions will take effect when you save the patron record.</translation>
+  <translation id="8273848271540785475">Pending Deletion</translation>
+  <translation id="8911378311883610606">To delete a barcode, you must:</translation>
+  <translation id="4229785283658902406">Deactivate it (uncheck Active)</translation>
+  <translation id="8416414809347075207">Apply Changes and Save the patron record</translation>
+  <translation id="982129958074184090">Reopen this dialog</translation>
+  <translation id="6319723066205117274">Then click Delete</translation>
+  <translation id="4338850711999911331">Note: Primary cards cannot be deleted.</translation>
+  <translation id="7348226424571958056">Deletion Requirements</translation>
+  <translation id="8009917708807544232">Deletion requirements help</translation>
+  <translation id="2316034079373362799">Save patron record after deactivating before deleting</translation>
+  <translation id="5321497922187429299">Barcode must be deactivated and saved before deletion</translation>
+  <translation id="6461649362230673157">Permission denied for deleting barcodes</translation>
+  <translation id="4446228655476422381">Cannot delete the primary barcode</translation>
+  <translation id="5519611780163394518">Active barcodes cannot be deleted. Deactivate the barcode first, save the patron record, then delete it.</translation>
+  <translation id="2063748172990686508">Please save the patron record after deactivating the barcode before deleting it.</translation>
+  <translation id="8067269981181074361">Search templates for keyword/text:</translation>
+  <translation id="1355453525242967418">Email Item Receipt</translation>
+  <translation id="3918428587895349846">Send an email receipt to</translation>
+  <translation id="4193298570823438255"> Select the patron you would like to send an email receipt to: </translation>
+  <translation id="2348647708112496698">no email address</translation>
+  <translation id="1629036028350799707">item</translation>
+  <translation id="7102411009202121517">Send </translation>
+  <translation id="3221970894381533554">Cancel </translation>
+  <translation id="4811205521450344509">Email receipt sent</translation>
+  <translation id="1555830991465604721">All items were already checked in</translation>
+  <translation id="7528324688702997540">No valid email address on record</translation>
+  <translation id="7426325365083172371">Failed to send email receipt</translation>
+  <translation id="3074834619895761441">Email Item Receipt(s)</translation>
+  <translation id="8599152897027031955">Select Subset to Edit </translation>
+  <translation id="8716359834484489616">Select All</translation>
+  <translation id="7380219470554318915">Select None</translation>
+  <translation id="2664188614048431502">Group Overdue</translation>
 </translationbundle>
