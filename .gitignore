@@ -35,6 +35,7 @@ Open-ILS/src/c-apps/Makefile.in
 Open-ILS/src/c-apps/oils_dataloader
 Open-ILS/src/c-apps/test_json_query
 Open-ILS/src/c-apps/test_qstore
+Open-ILS/src/eg2/locale
 Open-ILS/src/extras/.deps/
 Open-ILS/src/extras/eg_config
 Open-ILS/src/extras/fast-extract
@@ -206,6 +207,10 @@ Open-ILS/web/js/dojo/openils/reports/nls/pt-br/
 Open-ILS/web/js/dojo/openils/reports/nls/ru-ru/
 Open-ILS/web/js/dojo/openils/reports/nls/sv-se/
 Open-ILS/web/js/dojo/openils/reports/nls/tr-tr/
+Open-ILS/web/js/dojo/openils/serial/nls/cs-cz/
+Open-ILS/web/js/dojo/openils/serial/nls/en-ca/
+Open-ILS/web/js/dojo/openils/URLVerify/nls/cs-cz/
+Open-ILS/web/js/dojo/openils/URLVerify/nls/en-ca/
 Open-ILS/web/js/dojo/openils/User/nls/ar-jo/
 Open-ILS/web/js/dojo/openils/User/nls/cs-cz/
 Open-ILS/web/js/dojo/openils/User/nls/de-de/
@@ -222,6 +227,8 @@ Open-ILS/web/js/dojo/openils/User/nls/pt-br/
 Open-ILS/web/js/dojo/openils/User/nls/ru-ru/
 Open-ILS/web/js/dojo/openils/User/nls/sv-se/
 Open-ILS/web/js/dojo/openils/User/nls/tr-tr/
+Open-ILS/web/js/dojo/openils/vandelay/nls/cs-cz/
+Open-ILS/web/js/dojo/openils/vandelay/nls/en-ca/
 Open-ILS/web/js/dojo/openils/widget/nls/ar-jo/
 Open-ILS/web/js/dojo/openils/widget/nls/cs-cz/
 Open-ILS/web/js/dojo/openils/widget/nls/de-de/
