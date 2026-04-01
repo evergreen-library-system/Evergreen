@@ -5800,21 +5800,25 @@ SELECT  usr,
 			<field reporter:label="Created On" name="create_time" reporter:datatype="timestamp"/>
 			<field reporter:label="Owning Library" name="owning_lib" reporter:datatype="org_unit"/>
 			<field name="share_maps" reporter:datatype="link" oils_persist:virtual="true"/>
+			<field name="carousels" reporter:datatype="link" oils_persist:virtual="true"/>
 		</fields>
 		<links>
 			<link field="owning_lib" reltype="has_a" key="id" map="" class="aou"/>
 			<link field="owner" reltype="has_a" key="id" map="" class="au"/>
 			<link field="items" reltype="has_many" key="bucket" map="" class="cbrebi"/>
 			<link field="share_maps" reltype="has_many" key="bucket" map="" class="cbrebs"/>
+			<link field="carousels" reltype="has_many" key="bucket" map="" class="cc"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
 				<create permission="CREATE_BIB_BUCKET ADMIN_BIB_BUCKET" context_field="owning_lib" owning_user="owner"/>
 				<retrieve permission="CREATE_BIB_BUCKET ADMIN_BIB_BUCKET VIEW_CONTAINER" context_field="owning_lib" owning_user="owner" permit_field="pub" permit_field_value="t">
 					<context link="share_maps" field="share_org"/>
+					<context link="carousels" field="owner"/>
 				</retrieve>
 				<update permission="CREATE_BIB_BUCKET ADMIN_BIB_BUCKET UPDATE_CONTAINER" context_field="owning_lib" owning_user="owner">
 					<context link="share_maps" field="share_org"/>
+					<context link="carousels" field="owner"/>
 				</update>
 				<delete permission="CREATE_BIB_BUCKET ADMIN_BIB_BUCKET" context_field="owning_lib" owning_user="owner"/>
 			</actions>
@@ -9093,18 +9097,22 @@ SELECT  usr,
 				<create permission="CREATE_BIB_BUCKET ADMIN_BIB_BUCKET CREATE_CONTAINER_ITEM UPDATE_CONTAINER">
 					<context delegate="bucket" field="owning_lib" owning_user="owner"/>
 					<context delegate="bucket" jump="share_maps" field="share_org"/>
+					<context delegate="bucket" jump="carousels" field="owner"/>
 				</create>
 				<retrieve permission="CREATE_BIB_BUCKET ADMIN_BIB_BUCKET VIEW_CONTAINER UPDATE_CONTAINER">
 					<context delegate="bucket" field="owning_lib" owning_user="owner"/>
 					<context delegate="bucket" jump="share_maps" field="share_org"/>
+					<context delegate="bucket" jump="carousels" field="owner"/>
 				</retrieve>
 				<update permission="CREATE_BIB_BUCKET ADMIN_BIB_BUCKET UPDATE_CONTAINER">
 					<context delegate="bucket" field="owning_lib" owning_user="owner"/>
 					<context delegate="bucket" jump="share_maps" field="share_org"/>
+					<context delegate="bucket" jump="carousels" field="owner"/>
 				</update>
 				<delete permission="CREATE_BIB_BUCKET ADMIN_BIB_BUCKET DELETE_CONTAINER_ITEM UPDATE_CONTAINER">
 					<context delegate="bucket" field="owning_lib" owning_user="owner"/>
 					<context delegate="bucket" jump="share_maps" field="share_org"/>
+					<context delegate="bucket" jump="carousels" field="owner"/>
 				</delete>
 			</actions>
 		</permacrud>
