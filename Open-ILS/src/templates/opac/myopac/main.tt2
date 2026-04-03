@@ -117,13 +117,16 @@
                     
                     <td name='myopac_circ_trans_finished' >
                         [%  ts = f.xact.circulation.checkin_time || f.xact.reservation.return_time || 0;
+                            stop_fines = f.xact.circulation.stop_fines || '';
+                            total_owed = f.xact.total_owed || 0;
+                            max_fine = f.xact.circulation.max_fine || 0;
                             IF ts;
                                 date.format(ctx.parse_datetime(ts), DATE_FORMAT);
-                            ELSE %]
-                            <!-- XXX TODO fines aren't really accruing
-                                if circ has hit maxfines. more clarity
-                                here? --> 
-                            <span class="alert">[% l('(fines accruing)') %]</span>
+                            ELSIF stop_fines || (total_owed > 0 && total_owed >= max_fine); %]
+                                <!-- fines are stopped, or will be -->
+                                <span></span>
+                        [%  ELSE %]
+                            <span class="danger">[% l('(fines accruing)') %]</span>
                         [%  END %]
                     </td>
                    
