@@ -2931,11 +2931,10 @@ static char* searchValueTransform( const jsonObject* array ) {
 		return NULL;
 	}
 
-	char* func_item_string = jsonObjectGetString( func_item );
+	const char* func_item_string = jsonObjectGetString( func_item );
 	if (!is_identifier(func_item_string)) {
 		osrfLogError( OSRF_LOG_MARK, "%s: Expected function name, found \"%s\"\n",
 				modulename, func_item_string );
-		free( func_item_string );
 		return NULL;
 	}
 
