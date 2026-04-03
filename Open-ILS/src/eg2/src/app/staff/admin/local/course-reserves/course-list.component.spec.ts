@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { CourseListComponent, WINDOW } from './course-list.component';
+import { courseCanBeArchived, courseCanBeUnArchived, CourseListComponent, WINDOW } from './course-list.component';
 import { CourseService } from '@eg/staff/share/course.service';
 import { AuthService } from '@eg/core/auth.service';
 import { IdlService } from '@eg/core/idl.service';
@@ -69,5 +69,17 @@ describe('CourseListComponent', () => {
         component.editSelected([MockGenerators.idlObject({id: 20}), MockGenerators.idlObject({id: 21})]);
         expect(window.open).toHaveBeenCalledWith('https://my-evergreen.com/eg2/en-US/staff/admin/local/asset/course_list/20', 'course-20');
         expect(window.open).toHaveBeenCalledWith('https://my-evergreen.com/eg2/en-US/staff/admin/local/asset/course_list/21', 'course-21');
+    });
+});
+describe('courseCanBeArchived()', () => {
+    it('works', () => {
+        expect(courseCanBeArchived(MockGenerators.idlObject({is_archived: 't'}))).toBeFalse();
+        expect(courseCanBeArchived(MockGenerators.idlObject({is_archived: 'f'}))).toBeTrue();
+    });
+});
+describe('courseCanBeUnarchived()', () => {
+    it('works', () => {
+        expect(courseCanBeUnArchived(MockGenerators.idlObject({is_archived: 't'}))).toBeTrue();
+        expect(courseCanBeUnArchived(MockGenerators.idlObject({is_archived: 'f'}))).toBeFalse();
     });
 });

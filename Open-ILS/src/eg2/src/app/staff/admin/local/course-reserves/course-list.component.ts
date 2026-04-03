@@ -15,6 +15,16 @@ import {OrgFamily, OrgFamilySelectComponent} from '@eg/share/org-family-select/o
 import { StaffCommonModule } from '@eg/staff/common.module';
 import { AdminPageComponent } from '@eg/staff/share/admin-page/admin-page.component';
 import { TermListComponent } from './course-term-grid.component';
+import { noSuch } from '@eg/share/util/no-such';
+
+export function courseCanBeArchived (course: IdlObject) {
+    return course.is_archived() === 'f';
+}
+
+export function courseCanBeUnArchived (course: IdlObject) {
+    return course.is_archived() === 't';
+}
+
 
 export const WINDOW = new InjectionToken<Window>('Browser window', {  providedIn: 'root',  factory: () => window});
 
@@ -66,6 +76,8 @@ export class CourseListComponent implements OnInit, AfterViewInit {
     defaultOuId: number;
     searchOrgs: OrgFamily;
     defaultTerm: IdlObject;
+    protected noCourseCanBeArchived = noSuch(courseCanBeArchived);
+    protected noCourseCanBeUnarchived = noSuch(courseCanBeUnArchived);
 
     ngOnInit() {
         this.getSource();
@@ -176,15 +188,6 @@ export class CourseListComponent implements OnInit, AfterViewInit {
                     this.grid.reload();
                 } }
             );
-        });
-    }
-
-    courseArchiveableOrNot(course: IdlObject[], archiveBool) {
-        course.forEach(courseToMod => {
-            // eslint-disable-next-line eqeqeq
-            if (archiveBool == false) {return courseToMod.is_archived() == 't';}
-            // eslint-disable-next-line eqeqeq
-            return courseToMod.is_archived() == 'f';
         });
     }
 
