@@ -2924,7 +2924,7 @@ static char* searchValueTransform( const jsonObject* array ) {
 	if (!is_identifier(func_item_string)) {
 		osrfLogError( OSRF_LOG_MARK, "%s: Expected function name, found \"%s\"\n",
 				modulename, func_item_string );
-		osrf_buffer_free( sql_buf );
+		free( func_item_string );
 		return NULL;
 	}
 
