@@ -170,16 +170,6 @@ export class ResultRecordComponent implements OnInit, OnDestroy {
         }
     }
 
-    async toggleRecordInBucket(bibId: number, bucketId: number) {
-        const bibIds = new Array(bibId);
-        const inBucket = await this.bucketService.checkForBibInRecordBuckets(bibId, new Array(bucketId));
-        if (inBucket) {
-            await this.bucketService.removeBibsFromRecordBucket(bucketId, bibIds);
-        } else {
-            await this.bucketService.addBibsToRecordBucket(bucketId, bibIds);
-        }
-    }
-
     chooseBucket = async (bibId: number) => {
         console.debug('chooseBucket, invoked');
         try {
