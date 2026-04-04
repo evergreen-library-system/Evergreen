@@ -35,6 +35,7 @@ typedef struct ClassInfoStruct ClassInfo;
 
 struct ClassInfoStruct {
 	char* alias;
+	char* escaped_alias;
 	char* class_name;
 	char* source_def;
 	osrfHash* class_def;      // Points into IDL
@@ -152,6 +153,7 @@ int writeAuditInfo( osrfMethodContext* ctx, const char* user_id, const char* ws_
 
 static char* _sanitize_tz_name( const char* tz );
 static char* _sanitize_savepoint_name( const char* sp );
+static char* _sanitize_quoted_identifier( char* identifier );
 
 static char* cursor_name = NULL;
 const char charset[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_";
@@ -3103,7 +3105,7 @@ static char* searchFieldTransformPredicate( const ClassInfo* class_info, osrfHas
 		return NULL;
 	}
 
-	char* field_transform = searchFieldTransform( class_info->alias, field, node );
+	char* field_transform = searchFieldTransform( class_info->escaped_alias, field, node );
 	if( ! field_transform )
 		return NULL;
 	char* value = NULL;
@@ -3330,7 +3332,7 @@ static char* searchPredicate( const ClassInfo* class_info, osrfHash* field,
 
 	char* pred = NULL;
 	if( node->type == JSON_ARRAY ) { // equality IN search
-		pred = searchINPredicate( class_info->alias, field, node, NULL, ctx );
+		pred = searchINPredicate( class_info->escaped_alias, field, node, NULL, ctx );
 	} else if( node->type == JSON_HASH ) { // other search
 		jsonIterator* pred_itr = jsonNewIterator( node );
 		if( !jsonIteratorHasNext( pred_itr ) ) {
@@ -3344,18 +3346,18 @@ static char* searchPredicate( const ClassInfo* class_info, osrfHash* field,
 				osrfLogError( OSRF_LOG_MARK, "%s: Multiple predicates for field \"%s\"",
 						modulename, osrfHashGet(field, "name" ));
 			} else if( !(strcasecmp( pred_itr->key,"between" )) ) {
-				pred = searchBETWEENPredicate( class_info->alias, field, pred_node );
+				pred = searchBETWEENPredicate( class_info->escaped_alias, field, pred_node );
 			} else if( !(strcasecmp( pred_itr->key,"in" ))
 					|| !(strcasecmp( pred_itr->key,"not in" )) ) {
-				pred = searchINPredicate( class_info->alias, field, pred_node, pred_itr->key, ctx );
+				pred = searchINPredicate( class_info->escaped_alias, field, pred_node, pred_itr->key, ctx );
 			} else if( pred_node->type == JSON_ARRAY ) {
 				pred = searchFunctionPredicate(
-					class_info->alias, field, pred_node, pred_itr->key );
+					class_info->escaped_alias, field, pred_node, pred_itr->key );
 			} else if( pred_node->type == JSON_HASH ) {
 				pred = searchFieldTransformPredicate(
 					class_info, field, pred_node, pred_itr->key );
 			} else {
-				pred = searchSimplePredicate( pred_itr->key, class_info->alias, field, pred_node );
+				pred = searchSimplePredicate( pred_itr->key, class_info->escaped_alias, field, pred_node );
 			}
 		}
 		jsonIteratorFree( pred_itr );
@@ -3365,12 +3367,12 @@ static char* searchPredicate( const ClassInfo* class_info, osrfHash* field,
 		osrf_buffer_fadd(
 			_p,
 			"\"%s\".%s IS NULL",
-			class_info->alias,
+			class_info->escaped_alias,
 			osrfHashGet( field, "name" )
 		);
 		pred = osrf_buffer_release( _p );
 	} else { // equality search
-		pred = searchSimplePredicate( "=", class_info->alias, field, node );
+		pred = searchSimplePredicate( "=", class_info->escaped_alias, field, node );
 	}
 
 	return pred;
@@ -3647,7 +3649,7 @@ static char* searchJOIN( const jsonObject* join_hash, const ClassInfo* left_info
 			}
 	
 			osrf_buffer_fadd( join_buf, " %s AS \"%s\" ON ( \"%s\".%s = \"%s\".%s",
-						table, right_alias, right_alias, field, left_info->alias, fkey );
+						table, right_info->escaped_alias, right_info->escaped_alias, field, left_info->escaped_alias, fkey );
 	
 			// Add any other join conditions as specified by "filter"
 			const jsonObject* filter = jsonObjectGetKeyConst( snode, "filter" );
@@ -3846,14 +3848,14 @@ static char* searchWHERE( const jsonObject* search_hash, const ClassInfo* class_
 							"for table alias \"%s\"",
 							modulename,
 							fieldname,
-							alias_info->alias
+							alias_info->escaped_alias
 						);
 						jsonIteratorFree( search_itr );
 						osrf_buffer_free( sql_buf );
 						return NULL;
 					}
 
-					osrf_buffer_fadd( sql_buf, " \"%s\".%s ", alias_info->alias, fieldname );
+					osrf_buffer_fadd( sql_buf, " \"%s\".%s ", alias_info->escaped_alias, fieldname );
 				} else {
 					// It's something more complicated
 					char* subpred = searchWHERE( node, alias_info, AND_OP_JOIN, ctx );
@@ -4407,6 +4409,21 @@ char* SELECT (
 		core_class = jsonObjectGetString( jsonObjectGetIndex( join_hash, 0 ));
 		selhash = NULL;
 
+		if( ! is_identifier( core_class ) ) {
+			if( ctx )
+				osrfAppSessionStatus(
+					ctx->session,
+					OSRF_STATUS_INTERNALSERVERERROR,
+					"osrfMethodException",
+					ctx->request,
+					"Illegal function name in FROM clause"
+				);
+
+			osrfLogError( OSRF_LOG_MARK, "%s: Expected function name, found \"%s\"\n",
+					modulename, core_class );
+			return NULL;
+		}
+
 	} else if( join_hash->type == JSON_STRING ) {
 		// Populate the current QueryFrame with information
 		// about the core class
@@ -4810,11 +4827,13 @@ char* SELECT (
 						_alias = col_name;
 					}
 
+					char* clean_alias = _sanitize_quoted_identifier((char*)_alias);
+
 					if( jsonObjectGetKeyConst( selfield, "transform" )) {
 						char* transform_str = searchFieldTransform(
-							class_info->alias, field_def, selfield );
+							class_info->escaped_alias, field_def, selfield );
 						if( transform_str ) {
-							osrf_buffer_fadd( select_buf, " %s AS \"%s\"", transform_str, _alias );
+							osrf_buffer_fadd( select_buf, " %s AS \"%s\"", transform_str, clean_alias );
 							free( transform_str );
 						} else {
 							if( ctx )
@@ -4831,6 +4850,7 @@ char* SELECT (
 							if( defaultselhash )
 								jsonObjectFree( defaultselhash );
 							free( join_clause );
+							free( clean_alias );
 							return NULL;
 						}
 					} else {
@@ -4847,16 +4867,17 @@ char* SELECT (
 									" oils_i18n_xlate('%s', '%s', '%s', '%s', "
 									"\"%s\".%s::TEXT, '%s') AS \"%s\"",
 									class_tname, cname, col_name, class_pkey, cname,
-									class_pkey, locale, _alias );
+									class_pkey, locale, clean_alias );
 							} else {
 								osrf_buffer_fadd( select_buf, " \"%s\".%s AS \"%s\"",
-									cname, col_name, _alias );
+									cname, col_name, clean_alias );
 							}
 						} else {
 							osrf_buffer_fadd( select_buf, " \"%s\".%s AS \"%s\"",
-								cname, col_name, _alias );
+								cname, col_name, clean_alias );
 						}
 					}
+					free(clean_alias);
 				}
 				else {
 					osrfLogError(
@@ -4917,10 +4938,10 @@ char* SELECT (
 							OSRF_BUFFER_ADD_CHAR( group_buf, ',' );
 					    }
 
-					    _column = searchFieldTransform(class_info->alias, field, selfield);
+					    _column = searchFieldTransform(class_info->escaped_alias, field, selfield);
 						OSRF_BUFFER_ADD_CHAR(group_buf, ' ');
 						OSRF_BUFFER_ADD(group_buf, _column);
-					    _column = searchFieldTransform(class_info->alias, field, selfield);
+					    _column = searchFieldTransform(class_info->escaped_alias, field, selfield);
 					*/
 				    }
 			    }
@@ -5502,7 +5523,7 @@ static char* buildOrderByFromArray( osrfMethodContext* ctx, const jsonObject* or
 		if( !field_def ) {
 			osrfLogError( OSRF_LOG_MARK,
 				"%s: Invalid field \"%s\".%s referenced in ORDER BY clause",
-				modulename, class_alias, field );
+				modulename, order_class_info->escaped_alias, field );
 			if( ctx )
 				osrfAppSessionStatus(
 					ctx->session,
@@ -5530,7 +5551,7 @@ static char* buildOrderByFromArray( osrfMethodContext* ctx, const jsonObject* or
 		}
 
 		if( jsonObjectGetKeyConst( order_spec, "transform" )) {
-			char* transform_str = searchFieldTransform( class_alias, field_def, order_spec );
+			char* transform_str = searchFieldTransform( order_class_info->escaped_alias, field_def, order_spec );
 			if( ! transform_str ) {
 				if( ctx )
 					osrfAppSessionStatus(
@@ -5567,7 +5588,7 @@ static char* buildOrderByFromArray( osrfMethodContext* ctx, const jsonObject* or
 			free( compare_str );
 		}
 		else
-			osrf_buffer_fadd( order_buf, "\"%s\".%s", class_alias, field );
+			osrf_buffer_fadd( order_buf, "\"%s\".%s", order_class_info->escaped_alias, field );
 
 		const char* direction =
 			jsonObjectGetString( jsonObjectGetKeyConst( order_spec, "direction" ) );
@@ -7464,12 +7485,14 @@ static void clear_class_info( ClassInfo* info ) {
 	if( info->alias != info->alias_store )
 		free( info->alias );
 
+	free( info->escaped_alias );
+
 	if( info->class_name != info->class_name_store )
 		free( info->class_name );
 
 	free( info->source_def );
 
-	info->alias = info->class_name = info->source_def = NULL;
+	info->alias = info->escaped_alias = info->class_name = info->source_def = NULL;
 	info->next = NULL;
 }
 
@@ -7515,7 +7538,7 @@ static int build_class_info( ClassInfo* info, const char* alias, const char* cla
 	if( ! info ){
 		osrfLogError( OSRF_LOG_MARK,
 					  "%s ERROR: No ClassInfo available to populate", modulename );
-		info->alias = info->class_name = info->source_def = NULL;
+		info->alias = info->escaped_alias = info->class_name = info->source_def = NULL;
 		info->class_def = info->fields = info->links = NULL;
 		return 1;
 	}
@@ -7523,7 +7546,7 @@ static int build_class_info( ClassInfo* info, const char* alias, const char* cla
 	if( ! class ) {
 		osrfLogError( OSRF_LOG_MARK,
 					  "%s ERROR: No class name provided for lookup", modulename );
-		info->alias = info->class_name = info->source_def = NULL;
+		info->alias = info->escaped_alias = info->class_name = info->source_def = NULL;
 		info->class_def = info->fields = info->links = NULL;
 		return 1;
 	}
@@ -7537,13 +7560,13 @@ static int build_class_info( ClassInfo* info, const char* alias, const char* cla
 	if( ! class_def ) {
 		osrfLogError( OSRF_LOG_MARK,
 					  "%s ERROR: Class %s not defined in IDL", modulename, class );
-		info->alias = info->class_name = info->source_def = NULL;
+		info->alias = info->escaped_alias = info->class_name = info->source_def = NULL;
 		info->class_def = info->fields = info->links = NULL;
 		return 1;
 	} else if( str_is_true( osrfHashGet( class_def, "virtual" ) ) ) {
 		osrfLogError( OSRF_LOG_MARK,
 					  "%s ERROR: Class %s is defined as virtual", modulename, class );
-		info->alias = info->class_name = info->source_def = NULL;
+		info->alias = info->escaped_alias = info->class_name = info->source_def = NULL;
 		info->class_def = info->fields = info->links = NULL;
 		return 1;
 	}
@@ -7552,7 +7575,7 @@ static int build_class_info( ClassInfo* info, const char* alias, const char* cla
 	if( ! links ) {
 		osrfLogError( OSRF_LOG_MARK,
 					  "%s ERROR: No links defined in IDL for class %s", modulename, class );
-		info->alias = info->class_name = info->source_def = NULL;
+		info->alias = info->escaped_alias = info->class_name = info->source_def = NULL;
 		info->class_def = info->fields = info->links = NULL;
 		return 1;
 	}
@@ -7561,7 +7584,7 @@ static int build_class_info( ClassInfo* info, const char* alias, const char* cla
 	if( ! fields ) {
 		osrfLogError( OSRF_LOG_MARK,
 					  "%s ERROR: No fields defined in IDL for class %s", modulename, class );
-		info->alias = info->class_name = info->source_def = NULL;
+		info->alias = info->escaped_alias = info->class_name = info->source_def = NULL;
 		info->class_def = info->fields = info->links = NULL;
 		return 1;
 	}
@@ -7577,6 +7600,8 @@ static int build_class_info( ClassInfo* info, const char* alias, const char* cla
 		strcpy( info->alias_store, alias );
 		info->alias = info->alias_store;
 	}
+
+	info->escaped_alias = _sanitize_quoted_identifier(info->alias);
 
 	if( strlen( class ) > CLASS_NAME_STORE_SIZE )
 		info->class_name = strdup( class );
@@ -7701,7 +7726,7 @@ static void push_query_frame( void ) {
 
 	// Initialize the ClassInfo for the core class
 	ClassInfo* core = &frame->core;
-	core->alias = core->class_name = core->source_def = NULL;
+	core->alias = core->escaped_alias = core->class_name = core->source_def = NULL;
 	core->class_def = core->fields = core->links = NULL;
 
 	curr_query = frame;
@@ -7951,6 +7976,50 @@ static char* _sanitize_savepoint_name( const char* sp ) {
 	}
 	safeSpName[ i ] = '\0';
 	return safeSpName;
+}
+
+/**
+	@brief Double all "s in a string to escape them.
+	@param ident User-supplied identifier to be quoted
+	@return "-escaped identifier ready for use in " \"%s\".foo ", or NULL
+
+    The caller is expected to free the returned string.  Note that
+    this function exists only because we can't use PQescapeLiteral
+    without either forking libdbi or abandoning it.
+*/
+static char* _sanitize_quoted_identifier( char* identifier ) {
+
+	// PostgreSQL uses NAMEDATALEN-1 as a max length for identifiers,
+	// and the default value of NAMEDATALEN is 64; that should be long enough
+	// for our purposes, and it's unlikely that anyone is going to recompile
+	// PostgreSQL to have a smaller value, so cap the identifier name
+	// accordingly to avoid the remote chance that someone manages to pass in a
+	// 12GB identifier
+	const int MAX_LITERAL_NAMELEN = 63;
+	int len = 0;
+	len = strlen( identifier );
+	if (len > MAX_LITERAL_NAMELEN) {
+		len = MAX_LITERAL_NAMELEN;
+	}
+
+	// We create a buffer big enough that even a string full of "s will be OK.
+	// PG will truncate identifiers longer than NAMEDATALEN-1, but commands
+	// can pass them just fine. We'll cap it at 2x and let PG figure out the
+	// details.
+	char* safeIdentifier = safe_malloc( (MAX_LITERAL_NAMELEN + 1) * 2 );
+
+	int i = 0; // Target position, could be as far as j * 2 into the buffer
+	int j;
+	for (j = 0; j < len; j++) {
+
+		if (identifier[j] == '"') { // Found a ", add another to escape it
+			safeIdentifier[ i++ ] = '"';
+		}
+
+		safeIdentifier[ i++ ] = identifier[j]; // copy the character
+	}
+	safeIdentifier[ i ] = '\0';
+	return safeIdentifier;
 }
 
 /**
