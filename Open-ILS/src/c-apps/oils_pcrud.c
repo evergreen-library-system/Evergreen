@@ -109,6 +109,7 @@ int osrfAppInitialize( void ) {
 		osrfLogError( OSRF_LOG_MARK, "Error extending the IDL" );
 		return -1;
 	}
+	init_pcrud_function_allow_list( handle );
 	dbi_conn_close( handle );
 
 	// See if we should use retail or wholesale vis testing
