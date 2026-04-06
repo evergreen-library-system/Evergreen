@@ -126,6 +126,7 @@ static void clear_query_stack( void );
 static const jsonObject* verifyUserPCRUD( osrfMethodContext* );
 static const jsonObject* verifyUserPCRUDfull( osrfMethodContext*, int );
 static int verifyObjectPCRUD( osrfMethodContext*, osrfHash*, const jsonObject*, int );
+static int safePcrudFunctionName( const char* f_name );
 static const char* org_tree_root( osrfMethodContext* ctx );
 static jsonObject* single_hash( const char* key, const char* value );
 
@@ -148,6 +149,7 @@ static int max_flesh_depth = 100;
 static int perm_at_threshold = 5;
 static int enforce_pcrud = 0;     // Boolean
 static char* modulename = NULL;
+static osrfStringArray* pcrud_function_allow_list = NULL;
 
 int writeAuditInfo( osrfMethodContext* ctx, const char* user_id, const char* ws_id);
 
@@ -2940,6 +2942,12 @@ static char* searchValueTransform( const jsonObject* array ) {
 		return NULL;
 	}
 
+	if (!safePcrudFunctionName(func_item_string)) {
+		osrfLogError( OSRF_LOG_MARK, "%s: Function not considered safe: \"%s\"\n",
+				modulename, func_item_string );
+		return NULL;
+	}
+
 	growing_buffer* sql_buf = osrf_buffer_init( 32 );
 
 	OSRF_BUFFER_ADD( sql_buf, func_item_string );
@@ -3047,6 +3055,13 @@ static char* searchFieldTransform( const char* class_alias, osrfHash* field,
 
 			if( ! is_identifier( field_transform ) ) {
 				osrfLogError( OSRF_LOG_MARK, "%s: Expected function name, found \"%s\"\n",
+						modulename, field_transform );
+				osrf_buffer_free( sql_buf );
+				return NULL;
+			}
+
+			if( ! safePcrudFunctionName( field_transform ) ) {
+				osrfLogError( OSRF_LOG_MARK, "%s: Function not considered safe: \"%s\"\n",
 						modulename, field_transform );
 				osrf_buffer_free( sql_buf );
 				return NULL;
@@ -4420,7 +4435,7 @@ char* SELECT (
 		core_class = jsonObjectGetString( jsonObjectGetIndex( join_hash, 0 ));
 		selhash = NULL;
 
-		if( ! is_identifier( core_class ) ) {
+		if( !is_identifier(core_class) || !safePcrudFunctionName(core_class) ) {
 			if( ctx )
 				osrfAppSessionStatus(
 					ctx->session,
@@ -7866,6 +7881,56 @@ static void clear_query_stack( void ) {
 		pop_query_frame();
 }
 
+/**
+	@brief Read all STABLE and IMMUTABLE function names and add them to a pcrud allow-list
+*/
+void init_pcrud_function_allow_list ( dbi_conn handle  ) {
+
+	if (pcrud_function_allow_list) {
+		osrfStringArrayFree( pcrud_function_allow_list );
+	}
+
+	pcrud_function_allow_list = osrfNewStringArray(0);
+
+	dbi_result result = dbi_conn_query(
+		handle,
+		"SELECT n.nspname AS schema, p.proname AS function FROM pg_proc p JOIN pg_namespace n ON (n.oid = p.pronamespace) WHERE provolatile <> 'v';"
+	);
+
+	if( result ) {
+		if( dbi_result_first_row( result )) {
+			do {
+				jsonObject* return_val = oilsMakeJSONFromResult( result );
+				const char* sname = jsonObjectGetString( jsonObjectGetKeyConst( return_val, "schema" ) );
+				const char* fname = jsonObjectGetString( jsonObjectGetKeyConst( return_val, "function" ) );
+
+				// If there are more than 2k functions, this is going to yell into the logs.
+				// It's informational only, not an actual error.
+				osrfStringArrayAdd( pcrud_function_allow_list, fname );
+
+				growing_buffer* _buf = osrf_buffer_init( 128 ); // big enough for max name length * 2
+				osrf_buffer_fadd( _buf, "%s.%s", sname, fname );
+				char* fq_name = osrf_buffer_release( _buf );
+
+				osrfStringArrayAdd( pcrud_function_allow_list, fq_name );
+
+				free(fq_name);
+				jsonObjectFree( return_val );
+			} while( dbi_result_next_row( result ));
+		}
+		dbi_result_free( result );
+	}
+}
+
+
+/**
+	@brief If in PCRUD mode, check the function allow-list for the passed string.
+	@param f_name User-supplied string to be used as a function.
+	@return 1 outside of PCRUD mode or if the string is in the function allow-list, or 0 if not.
+*/
+static int safePcrudFunctionName( const char* f_name ) {
+	return enforce_pcrud ? osrfStringArrayContains( pcrud_function_allow_list, f_name ) : 1;
+}
 /**
 	@brief Implement the set_audit_info method.
 	@param ctx Pointer to the method context.
