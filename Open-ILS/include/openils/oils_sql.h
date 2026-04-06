@@ -32,6 +32,7 @@ void oilsSetSQLOptions( const char* module_name, int do_pcrud, int flesh_depth, 
 void oilsSetDBConnection( dbi_conn conn );
 int oilsIsDBConnected( dbi_conn handle );
 int oilsExtendIDL( dbi_conn handle );
+void init_pcrud_function_allow_list( dbi_conn handle );
 int str_is_true( const char* str );
 char* buildQuery( osrfMethodContext* ctx, jsonObject* query, int flags );
 
