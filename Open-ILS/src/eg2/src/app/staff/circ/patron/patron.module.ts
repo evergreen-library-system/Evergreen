@@ -34,6 +34,8 @@ import {PatronPermsComponent} from './perms.component';
 import {BillingHistoryComponent} from './billing-history.component';
 import {WorkLogModule} from '@eg/staff/share/worklog/worklog.module';
 import {LastPatronComponent} from './last.component';
+import {PendingListComponent} from './pending-list.component';
+import {PendingListService} from './pending-list.service';
 
 @NgModule({
     declarations: [
@@ -58,7 +60,8 @@ import {LastPatronComponent} from './last.component';
         LastPatronComponent,
         PatronBarcodesDialogComponent,
         SecondaryGroupsDialogComponent,
-        HoldNotifyUpdateDialogComponent
+        HoldNotifyUpdateDialogComponent,
+        PendingListComponent
     ],
     imports: [
         StaffCommonModule,
@@ -75,7 +78,8 @@ import {LastPatronComponent} from './last.component';
     ],
     providers: [
         PatronResolver,
-        PatronContextService
+        PatronContextService,
+        PendingListService
     ]
 })
 
