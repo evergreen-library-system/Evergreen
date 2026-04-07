@@ -198,7 +198,7 @@ export class EditComponent implements OnInit {
     identTypes: ComboboxEntry[];
     inetLevels: ComboboxEntry[];
     statCats: StatCat[] = [];
-    grpList: IdlObject;
+    grpList: IdlObject[];
     editProfiles: IdlObject[] = [];
     userStatCats: {[statId: number]: ComboboxEntry} = {};
     userSettings: {[name: string]: any} = {};
@@ -256,12 +256,12 @@ export class EditComponent implements OnInit {
         return this.setStatCats()
             .then(_ => this.getFieldDocs())
             .then(_ => this.setSurveys())
+            .then(_ => this.setEditProfiles())
             .then(_ => this.loadPatron())
             .then(_ => this.getCloneUser())
             .then(_ => this.getStageUser())
             .then(_ => this.getSecondaryGroups())
             .then(_ => this.applyPerms())
-            .then(_ => this.setEditProfiles())
             .then(_ => this.setIdentTypes())
             .then(_ => this.setInetLevels())
             .then(_ => this.setOptInSettings())
@@ -380,6 +380,33 @@ export class EditComponent implements OnInit {
         // Clear the usrname if it looks like a UUID
         if (patron.usrname().replace(/-/g, '').match(/[0-9a-f]{32}/)) {
             patron.usrname('');
+        }
+
+        if (!patron.passwd()) {
+            // Set password by phone if setting is enabled
+            if (this.context.settingsCache['patron.passwd_from_phone'] &&
+                patron.day_phone()) {
+                patron.passwd(patron.day_phone().slice(-4));
+
+            // otherwise, fall back to a random 4 digit number
+            } else {
+                patron.passwd(String(Math.floor(Math.random() * 9000) + 1000));
+            }
+        }
+
+        // Ensure our profile ID is a number for the selector
+        if (patron['profile']()) {
+            patron['profile'](Number(patron['profile']()));
+
+            // update the expire date based on the profile
+            const profile = this.grpList.find(
+                pgt => pgt.id() === patron['profile']()
+            );
+            if (profile) {
+                const newDate = this.getExpireDate(profile);
+                this.expireDate = newDate;
+                patron.expire_date(newDate.toISOString());
+            }
         }
 
         // Don't use stub address if we have one from the staged user.
@@ -1266,13 +1293,17 @@ export class EditComponent implements OnInit {
             .map(org => org.id());
     }
 
+    getExpireDate(profile: IdlObject): Date {
+        const seconds = DateUtil.intervalToSeconds(profile.perm_interval());
+        const nowEpoch = new Date().getTime();
+        return new Date(nowEpoch + (seconds * 1000 /* millis */));
+    }
+
     setExpireDate() {
         const profile = this.profileSelect.profiles[this.patron.profile()];
         if (!profile) { return; }
 
-        const seconds = DateUtil.intervalToSeconds(profile.perm_interval());
-        const nowEpoch = new Date().getTime();
-        const newDate = new Date(nowEpoch + (seconds * 1000 /* millis */));
+        const newDate = this.getExpireDate(profile);
         this.expireDate = newDate;
         this.fieldValueChange(null, null, 'expire_date', newDate.toISOString());
         this.afterFieldChange(null, null, 'expire_date');
