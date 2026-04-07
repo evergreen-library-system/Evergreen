@@ -7,6 +7,7 @@ import {TestPatronPasswordComponent} from './test-password.component';
 import {RegisterPatronComponent} from './register.component';
 import {LastPatronComponent} from './last.component';
 import {CanDeactivateGuard} from '@eg/share/util/can-deactivate.guard';
+import {PendingListComponent} from './pending-list.component';
 
 const routes: Routes = [{
     path: '',
@@ -23,6 +24,10 @@ const routes: Routes = [{
 }, {
     path: 'last',
     component: LastPatronComponent,
+    resolve: {resolver : PatronResolver}
+}, {
+    path: 'pending/list',
+    component: PendingListComponent,
     resolve: {resolver : PatronResolver}
 }, {
     path: 'register/clone/:cloneId',

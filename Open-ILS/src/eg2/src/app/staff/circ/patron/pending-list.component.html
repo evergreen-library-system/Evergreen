@@ -1,0 +1,86 @@
+<eg-staff-banner i18n-bannerText bannerText="Pending Patrons">
+</eg-staff-banner>
+
+<div class="row">
+  <div class="col mb-2">
+
+    <div class="input-group">
+      <label class="input-group-text form-label"
+        for="pending-context-org" i18n>
+        Home Library:
+      </label>
+
+      <eg-org-select domId="pending-context-org"
+        [initialOrgId]="contextOrg"
+        (onChange)="pendingOrgChanged($event)">
+      </eg-org-select>
+    </div>
+
+  </div>
+</div>
+
+<div class="row">
+  <div class="col">
+
+    <eg-grid #grid [dataSource]="dataSource"
+      [sortable]="true" [useLocalSort]="true"
+      persistKey="circ.pending_patrons.list"
+      (onRowActivate)="loadPendingPatron([$event])">
+
+      <eg-grid-toolbar-button i18n-label label="Load Patron"
+        [disabled]="grid.context.rowSelector.isEmpty()"
+        (onClick)="loadPendingPatron($event)">
+      </eg-grid-toolbar-button>
+
+      <eg-grid-toolbar-button i18n-label label="Delete Patron(s)"
+        [disabled]="grid.context.rowSelector.isEmpty()"
+        (onClick)="deletePendingPatrons($event)">
+      </eg-grid-toolbar-button>
+
+      <eg-grid-toolbar-action i18n-label label="Load Patron"
+        [disabled]="grid.context.rowSelector.isEmpty()"
+        (onClick)="loadPendingPatron($event)">
+      </eg-grid-toolbar-action>
+
+      <eg-grid-toolbar-action i18n-label label="Delete Patron(s)"
+        [disabled]="grid.context.rowSelector.isEmpty()"
+        (onClick)="deletePendingPatrons($event)">
+      </eg-grid-toolbar-action>
+
+      <eg-grid-column i18n-label label="Create Date"
+        path="user.row_date" datatype="timestamp" [datePlusTime]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="First Name"
+        path="user.first_given_name"></eg-grid-column>
+      <eg-grid-column i18n-label label="Middle Name"
+        path="user.second_given_name"></eg-grid-column>
+      <eg-grid-column i18n-label label="Last Name"
+        path="user.family_name"></eg-grid-column>
+      <eg-grid-column i18n-label label="Email"
+        path="user.email"></eg-grid-column>
+      <eg-grid-column i18n-label label="Home Library"
+        path="user.home_ou.shortname"></eg-grid-column>
+      <eg-grid-column i18n-label label="Street 1"
+        path="mailing_address.street1"></eg-grid-column>
+      <eg-grid-column i18n-label label="City"
+        path="mailing_address.city"></eg-grid-column>
+      <eg-grid-column i18n-label label="Post Code"
+        path="mailing_address.post_code"></eg-grid-column>
+      <eg-grid-column i18n-label label="Requested Username"
+        path="user.usrname"></eg-grid-column>
+      <eg-grid-column i18n-label label="User Stage: Row ID"
+        path="user.row_id" [index]="true" [hidden]="true"></eg-grid-column>
+      <eg-grid-column idlClass="stgu" [hidden]="true"
+        path="user.*"></eg-grid-column>
+      <eg-grid-column idlClass="stgma" [hidden]="true"
+        path="mailing_address.*"></eg-grid-column>
+    </eg-grid>
+
+  </div>
+</div>
+
+<eg-confirm-dialog #confirmDelete i18n-title title="Confirm Delete"
+  i18n-dialogTitle dialogTitle="Delete pending patron(s)?"
+  i18n-dialogBody
+  dialogBody="Are you sure you want to delete the selected pending patron(s)?"
+  i18n-confirmString confirmString="Delete">
+</eg-confirm-dialog>

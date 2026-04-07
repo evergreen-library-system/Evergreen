@@ -377,6 +377,14 @@
                 </a>
               }
               <a class="dropdown-item" ngbDropdownItem routerLinkActive="active"
+                ariaCurrentWhenActive="page" routerLink="/staff/circ/patron/pending/list"
+                (click)="isMenuCollapsed = true"
+                (keydown.space)="isMenuCollapsed = true"
+                (keydown.enter)="isMenuCollapsed = true">
+                <span class="material-icons" aria-hidden="true">thumb_up</span>
+                <span i18n>Pending Patrons</span>
+              </a>
+              <a class="dropdown-item" ngbDropdownItem routerLinkActive="active"
                 ariaCurrentWhenActive="page" routerLink="/staff/circ/patron/credentials"
                 (click)="isMenuCollapsed = true"
                 (keydown.space)="isMenuCollapsed = true"

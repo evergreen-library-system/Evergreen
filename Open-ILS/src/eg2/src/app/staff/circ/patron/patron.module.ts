@@ -34,6 +34,8 @@ import {BillingHistoryComponent} from './billing-history.component';
 import {WorkLogModule} from '@eg/staff/share/worklog/worklog.module';
 import {LastPatronComponent} from './last.component';
 import { MakeBookableDialogComponent } from '@eg/staff/share/booking/make-bookable-dialog.component';
+import {PendingListComponent} from './pending-list.component';
+import {PendingListService} from './pending-list.service';
 
 @NgModule({
     imports: [
@@ -59,6 +61,7 @@ import { MakeBookableDialogComponent } from '@eg/staff/share/booking/make-bookab
         PatronBarcodesDialogComponent,
         SecondaryGroupsDialogComponent,
         HoldNotifyUpdateDialogComponent,
+        PendingListComponent,
         StaffCommonModule,
         FmRecordEditorModule,
         BillingModule,
@@ -73,7 +76,8 @@ import { MakeBookableDialogComponent } from '@eg/staff/share/booking/make-bookab
     ],
     providers: [
         PatronResolver,
-        PatronContextService
+        PatronContextService,
+        PendingListService
     ]
 })
 
