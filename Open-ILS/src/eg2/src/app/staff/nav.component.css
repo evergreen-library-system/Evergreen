@@ -78,7 +78,7 @@
 #staff-navbar .nav-item:first-child .material-icons {
     font-size: 22px;
     margin-right: 0;
-    opacity: 1;
+    opacity: .65;
 }
 
 /* align top of dropdown w/ bottom of nav */
