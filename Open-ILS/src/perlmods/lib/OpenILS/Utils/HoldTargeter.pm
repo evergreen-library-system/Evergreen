@@ -558,7 +558,7 @@ sub get_hold_copies {
             if $U->is_true($hold->mint_condition);
     }
 
-    unless ($hold_type eq 'C' || $hold_type eq 'I' || $hold_type eq 'P' || $hold_type eq 'R') {
+    unless ($hold_type eq 'C' || $hold_type eq 'I' || $hold_type eq 'P' || $hold_type eq 'R' || $hold_type eq 'F') {
         # For volume and higher level holds, avoid targeting copies that
         # act as instances of monograph parts.
         $query->{from}->{acp}->{acpm} = {
