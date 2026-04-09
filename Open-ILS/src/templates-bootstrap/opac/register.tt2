@@ -274,7 +274,13 @@ FOR field_def IN register_fields;
                                 class="btn btn-confirm">[% l('Go Back') %]</a>
                             <input type="submit"
                                 value="[% l('Submit Registration') %]"
-                                class="btn btn-confirm" />
+                                class="btn btn-confirm"
+                                id="submit-button"/>
+                            <img
+                                src="/opac/images/progressbar_green.gif[% ctx.cache_key %]"
+                                alt="[% l('Registration submission in progress...') %]"
+                                class="hidden"
+                                id="submit-spinner"/>
                        </div>
                     </div>
             </form>
@@ -287,14 +293,24 @@ FOR field_def IN register_fields;
 (function() {
   'use strict';
   window.addEventListener('load', function() {
+    const submitButton = document.getElementById('submit-button');
+    const submitSpinner = document.getElementById('submit-spinner');
+
     // Fetch all the forms we want to apply custom Bootstrap validation styles to
     var forms = document.getElementsByClassName('needs-validation');
     // Loop over them and prevent submission
     var validation = Array.prototype.filter.call(forms, function(form) {
       form.addEventListener('submit', function(event) {
+        // Disable submit button to prevent multiple submissions and show loading spinner
+        submitButton.disabled = true;
+        submitSpinner.classList.remove('hidden');
+
         if (form.checkValidity() === false) {
+          // Validation failed, prevent form submission, re-enable submit button, and hide spinner
           event.preventDefault();
           event.stopPropagation();
+          submitButton.disabled = false;
+          submitSpinner.classList.add('hidden');
         }
         form.classList.add('was-validated');
       }, false);
