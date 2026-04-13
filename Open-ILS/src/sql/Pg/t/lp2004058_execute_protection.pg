@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT plan(17);
+SELECT plan(18);
 
 UPDATE asset.call_number_class 
 SET normalizer = $$1; INSERT INTO config.upgrade_log (version) VALUES ('lp2004058_asset.label_normalizer'); SELECT asset.label_normalizer_generic$$ 
@@ -97,6 +97,14 @@ SELECT cmp_ok(
     '<', '1', 'Injection fixed in auditor.create_auditor_seq'
 );
 
+-- and acquisitions auditor functions
+SELECT acq.create_acq_seq($$sneaky_seq; INSERT INTO config.upgrade_log (version)
+    VALUES ('lp2004058_acq.create_acq_seq'); CREATE sequence acq.sneaky_seq$$, 'again');
+
+SELECT cmp_ok(
+    (SELECT COUNT(*) FROM config.upgrade_log WHERE version = 'lp2004058_acq.create_acq_seq'),
+    '<', '1', 'Injection fixed in acq.create_acq_seq'
+);
 
 -- For the next 5 tests we just verify that each component part of auditor creation continues to work
 -- as expected with the quote_* additions, so just call the top-level auditor.create_auditor and then

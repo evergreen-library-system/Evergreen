@@ -1,5 +1,70 @@
 BEGIN;
 
+CREATE OR REPLACE FUNCTION acq.create_acq_seq     ( sch TEXT, tbl TEXT ) RETURNS BOOL AS $creator$
+BEGIN
+    EXECUTE $$CREATE SEQUENCE acq.$$ || quote_ident(sch || $$_$$ || tbl || $$_pkey_seq$$);
+	RETURN TRUE;
+END;
+$creator$ LANGUAGE 'plpgsql';
+
+CREATE OR REPLACE FUNCTION acq.create_acq_history ( sch TEXT, tbl TEXT ) RETURNS BOOL AS $creator$
+BEGIN
+    EXECUTE $$
+        CREATE TABLE acq.$$ || sch || $$_$$ || tbl || $$_history (
+            audit_id	BIGINT				PRIMARY KEY,
+            audit_time	TIMESTAMP WITH TIME ZONE	NOT NULL,
+            audit_action	TEXT				NOT NULL,
+            LIKE $$ || quote_ident(sch) || $$.$$ || quote_ident(tbl) || $$
+        );
+    $$;
+	RETURN TRUE;
+END;
+$creator$ LANGUAGE 'plpgsql';
+
+CREATE OR REPLACE FUNCTION acq.create_acq_func    ( sch TEXT, tbl TEXT ) RETURNS BOOL AS $creator$
+BEGIN
+    EXECUTE $$
+        CREATE OR REPLACE FUNCTION acq.audit_$$ || quote_ident(sch || $$_$$ || tbl || $$_func$$) || $$ ()
+        RETURNS TRIGGER AS $func$
+        BEGIN
+            INSERT INTO acq.$$ || quote_ident(sch || $$_$$ || tbl || $$_history$$) || $$
+                SELECT	nextval($$ || quote_literal($$acq.$$ || sch || $$_$$ || tbl || $$_pkey_seq$$) || $$),
+                    now(),
+                    SUBSTR(TG_OP,1,1),
+                    OLD.*;
+            RETURN NULL;
+        END;
+        $func$ LANGUAGE 'plpgsql';
+    $$;
+	RETURN TRUE;
+END;
+$creator$ LANGUAGE 'plpgsql';
+
+CREATE OR REPLACE FUNCTION acq.create_acq_update_trigger ( sch TEXT, tbl TEXT ) RETURNS BOOL AS $creator$
+BEGIN
+    EXECUTE $$
+        CREATE TRIGGER audit_$$ || quote_ident(sch || $$_$$ || tbl || $$_update_trigger$$) || $$
+            AFTER UPDATE OR DELETE ON $$ || quote_ident(sch) || $$.$$ || quote_ident(tbl) || $$ FOR EACH ROW
+            EXECUTE PROCEDURE acq.audit_$$ || quote_ident(sch || $$_$$ || tbl || $$_func$$) || $$ ();
+    $$;
+	RETURN TRUE;
+END;
+$creator$ LANGUAGE 'plpgsql';
+
+CREATE OR REPLACE FUNCTION acq.create_acq_lifecycle     ( sch TEXT, tbl TEXT ) RETURNS BOOL AS $creator$
+BEGIN
+    EXECUTE $$
+        CREATE OR REPLACE VIEW acq.$$ || quote_ident(sch || $$_$$ || tbl || $$_lifecycle$$) || $$ AS
+            SELECT	-1, now() as audit_time, '-' as audit_action, *
+              FROM	$$ || sch || $$.$$ || tbl || $$
+                UNION ALL
+            SELECT	*
+              FROM	acq.$$ || quote_ident(sch || $$_$$ || tbl || $$_history$$) || $$;
+    $$;
+	RETURN TRUE;
+END;
+$creator$ LANGUAGE 'plpgsql';
+
 CREATE OR REPLACE FUNCTION auditor.create_auditor_seq     ( sch TEXT, tbl TEXT ) RETURNS BOOL AS $creator$
 BEGIN
     EXECUTE $$CREATE SEQUENCE auditor.$$ || quote_ident(sch || $$_$$ || tbl || $$_pkey_seq$$);
