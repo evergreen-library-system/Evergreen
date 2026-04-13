@@ -230,22 +230,18 @@
             <div class="my-2 col-9">
                 <button name="action" class="btn btn-action btn-sm my-2" type="submit" value="place_hold" id="place_hold">[% l('Place hold') %]
                     <span class="result_count hidden">
-                        [%- l('([_1])', 0); -%]
                     </span>
                 </button>
                 <button name="action" class="btn btn-action btn-sm my-2" type="submit" value="print">[% l('Print title details') %]
                     <span class="result_count hidden">
-                        [%- l('([_1])', 0); -%]
                     </span>
                 </button>
                 <button name="action" class="btn btn-action btn-sm my-2" type="submit" value="email">[% l('Email title details') %]
                     <span class="result_count hidden">
-                        [%- l('([_1])', 0); -%]
                     </span>
                 </button>
                 <button name="action" class="btn btn-action btn-sm my-2" type="submit" value="del_item">[% l('Remove from list') %]
                     <span class="result_count hidden">
-                        [%- l('([_1])', 0); -%]
                     </span>
                 </button>
             </div>
