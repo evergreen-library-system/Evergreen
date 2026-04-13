@@ -1,5 +1,7 @@
 BEGIN;
 
+SELECT evergreen.upgrade_deps_block_check('1519', :eg_version);
+
 CREATE OR REPLACE FUNCTION acq.create_acq_seq     ( sch TEXT, tbl TEXT ) RETURNS BOOL AS $creator$
 BEGIN
     EXECUTE $$CREATE SEQUENCE acq.$$ || quote_ident(sch || $$_$$ || tbl || $$_pkey_seq$$);
