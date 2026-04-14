@@ -3,6 +3,49 @@
 :numbered:
 :toclevels: 3
 
+== Evergreen 3.16.6 ==
+
+This is a security release that fixes vulnernabilities that allow
+remote exfiltration of the contents of the database and the remote
+execution of arbitrary SQL and stored procedures in the Evergreen
+database.
+
+We strongly recommend *immediate* installation of this security release.
+
+The two security bugs fixed in this release are:
+
+* https://bugs.launchpad.net/evergreen/+bug/2004058[Bug 2004058]
+* https://bugs.launchpad.net/evergreen/+bug/2147196[Bug 2147196]
+
+These bugs will be made publicly visible after the security release
+is generally available.
+
+=== Upgrade notes ===
+
+This release includes updates to the database schema, the `open-ils.pcrud`
+service, and the `open-ils.fielder` service. This release *only* includes
+the security fixes; it does not include any other bugfixes or features
+that were merged since the previous release.
+
+=== Acknowledgments ===
+
+The Evergreen Project would like to thank the following individuals
+who contributed code, testing, and other assistance with this security
+release:
+
+* Blake Graham-Henderson
+* Chris Sharp
+* Galen Charlton
+* Jane Sandberg
+* Jason Boyer
+* Jason Stephenson
+* Jeff Davis
+* Jeff Godin
+* Mike Rylander
+
+We would also like to thank Karolis/Kaxolis for reporting one of
+the vulnerabilities fixed in this release.
+
 == Evergreen 3.16.5 ==
 
 This release contains bug fixes and documentation fixes improving on Evergreen 3.16.4.
