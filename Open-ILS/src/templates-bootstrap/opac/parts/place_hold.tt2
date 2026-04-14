@@ -322,7 +322,7 @@ document.addEventListener("DOMContentLoaded", () => {
                    [% l('Notify by email:') %]</label>
             </div>
             <div class="ml-4">
-                [% IF !ctx.user.email; %]
+                [% IF !ctx.user.email and !ctx.is_staff; %]
                     <span class="alert alert-warning" id="no-email-warning">
                         [% l('No configured email address.'); %]
                     <a class="alert-link" href="[% mkurl('myopac/update_email') %]">[% l('Add an email address') %]</a>
