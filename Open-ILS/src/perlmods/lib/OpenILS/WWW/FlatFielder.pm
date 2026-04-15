@@ -88,7 +88,7 @@ my @_output_handler_types = sort {
 
 # END package globals
 
-=comment
+=pod
 
 <FlatSearch hint='foo' identifier='bar' label='Foo Bar' FS_key='ad1awe43a3a2a3ra32a23ra32ra23rar23a23r'>
   <row ordinal='1'>

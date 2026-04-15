@@ -331,7 +331,7 @@ __PACKAGE__->register_method(
     }
 );
 
-=head comment
+=pod
 
 verification.res_code:
 
@@ -526,7 +526,7 @@ sub find_matching_url_for_attempt {
 }
 
 
-=head comment
+=pod
 
 1. create the verification object and commit.
 2. test the URL
