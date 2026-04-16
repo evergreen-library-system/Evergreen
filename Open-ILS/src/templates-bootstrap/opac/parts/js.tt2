@@ -223,20 +223,22 @@ var aou_hash = {
         });
         // password visibility eye
         Array.from(document.getElementsByClassName('show-password-toggle')).forEach(btn => {
-            let input = btn.previousElementSibling;
-            let icon = btn.querySelector('i');
+            const input = btn.previousElementSibling;
+            const icon = btn.querySelector('i');
             btn.addEventListener('click', () => {
                 if(input.type == 'password'){
                     input.type = 'text';
                     icon.setAttribute('class', 'fas fa-eye');
                     btn.setAttribute('aria-checked', 'true');
-                }else {
+                    btn.setAttribute('aria-label', '[% l('Hide password') %]');
+                } else {
                     input.type = 'password';
                     icon.setAttribute('class', 'fas fa-eye-slash');
                     btn.setAttribute('aria-checked', 'false');
+                    btn.setAttribute('aria-label', '[% l('Show password') %]');
                 }
                 input.focus();
-                let loginForm = input.closest('form');
+                const loginForm = input.closest('form');
                 loginForm.addEventListener('submit', ()=>{
                     input.type = 'password';
                 });
