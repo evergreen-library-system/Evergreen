@@ -1,60 +1,71 @@
 import { IdlObject } from '@eg/core/idl.service';
 import { SckoService } from './scko.service';
 import { SckoSummaryComponent } from './summary.component';
+import { MockGenerators } from 'test_data/mock_generators';
 
+function mockPatron(email: string | null, settings: IdlObject[] = []): IdlObject {
+    return MockGenerators.idlObject({ email, settings });
+}
 
-let patron: IdlObject;
-let mockService: any;
+function mockService(patron: IdlObject): SckoService {
+    return jasmine.createSpyObj<SckoService>([], {
+        patronSummary: {
+            id: null,
+            stats: null,
+            alerts: null,
+            patron
+        }
+    });
+}
+
+function mockSetting(name: string, value: string): IdlObject {
+    return MockGenerators.idlObject({ name, value });
+}
 
 describe('SummaryComponent', () => {
     describe('canEmail', () => {
         it('returns true if patron has a valid email address', () => {
-            patron = {
-                email: () => 'test@example.com',
-                a: null, _isfieldmapper: null, classname: null
-            };
-            mockService = jasmine.createSpyObj<SckoService>([], {
-                patronSummary: {
-                    id: null,
-                    stats: null,
-                    alerts: null,
-                    patron: patron
-                }
-            });
-            const component = new SckoSummaryComponent(mockService);
+            const patron = mockPatron('test@example.com');
+            const service = mockService(patron);
+            const component = new SckoSummaryComponent(service);
             expect(component.canEmail()).toEqual(true);
         });
         it('returns false if patron has a null email address', () => {
-            patron = {
-                email: () => null,
-                a: null, _isfieldmapper: null, classname: null
-            };
-            mockService = jasmine.createSpyObj<SckoService>([], {
-                patronSummary: {
-                    id: null,
-                    stats: null,
-                    alerts: null,
-                    patron: patron
-                }
-            });
-            const component = new SckoSummaryComponent(mockService);
+            const patron = mockPatron(null);
+            const service = mockService(patron);
+            const component = new SckoSummaryComponent(service);
             expect(component.canEmail()).toEqual(false);
         });
         it('returns false if patron has an empty string as an email address', () => {
-            patron = {
-                email: () => '',
-                a: null, _isfieldmapper: null, classname: null
-            };
-            mockService = jasmine.createSpyObj<SckoService>([], {
-                patronSummary: {
-                    id: null,
-                    stats: null,
-                    alerts: null,
-                    patron: patron
-                }
-            });
-            const component = new SckoSummaryComponent(mockService);
+            const patron = mockPatron('');
+            const service = mockService(patron);
+            const component = new SckoSummaryComponent(service);
             expect(component.canEmail()).toEqual(false);
+        });
+    });
+
+    describe('prefersEmail', () => {
+        it('returns true if default email receipt setting is true', () => {
+            const patron = mockPatron(null, [
+                mockSetting('circ.send_email_checkout_receipts', 'true')
+            ]);
+            const service = mockService(patron);
+            const component = new SckoSummaryComponent(service);
+            expect(component.prefersEmail()).toEqual(true);
+        });
+        it('returns false if default email receipt setting is not true', () => {
+            const patron = mockPatron(null, [
+                mockSetting('circ.send_email_checkout_receipts', 'false')
+            ]);
+            const service = mockService(patron);
+            const component = new SckoSummaryComponent(service);
+            expect(component.prefersEmail()).toEqual(false);
+        });
+        it('returns false if no default email receipt setting value', () => {
+            const patron = mockPatron(null, []);
+            const service = mockService(patron);
+            const component = new SckoSummaryComponent(service);
+            expect(component.prefersEmail()).toEqual(false);
         });
     });
 });
