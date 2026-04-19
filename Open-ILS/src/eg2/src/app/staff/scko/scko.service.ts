@@ -428,7 +428,7 @@ export class SckoService {
             return this.getFleshedCirc(payload.circ.id()).then(
                 circ => {
                     ctx.newCirc = circ;
-                    this.sessionCheckouts.push({circ: circ, ctx: ctx});
+                    this.sessionCheckouts.unshift({circ: circ, ctx: ctx});
                     return ctx;
                 }
             );
