@@ -637,9 +637,10 @@ export class SckoService {
     }
 
     emailReceipt(): Promise<any> {
-
         const circIds = this.sessionCheckouts
             .filter(c => Boolean(c.circ)).map(c => c.circ.id());
+
+        if (!circIds.length) { return Promise.resolve(); }
 
         return this.net.request(
             'open-ils.circ',
@@ -649,6 +650,9 @@ export class SckoService {
     }
 
     printReceipt(): Promise<any> {
+        if (!this.sessionCheckouts.length) {
+            return Promise.resolve();
+        }
 
         return new Promise((resolve, reject) => {
 

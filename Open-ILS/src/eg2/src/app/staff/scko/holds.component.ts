@@ -63,6 +63,8 @@ export class SckoHoldsComponent implements OnInit {
     }
 
     printList() {
+        if (!this.holds.length) { return; }
+
         this.printer.print({
             templateName: 'scko_holds',
             contextData: {

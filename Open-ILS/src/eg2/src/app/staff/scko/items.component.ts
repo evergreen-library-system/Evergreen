@@ -50,6 +50,7 @@ export class SckoItemsComponent implements OnInit {
     }
 
     printList() {
+        if (!this.circs.length) { return; }
 
         const data = this.circs.map(c => {
             return {
@@ -74,6 +75,10 @@ export class SckoItemsComponent implements OnInit {
         const selectMe =
             Object.values(this.selected).filter(v => v).length < this.circs.length;
         Object.keys(this.selected).forEach(key => this.selected[key] = selectMe);
+    }
+
+    circsSelected(): boolean {
+        return this.circs.some(c => this.selected[c.id()]);
     }
 
     renewSelected() {

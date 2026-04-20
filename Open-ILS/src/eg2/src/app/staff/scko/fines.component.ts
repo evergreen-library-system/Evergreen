@@ -88,6 +88,7 @@ export class SckoFinesComponent implements OnInit {
     }
 
     printList() {
+        if (!this.xacts.length) { return; }
 
         const data = this.xacts.map(x => {
             return {
