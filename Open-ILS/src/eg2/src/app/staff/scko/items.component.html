@@ -4,9 +4,11 @@
   </div>
   <div>
     <button type="button" class="scko-button"
-    (click)="renewSelected()" i18n>Renew Selected</button>
+      [disabled]="!circsSelected()"
+      (click)="renewSelected()" i18n>Renew Selected</button>
     <button type="button" class="scko-button"
-    (click)="printList()" i18n>Print List</button>
+      [disabled]="!circs.length"
+      (click)="printList()" i18n>Print List</button>
   </div>
 </div>
 <div id='oils-selfck-circ-table-div'>

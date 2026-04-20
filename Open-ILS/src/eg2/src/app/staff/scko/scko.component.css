@@ -140,6 +140,15 @@ label.btn-outline-success:active {
     --primary-hover: #F8E473;
 }
 
+.scko-button:disabled,
+.btn.scko-button:disabled {
+    --bs-btn-disabled-bg: #636363;
+    background: var(--bs-btn-disabled-bg);
+    border-color: var(--bs-btn-disabled-bg);
+    color: #e0e0e0;
+    opacity: 1;
+}
+
 label.btn-check-label.active:before {
     font-family: "Material Icons";
     content: "\e876";               /* a check mark, equivalent to "done" keyword */
