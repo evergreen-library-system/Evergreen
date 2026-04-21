@@ -16,7 +16,7 @@
               autocomplete="off" class="form-validated">
               <label class="visually-hidden" for="patron-username" i18n>Username</label>
               <input type="text" class="form-control border border-dark shadow-rounded mb-3"
-                (keyup.enter)="submitPatronLogin()"
+                (keyup.enter)="submitPatronLogin()" egFocusOnViewInit
                 autocomplete="off" id="patron-username" required
                 [(ngModel)]="patronUsername" name="patron-username"
                 placeholder="Username or Barcode" i18n-placeholder>

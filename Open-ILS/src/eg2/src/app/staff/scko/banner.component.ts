@@ -9,13 +9,14 @@ import {ForceReloadService} from '@eg/share/util/force-reload.service';
 
 import { FormsModule } from '@angular/forms';
 import { CredentialInputComponent } from '@eg/share/util/credential-input.component';
+import { FocusOnViewInitDirective } from '@eg/share/util/focus-on-view-init.directive';
 
 const FOCUS_DELAY = 50;
 
 @Component({
     selector: 'eg-scko-banner',
     templateUrl: 'banner.component.html',
-    imports: [CredentialInputComponent, FormsModule]
+    imports: [CredentialInputComponent, FocusOnViewInitDirective, FormsModule]
 })
 
 export class SckoBannerComponent implements OnInit, AfterViewInit {

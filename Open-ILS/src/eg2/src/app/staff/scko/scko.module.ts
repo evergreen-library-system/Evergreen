@@ -2,7 +2,6 @@ import {NgModule} from '@angular/core';
 import {EgCommonModule} from '@eg/common.module';
 import {CommonWidgetsModule} from '@eg/share/common-widgets.module';
 import {AudioService} from '@eg/share/util/audio.service';
-import {TitleComponent} from '@eg/share/title/title.component';
 import {PatronModule} from '@eg/staff/share/patron/patron.module';
 
 import {SckoComponent} from './scko.component';
@@ -15,6 +14,7 @@ import {SckoItemsComponent} from './items.component';
 import {SckoHoldsComponent} from './holds.component';
 import {SckoFinesComponent} from './fines.component';
 import {ForceReloadService} from '@eg/share/util/force-reload.service';
+import {FocusOnViewInitDirective} from '@eg/share/util/focus-on-view-init.directive';
 
 @NgModule({
     imports: [
@@ -28,7 +28,8 @@ import {ForceReloadService} from '@eg/share/util/force-reload.service';
         SckoItemsComponent,
         SckoHoldsComponent,
         SckoFinesComponent,
-        SckoRoutingModule
+        SckoRoutingModule,
+        FocusOnViewInitDirective
     ],
     providers: [
         SckoService,
