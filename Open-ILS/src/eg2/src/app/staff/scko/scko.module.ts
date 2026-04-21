@@ -15,6 +15,7 @@ import {SckoItemsComponent} from './items.component';
 import {SckoHoldsComponent} from './holds.component';
 import {SckoFinesComponent} from './fines.component';
 import {ForceReloadService} from '@eg/share/util/force-reload.service';
+import {FocusOnViewInitDirective} from '@eg/share/util/focus-on-view-init.directive';
 
 @NgModule({
     declarations: [
@@ -30,7 +31,8 @@ import {ForceReloadService} from '@eg/share/util/force-reload.service';
         EgCommonModule,
         CommonWidgetsModule,
         PatronModule,
-        SckoRoutingModule
+        SckoRoutingModule,
+        FocusOnViewInitDirective
     ],
     providers: [
         SckoService,
