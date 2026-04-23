@@ -1,12 +1,29 @@
-[%- USE CGI = CGI_utf8 -%]
+[%- USE CGI = CGI_utf8;
+valid_redirect = 0;
+destination = CGI.param('redirect_to');
+IF (matches = destination.match('^\/eg\/opac\/'));
+  valid_redirect = 1;
+END;
+-%]
 <html>
-  <head>
-    <script>window.location.href='[%- CGI.param('redirect_to') -%]';</script>
-  </head>
-  <body>
-    <p>Your browser should redirect you to your destination automatically; if
-      not, please <a href="[% CGI.param('redirect_to') | html %]">click here to
-      continue</a>
-    </p>
-  </body>
+  [% IF valid_redirect %]
+    <head>
+      <script>window.location.href='[%- destination | replace("'", "\\'") -%]';</script>
+    </head>
+    <body>
+      <p>Your browser should redirect you to your destination automatically; if
+        not, please <a href="[%- destination | html -%]">click here to
+        continue</a>
+      </p>
+    </body>
+  [% ELSE %]
+    <head>
+      <title>Something went wrong</title>
+    </head>
+    <body>
+      <p>Something went wrong. Please <a href="/eg/opac">click here to
+       go to the library catalog</a>
+      </p>
+    </body>
+  [% END %]
 <html>
