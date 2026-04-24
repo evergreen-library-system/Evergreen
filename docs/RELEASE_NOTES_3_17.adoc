@@ -10,9 +10,9 @@
 As compared to the first beta of 3.17, this release includes a
 significant upgrade of the Angular framework used by the staff
 interface. While this change is an internals-and-plumbing change
-that should not reset in any visible changes to the staff interface,
-it does have the potentially to cause breakage. Consequently, beta
-testers are strongly recommended to thoroughly test all staff interfaces.
+that should not result in any visible changes to the staff interface,
+it does have the potential to cause breakage. Consequently, beta
+testers are strongly encouraged to thoroughly test all staff interfaces.
 
 This release also contains the following bugfixes since the first beta:
 
