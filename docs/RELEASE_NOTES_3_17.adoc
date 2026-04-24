@@ -3,7 +3,34 @@
 :numbered:
 :toclevels: 3
 
-== Evergreen 3.17-beta ==
+== Evergreen 3.17-beta3 ==
+
+=== Changes from 3.17-beta ===
+
+As compared to the first beta of 3.17, this release includes a
+significant upgrade of the Angular framework used by the staff
+interface. While this change is an internals-and-plumbing change
+that should not reset in any visible changes to the staff interface,
+it does have the potentially to cause breakage. Consequently, beta
+testers are strongly recommended to thoroughly test all staff interfaces.
+
+This release also contains the following bugfixes since the first beta:
+
+* Fix crash that can occur when Quipu eRENEW attempts to update certain patron records. (https://bugs.launchpad.net/evergreen/+bug/2143938[Bug 2143938])
+* Fixes issue where recall holds on a items with a monograph part fail to be targeted (https://bugs.launchpad.net/evergreen/+bug/2130052[Bug 2130052])
+* Fixes issue where force holds on a items with a monograph part fail to be targeted (https://bugs.launchpad.net/evergreen/+bug/1838069[Bug 1838069])
+* Fixes F-type targeting issue that alternates between targeting and not targeting an item. (https://bugs.launchpad.net/evergreen/+bug/2131948[Bug 2131948])
+* Prevent simplistic scraper bots from wasting resources. (https://bugs.launchpad.net/evergreen/+bug/2113979[Bug 2113979])
+* Fixes bug where the age hold protect value was not included in CSV exports from the Item Table. (https://bugs.launchpad.net/evergreen/+bug/2146564[Bug 2146564])
+* Fix erroneous number on my list count. (https://bugs.launchpad.net/evergreen/+bug/2138265[Bug 2138265])
+* Fixes a security issue with certain database query generation methods (https://bugs.launchpad.net/evergreen/+bug/2147196[Bug 2147196])
+* Fixes a typo in the output of the /openils/bin/api_ctl program. (https://bugs.launchpad.net/evergreen/+bug/2147136[Bug 2147136])
+* Adds missing 'cancel if not filled by' alert dialog in staff client. (https://bugs.launchpad.net/evergreen/+bug/2147225[Bug 2147225])
+* Removes references to the "tundra" CSS class in the TPAC/BOOPAC (https://bugs.launchpad.net/evergreen/+bug/2056771[Bug 2056771])
+* Fixes issue where when a staff member places a hold for a patron via the Traditional (embedded) Catalog, the "No configured email address" warning would show up inappropriately. (https://bugs.launchpad.net/evergreen/+bug/2148326[Bug 2148326])
+* Fixes issue where some invoices charge twice when caluculating warning and stop percentages. (https://bugs.launchpad.net/evergreen/+bug/2088125[Bug 2088125])
+* Restores automatic focus on the barcode input after patron logout in the Angular self-check. (https://bugs.launchpad.net/evergreen/+bug/2127936[Bug 2127936])
+* Prevents duplicate patron self-registration submissions by double click. (https://bugs.launchpad.net/evergreen/+bug/1913626[Bug 1913626])
 
 === Upgrade notes ===
 
@@ -281,11 +308,13 @@ Evergreen:
 * Elizabeth Davis
 * Galen Charlton
 * Gina Monti
+* Hannah Darcy
 * Ian Skelskey
 * Jane Sandberg
 * Jason Boyer
 * Jason Etheridge
 * Jason Stephenson
+* Jeff Davis
 * Jeff Godin
 * Jennifer Pringle
 * Jennifer Weston
@@ -296,6 +325,7 @@ Evergreen:
 * Martha Driscoll
 * Mary Llewellyn
 * Michele Morgan
+* Millissa Macomber
 * Mike Rylander
 * Ranelle Irwin
 * Rogan Hamby
