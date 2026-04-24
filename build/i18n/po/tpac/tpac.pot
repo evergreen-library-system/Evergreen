@@ -420,7 +420,7 @@ msgstr ""
 msgid "Additional Physical Form available Note: "
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/base.tt2:65
+#: ../../Open-ILS/src/templates/opac/parts/base.tt2:60
 msgid "Additional Resources"
 msgstr ""
 
@@ -1016,7 +1016,7 @@ msgstr ""
 msgid "Casting director"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/base.tt2:60
+#: ../../Open-ILS/src/templates/opac/parts/base.tt2:55
 msgid "Catalog"
 msgstr ""
 
@@ -4887,7 +4887,7 @@ msgstr ""
 msgid "Single Sign On service"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/base.tt2:58
+#: ../../Open-ILS/src/templates/opac/parts/base.tt2:53
 msgid "Skip to main content"
 msgstr ""
 
