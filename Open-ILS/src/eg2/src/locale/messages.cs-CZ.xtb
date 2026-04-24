@@ -2882,9 +2882,7 @@ limitů se nezdařila</translation>
   <translation id="4167979496534975573">
               Rezervovat
             </translation>
-  <translation id="8621123584828872958">
-              Dočasná ochrana proti rezervacím
-            </translation>
+  <translation id="8621123584828872958"> Dočasná ochrana před rezervacemi </translation>
   <translation id="469233293913833886">
               Pohyblivá skupina
             </translation>
@@ -3764,7 +3762,7 @@ Přenos fondu neovlivní  finanční částku ani zatížení fondu, pokud nejso
   <translation id="4308637082966435549"> Vložte sem export svých nastavení. </translation>
   <translation id="7107875893797236195">Kontext organizační jednotky</translation>
   <translation id="5076796105879219579">Nastavení filtru</translation>
-  <translation id="1748116495714559897">Vyčisti filtr</translation>
+  <translation id="1748116495714559897">Zrušit filtr</translation>
   <translation id="6785659997897155974">Nastavení</translation>
   <translation id="4902817035128594900">Popis</translation>
   <translation id="7902069052673354876"> Editovat </translation>
@@ -4239,7 +4237,7 @@ není aktivní, proto ho není možné využít k  výpůjčkám.</translation>
   <translation id="4031146471831320500">Vrátit zrušení <ph name="INTERPOLATION"/> rezervace (rezervací)?</translation>
   <translation id="2719038915178831385">Vrátit zrušení rezervace (rezervací)</translation>
   <translation id="649720494834281682">Zobrazit rezervace na titul</translation>
-  <translation id="6011229620473146275"> Povolení odmítnuto. Prosím, zadejte přihlašovací údaje pro účet, který má oprávnění <ph name="INTERPOLATION"/>. </translation>
+  <translation id="6011229620473146275"> Oprávnění zamítnuto. Prosím, zadejte přihlašovací údaje pro účet, který má oprávnění <ph name="INTERPOLATION"/>. </translation>
   <translation id="1591700599178852066">Sloučit čtenáře</translation>
   <translation id="5379081329984157730"> Zahrnout neaktivní </translation>
   <translation id="1615862948897489623">Přidat do skupiny</translation>
@@ -5571,7 +5569,7 @@ Zadat rezervaci <ph name="START_SMALL_TEXT"/> (<ph name="INTERPOLATION"/>, <ph n
   <translation id="464749780222721589" desc="Patron status">Platnost skončila</translation>
   <translation id="1859131936150262113" desc="Patron status">Neaktivní</translation>
   <translation id="2425589165785133956" desc="Patron status">Překročen počet výpůjček</translation>
-  <translation id="2854961883923730547" desc="Patron status">Překročn počet výpůjček po lhůtě</translation>
+  <translation id="2854961883923730547" desc="Patron status">Překročen počet výpůjček po lhůtě</translation>
   <translation id="3353351804103029070" desc="Patron status">Překročen počet dlouhodobě nevrácených</translation>
   <translation id="1827892595518565985" desc="Patron status">Překročen počet ztracených výpůjček</translation>
   <translation id="1447397884970327070" desc="Patron status">Překročena výše pokut</translation>
@@ -6500,67 +6498,161 @@ Zkopírováno <ph name="INTERPOLATION"/></translation>
   <translation id="561998273195635812">Relativní pozice ve frontě</translation>
   <translation id="3949492330113173426">Celková pozice ve frontě</translation>
   <translation id="5591989979573150669">Přijato</translation>
-  <translation id="773494596403405672">Items Lost</translation>
-  <translation id="4698299184961617039">First 5 Characters</translation>
-  <translation id="7729181123707636273">First Contiguous Non-space String</translation>
-  <translation id="1989998323775948358">Username, Email, ID, Date of Birth</translation>
+  <translation id="773494596403405672">Ztracené jednotky</translation>
+  <translation id="4698299184961617039">Prvních 5 znaků</translation>
+  <translation id="7729181123707636273">První souvislý řetězec neobsahující mezery</translation>
+  <translation id="1989998323775948358">Uživatelské jméno, e-mail, ID, datum narození</translation>
   <translation id="3556428434026296622"> <ph name="INTERPOLATION"/> (<ph name="INTERPOLATION_1"/>) </translation>
-  <translation id="2439048338951564121">Contains (case-sensitive)</translation>
-  <translation id="535103204919284255">Age-based Hold Protection</translation>
-  <translation id="4948327341213349873">Search for records matching</translation>
-  <translation id="7126464771610287155">all</translation>
-  <translation id="2296681895307893686">any</translation>
-  <translation id="4424577588560362856">of the following terms:</translation>
-  <translation id="1032030949116117675">Clone Linked Limit Sets?</translation>
-  <translation id="8120884648739945463">Hold Policy Configuration</translation>
-  <translation id="3969632533752927875">Hold Policy Update Succeeded</translation>
-  <translation id="2046963588625832885">Hold Policy Creation Succeeded</translation>
-  <translation id="6907966584355836895">Item Circ Library</translation>
-  <translation id="8721369609165593039">User Home Library</translation>
-  <translation id="59556924600159167">Clear URL Filters</translation>
-  <translation id="6703551310168931115">Clear Org Filters</translation>
-  <translation id="6117449020348464536">New Hold Policy</translation>
+  <translation id="2439048338951564121">Obsahuje (rozlišuje velká a malá písmena)</translation>
+  <translation id="535103204919284255">Dočasná ochrana před rezervacemi</translation>
+  <translation id="4948327341213349873">Vyhledat záznamy odpovídající</translation>
+  <translation id="7126464771610287155">všem</translation>
+  <translation id="2296681895307893686">kterémukoliv</translation>
+  <translation id="4424577588560362856">z následujících termínů:</translation>
+  <translation id="1032030949116117675">Klonovat připojené sady limitů?</translation>
+  <translation id="8120884648739945463">Nastavení rezervačních pravidel</translation>
+  <translation id="3969632533752927875">Rezervační pravidla byla úspěšně aktualizována</translation>
+  <translation id="2046963588625832885">Rezervační pravidla byla úspěšně vytvořena</translation>
+  <translation id="6907966584355836895">Výpůjční knihovna jednotky</translation>
+  <translation id="8721369609165593039">Domovská knihovna uživatele</translation>
+  <translation id="59556924600159167">Zrušit filtrování podle URL</translation>
+  <translation id="6703551310168931115">Zrušit filtrování podle organizačních jednotek</translation>
+  <translation id="6117449020348464536">Přidat rezervační pravidla</translation>
   <translation id="5645227763312035323">Request-level Hold Policy Matchpoints</translation>
   <translation id="956660207067969742">Item-level Hold Policy Matchpoints</translation>
-  <translation id="360626330698378267">Hold Policy Effects</translation>
-  <translation id="7929060004172403288">{VAR_PLURAL, plural, =0 {No alerts} =1 {1 alert} other {<ph name="INTERPOLATION"/> alerts}}</translation>
+  <translation id="360626330698378267">Účinky rezervačních pravidel</translation>
+  <translation id="7929060004172403288">{VAR_PLURAL, plural, =0 {žádné upozornění} =1 {1 upozornění} other {<ph name="INTERPOLATION"/> upozornění}}</translation>
   <translation id="7715231050904909759"><ph name="ICU"/> </translation>
   <translation id="3159220406792452378"> <ph name="ICU"/> </translation>
-  <translation id="7049103459989038676">{VAR_PLURAL, plural, =0 {No tags} =1 {1 tag} other {<ph name="INTERPOLATION"/> tags}}</translation>
+  <translation id="7049103459989038676">{VAR_PLURAL, plural, =0 {Bez tagů} =1 {1 tagu} other {<ph name="INTERPOLATION"/> tagů}}</translation>
   <translation id="760024042867848802"> <ph name="ICU"/> </translation>
-  <translation id="2707336624017553768">{VAR_PLURAL, plural, =0 {No notes} =1 {1 note} other {<ph name="INTERPOLATION"/> notes}}</translation>
-  <translation id="1392006472617471414">Cancel if not filled by:</translation>
-  <translation id="3947767263395998206">Barcode deletions will take effect when you save the patron record.</translation>
-  <translation id="8273848271540785475">Pending Deletion</translation>
-  <translation id="8911378311883610606">To delete a barcode, you must:</translation>
-  <translation id="4229785283658902406">Deactivate it (uncheck Active)</translation>
-  <translation id="8416414809347075207">Apply Changes and Save the patron record</translation>
-  <translation id="982129958074184090">Reopen this dialog</translation>
-  <translation id="6319723066205117274">Then click Delete</translation>
-  <translation id="4338850711999911331">Note: Primary cards cannot be deleted.</translation>
+  <translation id="2707336624017553768">{VAR_PLURAL, plural, =0 {Bez poznámek} =1 {1 poznámky} other {<ph name="INTERPOLATION"/> poznámek}}</translation>
+  <translation id="1392006472617471414">Zrušit, pokud nebude splněno do:</translation>
+  <translation id="3947767263395998206">Zrušení čárových kódů se projeví až po uložení záznamu o čtenáři.</translation>
+  <translation id="8273848271540785475">Čeká na smazání</translation>
+  <translation id="8911378311883610606">Chcete-li smazat čárový kód, je nutné:</translation>
+  <translation id="4229785283658902406">Deaktivovat ho (zrušte zaškrtnutí políčka „Aktivní“)</translation>
+  <translation id="8416414809347075207">Použít změny a uložit záznam o čtenáři</translation>
+  <translation id="982129958074184090">Znovu otevřít toto dialogové okno</translation>
+  <translation id="6319723066205117274">Poté kliknout na Smazat</translation>
+  <translation id="4338850711999911331">Poznámka: Primární průkazy nelze smazat.</translation>
   <translation id="7348226424571958056">Deletion Requirements</translation>
   <translation id="8009917708807544232">Deletion requirements help</translation>
-  <translation id="2316034079373362799">Save patron record after deactivating before deleting</translation>
-  <translation id="5321497922187429299">Barcode must be deactivated and saved before deletion</translation>
-  <translation id="6461649362230673157">Permission denied for deleting barcodes</translation>
-  <translation id="4446228655476422381">Cannot delete the primary barcode</translation>
-  <translation id="5519611780163394518">Active barcodes cannot be deleted. Deactivate the barcode first, save the patron record, then delete it.</translation>
+  <translation id="2316034079373362799">Po deaktivaci před smazáním uložte záznam o uživateli</translation>
+  <translation id="5321497922187429299">Před smazáním je nutné čárový kód deaktivovat a uložit</translation>
+  <translation id="6461649362230673157">Bylo zamítnuto oprávnění ke smazání čárových kódů</translation>
+  <translation id="4446228655476422381">Nelze smazat primární čárový kód</translation>
+  <translation id="5519611780163394518">Aktivní čárové kódy nelze smazat. Nejprve čárový kód deaktivujte, uložte záznam o čtenáři a poté čárový kód smažte.</translation>
   <translation id="2063748172990686508">Please save the patron record after deactivating the barcode before deleting it.</translation>
   <translation id="8067269981181074361">Search templates for keyword/text:</translation>
-  <translation id="1355453525242967418">Email Item Receipt</translation>
-  <translation id="3918428587895349846">Send an email receipt to</translation>
-  <translation id="4193298570823438255"> Select the patron you would like to send an email receipt to: </translation>
-  <translation id="2348647708112496698">no email address</translation>
-  <translation id="1629036028350799707">item</translation>
-  <translation id="7102411009202121517">Send </translation>
-  <translation id="3221970894381533554">Cancel </translation>
-  <translation id="4811205521450344509">Email receipt sent</translation>
-  <translation id="1555830991465604721">All items were already checked in</translation>
-  <translation id="7528324688702997540">No valid email address on record</translation>
-  <translation id="7426325365083172371">Failed to send email receipt</translation>
-  <translation id="3074834619895761441">Email Item Receipt(s)</translation>
-  <translation id="8599152897027031955">Select Subset to Edit </translation>
-  <translation id="8716359834484489616">Select All</translation>
-  <translation id="7380219470554318915">Select None</translation>
-  <translation id="2664188614048431502">Group Overdue</translation>
+  <translation id="1355453525242967418">Zaslat výpis jednotek e-mailem</translation>
+  <translation id="3918428587895349846">Zaslat e-mailový výpis čtenáři</translation>
+  <translation id="4193298570823438255"> Vyberte čtenáře, kterému chcete zaslat výpis e-mailem: </translation>
+  <translation id="2348647708112496698">žádná e-mailová adresa</translation>
+  <translation id="1629036028350799707">jednotka</translation>
+  <translation id="7102411009202121517">Poslat </translation>
+  <translation id="3221970894381533554">Zrušit </translation>
+  <translation id="4811205521450344509">E-mailový výpis byl odeslán</translation>
+  <translation id="1555830991465604721">Všechny jednotky už byly vráceny</translation>
+  <translation id="7528324688702997540">Ve čtenářském kontě není platná e-mailová adresa</translation>
+  <translation id="7426325365083172371">Odeslání e-mailového výpisu se nezdařilo</translation>
+  <translation id="3074834619895761441">E-mailový výpis(y) jednotek</translation>
+  <translation id="8599152897027031955">Vyberte část k úpravám </translation>
+  <translation id="8716359834484489616">Vybrat vše</translation>
+  <translation id="7380219470554318915">Nevybrat nic</translation>
+  <translation id="2664188614048431502">Skupinové výpůjčky po lhůtě</translation>
+  <translation id="3542440267242519144"> <ph name="INTERPOLATION"/> <ph name="START_BLOCK_IF"/> (<ph name="INTERPOLATION_1"/>)
+<ph name="CLOSE_BLOCK_IF"/></translation>
+  <translation id="6387495212988942092">Receiving Items <ph name="START_BLOCK_IF"/><ph name="START_TAG_SPAN"/> (Dry Run)<ph name="CLOSE_TAG_SPAN"/><ph name="CLOSE_BLOCK_IF"/></translation>
+  <translation id="7563757928575174688">Direct Charges, Taxes, Fees, etc. <ph name="START_BLOCK_IF"/><ph name="START_BLOCK_IF"/><ph name="START_TAG_BUTTON"/> New Charge<ph name="CLOSE_TAG_BUTTON"/><ph name="CLOSE_BLOCK_IF"/><ph name="START_TAG_SPAN"/> | <ph name="CLOSE_TAG_SPAN"/><ph name="START_BLOCK_IF"/><ph name="START_TAG_BUTTON_1"/> Edit All<ph name="CLOSE_TAG_BUTTON"/><ph name="CLOSE_BLOCK_IF"/><ph name="START_TAG_SPAN"/> | <ph name="CLOSE_TAG_SPAN"/><ph name="CLOSE_BLOCK_IF"/></translation>
+  <translation id="4279709665573804393">Line Item(s) selected: <ph name="START_BLOCK_FOR"/><ph name="START_TAG_SPAN"/> <ph name="INTERPOLATION"/><ph name="START_BLOCK_IF"/><ph name="START_TAG_SPAN"/>,<ph name="CLOSE_TAG_SPAN"/><ph name="CLOSE_BLOCK_IF"/><ph name="CLOSE_TAG_SPAN"/><ph name="CLOSE_BLOCK_FOR"/></translation>
+  <translation id="6733186759615496122"><ph name="START_BLOCK_IF"/>
+Barcode
+<ph name="CLOSE_BLOCK_IF"/></translation>
+  <translation id="7503222333701661516"><ph name="INTERPOLATION"/> records from <ph name="INTERPOLATION_1"/> <ph name="INTERPOLATION_2"/></translation>
+  <translation id="4406891059176182169">Batch operation failed: <ph name="INTERPOLATION"/> <ph name="INTERPOLATION_1"/> </translation>
+  <translation id="813061108286400014"> No items to display. </translation>
+  <translation id="3494510466672413131"> (<ph name="INTERPOLATION"/>) </translation>
+  <translation id="8161584488888039350"> <ph name="INTERPOLATION"/></translation>
+  <translation id="6024600545537684236"> <ph name="INTERPOLATION"/> / <ph name="START_BLOCK_IF"/>
+Cancelled (<ph name="INTERPOLATION_1"/>)
+<ph name="CLOSE_BLOCK_IF"/><ph name="START_BLOCK_IF_1"/>
+Received <ph name="INTERPOLATION_2"/>
+<ph name="CLOSE_BLOCK_IF"/><ph name="START_BLOCK_IF_2"/>
+Not received
+<ph name="CLOSE_BLOCK_IF"/><ph name="START_UNORDERED_LIST"/><ph name="START_BLOCK_FOR"/><ph name="START_LIST_ITEM"/> <ph name="INTERPOLATION_3"/> <ph name="START_TAG_BUTTON"/>Print Voucher<ph name="CLOSE_TAG_BUTTON"/><ph name="CLOSE_LIST_ITEM"/><ph name="CLOSE_BLOCK_FOR"/><ph name="CLOSE_UNORDERED_LIST"/></translation>
+  <translation id="4274236146662999615"><ph name="TAG_INPUT"/> <ph name="INTERPOLATION"/> / <ph name="START_BLOCK_IF"/>
+Cancelled (<ph name="INTERPOLATION_1"/>)
+<ph name="CLOSE_BLOCK_IF"/><ph name="START_BLOCK_IF_1"/>
+Received <ph name="INTERPOLATION_2"/>
+<ph name="CLOSE_BLOCK_IF"/><ph name="START_BLOCK_IF_2"/>
+Not received
+<ph name="CLOSE_BLOCK_IF"/></translation>
+  <translation id="6285841601344565268"> <ph name="INTERPOLATION"/> (<ph name="INTERPOLATION_1"/>) <ph name="START_ITALIC_TEXT"/><ph name="INTERPOLATION_2"/><ph name="CLOSE_ITALIC_TEXT"/><ph name="START_BLOCK_IF"/> [Library initiated]
+<ph name="CLOSE_BLOCK_IF"/></translation>
+  <translation id="5719099501784943937">Direct Charges, Taxes, Fees, etc. <ph name="START_BLOCK_IF"/><ph name="START_TAG_BUTTON"/>New Charge<ph name="CLOSE_TAG_BUTTON"/><ph name="CLOSE_BLOCK_IF"/></translation>
+  <translation id="5415739204433525835"> <ph name="INTERPOLATION"/>
+</translation>
+  <translation id="8902812930859986695">
+    <ph name="INTERPOLATION"/>
+  </translation>
+  <translation id="1246252050856080814"> Template for &quot;<ph name="INTERPOLATION"/> (<ph name="INTERPOLATION_1"/>)&quot; <ph name="START_BLOCK_IF"/><ph name="START_TAG_SPAN"/> (Inactive) <ph name="CLOSE_TAG_SPAN"/><ph name="CLOSE_BLOCK_IF"/></translation>
+  <translation id="1616985490373365850">Settings For Group <ph name="START_TAG_SPAN"/>&apos;<ph name="INTERPOLATION"/>&apos;<ph name="CLOSE_TAG_SPAN"/></translation>
+  <translation id="2011142480813671926"><ph name="START_BLOCK_IF_4"/><ph name="START_BLOCK_IF"/><ph name="START_TAG_SPAN"/>NOT <ph name="CLOSE_TAG_SPAN"/><ph name="CLOSE_BLOCK_IF"/><ph name="START_BLOCK_IF_1"/><ph name="START_TAG_SPAN"/>Normalized Heading<ph name="CLOSE_TAG_SPAN"/><ph name="CLOSE_BLOCK_IF"/><ph name="START_TAG_SPAN"/><ph name="INTERPOLATION"/><ph name="INTERPOLATION_1"/><ph name="INTERPOLATION_2"/><ph name="CLOSE_TAG_SPAN"/><ph name="START_BLOCK_IF_2"/><ph name="START_TAG_SPAN"/> ‡<ph name="INTERPOLATION_3"/><ph name="CLOSE_TAG_SPAN"/><ph name="CLOSE_BLOCK_IF"/><ph name="START_BLOCK_IF_3"/><ph name="START_TAG_SPAN"/> | Match score <ph name="INTERPOLATION_4"/><ph name="CLOSE_TAG_SPAN"/><ph name="CLOSE_BLOCK_IF"/><ph name="CLOSE_BLOCK_IF"/></translation>
+  <translation id="1269496503436998141"> <ph name="ICU"/> </translation>
+  <translation id="3230520236125720798">Owning Library <ph name="START_BLOCK_IF"/><ph name="START_TAG_BUTTON"/><ph name="START_TAG_SPAN"/>↗<ph name="CLOSE_TAG_SPAN"/><ph name="CLOSE_TAG_BUTTON"/><ph name="CLOSE_BLOCK_IF"/><ph name="START_BLOCK_IF_1"/><ph name="START_TAG_BUTTON_1"/><ph name="START_TAG_SPAN"/>↙<ph name="CLOSE_TAG_SPAN"/><ph name="CLOSE_TAG_BUTTON"/><ph name="CLOSE_BLOCK_IF"/></translation>
+  <translation id="5014328601834555707">Classification <ph name="START_BLOCK_IF"/><ph name="START_TAG_BUTTON"/><ph name="START_TAG_SPAN"/>↗<ph name="CLOSE_TAG_SPAN"/><ph name="CLOSE_TAG_BUTTON"/><ph name="CLOSE_BLOCK_IF"/><ph name="START_BLOCK_IF_1"/><ph name="START_TAG_BUTTON_1"/><ph name="START_TAG_SPAN"/>↙<ph name="CLOSE_TAG_SPAN"/><ph name="CLOSE_TAG_BUTTON"/><ph name="CLOSE_BLOCK_IF"/></translation>
+  <translation id="2513115232011390796">Prefix <ph name="START_BLOCK_IF"/><ph name="START_TAG_BUTTON"/><ph name="START_TAG_SPAN"/>↗<ph name="CLOSE_TAG_SPAN"/><ph name="CLOSE_TAG_BUTTON"/><ph name="CLOSE_BLOCK_IF"/><ph name="START_BLOCK_IF_1"/><ph name="START_TAG_BUTTON_1"/><ph name="START_TAG_SPAN"/>↙<ph name="CLOSE_TAG_SPAN"/><ph name="CLOSE_TAG_BUTTON"/><ph name="CLOSE_BLOCK_IF"/></translation>
+  <translation id="221243327836298549">Call Number Label <ph name="START_BLOCK_IF"/><ph name="START_TAG_BUTTON"/><ph name="START_TAG_SPAN"/>↗<ph name="CLOSE_TAG_SPAN"/><ph name="CLOSE_TAG_BUTTON"/><ph name="CLOSE_BLOCK_IF"/><ph name="START_BLOCK_IF_1"/><ph name="START_TAG_BUTTON_1"/><ph name="START_TAG_SPAN"/>↙<ph name="CLOSE_TAG_SPAN"/><ph name="CLOSE_TAG_BUTTON"/><ph name="CLOSE_BLOCK_IF"/></translation>
+  <translation id="5128864990989609443">Suffix <ph name="START_BLOCK_IF"/><ph name="START_TAG_BUTTON"/><ph name="START_TAG_SPAN"/>↗<ph name="CLOSE_TAG_SPAN"/><ph name="CLOSE_TAG_BUTTON"/><ph name="CLOSE_BLOCK_IF"/><ph name="START_BLOCK_IF_1"/><ph name="START_TAG_BUTTON_1"/><ph name="START_TAG_SPAN"/>↙<ph name="CLOSE_TAG_SPAN"/><ph name="CLOSE_TAG_BUTTON"/><ph name="CLOSE_BLOCK_IF"/></translation>
+  <translation id="3606764135593585944">Barcode <ph name="START_BLOCK_IF"/><ph name="START_TAG_BUTTON"/><ph name="START_TAG_SPAN"/>↗<ph name="CLOSE_TAG_SPAN"/><ph name="CLOSE_TAG_BUTTON"/><ph name="CLOSE_BLOCK_IF"/><ph name="START_BLOCK_IF_1"/><ph name="START_TAG_BUTTON_1"/><ph name="START_TAG_SPAN"/>↙<ph name="CLOSE_TAG_SPAN"/><ph name="CLOSE_TAG_BUTTON"/><ph name="CLOSE_BLOCK_IF"/></translation>
+  <translation id="5527354302223321214">Part <ph name="START_BLOCK_IF"/><ph name="START_TAG_BUTTON"/><ph name="START_TAG_SPAN"/>↗<ph name="CLOSE_TAG_SPAN"/><ph name="CLOSE_TAG_BUTTON"/><ph name="CLOSE_BLOCK_IF"/><ph name="START_BLOCK_IF_1"/><ph name="START_TAG_BUTTON_1"/><ph name="START_TAG_SPAN"/>↙<ph name="CLOSE_TAG_SPAN"/><ph name="CLOSE_TAG_BUTTON"/><ph name="CLOSE_BLOCK_IF"/></translation>
+  <translation id="5374536588664632720"> Duplicate Barcode </translation>
+  <translation id="6298515642031274630"><ph name="START_TAG_SPAN"/><ph name="START_BLOCK_IF"/> See <ph name="CLOSE_BLOCK_IF"/><ph name="START_BLOCK_IF_1"/> Broader term <ph name="CLOSE_BLOCK_IF"/><ph name="START_BLOCK_IF_2"/> Narrower term <ph name="CLOSE_BLOCK_IF"/><ph name="START_BLOCK_IF_3"/> Related term <ph name="CLOSE_BLOCK_IF"/><ph name="CLOSE_TAG_SPAN"/><ph name="START_LINK"/> <ph name="INTERPOLATION"/> (<ph name="INTERPOLATION_1"/>) <ph name="CLOSE_LINK"/></translation>
+  <translation id="2013901538567804612">Hold activation date <ph name="INTERPOLATION"/> is not valid.
+    Please choose a date in the future</translation>
+  <translation id="1572431230578002295">Invalid Hold Expiration Date</translation>
+  <translation id="7124988071599681757">Cancel if not filled by date <ph name="INTERPOLATION"/> is not valid.
+    Please choose a date in the future</translation>
+  <translation id="7138919044775834776">Place Hold <ph name="START_BLOCK_IF"/><ph name="START_SMALL_TEXT"/> (<ph name="INTERPOLATION"/>, <ph name="INTERPOLATION_1"/>) <ph name="CLOSE_SMALL_TEXT"/><ph name="CLOSE_BLOCK_IF"/></translation>
+  <translation id="7764945320832517948">Placing <ph name="START_BLOCK_IF"/>
+METARECORD
+<ph name="CLOSE_BLOCK_IF"/><ph name="START_BLOCK_IF_1"/>
+TITLE
+<ph name="CLOSE_BLOCK_IF"/><ph name="START_BLOCK_IF_2"/>
+CALL NUMBER
+<ph name="CLOSE_BLOCK_IF"/><ph name="START_BLOCK_IF_3"/>
+FORCE ITEM
+<ph name="CLOSE_BLOCK_IF"/><ph name="START_BLOCK_IF_4"/>
+ITEM
+<ph name="CLOSE_BLOCK_IF"/><ph name="START_BLOCK_IF_5"/>
+RECALL
+<ph name="CLOSE_BLOCK_IF"/><ph name="START_BLOCK_IF_6"/>
+ISSUANCE
+<ph name="CLOSE_BLOCK_IF"/><ph name="START_BLOCK_IF_7"/>
+PARTS
+<ph name="CLOSE_BLOCK_IF"/> hold on record(s) </translation>
+  <translation id="7933974008370533093"> Conjoined Items<ph name="START_BLOCK_IF"/> (Currently <ph name="INTERPOLATION"/>)
+<ph name="CLOSE_BLOCK_IF"/></translation>
+  <translation id="6979397316295935849"> Overlay Target<ph name="START_BLOCK_IF"/> (Currently <ph name="INTERPOLATION"/>)
+<ph name="CLOSE_BLOCK_IF"/></translation>
+  <translation id="7132999468813348415"> Title Hold Transfer<ph name="START_BLOCK_IF"/> (Currently <ph name="INTERPOLATION"/>)
+<ph name="CLOSE_BLOCK_IF"/></translation>
+  <translation id="2379485784758296226"> Holding Transfer<ph name="START_BLOCK_IF"/> (Currently <ph name="INTERPOLATION"/>)
+<ph name="CLOSE_BLOCK_IF"/></translation>
+  <translation id="8382150314083930883">Associated Courses: <ph name="START_BLOCK_FOR"/><ph name="START_TAG_SPAN"/><ph name="START_LINK"/> <ph name="INTERPOLATION"/> (<ph name="INTERPOLATION_1"/>) <ph name="CLOSE_LINK"/><ph name="INTERPOLATION_2"/> <ph name="CLOSE_TAG_SPAN"/><ph name="CLOSE_BLOCK_FOR"/></translation>
+  <translation id="2744684544118256768"> Edited <ph name="INTERPOLATION"/> by <ph name="START_BLOCK_IF"/><ph name="START_LINK"/> <ph name="INTERPOLATION_1"/> <ph name="CLOSE_LINK"/><ph name="CLOSE_BLOCK_IF"/><ph name="START_BLOCK_IF_1"/><ph name="START_TAG_SPAN"/> ... <ph name="CLOSE_TAG_SPAN"/><ph name="CLOSE_BLOCK_IF"/></translation>
+  <translation id="7371453491011232079">
+    <ph name="START_BLOCK_IF"/>
+    <ph name="START_TAG_SPAN"/>
+    <ph name="INTERPOLATION"/>
+    <ph name="CLOSE_TAG_SPAN"/>
+    <ph name="CLOSE_BLOCK_IF"/>
+  </translation>
+  <translation id="4811859983013655306">Select <ph name="INTERPOLATION"/> - <ph name="INTERPOLATION_1"/> </translation>
+  <translation id="5321204500199532473" desc="Show/hide catalog advanced search filters"><ph name="START_BLOCK_IF"/> <ph name="ICU"/> <ph name="CLOSE_BLOCK_IF"/><ph name="START_BLOCK_IF_1"/> <ph name="ICU_1"/> <ph name="CLOSE_BLOCK_IF"/></translation>
+  <translation id="9187357539843518827"><ph name="START_BLOCK_CASE"/><ph name="START_TAG_SPAN"/>Search:<ph name="CLOSE_TAG_SPAN"/><ph name="CLOSE_BLOCK_CASE"/><ph name="START_BLOCK_CASE_1"/><ph name="START_TAG_SPAN"/>Identifier:<ph name="CLOSE_TAG_SPAN"/><ph name="CLOSE_BLOCK_CASE"/><ph name="START_BLOCK_CASE_2"/><ph name="START_TAG_SPAN"/>MARC:<ph name="CLOSE_TAG_SPAN"/><ph name="CLOSE_BLOCK_CASE"/><ph name="START_BLOCK_CASE_3"/><ph name="START_TAG_SPAN"/>Browse:<ph name="CLOSE_TAG_SPAN"/><ph name="CLOSE_BLOCK_CASE"/> <ph name="INTERPOLATION"/>
+</translation>
+  <translation id="6061449026236482249"> <ph name="INTERPOLATION"/> patron(s) with same <ph name="START_BLOCK_CASE"/><ph name="START_TAG_SPAN"/>phone<ph name="CLOSE_TAG_SPAN"/><ph name="CLOSE_BLOCK_CASE"/><ph name="START_BLOCK_CASE_1"/><ph name="START_TAG_SPAN"/>email<ph name="CLOSE_TAG_SPAN"/><ph name="CLOSE_BLOCK_CASE"/><ph name="START_BLOCK_CASE_2"/><ph name="START_TAG_SPAN"/>name<ph name="CLOSE_TAG_SPAN"/><ph name="CLOSE_BLOCK_CASE"/><ph name="START_BLOCK_CASE_3"/><ph name="START_TAG_SPAN"/>identifier<ph name="CLOSE_TAG_SPAN"/><ph name="CLOSE_BLOCK_CASE"/><ph name="START_BLOCK_CASE_4"/><ph name="START_TAG_SPAN"/>address<ph name="CLOSE_TAG_SPAN"/><ph name="CLOSE_BLOCK_CASE"/></translation>
+  <translation id="5864027694973082820"><ph name="START_BLOCK_IF"/> Non-Cataloged Circulations (<ph name="INTERPOLATION"/>) <ph name="CLOSE_BLOCK_IF"/></translation>
 </translationbundle>
