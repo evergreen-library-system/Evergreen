@@ -28,7 +28,7 @@ This release also contains the following bugfixes since the first beta:
 * Adds missing 'cancel if not filled by' alert dialog in staff client. (https://bugs.launchpad.net/evergreen/+bug/2147225[Bug 2147225])
 * Removes references to the "tundra" CSS class in the TPAC/BOOPAC (https://bugs.launchpad.net/evergreen/+bug/2056771[Bug 2056771])
 * Fixes issue where when a staff member places a hold for a patron via the Traditional (embedded) Catalog, the "No configured email address" warning would show up inappropriately. (https://bugs.launchpad.net/evergreen/+bug/2148326[Bug 2148326])
-* Fixes issue where some invoices charge twice when caluculating warning and stop percentages. (https://bugs.launchpad.net/evergreen/+bug/2088125[Bug 2088125])
+* Fixes issue where some invoices charge twice when calculating warning and stop percentages. (https://bugs.launchpad.net/evergreen/+bug/2088125[Bug 2088125])
 * Restores automatic focus on the barcode input after patron logout in the Angular self-check. (https://bugs.launchpad.net/evergreen/+bug/2127936[Bug 2127936])
 * Prevents duplicate patron self-registration submissions by double click. (https://bugs.launchpad.net/evergreen/+bug/1913626[Bug 1913626])
 
@@ -58,7 +58,7 @@ perldoc -l OpenILS::Application::PermaCrud
 
 This release:
 
-* Adds support for Debian 13 "Trixe" (https://bugs.launchpad.net/evergreen/+bug/2120581[Bug 2120581])
+* Adds support for Debian 13 "Trixie" (https://bugs.launchpad.net/evergreen/+bug/2120581[Bug 2120581])
 * Adds support for PostgreSQL 18 (https://bugs.launchpad.net/evergreen/+bug/2131086[Bug 2131086])
 * Removes support for PostgreSQL 13 (https://bugs.launchpad.net/evergreen/+bug/2131086[Bug 2131086])
 
@@ -78,7 +78,7 @@ release notes.
 == Notification Opt-Ins by Notice Type API / Settings ==
 
 Creates a set of notification group entries to collect user settings related
-to opting in to different types of notices (email, sms, phone, print).
+to opting in to different types of notices (email, SMS, phone, print).
 
 Adds an API which reports on which notice types a user is opted in to and 
 allows for batch opt in/out for a collection of notice types.
@@ -229,7 +229,7 @@ will be listed as options when translating terms within the staff client.
 
 == ChiliFresh Cover Images ==
 
-ChiliFresh is now avaialble as an added content source for cover
+ChiliFresh is now available as an added content source for cover
 images. To enable (after getting a subscription), edit `opensrf.xml`
 and set the `added_content/module` value to `OpenILS::WWW::AddedContent::Chilifresh`.
 
