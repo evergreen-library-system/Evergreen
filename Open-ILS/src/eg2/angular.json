@@ -85,10 +85,17 @@
             }
           }
         },
+        "build-for-i18n": {
+          "builder": "@angular-devkit/build-angular:application",
+          "options": {
+            "polyfills": ["@angular/localize/init"],
+            "tsConfig": "src/tsconfig.app.json"
+          }
+        },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "eg:build"
+            "buildTarget": "eg:build-for-i18n"
           }
         },
         "test": {
