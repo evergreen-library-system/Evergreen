@@ -74,61 +74,6 @@
           },
           "defaultConfiguration": ""
         },
-        "build-i18n": {
-          "builder": "@angular-devkit/build-angular:browser",
-          "options": {
-            "baseHref": "/eg2/",
-            "deployUrl": "/eg2/",
-            "outputPath": "../../web/eg2/",
-            "index": "src/index.html",
-            "localize": true,
-            "tsConfig": "src/tsconfig.app.json",
-            "polyfills": [
-              "src/polyfills.ts"
-            ],
-            "assets": [
-              "src/assets",
-              "src/favicon.ico"
-            ],
-            "styles": [
-              "src/styles.css",
-              "src/assets/css/styles-colors.css",
-              "src/assets/css/light.css",
-              "src/assets/css/dark.css"
-            ],
-            "scripts": [
-              "src/assets/js/marcrecord.js"
-            ],
-            "allowedCommonJsDependencies": [
-              "file-saver",
-              "moment",
-              "moment-timezone"
-            ],
-            "aot": false,
-            "extractLicenses": false,
-            "sourceMap": true,
-            "optimization": false,
-            "namedChunks": true,
-            "main": "src/main.ts"
-          },
-          "configurations": {
-            "production": {
-              "optimization": true,
-              "outputHashing": "all",
-              "sourceMap": false,
-              "namedChunks": false,
-              "aot": true,
-              "extractLicenses": true,
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.prod.ts"
-                }
-              ]
-            }
-          },
-          "defaultConfiguration": ""
-        },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
@@ -143,7 +88,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "eg:build-i18n"
+            "buildTarget": "eg:build"
           }
         },
         "test": {
