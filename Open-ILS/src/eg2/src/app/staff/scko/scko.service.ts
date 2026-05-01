@@ -103,6 +103,7 @@ export class SckoService {
         this.statusDisplayText = '';
         this.patronSummary = null;
         this.sessionCheckouts = [];
+        this.stopPatronTimer();
     }
 
     load(): Promise<any> {
@@ -234,17 +235,7 @@ export class SckoService {
 
     resetPatronTimeout() {
         console.debug('Resetting patron timeout=' + this.patronIdleTimeout);
-
-        if (this.patronTimeoutId) {
-            clearTimeout(this.patronTimeoutId);
-            this.patronTimeoutId = null;
-        }
-
-        if (this.logoutWarningTimerId) {
-            clearTimeout(this.logoutWarningTimerId);
-            this.logoutWarningTimerId = null;
-        }
-
+        this.stopPatronTimer();
         this.startPatronTimer();
     }
 
@@ -277,6 +268,17 @@ export class SckoService {
             },
             this.logoutWarningTimeout * 1000
         );
+    }
+
+    stopPatronTimer(): void {
+        if (this.patronTimeoutId) {
+            clearTimeout(this.patronTimeoutId);
+            this.patronTimeoutId = null;
+        }
+        if (this.logoutWarningTimerId) {
+            clearTimeout(this.logoutWarningTimerId);
+            this.logoutWarningTimerId = null;
+        }
     }
 
     sessionTotalCheckouts(): number {
