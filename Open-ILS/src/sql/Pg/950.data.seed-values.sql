@@ -2063,7 +2063,7 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
 ;
 
 INSERT INTO permission.perm_list (id,code) VALUES
- (677,'ADMIN_OPENAPI'),
+ (694,'ADMIN_OPENAPI'),
  (678,'API_LOGIN'),
  (679,'REST.api'),
  (680,'REST.api.patrons'),
