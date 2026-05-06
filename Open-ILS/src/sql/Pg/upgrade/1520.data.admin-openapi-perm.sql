@@ -1,6 +1,6 @@
 BEGIN;
 
---SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1520', :eg_version);
 
 INSERT INTO permission.perm_list (code)
 VALUES ('ADMIN_OPENAPI')
