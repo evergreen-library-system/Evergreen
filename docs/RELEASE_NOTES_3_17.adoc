@@ -3,7 +3,18 @@
 :numbered:
 :toclevels: 3
 
-== Evergreen 3.17-beta3 ==
+== Evergreen 3.17-rc ==
+
+This is a release candidate for Evergreen 3.17.0.
+
+=== Changes from 3.17-beta3 ===
+
+As compared to the third beta of 3.17, this release includes
+the following changes:
+
+* Adds a missing permission (ADMIN_OPENAPI) to allow administration of the OpenAPI settings. (https://bugs.launchpad.net/evergreen/+bug/2148133[Bug 2148133])
+* Removes extraneous email-templates: reporter-success, reporter-fail (https://bugs.launchpad.net/evergreen/+bug/1761891[Bug 1761891])
+* Fixes Angular string export for translators (https://bugs.launchpad.net/evergreen/+bug/2150276[Bug 2150276])
 
 === Changes from 3.17-beta ===
 
