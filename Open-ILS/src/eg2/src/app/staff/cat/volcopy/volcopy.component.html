@@ -61,13 +61,24 @@
       <ng-template ngbNavContent>
         <h3 class="visually-hidden" i18n>Holdings</h3>
         <div class="mt-2">
-          <eg-vol-edit [context]="context"
-          (canSaveChange)="volsCanSaveChange($event)" [itemRequirePartsMap]="itemRequirePartsMap"></eg-vol-edit>
+          <eg-vol-edit 
+            [context]="context" 
+            [contextChanged]=contextChange.asObservable()
+            [itemRequirePartsMap]="itemRequirePartsMap"
+            (canSaveChange)="volsCanSaveChange($event)"
+            (barcodeChange)="copyAttrs?.updateFilterFromChangedBarcode($event)"
+            >
+          </eg-vol-edit>
         </div>
         @if (volcopy.defaults.values.unified_display) {
           <div class="mt-2">
-            <eg-copy-attrs [context]="context" [contextChanged]="contextChange.asObservable()" #copyAttrs
-            (clearChanges)="clearChangesReaction($event)" (canSaveChange)="attrsCanSaveChange($event)"></eg-copy-attrs>
+            <eg-copy-attrs 
+             #copyAttrs
+             [context]="context" 
+             [contextChanged]="contextChange.asObservable()"
+             (clearChanges)="clearChangesReaction($event)" 
+             (canSaveChange)="attrsCanSaveChange($event)">
+            </eg-copy-attrs>
           </div>
         }
       </ng-template>

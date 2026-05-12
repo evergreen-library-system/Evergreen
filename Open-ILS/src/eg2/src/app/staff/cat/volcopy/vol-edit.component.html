@@ -483,7 +483,8 @@
                 'invalid': !copyNode.target.barcode() && !copyNode.target.isnew()
               }"
                         (change)="barcodeChanged(copyNode.target, $event.target.value)"
-                        (ngModelChange)="copyNode.target.barcode($event)"
+                        (ngModelChange)="barcodeChange.emit({old: copyNode.target.barcode(), new: $event})"
+                        (ngModelChange)="copyNode.target.barcode($event);"
                         (keyup.enter)="selectNextBarcode(copyNode.target.id())"
                         (keyup.shift.enter)="selectNextBarcode(copyNode.target.id(), true)"
                         (focus)="$event.target.select()"

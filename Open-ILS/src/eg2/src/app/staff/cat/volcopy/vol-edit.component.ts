@@ -88,6 +88,7 @@ export class VolEditComponent implements OnInit {
 
     // Emitted when the save-ability of this form changes.
     @Output() canSaveChange: EventEmitter<boolean> = new EventEmitter<boolean>();
+    @Output() barcodeChange: EventEmitter<any> = new EventEmitter<any>();
     changedCallnumberFields: string[] = [];
 
     ngOnInit() {
