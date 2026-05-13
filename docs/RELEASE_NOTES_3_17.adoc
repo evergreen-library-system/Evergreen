@@ -3,45 +3,9 @@
 :numbered:
 :toclevels: 3
 
-== Evergreen 3.17-rc ==
+== Evergreen 3.17.0 ==
 
-This is a release candidate for Evergreen 3.17.0.
-
-=== Changes from 3.17-beta3 ===
-
-As compared to the third beta of 3.17, this release includes
-the following changes:
-
-* Adds a missing permission (ADMIN_OPENAPI) to allow administration of the OpenAPI settings. (https://bugs.launchpad.net/evergreen/+bug/2148133[Bug 2148133])
-* Removes extraneous email-templates: reporter-success, reporter-fail (https://bugs.launchpad.net/evergreen/+bug/1761891[Bug 1761891])
-* Fixes Angular string export for translators (https://bugs.launchpad.net/evergreen/+bug/2150276[Bug 2150276])
-
-=== Changes from 3.17-beta ===
-
-As compared to the first beta of 3.17, this release includes a
-significant upgrade of the Angular framework used by the staff
-interface. While this change is an internals-and-plumbing change
-that should not result in any visible changes to the staff interface,
-it does have the potential to cause breakage. Consequently, beta
-testers are strongly encouraged to thoroughly test all staff interfaces.
-
-This release also contains the following bugfixes since the first beta:
-
-* Fix crash that can occur when Quipu eRENEW attempts to update certain patron records. (https://bugs.launchpad.net/evergreen/+bug/2143938[Bug 2143938])
-* Fixes issue where recall holds on a items with a monograph part fail to be targeted (https://bugs.launchpad.net/evergreen/+bug/2130052[Bug 2130052])
-* Fixes issue where force holds on a items with a monograph part fail to be targeted (https://bugs.launchpad.net/evergreen/+bug/1838069[Bug 1838069])
-* Fixes F-type targeting issue that alternates between targeting and not targeting an item. (https://bugs.launchpad.net/evergreen/+bug/2131948[Bug 2131948])
-* Prevent simplistic scraper bots from wasting resources. (https://bugs.launchpad.net/evergreen/+bug/2113979[Bug 2113979])
-* Fixes bug where the age hold protect value was not included in CSV exports from the Item Table. (https://bugs.launchpad.net/evergreen/+bug/2146564[Bug 2146564])
-* Fix erroneous number on my list count. (https://bugs.launchpad.net/evergreen/+bug/2138265[Bug 2138265])
-* Fixes a security issue with certain database query generation methods (https://bugs.launchpad.net/evergreen/+bug/2147196[Bug 2147196])
-* Fixes a typo in the output of the /openils/bin/api_ctl program. (https://bugs.launchpad.net/evergreen/+bug/2147136[Bug 2147136])
-* Adds missing 'cancel if not filled by' alert dialog in staff client. (https://bugs.launchpad.net/evergreen/+bug/2147225[Bug 2147225])
-* Removes references to the "tundra" CSS class in the TPAC/BOOPAC (https://bugs.launchpad.net/evergreen/+bug/2056771[Bug 2056771])
-* Fixes issue where when a staff member places a hold for a patron via the Traditional (embedded) Catalog, the "No configured email address" warning would show up inappropriately. (https://bugs.launchpad.net/evergreen/+bug/2148326[Bug 2148326])
-* Fixes issue where some invoices charge twice when calculating warning and stop percentages. (https://bugs.launchpad.net/evergreen/+bug/2088125[Bug 2088125])
-* Restores automatic focus on the barcode input after patron logout in the Angular self-check. (https://bugs.launchpad.net/evergreen/+bug/2127936[Bug 2127936])
-* Prevents duplicate patron self-registration submissions by double click. (https://bugs.launchpad.net/evergreen/+bug/1913626[Bug 1913626])
+This is a major functionality release of Evergreen.
 
 === Upgrade notes ===
 
@@ -51,10 +15,10 @@ The `open-ils.permacrud` service has been removed from this release. To remove i
 from existing installations, do the following:
 
 * Update `opensrf_core.xml` to remove `open-ils.permacrud` from
-  the list of services on the public router.
+the list of services on the public router.
 * Update `opensrf.xml` to remove the entire `<open-ils.permacrud>` element from
-  the `<apps>` element and remove `<appname>open-ils.permacrud</appname>`
-  from any `<activeapps>` elements where it is present.
+the `<apps>` element and remove `<appname>open-ils.permacrud</appname>`
+from any `<activeapps>` elements where it is present.
 
 If you have the `perldoc` command installed, you can use the following
 command to locate the path on disk of the `PermaCrud.pm` file, which
@@ -64,6 +28,24 @@ is no longer required and can be removed:
 -----------------------------------------------------------------
 perldoc -l OpenILS::Application::PermaCrud
 -----------------------------------------------------------------
+
+==== New Library Settings ====
+
+Evergreen 3.17.0 includes the following new library settings:
+
+* Stackmap: Enable (`opac.stackmap_enable`)
+* Stackmap: Identifier (`opac.stackmap.identifier`)
+* When aging circulations do not retain the year from patron date of birth (`circ.do_not_retain_year_of_birth_on_aged`)
+* When aging circulations do not retain the patron postal code (`circ.do_not_retain_post_code_on_aged`)
+* When aging holds do not retain the year from patron date of birth (`holds.do_not_retain_year_of_birth_on_aged`)
+* When aging holds do not retain the patron postal code (`holds.do_not_retain_year_of_birth_on_aged`)
+
+
+==== New Permissions ====
+
+Evergreen 3.17.0 does not include any new permissions per se, but
+does ensure that a permission, `ADMIN_OPENAPI`, that was meant to be
+added in a previous release is present.
 
 ==== Changes to Dependencies ====
 
@@ -75,140 +57,107 @@ This release:
 
 === New Features, Enhancements, and Improvements ===
 
-Evergreen 3.17-beta contains the following improvements over prior
+Evergreen 3.17.0 contains the following improvements over prior
 releases of Evergreen. Please note that if a bug was fixed in any
 prior release of Evergreen, it will generally not appear in these
 release notes.
 
 :leveloffset: +3
 
-
-= API =
-
-
-== Notification Opt-Ins by Notice Type API / Settings ==
-
-Creates a set of notification group entries to collect user settings related
-to opting in to different types of notices (email, SMS, phone, print).
-
-Adds an API which reports on which notice types a user is opted in to and 
-allows for batch opt in/out for a collection of notice types.
-
-Handles Action/Trigger opt-in user settings and the generic 'opac.hold_notify' 
-user setting which combines different notice types into a single setting.
-
-=== Configuration ===
-
-Add Action/Trigger notification opt-in user settings to one of the provided 
-setting groups to enable it for global opt in/out.
-
-=== Example Srfsh Query ===
-
-This example sets the value of the specified notice types and returns opt-in 
-information about all known notice types for the provided (or logged in) user.
-
-`_default_hold_notify` is a special type which indicates whether the 
-notification is opted in/out via the generic `opac.hold_notify` user setting.
-This is not reported as `opac.hold_notify` since its value is not boolean like
-other opt-in settings.
-
-If all notices of a given grouping (e.g. 'sms') are true, the user is 
-in effect opted in to 'sms' notices.  If the values are mixed, which can
-happen via other work flows / staff client, it's up to the caller to 
-decide how to interpret the data.
-
-request open-ils.actor open-ils.actor.settings.notify.opt_ins.crud "AUTHTOKEN" 221 {"email": true, "phone": true, "sms": true}
-- - - - - - - - - - - - - - - - - - - - - - - - - -
-{
-  "sms": {
-    "sms.notices.all": true,
-    "_default_hold_notify": true
-  },
-  "phone": {
-    "_default_hold_notify": true
-  },
-  "print": {
-    "_default_hold_notify": false
-  },
-  "email": {
-    "_default_hold_notify": true,
-    "email.notices.all": true
-  }
-}
-
-In this example "email.notices.all" and "sms.notices.all" are local test settings.
-
-=== "SMS" vs. Text ===
-
-For internal consistency, this feature uses the label/code "sms" as a stand-in 
-for text notices in general.
-
 = Cataloging =
 
 * Reimplement a slim version of the previous Working Items list to allow applying specific changes to user-selected subsets of items in the Holdings Editor. (https://bugs.launchpad.net/evergreen/+bug/1998645[Bug 1998645])
 * Item Buckets can now be imported from CSV files (https://bugs.launchpad.net/evergreen/+bug/1208093)[Bug 1208093]
 * Adds five item import attributes for use during MARC import: floating, loan duration, fine level, age-based hold protection, and quality (https://bugs.launchpad.net/evergreen/+bug/1376427[Bug 1376427])
-* Monograph parts that have been marked as deleted can now be displayed in the parts grid (https://bugs.launchpad.net/evergreen/+bug/2120735)[Bug 2120735]
+* Monograph parts that have been marked as deleted can now be displayed in the parts grid (https://bugs.launchpad.net/evergreen/+bug/2120735)[Bug 2120735])
 * Restores the ability to Unset some fields in the Holdings Editor. (https://bugs.launchpad.net/evergreen/+bug/2121686[Bug 2121686])
 
 = Circulation =
 
+== Library Group-based Hold and Circulation Policy Configuration ==
+
+* Add Library Group-based hold and circ policy configuration, and the ability to clone individual hold and circ policies. (https://bugs.launchpad.net/evergreen/+bug/1968186[Bug 1968186])
+
+Hold and circulation policies now include optional Library Group fields
+corresponding to each Library field. For example, hold policies now have
+a "Pickup Library Group" parallel to "Pickup Library".
+
+The new fields allow non-hierarchical grouping of organizational units
+in policy definition. These can be used either instead of, or in
+combination with, the library fields, the latter as a way to provide
+group-based specialization policies. Library Group fields are also
+available when creating policy weights.
+
+For example, consider a consortium that does not offer consortium-wide resource sharing
+but has some members who share among themselves. The new Library Group
+fields can be used to implement such arrangements without having to define policies
+for each combination of participating libraries.
+
+== Improvements to the Hold Policy Editor ==
+
+The hold policy editor in Location Administration now visually separates the policy
+match criteria from the policy outcome values.
+
+== Circulation and Hold Policy Cloning ==
+
+Both hold and circ policies can now be cloned directly, lowering the
+overhead of creating sets of policies.  When cloning circ policies, any
+extant limit sets on the to-be-cloned policy can be included in the
+clone, adjusted at the time of clone creation, or ignored completely.
+Cloning is initiated via the Action (and right-click) menu for selected
+rows, and is restricted to a single policy at a time to reduce
+confusion.
 
 == Opt Out of Year and Postal Code in Aged Transactions  ==
 
-Evergreen now supports additional org unit settings to control what information is included when you age holds and circulations.  Now the year of the patron's birth date and postal code can be set to null rather than populate the aged transaction tables when a transaction is aged.  The following settings control this behavior for holds and circulations respectively:  
+Evergreen now supports additional library settings to control what information is included when you age holds and circulations.  Now the year of the patron's birthdate and postal code can be set to null rather than populate the aged transaction tables when a transaction is aged.  The following settings control this behavior for holds and circulations respectively:
 
-----
-circ.do_not_retain_year_of_birth_on_aged
-circ.do_not_retain_post_code_on_aged
-holds.do_not_retain_year_of_birth_on_aged
-holds.do_not_retain_post_code_on_aged
-----
+* When aging circulations do not retain the year from patron date of birth (`circ.do_not_retain_year_of_birth_on_aged`)
+* When aging circulations do not retain the patron postal code (`circ.do_not_retain_post_code_on_aged`)
+* When aging holds do not retain the year from patron date of birth (`holds.do_not_retain_year_of_birth_on_aged`)
+* When aging holds do not retain the patron postal code (`holds.do_not_retain_year_of_birth_on_aged`)
 
-If you wish to not retain any of these fields on existing aged holds and circulations you should run the following SQL on the database.  
-
+If you wish to not retain any of these fields on existing aged holds and circulations you should run the following SQL on the database.
 to remove postal codes on aged holds:
 
 ----
 UPDATE action.aged_hold_request SET usr_post_code = NULL WHERE usr_post_code IS NOT NULL;
 ----
 
-to remove birth years on aged holds:
+To remove birth years on aged holds:
 
 ----
 UPDATE action.aged_hold_request SET usr_birth_year = NULL WHERE usr_birth_year IS NOT NULL;
 ----
 
-to remove postal codes on aged circulations:
+To remove postal codes on aged circulations:
 
 ----
 UPDATE action.aged_circulation SET usr_post_code = NULL WHERE usr_post_code IS NOT NULL;
 ----
 
-to remove birth years on aged circulations:
+To remove birth years on aged circulations:
 
 ----
 UPDATE action.aged_circulation SET usr_birth_year = NULL WHERE usr_birth_year IS NOT NULL;
 ----
 
+== Improvements to the Patron Summary Pane ==
 
-== User Settings in Patron Summary ==
-
-User settings, such as default phone number, default hold
+* User settings such as default phone number, default hold
 pickup library, and hold notification format, are now
 displayed as part of the patron summary pane when searching
 patrons or retrieving a patron record.
-
+* The privacy waiver is now more prominent on patron summary bar (https://bugs.launchpad.net/evergreen/+bug/1897121[Bug 1897121])
+* The patron summary now includes the number of overdue items in the patron's group if other patrons in the groups have overdue items. (https://bugs.launchpad.net/evergreen/+bug/2043051[Bug 2043051])
 
 == Other Improvements ==
 
-* Makes privacy waiver more prominent on patron summary bar (https://bugs.launchpad.net/evergreen/+bug/1897121[Bug 1897121])
 * Adds actions to the items out, renew, and checkin interfaces to email receipts to the patron. (https://bugs.launchpad.net/evergreen/+bug/1783642[Bug 1783642])
-* Staff can delete inactive patron barcodes via the web client. (https://bugs.launchpad.net/evergreen/+bug/1917761[Bug 1917761])
-* Add Library Group-based hold and circ policy configuration, and the ability to clone individual hold and circ policies. (https://bugs.launchpad.net/evergreen/+bug/1968186[Bug 1968186])
-* The patron summary now includes the number of overdue items in the patron's group if other patrons in the groups have overdue items. (https://bugs.launchpad.net/evergreen/+bug/2043051[Bug 2043051])
-* Adds option to set hold expiration at time of hold placement in OPAC. (https://bugs.launchpad.net/evergreen/+bug/2119563[Bug 2119563])
-
+* Staff can delete inactive patron barcodes via the staff interface. In order to do this,
+the staff member must have both the `UPDATE_PATRON_PRIMARY_CARD` and `UPDATE_PATRON_ACTIVE_CARD`
+permissions at the patron's home library. (https://bugs.launchpad.net/evergreen/+bug/1917761[Bug 1917761])
+* Adds option to set hold expiration at time of hold placement in the public catalog. (https://bugs.launchpad.net/evergreen/+bug/2119563[Bug 2119563])
 
 = Client =
 
@@ -216,9 +165,9 @@ patrons or retrieving a patron record.
 == Staff client locales configurable in the database ==
 
 Previously, system administrators could define which locales should display
-in the staff client by editing a file called environment.prod.ts.
+in the staff client by editing an Angular file called `environment.prod.ts`.
 
-In this release, these locales are instead configured in the config.i18n_locale
+In this release, these locales are instead configured in the `config.i18n_locale`
 database table.  To enable the cs-CZ locale in the staff client, for example,
 you can issue this SQL query:
 
@@ -227,13 +176,13 @@ you can issue this SQL query:
 UPDATE config.i18n_locale SET staff_client=TRUE WHERE code='cs-CZ';
 -------------
 
-Any locales with a true staff_client value will appear in the locale picker, and
+Any locales with a true `staff_client` value will appear in the locale picker, and
 will be listed as options when translating terms within the staff client.
 
 == Other Improvements ==
 
-* Allows case insensitive grid filter searching for text columns in tables with low cardinality, except log or history tables. (https://bugs.launchpad.net/evergreen/+bug/1910424[Bug 1910424])
-* Search box in Angular Reporter is changed from "Search templates for string" to "Search templates for keyword/text" to be more user-friendly. (https://bugs.launchpad.net/evergreen/+bug/2139299[Bug 2139299])
+* Allows case-insensitive grid filter searching for text columns in tables with low cardinality, except log or history tables. (https://bugs.launchpad.net/evergreen/+bug/1910424[Bug 1910424])
+* The search box in Angular Reporter is changed from "Search templates for string" to "Search templates for keyword/text" to be more user-friendly. (https://bugs.launchpad.net/evergreen/+bug/2139299[Bug 2139299])
 
 = Public Catalog =
 
@@ -244,27 +193,24 @@ ChiliFresh is now available as an added content source for cover
 images. To enable (after getting a subscription), edit `opensrf.xml`
 and set the `added_content/module` value to `OpenILS::WWW::AddedContent::Chilifresh`.
 
-The `added_content/base_url` value will also need to be set, typically to
-"https://content.chilifresh.com/".
+The `added_content/base_url` value will also need to be set, typically to `https://content.chilifresh.com/`.
 
 If you are supplied a "generic" code by ChiliFresh, that goes in the
 `added_content/generic` element in `opensrf.xml`.
-
-
 
 == Ability to enable Stackmap added content ==
 
 Creates two library settings to allow easier management of added content from Stackmap.
 
-  - Stackmap: Enable (true/false)
-  - Stackmap: Identifier (account code provided by Stackmap)
+- Stackmap: Enable (true/false)
+- Stackmap: Identifier (account code provided by Stackmap)
 
 == Other Improvements ==
 
 * Accessibility updates to Preferences > Other Settings page. (https://bugs.launchpad.net/evergreen/+bug/2115525[Bug 2115525])
-* Removes autofocus from OPAC basic search form keyword input (https://bugs.launchpad.net/evergreen/+bug/2115443[Bug 2115443])
+* Removes autofocus from the public catalog basic search form keyword input (https://bugs.launchpad.net/evergreen/+bug/2115443[Bug 2115443])
 
-= Architecture =
+= Architecture and API =
 
 == Removal of `open-ils.permacrud` service ==
 
@@ -272,7 +218,97 @@ The deprecated service `open-ils.permacrud` has been removed.
 Any remaining external clients using that service should switch
 to using the `open-ils.pcrud` service.
 
+= API =
+
+== Notification Opt-Ins by Notice Type API / Settings ==
+
+Creates a set of notification group entries to collect user settings related
+to opting in to different types of notices (email, SMS, phone, print).
+
+Adds an API which reports on which notice types a user is opted in to and
+allows for batch opt in/out for a collection of notice types.
+
+Handles Action/Trigger opt-in user settings and the generic 'opac.hold_notify'
+user setting which combines different notice types into a single setting.
+
+=== Configuration ===
+
+Add Action/Trigger notification opt-in user settings to one of the provided
+setting groups to enable it for global opt in/out.
+
+=== Example `srfsh` Query ===
+
+This example sets the value of the specified notice types and returns opt-in
+information about all known notice types for the provided (or logged-in) user.
+
+[source]
+-------------
+request open-ils.actor open-ils.actor.settings.notify.opt_ins.crud "AUTHTOKEN" 221 {"email": true, "phone": true, "sms": true}
+- - - - - - - - - - - - - - - - - - - - - - - - - -
+{
+"sms": {
+"sms.notices.all": true,
+"_default_hold_notify": true
+},
+"phone": {
+"_default_hold_notify": true
+},
+"print": {
+"_default_hold_notify": false
+},
+"email": {
+"_default_hold_notify": true,
+"email.notices.all": true
+}
+}
+-------------
+
+`_default_hold_notify` is a special type which indicates whether the
+notification is opted in/out via the generic `opac.hold_notify` user setting.
+This is not reported as `opac.hold_notify` since its value is not boolean like
+other opt-in settings.
+
+If all notices of a given grouping (e.g. 'sms') are true, the user is
+in effect opted in to 'sms' notices.  If the values are mixed, which can
+happen via other work flows / staff client, it's up to the caller to
+decide how to interpret the data.
+
+In this example "email.notices.all" and "sms.notices.all" are local test settings.
+
+=== "SMS" vs. Text ===
+
+For internal consistency, this feature uses the label/code "sms" as a stand-in
+for text notices in general.
+
+= Miscellaneous =
+
+* Adds a missing permission (`ADMIN_OPENAPI`) to allow administration of the OpenAPI settings. (https://bugs.launchpad.net/evergreen/+bug/2148133[Bug 2148133])
+* Removes extraneous email-templates: `reporter-success` and `reporter-fail` (https://bugs.launchpad.net/evergreen/+bug/1761891[Bug 1761891])
+* Fixes Angular string export for translators (https://bugs.launchpad.net/evergreen/+bug/2150276[Bug 2150276])
+* Fix crash that can occur when Quipu eRENEW attempts to update certain patron records. (https://bugs.launchpad.net/evergreen/+bug/2143938[Bug 2143938])
+* Fixes issue where recall holds on items with a monograph part fail to be targeted (https://bugs.launchpad.net/evergreen/+bug/2130052[Bug 2130052])
+* Fixes issue where force holds on items with a monograph part fail to be targeted (https://bugs.launchpad.net/evergreen/+bug/1838069[Bug 1838069])
+* Fixes force-type targeting issue that alternates between targeting and not targeting an item. (https://bugs.launchpad.net/evergreen/+bug/2131948[Bug 2131948])
+* Prevent simplistic scraper bots from wasting resources. (https://bugs.launchpad.net/evergreen/+bug/2113979[Bug 2113979])
+* Fixes bug where the age hold protect value was not included in CSV exports from the Item Table. (https://bugs.launchpad.net/evergreen/+bug/2146564[Bug 2146564])
+* Fix erroneous number on my list count. (https://bugs.launchpad.net/evergreen/+bug/2138265[Bug 2138265])
+* Fixes a security issue with certain database query generation methods (https://bugs.launchpad.net/evergreen/+bug/2147196[Bug 2147196])
+* Fixes a typo in the output of the `/openils/bin/api_ctl` program. (https://bugs.launchpad.net/evergreen/+bug/2147136[Bug 2147136])
+* Adds missing 'cancel if not filled by' alert dialog in staff client. (https://bugs.launchpad.net/evergreen/+bug/2147225[Bug 2147225])
+* Removes references to the "tundra" CSS class in the TPAC/BOOPAC (https://bugs.launchpad.net/evergreen/+bug/2056771[Bug 2056771])
+* Fixes issue where when a staff member places a hold for a patron via the Traditional (embedded) Catalog, the "No configured email address" warning would show up inappropriately. (https://bugs.launchpad.net/evergreen/+bug/2148326[Bug 2148326])
+* Fixes issue where some invoices charge twice when calculating warning and stop percentages. (https://bugs.launchpad.net/evergreen/+bug/2088125[Bug 2088125])
+* Restores automatic focus on the barcode input after patron logout in the Angular self-check. (https://bugs.launchpad.net/evergreen/+bug/2127936[Bug 2127936])
+* Prevents duplicate patron self-registration submissions by double click. (https://bugs.launchpad.net/evergreen/+bug/1913626[Bug 1913626])
+
 = Development =
+
+== Angular Upgrade for Staff Interface ==
+
+The Angular staff interface now uses version 21 of Angular, upgrading from version 18.
+
+This change is an internals-and-plumbing change that should not result in any visible
+changes to the staff interface.
 
 == Angular CLI No Longer Installed Globally ==
 
@@ -291,7 +327,6 @@ globally can install it with `npm i -g @angular/cli@^18.0`
 
 
 :leveloffset: 1
-
 
 == Acknowledgments ==
 
@@ -367,7 +402,5 @@ patches, documentation, and testing:
 * TADL
 
 We regret any omissions.  If a contributor has been inadvertently
-missed, please open a bug at http://bugs.launchpad.net/evergreen/
+missed, please open a bug at https://bugs.launchpad.net/evergreen/
 with a correction.
-
-
