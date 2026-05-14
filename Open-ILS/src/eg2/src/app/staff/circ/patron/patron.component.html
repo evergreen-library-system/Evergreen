@@ -228,7 +228,8 @@
         <ng-template ngbNavContent>
           <eg-title i18n-prefix [prefix]="patronTitle('Test Password for Patron')"></eg-title>
           <div class="">
-            <eg-patron-test-password></eg-patron-test-password>
+            <eg-patron-test-password [patronId]="patronId">
+            </eg-patron-test-password>
           </div>
         </ng-template>
       </li>
