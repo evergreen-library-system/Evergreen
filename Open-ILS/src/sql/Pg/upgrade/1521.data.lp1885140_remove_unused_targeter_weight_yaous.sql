@@ -1,6 +1,6 @@
 BEGIN;
 
---SELECT evergreen.upgrade_deps_block_check('xxxx', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1521', :eg_version);
 
 --remove entries from settings table
 DELETE FROM actor.org_unit_setting
