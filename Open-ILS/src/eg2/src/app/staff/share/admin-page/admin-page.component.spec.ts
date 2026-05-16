@@ -97,8 +97,8 @@ describe('AdminPageComponent', () => {
             component.dataSource = new GridDataSource();
             component.dataSource.data = [{id: 1, isDeleted: 'true'}];
             fixture.detectChanges();
-            expect(component.grid.context.columnSet.columns[1].name).toEqual('isDeleted');
-            expect(component.grid.context.columnSet.columns[1].filterValue).toEqual('f');
+            expect(component.grid().context.columnSet.columns[1].name).toEqual('isDeleted');
+            expect(component.grid().context.columnSet.columns[1].filterValue).toEqual('f');
         });
     });
 });

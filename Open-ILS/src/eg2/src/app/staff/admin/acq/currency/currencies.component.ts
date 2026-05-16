@@ -1,7 +1,6 @@
-import { Component, ViewChild, OnInit } from '@angular/core';
+import { Component, OnInit, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {GridDataSource, GridCellTextGenerator} from '@eg/share/grid/grid';
-import {GridComponent} from '@eg/share/grid/grid.component';
 import {AdminPageComponent} from '@eg/staff/share/admin-page/admin-page.component';
 import {Pager} from '@eg/share/util/pager';
 import {IdlObject} from '@eg/core/idl.service';
@@ -40,10 +39,9 @@ export class CurrenciesComponent extends AdminPageComponent implements OnInit {
     idlClass = 'acqct';
     classLabel: string;
 
-    @ViewChild('grid', { static: true }) grid: GridComponent;
-    @ViewChild('exchangeRatesDialog', { static: false }) exchangeRatesDialog: ExchangeRatesDialogComponent;
-    @ViewChild('alertDialog', {static: false}) private alertDialog: AlertDialogComponent;
-    @ViewChild('confirmDel', { static: true }) confirmDel: ConfirmDialogComponent;
+    protected exchangeRatesDialog = viewChild.required<ExchangeRatesDialogComponent>('exchangeRatesDialog');
+    protected confirmDel = viewChild.required<ConfirmDialogComponent>('confirmDel');
+    private alertDialog = viewChild.required<AlertDialogComponent>('alertDialog');
 
     cellTextGenerator: GridCellTextGenerator;
     notOneSelectedRow: (rows: IdlObject[]) => boolean;
@@ -109,8 +107,8 @@ export class CurrenciesComponent extends AdminPageComponent implements OnInit {
     }
 
     openExchangeRatesDialog(code: string) {
-        this.exchangeRatesDialog.currencyCode = code;
-        this.exchangeRatesDialog.open({size: 'lg'});
+        this.exchangeRatesDialog().currencyCode = code;
+        this.exchangeRatesDialog().open({size: 'lg'});
     }
 
     deleteIfPossible(rows: IdlObject[]) {
@@ -134,12 +132,12 @@ export class CurrenciesComponent extends AdminPageComponent implements OnInit {
                 }, error: (err: unknown) => {}, complete: () => {
                     if (can) {
                         // eslint-disable-next-line rxjs-x/no-nested-subscribe
-                        this.confirmDel.open().subscribe(confirmed => {
+                        this.confirmDel().open().subscribe(confirmed => {
                             if (!confirmed) { return; }
                             super.doDelete([ rows[0] ]);
                         });
                     } else {
-                        this.alertDialog.open();
+                        this.alertDialog().open();
                     }
                 } }
             );

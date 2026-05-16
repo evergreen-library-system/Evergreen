@@ -1,6 +1,6 @@
 /* eslint-disable */
 /* eslint-disable rxjs/no-implicit-any-catch, rxjs/no-nested-subscribe */
-import { Component, Input, OnInit, TemplateRef, ViewChild, inject } from '@angular/core';
+import { Component, Input, OnInit, TemplateRef, ViewChild, inject, viewChild } from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import { CommonModule, Location } from '@angular/common';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
@@ -179,19 +179,18 @@ export class AdminPageComponent implements OnInit {
     // And for toolbar buttons
     @Input() customButtons: TemplateAction[];
 
-    @ViewChild('grid', { static: true }) grid: GridComponent;
-    @ViewChild('editDialog', { static: true }) editDialog: FmRecordEditorComponent;
-    @ViewChild('successString', { static: true }) successString: StringComponent;
-    @ViewChild('createString', { static: true }) createString: StringComponent;
-    @ViewChild('createErrString', { static: true }) createErrString: StringComponent;
-    @ViewChild('updateFailedString', { static: true }) updateFailedString: StringComponent;
-    @ViewChild('deleteFailedString', { static: true }) deleteFailedString: StringComponent;
-    @ViewChild('deleteSuccessString', { static: true }) deleteSuccessString: StringComponent;
-    @ViewChild('undeleteFailedString', { static: true }) undeleteFailedString: StringComponent;
-    @ViewChild('undeleteSuccessString', { static: true }) undeleteSuccessString: StringComponent;
-    @ViewChild('translator', { static: true }) translator: TranslateComponent;
-    @ViewChild('deleteConfirmDialog', { static: true })
-    private deleteConfirmDialog: ConfirmDialogComponent;
+    grid = viewChild.required<GridComponent>('grid');
+    protected editDialog = viewChild.required<FmRecordEditorComponent>('editDialog')
+    protected successString = viewChild.required<StringComponent>('successString')
+    protected createString = viewChild.required<StringComponent>('createString')
+    protected createErrString = viewChild.required<StringComponent>('createErrString')
+    protected updateFailedString = viewChild.required<StringComponent>('updateFailedString')
+    protected deleteFailedString = viewChild.required<StringComponent>('deleteFailedString')
+    protected deleteSuccessString = viewChild.required<StringComponent>('deleteSuccessString')
+    protected undeleteFailedString = viewChild.required<StringComponent>('undeleteFailedString')
+    protected undeleteSuccessString = viewChild.required<StringComponent>('undeleteSuccessString')
+    protected translator = viewChild.required<TranslateComponent>('translator')
+    private deleteConfirmDialog = viewChild.required<ConfirmDialogComponent>('deleteConfirmDialog');
 
     idlClassDef: any;
     idlEditClassDef: any;
@@ -245,7 +244,7 @@ export class AdminPageComponent implements OnInit {
     }
 
     contextOrgChanged(orgEvent: any) {
-        this.grid.reload();
+        this.grid().reload();
         this.setDefaultNewRecordOrgFieldDefaults( orgEvent['primaryOrgId'] );
     }
 
@@ -432,19 +431,19 @@ export class AdminPageComponent implements OnInit {
         if (this.idlEditClass) {
             idlThing =  this.convertIdlClass2IdlEditClass(idlThing);
         }
-        this.editDialog.mode = 'update';
-        this.editDialog.recordId = idlThing[this.pkeyField]();
+        this.editDialog().mode = 'update';
+        this.editDialog().recordId = idlThing[this.pkeyField]();
         return new Promise((resolve, reject) => {
-            this.editDialog.open({size: this.dialogSize}).subscribe(
+            this.editDialog().open({size: this.dialogSize}).subscribe(
                 result => {
-                    this.successString.current()
+                    this.successString().current()
                         .then(str => this.toast.success(str));
-                    this.grid.reload();
+                    this.grid().reload();
                     this.broadcaster.broadcast(`eg.${this.idlEditClass || this.idlClass}_updated`, { action: 'edit', result: result });
                     resolve(result);
                 },
                 (error: unknown) => {
-                    this.updateFailedString.current()
+                    this.updateFailedString().current()
                         .then(str => this.toast.danger(str));
                     reject(error);
                 }
@@ -487,15 +486,15 @@ export class AdminPageComponent implements OnInit {
         idlThings.forEach(idlThing => idlThing.deleted(false));
         this.pcrud.update(idlThings).subscribe(
             val => {
-                this.undeleteSuccessString.current()
+                this.undeleteSuccessString().current()
                     .then(str => this.toast.success(str));
                 this.broadcaster.broadcast(`eg.${this.idlEditClass || this.idlClass}_updated`, { action: 'undelete', result: val });
             },
             (err: unknown) => {
-                this.undeleteFailedString.current()
+                this.undeleteFailedString().current()
                     .then(str => this.toast.danger(str));
             },
-            ()  => this.grid.reload()
+            ()  => this.grid().reload()
         );
     }
 
@@ -503,7 +502,7 @@ export class AdminPageComponent implements OnInit {
         if (this.idlEditClass) {
             idlThings = idlThings.map( thing => this.convertIdlClass2IdlEditClass(thing) );
         }
-        this.deleteConfirmDialog.open().subscribe(confirmed => {
+        this.deleteConfirmDialog().open().subscribe(confirmed => {
             if ( confirmed ) {
                 this.doDelete(idlThings);
             }
@@ -514,15 +513,15 @@ export class AdminPageComponent implements OnInit {
         idlThings.forEach(idlThing => idlThing.isdeleted(true));
         this.pcrud.autoApply(idlThings).subscribe(
             val => {
-                this.deleteSuccessString.current()
+                this.deleteSuccessString().current()
                     .then(str => this.toast.success(str));
                 this.broadcaster.broadcast(`eg.${this.idlEditClass || this.idlClass}_updated`, { action: 'delete', result: val });
             },
             (err: unknown) => {
-                this.deleteFailedString.current()
+                this.deleteFailedString().current()
                     .then(str => this.toast.danger(str));
             },
-            ()  => this.grid.reload()
+            ()  => this.grid().reload()
         );
     }
 
@@ -557,21 +556,21 @@ export class AdminPageComponent implements OnInit {
     }
 
     createNew() {
-        this.editDialog.mode = 'create';
+        this.editDialog().mode = 'create';
         // We reuse the same editor for all actions.  Be sure
         // create action does not try to modify an existing record.
-        this.editDialog.recordId = null;
-        this.editDialog.record = null;
-        this.editDialog.open({size: this.dialogSize}).subscribe(
+        this.editDialog().recordId = null;
+        this.editDialog().record = null;
+        this.editDialog().open({size: this.dialogSize}).subscribe(
             ok => {
-                this.createString.current()
+                this.createString().current()
                     .then(str => this.toast.success(str));
-                this.grid.reload();
+                this.grid().reload();
                 this.broadcaster.broadcast(`eg.${this.idlEditClass || this.idlClass}_updated`, { action: 'create', result: ok });
             },
             (rejection: any) => {
                 if (!rejection.dismissed) {
-                    this.createErrString.current()
+                    this.createErrString().current()
                         .then(str => this.toast.danger(str));
                 }
             }
@@ -583,10 +582,10 @@ export class AdminPageComponent implements OnInit {
     translate() {
         this.translateRowIdx = 0;
         this.translateFieldIdx = 0;
-        this.translator.fieldName = this.translatableFields[this.translateFieldIdx];
-        this.translator.idlObject = this.dataSource.data[this.translateRowIdx];
+        this.translator().fieldName = this.translatableFields[this.translateFieldIdx];
+        this.translator().idlObject = this.dataSource.data[this.translateRowIdx];
 
-        this.translator.nextString = () => {
+        this.translator().nextString = () => {
 
             if (this.translateFieldIdx < this.translatableFields.length - 1) {
                 this.translateFieldIdx++;
@@ -596,13 +595,13 @@ export class AdminPageComponent implements OnInit {
                 this.translateFieldIdx = 0;
             }
 
-            this.translator.idlObject =
+            this.translator().idlObject =
                 this.dataSource.data[this.translateRowIdx];
-            this.translator.fieldName =
+            this.translator().fieldName =
                 this.translatableFields[this.translateFieldIdx];
         };
 
-        this.translator.prevString = () => {
+        this.translator().prevString = () => {
 
             if (this.translateFieldIdx > 0) {
                 this.translateFieldIdx--;
@@ -612,13 +611,13 @@ export class AdminPageComponent implements OnInit {
                 this.translateFieldIdx = 0;
             }
 
-            this.translator.idlObject =
+            this.translator().idlObject =
                 this.dataSource.data[this.translateRowIdx];
-            this.translator.fieldName =
+            this.translator().fieldName =
                 this.translatableFields[this.translateFieldIdx];
         };
 
-        this.translator.open({size: 'lg'});
+        this.translator().open({size: 'lg'});
     }
 
     // Construct a routerLink path for a configField.

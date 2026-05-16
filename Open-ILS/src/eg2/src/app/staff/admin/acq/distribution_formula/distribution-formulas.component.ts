@@ -1,7 +1,6 @@
-import { Component, ViewChild, OnInit } from '@angular/core';
+import { Component, OnInit, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {GridDataSource, GridCellTextGenerator} from '@eg/share/grid/grid';
-import {GridComponent} from '@eg/share/grid/grid.component';
 import {AdminPageComponent} from '@eg/staff/share/admin-page/admin-page.component';
 import {Pager} from '@eg/share/util/pager';
 import {IdlObject} from '@eg/core/idl.service';
@@ -40,10 +39,9 @@ export class DistributionFormulasComponent extends AdminPageComponent implements
     idlClass = 'acqdf';
     classLabel: string;
 
-    @ViewChild('grid', { static: true }) grid: GridComponent;
-    @ViewChild('distributionFormulaEditDialog', { static: false }) distributionFormulaEditDialog: DistributionFormulaEditDialogComponent;
-    @ViewChild('alertDialog', {static: false}) private alertDialog: AlertDialogComponent;
-    @ViewChild('confirmDel', { static: true }) confirmDel: ConfirmDialogComponent;
+    protected distributionFormulaEditDialog = viewChild.required<DistributionFormulaEditDialogComponent>('distributionFormulaEditDialog');
+    protected confirmDel = viewChild.required<ConfirmDialogComponent>('confirmDel');
+    private alertDialog = viewChild.required<AlertDialogComponent>('alertDialog');
 
     notOneSelectedRow: (rows: IdlObject[]) => boolean;
     cellTextGenerator: GridCellTextGenerator;
@@ -123,37 +121,37 @@ export class DistributionFormulasComponent extends AdminPageComponent implements
 
     showEditDistributionFormulaDialog(successString: StringComponent, failString: StringComponent): Promise<any> {
         return new Promise((resolve, reject) => {
-            this.distributionFormulaEditDialog.open({size: 'xl', scrollable: true}).subscribe(
+            this.distributionFormulaEditDialog().open({size: 'xl', scrollable: true}).subscribe(
                 { next: result => {
-                    this.successString.current()
+                    this.successString().current()
                         .then(str => this.toast.success(str));
                     resolve(result);
                 }, error: (error: unknown) => {
-                    this.updateFailedString.current()
+                    this.updateFailedString().current()
                         .then(str => this.toast.danger(str));
                     reject(error);
-                }, complete: () => this.grid.reload() }
+                }, complete: () => this.grid().reload() }
             );
         });
     }
 
     createNew() {
-        this.distributionFormulaEditDialog.mode = 'create';
-        this.showEditDistributionFormulaDialog(this.createString, this.createErrString);
+        this.distributionFormulaEditDialog().mode = 'create';
+        this.showEditDistributionFormulaDialog(this.createString(), this.createErrString());
     }
 
     editSelected(rows: IdlObject[]) {
         if (rows.length <= 0) { return; }
-        this.distributionFormulaEditDialog.mode = 'update';
-        this.distributionFormulaEditDialog.formulaId = rows[0].id();
-        this.showEditDistributionFormulaDialog(this.successString, this.updateFailedString);
+        this.distributionFormulaEditDialog().mode = 'update';
+        this.distributionFormulaEditDialog().formulaId = rows[0].id();
+        this.showEditDistributionFormulaDialog(this.successString(), this.updateFailedString());
     }
 
     cloneSelected(rows: IdlObject[]) {
         if (rows.length <= 0) { return; }
-        this.distributionFormulaEditDialog.mode = 'clone';
-        this.distributionFormulaEditDialog.cloneSource = rows[0].id();
-        this.showEditDistributionFormulaDialog(this.createString, this.createErrString);
+        this.distributionFormulaEditDialog().mode = 'clone';
+        this.distributionFormulaEditDialog().cloneSource = rows[0].id();
+        this.showEditDistributionFormulaDialog(this.createString(), this.createErrString());
     }
 
     deleteSelected(rows: IdlObject[]) {
@@ -172,12 +170,12 @@ export class DistributionFormulasComponent extends AdminPageComponent implements
                 }, error: (err: unknown) => {}, complete: () => {
                     if (can) {
                         // eslint-disable-next-line rxjs-x/no-nested-subscribe
-                        this.confirmDel.open().subscribe(confirmed => {
+                        this.confirmDel().open().subscribe(confirmed => {
                             if (!confirmed) { return; }
                             super.doDelete([ rows[0] ]);
                         });
                     } else {
-                        this.alertDialog.open();
+                        this.alertDialog().open();
                     }
                 } }
             );

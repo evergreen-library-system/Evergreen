@@ -1,18 +1,8 @@
 import {Pager} from '@eg/share/util/pager';
-import {Location} from '@angular/common';
-import {FormatService} from '@eg/core/format.service';
-import { Component, Input, ViewChild, OnInit, inject } from '@angular/core';
-import {Router, ActivatedRoute} from '@angular/router';
-import {IdlService, IdlObject} from '@eg/core/idl.service';
+import { Component, Input, OnInit, inject } from '@angular/core';
+import {Router} from '@angular/router';
+import {IdlObject} from '@eg/core/idl.service';
 import {GridDataSource} from '@eg/share/grid/grid';
-import {GridComponent} from '@eg/share/grid/grid.component';
-import {ToastService} from '@eg/share/toast/toast.service';
-import {PcrudService} from '@eg/core/pcrud.service';
-import {OrgService} from '@eg/core/org.service';
-import {PermService} from '@eg/core/perm.service';
-import {AuthService} from '@eg/core/auth.service';
-import {BroadcastService} from '@eg/share/util/broadcast.service';
-import {StringComponent} from '@eg/share/string/string.component';
 import {AdminPageComponent} from '../../../share/admin-page/admin-page.component';
 import { StaffCommonModule } from '@eg/staff/common.module';
 import { FmRecordEditorComponent } from '@eg/share/fm-editor/fm-editor.component';
@@ -25,13 +15,7 @@ import { FmRecordEditorComponent } from '@eg/share/fm-editor/fm-editor.component
 export class SearchFilterGroupComponent extends AdminPageComponent implements OnInit {
     private router = inject(Router);
 
-
     @Input() gridDataSource: GridDataSource;
-    @ViewChild('grid', {static: true}) grid: GridComponent;
-    @ViewChild('createString') createString: StringComponent;
-    @ViewChild('createErrString') createErrString: StringComponent;
-    @ViewChild('deleteFailedString') deleteFailedString: StringComponent;
-    @ViewChild('deleteSuccessString') deleteSuccessString: StringComponent;
 
     ngOnInit() {
         this.gridDataSource = new GridDataSource();
@@ -43,7 +27,7 @@ export class SearchFilterGroupComponent extends AdminPageComponent implements On
             };
             return this.pcrud.retrieveAll('asfg', searchOps);
         };
-        this.grid.onRowActivate.subscribe(
+        this.grid().onRowActivate.subscribe(
             (idlThing: IdlObject) => {
                 const idToEdit = idlThing.id();
                 this.navigateToEditPage(idToEdit);
@@ -52,18 +36,18 @@ export class SearchFilterGroupComponent extends AdminPageComponent implements On
     }
 
     createNew = () => {
-        this.editDialog.mode = 'create';
-        this.editDialog.recordId = null;
-        this.editDialog.record = null;
-        this.editDialog.hiddenFieldsList = ['id', 'create_date'];
-        this.editDialog.open({size: 'lg'}).subscribe(
+        this.editDialog().mode = 'create';
+        this.editDialog().recordId = null;
+        this.editDialog().record = null;
+        this.editDialog().hiddenFieldsList = ['id', 'create_date'];
+        this.editDialog().open({size: 'lg'}).subscribe(
             { next: ok => {
-                this.createString.current()
+                this.createString().current()
                     .then(str => this.toast.success(str));
-                this.grid.reload();
+                this.grid().reload();
             }, error: (rejection: any) => {
                 if (!rejection.dismissed) {
-                    this.createErrString.current()
+                    this.createErrString().current()
                         .then(str => this.toast.danger(str));
                 }
             } }

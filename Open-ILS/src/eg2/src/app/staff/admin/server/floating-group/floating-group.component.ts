@@ -1,17 +1,8 @@
 import {Pager} from '@eg/share/util/pager';
-import { Component, Input, ViewChild, OnInit, inject } from '@angular/core';
-import {Location} from '@angular/common';
-import {Router, ActivatedRoute} from '@angular/router';
-import {FormatService} from '@eg/core/format.service';
-import {IdlService, IdlObject} from '@eg/core/idl.service';
+import { Component, OnInit, inject, viewChild } from '@angular/core';
+import {Router} from '@angular/router';
+import {IdlObject} from '@eg/core/idl.service';
 import {GridDataSource} from '@eg/share/grid/grid';
-import {GridComponent} from '@eg/share/grid/grid.component';
-import {ToastService} from '@eg/share/toast/toast.service';
-import {PcrudService} from '@eg/core/pcrud.service';
-import {OrgService} from '@eg/core/org.service';
-import {PermService} from '@eg/core/perm.service';
-import {AuthService} from '@eg/core/auth.service';
-import {BroadcastService} from '@eg/share/util/broadcast.service';
 import {AdminPageComponent} from '../../../share/admin-page/admin-page.component';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 import { StaffCommonModule } from '@eg/staff/common.module';
@@ -33,8 +24,7 @@ export class FloatingGroupComponent extends AdminPageComponent implements OnInit
 
     gridDataSource: GridDataSource = new GridDataSource();
 
-    @ViewChild('grid', {static: true}) grid: GridComponent;
-    @ViewChild('delConfirm', { static: true }) delConfirm: ConfirmDialogComponent;
+    protected delConfirm = viewChild.required<ConfirmDialogComponent>('delConfirm');
 
     ngOnInit() {
         super.ngOnInit();
@@ -54,7 +44,7 @@ export class FloatingGroupComponent extends AdminPageComponent implements OnInit
             return this.pcrud.retrieveAll('cfg', searchOps);
         };
 
-        this.grid.onRowActivate.subscribe(
+        this.grid().onRowActivate.subscribe(
             (idlThing: IdlObject) => {
                 const idToEdit = idlThing.id();
                 this.navigateToEditPage(idToEdit);
@@ -68,7 +58,7 @@ export class FloatingGroupComponent extends AdminPageComponent implements OnInit
     };
 
     deleteSelected = (idlThings: IdlObject[]) => {
-        this.delConfirm.open().subscribe(confirmed => {
+        this.delConfirm().open().subscribe(confirmed => {
             if (!confirmed) { return; }
             super.doDelete(idlThings);
         });

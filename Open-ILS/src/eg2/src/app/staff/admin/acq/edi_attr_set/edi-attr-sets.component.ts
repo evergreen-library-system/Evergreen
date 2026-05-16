@@ -1,7 +1,6 @@
-import { Component, ViewChild, OnInit } from '@angular/core';
+import { Component, OnInit, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {GridDataSource, GridCellTextGenerator} from '@eg/share/grid/grid';
-import {GridComponent} from '@eg/share/grid/grid.component';
 import {AdminPageComponent} from '@eg/staff/share/admin-page/admin-page.component';
 import {Pager} from '@eg/share/util/pager';
 import {IdlObject} from '@eg/core/idl.service';
@@ -42,11 +41,10 @@ export class EdiAttrSetsComponent extends AdminPageComponent implements OnInit {
     idlClass = 'aeas';
     classLabel: string;
 
-    @ViewChild('grid', { static: true }) grid: GridComponent;
-    @ViewChild('ediAttrSetProvidersDialog', { static: false }) ediAttrSetProvidersDialog: EdiAttrSetProvidersDialogComponent;
-    @ViewChild('ediAttrSetEditDialog', { static: false }) ediAttrSetEditDialog: EdiAttrSetEditDialogComponent;
-    @ViewChild('alertDialog', {static: false}) private alertDialog: AlertDialogComponent;
-    @ViewChild('confirmDel', { static: true }) confirmDel: ConfirmDialogComponent;
+    protected ediAttrSetProvidersDialog = viewChild.required<EdiAttrSetProvidersDialogComponent>('ediAttrSetProvidersDialog');
+    protected ediAttrSetEditDialog = viewChild.required<EdiAttrSetEditDialogComponent>('ediAttrSetEditDialog');
+    protected confirmDel = viewChild.required<ConfirmDialogComponent>('confirmDel');
+    private alertDialog = viewChild.required<AlertDialogComponent>('alertDialog');
 
     cellTextGenerator: GridCellTextGenerator;
     notOneSelectedRow: (rows: IdlObject[]) => boolean;
@@ -121,16 +119,16 @@ export class EdiAttrSetsComponent extends AdminPageComponent implements OnInit {
     }
 
     openEdiAttrSetProvidersDialog(id: number) {
-        this.ediAttrSetProvidersDialog.attrSetId = id;
-        this.ediAttrSetProvidersDialog.open({size: 'lg'});
+        this.ediAttrSetProvidersDialog().attrSetId = id;
+        this.ediAttrSetProvidersDialog().open({size: 'lg'});
     }
 
     deleteIfPossible(rows: IdlObject[]) {
         if (rows.length > 0) {
             if (rows[0].num_providers > 0) {
-                this.alertDialog.open();
+                this.alertDialog().open();
             } else {
-                this.confirmDel.open().subscribe(confirmed => {
+                this.confirmDel().open().subscribe(confirmed => {
                     if (!confirmed) { return; }
                     super.doDelete([ rows[0] ]);
                 });
@@ -140,14 +138,14 @@ export class EdiAttrSetsComponent extends AdminPageComponent implements OnInit {
 
     showEditAttrSetDialog(successString: StringComponent, failString: StringComponent): Promise<any> {
         return new Promise((resolve, reject) => {
-            this.ediAttrSetEditDialog.open({size: 'lg', scrollable: true}).subscribe(
+            this.ediAttrSetEditDialog().open({size: 'lg', scrollable: true}).subscribe(
                 { next: result => {
-                    this.successString.current()
+                    this.successString().current()
                         .then(str => this.toast.success(str));
-                    this.grid.reload();
+                    this.grid().reload();
                     resolve(result);
                 }, error: (error: unknown) => {
-                    this.updateFailedString.current()
+                    this.updateFailedString().current()
                         .then(str => this.toast.danger(str));
                     reject(error);
                 } }
@@ -156,21 +154,21 @@ export class EdiAttrSetsComponent extends AdminPageComponent implements OnInit {
     }
 
     createNew() {
-        this.ediAttrSetEditDialog.mode = 'create';
-        this.showEditAttrSetDialog(this.createString, this.createErrString);
+        this.ediAttrSetEditDialog().mode = 'create';
+        this.showEditAttrSetDialog(this.createString(), this.createErrString());
     }
 
     editSelected(rows: IdlObject[]) {
         if (rows.length <= 0) { return; }
-        this.ediAttrSetEditDialog.mode = 'update';
-        this.ediAttrSetEditDialog.attrSetId = rows[0].id();
-        this.showEditAttrSetDialog(this.successString, this.updateFailedString);
+        this.ediAttrSetEditDialog().mode = 'update';
+        this.ediAttrSetEditDialog().attrSetId = rows[0].id();
+        this.showEditAttrSetDialog(this.successString(), this.updateFailedString());
     }
 
     cloneSelected(rows: IdlObject[]) {
         if (rows.length <= 0) { return; }
-        this.ediAttrSetEditDialog.mode = 'clone';
-        this.ediAttrSetEditDialog.cloneSource = rows[0].id();
-        this.showEditAttrSetDialog(this.createString, this.createErrString);
+        this.ediAttrSetEditDialog().mode = 'clone';
+        this.ediAttrSetEditDialog().cloneSource = rows[0].id();
+        this.showEditAttrSetDialog(this.createString(), this.createErrString());
     }
 }
