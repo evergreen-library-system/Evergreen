@@ -80,6 +80,8 @@ sub load_config {
         }
     }
 
+    $config{host} = '127.0.0.1' if (!$config{host});
+
     if ($config{port} < 1 || $config{port} > 65535) {
         die $config{port} . ": not a valid port number";
     }
@@ -355,7 +357,7 @@ sub main {
     getopt('c:', \%opts);
     load_config;    # dies on invalid/incomplete config
     openlog basename($0), 'ndelay', LOG_USER;
-    my $server = RPC::XML::Server->new(port => $config{port}) or die "Failed to get new RPC::XML::Server: $!";
+    my $server = RPC::XML::Server->new(host => $config{host}, port => $config{port}) or die "Failed to get new RPC::XML::Server: $!";
 
     # Regarding signatures:
     #  ~ the first datatype  is  for RETURN value,
