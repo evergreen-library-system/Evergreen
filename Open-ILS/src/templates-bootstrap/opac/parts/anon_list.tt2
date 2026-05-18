@@ -4,7 +4,7 @@
         <h2>[% l('Basket') %]</h2>
 
         <form action="[% mkurl(ctx.opac_root _ '/mylist/move') %]" method="post">
-        <input type="hidden" name="anonsort" value="[% CGI.param('anonsort') %]" />
+        <input type="hidden" name="anonsort" value="[% CGI.param('anonsort') | html %]" />
         <input type="hidden" name="orig_referrer" value="[% CGI.referer | html %]" />
         <input type="hidden" name="redirect_to" value="[% mkurl('', {}, ['list_none_selected', 'cart_none_selected']) %]" />
         <div class="bbag-action" style="clear:both;">

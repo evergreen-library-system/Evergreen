@@ -807,9 +807,15 @@ sub _get_bookbag_sort_params {
     # In practice this means the "sort" parameter will be something like
     # "titlesort" or "authorsort.descending".
     my $sorter = $self->cgi->param($param_name) || "";
+    # while in theory the sorter could be any valid non-space
+    # UTF-8 character per the search grammer, possibly followed
+    # by a period and a modifier, we restrict it here to avoid security concerns
+    if ($sorter !~ /^([A-Za-z0-9_-]+?)\.*[A-Za-z0-9_-]*$/) {
+        $sorter = '';
+    }
     my $modifier;
     if ($sorter) {
-        $sorter =~ s/^(.*?)\.(.*)/$1/;
+        $sorter =~ s/^([A-Za-z0-9_-]+?)\.([A-Za-z0-9_-]*)$/$1/;
         $modifier = $2 || undef;
     }
 
