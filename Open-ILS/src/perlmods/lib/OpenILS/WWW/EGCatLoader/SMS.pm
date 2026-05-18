@@ -29,6 +29,9 @@ sub load_sms_cn {
     $ctx->{copy_id} = $cgi->param('copy_id');
     $ctx->{query} = $cgi->param('query');
     $ctx->{origin} = $cgi->param('origin') || $cgi->referer;
+    if (defined $ctx->{origin} && $ctx->{origin} !~ m!^(https*://|/eg/opac/)!) {
+        $ctx->{origin} = ''; # sanitize
+    }
 
     my $acn_results = $e->json_query({
         select => {
