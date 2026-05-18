@@ -21,15 +21,15 @@
 
                     [% IF ctx.sms_notify %]
                     <h1>[% l('Your message has been sent!') %]</h1>
-                    <a href="[% ctx.origin %]">[% l('Return to record') %]</a>
+                    <a href="[% ctx.origin | html %]">[% l('Return to record') %]</a>
                     <div class="sms_text"><pre>[% ctx.event.template_output.data %]</pre></div>
                     [% ELSE %]
                     <h1>[% l('Text call number') %]</h1>
-                    <a href="[% ctx.origin %]">[% l('Return to record') %]</a>
+                    <a href="[% ctx.origin | html %]">[% l('Return to record') %]</a>
                     <div class="sms_text"><pre>[% ctx.event.template_output.data %]</pre></div>
                         <form method="post">
                                 <input type="hidden" name="copy_id" value="[% ctx.copy_id %]"/>
-                                <input type="hidden" name="origin" value="[% ctx.origin %]"/>
+                                <input type="hidden" name="origin" value="[% ctx.origin | html %]"/>
                                 [% INCLUDE "opac/parts/sms_carrier_selector.tt2" sms_carrier_hide_warning="true" %]<br/>
                                 [% INCLUDE "opac/parts/sms_number_textbox.tt2" %]<br/>
                                 <input type="submit"
