@@ -860,6 +860,7 @@
             IF car.override_name.defined;
                 carousel.name = car.override_name;
             END;
+            carousel.name = carousel.name | html;
             carousels.push(carousel);
         END;
     END;
