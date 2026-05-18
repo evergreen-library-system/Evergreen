@@ -102,11 +102,17 @@
         [% PROCESS browse_pager id=0 %]
 
         [% bterm_label = CGI.param('bterm') | html; %]
-        [% IF CGI.param('qtype') == 'name'; %]
-          <h2>[% l('Browsing course names starting with <i>[_1]</i>', bterm_label) %]</h2>
-        [% ELSE; %]
-          <h2>[% l('Browsing course numbers starting with <i>[_1]</i>', bterm_label) %]</h2>
-        [% END; %] 
+
+        [% SWITCH CGI.param('qtype') %]
+          [% CASE 'name' %]
+            <h2>[% l('Browsing course names starting with <i>[_1]</i>', bterm_label) %]</h2>
+          [% CASE 'course_number' %]
+            <h2>[% l('Browsing course numbers starting with <i>[_1]</i>', bterm_label) %]</h2>
+          [% CASE 'instructor' %]
+            <h2>[% l('Browsing course instructors starting with <i>[_1]</i>', bterm_label) %]</h2>
+          [% CASE default %]
+        [% END %]
+
         [% IF ctx.browse_error %]
           <span class="browse-error">
             [% l("An error occurred browsing records. " _
