@@ -23,9 +23,10 @@ function oilsRptReportEditor(rptObject, folderWindow, readonly) {
 
     hideMe(DOM.oils_rpt_report_editor_template_doc_url_row);
     if (rptObject.def.version >= 4) {
-        if (URL = rptObject.def.doc_url) {
+        URL = rptObject.def.doc_url;
+        if (URL && URL.match(/^\s*https?:\/\//)) {
             var link = DOM.oils_rpt_report_editor_template_doc_url;
-            link.innerHTML = URL;
+            link.textContent = URL;
             if (typeof xulG == 'undefined') {
                 link.setAttribute('href', URL);
                 link.setAttribute('target', '_blank');
