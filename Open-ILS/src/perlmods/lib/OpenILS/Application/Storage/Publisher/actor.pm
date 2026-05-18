@@ -689,13 +689,17 @@ sub patron_search {
 
     my $strict_opt_in = OpenSRF::Utils::SettingsClient->new->config_value( share => user => 'opt_in' );
 
+    $sort = [$sort] unless ref($sort);
     $sort = ['family_name','first_given_name'] unless ($$sort[0]);
     push @$sort,'id';
 
-    if ($$sort[0] eq 'penalties') {
-        shift @$sort;
+    if (grep {'penalties'} @$sort) {
+        $sort = [ grep { $_ ne 'penalties' } @$sort];
         $penalty_sort = 1;
     }
+
+    # make sure remaining sort columns are real user columns
+    $sort = [grep { Fieldmapper::actor::user->has_field( (split / /,$_)[0] ) } @$sort];
 
     # group 0 = user
     # group 1 = address
@@ -721,7 +725,7 @@ sub patron_search {
     my @name_fields = qw/prefix first_given_name second_given_name family_name suffix/;
     my @usr_where_parts;
 
-    my @usr_fields = grep { ''.$$search{$_}{group} eq '0' } keys %$search;
+    my @usr_fields = grep { Fieldmapper::actor::user->has_field($_) } grep { ''.$$search{$_}{group} eq '0' } keys %$search;
     for my $usr_field (@usr_fields) {
 
         # sprintf template
@@ -745,7 +749,7 @@ sub patron_search {
             push(@usrv, $val);
             push(@usrv, $val);
 
-        } else {
+        } elsif (Fieldmapper::actor::user->has_field($usr_field)) {
 
             push(@usr_where_parts, sprintf($where_func, $usr_field));
             push(@usrv, $val);
@@ -754,25 +758,35 @@ sub patron_search {
 
     $usr = join ' AND ', @usr_where_parts;
 
-    while (($key, $value) = each (%$search)) {
-        if($$search{$key}{group} eq '4') {
+    while (my ($key, $value) = each (%$search)) {
+        if($key =~ /^dob_(?:year|month|day)$/ and $$search{$key}{group} eq '4') {
             my $tval = $key;
             $tval =~ s/dob_//g;
             my $right = "RIGHT('0'|| ";
             my $end = ", 2)";
-            $end = $right = '' if lc $tval eq 'year';
+            $end = $right = '' if lc $tval eq 'year'; # don't trim years to 2 0-lpadded characters
             $dob .= $right."CAST(DATE_PART('$tval', dob) AS text)$end ~ ? AND ";
+            push(@usrv, _clean_regex_chars($$search{$key}{value}));
         }
     }
+
     # Trim the last " AND "
     $dob = substr($dob,0,-4);
-    @dobv = map { _clean_regex_chars($$search{$_}{value}) } grep { ''.$$search{$_}{group} eq '4' } keys %$search;
     $usr .= ' AND ' if ( $usr && $dob );
     $usr .= $dob if $dob; # $dob not in-line above in case $usr doesn't have any search vals (only searched for dob)
-    push(@usrv, @dobv) if @dobv;
 
-    my $addr = join ' AND ', map { "evergreen.lowercase(CAST($_ AS text)) ~ ?" } grep { ''.$$search{$_}{group} eq '1' } keys %$search;
-    my @addrv = map { "^" . _clean_regex_chars($$search{$_}{value}) } grep { ''.$$search{$_}{group} eq '1' } keys %$search;
+    my $addr = join ' AND ',
+        map {
+            "evergreen.lowercase(CAST($_ AS text)) ~ ?"
+        } grep {
+            ''.$$search{$_}{group} eq '1' and Fieldmapper::actor::user_address->has_field($_)
+        } sort keys %$search; # sort the keys for query stability
+
+    my @addrv = map {
+        "^" . _clean_regex_chars($$search{$_}{value})
+    } grep {
+        ''.$$search{$_}{group} eq '1' and Fieldmapper::actor::user_address->has_field($_)
+    } sort keys %$search; # sort the keys for query stability
 
     # should only be 1 profile sent but this construction makes dealing with the lists simpler.
     my ($prof) = map { $$search{$_}{value} } grep {''.$$search{$_}{group} eq '5' } keys %$search;
@@ -897,7 +911,12 @@ sub patron_search {
 
     return undef if (!$select && !$card && !$phone_cte);
 
-    my $order_by = join ', ', map { 'evergreen.lowercase(CAST(users.'. (split / /,$_)[0] . ' AS text)) ' . (split / /,$_)[1] } @$sort;
+    my $order_by = join ', ',
+        map {
+            'evergreen.lowercase(CAST(users.'. (split / /,$_)[0] . ' AS text)) ' # @$sort values have been validated above
+                . asc_or_desc((split / /,$_)[1]) # starts with lowercase 'd', DESC. otherwise, ASC.
+        } @$sort;
+
     my $distinct_list = join ', ', map { 'evergreen.lowercase(CAST(users.'. (split / /,$_)[0] . ' AS text))' } @$sort;
     my $group_list = $distinct_list;
 
@@ -911,6 +930,7 @@ sub patron_search {
         $ws_ou = actor::org_unit->search( { parent_ou => undef } )->next->id;
     }
 
+    $search_org = ($search_org =~ /^\d+$/) ? $search_org : $ws_ou;
     my $descendants = "actor.org_unit_descendants($search_org)";
 
     my $opt_in_where = '';
@@ -933,6 +953,9 @@ sub patron_search {
                 ON (users.id = penalties.usr AND (penalties.stop_date IS NULL OR penalties.stop_date > NOW()))
         SQL
     }
+
+    $offset = int($offset) if $offset; # int or out
+    $limit = int($limit) if $limit; # int or out
 
     $select = "JOIN ($select) AS search ON (search.id = users.id)" if ($select);
     $select = <<"    SQL";
@@ -960,6 +983,12 @@ __PACKAGE__->register_method(
     api_level   => 1,
     method      => 'patron_search',
 );
+
+sub asc_or_desc {
+    my $val = shift;
+    return 'DESC' if (lc($val) =~ /^d/);
+    return 'ASC';
+}
 
 sub org_unit_list {
     my $self = shift;
