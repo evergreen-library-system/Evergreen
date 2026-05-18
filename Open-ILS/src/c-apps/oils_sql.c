@@ -153,6 +153,7 @@ static osrfStringArray* pcrud_function_allow_list = NULL;
 
 int writeAuditInfo( osrfMethodContext* ctx, const char* user_id, const char* ws_id);
 
+static char* _sanitize_locale( const char* locale );
 static char* _sanitize_tz_name( const char* tz );
 static char* _sanitize_savepoint_name( const char* sp );
 static char* _sanitize_quoted_identifier( char* identifier );
@@ -4349,7 +4350,8 @@ char* SELECT (
 		/* OFFSET   */ const jsonObject* offset,
 		/* flags    */ int flags
 ) {
-	const char* locale = osrf_message_get_last_locale();
+	const char* raw_locale = osrf_message_get_last_locale();
+	char* locale = _sanitize_locale(raw_locale);
 
 	// general tmp objects
 	const jsonObject* tmp_const;
@@ -4380,6 +4382,7 @@ char* SELECT (
 				ctx->request,
 				"FROM clause is missing or empty in JSON query"
 			);
+		if (locale) free(locale);
 		return NULL;
 	}
 
@@ -4402,6 +4405,7 @@ char* SELECT (
 					ctx->request,
 					"Unable to look up core class"
 				);
+			if (locale) free(locale);
 			return NULL;
 		}
 		core_class = curr_query->core.class_name;
@@ -4427,6 +4431,7 @@ char* SELECT (
 					ctx->request,
 					"Malformed FROM clause in JSON query"
 				);
+			if (locale) free(locale);
 			return NULL;    // Malformed join_hash; extra entry
 		}
 	} else if( join_hash->type == JSON_ARRAY ) {
@@ -4447,6 +4452,7 @@ char* SELECT (
 
 			osrfLogError( OSRF_LOG_MARK, "%s: Expected function name, found \"%s\"\n",
 					modulename, core_class );
+			if (locale) free(locale);
 			return NULL;
 		}
 
@@ -4464,6 +4470,7 @@ char* SELECT (
 					ctx->request,
 					"Unable to look up core class"
 				);
+			if (locale) free(locale);
 			return NULL;
 		}
 	}
@@ -4482,6 +4489,7 @@ char* SELECT (
 				ctx->request,
 				"Ill-formed FROM clause in JSON query"
 			);
+		if (locale) free(locale);
 		return NULL;
 	}
 
@@ -4500,6 +4508,7 @@ char* SELECT (
 					ctx->request,
 					"Unable to construct JOIN clause(s)"
 				);
+			if (locale) free(locale);
 			return NULL;
 		}
 	}
@@ -4520,6 +4529,7 @@ char* SELECT (
 					"Unable to build default SELECT clause in JSON query"
 				);
 				free( join_clause );
+				if (locale) free(locale);
 				return NULL;
 			}
 		}
@@ -4546,6 +4556,7 @@ char* SELECT (
 				"Malformed SELECT clause in JSON query"
 			);
 		free( join_clause );
+		if (locale) free(locale);
 		return NULL;
 	}
 
@@ -4573,6 +4584,7 @@ char* SELECT (
 						"Can't build default SELECT clause in JSON query"
 					);
 					free( join_clause );
+					if (locale) free(locale);
 					return NULL;
 				}
 			}
@@ -4635,6 +4647,7 @@ char* SELECT (
 				if( defaultselhash )
 					jsonObjectFree( defaultselhash );
 				free( join_clause );
+				if (locale) free(locale);
 				return NULL;
 			}
 
@@ -4660,6 +4673,7 @@ char* SELECT (
 				if( defaultselhash )
 					jsonObjectFree( defaultselhash );
 				free( join_clause );
+				if (locale) free(locale);
 				return NULL;
 			}
 
@@ -4728,6 +4742,7 @@ char* SELECT (
 						if( defaultselhash )
 							jsonObjectFree( defaultselhash );
 						free( join_clause );
+						if (locale) free(locale);
 						return NULL;
 					} else if( str_is_true( osrfHashGet( field_def, "virtual" ) ) ) {
 						// Virtual field not allowed
@@ -4752,6 +4767,7 @@ char* SELECT (
 						if( defaultselhash )
 							jsonObjectFree( defaultselhash );
 						free( join_clause );
+						if (locale) free(locale);
 						return NULL;
 					}
 
@@ -4816,6 +4832,7 @@ char* SELECT (
 						if( defaultselhash )
 							jsonObjectFree( defaultselhash );
 						free( join_clause );
+						if (locale) free(locale);
 						return NULL;
 					} else if( str_is_true( osrfHashGet( field_def, "virtual" ))) {
 						// No such field in current class
@@ -4840,6 +4857,7 @@ char* SELECT (
 						if( defaultselhash )
 							jsonObjectFree( defaultselhash );
 						free( join_clause );
+						if (locale) free(locale);
 						return NULL;
 					}
 
@@ -4877,6 +4895,7 @@ char* SELECT (
 								jsonObjectFree( defaultselhash );
 							free( join_clause );
 							free( clean_alias );
+							if (locale) free(locale);
 							return NULL;
 						}
 					} else {
@@ -4926,6 +4945,7 @@ char* SELECT (
 					if( defaultselhash )
 						jsonObjectFree( defaultselhash );
 					free( join_clause );
+					if (locale) free(locale);
 					return NULL;
 				}
 
@@ -5001,6 +5021,7 @@ char* SELECT (
 		if( defaultselhash )
 			jsonObjectFree( defaultselhash );
 		free( join_clause );
+		if (locale) free(locale);
 		return NULL;
 	}
 
@@ -5024,6 +5045,7 @@ char* SELECT (
 		if( defaultselhash )
 			jsonObjectFree( defaultselhash );
 		free( join_clause );
+		if (locale) free(locale);
 		return NULL;
 	}
 
@@ -5064,6 +5086,7 @@ char* SELECT (
 				osrf_buffer_free( sql_buf );
 				if( defaultselhash )
 					jsonObjectFree( defaultselhash );
+				if (locale) free(locale);
 				return NULL;
 			}
 
@@ -5091,6 +5114,7 @@ char* SELECT (
 				osrf_buffer_free( sql_buf );
 				if( defaultselhash )
 					jsonObjectFree( defaultselhash );
+				if (locale) free(locale);
 				return NULL;
 			}
 		}
@@ -5106,6 +5130,7 @@ char* SELECT (
 				osrf_buffer_free( sql_buf );
 				if( defaultselhash )
 					jsonObjectFree( defaultselhash );
+				if (locale) free(locale);
 				return NULL;
 			}
 		} else if( JSON_HASH == order_hash->type ) {
@@ -5136,6 +5161,7 @@ char* SELECT (
 					osrf_buffer_free( sql_buf );
 					if( defaultselhash )
 						jsonObjectFree( defaultselhash );
+					if (locale) free(locale);
 					return NULL;
 				}
 
@@ -5171,6 +5197,7 @@ char* SELECT (
 							osrf_buffer_free( sql_buf );
 							if( defaultselhash )
 								jsonObjectFree( defaultselhash );
+							if (locale) free(locale);
 							return NULL;
 						} else if( str_is_true( osrfHashGet( field_def, "virtual" ) ) ) {
 							osrfLogError( OSRF_LOG_MARK,
@@ -5193,6 +5220,7 @@ char* SELECT (
 							osrf_buffer_free( sql_buf );
 							if( defaultselhash )
 								jsonObjectFree( defaultselhash );
+							if (locale) free(locale);
 							return NULL;
 						}
 
@@ -5221,6 +5249,7 @@ char* SELECT (
 									osrf_buffer_free( sql_buf );
 									if( defaultselhash )
 										jsonObjectFree( defaultselhash );
+									if (locale) free(locale);
 									return NULL;
 								}
 							} else {
@@ -5259,6 +5288,7 @@ char* SELECT (
 							osrf_buffer_free( sql_buf );
 							if( defaultselhash )
 								jsonObjectFree( defaultselhash );
+							if (locale) free(locale);
 							return NULL;
 
 						} else {
@@ -5315,6 +5345,7 @@ char* SELECT (
 							osrf_buffer_free( sql_buf );
 							if( defaultselhash )
 								jsonObjectFree( defaultselhash );
+							if (locale) free(locale);
 							return NULL;
 						} else if( str_is_true( osrfHashGet( field_def, "virtual" ) ) ) {
 							osrfLogError( OSRF_LOG_MARK,
@@ -5336,6 +5367,7 @@ char* SELECT (
 							osrf_buffer_free( sql_buf );
 							if( defaultselhash )
 								jsonObjectFree( defaultselhash );
+							if (locale) free(locale);
 							return NULL;
 						}
 
@@ -5370,6 +5402,7 @@ char* SELECT (
 					if( defaultselhash )
 						jsonObjectFree( defaultselhash );
 					jsonIteratorFree( class_itr );
+					if (locale) free(locale);
 					return NULL;
 				}
 			} // end while
@@ -5393,6 +5426,7 @@ char* SELECT (
 			osrf_buffer_free( sql_buf );
 			if( defaultselhash )
 				jsonObjectFree( defaultselhash );
+			if (locale) free(locale);
 			return NULL;
 		}
 	}
@@ -5441,6 +5475,8 @@ char* SELECT (
 
 	if( defaultselhash )
 		 jsonObjectFree( defaultselhash );
+
+	if (locale) free(locale);
 
 	return osrf_buffer_release( sql_buf );
 
@@ -5645,7 +5681,8 @@ static char* buildOrderByFromArray( osrfMethodContext* ctx, const jsonObject* or
 static char* buildSELECT ( const jsonObject* search_hash, jsonObject* rest_of_query,
 	osrfHash* meta, osrfMethodContext* ctx, char* new_cursor_name ) {
 
-	const char* locale = osrf_message_get_last_locale();
+	const char* raw_locale = osrf_message_get_last_locale();
+	char* locale = _sanitize_locale(raw_locale);
 
 	osrfHash* fields = osrfHashGet( meta, "fields" );
 	const char* core_class = osrfHashGet( meta, "classname" );
@@ -5779,6 +5816,7 @@ static char* buildSELECT ( const jsonObject* search_hash, jsonObject* rest_of_qu
 		osrf_buffer_free( sql_buf );
 		if( defaultselhash )
 			jsonObjectFree( defaultselhash );
+		if (locale) free(locale);
 		return NULL;
 	}
 
@@ -5809,6 +5847,7 @@ static char* buildSELECT ( const jsonObject* search_hash, jsonObject* rest_of_qu
 		if( defaultselhash )
 			jsonObjectFree( defaultselhash );
 		clear_query_stack();
+		if (locale) free(locale);
 		return NULL;
 	} else {
 		osrf_buffer_add( sql_buf, pred );
@@ -5829,6 +5868,7 @@ static char* buildSELECT ( const jsonObject* search_hash, jsonObject* rest_of_qu
 					if( defaultselhash )
 						jsonObjectFree( defaultselhash );
 					clear_query_stack();
+					if (locale) free(locale);
 					return NULL;
 				}
 			} else if( JSON_HASH == order_by->type ) {
@@ -5881,6 +5921,7 @@ static char* buildSELECT ( const jsonObject* search_hash, jsonObject* rest_of_qu
 										if( defaultselhash )
 											jsonObjectFree( defaultselhash );
 										clear_query_stack();
+										if (locale) free(locale);
 										return NULL;
 									}
 								} else {
@@ -5947,6 +5988,7 @@ static char* buildSELECT ( const jsonObject* search_hash, jsonObject* rest_of_qu
 							if( defaultselhash )
 								jsonObjectFree( defaultselhash );
 							clear_query_stack();
+							if (locale) free(locale);
 							return NULL;
 						}
 						osrf_buffer_add( order_buf, str );
@@ -5995,6 +6037,7 @@ static char* buildSELECT ( const jsonObject* search_hash, jsonObject* rest_of_qu
 	if( defaultselhash )
 		jsonObjectFree( defaultselhash );
 	clear_query_stack();
+	if (locale) free(locale);
 
 	OSRF_BUFFER_ADD_CHAR( sql_buf, ';' );
 	return osrf_buffer_release( sql_buf );
@@ -8138,6 +8181,38 @@ static char* _sanitize_tz_name( const char* tz ) {
 	}
 	safeSpName[ i ] = '\0';
 	return safeSpName;
+}
+
+/**
+	@brief Remove all but safe character from locale
+	@param locale User-supplied locale
+	@return sanitized locale, or NULL
+*/
+static char* _sanitize_locale( const char* locale ) {
+
+	if (NULL == locale) return NULL;
+
+	const char* safe_chars = "abcdefghijklmnopqrstuvwxyz-_ABCDEFGHIJKLMNOPQRSTUVWXYZ012345789";
+
+	const int MAX_LITERAL_NAMELEN = 32; // in practice, this will normally be, like, 5, but locale strings can be arbitrarily long.
+	int len = 0;
+	len = strlen( locale );
+	if (len > MAX_LITERAL_NAMELEN) {
+		len = MAX_LITERAL_NAMELEN;
+	}
+
+	char* safeLocale = safe_malloc( len + 1 );
+	int i = 0;
+	int j;
+	char* found;
+	for (j = 0; j < len; j++) {
+		found = strchr(safe_chars, locale[j]);
+		if (found) {
+			safeLocale[ i++ ] = found[0];
+		}
+	}
+	safeLocale[ i ] = '\0';
+	return safeLocale;
 }
 
 /*@}*/
