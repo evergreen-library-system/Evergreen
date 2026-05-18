@@ -17,7 +17,7 @@ Hardware
 Get a dedicated computer running Linux and make sure it meets any system requirements for Asterisk. 1 modern CPU, 1 GB memory is plenty for most
 applications.  More is always better.
 
-Make sure that the system running Evergreen (specifically, the utility box if you're dealing with a multi-server environment that has a utility box specifically for Action/Trigger stuff) has network connectivity to the box running Asterisk.  At minimum it needs to be able to reach that Asterisk machine via TCP port 10080.  Do not let the whole Internet talk to your Asterisk box via TCP port 10080.  iptables is your friend.
+Make sure that the system running Evergreen (specifically, the utility box if you're dealing with a multi-server environment that has a utility box specifically for Action/Trigger stuff) has network connectivity to the box running Asterisk.  At minimum it needs to be able to reach that Asterisk machine via TCP port 10080.  Do not let the whole Internet talk to your Asterisk box via TCP port 10080. By default, the PBX mediator defaults to listening on localhost only, but unless Asterisk is running on the same server as your Action/Trigger reactor, this will need to be changed and you will need to protect that connection pathway.  iptables is your friend.
 
 If you're using analog telephony (you're connecting to the Public Switched Telephone Network), you'll need an actual physical computer.
 
