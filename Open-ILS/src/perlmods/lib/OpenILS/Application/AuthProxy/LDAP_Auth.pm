@@ -4,6 +4,7 @@ use warnings;
 use base 'OpenILS::Application::AuthProxy::AuthBase';
 use OpenILS::Event;
 use Net::LDAP;
+use Net::LDAP::Util qw/escape_filter_value/;
 use OpenSRF::Utils::SettingsClient;
 use OpenSRF::Utils::Logger qw(:logger);
 
@@ -77,7 +78,7 @@ sub authenticate {
             $reached_ldap = 1;
             # verify username and lookup user's DN
             $ldap_search = $ldap->search( base => $basedn,
-                                             filter => "($bind_attr=$username)" );
+                                             filter => "($bind_attr=".escape_filter_value($username).')' );
             if ( $ldap_search->count != 0 ) {
                 $user_in_ldap = 1;
 
