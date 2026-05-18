@@ -353,7 +353,7 @@ END;
                                                                 </td>
                                                                 <td><a href="[% uri.href | html %]" class="uri_link" target="_blank" data-record-id="[% rec.bre_id %]" rel="noopener">[% uri.link | html %]</a>
                                                                     [%- IF uri.note -%]
-                                                                        [%- '- <span property="description">' _ uri.note _ '</span>' %]
+                                                                        [%- '- <span property="description">'; uri.note | html; '</span>' %]
                                                                     [%- ELSE -%]
                                                                         [% IF ctx.get_org_setting(ctx.search_ou, 'opac.uri_default_note_text') %]
                                                                             [% link_note = ctx.get_org_setting(ctx.search_ou, 'opac.uri_default_note_text') %]
