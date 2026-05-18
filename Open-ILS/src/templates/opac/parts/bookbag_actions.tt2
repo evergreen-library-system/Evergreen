@@ -68,7 +68,7 @@
         [%- ELSE -%]
     <li>
         [%- END -%]
-    <a href="[% href %]">[% bag.name %]</a>
+    <a href="[% href %]">[% bag.name | html %]</a>
     </li>
     [%
        END;

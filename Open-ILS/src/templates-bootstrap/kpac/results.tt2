@@ -6,7 +6,7 @@
     PROCESS get_marc_attrs args=attrs;
     page_id = trail_endpoint();
     IF ctx.bookbag;
-        ctx.page_title = l(ctx.bookbag.name);
+        ctx.page_title = l(ctx.bookbag.name) | html;
     ELSE;
         ctx.page_title = l('Search Results');
     END;
@@ -18,7 +18,7 @@
 
 [% IF ctx.bookbag %]
     <h2>[% l(ctx.page_title) %]</h2>
-    <div class="list-description">[% l(ctx.bookbag.description) %]</div>
+    <div class="list-description">[% l(ctx.bookbag.description) | html %]</div>
 [% ELSE %]
     <h2>[% l('Search Results') %]</h2>
 [% END %]
