@@ -68,7 +68,7 @@
     %]
     <div class="dropdown-divider"></div>
         [%- END -%]
-    <a class="dropdown-item" href="[% href %]">[% bag.name %]</a>
+    <a class="dropdown-item" href="[% href %]">[% bag.name | html %]</a>
     [%
        END;
        END
