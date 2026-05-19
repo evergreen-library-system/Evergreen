@@ -2467,7 +2467,7 @@ sub unique_unnested_numbers {
         map(
             int,
             map { $_ eq 'NULL' ? undef : (split /,/, $_) }
-                map { substr($_, 1, -1) } @_
+                map { substr($_, 1, -1) } grep { length } @_
         )
     );
 }
