@@ -25777,7 +25777,7 @@ INSERT INTO openapi.endpoint_param (endpoint,name,in_part,schema_type,schema_for
 ON CONFLICT DO NOTHING;
 INSERT INTO openapi.endpoint_response (endpoint,schema_type) VALUES ('authenticateUser','object') ON CONFLICT DO NOTHING;
 INSERT INTO openapi.endpoint_response (endpoint,content_type) VALUES ('authenticateUser','text/plain') ON CONFLICT DO NOTHING;
-INSERT INTO openapi.endpoint_response (endpoint,schema_type) VALUES ('logoutUser','object') ON CONFLICT DO NOTHING;
+INSERT INTO openapi.endpoint_response (endpoint,schema_type) VALUES ('logoutUser','string') ON CONFLICT DO NOTHING;
 INSERT INTO openapi.endpoint_response (endpoint,content_type) VALUES ('logoutUser','text/plain') ON CONFLICT DO NOTHING;
 
 -- ===== self-service
