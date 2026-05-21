@@ -407,10 +407,10 @@ sub is_rendered_success_type {
     my $renderer = shift;
     return 0 unless ( grep {$renderer eq $_} qw/json openapi/ );
 
-    my ($success_res) = grep {$_->status == 200} @{$ep->responses};
-    return 0 unless $success_res;
-
-    return $success_res->schema_type eq $type ? 1 : 0;
+    if (grep {$_->status == 200 && defined($_->schema_type) && $_->schema_type eq $type} @{$ep->responses}) {
+        return 1;
+    }
+    return 0;
 }
 
 sub basic_handler_wrapper {
