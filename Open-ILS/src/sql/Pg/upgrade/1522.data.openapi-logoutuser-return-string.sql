@@ -1,6 +1,6 @@
 BEGIN;
 
---SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1522', :eg_version);
 
 UPDATE openapi.endpoint_response
 SET schema_type = 'string'
