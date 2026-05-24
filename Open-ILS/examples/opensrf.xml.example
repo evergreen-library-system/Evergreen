@@ -296,6 +296,10 @@ vim:et:ts=4:sw=4:
             <!-- load the Obalkyknih added content module -->
             <!-- <module>OpenILS::WWW::AddedContent::ObalkyKnih</module> -->
 
+            <!-- load the Loral added content module -->
+            <!-- <module>OpenILS::WWW::AddedContent::Loral</module> -->
+            <!-- <base_url>https://api.loralforlibraries.com</base_url> -->
+
             <!--
             Max number of seconds to wait for an added content request to 
             return data.  Data not returned within the timeout is considered
@@ -366,6 +370,14 @@ vim:et:ts=4:sw=4:
                 <reviews>true</reviews>
 
             </ObalkyKnih>
+
+            <!--
+                Segregating the the details for Loral out for easier use.
+            -->
+            <Loral>
+                <userid>MY_USER_ID</userid>
+                <password>MY_PASSWORD</password>
+            </Loral>
 
             <!--
             Optional code supplied by ChiliFresh to specify a fallback image.

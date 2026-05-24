@@ -305,12 +305,13 @@ sub print_content {
 
 # returns an HTTP::Response object
 sub get_url {
-    my( $self, $url ) = @_;
+    my( $self, $url, $headers ) = @_;
+    # $headers is an optional array reference of name, value pairs.
 
     $logger->info("added content getting [timeout=$net_timeout, errors_remaining=$error_countdown] URL = $url");
-    my $agent = LWP::UserAgent->new(timeout => $net_timeout);
+    my $agent = get_agent();
 
-    my $res = $agent->get($url); 
+    my $res = $agent->get($url, @{$headers});
     $logger->info("added content request returned with code " . $res->code);
     die "added content request failed: " . $res->status_line ."\n" unless $res->is_success;
 
@@ -322,7 +323,7 @@ sub post_url {
     my( $self, $url, $content ) = @_;
 
     $logger->info("added content getting [timeout=$net_timeout, errors_remaining=$error_countdown] URL = $url");
-    my $agent = LWP::UserAgent->new(timeout => $net_timeout);
+    my $agent = get_agent();
 
     my $res = $agent->post($url, Content => $content);
     $logger->info("added content request returned with code " . $res->code);
@@ -400,6 +401,13 @@ sub clear_cache {
     }
     $data->{content} .= "Done Checking $key\n";
     return $class->print_content($data, 0);
+}
+
+# builds LWP::UserAgent and sets the User-agent header.
+sub get_agent {
+    use OpenILS; # because version is in the form we want here.
+    return LWP::UserAgent->new(agent => "Evergreen/" . $OpenILS::VERSION . " ",
+                               timeout => $net_timeout);
 }
 
 1;
