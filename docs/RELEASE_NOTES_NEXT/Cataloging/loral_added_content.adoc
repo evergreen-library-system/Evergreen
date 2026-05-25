@@ -1,0 +1,50 @@
+== New Added Content Provider ==
+
+Loral for Libraries is available as a new Added Content
+Provider. Loral can provide the following enhancements for your
+catalog:
+
+ * Book Covers
+ * Author Biographies
+ * Summaries
+ * Reviews
+
+=== Activating Loral for Libraries ===
+
+Loral for Libraries is a subscription service.
+
+To activate the Loral for Libraries added content provider, first
+comment out the default OpenLibrary module in
+_/openils/conf/opensrf.xml_ by adding _<!--_ and _-->_ to the
+beginning and end of the line, respectively:
+
+----
+<!-- <module>OpenILS::WWW::AddedContent::OpenLibrary</module> -->
+----
+
+Uncomment the _<module>_ and _<base_url>_ elements for Loral by
+removing the _<!--_ and _-->_ from the lines:
+
+----
+<module>OpenILS::WWW::AddedContent::Loral</module>
+<base_url>https://api.loralforlibraries.com</base_url>
+----
+
+Replace _MY_USER_ID_ and _MY_PASSWORD_ in the _<userid>_ and
+_<password>_ child elements of the _<Loral>_ element with your Loral
+ID and password:
+
+----
+<Loral>
+    <userid>MY_USER_ID</userid>
+    <password>MY_PASSWORD</password>
+</Loral>
+----
+
+Finally, you will need to restart Evergreen and Apache for the module
+to be activated in your catalog.
+
+=== Acknowledgments ===
+
+Development of the Loral for Libraries added content provider module
+was sponsored by North of Boston Library Exchange (NOBLE), Inc.

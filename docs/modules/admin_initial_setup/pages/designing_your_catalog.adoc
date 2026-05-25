@@ -634,6 +634,41 @@ found in bibliographic records:
 * UPC
 * ISSN
 
+=== Loral for Libraries ===
+
+Loral for Libraries is a subscription service providing book covers,
+author biographies, summaries, and reviews for items in your catalog.
+
+To activate the Loral for Libraries added content provider, first
+comment out the default OpenLibrary module in
+_/openils/conf/opensrf.xml_ by adding _<!--_ and _-->_ to the
+beginning and end of the line, respectively:
+
+----
+<!-- <module>OpenILS::WWW::AddedContent::OpenLibrary</module> -->
+----
+
+Uncomment the _<module>_ and _<base_url>_ elements for Loral by
+removing the _<!--_ and _-->_ from the lines:
+
+----
+<module>OpenILS::WWW::AddedContent::Loral</module>
+<base_url>https://api.loralforlibraries.com</base_url>
+----
+
+Replace _MY_USER_ID_ and _MY_PASSWORD_ in the _<userid>_ and
+_<password>_ child elements of the _<Loral>_ element with your Loral
+ID and password:
+
+----
+<Loral>
+    <userid>MY_USER_ID</userid>
+    <password>MY_PASSWORD</password>
+</Loral>
+----
+
+Finally, you will need to restart Evergreen and Apache for the module
+to be activated in your catalog.
 
 === Clear External/Added Content Cache ===
 
