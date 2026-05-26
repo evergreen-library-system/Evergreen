@@ -693,7 +693,7 @@ sub patron_search {
     $sort = ['family_name','first_given_name'] unless ($$sort[0]);
     push @$sort,'id';
 
-    if (grep {'penalties'} @$sort) {
+    if (grep { $_ eq 'penalties' } @$sort) {
         $sort = [ grep { $_ ne 'penalties' } @$sort];
         $penalty_sort = 1;
     }
