@@ -17,6 +17,8 @@
     Please choose a date in the future">
 </eg-alert-dialog>
 
+<eg-hold-note-dialog #holdNoteDialog></eg-hold-note-dialog>
+
 <div class="row">
   <div class="col-lg-1">
     <button type="button" class="btn btn-info label-with-material-icon"
@@ -350,8 +352,9 @@ only when metarecord holds are enabled).
     <div class="col-lg-2" i18n>Part</div>
     <div class="col-lg-2" i18n>Call Number</div>
     <div class="col-lg-1" i18n>Barcode</div>
-    <div class="col-lg-2" i18n>Holds Status</div>
+    <div class="col-lg-1" i18n>Holds Status</div>
     <div class="col-lg-1" i18n>Override</div>
+    <div class="col-lg-1" i18n>Note</div>
   </div>
   @if (showOverrideAll()) {
     <div class="row mt-1 ms-1 me-1">
@@ -426,7 +429,7 @@ only when metarecord holds are enabled).
                 <span class="fst-italic" i18n>ANY</span>
               }
             </div>
-            <div class="col-lg-2">
+            <div class="col-lg-1">
               @if (!ctx.lastRequest && !ctx.processing) {
                 <div class="alert alert-info p-1 ms-2" i18n>Hold Pending</div>
               }
@@ -454,6 +457,14 @@ only when metarecord holds are enabled).
             <div class="col-lg-1">
               @if (canOverride(ctx)) {
                 <button type="button" class="btn btn-info" (click)="override(ctx)">Override</button>
+              }
+            </div>
+            <div class="col-lg-1">
+              @if (canAddNote(ctx)) {
+                <button type="button" class="btn btn-info" (click)="newNote(ctx)">Add Note</button>
+              }
+              @if (canRemoveNote(ctx)) {
+                <button type="button" class="btn btn-destroy" (click)="removeNotes(ctx)">Remove Note</button>
               }
             </div>
           </div>

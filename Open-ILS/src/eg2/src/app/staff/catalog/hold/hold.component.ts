@@ -28,6 +28,7 @@ import { OrgSelectComponent } from '@eg/share/org-select/org-select.component';
 import { CommonModule } from '@angular/common';
 import { DateSelectComponent } from '@eg/share/date-select/date-select.component';
 import { FormsModule } from '@angular/forms';
+import {HoldNoteDialogComponent} from '@eg/staff/share/holds/note-dialog.component';
 
 export class HoldRequestStats {
     private successes = 0;
@@ -92,6 +93,7 @@ class HoldContext {
     selectedFormats: any;
     stats = new HoldRequestStats;
     success = false;
+    notes: IdlObject[] = [];
 
     constructor(target: number) {
         this.holdTarget = target;
@@ -123,6 +125,7 @@ class HoldContext {
         PatronSearchDialogComponent,
         RouterModule,
         WorkLogStringsComponent,
+        HoldNoteDialogComponent
     ]
 })
 export class HoldComponent implements OnInit, OnDestroy {
@@ -206,6 +209,8 @@ export class HoldComponent implements OnInit, OnDestroy {
 
     @ViewChild('activeDateAlert') private activeDateAlert: AlertDialogComponent;
     @ViewChild('expireDateAlert') private expireDateAlert: AlertDialogComponent;
+
+    @ViewChild('holdNoteDialog') private holdNoteDialog: HoldNoteDialogComponent;
 
     constructor() {
         this.holdContexts = [];
@@ -848,6 +853,34 @@ export class HoldComponent implements OnInit, OnDestroy {
 
     overrideAll(): void {
         this.placeHolds(0, true);
+    }
+
+    canAddNote(ctx: HoldContext): boolean {
+        return ctx.lastRequest &&
+                ctx.lastRequest.result.success && ctx.notes.length == 0;
+    }
+
+    canRemoveNote(ctx: HoldContext): boolean {
+        return ctx.lastRequest &&
+                ctx.lastRequest.result.success && ctx.notes.length > 0;
+    }
+
+    newNote(ctx: HoldContext): void {
+        if(ctx.lastRequest.result && ctx.lastRequest.result.success) {
+            this.holdNoteDialog.holdId = ctx.lastRequest.result.holdId;
+            this.holdNoteDialog.pub = false;
+            this.holdNoteDialog.slip = false;
+            this.holdNoteDialog.title = "";
+            this.holdNoteDialog.body = "";
+            this.holdNoteDialog.open().subscribe(note => ctx.notes.unshift(note));
+        }
+    }
+
+    removeNotes(ctx: HoldContext): void {
+        ctx.notes.forEach(note => {
+            this.pcrud.remove(note).toPromise();
+        });
+        ctx.notes = [];
     }
 
     iconFormatLabel(code: string): string {
