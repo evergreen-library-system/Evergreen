@@ -179,6 +179,7 @@ export class MockGenerators {
     static orgService() {
         return {
             ancestors: () => [],
+            get: (nodeOrOrgId: any) => this.idlObject({shortname: 'MYLIB'}),
             list: () => of([]),
             settings: () => Promise.resolve(null),
         };
