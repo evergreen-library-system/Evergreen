@@ -8,6 +8,7 @@ import { ConfirmDialogComponent } from '@eg/share/dialog/confirm.component';
 import { of } from 'rxjs';
 import { GridContext } from '@eg/share/grid/grid';
 import { BroadcastService } from '@eg/share/util/broadcast.service';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 describe('PendingListComponent', () => {
     const DEFAULT_ORG_ID = 1;
@@ -40,12 +41,15 @@ describe('PendingListComponent', () => {
         mockConfirm = jasmine.createSpyObj<ConfirmDialogComponent>(['open']);
 
         await TestBed.configureTestingModule({
-            declarations: [PendingListComponent],
+            imports: [PendingListComponent],
             schemas: [CUSTOM_ELEMENTS_SCHEMA],
             providers: [
                 { provide: BroadcastService, useValue: mockBroadcast },
                 { provide: PendingListService, useValue: mockPending }
             ]
+        }).overrideComponent(PendingListComponent, {
+            add: { schemas: [CUSTOM_ELEMENTS_SCHEMA] },
+            remove: { imports: [StaffCommonModule] }
         }).compileComponents();
 
         fixture = TestBed.createComponent(PendingListComponent);
