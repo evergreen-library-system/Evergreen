@@ -316,13 +316,13 @@
 
 
   <div id="patron-tabs" [ngClass]="{'pt-5': !hideNavButton()}">
-    
+
     @if (patronTab === 'edit') {
       <!-- put the editor toolbar up here in the sticky section -->
       <eg-patron-edit-toolbar #editorToolbar [patronId]="patronId">
       </eg-patron-edit-toolbar>
     }
-    
+
     @if (!loading) {
       <div>
         <div [ngbNavOutlet]="patronNav"></div>

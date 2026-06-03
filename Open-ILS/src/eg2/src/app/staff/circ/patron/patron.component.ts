@@ -2,7 +2,7 @@ import {Component, ViewChild, OnInit, HostListener, inject, OnDestroy} from '@an
 import {Router, ActivatedRoute, ParamMap, RoutesRecognized} from '@angular/router';
 import {Location} from '@angular/common';
 import {NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
-import {catchError, concatMap, EMPTY, filter, from, pairwise, tap, Subject} from 'rxjs';
+import {catchError, concatMap, EMPTY, filter, from, lastValueFrom, pairwise, tap, Subject} from 'rxjs';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';
@@ -127,10 +127,9 @@ export class PatronComponent implements OnInit, OnDestroy {
 
             if ($event) { // window.onbeforeunload
                 $event.preventDefault();
-                $event.returnValue = true;
 
             } else { // tab OR route change.
-                return this.pendingChangesDialog.open().toPromise();
+                return lastValueFrom(this.pendingChangesDialog.open());
             }
 
         } else {
@@ -336,19 +335,19 @@ export class PatronComponent implements OnInit, OnDestroy {
 
     purgeAccount() {
 
-        this.purgeConfirm1.open().toPromise()
+        lastValueFrom(this.purgeConfirm1.open())
             .then(confirmed => {
                 if (confirmed) {
-                    return this.purgeConfirm2.open().toPromise();
+                    return lastValueFrom(this.purgeConfirm2.open());
                 }
             })
             .then(confirmed => {
                 if (confirmed) {
-                    return this.net.request(
+                    return lastValueFrom(this.net.request(
                         'open-ils.actor',
                         'open-ils.actor.user.has_work_perm_at',
                         this.auth.token(), 'STAFF_LOGIN', this.patronId
-                    ).toPromise();
+                    ));
                 }
             })
             .then(permOrgs => {
@@ -364,10 +363,10 @@ export class PatronComponent implements OnInit, OnDestroy {
 
     handleStaffPurge(): Promise<any> {
 
-        return this.purgeStaffDialog.open().toPromise()
+        return lastValueFrom(this.purgeStaffDialog.open())
             .then(barcode => {
                 if (barcode) {
-                    return this.pcrud.search('ac', {barcode: barcode}).toPromise();
+                    return lastValueFrom(this.pcrud.search('ac', {barcode: barcode}));
                 }
             })
             .then(card => {
@@ -383,14 +382,14 @@ export class PatronComponent implements OnInit, OnDestroy {
         let method = 'open-ils.actor.user.delete';
         if (override) { method += '.override'; }
 
-        return this.net.request('open-ils.actor', method,
-            this.auth.token(), this.patronId, destUserId).toPromise()
+        return lastValueFrom(this.net.request('open-ils.actor', method,
+            this.auth.token(), this.patronId, destUserId))
             .then(resp => {
 
                 const evt = this.evt.parse(resp);
                 if (evt) {
                     if (evt.textcode === 'ACTOR_USER_DELETE_OPEN_XACTS') {
-                        return this.purgeConfirmOverride.open().toPromise()
+                        return lastValueFrom(this.purgeConfirmOverride.open())
                             .then(confirmed => {
                                 if (confirmed) {
                                     return this.doThePurge(destUserId, true);
