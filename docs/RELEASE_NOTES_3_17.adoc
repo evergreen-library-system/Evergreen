@@ -423,6 +423,7 @@ organizations that commissioned developments in this release of
 Evergreen:
 
 * BC Libraries Cooperative
+* Evergreen Collaborative Development Initiative
 * PaILS
 
 We would also like to thank the following individuals who contributed
