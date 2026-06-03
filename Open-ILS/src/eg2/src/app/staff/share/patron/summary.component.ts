@@ -4,8 +4,7 @@ import {IdlObject} from '@eg/core/idl.service';
 import {PrintService} from '@eg/share/print/print.service';
 import {PatronService, PatronSummary} from './patron.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
-import { CommonModule, NgClass } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 @Component({
     templateUrl: 'summary.component.html',
