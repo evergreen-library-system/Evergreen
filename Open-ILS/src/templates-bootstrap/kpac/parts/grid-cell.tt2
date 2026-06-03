@@ -15,9 +15,8 @@
                         <a href="[% mkurl(ctx.kpac_root _ '/category', {trail => new_trail, locg => location,
                             nosprop => 1}, ['page', 'qtype', 'bookbag']) %]">
                     [% END %]
-                    <img src="[% ctx.media_prefixes _ '/images/kpac2/uploads/' _ cat.img %]" 
-                        class="cat-img" 
-                        alt="" /><br/>
+                    [% tile = cat.img ? 'uploads/' _ cat.img : 'default-topic.png' %]
+                    <img src="[% ctx.media_prefixes _ '/images/kpac2/' _ tile %]" class="cat-img" alt="" /><br/>
                     <div class="cat-title">[% l(cat.name) %]</div>
                     </a>
                 </div>
