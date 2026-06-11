@@ -424,6 +424,8 @@ a|
 |bibs a|
 bibDisplayFields
 
+bibByISBN
+
 createOneBib
 
 deleteOneBib
@@ -440,6 +442,28 @@ a|
 "Bibs - API only" (API_LOGIN, REST.api, REST.api.bibs)
 
 "Bibs - standard permissions" (OPAC_LOGIN)
+
+|coded_value_maps a|
+
+codedValueMapsByCtype
+
+retrieveCodedValueMap
+
+a|
+
+"Coded Value Maps - API only" (API_LOGIN, REST.api)
+
+"Coded Value Maps - standard permissions" (OPAC_LOGIN)
+
+|search a|
+
+searchMultiClass
+
+a|
+
+"Search - API only" (API_LOGIN, REST.api)
+
+"Search - standard permissions" (OPAC_LOGIN)
 
 |===
 
