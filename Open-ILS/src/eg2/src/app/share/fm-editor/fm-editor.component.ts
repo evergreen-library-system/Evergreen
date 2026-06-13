@@ -223,7 +223,7 @@ export class FmRecordEditorComponent
     // Record ID to view/update.
     _recordId: any = null;
     @Input() set recordId(id: any) {
-        if (id) {
+        if (id !== null && id !== undefined) {
             if (id !== this._recordId) {
                 this._recordId = id;
                 this._record = null; // force re-fetch
@@ -374,7 +374,7 @@ export class FmRecordEditorComponent
             let promise;
             if (this.record && this.recordId === null) {
                 promise = Promise.resolve(this.record);
-            } else if (this.recordId) {
+            } else if (this.recordId !== null && this.recordId !== undefined) {
                 promise =
                     this.pcrud.retrieve(this.idlClass, this.recordId).toPromise();
             } else {
