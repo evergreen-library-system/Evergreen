@@ -4,6 +4,7 @@ import { Tree, TreeNode } from '@eg/share/tree/tree';
 import { IdlObject } from '@eg/core/idl.service';
 import { ServerStoreService } from '@eg/core/server-store.service';
 import { EnhancedOrgTree } from '@eg/share/tree/enhanced-org-tree';
+import { focusElement } from 'test_data/test-helpers';
 
 const mockRootIdlObject = jasmine.createSpyObj<IdlObject>(['id', 'shortname'], {classname: 'aou'});
 mockRootIdlObject.id.and.returnValue(1);
@@ -69,7 +70,7 @@ describe('CatalogOrgSelectComponent', () => {
     it('displays an org tree', fakeAsync(() => {
         // non-collapsing space
         const PAD_SPACE = ' '; // U+2007
-        fixture.nativeElement.querySelector('input').focus();
+        focusElement(fixture.nativeElement.querySelector('input'));
 
         flush();
         const entries = fixture.nativeElement.querySelectorAll('button.dropdown-item');
@@ -87,7 +88,7 @@ describe('CatalogOrgSelectComponent', () => {
             emitted = event;
         });
 
-        fixture.nativeElement.querySelector('input').focus();
+        focusElement(fixture.nativeElement.querySelector('input'));
         fixture.debugElement.query(
             debugEl => debugEl.nativeElement.textContent === 'LINN'
         ).nativeElement.click();
