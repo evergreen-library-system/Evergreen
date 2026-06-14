@@ -464,6 +464,7 @@ only when metarecord holds are enabled).
                 <button type="button" class="btn btn-info" (click)="newNote(ctx)">Add Note</button>
               }
               @if (canRemoveNote(ctx)) {
+                {{ firstNote(ctx) | snippet: 15 }}
                 <button type="button" class="btn btn-destroy" (click)="removeNotes(ctx)">Remove Note</button>
               }
             </div>

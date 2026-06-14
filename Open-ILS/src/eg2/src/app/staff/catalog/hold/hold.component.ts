@@ -29,6 +29,7 @@ import { CommonModule } from '@angular/common';
 import { DateSelectComponent } from '@eg/share/date-select/date-select.component';
 import { FormsModule } from '@angular/forms';
 import {HoldNoteDialogComponent} from '@eg/staff/share/holds/note-dialog.component';
+import { SnippetPipe } from '../../../share/pipes/snippet_pipe';
 
 export class HoldRequestStats {
     private successes = 0;
@@ -125,7 +126,8 @@ class HoldContext {
         PatronSearchDialogComponent,
         RouterModule,
         WorkLogStringsComponent,
-        HoldNoteDialogComponent
+        HoldNoteDialogComponent,
+        SnippetPipe
     ]
 })
 export class HoldComponent implements OnInit, OnDestroy {
@@ -857,7 +859,7 @@ export class HoldComponent implements OnInit, OnDestroy {
 
     canAddNote(ctx: HoldContext): boolean {
         return ctx.lastRequest &&
-                ctx.lastRequest.result.success && ctx.notes.length == 0;
+                ctx.lastRequest.result.success && ctx.notes.length === 0;
     }
 
     canRemoveNote(ctx: HoldContext): boolean {
@@ -870,17 +872,21 @@ export class HoldComponent implements OnInit, OnDestroy {
             this.holdNoteDialog.holdId = ctx.lastRequest.result.holdId;
             this.holdNoteDialog.pub = false;
             this.holdNoteDialog.slip = false;
-            this.holdNoteDialog.title = "";
-            this.holdNoteDialog.body = "";
+            this.holdNoteDialog.title = '';
+            this.holdNoteDialog.body = '';
             this.holdNoteDialog.open().subscribe(note => ctx.notes.unshift(note));
         }
     }
 
     removeNotes(ctx: HoldContext): void {
         ctx.notes.forEach(note => {
-            this.pcrud.remove(note).toPromise();
+            lastValueFrom(this.pcrud.remove(note));
         });
         ctx.notes = [];
+    }
+
+    protected firstNote(ctx: HoldContext): string {
+        return ctx.notes[0]?.title();
     }
 
     iconFormatLabel(code: string): string {
