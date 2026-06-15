@@ -1,64 +1,42 @@
-import { Component, OnInit, Input, ViewChild, inject } from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {IdlObject} from '@eg/core/idl.service';
-import {NetService} from '@eg/core/net.service';
-import {EventService} from '@eg/core/event.service';
-import {ToastService} from '@eg/share/toast/toast.service';
-import {PcrudService} from '@eg/core/pcrud.service';
-import {AuthService} from '@eg/core/auth.service';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {StringComponent} from '@eg/share/string/string.component';
+import {NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 import {DateTimeSelectComponent} from '@eg/share/datetime-select/datetime-select.component';
-
+import {Observable} from 'rxjs';
 
 /* Dialog for modifying circulation due dates. */
 
 @Component({
     selector: 'eg-due-date-dialog',
     templateUrl: 'due-date-dialog.component.html',
-    imports: [
-        DateTimeSelectComponent,
-        StringComponent
-    ]
+    imports: [DateTimeSelectComponent]
 })
 
-export class DueDateDialogComponent
-    extends DialogComponent implements OnInit {
-    private modal: NgbModal;
-    private toast = inject(ToastService);
-    private net = inject(NetService);
-    private evt = inject(EventService);
-    private pcrud = inject(PcrudService);
-    private auth = inject(AuthService);
-
+export class DueDateDialogComponent extends DialogComponent {
 
     @Input() circs: IdlObject[] = [];
-    @Input() allowPastDate = false;
+    @Input() isRenewal = false;
 
-    @ViewChild('successMsg', { static: true }) private successMsg: StringComponent;
-    @ViewChild('errorMsg', { static: true }) private errorMsg: StringComponent;
+    protected dueDateIso = new Date().toISOString();
+    protected nowTime = new Date().getTime();
 
-    dueDateIsValid = false;
-    dueDateIso: string;
-    nowTime: number;
+    open(options?: NgbModalOptions): Observable<any> {
+        const now = new Date();
+        // floor minutes to be compatible with the time picker so
+        // our "now" time isn't slightly ahead in dueDateChange()
+        now.setSeconds(0, 0);
+        this.nowTime = now.getTime();
 
-    constructor() {
-        const modal = inject(NgbModal);
+        this.dueDateIso = this.isRenewal || this.circs.length !== 1
+            ? new Date().toISOString()
+            : this.circs[0].due_date();
 
-        super(modal); // required for subclassing
-
-        this.modal = modal;
+        return super.open(options);
     }
 
-    ngOnInit() {
-        this.onOpen$.subscribe(_ => {
-            this.dueDateIso = new Date().toISOString();
-            this.nowTime = new Date().getTime();
-        });
-    }
-
-    dueDateChange(iso: string) {
-        if (iso && (this.allowPastDate || Date.parse(iso) > this.nowTime)) {
+    protected dueDateChange(iso: string): void {
+        if (iso && (!this.isRenewal || Date.parse(iso) > this.nowTime)) {
             this.dueDateIso = iso;
         } else {
             this.dueDateIso = null;

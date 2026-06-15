@@ -338,6 +338,8 @@ export class CircGridComponent implements OnInit {
         const ids = this.getCircIds(rows);
         if (ids.length === 0) { return; }
 
+        this.dueDateDialog.isRenewal = false;
+        this.dueDateDialog.circs = this.getCircs(rows);
         this.dueDateDialog.open().subscribe(isoDate => {
             if (!isoDate) { return; } // canceled
 
@@ -448,6 +450,8 @@ export class CircGridComponent implements OnInit {
         const ids = this.getCopyIds(rows);
         if (ids.length === 0) { return; }
 
+        this.dueDateDialog.isRenewal = true;
+        this.dueDateDialog.circs = this.getCircs(rows);
         this.dueDateDialog.open().subscribe(isoDate => {
             if (!isoDate) { return; } // canceled
 
@@ -456,7 +460,7 @@ export class CircGridComponent implements OnInit {
 
             let refreshNeeded = false;
             // eslint-disable-next-line rxjs-x/no-nested-subscribe
-            this.circ.renewBatch(ids).subscribe(
+            this.circ.renewBatch(ids, params).subscribe(
                 { next: resp => {
                     if (resp.success) { refreshNeeded = true; }
                     dialog.increment();
