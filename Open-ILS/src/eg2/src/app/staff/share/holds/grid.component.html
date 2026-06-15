@@ -9,6 +9,7 @@
 <eg-hold-retarget-dialog #retargetDialog></eg-hold-retarget-dialog>
 <eg-hold-cancel-dialog #cancelDialog></eg-hold-cancel-dialog>
 <eg-hold-manage-dialog #manageDialog></eg-hold-manage-dialog>
+<eg-manage-hold-notes #manageNotesDialog [holdId]="selectedHoldId()"></eg-manage-hold-notes>
 <eg-confirm-dialog #uncancelDialog
   i18n-dialogTitle i18n-dialogBody
   i18n-dialogTitle="Un-Cancel Holds"
@@ -371,6 +372,18 @@
       <eg-grid-column i18n-label label="Transit Hold" path='tr_hold' [hidden]="true"></eg-grid-column>
       <eg-grid-column i18n-label label="Transit Cancel Time" path='tr_cancel_time' datatype="timestamp" [datePlusTime]="true" [hidden]="true"></eg-grid-column>
       <eg-grid-column i18n-label label="Hold Note Count" path='note_count' [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Hold Notes" path="note_first" [cellTemplate]="notesTmpl"></eg-grid-column>
+      <ng-template #notesTmpl let-hold="row">
+        @if (hold.note_count === 1) {
+          <a tabindex="0" role="button" class="link-primary" (click)="showManageNotesDialog(hold.id)">
+            {{hold.note_first}}
+          </a>
+        } @else if (hold.note_count > 1) {
+          <button type="button" i18n (click)="showManageNotesDialog(hold.id)" class="btn btn-sm btn-secondary">Manage ({{hold.note_count}})</button>
+        } @else {
+          <button type="button" i18n (click)="showManageNotesDialog(hold.id)" class="btn btn-sm btn-secondary">Manage</button>
+        }
+      </ng-template>
       <eg-grid-column i18n-label label="User Display Name" path='usr_display_name' [hidden]="true"></eg-grid-column>
       <eg-grid-column i18n-label label="Requestor Username" path='rusr_usrname' [hidden]="true"></eg-grid-column>
       <eg-grid-column i18n-label label="Item ID" path='cp_id' [hidden]="true"></eg-grid-column>

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild, inject } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild, inject, WritableSignal, signal } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import {Observable, Observer, of, from, concatMap} from 'rxjs';
 import {IdlObject} from '@eg/core/idl.service';
@@ -31,6 +31,7 @@ import { GridModule } from '@eg/share/grid/grid.module';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { HoldDetailComponent } from './detail.component';
+import { ManageHoldNotesComponent } from './manage-hold-notes.component';
 
 /** Holds grid with access to detail page and other actions */
 
@@ -54,7 +55,8 @@ import { HoldDetailComponent } from './detail.component';
         MarkMissingDialogComponent,
         OrgSelectComponent,
         ProgressDialogComponent,
-        RouterModule
+        RouterModule,
+        ManageHoldNotesComponent
     ]
 })
 export class HoldsGridComponent implements OnInit {
@@ -147,6 +149,7 @@ export class HoldsGridComponent implements OnInit {
     private cancelDialog: HoldCancelDialogComponent;
     @ViewChild('manageDialog', { static: true })
     private manageDialog: HoldManageDialogComponent;
+    @ViewChild('manageNotesDialog') private manageNotesDialog: ManageHoldNotesComponent;
     @ViewChild('uncancelDialog') private uncancelDialog: ConfirmDialogComponent;
     @ViewChild('copyLocationsDialog')
     private copyLocationsDialog: HoldCopyLocationsDialogComponent;
@@ -218,6 +221,8 @@ export class HoldsGridComponent implements OnInit {
 
     // Notify the caller the place hold button was clicked.
     @Output() placeHoldRequested: EventEmitter<void> = new EventEmitter<void>();
+
+    selectedHoldId: WritableSignal<number> = signal(null);
 
     constructor() {
         this.gridDataSource = new GridDataSource();
@@ -409,7 +414,7 @@ export class HoldsGridComponent implements OnInit {
 
     applyFilters(): any {
 
-        const filters: any = {};
+        const filters: any = {is_staff_request: 'true'};
 
         if (this.copyLocationIds.length) {
             filters['acpl.id'] = this.copyLocationIds;
@@ -664,6 +669,11 @@ export class HoldsGridComponent implements OnInit {
                 }
             );
         }
+    }
+
+    showManageNotesDialog(holdId: number) {
+        this.selectedHoldId.set(holdId);
+        this.manageNotesDialog.open({size: 'lg'}).subscribe(() => this.holdsGrid.reload());
     }
 
     showTransferDialog(rows: any[]) {

@@ -174,6 +174,7 @@ table.list tr.selected td { /* deprecated? */
 .pad-all-min {padding : 5px; }
 .pad-all-min2 {padding : 2px; }
 .pad-all {padding : 10px; }
+.pad-bottom { padding-block-end: 15px; }
 
 #print-div { display: none; }
 

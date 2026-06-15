@@ -37,8 +37,8 @@ angular.module('egHoldsApp',
 
 
 .controller('HoldsShelfCtrl',
-       ['$scope','$q','$routeParams','$window','$location','egCore','egHolds','egHoldGridActions','egCirc','egGridDataProvider','egProgressDialog',
-function($scope , $q , $routeParams , $window , $location , egCore , egHolds , egHoldGridActions , egCirc , egGridDataProvider , egProgressDialog)  {
+       ['$scope','$routeParams','$location','egCore','egHolds','egHoldGridActions','egHoldGridActions','egGridDataProvider','egProgressDialog', 'egHoldNotes',
+function($scope , $routeParams , $location , egCore , egHolds , egHoldGridActions , egHoldGridActions , egGridDataProvider , egProgressDialog, egHoldNotes)  {
     $scope.detail_hold_id = $routeParams.hold_id;
 
     var holds = [];
@@ -57,6 +57,11 @@ function($scope , $q , $routeParams , $window , $location , egCore , egHolds , e
     }
     // called after any egHoldGridActions action occurs
     $scope.grid_actions.refresh = refresh_page;
+
+    $scope.gridCellHandlers = {
+        manage_notes: egHoldNotes.manage,
+        refresh: refresh_page
+    };
 
     provider.get = function(offset, count) {
 

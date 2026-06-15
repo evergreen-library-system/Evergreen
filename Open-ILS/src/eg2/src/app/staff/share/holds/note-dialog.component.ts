@@ -1,9 +1,9 @@
 import { Component, Input, inject } from '@angular/core';
 import {IdlService} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import { FormsModule } from '@angular/forms';
+import { lastValueFrom } from 'rxjs';
 
 /** New hold note dialog */
 
@@ -15,7 +15,6 @@ import { FormsModule } from '@angular/forms';
     ]
 })
 export class HoldNoteDialogComponent extends DialogComponent {
-    private modal: NgbModal;
     private idl = inject(IdlService);
     private pcrud = inject(PcrudService);
 
@@ -26,12 +25,6 @@ export class HoldNoteDialogComponent extends DialogComponent {
 
     @Input() holdId: number;
 
-    constructor() {
-        const modal = inject(NgbModal);
-        super(modal);
-        this.modal = modal;
-    }
-
     createNote() {
         const note = this.idl.create('ahrn');
         note.staff('t');
@@ -41,7 +34,7 @@ export class HoldNoteDialogComponent extends DialogComponent {
         note.slip(this.slip ? 't' : 'f');
         note.pub(this.pub ? 't' : 'f');
 
-        this.pcrud.create(note).toPromise().then(
+        lastValueFrom(this.pcrud.create(note)).then(
             resp => this.close(resp), // new note object
             err => console.error('Could not create note', err)
         );

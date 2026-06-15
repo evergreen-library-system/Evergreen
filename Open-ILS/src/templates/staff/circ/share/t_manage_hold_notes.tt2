@@ -1,0 +1,60 @@
+  <div class="modal-header">
+    <button type="button" class="close" ng-click="ok($event)"
+      aria-hidden="true">&times;</button>
+    <h4 class="modal-title">[% l('Manage hold notes') %]</h4>
+  </div>
+  <div class="modal-body">
+    <details id="new-hold-note">
+      <summary><span class="glyphicon glyphicon-plus"></span>[% l('Add new note') %]</summary>
+      <div class="form-group row">
+        <div class="col-md-3">
+          <label for="note-pub">[% l('Patron Visible?') %]</label>
+        </div>
+        <div class="col-md-9">
+          <input type="checkbox" class="checkbox"
+            id="note-pub" ng-model="args.pub"/>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-md-3">
+          <label for="note-slip">[% l('Print on Slip?') %]</label>
+        </div>
+        <div class="col-md-9">
+          <input type="checkbox" class="checkbox"
+            id="note-slip" ng-model="args.slip"/>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-md-3">
+          <label for="note-title">[% l('Title') %]</label>
+        </div>
+        <div class="col-md-9">
+          <input type="text" class="form-control" focus-me='focusNote' required
+            id="note-title" ng-model="args.title" placeholder="[% l('Title...') %]"/>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-md-3">
+          <label for="note-body">[% l('Note Body') %]</label>
+        </div>
+        <div class="col-md-9">
+          <textarea class="form-control" required
+            id="note-body" ng-model="args.body" placeholder="[% l('Note Body...') %]">
+          </textarea>
+        </div>
+      </div>
+      <button type="button" ng-click="create()" class="btn">[% l('Add note') %]</button>
+    </details>
+    <ul ng-if="notes.length > 0" class="list-group">
+      <li class="list-group-item" ng-repeat="note in notes">
+        <h5 class="list-group-item-heading">{{ note.title() }}</h5>
+        <p class="list-group-item-text">{{ note.body() }}</p>
+        <button ng-click="delete(note)" class="btn btn-destroy btn-xs">[% l('Remove') %]</button>
+      </div>
+    </dl>
+  </div>
+  <div class="modal-footer">
+    <button type="submit" class="btn" ng-click="ok($event)">[% l('Close') %]</button>
+  </div>
+</div> <!-- modal-content -->
+

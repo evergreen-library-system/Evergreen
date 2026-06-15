@@ -605,8 +605,8 @@ function($uibModal , $q , egCore , egConfirmDialog , egAlertDialog , egWorkLog) 
  * most actionis are performed.
  */
 .factory('egHoldGridActions', 
-       ['$window','$location','$timeout','egCore','egHolds','egCirc',
-function($window , $location , $timeout , egCore , egHolds , egCirc) {
+       ['$window','$timeout','egCore','egHolds','egCirc',
+function($window, $timeout , egCore , egHolds , egCirc) {
     
     var service = {};
 
@@ -835,6 +835,83 @@ function($window , $location , $timeout , egCore , egHolds , egCirc) {
 
     return service;
 }])
+
+/**
+ * Service concerning hold notes
+ */
+.factory('egHoldNotes',
+    ['$uibModal','egCore',
+    function($uibModal, egCore) {
+        function addNote(note, callback) {
+            egCore.pcrud.create(note).then(function(note) { callback(note) });
+        }
+        function deleteNote(note, callback) {
+            egCore.pcrud.remove(note).then(function(note) { callback(note) });
+        }
+        function getNotes(holdId, callback) {
+            return egCore.pcrud.search('ahrn', {hold: holdId}, null, {atomic: true}).then(function(notes) { callback(notes) })
+        }
+
+        return {
+            getNotes: getNotes,
+            manage: function(holdId, closeCallback) {
+                return $uibModal.open({
+                    templateUrl : './circ/share/t_manage_hold_notes',
+                    backdrop: 'static',
+                    controller :
+                        ['$scope', '$uibModalInstance',
+                        function($scope, $uibModalInstance) {
+                            $scope.notes = [];
+
+                            function refreshDisplay() {
+                                getNotes(holdId, function(notes) {
+                                    var freshNotes = []
+                                    angular.forEach(notes, function(note) {
+                                        freshNotes.push(note);
+                                    });
+                                    $scope.notes = freshNotes;
+                                } )
+                            }
+
+                            $scope.args = {
+                                pub : false,
+                                slip: false,
+                                title: '',
+                                body: ''
+                            };
+
+                            $scope.ok = function($event) {
+                                $uibModalInstance.dismiss();
+                                $event.preventDefault();
+                                closeCallback();
+                            }
+
+                            $scope.create = function() {
+                                var note = new egCore.idl.ahrn();
+                                note.hold(holdId);
+                                note.staff(true);
+                                note.slip($scope.args.slip);
+                                note.pub($scope.args.pub);
+                                note.title($scope.args.title);
+                                note.body($scope.args.body);
+                                addNote(note, function() {
+                                    document.querySelector('#new-hold-note').removeAttribute('open');
+                                    refreshDisplay();
+                                })
+                            }
+
+                            $scope.delete = function(note) {
+                                deleteNote(note, function() { refreshDisplay() })
+                            }
+
+                            refreshDisplay()
+                        }
+                    ]
+                }).result;
+            }
+        }
+    }
+])
 
 /**
  * Hold details interface 

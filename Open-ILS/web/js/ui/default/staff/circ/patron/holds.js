@@ -4,9 +4,9 @@
 
 angular.module('egPatronApp').controller('PatronHoldsCtrl',
 
-       ['$scope','$q','$routeParams','egCore','egUser','patronSvc',
+       ['$scope','$routeParams','egCore','patronSvc','egHoldNotes', '$q',
         'egGridDataProvider','egHolds','$window','$location','egCirc','egHoldGridActions',
-function($scope,  $q,  $routeParams,  egCore,  egUser,  patronSvc,  
+function($scope, $routeParams,  egCore,  patronSvc, egHoldNotes, $q,
         egGridDataProvider , egHolds , $window , $location , egCirc, egHoldGridActions) {
 
     $scope.initTab('holds', $routeParams.id);
@@ -22,6 +22,10 @@ function($scope,  $q,  $routeParams,  egCore,  egUser,  patronSvc,
         provider.refresh() 
     }
     $scope.grid_actions.refresh = refresh_all;
+    $scope.gridCellHandlers = {
+        manage_notes: egHoldNotes.manage,
+        refresh: refresh_all
+    };
 
     $scope.show_main_list = function() {
         // don't need a full reset_page() to swap tabs
@@ -129,7 +133,8 @@ function($scope,  $q,  $routeParams,  egCore,  egUser,  patronSvc,
         var restrictions = {
                 cancel_time      : null,
                 fulfillment_time  : null,
-                'h.usr': $scope.patron_id
+                'h.usr': $scope.patron_id,
+                is_staff_request: 'true'
         };
         var options;
         if ($scope.holds_display == 'alt') {
@@ -221,7 +226,7 @@ function($scope,  $q,  $routeParams,  egCore,  egUser,  patronSvc,
                     patronSvc.holds.push(new_item);
                 }
             }
-        )/*.finally(egProgressDialog.close)*/;
+        )
     }
 
     $scope.print = function() {

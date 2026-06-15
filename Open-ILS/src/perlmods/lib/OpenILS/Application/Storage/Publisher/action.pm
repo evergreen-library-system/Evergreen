@@ -2269,7 +2269,7 @@ SELECT  h.id, h.request_time, h.capture_time, h.fulfillment_time, h.checkin_time
         tr.copy_status AS tr_copy_status, tr.persistant_transfer AS tr_persistant_transfer,
         tr.prev_dest AS tr_prev_dest, tr.hold AS tr_hold, tr.cancel_time AS tr_cancel_time,
 
-        notes.count AS note_count,
+        notes.count AS note_count, notes.first AS note_first,
 
         u.id AS usr_id, u.card AS usr_card, u.profile AS usr_profile, u.usrname AS usr_usrname,
         u.email AS usr_email, u.standing AS usr_standing, u.ident_type AS usr_ident_type,
@@ -2452,7 +2452,7 @@ SELECT  h.id, h.request_time, h.capture_time, h.fulfillment_time, h.checkin_time
                     JOIN reporter.hold_request_record sr ON (sh.id = sr.id AND sh.cancel_time IS NULL AND sh.fulfillment_time IS NULL)
               WHERE sr.bib_record = r.bib_record
         ) pos ON (pos.id=h.id)
-        LEFT JOIN LATERAL (SELECT COUNT(*) FROM action.hold_request_note WHERE h.id = hold AND (pub = TRUE OR staff = $is_staff_request)) notes ON TRUE
+        LEFT JOIN LATERAL (SELECT COUNT(*), FIRST(CONCAT(title,': ',body)) AS first FROM action.hold_request_note WHERE h.id = hold AND ((pub AND NOT staff) OR $is_staff_request)) notes ON TRUE
         LEFT JOIN LATERAL (SELECT COUNT(*), MAX(notify_time) FROM action.hold_notification WHERE h.id = hold) n ON TRUE
         LEFT JOIN LATERAL (SELECT FIRST(value) AS value FROM metabib.display_entry WHERE source = r.bib_record AND field = t_field.field) t ON TRUE
         LEFT JOIN LATERAL (SELECT FIRST(value) AS value FROM metabib.display_entry WHERE source = r.bib_record AND field = a_field.field) a ON TRUE

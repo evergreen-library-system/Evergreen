@@ -129,6 +129,11 @@
   <eg-grid-field label="[% l('Transit Hold') %]" path='hold.tr_hold' hidden></eg-grid-field>
   <eg-grid-field label="[% l('Transit Cancel Time') %]" path='hold.tr_cancel_time' datatype="timestamp" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Hold Note Count') %]" path='hold.note_count' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Hold Notes') %]" path='hold.note_first' handlers="gridCellHandlers" compiled>
+    <a ng-show="item.hold.note_count == 1" href="#" ng-click="col.handlers.manage_notes(item.hold.id, col.handlers.refresh)">{{ item.hold.note_first }}</a>
+    <button ng-show="item.hold.note_count > 1" ng-click="col.handlers.manage_notes(item.hold.id, col.handlers.refresh)" class="btn btn-xs btn-default" type="button">[% l('Manage') %] ({{item.hold.note_count}})</button>
+    <button ng-show="!item.hold.note_count" ng-click="col.handlers.manage_notes(item.hold.id, col.handlers.refresh)" class="btn btn-xs btn-default" type="button">[% l('Manage') %]</button>
+  </eg-grid-field>
   <eg-grid-field label="[% l('User Display Name') %]" path='hold.usr_display_name' hidden></eg-grid-field>
   <eg-grid-field label="[% l('User Alias') %]" path='hold.usr_alias' hidden></eg-grid-field>
   <eg-grid-field label="[% l('User Alias or Display Name') %]" path='hold.usr_alias_or_display_name' hidden></eg-grid-field>
