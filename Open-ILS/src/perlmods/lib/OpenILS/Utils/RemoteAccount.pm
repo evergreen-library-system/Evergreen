@@ -380,21 +380,26 @@ sub _sftp {
     my %args = (
         user => $self->remote_user,
         password => $self->remote_password,
+        timeout => 15,
         more => [-o => "StrictHostKeyChecking=no"],
     );
     $args{'port'} = $self->port if $self->port;
     my $sftp = Net::SFTP::Foreign->new($self->remote_host, %args);
-    $sftp->error and $logger->error("SFTP connect FAILED: " . $sftp->error);
+    if ($sftp->error) {
+        $logger->error("SFTP connect FAILED: " . $sftp->error);
+        return;
+    }
     return $self->{sftp} = $sftp;
 }
 
 sub put_sftp {
     my $self = shift;
-    my $res = $self->_sftp->put(@{$self->{put_args}});
-    if ($self->_sftp->error or not $res) {
+    my $res;
+    eval { $res = $self->_sftp->put(@{$self->{put_args}}) };
+    if ($@ or not $res) {
         $logger->error(
             $self->_error(
-                "SFTP put to", $self->remote_host, "failed with error: " . $self->_sftp->error
+                "SFTP put to", $self->remote_host, "failed with error: " . $@
             )
         );
         return;
@@ -413,11 +418,12 @@ sub get_sftp {
     my $self = shift;
     my $remote_filename = $self->{get_args}->[0];
     my $filename = $self->{get_args}->[1];
-    my $success = $self->_sftp->get(@{$self->{get_args}});
-    if ($self->_sftp->error or not $success) {
+    my $success;
+    eval { $success = $self->_sftp->get(@{$self->{get_args}}) };
+    if ($@ or not $success) {
         $logger->error(
             $self->_error(
-                "get from", $self->remote_host, "failed with error: " . $self->_sftp->error
+                "get from", $self->remote_host, "failed with error: " . $@
             )
         );
         return;
@@ -443,11 +449,12 @@ sub ls_sftp {   # returns full path like: dir/path/file.ext
         my ($dirpath, $regex) = $self->glob_parse($_);
         my $dirtarget = $dirpath || $_;
         $dirtarget =~ s/\/+$//;
-        my @part = @{$self->_sftp->ls($dirtarget, names_only=>1, no_wanted => qr/^\.+$/)};
-        if ($self->_sftp->error) {
+        my @part;
+        eval { @part = @{$self->_sftp->ls($dirtarget, names_only=>1, no_wanted => qr/^\.+$/)} };
+        if ($@) {
             $logger->error(
                 $self->_error(
-                    "ls from",  $self->remote_host, "failed with error: " . $self->_sftp->error
+                    "ls from",  $self->remote_host, "failed with error: " . $@
                 )
             );
             next;
