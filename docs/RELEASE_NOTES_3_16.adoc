@@ -3,6 +3,48 @@
 :numbered:
 :toclevels: 3
 
+== Evergreen 3.16.8 == 
+
+This release contains bug fixes and documentation fixes improving on Evergreen 3.17.1.
+
+=== Upgrade Notes ===
+
+The following item requires running a database upgrade script:
+
+* Fix a data type mismatch error when logging out of the RESTful API using application/json Accept header. (https://bugs.launchpad.net/evergreen/+bug/2153793[Bug 2153793])
+
+
+=== Administration ===
+
+* Fixes an issue where RESTful API rendered responses may not be rendered correctly and quiets an uninitialized value warning. (https://bugs.launchpad.net/evergreen/+bug/2153806[Bug 2153806])
+* Fix a data type mismatch error when logging out of the RESTful API using application/json Accept header. (https://bugs.launchpad.net/evergreen/+bug/2153793[Bug 2153793])
+
+
+=== Staff Interface ===
+
+* Fixes bug that caused patron search results to always be sorted primarily by penalties. (https://bugs.launchpad.net/evergreen/+bug/2152781[Bug 2152781])
+* Ports the pending patron interface to Angular. (https://bugs.launchpad.net/evergreen/+bug/2146953[Bug 2146953])
+* Fixes Angular pending patron test failures (https://bugs.launchpad.net/evergreen/+bug/2154783[Bug 2154783])
+
+
+=== Acknowledgements ===
+
+We would like to thank the following individuals who contributed code, testing, documentation, and patches to the 3.16.8 point release of Evergreen:
+
+* Andrea Buntz Neiman
+* Bill Erickson
+* Chris Sharp
+* Dan Briem
+* Galen Charlton
+* Gina Monti
+* Ian Skelskey
+* Jane Sandberg
+* Jason Stephenson
+* John Amundson
+* Michele Morgan
+* Mike Rylander
+
+
 == Evergreen 3.16.7 ==
 
 This is a security release that fixes several vulnerabilities, including ones that allow
