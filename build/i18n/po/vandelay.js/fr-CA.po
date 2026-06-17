@@ -1,0 +1,25 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
+"POT-Creation-Date: 2022-04-27 17:07:21-0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Translate Toolkit 3.8.4\n"
+
+#: vandelay.js:NO_BUCKET_ITEMS
+msgid ""
+"No bucket was created because the selected queue has no imported records"
+msgstr ""
+
+#: vandelay.js:BUCKET_CREATE_SUCCESS
+msgid ""
+"Successfully added ${0} record(s) to bucket \"${1}\".\n"
+"\n"
+"The bucket now has ${2} total records."
+msgstr ""
