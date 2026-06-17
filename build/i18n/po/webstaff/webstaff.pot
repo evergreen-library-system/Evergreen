@@ -369,7 +369,7 @@ msgstr ""
 msgid "<OPAC Renewal>"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:701
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:707
 msgid "<no workstation>"
 msgstr ""
 
@@ -417,7 +417,7 @@ msgstr ""
 msgid "Abort Update"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/index.tt2:13 ../../Open-ILS/src/templates/staff/navbar.tt2:809
+#: ../../Open-ILS/src/templates/staff/index.tt2:13 ../../Open-ILS/src/templates/staff/navbar.tt2:815
 msgid "About"
 msgstr ""
 
@@ -445,11 +445,11 @@ msgstr ""
 msgid "Acquisition Patron Requests"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/acq/index.tt2:2 ../../Open-ILS/src/templates/staff/navbar.tt2:473
+#: ../../Open-ILS/src/templates/staff/acq/index.tt2:2 ../../Open-ILS/src/templates/staff/navbar.tt2:479
 msgid "Acquisitions"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/admin/acq/index.tt2:2 ../../Open-ILS/src/templates/staff/admin/acq/t_splash.tt2:4 ../../Open-ILS/src/templates/staff/navbar.tt2:664
+#: ../../Open-ILS/src/templates/staff/admin/acq/index.tt2:2 ../../Open-ILS/src/templates/staff/admin/acq/t_splash.tt2:4 ../../Open-ILS/src/templates/staff/navbar.tt2:670
 msgid "Acquisitions Administration"
 msgstr ""
 
@@ -726,7 +726,7 @@ msgstr ""
 msgid "Adjustment"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:633 ../../Open-ILS/src/templates/staff/t_splash.tt2:78
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:639 ../../Open-ILS/src/templates/staff/t_splash.tt2:78
 msgid "Administration"
 msgstr ""
 
@@ -1152,7 +1152,7 @@ msgstr ""
 msgid "Authorized users of this account"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:746 ../../Open-ILS/src/templates/staff/navbar.tt2:771
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:752 ../../Open-ILS/src/templates/staff/navbar.tt2:777
 msgid "Auto"
 msgstr ""
 
@@ -1233,7 +1233,7 @@ msgstr ""
 msgid "Backdating Enabled"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:530
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:536
 msgid "Background Imports"
 msgstr ""
 
@@ -1604,11 +1604,11 @@ msgstr ""
 msgid "Book Item Now"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/booking/index.tt2:2 ../../Open-ILS/src/templates/staff/navbar.tt2:587
+#: ../../Open-ILS/src/templates/staff/booking/index.tt2:2 ../../Open-ILS/src/templates/staff/navbar.tt2:593
 msgid "Booking"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/admin/booking/index.tt2:2 ../../Open-ILS/src/templates/staff/admin/booking/t_splash.tt2:4 ../../Open-ILS/src/templates/staff/navbar.tt2:676
+#: ../../Open-ILS/src/templates/staff/admin/booking/index.tt2:2 ../../Open-ILS/src/templates/staff/admin/booking/t_splash.tt2:4 ../../Open-ILS/src/templates/staff/navbar.tt2:682
 msgid "Booking Administration"
 msgstr ""
 
@@ -1985,7 +1985,7 @@ msgstr ""
 msgid "Capture Local Holds As Transits"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:606
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:612
 msgid "Capture Resources"
 msgstr ""
 
@@ -2017,11 +2017,11 @@ msgstr ""
 msgid "CatLang"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/index.tt2:2 ../../Open-ILS/src/templates/staff/cat/catalog/index.tt2:65 ../../Open-ILS/src/templates/staff/navbar.tt2:360 ../../Open-ILS/src/templates/staff/navbar.tt2:60
+#: ../../Open-ILS/src/templates/staff/cat/catalog/index.tt2:2 ../../Open-ILS/src/templates/staff/cat/catalog/index.tt2:65 ../../Open-ILS/src/templates/staff/navbar.tt2:366 ../../Open-ILS/src/templates/staff/navbar.tt2:60
 msgid "Catalog"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/circ/share/circ_strings.tt2:43 ../../Open-ILS/src/templates/staff/navbar.tt2:353
+#: ../../Open-ILS/src/templates/staff/circ/share/circ_strings.tt2:43 ../../Open-ILS/src/templates/staff/navbar.tt2:359
 msgid "Cataloging"
 msgstr ""
 
@@ -2053,7 +2053,7 @@ msgstr ""
 msgid "Change Given:"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:785 ../../Open-ILS/src/templates/staff/reporter/t_edit_template.tt2:200
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:791 ../../Open-ILS/src/templates/staff/reporter/t_edit_template.tt2:200
 msgid "Change Operator"
 msgstr ""
 
@@ -2411,11 +2411,11 @@ msgstr ""
 msgid "Claim Types"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:548
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:554
 msgid "Claim-Ready Items"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:554
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:560
 msgid "Claim-Ready Items (Legacy)"
 msgstr ""
 
@@ -2899,11 +2899,11 @@ msgstr ""
 msgid "Create Event"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:573
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:579
 msgid "Create Invoice"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:579
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:585
 msgid "Create Invoice (Legacy)"
 msgstr ""
 
@@ -2915,7 +2915,7 @@ msgstr ""
 msgid "Create MFHD"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:424 ../../Open-ILS/src/templates/staff/navbar.tt2:426
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:430 ../../Open-ILS/src/templates/staff/navbar.tt2:432
 msgid "Create New MARC Record"
 msgstr ""
 
@@ -2931,7 +2931,7 @@ msgstr ""
 msgid "Create Pattern"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:541
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:547
 msgid "Create Purchase Order"
 msgstr ""
 
@@ -2943,7 +2943,7 @@ msgstr ""
 msgid "Create Request"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:594
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:600
 msgid "Create Reservations"
 msgstr ""
 
@@ -3073,7 +3073,7 @@ msgstr ""
 msgid "Ctrl+F2"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:427
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:433
 msgid "Ctrl+F3"
 msgstr ""
 
@@ -3117,7 +3117,7 @@ msgstr ""
 msgid "Current Users"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:729
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:735
 msgid "Current color mode:"
 msgstr ""
 
@@ -3154,7 +3154,7 @@ msgstr ""
 msgid "Damaged"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:740 ../../Open-ILS/src/templates/staff/navbar.tt2:763
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:746 ../../Open-ILS/src/templates/staff/navbar.tt2:769
 msgid "Dark"
 msgstr ""
 
@@ -4280,7 +4280,7 @@ msgstr ""
 msgid "F2"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:363 ../../Open-ILS/src/templates/staff/navbar.tt2:63
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:369 ../../Open-ILS/src/templates/staff/navbar.tt2:63
 msgid "F3"
 msgstr ""
 
@@ -4288,7 +4288,7 @@ msgstr ""
 msgid "F4"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:242 ../../Open-ILS/src/templates/staff/navbar.tt2:378 ../../Open-ILS/src/templates/staff/navbar.tt2:54
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:242 ../../Open-ILS/src/templates/staff/navbar.tt2:384 ../../Open-ILS/src/templates/staff/navbar.tt2:54
 msgid "F5"
 msgstr ""
 
@@ -4718,7 +4718,7 @@ msgid ""
 "label. Use pocket label left margin to identify how much space to provide between labels within one set. Must be in format &quot;0.25in&quot;, &quot;2.5cm&quot;, &quot;1.5in&quot;, etc. (units of measurement must be valid CSS)"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:480
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:486
 msgid "General Search"
 msgstr ""
 
@@ -4822,7 +4822,7 @@ msgstr ""
 msgid "Hard Due Date Changes"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:821
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:827
 msgid "Hatch"
 msgstr ""
 
@@ -4841,7 +4841,7 @@ msgid ""
 "settings are required."
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:816
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:822
 msgid "Hatch Connection Status"
 msgstr ""
 
@@ -5256,7 +5256,7 @@ msgstr ""
 msgid "Import Record"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:433
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:439
 msgid "Import Record from Z39.50"
 msgstr ""
 
@@ -5404,7 +5404,7 @@ msgstr ""
 msgid "Invoice Payment Method"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:567
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:573
 msgid "Invoices"
 msgstr ""
 
@@ -5523,7 +5523,7 @@ msgstr ""
 msgid "Item Barcode: %1"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/cat/bucket/copy/index.tt2:2 ../../Open-ILS/src/templates/staff/navbar.tt2:391 ../../Open-ILS/src/templates/staff/t_splash.tt2:68
+#: ../../Open-ILS/src/templates/staff/cat/bucket/copy/index.tt2:2 ../../Open-ILS/src/templates/staff/navbar.tt2:397 ../../Open-ILS/src/templates/staff/t_splash.tt2:68
 msgid "Item Buckets"
 msgstr ""
 
@@ -5583,7 +5583,7 @@ msgstr ""
 msgid "Item Selection Depth"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_templates.tt2:29 ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:97 ../../Open-ILS/src/templates/staff/cat/item/index.tt2:2 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:6 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:92 ../../Open-ILS/src/templates/staff/circ/holds/t_pull_list.tt2:127 ../../Open-ILS/src/templates/staff/circ/holds/t_shelf_list.tt2:79 ../../Open-ILS/src/templates/staff/circ/in_house_use/index.tt2:102 ../../Open-ILS/src/templates/staff/circ/patron/t_holds_list.tt2:78 ../../Open-ILS/src/templates/staff/circ/patron/t_items_out.tt2:107 ../../Open-ILS/src/templates/staff/navbar.tt2:239 ../../Open-ILS/src/templates/staff/navbar.tt2:241 ../../Open-ILS/src/templates/staff/navbar.tt2:375 ../../Open-ILS/src/templates/staff/navbar.tt2:377 ../../Open-ILS/src/templates/staff/navbar.tt2:51
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_templates.tt2:29 ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:97 ../../Open-ILS/src/templates/staff/cat/item/index.tt2:2 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:6 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:92 ../../Open-ILS/src/templates/staff/circ/holds/t_pull_list.tt2:127 ../../Open-ILS/src/templates/staff/circ/holds/t_shelf_list.tt2:79 ../../Open-ILS/src/templates/staff/circ/in_house_use/index.tt2:102 ../../Open-ILS/src/templates/staff/circ/patron/t_holds_list.tt2:78 ../../Open-ILS/src/templates/staff/circ/patron/t_items_out.tt2:107 ../../Open-ILS/src/templates/staff/navbar.tt2:239 ../../Open-ILS/src/templates/staff/navbar.tt2:241 ../../Open-ILS/src/templates/staff/navbar.tt2:381 ../../Open-ILS/src/templates/staff/navbar.tt2:383 ../../Open-ILS/src/templates/staff/navbar.tt2:51
 msgid "Item Status"
 msgstr ""
 
@@ -5997,7 +5997,7 @@ msgstr ""
 msgid "Library: "
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:734 ../../Open-ILS/src/templates/staff/navbar.tt2:755
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:740 ../../Open-ILS/src/templates/staff/navbar.tt2:761
 msgid "Light"
 msgstr ""
 
@@ -6013,7 +6013,7 @@ msgstr ""
 msgid "Lineitem ID"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:452
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:458
 msgid "Link Checker"
 msgstr ""
 
@@ -6041,11 +6041,11 @@ msgstr ""
 msgid "Load Bucket"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:517
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:523
 msgid "Load Catalog Record IDs"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:524
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:530
 msgid "Load MARC Order Records"
 msgstr ""
 
@@ -6069,7 +6069,7 @@ msgstr ""
 msgid "Loan Duration"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:658
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:664
 msgid "Local Administration"
 msgstr ""
 
@@ -6085,7 +6085,7 @@ msgstr ""
 msgid "Location:"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:797
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:803
 msgid "Log Out"
 msgstr ""
 
@@ -6121,11 +6121,11 @@ msgstr ""
 msgid "Lower case"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:445
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:451
 msgid "MARC Batch Edit"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:439
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:445
 msgid "MARC Batch Import/Export"
 msgstr ""
 
@@ -6137,7 +6137,7 @@ msgstr ""
 msgid "MARC Edit"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:511
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:517
 msgid "MARC Federated Search"
 msgstr ""
 
@@ -6294,7 +6294,7 @@ msgstr ""
 msgid "Manage"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:459
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:465
 msgid "Manage Authorities"
 msgstr ""
 
@@ -6330,7 +6330,7 @@ msgstr ""
 msgid "Manage Predictions"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:50 ../../Open-ILS/src/templates/staff/cat/item/index.tt2:105 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:26 ../../Open-ILS/src/templates/staff/navbar.tt2:624
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:50 ../../Open-ILS/src/templates/staff/cat/item/index.tt2:105 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:26 ../../Open-ILS/src/templates/staff/navbar.tt2:630
 msgid "Manage Reservations"
 msgstr ""
 
@@ -6722,7 +6722,7 @@ msgstr ""
 msgid "Move user into this group?"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:803
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:809
 msgid "Multi-factor Authentication"
 msgstr ""
 
@@ -6854,7 +6854,7 @@ msgstr ""
 msgid "New Barcode..."
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:499
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:505
 msgid "New Brief Record"
 msgstr ""
 
@@ -7740,7 +7740,7 @@ msgstr ""
 msgid "Patron Registration"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:505
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:511
 msgid "Patron Requests"
 msgstr ""
 
@@ -7935,7 +7935,7 @@ msgstr ""
 msgid "Pending Items"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/pending.tt2:2 ../../Open-ILS/src/templates/staff/circ/patron/t_pending_list.tt2:3 ../../Open-ILS/src/templates/staff/navbar.tt2:183
+#: ../../Open-ILS/src/templates/staff/circ/patron/pending.tt2:2 ../../Open-ILS/src/templates/staff/circ/patron/t_pending_list.tt2:3 ../../Open-ILS/src/templates/staff/navbar.tt2:183 ../../Open-ILS/src/templates/staff/navbar.tt2:345
 msgid "Pending Patrons"
 msgstr ""
 
@@ -8012,7 +8012,7 @@ msgstr ""
 msgid "Pick Up Holds?"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:612
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:618
 msgid "Pick Up Reservations"
 msgstr ""
 
@@ -8404,7 +8404,7 @@ msgstr ""
 msgid "Proj"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:486
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:492
 msgid "Provider Search"
 msgstr ""
 
@@ -8456,11 +8456,11 @@ msgstr ""
 msgid "Publisher..."
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:600
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:606
 msgid "Pull List"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:535
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:541
 msgid "Purchase Orders"
 msgstr ""
 
@@ -8594,7 +8594,7 @@ msgstr ""
 msgid "Receive Next"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:561
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:567
 msgid "Receive Shipment"
 msgstr ""
 
@@ -8648,7 +8648,7 @@ msgstr ""
 msgid "Record %1 marked for overlay"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/cat/bucket/record/index.tt2:2 ../../Open-ILS/src/templates/staff/navbar.tt2:385 ../../Open-ILS/src/templates/staff/t_splash.tt2:62
+#: ../../Open-ILS/src/templates/staff/cat/bucket/record/index.tt2:2 ../../Open-ILS/src/templates/staff/navbar.tt2:391 ../../Open-ILS/src/templates/staff/t_splash.tt2:62
 msgid "Record Buckets"
 msgstr ""
 
@@ -9004,7 +9004,7 @@ msgstr ""
 msgid "Reporter"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:683 ../../Open-ILS/src/templates/staff/reporter/share/report_strings.tt2:39 ../../Open-ILS/src/templates/staff/t_splash.tt2:96
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:689 ../../Open-ILS/src/templates/staff/reporter/share/report_strings.tt2:39 ../../Open-ILS/src/templates/staff/t_splash.tt2:96
 msgid "Reports"
 msgstr ""
 
@@ -9167,7 +9167,7 @@ msgstr ""
 msgid "Restarts at unit completion"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:791
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:797
 msgid "Restore Operator"
 msgstr ""
 
@@ -9187,15 +9187,15 @@ msgstr ""
 msgid "Retrieve All These Patrons"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:465
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:471
 msgid "Retrieve Authority Record by ID"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:398
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:404
 msgid "Retrieve Bib Record by ID"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:407
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:413
 msgid "Retrieve Bib Record by TCN"
 msgstr ""
 
@@ -9203,7 +9203,7 @@ msgstr ""
 msgid "Retrieve Item"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:405 ../../Open-ILS/src/templates/staff/navbar.tt2:414 ../../Open-ILS/src/templates/staff/navbar.tt2:416
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:411 ../../Open-ILS/src/templates/staff/navbar.tt2:420 ../../Open-ILS/src/templates/staff/navbar.tt2:422
 msgid "Retrieve Last Bib Record"
 msgstr ""
 
@@ -9227,7 +9227,7 @@ msgstr ""
 msgid "Retrieve Selected Patrons"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:618
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:624
 msgid "Return Reservations"
 msgstr ""
 
@@ -9469,11 +9469,11 @@ msgstr ""
 msgid "Search for..."
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:362 ../../Open-ILS/src/templates/staff/navbar.tt2:62
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:368 ../../Open-ILS/src/templates/staff/navbar.tt2:62
 msgid "Search the Catalog"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:369
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:375
 msgid "Search the Catalog (Traditional)"
 msgstr ""
 
@@ -9603,7 +9603,7 @@ msgstr ""
 msgid "Selection List ID"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:493
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:499
 msgid "Selection Lists"
 msgstr ""
 
@@ -9663,7 +9663,7 @@ msgstr ""
 msgid "Serials"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/admin/serials/index.tt2:2 ../../Open-ILS/src/templates/staff/admin/serials/t_splash.tt2:4 ../../Open-ILS/src/templates/staff/navbar.tt2:670
+#: ../../Open-ILS/src/templates/staff/admin/serials/index.tt2:2 ../../Open-ILS/src/templates/staff/admin/serials/t_splash.tt2:4 ../../Open-ILS/src/templates/staff/navbar.tt2:676
 msgid "Serials Administration"
 msgstr ""
 
@@ -9679,7 +9679,7 @@ msgstr ""
 msgid "Series"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/admin/server/index.tt2:2 ../../Open-ILS/src/templates/staff/admin/server/t_splash.tt2:4 ../../Open-ILS/src/templates/staff/navbar.tt2:652
+#: ../../Open-ILS/src/templates/staff/admin/server/index.tt2:2 ../../Open-ILS/src/templates/staff/admin/server/t_splash.tt2:4 ../../Open-ILS/src/templates/staff/navbar.tt2:658
 msgid "Server Administration"
 msgstr ""
 
@@ -9827,11 +9827,11 @@ msgstr ""
 msgid "Shift+F2"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:408
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:414
 msgid "Shift+F3"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:417
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:423
 msgid "Shift+F8"
 msgstr ""
 
@@ -9963,7 +9963,7 @@ msgstr ""
 msgid "Sign in"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:690
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:696
 msgid "Simple Reports"
 msgstr ""
 
@@ -11394,7 +11394,7 @@ msgstr ""
 msgid "User Not Found"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/admin/user_perms.tt2:2 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:224 ../../Open-ILS/src/templates/staff/navbar.tt2:646
+#: ../../Open-ILS/src/templates/staff/admin/user_perms.tt2:2 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:224 ../../Open-ILS/src/templates/staff/navbar.tt2:652
 msgid "User Permission Editor"
 msgstr ""
 
@@ -11450,7 +11450,7 @@ msgstr ""
 msgid "Verify"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/t_credentials.tt2:5 ../../Open-ILS/src/templates/staff/navbar.tt2:202 ../../Open-ILS/src/templates/staff/navbar.tt2:345
+#: ../../Open-ILS/src/templates/staff/circ/patron/t_credentials.tt2:5 ../../Open-ILS/src/templates/staff/navbar.tt2:202 ../../Open-ILS/src/templates/staff/navbar.tt2:351
 msgid "Verify Credentials"
 msgstr ""
 
@@ -11771,7 +11771,7 @@ msgstr ""
 msgid "Working location"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/t_items_out.tt2:90 ../../Open-ILS/src/templates/staff/navbar.tt2:640 ../../Open-ILS/src/templates/staff/offline-interface.tt2:13 ../../Open-ILS/src/templates/staff/offline-interface.tt2:200 ../../Open-ILS/src/templates/staff/t_login.tt2:40
+#: ../../Open-ILS/src/templates/staff/circ/patron/t_items_out.tt2:90 ../../Open-ILS/src/templates/staff/navbar.tt2:646 ../../Open-ILS/src/templates/staff/offline-interface.tt2:13 ../../Open-ILS/src/templates/staff/offline-interface.tt2:200 ../../Open-ILS/src/templates/staff/t_login.tt2:40
 msgid "Workstation"
 msgstr ""
 
@@ -11975,7 +11975,7 @@ msgstr ""
 msgid "ctrl+f2"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:423
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:429
 msgid "ctrl+f3"
 msgstr ""
 
@@ -11999,7 +11999,7 @@ msgstr ""
 msgid "f2"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:359 ../../Open-ILS/src/templates/staff/navbar.tt2:59
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:365 ../../Open-ILS/src/templates/staff/navbar.tt2:59
 msgid "f3"
 msgstr ""
 
@@ -12007,7 +12007,7 @@ msgstr ""
 msgid "f4"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:238 ../../Open-ILS/src/templates/staff/navbar.tt2:374 ../../Open-ILS/src/templates/staff/navbar.tt2:50
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:238 ../../Open-ILS/src/templates/staff/navbar.tt2:380 ../../Open-ILS/src/templates/staff/navbar.tt2:50
 msgid "f5"
 msgstr ""
 
@@ -12077,11 +12077,11 @@ msgstr ""
 msgid "shift+f2"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:404
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:410
 msgid "shift+f3"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:413
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:419
 msgid "shift+f8"
 msgstr ""
 
