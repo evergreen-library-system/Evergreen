@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2025-10-29 12:29-0400\n"
-"PO-Revision-Date: 2014-11-03 23:16+0000\n"
-"Last-Translator: André Yamada <andrehideo@hotmail.com>\n"
+"PO-Revision-Date: 2026-05-24 15:24+0000\n"
+"Last-Translator: Krascovict <Unknown>\n"
 "Language-Team: Brazilian Portuguese <pt_BR@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2025-10-30 07:38+0000\n"
-"X-Generator: Launchpad (build 1d08ffb47b836b8a4c9a0f11318dfdea7420ab6d)\n"
+"X-Launchpad-Export-Date: 2026-05-25 14:04+0000\n"
+"X-Generator: Launchpad (build e655887187b0b1e1a70625cd2d210bb3cf47cd14)\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-Country: BRAZIL\n"
 "Language: pt_BR\n"
@@ -38,7 +38,7 @@ msgstr "Projeto Gutenberg"
 
 #: 950.data.seed-values.sql:8
 msgid "Course materials module"
-msgstr ""
+msgstr "Módulo de materiais do curso"
 
 #: 950.data.seed-values.sql:12
 msgid "Bound Volume"
@@ -88,7 +88,7 @@ msgstr "Usuário excede o limite de avisos de pré-coleções"
 
 #: 950.data.seed-values.sql:32
 msgid "Patron exceeds max lost item threshold"
-msgstr ""
+msgstr "Cliente ultrapassa o limite máximo de itens perdidos."
 
 #: 950.data.seed-values.sql:34
 msgid "Alerting Note, no blocks"
@@ -136,19 +136,20 @@ msgstr "Usuário encaminhado a uma agência de coletas"
 
 #: 950.data.seed-values.sql:49
 msgid "Patron had an invalid email address"
-msgstr ""
+msgstr "O usuário tinha um endereço de e-mail inválido."
 
 #: 950.data.seed-values.sql:61
 msgid "Patron had an invalid daytime phone number"
 msgstr ""
+"O cliente tinha um número de telefone inválido para contato durante o dia."
 
 #: 950.data.seed-values.sql:73
 msgid "Patron had an invalid evening phone number"
-msgstr ""
+msgstr "O cliente tinha um número de telefone noturno inválido."
 
 #: 950.data.seed-values.sql:85
 msgid "Patron had an invalid other phone number"
-msgstr ""
+msgstr "O cliente tinha um outro número de telefone inválido."
 
 # id::vqarad.description__1
 #: 950.data.seed-values.sql:99 950.data.seed-values.sql:6293
@@ -314,31 +315,31 @@ msgstr "LC Número de Controle"
 
 #: 950.data.seed-values.sql:186
 msgid "Title Proper (Browse)"
-msgstr ""
+msgstr "Título Próprio (Navegar)"
 
 #: 950.data.seed-values.sql:188
 msgid "Series Title (Browse)"
-msgstr ""
+msgstr "Título da Série (Navegar)"
 
 #: 950.data.seed-values.sql:191
 msgid "Genre"
-msgstr ""
+msgstr "Gênero"
 
 #: 950.data.seed-values.sql:198
 msgid "Topic Browse"
-msgstr ""
+msgstr "Navegação por tópicos"
 
 #: 950.data.seed-values.sql:203
 msgid "Geographic Name Browse"
-msgstr ""
+msgstr "Navegação por nome geográfico"
 
 #: 950.data.seed-values.sql:208
 msgid "Temporal Term Browse"
-msgstr ""
+msgstr "Navegação por termo temporal"
 
 #: 950.data.seed-values.sql:213
 msgid "All Creators"
-msgstr ""
+msgstr "Todos os Criadores"
 
 # id::vqbrad.description__14
 #: 950.data.seed-values.sql:220 950.data.seed-values.sql:6241
@@ -347,7 +348,7 @@ msgstr "Edição"
 
 #: 950.data.seed-values.sql:229
 msgid "Physical Description"
-msgstr ""
+msgstr "Descrição Física"
 
 # id::cza.label__7 id::cza.label__16 id::vqbrad.description__12
 #: 950.data.seed-values.sql:238 950.data.seed-values.sql:618
@@ -357,15 +358,15 @@ msgstr "Editora"
 
 #: 950.data.seed-values.sql:247
 msgid "Abstract"
-msgstr ""
+msgstr "Resumo"
 
 #: 950.data.seed-values.sql:256
 msgid "Table of Contents"
-msgstr ""
+msgstr "Índice"
 
 #: 950.data.seed-values.sql:265
 msgid "Type of Resource"
-msgstr ""
+msgstr "Tipo de recurso"
 
 # id::cza.label__8 id::cza.label__17 id::vqbrad.description__13
 #: 950.data.seed-values.sql:274 950.data.seed-values.sql:620
@@ -375,38 +376,38 @@ msgstr "Data de Publicação"
 
 #: 950.data.seed-values.sql:280
 msgid "All searchable fields"
-msgstr ""
+msgstr "Todos os campos pesquisáveis"
 
 #: 950.data.seed-values.sql:286 950.data.seed-values.sql:8645
 #: 950.data.seed-values.sql:9325 950.data.seed-values.sql:9339
 #: 950.data.seed-values.sql:9353 950.data.seed-values.sql:9367
 #: 950.data.seed-values.sql:9381 950.data.seed-values.sql:9395
 msgid "Bibliography"
-msgstr ""
+msgstr "Bibliografia"
 
 #: 950.data.seed-values.sql:291
 msgid "Thesis"
-msgstr ""
+msgstr "Tese"
 
 #: 950.data.seed-values.sql:296
 msgid "Creation/Production Credits"
-msgstr ""
+msgstr "Créditos de Criação/Produção"
 
 #: 950.data.seed-values.sql:301
 msgid "Performers"
-msgstr ""
+msgstr "Artistas"
 
 #: 950.data.seed-values.sql:306
 msgid "General Note"
-msgstr ""
+msgstr "Nota geral"
 
 #: 950.data.seed-values.sql:326
 msgid "Origin Info"
-msgstr ""
+msgstr "Informações de origem"
 
 #: 950.data.seed-values.sql:336
 msgid "Main Title"
-msgstr ""
+msgstr "Título principal"
 
 # id::cnct.name__1
 #: 950.data.seed-values.sql:465
@@ -619,15 +620,15 @@ msgstr "Na prateleira de reserva"
 
 #: 950.data.seed-values.sql:546
 msgid "Long Overdue"
-msgstr ""
+msgstr "Já estava na hora"
 
 #: 950.data.seed-values.sql:549
 msgid "Lost and Paid"
-msgstr ""
+msgstr "Perdido e Pago"
 
 #: 950.data.seed-values.sql:550
 msgid "Canceled Transit"
-msgstr ""
+msgstr "Trânsito cancelado"
 
 # id::cnal.name__1
 #: 950.data.seed-values.sql:556
@@ -726,7 +727,7 @@ msgstr "Russo"
 
 #: 950.data.seed-values.sql:595 950.data.seed-values.sql:596
 msgid "Arabic (Jordan)"
-msgstr ""
+msgstr "Árabe (Jordânia)"
 
 #: 950.data.seed-values.sql:601
 msgid "Library of Congress"
@@ -843,7 +844,7 @@ msgstr "Taxa de notificação"
 
 #: 950.data.seed-values.sql:693
 msgid "Long-Overdue Materials"
-msgstr ""
+msgstr "Materiais há muito esperados"
 
 #: 950.data.seed-values.sql:695 950.data.seed-values.sql:16985
 #: 950.data.seed-values.sql:16991
