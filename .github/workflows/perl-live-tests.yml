@@ -1,0 +1,140 @@
+name: Run perl live tests
+on:
+  push:
+    paths:
+      - '.github/workflows/**'
+      - 'configure.ac'
+      - 'Makefile.am'
+      - 'Open-ILS/**'
+  pull_request:
+    paths:
+      - '.github/workflows/**'
+      - 'configure.ac'
+      - 'Makefile.am'
+      - 'Open-ILS/**'
+  workflow_dispatch:
+
+env:
+  PGHOST: localhost
+  PGPASSWORD: postgres
+  PGPORT: 5432
+  PGUSER: postgres
+
+jobs:
+  live:
+    name: Run Live tests
+    runs-on: ubuntu-24.04
+    steps:
+      - run: sudo apt-get update -y
+      - name: Delete the postgres cluster that comes with the github actions ubuntu image
+        run: sudo pg_dropcluster --stop 16 main
+      - name: Remove any postgres that is already installed in the github actions ubuntu image
+        run: sudo apt remove -y postgres*
+      - name: Install a syslog implementation
+        run: sudo apt install -y rsyslog
+      - name: Clone OpenSRF repository
+        run: git clone --branch main git://git.evergreen-ils.org/OpenSRF.git
+      - name: "OpenSRF: install dependencies"
+        run: sudo make -f src/extras/Makefile.install ubuntu-noble
+        working-directory: ./OpenSRF
+      - name: "OpenSRF: configure and make"
+        run: autoreconf -i && ./configure --prefix=/openils --sysconfdir=/openils/conf && make
+        working-directory: ./OpenSRF
+      - name: "OpenSRF: make install"
+        run: sudo make install
+        working-directory: ./OpenSRF
+      - name: "OpenSRF: create and set up the opensrf Unix user environment"
+        run: sudo useradd -m -s /bin/bash opensrf && echo "opensrf:opensrf" | sudo chpasswd && sudo chown -R opensrf:opensrf /openils && sudo sh -c "echo 'export PATH=$PATH:/openils/bin' >> /home/opensrf/.bashrc" && echo "/openils/bin" >> $GITHUB_PATH
+      - name: "OpenSRF: Define your public and private OpenSRF domains"
+        run: sudo sh -c "echo '127.0.0.1 private.localhost public.localhost' >> /etc/hosts"
+      - name: "OpenSRF: Adjust the system dynamic library path"
+        run: sudo sh -c "echo '/openils/lib' > /etc/ld.so.conf.d/opensrf.conf" && sudo ldconfig
+      - name: "OpenSRF: Updating the OpenSRF configuration files"
+        run: sudo cp redis-accounts.txt.example redis-accounts.txt
+        working-directory: /openils/conf
+
+      - uses: actions/checkout@v4
+        with:
+          path: Evergreen
+      - name: "Evergreen: install dependencies"
+        run: sudo PERL_MM_USE_DEFAULT=1 NO_CPAN_TEST=1 make -f Open-ILS/src/extras/Makefile.install ubuntu-noble && sudo PERL_MM_USE_DEFAULT=1 NO_CPAN_TEST=1 make -f Open-ILS/src/extras/Makefile.install ubuntu-noble-developer
+        working-directory: ./Evergreen
+      - name: "Evergeen: Install AngularJS files for web staff client"
+        run: npm ci && npm run build-prod
+        working-directory: ./Evergreen/Open-ILS/web/js/ui/default/staff
+      - name: "Evergeen: Install Angular files for web staff client"
+        run: npm ci && npx ng build --configuration=production
+        working-directory: ./Evergreen/Open-ILS/src/eg2
+      - name: "Evergreen: configure and make"
+        run: autoreconf -i && PATH=/openils/bin:$PATH ./configure --prefix=/openils --sysconfdir=/openils/conf && make
+        working-directory: ./Evergreen
+      - name: "Evergreen: install"
+        run: sudo make install
+        working-directory: ./Evergreen
+      - name: "Evergreen: Change ownership of the Evergreen files"
+        run: sudo chown -R opensrf:opensrf /openils
+        working-directory: ./Evergreen
+      - name: "Evergreen: Run ldconfig"
+        run: sudo ldconfig
+        working-directory: ./Evergreen
+      - name: "Evergreen: Add Apache config files"
+        run: >
+          sudo cp Open-ILS/examples/apache_24/eg_24.conf /etc/apache2/sites-available/eg.conf &&
+          sudo cp Open-ILS/examples/apache_24/eg_vhost_24.conf /etc/apache2/eg_vhost.conf &&
+          sudo cp Open-ILS/examples/apache_24/eg_startup /etc/apache2/ &&
+          sudo perl -pi -e 's/Require host 10.0.0.0\/8/Require all granted/g' /etc/apache2/sites-available/eg.conf &&
+          sudo sh -c "echo '<IfModule mpm_prefork_module>' > /etc/apache2/mods-available/mpm_prefork.conf" &&
+          sudo sh -c "echo '   StartServers            15' >> /etc/apache2/mods-available/mpm_prefork.conf" &&
+          sudo sh -c "echo '   MinSpareServers          5' >> /etc/apache2/mods-available/mpm_prefork.conf" &&
+          sudo sh -c "echo '   MaxSpareServers         15' >> /etc/apache2/mods-available/mpm_prefork.conf" &&
+          sudo sh -c "echo '   MaxRequestWorkers       75' >> /etc/apache2/mods-available/mpm_prefork.conf" &&
+          sudo sh -c "echo '   MaxConnectionsPerChild 500' >> /etc/apache2/mods-available/mpm_prefork.conf" &&
+          sudo sh -c "echo '</IfModule>' >> /etc/apache2/mods-available/mpm_prefork.conf" &&
+          sudo mkdir -p /etc/apache2/ssl
+        working-directory: ./Evergreen
+      - name: "Evergreen: Openssl"
+        run: sudo openssl req -new -x509 -days 365 -nodes -out server.crt -keyout server.key -subj "/C=US/ST=GA/L=Athens/O=Evergreen/OU=Continuous Integration/CN=localhost.localdomain.org"
+        working-directory: /etc/apache2/ssl
+      - name: "Evergreen: print apache2.conf for debugging"
+        run: cat /etc/apache2/apache2.conf
+      - name: "Evergreen: print mpm_prefork for debugging"
+        run: cat /etc/apache2/mods-available/mpm_prefork.conf
+      - name: "Evergreen: Configure the Apache Web server"
+        run: >
+          sudo a2dismod mpm_event &&
+          sudo a2enmod mpm_prefork &&
+          sudo a2dissite 000-default &&
+          sudo a2ensite eg.conf &&
+          sudo chown opensrf /var/lock/apache2 &&
+          sudo perl -pi -e 's/APACHE_RUN_USER=.*/APACHE_RUN_USER=opensrf/g' /etc/apache2/envvars &&
+          sudo service apache2 restart
+      - name: "Evergreen: Configure OpenSRF for the Evergreen application"
+        run: sudo cp -b /openils/conf/opensrf_core.xml.example /openils/conf/opensrf_core.xml && sudo cp -b /openils/conf/opensrf.xml.example /openils/conf/opensrf.xml
+      - name: "Evergreen: Set up the PostgreSQL server"
+        run: sudo PERL_MM_USE_DEFAULT=1 NO_CPAN_TEST=1 make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-noble-17 && sudo service postgresql start && sudo -u postgres psql -c "CREATE ROLE evergreen WITH LOGIN SUPERUSER PASSWORD '$PGPASSWORD'"
+        working-directory: ./Evergreen
+      - name: "Evergreen: Creating the Evergreen database and schema"
+        run: >
+          sudo perl Open-ILS/src/support-scripts/eg_db_config --update-config
+          --service all --create-database --create-schema --create-offline
+          --user evergreen --password $PGPASSWORD --hostname $PGHOST --port $PGPORT
+          --database evergreen --admin-user admin --admin-pass demo123
+          --load-all-sample
+        working-directory: ./Evergreen
+      - name: "Evergreen: remove comment separators from opensrf_core"
+        run: sudo perl -pi -e 's/<!--\s+=+\s+-->/\n/g' /openils/conf/opensrf_core.xml
+      - name: "Evergreen: comment ejabberd config from opensrf_core"
+        run: sudo perl -0777 -pi -e 's/<!-- +Ejabberd +-->((?:\n|.)*?>)(?:\n(\s*)){2}/<!--\1-->\n\n/igs' /openils/conf/opensrf_core.xml
+      - name: "Evergreen: add redis config to opensrf_core"
+        run: sudo perl -0777 -pi -e 's/<!-- Redis -->\n *?<!--((?:\n|.)*?)-->\n/\1/igs' /openils/conf/opensrf_core.xml
+      - name: "Evergreen: Starting evergreen"
+        run: sudo service redis-server restart && sudo service memcached restart && sudo -u opensrf sh -c 'PATH=$PATH:/openils/bin osrf_control --localhost --restart-all'
+      - name: "Evergeen: Run autogen"
+        run: sudo -u opensrf sh -c 'export PATH=$PATH:/openils/bin && autogen.sh'
+      - name: "Evergreen: Restart httpd"
+        run: "sudo service apache2 restart"
+      - name: "Evergreen: try to run the patron loader for debugging"
+        run: "export PATH=$PATH:/openils/bin && patron_loader.pl -h "
+      - name: "Evergreen: Run live tests"
+        run: sudo PATH=$PATH:/openils/bin make livecheck
+        working-directory: ./Evergreen/Open-ILS/src/perlmods
