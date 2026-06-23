@@ -69,7 +69,8 @@ const PERMS_NEEDED = [
 enum FieldVisibility {
     REQUIRED = 3,
     VISIBLE = 2,
-    SUGGESTED = 1
+    SUGGESTED = 1,
+    HIDDEN = -1
 }
 
 // 3 == value universally required
@@ -85,6 +86,8 @@ const DEFAULT_FIELD_VISIBILITY = {
     'au.pref_family_name': FieldVisibility.VISIBLE,
     'au.ident_type': FieldVisibility.REQUIRED,
     'au.ident_type2': FieldVisibility.VISIBLE,
+    'au.photo_url': FieldVisibility.VISIBLE,
+    'au.locale': FieldVisibility.VISIBLE,
     'au.home_ou': FieldVisibility.REQUIRED,
     'au.profile': FieldVisibility.REQUIRED,
     'au.expire_date': FieldVisibility.REQUIRED,
@@ -196,6 +199,7 @@ export class EditComponent implements OnInit {
     surveys: IdlObject[];
     smsCarriers: ComboboxEntry[];
     identTypes: ComboboxEntry[];
+    locales: ComboboxEntry[];
     inetLevels: ComboboxEntry[];
     statCats: StatCat[] = [];
     grpList: IdlObject[];
@@ -263,6 +267,7 @@ export class EditComponent implements OnInit {
             .then(_ => this.getSecondaryGroups())
             .then(_ => this.applyPerms())
             .then(_ => this.setIdentTypes())
+            .then(_ => this.setLocales())
             .then(_ => this.setInetLevels())
             .then(_ => this.setOptInSettings())
             .then(_ => this.setSmsCarriers())
@@ -681,6 +686,17 @@ export class EditComponent implements OnInit {
         return this.patronService.getIdentTypes()
             .then(types => {
                 this.identTypes = types.map(t => ({id: t.id(), label: t.name()}));
+            });
+    }
+
+    setLocales(): Promise<any> {
+        return this.pcrud.retrieveAll('i18n_l',
+            {order_by: {i18n_l: ['name']}}, {atomic: true}).toPromise()
+            .then(locales => {
+                this.locales = locales.map(loc => ({
+                    id: loc.code(),
+                    label: loc.name() || loc.code()
+                }));
             });
     }
 
@@ -1224,6 +1240,14 @@ export class EditComponent implements OnInit {
 
             } else if (this.context.settingsCache[suggest]) {
                 this.fieldVisibility[field] = FieldVisibility.SUGGESTED;
+
+            } else if (this.context.settingsCache[show] === false) {
+                // Hide the field if the 'show' setting is explicitly
+                // false (not undefined), unless it is a
+                // database-required field.
+                if (DEFAULT_FIELD_VISIBILITY[field] !== FieldVisibility.REQUIRED) {
+                    this.fieldVisibility[field] = FieldVisibility.HIDDEN;
+                }
             }
         }
 
@@ -1502,7 +1526,19 @@ export class EditComponent implements OnInit {
             .then(_ => this.saveUserSettings())
             .then(_ => this.updateHoldPrefs())
             .then(_ => this.removeStagedUser())
-            .then(_ => this.postSaveRedirect(clone));
+            .then(_ => this.postSaveRedirect(clone))
+            .catch(err => {
+                // The save failed or was canceled -- e.g. the user
+                // dismissed the permission override dialog.  Restore the
+                // form so they can adjust and retry instead of being left
+                // staring at the loading spinner.
+                this.loading = false;
+                this.showForm = true;
+                this.changesPending = true;
+                if (err !== 'Operation canceled') {
+                    console.error('Patron save failed', err);
+                }
+            });
     }
 
     postSaveRedirect(clone: boolean) {

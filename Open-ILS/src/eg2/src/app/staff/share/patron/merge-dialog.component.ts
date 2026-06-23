@@ -29,6 +29,7 @@ const PATRON_FLESH_FIELDS = [
     'net_access_level',
     'ident_type',
     'ident_type2',
+    'locale',
     'groups'
 ];
 
