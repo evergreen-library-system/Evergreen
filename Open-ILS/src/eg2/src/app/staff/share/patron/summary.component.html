@@ -2,7 +2,7 @@
 <div class="patron-summary-container">
 
   <div class="row">
-    <div class="d-flex flex-wrap align-items-start">
+    <div class="d-flex flex-wrap align-items-center">
       <button id="summary-toggle" class="btn btn-sm py-0 lh-sm" type="button"
         (click)="toggleShowSummaryPane()"
         [attr.aria-label]="summaryPaneButtonLabel()"
@@ -16,6 +16,13 @@
           }
         </span>
       </button>
+
+      @if (p().photo_url()) {
+        <img class="rounded patron-photo-thumb ms-2 me-2"
+          [class.d-none]="p().photo_url() !== loadedPhotoUrl"
+          [src]="p().photo_url()" (load)="photoLoaded()"
+          i18n-alt alt="Patron photo">
+      }
 
       <div class="patron-status">
         <h2 class="text-dark fw-bold d-inline m-0" i18n>
@@ -164,6 +171,10 @@
             <div>
               <dt i18n>Net Access</dt>
               <dd>{{p().net_access_level().name()}}</dd>
+            </div>
+            <div>
+              <dt i18n>Preferred Language</dt>
+              <dd>{{preferredLanguage()}}</dd>
             </div>
             <div>
               <dt>

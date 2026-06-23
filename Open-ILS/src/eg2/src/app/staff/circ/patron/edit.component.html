@@ -370,6 +370,12 @@ Used when a field requires no additional toggles. -->
   <ng-container *ngTemplateOutlet="fieldRow; context: 
     {args: {template: fieldInput, field: 'ident_value2'}}">
     </ng-container>
+  <ng-container *ngTemplateOutlet="fieldRow; context:
+    {args: {template: fieldInput, field: 'photo_url'}}">
+    </ng-container>
+  <ng-container *ngTemplateOutlet="fieldRow; context:
+    {args: {template: fieldCombobox, field: 'locale', entries: locales}}">
+    </ng-container>
     <div class="row pt-1 pb-1 mt-1">
       <ng-container
         *ngTemplateOutlet="fieldLabel; context: {args: {field: 'email'}}">
@@ -509,7 +515,7 @@ Used when a field requires no additional toggles. -->
   <ng-container *ngTemplateOutlet="fieldRow; context: 
     {args: {template: fieldCheckbox, field: 'active'}}">
     </ng-container>
-  <ng-container *ngTemplateOutlet="fieldRow; context: 
+  <ng-container *ngTemplateOutlet="fieldRow; context:
     {args: {template: fieldCheckbox, field: 'barred'}}">
     </ng-container>
   <ng-container *ngTemplateOutlet="fieldRow; context: 

@@ -53,6 +53,16 @@ export class PatronSummaryComponent implements OnInit {
         return this.summary ? this.summary.patron : null;
     }
 
+    // The photo_url that has actually loaded.  We reveal the <img> only
+    // once it matches the current photo_url, so a missing/slow/broken
+    // image never flashes a broken icon -- and switching to a new URL
+    // hides the old photo immediately rather than after a load timeout.
+    private loadedPhotoUrl?: string;
+
+    photoLoaded() {
+        this.loadedPhotoUrl = this.p()?.photo_url();
+    }
+
     hasPrefName(): boolean {
         if (this.p()) {
             return (
@@ -70,6 +80,11 @@ export class PatronSummaryComponent implements OnInit {
             this.p().second_given_name(),
             this.p().family_name()
         ].filter(Boolean).join(' ');
+    }
+
+    preferredLanguage(): string {
+        const locale = this.p()?.locale();
+        return locale ? locale.name() : '';
     }
 
     penaltyLabel(pen: IdlObject): string {

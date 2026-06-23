@@ -1,4 +1,12 @@
 
+/* Small avatar-style patron photo shown inline next to the name. */
+.patron-photo-thumb {
+  height: 2.5rem;
+  width: 2.5rem;
+  object-fit: cover;
+  flex: 0 0 auto;
+}
+
 .patron-summary-container {
   background-color: var(--bs-body-bg);
   border-radius: 0.5rem;
