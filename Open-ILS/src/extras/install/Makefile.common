@@ -8,6 +8,7 @@ endif
 
 # Install the CPAN modules
 install_cpan:
+	echo yes | perl -MCPAN -e shell
 	for m in $(CPAN_MODULES); do echo "$(CPAN_INSTALL_COMMAND) $$m" | perl -MCPAN -e shell ; done
 
 install_cpan_force:
