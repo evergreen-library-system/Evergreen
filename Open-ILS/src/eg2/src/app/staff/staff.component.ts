@@ -8,6 +8,7 @@ import { StaffNavComponent } from './nav.component';
 import { ToastComponent } from '@eg/share/toast/toast.component';
 import { PrintComponent } from '@eg/share/print/print.component';
 import { ContextMenuContainerComponent } from '@eg/share/context-menu/context-menu-container.component';
+import { AccessKeyDirective } from '@eg/share/accesskey/accesskey.directive';
 
 const MFA_PATH = '/staff/mfa';
 const LOGIN_PATH = '/staff/login';
@@ -18,6 +19,7 @@ const WS_MANAGE_PATH = '/staff/admin/workstation/workstations/manage';
     templateUrl: 'staff.component.html',
     styleUrls: ['staff.component.css'],
     imports: [
+        AccessKeyDirective,
         AccessKeyInfoComponent,
         ContextMenuContainerComponent,
         PrintComponent,
