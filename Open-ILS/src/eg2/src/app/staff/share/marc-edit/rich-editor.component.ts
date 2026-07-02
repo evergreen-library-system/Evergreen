@@ -14,6 +14,7 @@ import { EditableContentComponent } from './editable-content.component';
 import { FixedFieldsEditorComponent } from './fixed-fields-editor.component';
 import { ProgressInlineComponent } from '@eg/share/dialog/progress-inline.component';
 import { FormsModule } from '@angular/forms';
+import { AccessKeyDirective } from '@eg/share/accesskey/accesskey.directive';
 
 
 /**
@@ -25,6 +26,7 @@ import { FormsModule } from '@angular/forms';
     templateUrl: './rich-editor.component.html',
     styleUrls: ['rich-editor.component.css', 'rich-editor-colors.css'],
     imports: [
+        AccessKeyDirective,
         AuthorityLinkingDialogComponent,
         CharMapDialogComponent,
         CommonModule,

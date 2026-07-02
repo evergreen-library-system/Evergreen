@@ -11,7 +11,7 @@
       <div class="col-lg-2 p-1 shortcut-context" i18n>Context</div>
       <div class="col-lg-2 p-1 shortcut-status" i18n>Active?</div>
     </div>
-    @for (a of assignments(); track a) {
+    @for (a of assignments; track $index) {
       <div class="row border-bottom">
         <div class="col-lg-2 p-1 border-end shortcut-keycombo">
           @for (kbd of a.key.split('+'); track kbd; let isLastKey = $last) {

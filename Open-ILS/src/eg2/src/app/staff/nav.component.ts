@@ -13,12 +13,14 @@ import {PermService} from '@eg/core/perm.service';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 import {NgbCollapseModule, NgbDropdown, NgbDropdownItem, NgbDropdownMenu, NgbDropdownToggle} from '@ng-bootstrap/ng-bootstrap';
 import {AccessKeyInfoComponent} from '@eg/share/accesskey/accesskey-info.component';
+import {AccessKeyDirective} from '@eg/share/accesskey/accesskey.directive';
 
 @Component({
     selector: 'eg-staff-nav-bar',
     styleUrls: ['nav.component.css'],
     templateUrl: 'nav.component.html',
     imports: [
+        AccessKeyDirective,
         AccessKeyInfoComponent,
         ConfirmDialogComponent,
         NgbCollapseModule,
