@@ -16,6 +16,52 @@
 
 <div id='myopac_bookbag_div container'>
     <div class="row">
+        <!-- new list creation -->
+        <details id="new_list" [% IF ctx.add_rec || move_cart_by_default || !ctx.bookbags.size %] open [% END %]>
+            <summary class="[% IF ctx.add_rec || move_cart_by_default || !ctx.bookbags.size %] h3 [% END %]">[% l('Create New List') %]</summary>
+            
+            <div id="create_form" class="my-3">
+                <form action="[% mkurl(ctx.opac_root _ '/myopac/list/update') %]" method="post">
+                    [%- INCLUDE "opac/parts/preserve_params.tt2"; %]
+                    <input type="hidden" name="action" value="create" class="form-control" />
+                    [% IF ctx.add_rec %]
+                        <input type="hidden" name="add_rec" value="[% ctx.add_rec %]" class="form-control" />
+                    [% END %]
+                    [% IF ctx.where_from %]
+                        <input type="hidden" name="where_from" value="[% ctx.where_from %]" class="form-control" />
+                    [% END %]
+                    <div class="form-group">
+                        <label for="list_create_name">[% l('Enter the name of the new list:') %]</label>
+                        <input id="list_create_name" type="text" name="name" class="form-control" autofocus>
+                    </div>
+                    <div class="form-group">
+                        <label for="list_description">[% l("List description (optional):") %]</label>
+                        <textarea name="description" id="list_description" class="form-control"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="list_create_shared">[% l('Share this list?') %]</label>
+                        <select class="d-inline-block form-control mini-control" name="shared" id="list_create_shared">
+                            <option value="0">[% l('No') %]
+                            <option value="1">[% l('Yes') %]
+                        </select>
+                        <a href="#" aria-label="[% l('Help with sharing') %]" title="[% l('Allows the list to be shared through a link or RSS.') %]" data-toggletip>
+                            <i class="fas fa-question-circle" aria-hidden="true"></i></a>
+                    </div>
+                    [% IF ctx.mylist.size %]
+                    <div class="form-group">
+                        <label for="list_move_cart">[% l('Move contents of basket to this list?') %]</label>
+                        <select class="d-inline-block form-control mini-control" name="move_cart" id="list_move_cart">
+                            <option value="0">[% l('No') %]
+                            <option value="1" [% IF move_cart_by_default %]selected="selected"[% END%]>[% l('Yes') %]
+                        </select>
+                    </div>
+                    [% END %]
+                    <button type="submit" class="btn btn-confirm"><i class="fas fa-plus-square" aria-hidden="true"></i> [% l('Save New List') %]</button>
+                </form>
+            </div>
+        </details>
+    </div>
+    <div class="row">
         <div class="col-12">
             <h2>[% l('Saved Lists') %]</h2>
 
@@ -452,51 +498,6 @@
     </div>
     [% END %][% END %]
 
-    <!-- new list creation -->
-    <details id="new_list" [% IF ctx.add_rec || move_cart_by_default || !ctx.bookbags.size %] open [% END %]>
-        <summary class="[% IF ctx.add_rec || move_cart_by_default || !ctx.bookbags.size %] h3 [% END %]">[% l('Create New List') %]</summary>
-        
-        <div id="create_form" class="my-3">
-            <form action="[% mkurl(ctx.opac_root _ '/myopac/list/update') %]" method="post">
-                [%- INCLUDE "opac/parts/preserve_params.tt2"; %]
-                <input type="hidden" name="action" value="create" class="form-control" />
-                [% IF ctx.add_rec %]
-                    <input type="hidden" name="add_rec" value="[% ctx.add_rec %]" class="form-control" />
-                [% END %]
-                [% IF ctx.where_from %]
-                     <input type="hidden" name="where_from" value="[% ctx.where_from %]" class="form-control" />
-                [% END %]
-                <div class="form-group">
-                    <label for="list_create_name">[% l('Enter the name of the new list:') %]</label>
-                    <input id="list_create_name" type="text" name="name" class="form-control" autofocus>
-                </div>
-                <div class="form-group">
-                    <label for="list_description">[% l("List description (optional):") %]</label>
-                    <textarea name="description" id="list_description" class="form-control"></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="list_create_shared">[% l('Share this list?') %]</label>
-                    <select class="d-inline-block form-control mini-control" name="shared" id="list_create_shared">
-                        <option value="0">[% l('No') %]
-                        <option value="1">[% l('Yes') %]
-                    </select>
-                    <a href="#" aria-label="[% l('Help with sharing') %]" title="[% l('Allows the list to be shared through a link or RSS.') %]" data-toggletip>
-                        <i class="fas fa-question-circle" aria-hidden="true"></i></a>
-                </div>
-                [% IF ctx.mylist.size %]
-                <div class="form-group">
-                    <label for="list_move_cart">[% l('Move contents of basket to this list?') %]</label>
-                    <select class="d-inline-block form-control mini-control" name="move_cart" id="list_move_cart">
-                        <option value="0">[% l('No') %]
-                        <option value="1" [% IF move_cart_by_default %]selected="selected"[% END%]>[% l('Yes') %]
-                    </select>
-                </div>
-                [% END %]
-                <button type="submit" class="btn btn-confirm"><i class="fas fa-plus-square" aria-hidden="true"></i> [% l('Save New List') %]</button>
-            </form>
-        </div>
-    </details>
-</div>
 
 <script>
 
