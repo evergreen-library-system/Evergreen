@@ -19,8 +19,19 @@ sub CircIsOpen {
     my $self = shift;
     my $env = shift;
 
-    return 0 if (defined($env->{target}->checkin_time));
-    return 0 if (defined($env->{target}->xact_finish));
+    # It's possible a patron has renewed or checked in the 
+    # current circulation.  Let's check the live circ rather
+    # than depending on the state of the circ at the time
+    # processing began
+    my $current = new_editor()->search_action_circulation({
+        id => $env->{target}->id,
+        '-or' => [
+            {checkin_time => {'!=' => undef}},
+            {xact_finish => {'!=' => undef}},
+        ]
+    });
+
+    return 0 if @$current;
 
     if ($env->{params}->{min_target_age}) {
         $env->{params}->{target_age_field} = 'xact_start';
