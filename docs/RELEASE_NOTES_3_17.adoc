@@ -25,7 +25,7 @@ The following items require running a database upgrade script:
 
 === Staff Interface ===
 
-* Fixes bug that caused patron search results to always be sorted primarily by penalties. (https://bugs.launchpad.net/evergreen/+bug/2152781[Bug 2152781])
+* Fixes bug that caused patron search results to always be sorted primarily by penalties. (https://bugs.launchpad.net/evergreen/+bug/2153879[Bug 2153879])
 * Ports the pending patron interface to Angular. (https://bugs.launchpad.net/evergreen/+bug/2146953[Bug 2146953])
 * Fixes Angular pending patron test failures (https://bugs.launchpad.net/evergreen/+bug/2154783[Bug 2154783])
 
