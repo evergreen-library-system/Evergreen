@@ -134,7 +134,12 @@
     </div>
     <div class="row p-1">
       <div class="col-lg-2" i18n>Owning Library</div>
-      <div class="col-lg-2">{{context.orgSn(copy().call_number().owning_lib())}}</div>
+      <div class="col-lg-2">
+        <a target="_blank"
+          href="/eg/opac/library/{{context.orgSn(copy().call_number().owning_lib())}}">
+          {{context.orgSn(copy().call_number().owning_lib())}}
+        </a>
+      </div>
     </div>
   </div>
 }
@@ -210,7 +215,7 @@
             </div>
             <div class="row">
               <div class="col-lg-2 offset-lg-8" i18n>Total Payments</div>
-              <div class="col-lg-2">{{statement.summary.payment_total | currency}}</div>
+              <div class="col-lg-2 text-danger">-{{statement.summary.payment_total | currency}}</div>
             </div>
             <div class="row">
               <div class="col-lg-2 offset-lg-8" i18n>Total Nonrefundable</div>

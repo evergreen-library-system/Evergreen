@@ -115,8 +115,9 @@ Sometimes you may need to void a bill a patron has already paid in order to proc
 === Bill History ===
 
 . Click *History* in patron's bills screen.
-. View all bills, or bills from a specified time frame. Use the calendar widgets 
-to choose the *Start Date* and *End Date*, and click *Apply*.
+. View all bills, or bills from a specified time frame. Use the calendar widgets
+to choose the *Start Date* and *End Date*. The list refreshes as soon as a date
+is changed.
 . For more information about a particular bill, select the line item and click *Actions -> Full Details*.
 . All transaction details are listed, such as time stamps, circulation dates, billing dates, amounts, staff identification, and item information
 
@@ -124,7 +125,9 @@ to choose the *Start Date* and *End Date*, and click *Apply*.
 === Payment History ===
 
 . Click *Payments* on *Bill History* screen.
-. View all payments, or payments from a specified time frame. Use the calendar widgets to choose the *Start Date* and *End Date*, and click *Apply*.
+. View all payments, or payments from a specified time frame. Use the calendar
+widgets to choose the *Start Date* and *End Date*. The list refreshes as soon as
+a date is changed.
 . For more information about a particular payment, select the line item and click *Actions -> Full Details*.
 
 == Refund ==

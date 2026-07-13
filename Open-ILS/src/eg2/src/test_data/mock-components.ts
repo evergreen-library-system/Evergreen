@@ -3,7 +3,7 @@
 // but you don't want to have to re-implement all of
 // the child's logic in your test
 
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ComboboxEntry } from '@eg/share/combobox/combobox.component';
 
 @Component({
@@ -27,4 +27,29 @@ export class MockOrgSelectComponent {
     @Input() required: boolean;
 
     @Input() applyOrgId(_id: number) {};
+}
+
+@Component({
+    selector: 'eg-grid',
+    standalone: true,
+    template: '<ng-content></ng-content>'
+})
+export class MockGridComponent {
+    @Input() idlClass: string;
+    @Input() pageSize: number;
+    @Input() persistKey: string;
+    @Input() showDeclaredFieldsOnly: boolean;
+    @Input() reloadOnColumnChange: boolean;
+    @Input() dataSource: any;
+    @Input() sortable: boolean;
+
+    @Output() onRowActivate = new EventEmitter<any>();
+
+    context = {
+        rowSelector: {
+            selected: () => []
+        }
+    };
+
+    reload = jasmine.createSpy('reload');
 }

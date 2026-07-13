@@ -39,12 +39,12 @@
         <div class="col-lg-4 form-inline">
           <span class="me-2" i18n>Start Date:</span>
           <eg-date-select [initialIso]="xactsStart"
-          (onChangeAsIso)="dateChange('xactsStart', $event)"></eg-date-select>
+          (onChangeAsDate)="dateChange('xactsStart', $event)"></eg-date-select>
         </div>
         <div class="col-lg-4 form-inline">
           <span class="me-2" i18n>End Date:</span>
           <eg-date-select [initialIso]="xactsEnd"
-          (onChangeAsIso)="dateChange('xactsEnd', $event)"></eg-date-select>
+          (onChangeAsDate)="dateChange('xactsEnd', $event)"></eg-date-select>
         </div>
       </div>
 
@@ -79,6 +79,16 @@
         <eg-grid-column path="summary.xact_type" i18n-label label="Type"></eg-grid-column>
         <eg-grid-column name="last_payment_ts" path="summary.last_payment_ts"
         datatype="timestamp" [required]="true" [hidden]="true"></eg-grid-column>
+        <eg-grid-column name="last_billing_type" path="summary.last_billing_type"
+        [required]="true" [hidden]="true" i18n-label label="Last Billing Type"></eg-grid-column>
+        <eg-grid-column name="last_billing_note" path="summary.last_billing_note"
+        [required]="true" [hidden]="true" i18n-label label="Last Billing Note"></eg-grid-column>
+        <eg-grid-column name="last_billing_ts" path="summary.last_billing_ts"
+        datatype="timestamp" [required]="true" [hidden]="true"></eg-grid-column>
+        <eg-grid-column name="last_payment_type" path="summary.last_payment_type"
+        [required]="true" [hidden]="true" i18n-label label="Last Payment Type"></eg-grid-column>
+        <eg-grid-column name="last_payment_note" path="summary.last_payment_note"
+        [required]="true" [hidden]="true" i18n-label label="Last Payment Note"></eg-grid-column>
 
         <eg-grid-column i18n-label label="Title" name="title"
           [cellTemplate]="titleTemplate"
@@ -159,6 +169,9 @@
         <eg-grid-column path="voided" i18n-label label="Voided"></eg-grid-column>
         <eg-grid-column path="xact.summary.xact_type" i18n-label label="Transaction Type"></eg-grid-column>
         <eg-grid-column path="xact.summary.last_billing_type" i18n-label label="Last Billing Type"></eg-grid-column>
+        <eg-grid-column path="xact.summary.last_billing_note" [hidden]="true" i18n-label label="Last Billing Note"></eg-grid-column>
+        <eg-grid-column path="xact.summary.total_owed" [hidden]="true" i18n-label label="Total Owed"></eg-grid-column>
+        <eg-grid-column path="xact.summary.total_paid" [hidden]="true" i18n-label label="Total Paid"></eg-grid-column>
         <eg-grid-column path="payment_type" i18n-label label="Payment Type"></eg-grid-column>
         <eg-grid-column path="refundable" i18n-label label="Refundable"></eg-grid-column>
 
@@ -191,6 +204,8 @@
         <eg-grid-column path="xact.usr" [required]="true" [hidden]="true"></eg-grid-column>
         <eg-grid-column path="check_payment.check_number" i18n-label
         label="Check Number" [hidden]="true"></eg-grid-column>
+        <eg-grid-column path="credit_card_payment.approval_code" [hidden]="true" i18n-label label="Approval Code"></eg-grid-column>
+
 
         <!--
         <eg-grid-column path="xact.*" [hidden]="true"></eg-grid-column>
