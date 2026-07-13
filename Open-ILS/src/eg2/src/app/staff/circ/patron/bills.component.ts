@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, AfterViewInit, ViewChild, inject } from '@angular/core';
 import {Router} from '@angular/router';
-import {from, empty, range, concatMap, tap} from 'rxjs';
+import {empty, range, tap} from 'rxjs';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {EventService} from '@eg/core/event.service';
 import {NetService} from '@eg/core/net.service';
@@ -25,6 +25,10 @@ import {ToastService} from '@eg/share/toast/toast.service';
 import {GridFlatDataService} from '@eg/share/grid/grid-flat-data.service';
 import {WorkLogService} from '@eg/staff/share/worklog/worklog.service';
 import { StaffCommonModule } from '@eg/staff/common.module';
+
+// Ceiling on the number of bills fetched in a single pass, matching the
+// grid's own all-rows limit.
+const MAX_BILLS_FETCHED = 10000;
 
 @Component({
     templateUrl: 'bills.component.html',
@@ -90,6 +94,7 @@ export class BillsComponent implements OnInit, AfterViewInit {
 
     @ViewChild('billGrid') private billGrid: GridComponent;
     @ViewChild('annotateDialog') private annotateDialog: PromptDialogComponent;
+    @ViewChild('noPayAmountDialog') private noPayAmountDialog: AlertDialogComponent;
     @ViewChild('maxPayDialog') private maxPayDialog: AlertDialogComponent;
     @ViewChild('errorDialog') private errorDialog: AlertDialogComponent;
     @ViewChild('warnPayDialog') private warnPayDialog: ConfirmDialogComponent;
@@ -123,7 +128,7 @@ export class BillsComponent implements OnInit, AfterViewInit {
             } else if (row['circulation.stop_fines'] === 'LONGOVERDUE') {
                 return 'longoverdue-row';
             } else if (this.circIsOverdue(row)) {
-                return 'less-intense-alert';
+                return 'overdue-row';
             }
             return '';
         };
@@ -146,8 +151,16 @@ export class BillsComponent implements OnInit, AfterViewInit {
                 balance_owed: {'<>' : 0}
             };
 
+            // The grid pages for display only.  Selecting bills for
+            // payment, the refunds available summary, and the pending
+            // payment allocation all operate on the patron's complete set
+            // of bills, so fetch every bill in one pass instead of one
+            // display page at a time.
+            const allBills = new Pager();
+            allBills.limit = MAX_BILLS_FETCHED;
+
             return this.flatData.getRows(
-                this.billGrid.context, query, pager, sort)
+                this.billGrid.context, query, allBills, sort)
                 .pipe(
                     tap(row => {
                         row.paymentPending = 0;
@@ -156,6 +169,7 @@ export class BillsComponent implements OnInit, AfterViewInit {
                             row['circulation.circ_lib.shortname'];
                     }),
                     tap({complete: () => {
+                        this.applyFullBillSet(pager);
                         this.selectAllBillsOnLoad();
                         this.focusDefaultControlOnLoad();
                     }}));
@@ -233,6 +247,36 @@ export class BillsComponent implements OnInit, AfterViewInit {
 
     patron(): IdlObject {
         return this.context.summary ? this.context.summary.patron : null;
+    }
+
+    // Grid actions that act on a single transaction pass this to
+    // [disableOnRows] so the menu entry greys out for any other count.
+    notExactlyOneRow = (rows: any[]): boolean => rows.length !== 1;
+
+    selectedCount(): number {
+        if (!this.billGrid) { return 0; } // page loading
+
+        return this.billGrid.context.rowSelector.selected().length;
+    }
+
+    // Total of the negative balances among the selected transactions,
+    // i.e. the amount a refund would cover.  Returned as a positive value
+    // to match the Refunds Available summary.
+    refundableSelected(): number {
+        let amount = 0;
+
+        if (!this.billGrid) { return amount; } // page loading
+
+        this.billGrid.context.rowSelector.selected().forEach(id => {
+            const row = this.billGrid.context.getRowByIndex(id);
+
+            if (!row) { return; } // Called mid-reload
+
+            const balance = Number(row.balance_owed);
+            if (balance < 0) { amount += balance * 100; }
+        });
+
+        return -(amount / 100);
     }
 
     selectedPaymentInfo(): {owed: number, billed: number, paid: number} {
@@ -317,6 +361,7 @@ export class BillsComponent implements OnInit, AfterViewInit {
     }
 
     applyPayment() {
+        if (this.amountUnspecified()) { return; }
         if (this.amountExceedsMax()) { return; }
 
         this.applyingPayment = true;
@@ -381,6 +426,19 @@ export class BillsComponent implements OnInit, AfterViewInit {
             }
         });
         return payments;
+    }
+
+    // Payment Received is empty until staff type in it, and empties again
+    // after a payment is applied.  Neither undefined nor null compares
+    // usefully against the maximum, so check for a missing amount first and
+    // report that instead of blaming the payment ceiling.
+    amountUnspecified(): boolean {
+        if (Number.isFinite(this.paymentAmount)) { return false; }
+
+        this.noPayAmountDialog.open().toPromise()
+            .then(_ => this.focusPayAmount());
+
+        return true;
     }
 
     amountExceedsMax(): boolean {
@@ -532,9 +590,26 @@ export class BillsComponent implements OnInit, AfterViewInit {
         });
     }
 
-    // Called when the bills grid finishes loading a page of rows.  Waits
-    // for the library settings so we know whether the staff wants bills
-    // left unchecked, then selects every row exactly once on initial load.
+    // Called once the grid has fetched every bill.  Rows are stored
+    // starting at the pager's current offset, so a reload requested while
+    // the user is past page one -- the column picker does this -- leaves
+    // empty leading slots.  Compact those away and return to page one.
+    // Reporting the data source complete keeps paging local: the grid
+    // slices the rows it already holds rather than refetching.
+    applyFullBillSet(pager: Pager) {
+        if (this.gridDataSource.data.includes(undefined)) {
+            this.gridDataSource.data =
+                this.gridDataSource.data.filter(row => row !== undefined);
+            pager.offset = 0;
+        }
+
+        this.gridDataSource.allRowsRetrieved = true;
+        pager.resultCount = this.gridDataSource.data.length;
+    }
+
+    // Called when the bills grid finishes loading.  Waits for the library
+    // settings so we know whether the staff wants bills left unchecked,
+    // then selects every row exactly once on initial load.
     selectAllBillsOnLoad() {
         return this.settingsReady.then(() => {
             if (this.billsSelectedOnLoad) { return; }
@@ -572,11 +647,29 @@ export class BillsComponent implements OnInit, AfterViewInit {
 
     selectRefunds() {
         this.billGrid.context.rowSelector.clear();
-        this.gridDataSource.data.forEach(row => {
+
+        let firstPosition = -1;
+
+        this.gridDataSource.data.forEach((row, position) => {
             if (row.balance_owed < 0) {
+                if (firstPosition < 0) { firstPosition = position; }
                 this.billGrid.context.toggleSelectOneRow(row.id);
             }
         });
+
+        this.showSelectionPage(firstPosition);
+    }
+
+    // Paging here is display only, so an action can select rows that sit on
+    // another page.  Move to the page holding the first selected row so the
+    // result of the action is on screen.
+    showSelectionPage(position: number) {
+        if (position < 0) { return; }
+
+        const pager = this.billGrid.context.pager;
+        const page = Math.floor(position / pager.limit) + 1;
+
+        if (page !== pager.currentPage()) { pager.setPage(page); }
     }
 
     addBilling() {
@@ -588,28 +681,21 @@ export class BillsComponent implements OnInit, AfterViewInit {
         });
     }
 
+    // Adds a billing to one existing transaction, matching the behavior of
+    // the AngularJS interface.  The toolbar action is disabled unless
+    // exactly one row is selected; queueing a dialog per selected row gave
+    // staff no way to abandon the batch part way through.
     addBillingForXact(rows: any[]) {
-        if (rows.length === 0) { return; }
-        const xactIds = rows.map(r => r.id);
+        if (rows.length !== 1) { return; }
 
         this.billingDialog.newXact = false;
-        const xactsChanged = [];
+        this.billingDialog.xactId = rows[0].id;
 
-        from(xactIds)
-            .pipe(concatMap(id => {
-                this.billingDialog.xactId = id;
-                return this.billingDialog.open();
-            }))
-            .pipe(tap(data => {
-                if (data) {
-                    xactsChanged.push(data.xactId);
-                }
-            }))
-            .subscribe({ complete: () => {
-                if (xactsChanged.length > 0) {
-                    this.billGrid.reload();
-                }
-            } });
+        this.billingDialog.open().subscribe(data => {
+            if (data) {
+                this.billGrid.reload();
+            }
+        });
     }
 
     voidBillings(rows: any[]) {
@@ -621,16 +707,16 @@ export class BillsComponent implements OnInit, AfterViewInit {
 
         console.debug('Voiding transactions', xactIds);
 
-        // Grab the billings
-        from(xactIds).pipe(concatMap(xactId => {
-            return this.pcrud.search('mb', {xact: xactId}, {}, {authoritative: true})
-                .pipe(tap(billing => {
-                    if (billing.voided() === 'f') {
-                        cents += billing.amount() * 100;
-                        billIds.push(billing.id());
-                    }
-                }));
-        })).toPromise()
+        // Grab the billings.  One search across every selected transaction
+        // rather than one search apiece, which serialized hundreds of
+        // round trips before the confirmation dialog could even appear.
+        this.pcrud.search('mb', {xact: xactIds}, {}, {authoritative: true})
+            .pipe(tap(billing => {
+                if (billing.voided() === 'f') {
+                    cents += billing.amount() * 100;
+                    billIds.push(billing.id());
+                }
+            })).toPromise()
 
         // Confirm the void action
             .then(_ => {

@@ -10,8 +10,7 @@
   "exclude": [
     "test.ts",
     "**/*.spec.ts",
-    "test_data/mock_generators.ts",
-    "test_data/mock-pipes.ts",
+    "test_data/**/*.ts",
     "environments/environment.prod.ts"
   ]
 }
