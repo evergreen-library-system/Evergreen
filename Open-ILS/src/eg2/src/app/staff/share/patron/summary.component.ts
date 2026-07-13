@@ -38,6 +38,13 @@ export class PatronSummaryComponent implements OnInit {
     penalties = 0;
 
     showSummaryPane = true;
+
+    // The photo_url that has actually loaded.  We reveal the <img> only
+    // once it matches the current photo_url, so a missing/slow/broken
+    // image never flashes a broken icon -- and switching to a new URL
+    // hides the old photo immediately rather than after a load timeout.
+    private loadedPhotoUrl?: string;
+
     @Input() set showPane(show: boolean) {
         this.showSummaryPane = show;
     }
@@ -52,12 +59,6 @@ export class PatronSummaryComponent implements OnInit {
     p(): IdlObject { // patron shorthand
         return this.summary ? this.summary.patron : null;
     }
-
-    // The photo_url that has actually loaded.  We reveal the <img> only
-    // once it matches the current photo_url, so a missing/slow/broken
-    // image never flashes a broken icon -- and switching to a new URL
-    // hides the old photo immediately rather than after a load timeout.
-    private loadedPhotoUrl?: string;
 
     photoLoaded() {
         this.loadedPhotoUrl = this.p()?.photo_url();
