@@ -91,6 +91,7 @@ sub HoldIsAvailable {
     my $env = shift;
 
     my $hold = new_editor()->retrieve_action_hold_request($env->{target}->id);
+    $hold->current_copy( $env->{target}->current_copy );
 
     if ($env->{params}->{check_email_notify}) {
         return 0 unless $U->is_true($hold->email_notify);
