@@ -70,7 +70,7 @@ sub MinPassiveTargetAge {
 sub CircIsOverdue {
     my $self = shift;
     my $env = shift;
-    my $circ = $env->{target};
+    my $circ = new_editor()->retrieve_action_circulation($env->{target}->id);
 
     return 0 if $circ->checkin_time;
     return 0 if $circ->stop_fines and not $circ->stop_fines =~ /MAXFINES|LONGOVERDUE/;
@@ -90,7 +90,7 @@ sub HoldIsAvailable {
     my $self = shift;
     my $env = shift;
 
-    my $hold = $env->{target};
+    my $hold = new_editor()->retrieve_action_hold_request($env->{target}->id);
 
     if ($env->{params}->{check_email_notify}) {
         return 0 unless $U->is_true($hold->email_notify);
@@ -119,7 +119,7 @@ sub HoldIsAvailable {
 sub ReservationIsAvailable {
     my $self = shift;
     my $env = shift;
-    my $reservation = $env->{target};
+    my $reservation = new_editor()->retrieve_booking_reservation($env->{target}->id);
 
     return 1 if
         !$reservation->cancel_time and
@@ -133,7 +133,7 @@ sub HoldIsCancelled {
     my $self = shift;
     my $env = shift;
 
-    my $hold = $env->{target};
+    my $hold = new_editor()->retrieve_action_hold_request($env->{target}->id);
 
     if ($env->{params}->{check_email_notify}) {
         return 0 unless $U->is_true($hold->email_notify);
@@ -152,7 +152,7 @@ sub HoldNotifyCheck {
     my $self = shift;
     my $env = shift;
 
-    my $hold = $env->{target};
+    my $hold = new_editor()->retrieve_action_hold_request($env->{target}->id);
 
     if ($env->{params}->{check_email_notify}) {
         return 0 unless $U->is_true($hold->email_notify);
