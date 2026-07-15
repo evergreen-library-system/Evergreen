@@ -87,7 +87,8 @@
 
     <ul ngbNav #patronNav="ngbNav" class="nav-tabs flex-column"
       [keyboard]="true" [roles]="false" role="tablist"
-      [activeId]="patronTab" (navChange)="beforeTabChange($event)">
+      [activeId]="patronTab" (navChange)="beforeTabChange($event)"
+      (shown)="patronTabShown($event)">
 
       <li role="presentation" ngbNavItem="checkout" [disabled]="!context.summary">
         <button type="button" role="tab" ngbNavLink (click)="navItemClick('checkout', $event)"
@@ -158,7 +159,7 @@
             </eg-patron-billing-history>
           }
           @if (!statementXact && !billingHistoryTab) {
-            <eg-patron-bills [patronId]="patronId"></eg-patron-bills>
+            <eg-patron-bills #patronBills [patronId]="patronId"></eg-patron-bills>
           }
         </ng-template>
       </li>

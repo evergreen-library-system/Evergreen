@@ -80,8 +80,10 @@
       <span class="money">{{refundsAvailable() | currency}}</span>
     </li>
     <li>
+      @if (!disablePatronCredit) {
       <span i18n>Credit Available:</span>
       <span class="money">{{patron().credit_forward_balance() | currency}}</span>
+      }
     </li>
     <li>
       <span i18n>Session Voided:</span>
@@ -114,7 +116,9 @@
       <option value="check_payment" i18n>Check</option>
       <option value="credit_card_payment" i18n>Credit Card</option>
       <option value="debit_card_payment" i18n>Debit Card</option>
-      <option value="credit_payment" i18n>Patron Credit</option>
+      @if (!disablePatronCredit) {
+        <option value="credit_payment" i18n>Patron Credit</option>
+      }
       <option value="work_payment" i18n>Work</option>
       <option value="forgive_payment" i18n>Forgive</option>
       <option value="goods_payment" i18n>Goods</option>
@@ -323,16 +327,18 @@
 </eg-grid>
 
 <div class="row mt-2">
-  <div class="col-lg-12 d-flex">
-    <div class="d-flex flex-column ms-auto align-items-center justify-content-end">
-      <div class="form-check form-check-inline">
-        <input class="form-check-input" type="checkbox" id="patron-credit-cbox"
-          [(ngModel)]="convertChangeToCredit"/>
-        <label class="form-label form-check-label" for="patron-credit-cbox" i18n>
-        Convert Change To Patron Credit
-      </label>
+  <div class="col-lg-12 d-flex justify-content-end">
+    @if (!disablePatronCredit) {
+      <div class="d-flex flex-column align-items-center justify-content-end">
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="checkbox" id="patron-credit-cbox"
+            [(ngModel)]="convertChangeToCredit"/>
+          <label class="form-label form-check-label" for="patron-credit-cbox" i18n>
+          Convert Change To Patron Credit
+        </label>
+        </div>
       </div>
-    </div>
+    }
     <div class="d-flex flex-column justify-content-end">
       <div class="form-check form-check-inline ms-2">
         <input class="form-check-input" type="checkbox" id="receipt-on-payment-cbox"

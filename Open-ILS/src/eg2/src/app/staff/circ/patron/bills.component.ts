@@ -1,9 +1,8 @@
 import { Component, Input, OnInit, AfterViewInit, ViewChild, inject } from '@angular/core';
-import {Router, ActivatedRoute} from '@angular/router';
+import {Router} from '@angular/router';
 import {from, empty, range, concatMap, tap} from 'rxjs';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {EventService} from '@eg/core/event.service';
-import {OrgService} from '@eg/core/org.service';
 import {NetService} from '@eg/core/net.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {AuthService} from '@eg/core/auth.service';
@@ -13,7 +12,6 @@ import {PatronContextService} from './patron.service';
 import {GridDataSource, GridColumn, GridCellTextGenerator, GridRowFlairEntry} from '@eg/share/grid/grid';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {Pager} from '@eg/share/util/pager';
-import {CircService} from '@eg/staff/share/circ/circ.service';
 import {PrintService} from '@eg/share/print/print.service';
 import {PromptDialogComponent} from '@eg/share/dialog/prompt.component';
 import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
@@ -40,10 +38,8 @@ import { StaffCommonModule } from '@eg/staff/common.module';
 })
 export class BillsComponent implements OnInit, AfterViewInit {
     private router = inject(Router);
-    private route = inject(ActivatedRoute);
     private audio = inject(AudioService);
     private toast = inject(ToastService);
-    private org = inject(OrgService);
     private evt = inject(EventService);
     private net = inject(NetService);
     private pcrud = inject(PcrudService);
@@ -51,7 +47,6 @@ export class BillsComponent implements OnInit, AfterViewInit {
     private idl = inject(IdlService);
     private printer = inject(PrintService);
     private serverStore = inject(ServerStoreService);
-    private circ = inject(CircService);
     private billing = inject(BillingService);
     private flatData = inject(GridFlatDataService);
     private worklog = inject(WorkLogService);
@@ -68,6 +63,7 @@ export class BillsComponent implements OnInit, AfterViewInit {
     annotatePayment = false;
     paymentNote: string;
     convertChangeToCredit = false;
+    disablePatronCredit = false;
     receiptOnPayment = false;
     applyingPayment = false;
     numReceipts = 1;
@@ -77,6 +73,10 @@ export class BillsComponent implements OnInit, AfterViewInit {
     // eslint-disable-next-line no-magic-numbers
     maxPayAmount = 100000;
     warnPayAmount = 1000;
+    uncheckBillsAndFocusSelectAll = false;
+    billsSelectedOnLoad = false;
+    defaultControlFocusedOnLoad = false;
+    settingsReady!: Promise<any>;
     voidAmount = 0;
     refunding = false;
 
@@ -148,18 +148,24 @@ export class BillsComponent implements OnInit, AfterViewInit {
 
             return this.flatData.getRows(
                 this.billGrid.context, query, pager, sort)
-                .pipe(tap(row => {
-                    row.paymentPending = 0;
-                    row.billingLocation =
-                    row['grocery.billing_location.shortname'] ||
-                    row['circulation.circ_lib.shortname'];
-                }));
+                .pipe(
+                    tap(row => {
+                        row.paymentPending = 0;
+                        row.billingLocation =
+                            row['grocery.billing_location.shortname'] ||
+                            row['circulation.circ_lib.shortname'];
+                    }),
+                    tap({complete: () => {
+                        this.selectAllBillsOnLoad();
+                        this.focusDefaultControlOnLoad();
+                    }}));
         };
 
-        this.pcrud.retrieve('mowbus', this.patronId).toPromise()
+        this.settingsReady =
+            this.pcrud.retrieve('mowbus', this.patronId).toPromise()
         // Summary will be null for users with no billing history.
-            .then(summary => this.summary = summary || this.idl.create('mowbus'))
-            .then(_ => this.loadSettings());
+                .then(summary => this.summary = summary || this.idl.create('mowbus'))
+                .then(_ => this.loadSettings());
     }
 
     circIsOverdue(row: any): boolean {
@@ -178,16 +184,20 @@ export class BillsComponent implements OnInit, AfterViewInit {
         return this.serverStore.getItemBatch([
             'ui.circ.billing.amount_warn',
             'ui.circ.billing.amount_limit',
+            'ui.circ.billing.uncheck_bills_and_unfocus_payment_box',
             'circ.staff_client.do_not_auto_attempt_print',
             'circ.bills.receiptonpay',
-            'eg.circ.bills.annotatepayment'
+            'eg.circ.bills.annotatepayment',
+            'circ.disable_patron_credit'
 
         ]).then(sets => {
             // eslint-disable-next-line no-magic-numbers
             this.maxPayAmount = sets['ui.circ.billing.amount_limit'] || 100000;
             this.warnPayAmount = sets['ui.circ.billing.amount_warn'] || 1000;
+            this.uncheckBillsAndFocusSelectAll = sets['ui.circ.billing.uncheck_bills_and_unfocus_payment_box'] || false;
             this.receiptOnPayment = sets['circ.bills.receiptonpay'];
             this.annotatePayment = sets['eg.circ.bills.annotatepayment'];
+            this.disablePatronCredit = sets['circ.disable_patron_credit'] || false;
 
             const noPrint = sets['circ.staff_client.do_not_auto_attempt_print'];
             if (noPrint && noPrint.includes('Bill Pay')) {
@@ -208,8 +218,6 @@ export class BillsComponent implements OnInit, AfterViewInit {
                 this.refunding = false;
                 this.updatePendingColumn();
             });
-
-        this.focusPayAmount();
     }
 
     focusPayAmount() {
@@ -217,6 +225,10 @@ export class BillsComponent implements OnInit, AfterViewInit {
             const node = document.getElementById('pay-amount') as HTMLInputElement;
             if (node) { node.focus(); node.select(); }
         });
+    }
+
+    focusSelectAllBills() {
+        setTimeout(() => this.billGrid?.focusSelectAll());
     }
 
     patron(): IdlObject {
@@ -511,6 +523,51 @@ export class BillsComponent implements OnInit, AfterViewInit {
                 printContext: 'receipt'
             });
         });
+    }
+
+    selectAllBills() {
+        this.billGrid.context.rowSelector.clear();
+        this.gridDataSource.data.forEach(row => {
+            this.billGrid.context.toggleSelectOneRow(row.id);
+        });
+    }
+
+    // Called when the bills grid finishes loading a page of rows.  Waits
+    // for the library settings so we know whether the staff wants bills
+    // left unchecked, then selects every row exactly once on initial load.
+    selectAllBillsOnLoad() {
+        return this.settingsReady.then(() => {
+            if (this.billsSelectedOnLoad) { return; }
+            this.billsSelectedOnLoad = true;
+            if (!this.uncheckBillsAndFocusSelectAll) {
+                this.selectAllBills();
+            }
+        });
+    }
+
+    // Waits for the library settings, then focuses the Payment Received
+    // field or the grid's Select All checkbox, whichever the setting says
+    // staff expect to act on next, once per initial grid load.
+    focusDefaultControlOnLoad() {
+        return this.settingsReady.then(() => {
+            if (this.defaultControlFocusedOnLoad) { return; }
+            this.defaultControlFocusedOnLoad = true;
+            this.focusDefaultControl();
+        });
+    }
+
+    // Re-focuses the same default control every time the Bills tab is
+    // activated, not just on the initial grid load.
+    focusDefaultControlOnTabActivation() {
+        return this.settingsReady.then(() => this.focusDefaultControl());
+    }
+
+    focusDefaultControl() {
+        if (this.uncheckBillsAndFocusSelectAll) {
+            this.focusSelectAllBills();
+        } else {
+            this.focusPayAmount();
+        }
     }
 
     selectRefunds() {
