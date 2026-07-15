@@ -5,7 +5,7 @@
     <th scope="col" role="columnheader"
       class="eg-grid-cell eg-grid-header-cell eg-grid-checkbox-cell">
       <div class="eg-grid-cell-contents">
-        <input type='checkbox' (click)="handleBatchSelect($event)"
+        <input #selectAllCheckbox type='checkbox' (click)="handleBatchSelect($event)"
           i18n-aria-label aria-label="All rows"
           [(ngModel)]="batchRowCheckbox">
       </div>
