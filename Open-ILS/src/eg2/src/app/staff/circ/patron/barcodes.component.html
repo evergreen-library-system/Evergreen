@@ -57,7 +57,7 @@
                   <button type="button" class="btn btn-sm"
                     [class.btn-danger]="!card.isdeleted()"
                     [class.btn-secondary]="card.isdeleted()"
-                    [disabled]="!(myPerms.UPDATE_PATRON_ACTIVE_CARD && myPerms.UPDATE_PATRON_PRIMARY_CARD) || card.id() === primaryCard || card.isdeleted() || card.active() === 't' || hasUnsavedActiveChanges(card)"
+                    [disabled]="deleteCardDisabled(card)"
                     [attr.title]="getDeleteTitle(card)"
                     (click)="deleteCard(card)"
                     [attr.aria-label]="'Delete barcode ' + card.barcode()"

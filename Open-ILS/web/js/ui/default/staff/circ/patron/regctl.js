@@ -263,7 +263,8 @@ angular.module('egCoreMod')
             'UPDATE_PATRON_CLAIM_RETURN_COUNT',
             'UPDATE_PATRON_CLAIM_NEVER_CHECKED_OUT_COUNT',
             'UPDATE_PATRON_ACTIVE_CARD',
-            'UPDATE_PATRON_PRIMARY_CARD'
+            'UPDATE_PATRON_PRIMARY_CARD',
+            'DELETE_INACTIVE_NONPRIMARY_PATRON_CARD'
         ];
 
         return egCore.perm.hasPermAt(perms_needed, true)
@@ -1962,9 +1963,22 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
                     return Boolean(card._backend_active) !== Boolean(card.active);
                 };
 
+                $scope.okDisabled = function() {
+                    return !$scope.perms.UPDATE_PATRON_PRIMARY_CARD
+                        && !$scope.perms.UPDATE_PATRON_ACTIVE_CARD
+                        && !$scope.perms.DELETE_INACTIVE_NONPRIMARY_PATRON_CARD;
+                };
+
+                $scope.deleteDisabled = function(card) {
+                    return !$scope.perms.DELETE_INACTIVE_NONPRIMARY_PATRON_CARD
+                        || card.id === $scope.args.primary_barcode
+                        || card.isdeleted
+                        || card.active
+                        || $scope.hasUnsavedActiveChanges(card);
+                };
+
                 $scope.deleteCard = function(card) {
-                    // Require both permissions
-                    if (!$scope.perms.UPDATE_PATRON_ACTIVE_CARD || !$scope.perms.UPDATE_PATRON_PRIMARY_CARD) {
+                    if (!$scope.perms.DELETE_INACTIVE_NONPRIMARY_PATRON_CARD) {
                         ngToast.danger(egCore.strings.PERMISSION_DENIED_DELETE_BARCODES || 'Permission denied for deleting barcodes');
                         return;
                     }

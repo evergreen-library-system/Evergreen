@@ -1089,11 +1089,12 @@ sub _delete_card {
     
     my $patron = $e->retrieve_actor_user($card_obj->usr);
     return $e->die_event unless $patron;
-    
-    # Require both permissions for deleting barcodes
+
     return OpenILS::Event->new('PERM_FAILURE')
-        unless $e->allowed('UPDATE_PATRON_ACTIVE_CARD', $patron->home_ou)
-        && $e->allowed('UPDATE_PATRON_PRIMARY_CARD', $patron->home_ou);
+        unless $e->allowed(
+            'DELETE_INACTIVE_NONPRIMARY_PATRON_CARD',
+            $patron->home_ou
+        );
     
     # Cannot delete active barcodes - safety and data integrity check
     if ($card_obj->active eq 't') {
