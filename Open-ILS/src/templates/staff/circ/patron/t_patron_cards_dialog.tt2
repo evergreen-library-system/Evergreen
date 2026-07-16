@@ -56,7 +56,7 @@
               <button type="button" class="btn btn-sm barcode-delete-btn"
                 ng-class="{'btn-danger': !card.isdeleted, 'btn-secondary': card.isdeleted}"
                 ng-click="deleteCard(card)"
-                ng-disabled="!(perms.UPDATE_PATRON_ACTIVE_CARD && perms.UPDATE_PATRON_PRIMARY_CARD) || card.id == args.primary_barcode || card.isdeleted || card.active || hasUnsavedActiveChanges(card)"
+                ng-disabled="deleteDisabled(card)"
                 ng-attr-title="{{ hasUnsavedActiveChanges(card) ? '[% l("Save patron record after deactivating before deleting") %]' : '[% l("Barcode must be deactivated and saved before deletion") %]' }}"
                 aria-label="Delete barcode {{card.barcode}}">
                 [% l('Delete') %]
@@ -69,7 +69,7 @@
   </div>
   <div class="modal-footer">
     <button type="submit" class="btn btn-success"
-      ng-disabled="!perms.UPDATE_PATRON_PRIMARY_CARD && !perms.UPDATE_PATRON_ACTIVE_CARD">
+      ng-disabled="okDisabled()">
       [% l('Apply Changes') %]
     </button>
     <button type="button" class="btn btn-normal" ng-click="cancel()">[% l('Cancel') %]</button>

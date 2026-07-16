@@ -2065,7 +2065,9 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
  ( 696, 'ADMIN_RECORD_DISPLAY', oils_i18n_gettext(696,
      'Allow modifying the display of catalog records in certain interfaces', 'ppl', 'description')),
  ( 697, 'PURGE_USER', oils_i18n_gettext(697,
-     'Allow a user to delete (purge) another user', 'ppl', 'description'))
+     'Allow a user to delete (purge) another user', 'ppl', 'description')),
+ ( 698, 'DELETE_INACTIVE_NONPRIMARY_PATRON_CARD', oils_i18n_gettext(698,
+     'Allow a user to delete a patron''s inactive, non-primary cards', 'ppl', 'description'))
 ;
 
 INSERT INTO permission.perm_list (id,code) VALUES
