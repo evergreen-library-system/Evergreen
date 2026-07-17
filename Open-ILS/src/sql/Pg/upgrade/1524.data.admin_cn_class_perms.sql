@@ -1,11 +1,11 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1524', :eg_version);
 
 INSERT INTO permission.perm_list ( id, code, description ) SELECT DISTINCT
-   YYY,
+   694,
    'ADMIN_CALL_NUMBER_CLASS',
-   oils_i18n_gettext(YYY,
+   oils_i18n_gettext(694,
      'Allow updates to call number classification names, normalizers, and fields.', 'ppl', 'description'
    )
    FROM permission.perm_list
