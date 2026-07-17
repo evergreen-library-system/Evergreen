@@ -12,7 +12,7 @@ import {SRFieldComponent} from './sr-field.component';
 import {SimpleReporterRoutingModule} from './routing.module';
 
 @NgModule({
-    declarations: [
+    imports: [
         SimpleReporterComponent,
         SROutputsComponent,
         SRReportsComponent,
@@ -20,9 +20,7 @@ import {SimpleReporterRoutingModule} from './routing.module';
         SRSortOrderComponent,
         SROutputOptionsComponent,
         SRFieldComponent,
-        SREditorComponent
-    ],
-    imports: [
+        SREditorComponent,
         StaffCommonModule,
         SimpleReporterRoutingModule,
         OrgFamilySelectModule

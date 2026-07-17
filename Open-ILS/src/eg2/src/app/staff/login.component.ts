@@ -1,22 +1,33 @@
-import {
-    Component,
-    ElementRef,
-    OnInit,
-    Renderer2,
-    ViewChild
-} from '@angular/core';
-import {Location} from '@angular/common';
+import { Component, ElementRef, OnInit, Renderer2, ViewChild, inject } from '@angular/core';
+import { DatePipe, Location, NgClass } from '@angular/common';
 import {Router, ActivatedRoute} from '@angular/router';
 import {AuthService, AuthWsState} from '@eg/core/auth.service';
 import {StoreService} from '@eg/core/store.service';
 import {OrgService} from '@eg/core/org.service';
 import {OfflineService} from '@eg/staff/share/offline.service';
+import { CredentialInputComponent } from '@eg/share/util/credential-input.component';
+import { FormsModule } from '@angular/forms';
 
 @Component({
     styleUrls: ['./login.component.css'],
-    templateUrl : './login.component.html'
+    templateUrl: './login.component.html',
+    imports: [
+        CredentialInputComponent,
+        DatePipe,
+        FormsModule,
+        NgClass
+    ]
 })
 export class StaffLoginComponent implements OnInit {
+    private router = inject(Router);
+    private route = inject(ActivatedRoute);
+    private ngLocation = inject(Location);
+    private renderer = inject(Renderer2);
+    private auth = inject(AuthService);
+    private org = inject(OrgService);
+    private store = inject(StoreService);
+    private offline = inject(OfflineService);
+
 
     @ViewChild('password')
         passwordInput: ElementRef;
@@ -36,17 +47,6 @@ export class StaffLoginComponent implements OnInit {
         workstation : '',
         type : 'staff'
     };
-
-    constructor(
-      private router: Router,
-      private route: ActivatedRoute,
-      private ngLocation: Location,
-      private renderer: Renderer2,
-      private auth: AuthService,
-      private org: OrgService,
-      private store: StoreService,
-      private offline: OfflineService
-    ) {}
 
     ngOnInit() {
         this.activeLogout = !!this.route.snapshot.queryParamMap.get('activeLogout');
@@ -95,7 +95,9 @@ export class StaffLoginComponent implements OnInit {
     redirectToSSO(type = 'login') {
         let url = `/eg/opac/staff/sso/${type}?ws=${this.args.workstation}`;
         if (this.routeTo) {
-            url = url + '&redirect_to=' + encodeURIComponent(this.routeTo);
+            url = url + '&redirect_to=' + encodeURIComponent(
+                this.ngLocation.prepareExternalUrl(this.routeTo)
+            );
         }
         if (this.activeLogout) {
             url = url + '&active_logout=1';
@@ -113,7 +115,7 @@ export class StaffLoginComponent implements OnInit {
 
 
     applyWorkstation() {
-        const wanted = this.route.snapshot.queryParamMap.get('workstation');
+        const wanted = this.route.snapshot.queryParamMap.get('ws');
         if (!wanted) { return this.args.workstation; } // use the default
 
         const exists = this.workstations.find(w => w.name === wanted);

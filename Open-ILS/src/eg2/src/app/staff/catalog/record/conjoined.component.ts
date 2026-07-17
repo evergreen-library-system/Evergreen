@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, ViewChild} from '@angular/core';
+import { Component, OnInit, Input, ViewChild, inject } from '@angular/core';
 import {IdlService} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {Pager} from '@eg/share/util/pager';
@@ -9,14 +9,24 @@ import {GridComponent} from '@eg/share/grid/grid.component';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 import {ConjoinedItemsDialogComponent
 } from '@eg/staff/share/holdings/conjoined-items-dialog.component';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 /** Conjoined items per record grid */
 
 @Component({
     selector: 'eg-catalog-record-conjoined',
-    templateUrl: 'conjoined.component.html'
+    templateUrl: 'conjoined.component.html',
+    imports: [
+        ConjoinedItemsDialogComponent,
+        StaffCommonModule
+    ]
 })
 export class ConjoinedComponent implements OnInit {
+    private idl = inject(IdlService);
+    private org = inject(OrgService);
+    private pcrud = inject(PcrudService);
+    private perm = inject(PermService);
+
 
     @Input() recordId: number;
 
@@ -32,12 +42,7 @@ export class ConjoinedComponent implements OnInit {
     @ViewChild('confirmUnlink', { static: true })
     private confirmUnlink: ConfirmDialogComponent;
 
-    constructor(
-        private idl: IdlService,
-        private org: OrgService,
-        private pcrud: PcrudService,
-        private perm: PermService
-    ) {
+    constructor() {
         this.gridDataSource = new GridDataSource();
         this.idsToUnlink = [];
     }

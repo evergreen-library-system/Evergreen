@@ -11,13 +11,16 @@
  *     keyDesc="My Description" 18n-keyDesc
  *   >
  */
-import {Directive, ElementRef, Input, OnInit} from '@angular/core';
+import { Directive, ElementRef, Input, OnInit, inject } from '@angular/core';
 import {AccessKeyService} from '@eg/share/accesskey/accesskey.service';
 
 @Directive({
     selector: '[egAccessKey]'
 })
 export class AccessKeyDirective implements OnInit {
+    private elm = inject(ElementRef);
+    private keyService = inject(AccessKeyService);
+
 
     // Space-separated list of key combinations
     // E.g. "ctrl+h", "alt+h ctrl+y"
@@ -29,11 +32,6 @@ export class AccessKeyDirective implements OnInit {
     // Context info to display in the accesskey info dialog
     // E.g. "navbar"
     @Input() keyCtx: string;
-
-    constructor(
-        private elm: ElementRef,
-        private keyService: AccessKeyService
-    ) { }
 
     ngOnInit() {
 

@@ -1,16 +1,25 @@
 /* eslint-disable no-magic-numbers, @angular-eslint/component-selector */
-import {Component, Input, OnInit, AfterViewInit, QueryList, ViewChildren, inject, NgZone, OnDestroy, Renderer2} from '@angular/core';
-import {DOCUMENT} from '@angular/common';
+import {Component, Input, OnInit, AfterViewInit, QueryList, ViewChildren,
+    inject, NgZone, OnDestroy, Renderer2, DOCUMENT} from '@angular/core';
+import { NgClass } from '@angular/common';
 import {GridContext, GridColumn} from './grid';
 import {GridFilterControlComponent} from './grid-filter-control.component';
 import {takeUntil, switchMap, map, tap, Subject, fromEvent} from 'rxjs';
+import { FormsModule } from '@angular/forms';
 
 @Component({
     selector: 'thead.eg-grid-header',
-    templateUrl: './grid-header.component.html'
+    templateUrl: './grid-header.component.html',
+    imports: [
+        FormsModule,
+        GridFilterControlComponent,
+        NgClass
+    ]
 })
 
 export class GridHeaderComponent implements OnInit, OnDestroy, AfterViewInit {
+    private renderer = inject(Renderer2);
+
 
     @Input() context: GridContext;
 
@@ -26,9 +35,6 @@ export class GridHeaderComponent implements OnInit, OnDestroy, AfterViewInit {
 
     @ViewChildren(GridFilterControlComponent) filterControls: QueryList<GridFilterControlComponent>;
     @ViewChildren('colResizeButton') colResizeControls: QueryList<any>;
-
-    constructor( private renderer: Renderer2 ) {
-    }
 
     ngOnInit() {
         this.context.selectRowsInPageEmitter.subscribe(

@@ -7,10 +7,8 @@ import {PatronModule} from '@eg/staff/share/patron/patron.module';
 import {MarkItemMissingPiecesComponent} from './missing-pieces.component';
 
 @NgModule({
-    declarations: [
-        MarkItemMissingPiecesComponent
-    ],
     imports: [
+        MarkItemMissingPiecesComponent,
         StaffCommonModule,
         CommonWidgetsModule,
         ItemRoutingModule,

@@ -1,12 +1,10 @@
-import {Component, OnInit, AfterViewInit, OnDestroy, Input, Output, ViewChild, EventEmitter, ChangeDetectorRef} from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy, Input, Output, ViewChild,
+    EventEmitter, ChangeDetectorRef, inject } from '@angular/core';
 import {EMPTY, throwError, from, Subscription, map} from 'rxjs';
-import {Router, ActivatedRoute} from '@angular/router';
 import {Pager} from '@eg/share/util/pager';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
-import {NetService} from '@eg/core/net.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {EventService} from '@eg/core/event.service';
-import {AuthService} from '@eg/core/auth.service';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {GridDataSource, GridCellTextGenerator} from '@eg/share/grid/grid';
 import {ProviderRecordService} from './provider-record.service';
@@ -16,12 +14,28 @@ import {StringComponent} from '@eg/share/string/string.component';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 import {ToastService} from '@eg/share/toast/toast.service';
 
+import { GridModule } from '@eg/share/grid/grid.module';
+
 
 @Component({
     selector: 'eg-provider-contacts',
     templateUrl: 'provider-contacts.component.html',
+    imports: [
+        ConfirmDialogComponent,
+        FmRecordEditorComponent,
+        GridModule,
+        ProviderContactAddressesComponent,
+        StringComponent
+    ]
 })
 export class ProviderContactsComponent implements OnInit, AfterViewInit, OnDestroy {
+    private changeDetector = inject(ChangeDetectorRef);
+    private pcrud = inject(PcrudService);
+    private evt = inject(EventService);
+    private idl = inject(IdlService);
+    private providerRecord = inject(ProviderRecordService);
+    private toast = inject(ToastService);
+
 
     @Input() providerId: any;
     contacts: any[] = [];
@@ -61,19 +75,6 @@ export class ProviderContactsComponent implements OnInit, AfterViewInit, OnDestr
 
     // Size of create/edito dialog.  Uses large by default.
     @Input() dialogSize: 'sm' | 'lg' = 'lg';
-
-    constructor(
-        private router: Router,
-        private route: ActivatedRoute,
-        private changeDetector: ChangeDetectorRef,
-        private net: NetService,
-        private pcrud: PcrudService,
-        private evt: EventService,
-        private auth: AuthService,
-        private idl: IdlService,
-        private providerRecord: ProviderRecordService,
-        private toast: ToastService) {
-    }
 
     ngOnInit() {
         this.gridSource = this.getDataSource();

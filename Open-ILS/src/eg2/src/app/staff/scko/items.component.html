@@ -3,10 +3,10 @@
     <h1 i18n>Items Out</h1>
   </div>
   <div>
-    <button type="button" class="scko-button" 
-      (click)="renewSelected()" i18n>Renew Selected</button>
-    <button type="button" class="scko-button" 
-      (click)="printList()" i18n>Print List</button>
+    <button type="button" class="scko-button"
+    (click)="renewSelected()" i18n>Renew Selected</button>
+    <button type="button" class="scko-button"
+    (click)="printList()" i18n>Print List</button>
   </div>
 </div>
 <div id='oils-selfck-circ-table-div'>
@@ -26,25 +26,31 @@
       </tr>
     </thead>
     <tbody id='oils-selfck-circ-out-tbody' class='oils-selfck-item-table'>
-	    <tr *ngFor="let circ of circs">
-        <td>
-          <input type="checkbox" [(ngModel)]="selected[circ.id()]"/>
-        <td>
-          <ng-container *ngIf="circ.target_copy().id() !== -1">
-            <img i18n-alt alt="Jacket Image"
-              src="/opac/extras/ac/jacket/small/r/{{circ.target_copy().call_number().record().id()}}"/>
-          </ng-container>
-        </td>
-        <td>{{circ.target_copy().barcode()}}</td>
-        <td>{{scko.getCircTitle(circ)}}</td>
-        <td>{{scko.getCircAuthor(circ)}}</td>
-        <td>{{circ | egDueDate}}</td>
-        <td>{{circ.renewal_remaining()}}</td>
-        <td>
-          <span *ngIf="circ.parent_circ()" i18n>Renewal</span>
-          <span *ngIf="!circ.parent_circ()" i18n>Checkout</span>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+      @for (circ of circs; track circ) {
+        <tr>
+          <td>
+            <input type="checkbox" [(ngModel)]="selected[circ.id()]"/>
+            <td>
+              @if (circ.target_copy().id() !== -1) {
+                <img i18n-alt alt="Jacket Image"
+                  src="/opac/extras/ac/jacket/small/r/{{circ.target_copy().call_number().record().id()}}"/>
+              }
+            </td>
+            <td>{{circ.target_copy().barcode()}}</td>
+            <td>{{scko.getCircTitle(circ)}}</td>
+            <td>{{scko.getCircAuthor(circ)}}</td>
+            <td>{{circ | egDueDate}}</td>
+            <td>{{circ.renewal_remaining()}}</td>
+            <td>
+              @if (circ.parent_circ()) {
+                <span i18n>Renewal</span>
+              }
+              @if (!circ.parent_circ()) {
+                <span i18n>Checkout</span>
+              }
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>

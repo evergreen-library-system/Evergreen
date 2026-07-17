@@ -1,11 +1,11 @@
-import {Injectable, EventEmitter} from '@angular/core';
+import { Injectable, EventEmitter, inject } from '@angular/core';
 import {Observable, from, concat, empty, firstValueFrom, switchMap, map, tap, mergeWith as merge} from 'rxjs';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
-import {ItemLocationService} from '@eg/share/item-location-select/item-location-select.service';
+import {ItemLocationService} from '@eg/share/item-location-select/item-location.service';
 import {saveAs} from 'file-saver';
 import {LineitemAlertDialogComponent} from './lineitem-alert-dialog.component';
 
@@ -62,8 +62,14 @@ interface LineitemAlertData {
     alertComment: string;
 }
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class LineitemService {
+    private idl = inject(IdlService);
+    private net = inject(NetService);
+    private auth = inject(AuthService);
+    private pcrud = inject(PcrudService);
+    private loc = inject(ItemLocationService);
+
 
     liAttrDefs: IdlObject[];
 
@@ -89,14 +95,6 @@ export class LineitemService {
 
     naturalCollator = new Intl.Collator(undefined,
         {numeric: true, sensitivity: 'base', ignorePunctuation: true});
-
-    constructor(
-        private idl: IdlService,
-        private net: NetService,
-        private auth: AuthService,
-        private pcrud: PcrudService,
-        private loc: ItemLocationService
-    ) {}
 
     clearLiCache() {
         this.liCache = [];

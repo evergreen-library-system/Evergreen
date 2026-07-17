@@ -1,5 +1,5 @@
 /* eslint-disable no-shadow, no-var */
-import {Injectable} from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import {Observable, Observer} from 'rxjs';
 import {IdlService, IdlObject} from './idl.service';
 import {NetService, NetRequest} from './net.service';
@@ -322,14 +322,12 @@ export class PcrudContext {
 
 @Injectable({providedIn: 'root'})
 export class PcrudService {
-    static useAuthoritative = true;
+    private idl = inject(IdlService);
+    private store = inject(StoreService);
+    private net = inject(NetService);
+    private auth = inject(AuthService);
 
-    constructor(
-        private idl: IdlService,
-        private store: StoreService,
-        private net: NetService,
-        private auth: AuthService
-    ) {}
+    static useAuthoritative = true;
 
     // Pass-thru functions for one-off PCRUD calls
 

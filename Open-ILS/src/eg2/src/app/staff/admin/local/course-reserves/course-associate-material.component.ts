@@ -1,5 +1,5 @@
 import { PermService } from '@eg/core/perm.service';
-import {Component, Input, ViewChild, OnInit} from '@angular/core';
+import { Component, Input, ViewChild, OnInit, inject } from '@angular/core';
 import { Observable, merge, of, EMPTY, from, switchMap, concatMap } from 'rxjs';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {AuthService} from '@eg/core/auth.service';
@@ -14,13 +14,29 @@ import {StringComponent} from '@eg/share/string/string.component';
 import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {CourseService} from '@eg/staff/share/course.service';
+import { StaffCommonModule } from '@eg/staff/common.module';
+import { ItemLocationSelectComponent } from '@eg/share/item-location-select/item-location-select.component';
+import { MarcSimplifiedEditorModule } from '@eg/staff/share/marc-edit/simplified-editor/simplified-editor.module';
 
 @Component({
     selector: 'eg-course-associate-material-dialog',
-    templateUrl: './course-associate-material.component.html'
+    templateUrl: './course-associate-material.component.html',
+    imports: [
+        FmRecordEditorComponent,
+        ItemLocationSelectComponent,
+        MarcSimplifiedEditorModule,
+        StaffCommonModule
+    ]
 })
 
 export class CourseAssociateMaterialComponent extends DialogComponent implements OnInit {
+    private auth = inject(AuthService);
+    private course = inject(CourseService);
+    private net = inject(NetService);
+    private pcrud = inject(PcrudService);
+    private toast = inject(ToastService);
+    private perm = inject(PermService);
+
     @Input() currentCourse: IdlObject;
     @Input() courseId: any;
     @Input() courseIsArchived: string;
@@ -44,7 +60,7 @@ export class CourseAssociateMaterialComponent extends DialogComponent implements
         materialAddDifferentLibraryString: StringComponent;
     @ViewChild('confirmOtherLibraryDialog') confirmOtherLibraryDialog: DialogComponent;
     @ViewChild('otherLibraryNoPermissionsAlert') otherLibraryNoPermissionsAlert: DialogComponent;
-    materialsDataSource: GridDataSource;
+    materialsDataSource: GridDataSource = new GridDataSource();
     @Input() barcodeInput: string;
     @Input() relationshipInput: string;
     @Input() tempCallNumber: string;
@@ -62,18 +78,7 @@ export class CourseAssociateMaterialComponent extends DialogComponent implements
     associateBriefRecord: (newRecord: string) => void;
     associateElectronicBibRecord: () => void;
 
-    constructor(
-        private auth: AuthService,
-        private course: CourseService,
-        private net: NetService,
-        private pcrud: PcrudService,
-        private toast: ToastService,
-        private perm: PermService,
-        private modal: NgbModal
-    ) {
-        super(modal);
-        this.materialsDataSource = new GridDataSource();
-
+    ngOnInit() {
         this.materialsDataSource.getRows = (pager: Pager, sort: any[]) => {
             return this.net.request(
                 'open-ils.courses',
@@ -81,9 +86,6 @@ export class CourseAssociateMaterialComponent extends DialogComponent implements
                 {course: this.courseId}
             );
         };
-    }
-
-    ngOnInit() {
         this.associateBriefRecord = (newRecord: string) => {
             return this.net.request(
                 'open-ils.courses',

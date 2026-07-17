@@ -19,27 +19,24 @@ import {FmRecordEditorModule} from '@eg/share/fm-editor/fm-editor.module';
 import {ProviderRecordService} from './provider-record.service';
 
 @NgModule({
-    declarations: [
+    imports: [
         AcqProviderComponent,
         AcqProviderSearchFormComponent,
         AcqProviderSummaryPaneComponent,
-        ProviderResultsComponent,
-        ProviderDetailsComponent,
         ProviderAddressesComponent,
-        ProviderContactsComponent,
-        ProviderContactAddressesComponent,
-        ProviderHoldingsComponent,
         ProviderAttributesComponent,
-        ProviderEdiAccountsComponent,
+        ProviderContactAddressesComponent,
+        ProviderContactsComponent,
+        ProviderHoldingsComponent,
         ProviderInvoicesComponent,
         ProviderPurchaseOrdersComponent,
-        AcqProviderSummaryPaneComponent
-    ],
-    imports: [
+        ProviderResultsComponent,
         StaffCommonModule,
         OrgFamilySelectModule,
+        ProviderDetailsComponent,
         FmRecordEditorModule,
-        AcqProviderRoutingModule
+        AcqProviderRoutingModule,
+        ProviderEdiAccountsComponent,
     ],
     providers: [
         ProviderRecordService

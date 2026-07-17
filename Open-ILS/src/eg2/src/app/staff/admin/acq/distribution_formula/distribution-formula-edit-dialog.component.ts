@@ -1,24 +1,33 @@
 /* eslint-disable eqeqeq, no-magic-numbers */
-import {Component, Input, ViewChild, OnInit} from '@angular/core';
+import { Component, Input, ViewChild, OnInit, inject } from '@angular/core';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
-import {EventService} from '@eg/core/event.service';
 import {OrgService} from '@eg/core/org.service';
-import {NetService} from '@eg/core/net.service';
-import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {StringComponent} from '@eg/share/string/string.component';
-import {ToastService} from '@eg/share/toast/toast.service';
-import {PermService} from '@eg/core/perm.service';
+import { FormsModule } from '@angular/forms';
+import { OrgSelectComponent } from '@eg/share/org-select/org-select.component';
+import { ComboboxComponent } from '@eg/share/combobox/combobox.component';
+import { ItemLocationSelectComponent } from '@eg/share/item-location-select/item-location-select.component';
 
 @Component({
     selector: 'eg-distribution-formula-edit-dialog',
-    templateUrl: './distribution-formula-edit-dialog.component.html'
+    templateUrl: './distribution-formula-edit-dialog.component.html',
+    imports: [
+        ComboboxComponent,
+        FormsModule,
+        ItemLocationSelectComponent,
+        OrgSelectComponent,
+        StringComponent
+    ]
 })
 
 export class DistributionFormulaEditDialogComponent
     extends DialogComponent implements OnInit {
+    private idl = inject(IdlService);
+    private org = inject(OrgService);
+    private pcrud = inject(PcrudService);
+
 
     @Input() mode = 'create';
     @Input() formulaId: number;
@@ -28,20 +37,6 @@ export class DistributionFormulaEditDialogComponent
     formula: IdlObject;
     deadEntries: IdlObject[];
     clonedLabel = '';
-
-    constructor(
-        private idl: IdlService,
-        private evt: EventService,
-        private net: NetService,
-        private auth: AuthService,
-        private org: OrgService,
-        private pcrud: PcrudService,
-        private perm: PermService,
-        private toast: ToastService,
-        private modal: NgbModal
-    ) {
-        super(modal);
-    }
 
     ngOnInit() {
         this.onOpen$.subscribe(() => this._initRecord());

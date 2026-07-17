@@ -3,53 +3,59 @@
     <div class="modal-header">
       <h3 class="modal-title" i18n>Link Invoice</h3>
       <button type="button" class="btn-close btn-close-white"
-        i18n-aria-label aria-label="Close dialog" (click)="close()"></button>
+      i18n-aria-label aria-label="Close dialog" (click)="close()"></button>
     </div>
     <div class="modal-body">
-      <h4 i18n *ngIf="liIds && liIds.length">Line Item(s) selected:
-        <span *ngFor="let id of liIds; last as isLast">
-          {{id}}<span *ngIf="!isLast">,</span>
+      @if (liIds && liIds.length) {
+        <h4 i18n>Line Item(s) selected:
+        @for (id of liIds; track id; let isLast = $last) {
+<span>
+          {{id}}@if (!isLast) {
+<span>,</span>
+}
         </span>
+}
       </h4>
-      <div class="d-flex">
-        <div class="flex-1">
-          <label class="form-label" for="provider-input" i18n>Provider</label>
-        </div>
-        <div class="flex-3">
-          <eg-combobox domId="provider-input" [(ngModel)]="provider" 
-            style="border-inline-start-width: 0px"
-            name="provider-input"
-            idlIncludeLibraryInLabel="owner"
-            [required]="true"
-            [asyncSupportsEmptyTermClick]="true"
-            [idlQueryAnd]="{active: 't'}" idlClass="acqpro">
-          </eg-combobox>
-        </div>
+    }
+    <div class="d-flex">
+      <div class="flex-1">
+        <label class="form-label" for="provider-input" i18n>Provider</label>
       </div>
-      <div class="d-flex mt-2">
-        <div class="flex-1">
-          <label class="form-label" for="invoice-input" i18n>Invoice</label>
-        </div>
-        <div class="flex-3">
-          <eg-combobox domId="invoice-input" [(ngModel)]="invoice" 
-            style="border-inline-start-width: 0px"
-            [readOnly]="!provider || !provider?.id"
-            name="invoice-input"
-            [required]="true"
-            idlField="inv_ident"
-            [asyncSupportsEmptyTermClick]="true"
-            [idlQueryAnd]="{provider: provider?.id, close_date: null}" idlClass="acqinv">
-          </eg-combobox>
-        </div>
+      <div class="flex-3">
+        <eg-combobox domId="provider-input" [(ngModel)]="provider"
+          style="border-inline-start-width: 0px"
+          name="provider-input"
+          idlIncludeLibraryInLabel="owner"
+          [required]="true"
+          [asyncSupportsEmptyTermClick]="true"
+          [idlQueryAnd]="{active: 't'}" idlClass="acqpro">
+        </eg-combobox>
       </div>
     </div>
-    <div class="modal-footer">
-      <button type="button" class="btn btn-success"
-        [disabled]="!invoice || !invoice.id"
-        (click)="close(invoice.id)" i18n>Link Invoice</button>
-      <button type="button" class="btn btn-normal"
-        (click)="close()" i18n>Cancel</button>
+    <div class="d-flex mt-2">
+      <div class="flex-1">
+        <label class="form-label" for="invoice-input" i18n>Invoice</label>
+      </div>
+      <div class="flex-3">
+        <eg-combobox domId="invoice-input" [(ngModel)]="invoice"
+          style="border-inline-start-width: 0px"
+          [readOnly]="!provider || !provider?.id"
+          name="invoice-input"
+          [required]="true"
+          idlField="inv_ident"
+          [asyncSupportsEmptyTermClick]="true"
+          [idlQueryAnd]="{provider: provider?.id, close_date: null}" idlClass="acqinv">
+        </eg-combobox>
+      </div>
     </div>
-  </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-success"
+      [disabled]="!invoice || !invoice.id"
+    (click)="close(invoice.id)" i18n>Link Invoice</button>
+    <button type="button" class="btn btn-normal"
+    (click)="close()" i18n>Cancel</button>
+  </div>
+</form>
 </ng-template>
 

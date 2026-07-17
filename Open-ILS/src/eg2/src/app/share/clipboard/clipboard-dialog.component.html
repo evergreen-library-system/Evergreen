@@ -1,23 +1,25 @@
 <ng-template #dialogContent>
   <div class="modal-header">
     <h4 class="modal-title" i18n>Copy Data to Clipboard</h4>
-    <button type="button" class="btn-close btn-close-white" 
-      i18n-aria-label aria-label="Close dialog" (click)="close()"></button>
+    <button type="button" class="btn-close btn-close-white"
+    i18n-aria-label aria-label="Close dialog" (click)="close()"></button>
   </div>
   <div class="modal-body common-form striped-odd">
-    <div class="row" *ngFor="let value of values">
-      <div class="col-lg-4 fw-bold border-end">{{value.label}}</div>
-      <div class="col-lg-8">
-        <button type="button" class="btn btn-link" (click)="copyValue(value.value)">{{value.value}}</button>
+    @for (value of values; track value) {
+      <div class="row">
+        <div class="col-lg-4 fw-bold border-end">{{value.label}}</div>
+        <div class="col-lg-8">
+          <button type="button" class="btn btn-link" (click)="copyValue(value.value)">{{value.value}}</button>
+        </div>
       </div>
-    </div>
+    }
 
     <!-- hidden landing spot for copy-able text -->
     <textarea style="display:none;visibility:hidden" id='clipboard-textarea'>
     </textarea>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-normal" 
-      (click)="close()" i18n>Cancel</button>
+    <button type="button" class="btn btn-normal"
+    (click)="close()" i18n>Cancel</button>
   </div>
 </ng-template>

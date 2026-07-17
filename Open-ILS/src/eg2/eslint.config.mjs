@@ -39,7 +39,6 @@ export default defineConfig([globalIgnores(["projects/**/*"]), {
         sourceType: "module",
 
         parserOptions: {
-            "project": ["tsconfig.json", "tsconfig.app.json", "tsconfig.spec.json", "e2e/tsconfig.json"],
             createDefaultProgram: true,
             projectService: true,
         },

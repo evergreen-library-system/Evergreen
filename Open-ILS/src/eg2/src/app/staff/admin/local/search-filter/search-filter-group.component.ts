@@ -1,7 +1,7 @@
 import {Pager} from '@eg/share/util/pager';
 import {Location} from '@angular/common';
 import {FormatService} from '@eg/core/format.service';
-import {Component, Input, ViewChild, OnInit} from '@angular/core';
+import { Component, Input, ViewChild, OnInit, inject } from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {GridDataSource} from '@eg/share/grid/grid';
@@ -14,12 +14,17 @@ import {AuthService} from '@eg/core/auth.service';
 import {BroadcastService} from '@eg/share/util/broadcast.service';
 import {StringComponent} from '@eg/share/string/string.component';
 import {AdminPageComponent} from '../../../share/admin-page/admin-page.component';
+import { StaffCommonModule } from '@eg/staff/common.module';
+import { FmRecordEditorComponent } from '@eg/share/fm-editor/fm-editor.component';
 
 @Component({
-    templateUrl: './search-filter-group.component.html'
+    templateUrl: './search-filter-group.component.html',
+    imports: [StaffCommonModule, FmRecordEditorComponent]
 })
 
 export class SearchFilterGroupComponent extends AdminPageComponent implements OnInit {
+    private router = inject(Router);
+
 
     @Input() gridDataSource: GridDataSource;
     @ViewChild('grid', {static: true}) grid: GridComponent;
@@ -27,22 +32,6 @@ export class SearchFilterGroupComponent extends AdminPageComponent implements On
     @ViewChild('createErrString') createErrString: StringComponent;
     @ViewChild('deleteFailedString') deleteFailedString: StringComponent;
     @ViewChild('deleteSuccessString') deleteSuccessString: StringComponent;
-
-    constructor(
-        route: ActivatedRoute,
-        ngLocation: Location,
-        format: FormatService,
-        idl: IdlService,
-        org: OrgService,
-        auth: AuthService,
-        pcrud: PcrudService,
-        perm: PermService,
-        toast: ToastService,
-        private router: Router,
-        broadcaster: BroadcastService
-    ) {
-        super(route, ngLocation, format, idl, org, auth, pcrud, perm, toast, broadcaster);
-    }
 
     ngOnInit() {
         this.gridDataSource = new GridDataSource();

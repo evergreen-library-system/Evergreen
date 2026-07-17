@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed, fakeAsync, flush, tick } from '@angular/core/testing';
 import { TreeComboboxComponent } from './tree-combobox.component';
 import { Tree, TreeNode } from '../tree/tree';
+import { focusElement } from 'test_data/test-helpers';
 
 // non-collapsing space
 const PAD_SPACE = ' '; // U+2007
@@ -39,7 +40,7 @@ describe('TreeComboboxComponent', () => {
     });
 
     it('uses spaces to indent child entries', fakeAsync(() => {
-        fixture.nativeElement.querySelector('input').focus();
+        focusElement(fixture.nativeElement.querySelector('input'));
 
         flush();
         const entries = fixture.nativeElement.querySelectorAll('button.dropdown-item');
@@ -69,7 +70,7 @@ describe('TreeComboboxComponent', () => {
             emitted = event;
         });
 
-        fixture.nativeElement.querySelector('input').focus();
+        focusElement(fixture.nativeElement.querySelector('input'));
         fixture.debugElement.query(
             debugEl => debugEl.nativeElement.textContent === 'Metals'
         ).nativeElement.click();
@@ -80,7 +81,7 @@ describe('TreeComboboxComponent', () => {
     it('displays the selected node in the <input>', () => {
         const input = fixture.nativeElement.querySelector('input');
 
-        input.focus();
+        focusElement(input);
         fixture.debugElement.query(
             debugEl => debugEl.nativeElement.textContent === 'Metals'
         ).nativeElement.click();

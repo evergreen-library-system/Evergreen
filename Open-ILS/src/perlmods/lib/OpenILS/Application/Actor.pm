@@ -1033,6 +1033,15 @@ sub _add_update_cards {
             }
             $card_changed++;
 
+        } elsif( ref($card) and $card->isdeleted() ) {
+            # Cannot delete the primary card
+            # Note: $new_patron->card() returns the card ID, not the card object
+            if( $card->id() == $new_patron->card() ) {
+                return (undef, OpenILS::Event->new('CANNOT_DELETE_PRIMARY_CARD'));
+            }
+            $evt = _delete_card($e, $card);
+            return (undef, $evt) if $evt;
+            $card_changed++;
         } elsif( ref($card) and $card->ischanged() ) {
             $evt = _update_card($e, $card);
             return (undef, $evt) if $evt;
@@ -1066,6 +1075,35 @@ sub _update_card {
     $logger->info("Updating patron card ".$card->id);
 
     $e->update_actor_card($card) or return $e->die_event;
+    return undef;
+}
+
+
+# returns event on error.  returns undef otherwise
+sub _delete_card {
+    my( $e, $card ) = @_;
+    
+    # Check permission to delete cards
+    my $card_obj = $e->retrieve_actor_card($card->id);
+    return $e->die_event unless $card_obj;
+    
+    my $patron = $e->retrieve_actor_user($card_obj->usr);
+    return $e->die_event unless $patron;
+    
+    # Require both permissions for deleting barcodes
+    return OpenILS::Event->new('PERM_FAILURE')
+        unless $e->allowed('UPDATE_PATRON_ACTIVE_CARD', $patron->home_ou)
+        && $e->allowed('UPDATE_PATRON_PRIMARY_CARD', $patron->home_ou);
+    
+    # Cannot delete active barcodes - safety and data integrity check
+    if ($card_obj->active eq 't') {
+        $logger->warn("User attempted to delete active barcode " . $card->id . " for patron " . $patron->id);
+        return OpenILS::Event->new('CANNOT_DELETE_ACTIVE_CARD');
+    }
+    
+    $logger->info("Deleting patron card ".$card->id . " for patron " . $patron->id);
+
+    $e->delete_actor_card($card_obj) or return $e->die_event;
     return undef;
 }
 
@@ -2030,7 +2068,7 @@ __PACKAGE__->register_method(
             {desc => 'Optional User ID, for use in the staff client', type => 'number'}  # number?
         ],
         return => {
-            desc => "An object with four properties: user, fines, checkouts and holds."
+            desc => "An object with several properties: user, fines, checkouts, holds, and messages."
         }
     }
 );
@@ -2069,6 +2107,11 @@ sub user_opac_vitals {
     return $out if (defined($U->event_code($out)));
 
     $out->{"total_out"} = reduce { $a + $out->{$b} } 0, qw/out overdue/;
+
+    my ($group_overdue_count) = $self
+        ->method_lookup('open-ils.actor.usergroup.members.overdue_count')
+        ->run($auth, $user->usrgroup);
+    $out->{group} = {overdue => $group_overdue_count};
 
     my $unread_msgs = $e->search_actor_usr_message([
         {usr => $user_id, read_date => undef, deleted => 'f',

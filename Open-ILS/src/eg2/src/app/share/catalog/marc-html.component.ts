@@ -1,6 +1,5 @@
-import {Component, OnInit, Input, ElementRef} from '@angular/core';
+import { Component, OnInit, Input, ElementRef, inject } from '@angular/core';
 import {NetService} from '@eg/core/net.service';
-import {OrgService} from '@eg/core/org.service';
 import {AuthService} from '@eg/core/auth.service';
 
 @Component({
@@ -9,6 +8,10 @@ import {AuthService} from '@eg/core/auth.service';
     template: '<ng-template></ng-template>'
 })
 export class MarcHtmlComponent implements OnInit {
+    private elm = inject(ElementRef);
+    private net = inject(NetService);
+    private auth = inject(AuthService);
+
 
     recId: number;
     initDone = false;
@@ -46,12 +49,6 @@ export class MarcHtmlComponent implements OnInit {
     get recordType(): string {
         return this._recordType;
     }
-
-    constructor(
-        private elm: ElementRef,
-        private net: NetService,
-        private auth: AuthService
-    ) {}
 
     ngOnInit() {
         this.collectData().then(_ => this.initDone = true);

@@ -1,5 +1,5 @@
 /* eslint-disable */
-import {Component, OnInit, ViewChild, Input} from '@angular/core';
+import { Component, OnInit, ViewChild, Input, inject } from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 import {AuthService} from '@eg/core/auth.service';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
@@ -7,20 +7,33 @@ import {PcrudService} from '@eg/core/pcrud.service';
 import {StringComponent} from '@eg/share/string/string.component';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
-import {Pager} from '@eg/share/util/pager';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {GridDataSource, GridCellTextGenerator} from '@eg/share/grid/grid';
 import {ReporterService} from '../share/reporter.service';
 import {PromptDialogComponent} from '@eg/share/dialog/prompt.component';
 import {FolderShareOrgDialogComponent} from './folder-share-org-dialog.component';
 import {ChangeFolderDialogComponent} from './change-folder-dialog.component';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
     selector: 'eg-reporter-outputs',
     templateUrl: 'my-outputs.component.html',
+    imports: [
+        ChangeFolderDialogComponent,
+        FolderShareOrgDialogComponent,
+        StaffCommonModule
+    ]
 })
 
 export class FullReporterOutputsComponent implements OnInit {
+    private router = inject(Router);
+    private route = inject(ActivatedRoute);
+    private auth = inject(AuthService);
+    private pcrud = inject(PcrudService);
+    private idl = inject(IdlService);
+    private toast = inject(ToastService);
+    RSvc = inject(ReporterService);
+
 
     @Input() currentFolder: IdlObject = null;
     @Input() searchReport: IdlObject = null;
@@ -44,15 +57,7 @@ export class FullReporterOutputsComponent implements OnInit {
 
     cellTextGenerator: GridCellTextGenerator;
 
-    constructor(
-        private router: Router,
-        private route: ActivatedRoute,
-        private auth: AuthService,
-        private pcrud: PcrudService,
-        private idl: IdlService,
-        private toast: ToastService,
-        public RSvc: ReporterService,
-    ) {
+    constructor() {
         // These values are all replaced via custom templates and cause warnings if not specified here.
         this.cellTextGenerator = {
             _output: row => ''

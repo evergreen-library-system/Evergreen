@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, ViewChild} from '@angular/core';
+import { Component, OnInit, Input, ViewChild, inject } from '@angular/core';
 import {Observable, of, map} from 'rxjs';
 import {NetService} from '@eg/core/net.service';
 import {StaffCatalogService} from '../catalog.service';
@@ -9,12 +9,21 @@ import {GridComponent} from '@eg/share/grid/grid.component';
 import {BroadcastService} from '@eg/share/util/broadcast.service';
 import {CourseService} from '@eg/staff/share/course.service';
 import {PermService} from '@eg/core/perm.service';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
     selector: 'eg-catalog-copies',
-    templateUrl: 'copies.component.html'
+    templateUrl: 'copies.component.html',
+    imports: [StaffCommonModule]
 })
 export class CopiesComponent implements OnInit {
+    private course = inject(CourseService);
+    private net = inject(NetService);
+    private org = inject(OrgService);
+    private staffCat = inject(StaffCatalogService);
+    private broadcaster = inject(BroadcastService);
+    private perm = inject(PermService);
+
 
     recId: number;
     initDone = false;
@@ -36,14 +45,7 @@ export class CopiesComponent implements OnInit {
 
     cellTextGenerator: GridCellTextGenerator;
 
-    constructor(
-        private course: CourseService,
-        private net: NetService,
-        private org: OrgService,
-        private staffCat: StaffCatalogService,
-        private broadcaster: BroadcastService,
-        private perm: PermService
-    ) {
+    constructor() {
         this.gridDataSource = new GridDataSource();
     }
 
@@ -87,7 +89,8 @@ export class CopiesComponent implements OnInit {
             callnumber: row => (`${row.call_number_prefix_label} ` +
                 `${row.call_number_label} ${row.call_number_suffix_label}`).trim(),
             holdable: row => this.copyContext.holdable(row),
-            barcode: row => row.barcode
+            barcode: row => row.barcode,
+            age_protect: row => row.age_protect_label
         };
 
         this.broadcaster.listen('eg.holdings.update').subscribe(data => {

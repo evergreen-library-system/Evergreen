@@ -1,18 +1,18 @@
 
 <eg-string key="catalog.record.toast.conjoined"
-  i18n-text text="Conjoined Record Target Set"></eg-string>
+i18n-text text="Conjoined Record Target Set"></eg-string>
 <eg-string key="catalog.record.toast.overlay"
-  i18n-text text="Record Overlay Target Set"></eg-string>
+i18n-text text="Record Overlay Target Set"></eg-string>
 <eg-string key="catalog.record.toast.holdTransfer"
-  i18n-text text="Hold Transfer Target Set"></eg-string>
+i18n-text text="Hold Transfer Target Set"></eg-string>
 <eg-string key="catalog.record.toast.holdingTransfer"
-  i18n-text text="Holding Transfer Target Set"></eg-string>
+i18n-text text="Holding Transfer Target Set"></eg-string>
 <eg-string key="catalog.record.toast.cleared"
-  i18n-text text="Record Marks Cleared"></eg-string>
+i18n-text text="Record Marks Cleared"></eg-string>
 <eg-string key="catalog.record.toast.clearAddedContentCache"
-  i18n-text text="Added Content Cache Cleared"></eg-string>
+i18n-text text="Added Content Cache Cleared"></eg-string>
 <eg-string key="catalog.record.toast.clearAddedContentCacheFailed"
-  i18n-text text="Failed to Clear Added Content Cache"></eg-string>
+i18n-text text="Failed to Clear Added Content Cache"></eg-string>
 
 <eg-bucket-dialog #recordBucketDialog bucketClass="biblio" [itemIds]="[recId]">
 </eg-bucket-dialog>
@@ -30,13 +30,17 @@
     Patron View
   </a>
 
-  <a routerLink="/staff/catalog/hold/T" [queryParams]="{target: recId}"
-    *ngIf="isHoldable" class="btn btn-outline-primary ms-1" i18n>
+  @if (isHoldable) {
+    <a routerLink="/staff/catalog/hold/T" [queryParams]="{target: recId}"
+      class="btn btn-outline-primary ms-1" i18n>
     Place Hold
   </a>
-  <button type="button" class="btn btn-outline-secondary ms-1" *ngIf="!isHoldable" disabled i18n>
+  }
+  @if (!isHoldable) {
+    <button type="button" class="btn btn-outline-secondary ms-1" disabled i18n>
     Place Hold
   </button>
+  }
 
   <button type="button" class="btn btn-outline-primary ms-1" (click)="addHoldings()" i18n id="add-holdings-btn">
     Add Holdings
@@ -44,11 +48,11 @@
 
   <div ngbDropdown placement="bottom-right" class="ms-1">
     <button type="button" class="btn btn-outline-primary" id="actionsForSerials"
-      ngbDropdownToggle i18n>Serials</button>
+    ngbDropdownToggle i18n>Serials</button>
     <div ngbDropdownMenu aria-labelledby="actionsForSerials">
       <a ngbDropdownItem class="dropdown-item"
-         routerLink="/staff/serials/{{recId}}/quick-receive"
-         i18n="Serials Quick Receive feature">Quick Receive</a>
+        routerLink="/staff/serials/{{recId}}/quick-receive"
+      i18n="Serials Quick Receive feature">Quick Receive</a>
       <a ngbDropdownItem class="dropdown-item" href="/eg/staff/serials/{{recId}}" i18n>
         Manage Subscriptions
       </a>
@@ -60,56 +64,68 @@
 
   <div ngbDropdown placement="bottom-right" class="ms-1">
     <button type="button" class="btn btn-outline-primary" id="actionsForDd"
-      ngbDropdownToggle i18n>Mark For...</button>
+    ngbDropdownToggle i18n>Mark For...</button>
     <div ngbDropdownMenu aria-labelledby="actionsForDd">
       <button type="button" ngbDropdownItem class="dropdown-item" (click)="mark('conjoined')" i18n>
-        Conjoined Items<ng-container *ngIf="targets.conjoined.current">
-            (Currently {{targets.conjoined.current}})</ng-container>
+        Conjoined Items@if (targets.conjoined.current) {
+
+            (Currently {{targets.conjoined.current}})
+}
       </button>
-      <button type="button" ngbDropdownItem class="dropdown-item" (click)="mark('overlay')" i18n>
-        Overlay Target<ng-container *ngIf="targets.overlay.current">
-            (Currently {{targets.overlay.current}})</ng-container>
+    <button type="button" ngbDropdownItem class="dropdown-item" (click)="mark('overlay')" i18n>
+        Overlay Target@if (targets.overlay.current) {
+
+            (Currently {{targets.overlay.current}})
+}
         </button>
-      <button type="button" ngbDropdownItem class="dropdown-item" (click)="mark('holdTransfer')" i18n>
-        Title Hold Transfer<ng-container *ngIf="targets.holdTransfer.current">
-            (Currently {{targets.holdTransfer.current}})</ng-container>
+  <button type="button" ngbDropdownItem class="dropdown-item" (click)="mark('holdTransfer')" i18n>
+        Title Hold Transfer@if (targets.holdTransfer.current) {
+
+            (Currently {{targets.holdTransfer.current}})
+}
       </button>
-      <button type="button" ngbDropdownItem class="dropdown-item" (click)="mark('holdingTransfer')" i18n>
-        Holding Transfer<ng-container *ngIf="targets.holdingTransfer.current">
-            (Currently {{targets.holdingTransfer.current}})</ng-container>
+<button type="button" ngbDropdownItem class="dropdown-item" (click)="mark('holdingTransfer')" i18n>
+        Holding Transfer@if (targets.holdingTransfer.current) {
+
+            (Currently {{targets.holdingTransfer.current}})
+}
       </button>
-      <button type="button" ngbDropdownItem class="dropdown-item" (click)="clearMarks()" i18n>
+<button type="button" ngbDropdownItem class="dropdown-item" (click)="clearMarks()" i18n>
         Reset Record Marks
       </button>
-    </div>
-  </div>
+</div>
+</div>
 
-  <div ngbDropdown placement="bottom-right" class="ms-1">
-    <button type="button" class="btn btn-outline-primary" id="otherActionsForDd"
-      ngbDropdownToggle i18n>Other Actions</button>
-    <div ngbDropdownMenu aria-labelledby="otherActionsForDd">
-      <button type="button" ngbDropdownItem class="dropdown-item" (click)="recordBucketDialog.open({size: 'lg'})">
-        <span i18n>Add To Bucket</span>
-      </button>
-      <button type="button" ngbDropdownItem class="dropdown-item" (click)="recordCarouselDialog.open({size: 'lg'})">
-        <span i18n>Add To Carousel</span>
-      </button>
-      <button type="button" ngbDropdownItem class="dropdown-item" *ngIf="!basket.hasRecordId(recId)" (click)="addToBasket()">
+<div ngbDropdown placement="bottom-right" class="ms-1">
+  <button type="button" class="btn btn-outline-primary" id="otherActionsForDd"
+  ngbDropdownToggle i18n>Other Actions</button>
+  <div ngbDropdownMenu aria-labelledby="otherActionsForDd">
+    <button type="button" ngbDropdownItem class="dropdown-item" (click)="recordBucketDialog.open({size: 'lg'})">
+      <span i18n>Add To Bucket</span>
+    </button>
+    <button type="button" ngbDropdownItem class="dropdown-item" (click)="recordCarouselDialog.open({size: 'lg'})">
+      <span i18n>Add To Carousel</span>
+    </button>
+    @if (!basket.hasRecordId(recId)) {
+      <button type="button" ngbDropdownItem class="dropdown-item" (click)="addToBasket()">
         <span i18n>Add To Basket</span>
       </button>
-      <button type="button" ngbDropdownItem class="dropdown-item" *ngIf="basket.hasRecordId(recId)" (click)="removeFromBasket()">
+    }
+    @if (basket.hasRecordId(recId)) {
+      <button type="button" ngbDropdownItem class="dropdown-item" (click)="removeFromBasket()">
         <span i18n>Remove From Basket</span>
       </button>
-      <button type="button" ngbDropdownItem class="dropdown-item" (click)="jacketImageDialog.open({size: 'lg'})">
-        <span i18n>Upload Cover Image</span>
-      </button>
-      <button type="button" ngbDropdownItem class="dropdown-item" (click)="clearAddedContentCache()">
-        <span i18n>Clear Added Content Cache</span>
-      </button>
-      <a ngbDropdownItem class="dropdown-item" target="_blank" routerLink="/staff/acq/related/{{recId}}">
-        <span i18n>View/Place Orders</span>
-      </a>
-    </div>
+    }
+    <button type="button" ngbDropdownItem class="dropdown-item" (click)="jacketImageDialog.open({size: 'lg'})">
+      <span i18n>Upload Cover Image</span>
+    </button>
+    <button type="button" ngbDropdownItem class="dropdown-item" (click)="clearAddedContentCache()">
+      <span i18n>Clear Added Content Cache</span>
+    </button>
+    <a ngbDropdownItem class="dropdown-item" target="_blank" routerLink="/staff/acq/related/{{recId}}">
+      <span i18n>View/Place Orders</span>
+    </a>
   </div>
+</div>
 </div>
 

@@ -1,5 +1,5 @@
-import {Component, OnInit, OnDestroy, ViewChild} from '@angular/core';
-import {FormGroup, FormControl} from '@angular/forms';
+import { Component, OnInit, OnDestroy, ViewChild, inject } from '@angular/core';
+import {FormGroup, FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {of, Subscription, debounceTime, switchMap} from 'rxjs';
 import {AuthService} from '@eg/core/auth.service';
 import {NetService} from '@eg/core/net.service';
@@ -8,12 +8,27 @@ import {ToastService} from '@eg/share/toast/toast.service';
 import {BookingResourceBarcodeValidator} from './booking_resource_validator.directive';
 import {ReservationActionsService} from './reservation-actions.service';
 import {ReservationsGridComponent} from './reservations-grid.component';
+import { StaffBannerComponent } from '../share/staff-banner.component';
+import { TitleComponent } from '@eg/share/title/title.component';
 
 @Component({
-    templateUrl: './capture.component.html'
+    templateUrl: './capture.component.html',
+    imports: [
+        ReactiveFormsModule,
+        ReservationsGridComponent,
+        StaffBannerComponent,
+        StringComponent,
+        TitleComponent,
+    ]
 })
 
 export class CaptureComponent implements OnInit, OnDestroy {
+    private auth = inject(AuthService);
+    private net = inject(NetService);
+    private resourceValidator = inject(BookingResourceBarcodeValidator);
+    private toast = inject(ToastService);
+    private actions = inject(ReservationActionsService);
+
 
     findResource: FormGroup;
     subscriptions: Subscription[] = [];
@@ -22,15 +37,6 @@ export class CaptureComponent implements OnInit, OnDestroy {
     @ViewChild('noResourceString', { static: true }) noResourceString: StringComponent;
     @ViewChild('captureSuccessString', { static: true }) captureSuccessString: StringComponent;
     @ViewChild('captureFailureString', { static: true }) captureFailureString: StringComponent;
-
-    constructor(
-        private auth: AuthService,
-        private net: NetService,
-        private resourceValidator: BookingResourceBarcodeValidator,
-        private toast: ToastService,
-        private actions: ReservationActionsService
-    ) {
-    }
 
     ngOnInit() {
         this.findResource = new FormGroup({

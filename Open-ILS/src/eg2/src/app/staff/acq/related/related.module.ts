@@ -8,14 +8,12 @@ import {RelatedRoutingModule} from './routing.module';
 import {RelatedComponent} from './related.component';
 
 @NgModule({
-    declarations: [
-        RelatedComponent
-    ],
     imports: [
         StaffCommonModule,
         CatalogCommonModule,
         LineitemModule,
         HoldingsModule,
+        RelatedComponent,
         RelatedRoutingModule
     ]
 })

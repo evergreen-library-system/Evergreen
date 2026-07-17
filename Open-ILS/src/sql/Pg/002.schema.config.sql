@@ -92,7 +92,7 @@ CREATE TRIGGER no_overlapping_deps
     BEFORE INSERT OR UPDATE ON config.db_patch_dependencies
     FOR EACH ROW EXECUTE PROCEDURE evergreen.array_overlap_check ('deprecates');
 
-INSERT INTO config.upgrade_log (version, applied_to) VALUES ('1509', :eg_version); -- Rogan/mdriscoll/Dyrcona
+INSERT INTO config.upgrade_log (version, applied_to) VALUES ('1524', :eg_version); -- sleary/kmlussier/sandbergja
 
 CREATE TABLE config.bib_source (
 	id		SERIAL	PRIMARY KEY,
@@ -186,7 +186,7 @@ INSERT INTO config.biblio_fingerprint (name, xpath, format)
     );
 
 CREATE TABLE config.metabib_class (
-    name     TEXT    PRIMARY KEY,
+    name     TEXT    CHECK (name ~ '^\w+$') PRIMARY KEY,
     label    TEXT    NOT NULL UNIQUE,
     buoyant  BOOL    DEFAULT FALSE NOT NULL,
     restrict BOOL    DEFAULT FALSE NOT NULL,
@@ -594,7 +594,8 @@ CREATE TABLE config.i18n_locale (
     marc_code   TEXT    NOT NULL, -- should exist in config.coded_value_map WHERE ctype = 'item_lang'
     name        TEXT    UNIQUE NOT NULL,
     description TEXT,
-    rtl         BOOL    NOT NULL DEFAULT FALSE
+    rtl         BOOL    NOT NULL DEFAULT FALSE,
+    staff_client BOOL   NOT NULL DEFAULT FALSE
 );
 
 CREATE TABLE config.i18n_core (

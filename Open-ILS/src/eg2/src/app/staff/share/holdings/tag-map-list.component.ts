@@ -1,19 +1,27 @@
-import { Component, OnInit, Input, Output, ViewChild, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, ViewChild, EventEmitter, inject } from '@angular/core';
 import { firstValueFrom, Observable, from } from 'rxjs';
-import { OrgService } from '@eg/core/org.service';
-import { IdlObject, IdlService } from '@eg/core/idl.service';
+import { IdlObject } from '@eg/core/idl.service';
 import { PcrudService } from '@eg/core/pcrud.service';
 import { BroadcastService } from '@eg/share/util/broadcast.service';
 import { GridComponent } from '@eg/share/grid/grid.component';
 import { GridDataSource, GridCellTextGenerator, GridColumnSort } from '@eg/share/grid/grid';
 import {Pager} from '@eg/share/util/pager';
+import { GridModule } from '@eg/share/grid/grid.module';
+import { RouterModule } from '@angular/router';
 
 @Component({
     selector: 'eg-tag-map-list',
     templateUrl: './tag-map-list.component.html',
-    styleUrls: ['./tag-map-list.component.css']
+    styleUrls: ['./tag-map-list.component.css'],
+    imports: [
+        GridModule,
+        RouterModule
+    ]
 })
 export class TagMapListComponent implements OnInit {
+    private pcrud = inject(PcrudService);
+    private broadcaster = inject(BroadcastService);
+
     @Input() maps: IdlObject[] = [];
     @Input() newThings: IdlObject[] = [];
     @Input() headerText: string;
@@ -41,13 +49,6 @@ export class TagMapListComponent implements OnInit {
     // noSelectedRows: (rows: IdlObject[]) => boolean;
     noSelectedTagMaps: (rows: IdlObject[]) => boolean;
     noSelectedTags: (rows: IdlObject[]) => boolean;
-
-    constructor(
-        private org: OrgService,
-        private idl: IdlService,
-        private pcrud: PcrudService,
-        private broadcaster: BroadcastService
-    ) {}
 
     ngOnInit() {
         // console.debug('TagMapListComponent, ngOnInit, this', this);

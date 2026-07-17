@@ -340,6 +340,12 @@
             </a>
           </li>
           <li>
+            <a href="/eg2/staff/circ/patron/pending/list">
+              <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
+              <span>[% l('Pending Patrons') %]</span>
+            </a>
+          </li>
+          <li>
             <a href="/eg2/staff/circ/patron/credentials" >
               <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
               <span>[% l('Verify Credentials') %]</span>
@@ -447,7 +453,7 @@
           </li>
           <li class="divider"></li>
           <li>
-            <a href="./cat/catalog/verifyURLs" target="_self">
+            <a href="/eg2/staff/cat/linkchecker" target="_self">
               <span class="glyphicon glyphicon-link" aria-hidden="true"></span>
               <span>[% l('Link Checker') %]</span>
             </a>

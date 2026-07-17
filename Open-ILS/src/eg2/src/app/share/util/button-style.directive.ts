@@ -1,4 +1,4 @@
-import { Directive, ElementRef, Input, Renderer2 } from '@angular/core';
+import { Directive, ElementRef, Input, Renderer2, inject } from '@angular/core';
 
 export type ButtonStyle = {
     primary?: boolean;
@@ -17,6 +17,9 @@ export type ButtonStyle = {
     selector: '[egButtonStyle]'
 })
 export class ButtonStyleDirective {
+    private el = inject(ElementRef);
+    private renderer = inject(Renderer2);
+
     @Input('egButtonStyle') set buttonStyle(value: ButtonStyle) {
         this.updateClasses(value);
     }
@@ -26,8 +29,6 @@ export class ButtonStyleDirective {
         'warning', 'info', 'light', 'dark', 'link',
         'normal', 'destroy'
     ];
-
-    constructor(private el: ElementRef, private renderer: Renderer2) {}
 
     private updateClasses(style: ButtonStyle) {
         // Always ensure the base 'btn' class is present

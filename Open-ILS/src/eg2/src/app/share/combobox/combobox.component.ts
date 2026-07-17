@@ -5,17 +5,15 @@
  *  <!-- see also <eg-combobox-entry> -->
  * </eg-combobox>
  */
-import {Component, OnInit, Input, Output, ViewChild,
-    Directive, ViewChildren, QueryList, AfterViewInit,
-    OnChanges, SimpleChanges,
-    TemplateRef, EventEmitter, ElementRef, forwardRef} from '@angular/core';
-import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
+import { Component, OnInit, Input, Output, ViewChild, Directive, ViewChildren, QueryList, AfterViewInit, OnChanges, SimpleChanges, TemplateRef, EventEmitter, ElementRef, forwardRef, inject } from '@angular/core';
+import {ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR} from '@angular/forms';
 import {EMPTY, Observable, of, Subject} from 'rxjs';
 import {map, mergeMap, mapTo, debounceTime, distinctUntilChanged, merge, filter, mergeWith} from 'rxjs/operators';
-import {NgbTypeahead, NgbTypeaheadSelectItemEvent} from '@ng-bootstrap/ng-bootstrap';
+import {NgbTypeahead, NgbTypeaheadModule, NgbTypeaheadSelectItemEvent} from '@ng-bootstrap/ng-bootstrap';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {OrgService} from '@eg/core/org.service';
+import { CommonModule } from '@angular/common';
 
 export interface ComboboxEntry {
   id: any;
@@ -32,8 +30,9 @@ export interface ComboboxEntry {
     selector: 'ng-template[egIdlClass]'
 })
 export class IdlClassTemplateDirective {
+  template = inject<TemplateRef<any>>(TemplateRef);
+
   @Input() egIdlClass: string;
-  constructor(public template: TemplateRef<any>) {}
 }
 
 @Component({
@@ -44,13 +43,23 @@ export class IdlClassTemplateDirective {
     .material-icons {font-size: 16px;font-weight:bold}
   `],
     providers: [{
-        provide: NG_VALUE_ACCESSOR,
-        useExisting: forwardRef(() => ComboboxComponent),
-        multi: true
-    }]
+            provide: NG_VALUE_ACCESSOR,
+            useExisting: forwardRef(() => ComboboxComponent),
+            multi: true
+        }],
+        imports: [
+    CommonModule,
+    FormsModule,
+    NgbTypeaheadModule
+]
 })
 export class ComboboxComponent
 implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
+    private elm = inject(ElementRef);
+    private idl = inject(IdlService);
+    private pcrud = inject(PcrudService);
+    private org = inject(OrgService);
+
 
     static domIdAuto = 0;
 
@@ -274,12 +283,7 @@ implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
     propagateChange = (_: any) => {};
     propagateTouch = () => {};
 
-    constructor(
-      private elm: ElementRef,
-      private idl: IdlService,
-      private pcrud: PcrudService,
-      private org: OrgService,
-    ) {
+    constructor() {
         this.entrylist = [];
         this.asyncIds = {};
         this.click$ = new Subject<string>();
@@ -413,7 +417,7 @@ implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
         });
         if (!firstTime) {
             if ('selectedId' in changes) {
-                if (!changes.selectedId.currentValue) {
+                if (changes.selectedId.currentValue === null || changes.selectedId.currentValue === undefined) {
 
                     // In allowFreeText mode, selectedId will be null even
                     // though a freetext value may be present in the combobox.
@@ -501,7 +505,7 @@ implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
         if (!this.controller)
             return;
 
-        const listbox = document.getElementById(this.controller.getAttribute('aria-owns'));
+        const listbox = document.getElementById(this.controller.getAttribute('aria-controls'));
         // console.debug("Listbox: ", listbox);
 
         const activeItem = document.getElementById(this.controller.getAttribute('aria-activedescendant'));

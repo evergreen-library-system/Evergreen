@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import { Component, Input, OnInit, ViewChild, inject } from '@angular/core';
 import {Observable, EMPTY, from, switchMap} from 'rxjs';
 import {Pager} from '@eg/share/util/pager';
 import {NetService} from '@eg/core/net.service';
@@ -6,15 +6,21 @@ import {PcrudService} from '@eg/core/pcrud.service';
 import {OrgService} from '@eg/core/org.service';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {GridDataSource, GridCellTextGenerator} from '@eg/share/grid/grid';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 
 /* Grid of bib records and associated actions. */
 
 @Component({
     templateUrl: 'bib-list.component.html',
-    selector: 'eg-bib-list'
+    selector: 'eg-bib-list',
+    imports: [StaffCommonModule]
 })
 export class BibListComponent implements OnInit {
+    private net = inject(NetService);
+    private org = inject(OrgService);
+    private pcrud = inject(PcrudService);
+
 
     // Static source of bib record IDs
     @Input() bibIds: number[];
@@ -26,13 +32,6 @@ export class BibListComponent implements OnInit {
     cellTextGenerator: GridCellTextGenerator;
 
     @ViewChild('grid', {static: false}) grid: GridComponent;
-
-    constructor(
-        private net: NetService,
-        private org: OrgService,
-        private pcrud: PcrudService
-    ) {
-    }
 
     ngOnInit() {
         this.dataSource = new GridDataSource();

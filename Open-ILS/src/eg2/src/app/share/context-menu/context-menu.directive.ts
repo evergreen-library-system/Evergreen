@@ -1,4 +1,4 @@
-import {Input, Output, EventEmitter, Directive} from '@angular/core';
+import { Input, Output, EventEmitter, Directive, DOCUMENT, inject } from '@angular/core';
 import {NgbPopover} from '@ng-bootstrap/ng-bootstrap';
 import {ContextMenuService, ContextMenu, ContextMenuEntry} from './context-menu.service';
 
@@ -6,11 +6,8 @@ import {ContextMenuService, ContextMenu, ContextMenuEntry} from './context-menu.
 /* Import all of this stuff so we can pass it to our parent
  * class via its constructor */
 /* eslint-disable no-duplicate-imports */
-import {
-    Inject, Injector, Renderer2, ElementRef, ViewContainerRef,
-    NgZone, ChangeDetectorRef, ApplicationRef
-} from '@angular/core';
-import {DOCUMENT} from '@angular/common';
+import { Injector, Renderer2, ElementRef, ViewContainerRef, NgZone, ChangeDetectorRef, ApplicationRef } from '@angular/core';
+
 import {NgbPopoverConfig} from '@ng-bootstrap/ng-bootstrap';
 /* eslint-enable no-duplicate-imports */
 /* --- */
@@ -20,6 +17,8 @@ import {NgbPopoverConfig} from '@ng-bootstrap/ng-bootstrap';
     exportAs: 'egContextMenu'
 })
 export class ContextMenuDirective extends NgbPopover {
+    private menuService = inject(ContextMenuService);
+
 
     // Only one active menu is allowed at a time.
     static activeDirective: ContextMenuDirective;
@@ -37,11 +36,7 @@ export class ContextMenuDirective extends NgbPopover {
 
     @Output() menuItemSelected: EventEmitter<ContextMenuEntry>;
 
-    constructor(
-        p1: ElementRef<HTMLElement>, p2: Renderer2, p3: Injector,
-        p5: ViewContainerRef, p6: NgbPopoverConfig,
-        p7: NgZone, @Inject(DOCUMENT) p8: any, p9: ChangeDetectorRef,
-        p10: ApplicationRef, private menuService: ContextMenuService) {
+    constructor() {
 
         super();
 

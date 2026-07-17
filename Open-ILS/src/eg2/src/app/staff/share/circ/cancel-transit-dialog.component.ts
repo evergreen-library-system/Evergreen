@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, ViewChild} from '@angular/core';
+import { Component, OnInit, Input, ViewChild, inject } from '@angular/core';
 import {from, concatMap, tap} from 'rxjs';
 import {AuthService} from '@eg/core/auth.service';
 import {NetService} from '@eg/core/net.service';
@@ -7,14 +7,22 @@ import {StringComponent} from '@eg/share/string/string.component';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {ToastService} from '@eg/share/toast/toast.service';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 /** Route Item Dialog */
 
 @Component({
     templateUrl: 'cancel-transit-dialog.component.html',
-    selector: 'eg-cancel-transit-dialog'
+    selector: 'eg-cancel-transit-dialog',
+    imports: [StaffCommonModule]
 })
 export class CancelTransitDialogComponent extends DialogComponent implements OnInit {
+    private modal: NgbModal;
+    private auth = inject(AuthService);
+    private net = inject(NetService);
+    private evt = inject(EventService);
+    private toast = inject(ToastService);
+
 
     @Input() transitIds: number[];
     numTransits: number;
@@ -22,13 +30,11 @@ export class CancelTransitDialogComponent extends DialogComponent implements OnI
     @ViewChild('success') success: StringComponent;
     @ViewChild('failure') failure: StringComponent;
 
-    constructor(
-        private modal: NgbModal,
-        private auth: AuthService,
-        private net: NetService,
-        private evt: EventService,
-        private toast: ToastService
-    ) { super(modal); }
+    constructor() {
+        const modal = inject(NgbModal);
+        super(modal);
+        this.modal = modal;
+    }
 
     ngOnInit() {
         this.onOpen$.subscribe(_ => {

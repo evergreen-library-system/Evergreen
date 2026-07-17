@@ -1,19 +1,21 @@
 
-<ng-container *ngIf="routerLink">
+@if (routerLink) {
   <a [routerLink]="routerLink">
-    <ng-container 
-      *ngFor="let val of getDisplayStrings(); let first = first">
-      <ng-container *ngIf="joiner && !first">{{joiner}} </ng-container>
+    @for (val of getDisplayStrings(); track val; let first = $first) {
+      @if (joiner && !first) {
+        {{joiner}}
+      }
       <span [innerHTML]="val"></span>
-    </ng-container>
+    }
   </a>
-</ng-container>
+}
 
-<ng-container *ngIf="!routerLink">
-  <ng-container 
-    *ngFor="let val of getDisplayStrings(); let first = first">
-    <ng-container *ngIf="joiner && !first">{{joiner}} </ng-container>
+@if (!routerLink) {
+  @for (val of getDisplayStrings(); track val; let first = $first) {
+    @if (joiner && !first) {
+      {{joiner}}
+    }
     <span [innerHTML]="val"></span>
-  </ng-container>
-</ng-container>
+  }
+}
 

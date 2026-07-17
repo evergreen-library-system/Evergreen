@@ -2,23 +2,30 @@
 </eg-staff-banner>
 <eg-barcode-select #barcodeSelect></eg-barcode-select>
 
+<div class="row mb-3 mb-lg-0 text-end">
+  <div class="col">
+    <a routerLink="/staff/circ/patron/search" i18n>Patron Search</a>
+  </div>
+</div>
 <div class="row">
   <div class="col-lg-4">
     <div class="input-group">
       <span class="input-group-text" i18n>Patron Barcode:</span>
-      <input type='text' id='barcode-search-input' class="form-control" 
+      <input type='text' id='barcode-search-input' class="form-control"
         placeholder="Barcode" i18n-placeholder [(ngModel)]='barcode'
         (keydown.enter)="findUser()"/>
       <div class="input-group-text">
-        <button type="button" class="btn btn-outline-secondary" 
-          (click)="findUser()" i18n>Submit</button>
+        <button type="button" class="btn btn-outline-secondary"
+        (click)="findUser()" i18n>Submit</button>
       </div>
     </div>
   </div>
   <div class="col-lg-4">
-    <div *ngIf="notFound" class="alert alert-warning" i18n>
+    @if (notFound) {
+      <div class="alert alert-warning" i18n>
       No match found for barcode "{{barcode}}".
     </div>
+    }
   </div>
 </div>
 

@@ -1,34 +1,26 @@
 import {IdlService} from './idl.service';
-import {EventService} from './event.service';
 import {DbStoreService} from './db-store.service';
 import {NetService} from './net.service';
 import {AuthService} from './auth.service';
 import {PcrudService} from './pcrud.service';
-import {StoreService} from './store.service';
 import {OrgService} from './org.service';
-import {HatchService} from './hatch.service';
+import { TestBed } from '@angular/core/testing';
+import { MockGenerators } from 'test_data/mock_generators';
 
 describe('OrgService', () => {
     let idlService: IdlService;
-    let netService: NetService;
-    let authService: AuthService;
-    let pcrudService: PcrudService;
     let orgService: OrgService;
-    let evtService: EventService;
-    let storeService: StoreService;
-    let hatchService: HatchService;
-    let dbStoreService: DbStoreService;
 
     beforeEach(() => {
         idlService = new IdlService();
-        evtService = new EventService();
-        hatchService = new HatchService();
-        storeService = new StoreService(null /* CookieService */, hatchService);
-        netService = new NetService(evtService);
-        authService = new AuthService(evtService, netService, storeService);
-        pcrudService = new PcrudService(idlService, null, netService, authService);
-        dbStoreService = new DbStoreService();
-        orgService = new OrgService(dbStoreService, netService, authService, pcrudService);
+        TestBed.configureTestingModule({providers: [
+            {provide: AuthService, useValue: MockGenerators.authService()},
+            DbStoreService,
+            {provide: NetService, useValue: MockGenerators.netService({})},
+            OrgService,
+            {provide: PcrudService, useValue: null}
+        ]});
+        orgService = TestBed.inject(OrgService);
     });
 
     const initTestData = () => {

@@ -1,8 +1,8 @@
-import {Component, ViewChild, OnInit, HostListener} from '@angular/core';
+import {Component, ViewChild, OnInit, HostListener, inject, OnDestroy} from '@angular/core';
 import {Router, ActivatedRoute, ParamMap, RoutesRecognized} from '@angular/router';
 import {Location} from '@angular/common';
 import {NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
-import {filter, pairwise} from 'rxjs';
+import {catchError, concatMap, EMPTY, filter, from, lastValueFrom, pairwise, tap, Subject} from 'rxjs';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';
@@ -11,19 +11,68 @@ import {StoreService} from '@eg/core/store.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
 import {PatronService} from '@eg/staff/share/patron/patron.service';
 import {PatronContextService} from './patron.service';
-import {PatronSearch} from '@eg/staff/share/patron/search.component';
+import {PatronSearch, PatronSearchComponent} from '@eg/staff/share/patron/search.component';
 import {EditToolbarComponent} from './edit-toolbar.component';
 import {EditComponent} from './edit.component';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 import {PromptDialogComponent} from '@eg/share/dialog/prompt.component';
 import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
-import {PatronStatCatsComponent} from '@eg/staff/circ/patron/statcats.component';
+import { StaffCommonModule } from '@eg/staff/common.module';
+import { WorkLogStringsComponent } from '@eg/staff/share/worklog/strings.component';
+import { CircComponentsComponent } from '@eg/staff/share/circ/components.component';
+import { CheckoutComponent } from './checkout.component';
+import { HoldsComponent } from './holds.component';
+import { BillsComponent } from './bills.component';
+import { PatronSummaryComponent } from '@eg/staff/share/patron/summary.component';
+import { ItemsComponent } from './items.component';
+import { PatronMessagesComponent } from './messages.component';
+import { PatronSurveyResponsesComponent } from './surveys.component';
+import { PatronStatCatsComponent } from './statcats.component';
+import { PatronGroupComponent } from './group.component';
+import { PatronPermsComponent } from './perms.component';
+import { TestPatronPasswordComponent } from './test-password.component';
+import { BillStatementComponent } from './bill-statement.component';
+import { BillingHistoryComponent } from './billing-history.component';
+import {ToastService} from '@eg/share/toast/toast.service';
 
 @Component({
     templateUrl: 'patron.component.html',
-    styleUrls: ['patron.component.css']
+    styleUrls: ['patron.component.css'],
+    imports: [
+        BillsComponent,
+        BillStatementComponent,
+        BillingHistoryComponent,
+        CheckoutComponent,
+        CircComponentsComponent,
+        EditComponent,
+        HoldsComponent,
+        ItemsComponent,
+        EditToolbarComponent,
+        PatronGroupComponent,
+        PatronMessagesComponent,
+        PatronPermsComponent,
+        PatronSearchComponent,
+        PatronStatCatsComponent,
+        PatronSummaryComponent,
+        PatronSurveyResponsesComponent,
+        StaffCommonModule,
+        TestPatronPasswordComponent,
+        WorkLogStringsComponent
+    ]
 })
-export class PatronComponent implements OnInit {
+export class PatronComponent implements OnInit, OnDestroy {
+    private router = inject(Router);
+    private route = inject(ActivatedRoute);
+    private ngLocation = inject(Location);
+    private net = inject(NetService);
+    private auth = inject(AuthService);
+    private pcrud = inject(PcrudService);
+    private evt = inject(EventService);
+    private store = inject(StoreService);
+    private serverStore = inject(ServerStoreService);
+    patronService = inject(PatronService);
+    context = inject(PatronContextService);
+    private toast = inject(ToastService);
 
     patronId: number;
     patronTab = 'search';
@@ -34,6 +83,15 @@ export class PatronComponent implements OnInit {
     showNav = true;
     loading = true;
     showRecentPatrons = false;
+
+    private updateSetting = new Subject<{key: string, value: any}>();
+    private onUpdateSetting = this.updateSetting.pipe(
+        concatMap(({ key, value }) =>
+            from(this.serverStore.setItem(key, value)).pipe(
+                catchError(() => EMPTY)
+            )
+        )
+    ).subscribe();
 
     /* eg-patron-edit is unable to find #editorToolbar directly
      * within the template.  Adding a ref here allows it to
@@ -50,20 +108,6 @@ export class PatronComponent implements OnInit {
     @ViewChild('purgeConfirmOverride') private purgeConfirmOverride: ConfirmDialogComponent;
     @ViewChild('purgeStaffDialog') private purgeStaffDialog: PromptDialogComponent;
     @ViewChild('purgeBadBarcode') private purgeBadBarcode: AlertDialogComponent;
-
-    constructor(
-        private router: Router,
-        private route: ActivatedRoute,
-        private ngLocation: Location,
-        private net: NetService,
-        private auth: AuthService,
-        private pcrud: PcrudService,
-        private evt: EventService,
-        private store: StoreService,
-        private serverStore: ServerStoreService,
-        public patronService: PatronService,
-        public context: PatronContextService
-    ) {}
 
     ngOnInit() {
         this.patronTab = 'search';
@@ -83,10 +127,9 @@ export class PatronComponent implements OnInit {
 
             if ($event) { // window.onbeforeunload
                 $event.preventDefault();
-                $event.returnValue = true;
 
             } else { // tab OR route change.
-                return this.pendingChangesDialog.open().toPromise();
+                return lastValueFrom(this.pendingChangesDialog.open());
             }
 
         } else {
@@ -101,10 +144,11 @@ export class PatronComponent implements OnInit {
     }
 
     fetchSettings(): Promise<any> {
-
         return this.serverStore.getItemBatch([
+            'eg.circ.patron.nav.collapse',
             'eg.circ.patron.summary.collapse'
         ]).then(prefs => {
+            this.showNav = !prefs['eg.circ.patron.nav.collapse'];
             this.showSummary = !prefs['eg.circ.patron.summary.collapse'];
         });
     }
@@ -214,22 +258,30 @@ export class PatronComponent implements OnInit {
         }
     }
 
-    showSummaryPane(): boolean {
-        return this.showSummary || this.patronTab === 'search';
+    patronGridClasses(): {[key: string]: boolean} {
+        return {
+            'show-nav': !!(this.showNav && this.context?.summary),
+            'search-form-no-patron': this.hideNavButton()
+        };
     }
 
-    toggleSummaryPane() {
-        this.serverStore.setItem( // collapse is the opposite of show
-            'eg.circ.patron.summary.collapse', this.showSummary);
-        this.showSummary = !this.showSummary;
+    hideNavButton(): boolean {
+        return this.patronTab === 'search' && !this.context?.summary;
     }
 
-    toggleNavPane() {
-        /* TODO: wire up this setting */
-        /*
-        this.serverStore.setItem( // collapse is the opposite of show
-            'eg.circ.patron.nav.collapse', this.showNav);
-        /**/
+    updateShowSummary(show: boolean): void {
+        this.showSummary = show;
+        this.updateSetting.next({
+            key: 'eg.circ.patron.summary.collapse',
+            value: show ? null : true
+        });
+    }
+
+    toggleNavPane(): void {
+        this.updateSetting.next({
+            key: 'eg.circ.patron.nav.collapse',
+            value: this.showNav || null
+        });
         this.showNav = !this.showNav;
     }
 
@@ -283,19 +335,19 @@ export class PatronComponent implements OnInit {
 
     purgeAccount() {
 
-        this.purgeConfirm1.open().toPromise()
+        lastValueFrom(this.purgeConfirm1.open())
             .then(confirmed => {
                 if (confirmed) {
-                    return this.purgeConfirm2.open().toPromise();
+                    return lastValueFrom(this.purgeConfirm2.open());
                 }
             })
             .then(confirmed => {
                 if (confirmed) {
-                    return this.net.request(
+                    return lastValueFrom(this.net.request(
                         'open-ils.actor',
                         'open-ils.actor.user.has_work_perm_at',
                         this.auth.token(), 'STAFF_LOGIN', this.patronId
-                    ).toPromise();
+                    ));
                 }
             })
             .then(permOrgs => {
@@ -311,10 +363,10 @@ export class PatronComponent implements OnInit {
 
     handleStaffPurge(): Promise<any> {
 
-        return this.purgeStaffDialog.open().toPromise()
+        return lastValueFrom(this.purgeStaffDialog.open())
             .then(barcode => {
                 if (barcode) {
-                    return this.pcrud.search('ac', {barcode: barcode}).toPromise();
+                    return lastValueFrom(this.pcrud.search('ac', {barcode: barcode}));
                 }
             })
             .then(card => {
@@ -330,14 +382,14 @@ export class PatronComponent implements OnInit {
         let method = 'open-ils.actor.user.delete';
         if (override) { method += '.override'; }
 
-        return this.net.request('open-ils.actor', method,
-            this.auth.token(), this.patronId, destUserId).toPromise()
+        return lastValueFrom(this.net.request('open-ils.actor', method,
+            this.auth.token(), this.patronId, destUserId))
             .then(resp => {
 
                 const evt = this.evt.parse(resp);
                 if (evt) {
                     if (evt.textcode === 'ACTOR_USER_DELETE_OPEN_XACTS') {
-                        return this.purgeConfirmOverride.open().toPromise()
+                        return lastValueFrom(this.purgeConfirmOverride.open())
                             .then(confirmed => {
                                 if (confirmed) {
                                     return this.doThePurge(destUserId, true);
@@ -380,6 +432,45 @@ export class PatronComponent implements OnInit {
         const name = family && given ? `${family}, ${given}` : (family || given);
 
         return [prefix, name, suffix].filter(Boolean).join(': ');
+    }
+
+    refreshPenalties(): void {
+        if (!this.context.summary) { return; }
+
+        const failMsg = $localize`Penalty refresh failed`;
+        const successMsg = $localize`Penalty refresh succeeded`;
+
+        this.net.request(
+            'open-ils.actor',
+            'open-ils.actor.user.penalties.update',
+            this.auth.token(),
+            this.context.summary.id
+        ).pipe(
+            tap(resp => {
+                const error = this.evt.parse(resp);
+                if (error) {
+                    console.error(error.toString());
+                    this.toast.danger(failMsg);
+                } else {
+                    this.context.refreshPatron();
+                    this.toast.success(successMsg);
+                }
+            }),
+            catchError(() => {
+                this.toast.danger(failMsg);
+                return EMPTY;
+            })
+        ).subscribe();
+    }
+
+    navPaneButtonTitle(): string {
+        return this.showNav
+            ? $localize`Hide Account Navigation`
+            : $localize`Show Account Navigation`;
+    }
+
+    ngOnDestroy() {
+        this.onUpdateSetting.unsubscribe();
     }
 }
 

@@ -1,5 +1,5 @@
 
-import {Injectable} from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import {EMPTY, throwError, map} from 'rxjs';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
@@ -103,18 +103,18 @@ export interface AcqSearch {
 
 @Injectable()
 export class AcqSearchService {
+    private net = inject(NetService);
+    private evt = inject(EventService);
+    private auth = inject(AuthService);
+    private pcrud = inject(PcrudService);
+    private attrDefs = inject(AttrDefsService);
+
 
     _terms: AcqSearchTerm[] = [];
     _conjunction = 'all';
     firstRun = true;
 
-    constructor(
-        private net: NetService,
-        private evt: EventService,
-        private auth: AuthService,
-        private pcrud: PcrudService,
-        private attrDefs: AttrDefsService
-    ) {
+    constructor() {
         this.firstRun = true;
     }
 

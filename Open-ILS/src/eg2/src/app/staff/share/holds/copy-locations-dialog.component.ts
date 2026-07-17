@@ -1,5 +1,7 @@
 /* eslint-disable brace-style, no-shadow */
-import {Component, Input, OnDestroy, ViewChild} from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, Input, OnDestroy, ViewChild, inject } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import {IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
 import {PcrudService} from '@eg/core/pcrud.service';
@@ -22,10 +24,20 @@ import {BehaviorSubject, Observable, Subject, of, catchError, exhaustMap,
  */
 @Component({
     selector: 'eg-hold-copy-locations-dialog',
-    templateUrl: './copy-locations-dialog.component.html'
+    templateUrl: './copy-locations-dialog.component.html',
+    imports: [
+        ComboboxComponent,
+        CommonModule,
+        FormsModule,
+        StringComponent,
+    ]
 })
 export class HoldCopyLocationsDialogComponent
     extends DialogComponent implements OnDestroy {
+    private modal: NgbModal;
+    private org = inject(OrgService);
+    private pcrud = inject(PcrudService);
+
 
 
   // limit to locations or groups owned by this org or its ancestors
@@ -67,12 +79,12 @@ export class HoldCopyLocationsDialogComponent
   );
 
 
-  constructor(
-    private modal: NgbModal,
-    private org: OrgService,
-    private pcrud: PcrudService
-  ) {
+  constructor() {
+      const modal = inject(NgbModal);
+
       super(modal);
+
+      this.modal = modal;
   }
 
   ngOnDestroy(): void {

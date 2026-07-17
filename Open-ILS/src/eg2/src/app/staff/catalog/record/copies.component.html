@@ -1,59 +1,65 @@
 <ng-template #cnTemplate let-copy="row" let-context="userContext">
-    <div id="copy-callnumber-{{copy.call_number}}">
+  <div id="copy-callnumber-{{copy.call_number}}">
     {{copy.call_number_prefix_label}}
     <span id="copy-callnumber-label-{{copy.call_number_label}}">{{copy.call_number_label}}</span>
     {{copy.call_number_suffix_label}}
-    </div>
+  </div>
   <div>
-    <ng-container *ngIf="context.editableCN(copy)">
+    @if (context.editableCN(copy)) {
       <a routerLink="/staff/cat/volcopy/holdings/callnumber/{{copy.call_number}}"
-      target="_blank" i18n attr.aria-describedby="copy-callnumber-label-{{copy.call_number_label}}">Edit</a> 
-    </ng-container>
+      target="_blank" i18n attr.aria-describedby="copy-callnumber-label-{{copy.call_number_label}}">Edit</a>
+    }
   </div>
 </ng-template>
 
 <ng-template #barcodeTemplate let-copy="row" let-context="userContext">
   <div id="copy-barcode-{{copy.id}}">{{copy.barcode}}</div>
   <div>
-  <a class="ps-1" target="_blank" attr.aria-describedby="copy-barcode-{{copy.id}}"
+    <a class="ps-1" target="_blank" attr.aria-describedby="copy-barcode-{{copy.id}}"
     href="/eg/staff/cat/item/{{copy.id}}" i18n>View</a>
-    <ng-container *ngIf="context.editable(copy)">
+    @if (context.editable(copy)) {
       | <a class="ps-1" target="_blank"  attr.aria-describedby="copy-barcode-{{copy.id}}"
-        routerLink="/staff/cat/volcopy/attrs/item/{{copy.id}}" [queryParams]="{record_id: recId}" i18n>Edit</a>
-    </ng-container>
-  </div>
+    routerLink="/staff/cat/volcopy/attrs/item/{{copy.id}}" [queryParams]="{record_id: recId}" i18n>Edit</a>
+  }
+</div>
 </ng-template>
 
 <ng-template #holdableTemplate let-copy="row" let-context="userContext">
-  <div *ngIf="context.holdable(copy)">
-    <div class="border-bottom">
-      <a routerLink="/staff/catalog/hold/C"
-        attr.aria-describedby="copy-barcode-{{copy.id}}"
-        [queryParams]="{target: copy.id}"
-        queryParamsHandling="merge" i18n>
+  @if (context.holdable(copy)) {
+    <div>
+      <div class="border-bottom">
+        <a routerLink="/staff/catalog/hold/C"
+          attr.aria-describedby="copy-barcode-{{copy.id}}"
+          [queryParams]="{target: copy.id}"
+          queryParamsHandling="merge" i18n>
         Item Hold
       </a>
-    </div>
-    <div>
-      <a routerLink="/staff/catalog/hold/V"
-        attr.aria-describedby="copy-barcode-{{copy.id}}"
-        [queryParams]="{target: copy.call_number}"
-        queryParamsHandling="merge" i18n>
+      </div>
+      <div>
+        <a routerLink="/staff/catalog/hold/V"
+          attr.aria-describedby="copy-barcode-{{copy.id}}"
+          [queryParams]="{target: copy.call_number}"
+          queryParamsHandling="merge" i18n>
         Call Number Hold
       </a>
+      </div>
     </div>
-  </div>
-  <div *ngIf="!context.holdable(copy)" i18n>No</div>
+  }
+  @if (!context.holdable(copy)) {
+    <div i18n>No</div>
+  }
 </ng-template>
 
 <ng-template #courseTemplate let-copy="row">
-  <div *ngFor="let course of copy._courses">
-    <span class="visually-hidden" id="course-name-{{course.id()}}">{{course.name()}}</span>
-    <a attr.aria-describedby="course-name-{{course.id()}}"
-    routerLink="/staff/admin/local/asset/course_list/{{course.id()}}">
-      {{course.course_number()}}
-    </a>
-  </div>
+  @for (course of copy._courses; track course) {
+    <div>
+      <span class="visually-hidden" id="course-name-{{course.id()}}">{{course.name()}}</span>
+      <a attr.aria-describedby="course-name-{{course.id()}}"
+        routerLink="/staff/admin/local/asset/course_list/{{course.id()}}">
+        {{course.course_number()}}
+      </a>
+    </div>
+  }
 </ng-template>
 
 <ng-template #ageTemplate let-copy="row">
@@ -61,15 +67,15 @@
 </ng-template>
 
 <div class='eg-copies w-100 mt-3'>
-  <eg-grid #copyGrid [dataSource]="gridDataSource" 
+  <eg-grid #copyGrid [dataSource]="gridDataSource"
     [disableSelect]="true" [cellTextGenerator]="cellTextGenerator"
     [sortable]="false" persistKey="catalog.record.copies">
-    <eg-grid-column i18n-label label="Item ID" path="id" 
+    <eg-grid-column i18n-label label="Item ID" path="id"
       [hidden]="true" [index]="true">
     </eg-grid-column>
     <eg-grid-column i18n-label label="Location" path="circ_lib" datatype="org_unit">
     </eg-grid-column>
-    <eg-grid-column i18n-label label="Call Number / Item Notes" name="callnumber" 
+    <eg-grid-column i18n-label label="Call Number / Item Notes" name="callnumber"
       [cellTemplate]="cnTemplate" [cellContext]="copyContext">
     </eg-grid-column>
     <eg-grid-column i18n-label label="Part" path="part_label" name="monograph_part">
@@ -84,15 +90,17 @@
     <eg-grid-column i18n-label label="Age Hold Protection" path="age_protect"
       [cellTemplate]="ageTemplate">
     </eg-grid-column>
-    <eg-grid-column i18n-label label="Active/Create Date" 
+    <eg-grid-column i18n-label label="Active/Create Date"
       path="active_date" datatype="timestamp">
     </eg-grid-column>
-    <eg-grid-column i18n-label label="Holdable?" name="holdable" 
+    <eg-grid-column i18n-label label="Holdable?" name="holdable"
       [cellTemplate]="holdableTemplate" [cellContext]="copyContext">
     </eg-grid-column>
-    <eg-grid-column i18n-label label="Course" name="course"
-      [cellTemplate]="courseTemplate" *ngIf="usingCourseModule">
-    </eg-grid-column>
+    @if (usingCourseModule) {
+      <eg-grid-column i18n-label label="Course" name="course"
+        [cellTemplate]="courseTemplate">
+      </eg-grid-column>
+    }
     <eg-grid-column i18n-label label="Status" path="copy_status">
     </eg-grid-column>
     <eg-grid-column i18n-label label="Due Date" path="due_date" datatype="timestamp">

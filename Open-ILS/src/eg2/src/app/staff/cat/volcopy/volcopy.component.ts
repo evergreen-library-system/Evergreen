@@ -1,5 +1,5 @@
-import {DOCUMENT, ViewportScroller} from '@angular/common';
-import {Component, OnInit, ViewChild, HostListener,  inject} from '@angular/core';
+import {ViewportScroller} from '@angular/common';
+import {Component, OnInit, ViewChild, HostListener, inject, DOCUMENT} from '@angular/core';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {BehaviorSubject, from, Observable, of, finalize, switchMap, tap, map} from 'rxjs';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
@@ -21,6 +21,10 @@ import {VolCopyService} from './volcopy.service';
 import {NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import {BroadcastService} from '@eg/share/util/broadcast.service';
 import {CopyAttrsComponent} from './copy-attrs.component';
+import { StaffCommonModule } from '@eg/staff/common.module';
+import { VolCopyTemplateGridComponent } from './template-grid.component';
+import { VolCopyConfigComponent } from './config.component';
+import { VolEditComponent } from './vol-edit.component';
 
 const COPY_FLESH = {
     flesh: 3,
@@ -55,9 +59,33 @@ interface EditSession {
 
 @Component({
     templateUrl: 'volcopy.component.html',
-    styleUrls: ['./volcopy.component.css']
+    styleUrls: ['./volcopy.component.css'],
+    imports: [
+        CopyAttrsComponent,
+        StaffCommonModule,
+        VolCopyConfigComponent,
+        VolCopyPermissionDialogComponent,
+        VolCopyTemplateGridComponent,
+        VolEditComponent
+    ]
 })
 export class VolCopyComponent implements OnInit {
+    private router = inject(Router);
+    private route = inject(ActivatedRoute);
+    private evt = inject(EventService);
+    private idl = inject(IdlService);
+    private org = inject(OrgService);
+    private net = inject(NetService);
+    private auth = inject(AuthService);
+    private perm = inject(PermService);
+    private pcrud = inject(PcrudService);
+    private store = inject(StoreService);
+    private cache = inject(AnonCacheService);
+    private broadcaster = inject(BroadcastService);
+    private holdings = inject(HoldingsService);
+    private volcopy = inject(VolCopyService);
+    protected vs = inject(ViewportScroller);
+
 
     context: VolCopyContext;
     private contextChange = new BehaviorSubject<VolCopyContext>(null);
@@ -97,24 +125,6 @@ export class VolCopyComponent implements OnInit {
     @ViewChild('volEditOpChange', {static: false}) volEditOpChange: OpChangeComponent;
 
     private _document = inject(DOCUMENT);
-
-    constructor(
-        private router: Router,
-        private route: ActivatedRoute,
-        private evt: EventService,
-        private idl: IdlService,
-        private org: OrgService,
-        private net: NetService,
-        private auth: AuthService,
-        private perm: PermService,
-        private pcrud: PcrudService,
-        private store: StoreService,
-        private cache: AnonCacheService,
-        private broadcaster: BroadcastService,
-        private holdings: HoldingsService,
-        private volcopy: VolCopyService,
-        protected vs: ViewportScroller
-    ) { }
 
     ngOnInit() {
         // console.debug('VolCopyComponent, this',this);
@@ -817,9 +827,11 @@ export class VolCopyComponent implements OnInit {
         const settingEnabled = this.orgRequiresParts[org];
         const recordHasParts = this.volcopy.bibParts[record] && this.volcopy.bibParts[record].length > 0;
 
-        const copyStatusHoldable = this.volcopy.copyStatuses[copyNode.target.status()].holdable() === 't';
+        const status = this.volcopy.copyStatuses[copyNode.target.status()];
+        const copyStatusHoldable = status?.holdable() === 't';
         const copyHoldableFlag = copyNode.target.holdable() === 't';
-        const copyShelvingLocationHoldable = copyNode.target.location().holdable() === 't';
+        const shelfLoc = copyNode.target.location();
+        const copyShelvingLocationHoldable = shelfLoc?.holdable() === 't';
         const copyIsHoldable = copyStatusHoldable && copyHoldableFlag && copyShelvingLocationHoldable;
 
         const copyRequiresPart = settingEnabled && recordHasParts && copyIsHoldable;

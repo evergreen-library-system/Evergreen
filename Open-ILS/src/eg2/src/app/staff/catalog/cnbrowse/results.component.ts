@@ -1,5 +1,5 @@
 /* eslint-disable no-magic-numbers */
-import {Component, Input, OnInit, OnDestroy} from '@angular/core';
+import { Component, Input, OnInit, OnDestroy, inject } from '@angular/core';
 import {ActivatedRoute, Router, ParamMap} from '@angular/router';
 import {Subscription} from 'rxjs';
 import {IdlObject} from '@eg/core/idl.service';
@@ -10,13 +10,24 @@ import {CatalogUrlService} from '@eg/share/catalog/catalog-url.service';
 import {CatalogSearchContext, CatalogSearchState} from '@eg/share/catalog/search-context';
 import {StaffCatalogService} from '../catalog.service';
 import {OrgService} from '@eg/core/org.service';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
     selector: 'eg-catalog-cn-browse-results',
     templateUrl: 'results.component.html',
-    styleUrls: ['results.component.css']
+    styleUrls: ['results.component.css'],
+    imports: [StaffCommonModule]
 })
 export class CnBrowseResultsComponent implements OnInit, OnDestroy {
+    private router = inject(Router);
+    private route = inject(ActivatedRoute);
+    private org = inject(OrgService);
+    private pcrud = inject(PcrudService);
+    private cat = inject(CatalogService);
+    private bib = inject(BibRecordService);
+    private catUrl = inject(CatalogUrlService);
+    private staffCat = inject(StaffCatalogService);
+
 
     // If set, this is a bib-focused browse
     @Input() bibSummary: BibRecordSummary;
@@ -34,17 +45,6 @@ export class CnBrowseResultsComponent implements OnInit, OnDestroy {
     // When browsing by a specific record, keep tabs on the initial
     // browse call number.
     browseCn: string;
-
-    constructor(
-        private router: Router,
-        private route: ActivatedRoute,
-        private org: OrgService,
-        private pcrud: PcrudService,
-        private cat: CatalogService,
-        private bib: BibRecordService,
-        private catUrl: CatalogUrlService,
-        private staffCat: StaffCatalogService
-    ) {}
 
     ngOnInit() {
         this.searchContext = this.staffCat.searchContext;

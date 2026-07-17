@@ -1,8 +1,9 @@
-import { waitForAsync } from '@angular/core/testing';
+import { TestBed, waitForAsync } from '@angular/core/testing';
 import { NetService } from '@eg/core/net.service';
 import { of } from 'rxjs';
 import { BibRecordService } from './bib-record.service';
 import { PermService } from '@eg/core/perm.service';
+import { OrgService } from '@eg/core/org.service';
 
 const mockNetService = jasmine.createSpyObj<NetService>(['request']);
 const mockPermService = jasmine.createSpyObj<PermService>(['hasWorkPermHere']);
@@ -67,9 +68,18 @@ mockNetService.request.and.returnValue(of({
     'hold_count': '0'
 }));
 mockPermService.hasWorkPermHere.and.returnValue(Promise.resolve({PLACE_UNFILLABLE_HOLD: true}));
-const service = new BibRecordService(mockNetService, null, mockPermService);
+let service: BibRecordService;
 
 describe('BibRecordService', () => {
+    beforeEach(() => {
+        TestBed.configureTestingModule({providers: [
+            {provide: NetService, useValue: mockNetService},
+            {provide: OrgService, useValue: null},
+            {provide: PermService, useValue: mockPermService},
+            BibRecordService
+        ]});
+        service = TestBed.inject(BibRecordService);
+    });
     describe('getBibSummary()', () => {
         it('gets the holdCount from the net service response', waitForAsync(() => {
             service.getBibSummary(248, 1, true)

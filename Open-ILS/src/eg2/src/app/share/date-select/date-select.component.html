@@ -1,10 +1,10 @@
-<ng-container *ngIf="readOnly">
+@if (readOnly) {
   {{initialDate | formatValue:'timestamp'}}
-</ng-container>
-<ng-container *ngIf="!readOnly">
-  <div class="input-group eg-date-select form-validated p-0" 
+}
+@if (!readOnly) {
+  <div class="input-group eg-date-select form-validated p-0"
     [ngClass]="{'date-select-width': !noMaxWidth}">
-    <input 
+    <input
       class="form-control"
       type="text"
       ngbDatepicker
@@ -23,11 +23,10 @@
       (ngModelChange)="inputChanged($event)"
       (keyup.enter)="onDateEnter()"
       (dateSelect)="onDateSelect($event)"/>
-      
-      <button class="input-group-text" [disabled]="disabled"
-        title="Select Date" i18n-title aria-label="Select Date" i18n-aria-label
-        (click)="datePicker.toggle()" type="button">
-        <span class="material-icons mat-icon-in-button" aria-hidden="true">event</span>
-      </button>
+    <button class="input-group-text" [disabled]="disabled"
+      title="Select Date" i18n-title aria-label="Select Date" i18n-aria-label
+      (click)="datePicker.toggle()" type="button">
+      <span class="material-icons mat-icon-in-button" aria-hidden="true">event</span>
+    </button>
   </div>
-</ng-container>
+}

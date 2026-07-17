@@ -1,34 +1,41 @@
-import {Component, Input, ViewChild, TemplateRef} from '@angular/core';
+import { Component, Input, ViewChild, TemplateRef, inject } from '@angular/core';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {AuthService} from '@eg/core/auth.service';
 import { HoldsService } from '@eg/staff/share/holds/holds.service';
 import {NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
-import { EmptyError, firstValueFrom, lastValueFrom, map, tap, toArray} from 'rxjs';
+import { StaffCommonModule } from '@eg/staff/common.module';
+import { lastValueFrom, map, toArray } from 'rxjs';
 
 @Component({
     selector: 'eg-catalog-part-merge-dialog',
-    templateUrl: './part-merge-dialog.component.html'
+    templateUrl: './part-merge-dialog.component.html',
+    imports: [StaffCommonModule]
 })
 
 /**
  * Ask the user which part is the lead part then merge others parts in.
  */
 export class PartMergeDialogComponent extends DialogComponent {
+    private idl = inject(IdlService);
+    private pcrud = inject(PcrudService);
+    private auth = inject(AuthService);
+    private holds = inject(HoldsService);
+    private modal: NgbModal;
+
 
     // What parts are we merging
     parts: IdlObject[];
     copyPartMaps: IdlObject[];
     leadPart: number;
 
-    constructor(
-        private idl: IdlService,
-        private pcrud: PcrudService,
-        private auth: AuthService,
-        private holds: HoldsService,
-        private modal: NgbModal) {
+    constructor() {
+        const modal = inject(NgbModal);
+
         super(modal);
+
+        this.modal = modal;
     }
 
     // 1. Apply lead part to all copies 2. Apply lead part to all holds 3. Delete subordinate parts - which should have no copies

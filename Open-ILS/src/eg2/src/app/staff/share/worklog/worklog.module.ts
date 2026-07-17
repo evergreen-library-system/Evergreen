@@ -4,11 +4,9 @@ import {WorkLogService} from './worklog.service';
 import {WorkLogStringsComponent} from './strings.component';
 
 @NgModule({
-    declarations: [
-        WorkLogStringsComponent
-    ],
     imports: [
-        StaffCommonModule
+        StaffCommonModule,
+        WorkLogStringsComponent
     ],
     exports: [
         WorkLogStringsComponent

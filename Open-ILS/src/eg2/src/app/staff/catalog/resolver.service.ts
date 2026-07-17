@@ -1,10 +1,8 @@
-import {Injectable} from '@angular/core';
-import {Router, Resolve, RouterStateSnapshot,
+import { Injectable, inject } from '@angular/core';
+import {Resolve, RouterStateSnapshot,
     ActivatedRouteSnapshot} from '@angular/router';
 import {ServerStoreService} from '@eg/core/server-store.service';
-import {NetService} from '@eg/core/net.service';
 import {OrgService} from '@eg/core/org.service';
-import {AuthService} from '@eg/core/auth.service';
 import {CatalogService} from '@eg/share/catalog/catalog.service';
 import {StaffCatalogService} from './catalog.service';
 import {BasketService} from '@eg/share/catalog/basket.service';
@@ -13,17 +11,12 @@ import {CATALOG_CCVM_FILTERS} from '@eg/share/catalog/search-context';
 
 @Injectable()
 export class CatalogResolver implements Resolve<Promise<any[]>> {
+    private store = inject(ServerStoreService);
+    private org = inject(OrgService);
+    private cat = inject(CatalogService);
+    private staffCat = inject(StaffCatalogService);
+    private basket = inject(BasketService);
 
-    constructor(
-        private router: Router,
-        private store: ServerStoreService,
-        private org: OrgService,
-        private net: NetService,
-        private auth: AuthService,
-        private cat: CatalogService,
-        private staffCat: StaffCatalogService,
-        private basket: BasketService
-    ) {}
 
     resolve(
         route: ActivatedRouteSnapshot,

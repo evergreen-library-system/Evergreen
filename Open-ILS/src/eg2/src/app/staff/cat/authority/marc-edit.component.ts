@@ -1,11 +1,22 @@
-import {Component, OnInit, AfterViewInit, ViewChild, Renderer2} from '@angular/core';
-import {Router, ActivatedRoute, ParamMap} from '@angular/router';
-import {MarcSavedEvent} from '@eg/staff/share/marc-edit/editor.component';
+import { Component, AfterViewInit, Renderer2, inject } from '@angular/core';
+import {Router, ActivatedRoute} from '@angular/router';
+import { MarcEditorComponent } from '@eg/staff/share/marc-edit/editor.component';
+import { StaffBannerComponent } from '@eg/staff/share/staff-banner.component';
+import { FormsModule } from '@angular/forms';
 
 @Component({
-    templateUrl: 'marc-edit.component.html'
+    templateUrl: 'marc-edit.component.html',
+    imports: [
+        MarcEditorComponent,
+        StaffBannerComponent,
+        FormsModule
+    ]
 })
 export class AuthorityMarcEditComponent implements AfterViewInit {
+    private router = inject(Router);
+    private route = inject(ActivatedRoute);
+    private renderer = inject(Renderer2);
+
 
     authorityId: number;
 
@@ -13,10 +24,7 @@ export class AuthorityMarcEditComponent implements AfterViewInit {
     // cause the marc editor to load prematurely.
     loadId: number;
 
-    constructor(
-        private router: Router,
-        private route: ActivatedRoute,
-        private renderer: Renderer2) {
+    constructor() {
         this.authorityId = +this.route.snapshot.paramMap.get('id');
     }
 

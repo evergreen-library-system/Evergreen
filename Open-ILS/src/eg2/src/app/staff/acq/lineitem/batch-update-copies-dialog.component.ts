@@ -1,18 +1,31 @@
-import {Component, Input} from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import {Observable} from 'rxjs';
 import {NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
 import {AuthService} from '@eg/core/auth.service';
-import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
+import {ComboboxComponent, ComboboxEntry} from '@eg/share/combobox/combobox.component';
+import { CommonModule } from '@angular/common';
+import { LineitemCopyAttrsComponent } from './copy-attrs.component';
+import { FormsModule } from '@angular/forms';
 
 @Component({
     selector: 'eg-acq-batch-update-copies-dialog',
-    templateUrl: './batch-update-copies-dialog.component.html'
+    templateUrl: './batch-update-copies-dialog.component.html',
+    imports: [
+        ComboboxComponent,
+        CommonModule,
+        FormsModule,
+        LineitemCopyAttrsComponent
+    ]
 })
 
 export class BatchUpdateCopiesDialogComponent extends DialogComponent {
+    private modal: NgbModal;
+    private org = inject(OrgService);
+    private auth = inject(AuthService);
+
 
     @Input() ids: number[];
     @Input() activatedPo: boolean;
@@ -22,12 +35,12 @@ export class BatchUpdateCopiesDialogComponent extends DialogComponent {
     formulaFilter = {owner: []};
     templateCopy: IdlObject;
 
-    constructor(
-        private modal: NgbModal,
-        private org: OrgService,
-        private auth: AuthService
-    ) {
+    constructor() {
+        const modal = inject(NgbModal);
+
         super(modal);
+
+        this.modal = modal;
     }
 
     open(args?: NgbModalOptions): Observable<any> {

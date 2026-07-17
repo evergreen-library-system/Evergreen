@@ -1,18 +1,16 @@
 /* eslint-disable no-magic-numbers */
-import {Component, ViewChild, OnInit, AfterViewInit} from '@angular/core';
+import { Component, ViewChild, OnInit, AfterViewInit, inject } from '@angular/core';
 import {Location} from '@angular/common';
 import {Router, ActivatedRoute} from '@angular/router';
-import {empty, from, concatMap} from 'rxjs';
+import {empty, from, concatMap, catchError, EMPTY, tap} from 'rxjs';
 import {IdlObject} from '@eg/core/idl.service';
-import {NetService} from '@eg/core/net.service';
 import {OrgService} from '@eg/core/org.service';
-import {AuthService} from '@eg/core/auth.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
 import {PatronService} from '@eg/staff/share/patron/patron.service';
 import {GridDataSource, GridCellTextGenerator} from '@eg/share/grid/grid';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {Pager} from '@eg/share/util/pager';
-import {CircService, CircDisplayInfo, CheckinParams, CheckinResult
+import {CircService, CheckinParams, CheckinResult
 } from '@eg/staff/share/circ/circ.service';
 import {BarcodeSelectComponent
 } from '@eg/staff/share/barcodes/barcode-select.component';
@@ -30,6 +28,9 @@ import {CancelTransitDialogComponent
 } from '@eg/staff/share/circ/cancel-transit-dialog.component';
 import {HoldingsService} from '@eg/staff/share/holdings/holdings.service';
 import {AnonCacheService} from '@eg/share/util/anon-cache.service';
+import { StaffCommonModule } from '@eg/staff/common.module';
+import { WorkLogStringsComponent } from '@eg/staff/share/worklog/strings.component';
+import { CircComponentsComponent } from '@eg/staff/share/circ/components.component';
 
 
 interface CheckinGridEntry extends CheckinResult {
@@ -58,9 +59,30 @@ const SETTINGS = [
 
 @Component({
     templateUrl: 'checkin.component.html',
-    styleUrls: ['checkin.component.css']
+    styleUrls: ['checkin.component.css'],
+    imports: [
+        BackdateDialogComponent,
+        BarcodeSelectComponent,
+        CancelTransitDialogComponent,
+        CircComponentsComponent,
+        CopyAlertsDialogComponent,
+        MarkDamagedDialogComponent,
+        StaffCommonModule,
+        WorkLogStringsComponent
+    ]
 })
 export class CheckinComponent implements OnInit, AfterViewInit {
+    private route = inject(ActivatedRoute);
+    private ngLocation = inject(Location);
+    private org = inject(OrgService);
+    private store = inject(ServerStoreService);
+    private circ = inject(CircService);
+    private toast = inject(ToastService);
+    private printer = inject(PrintService);
+    private holdings = inject(HoldingsService);
+    private anonCache = inject(AnonCacheService);
+    patronService = inject(PatronService);
+
     checkins: CheckinGridEntry[] = [];
     autoIndex = 0;
 
@@ -90,22 +112,6 @@ export class CheckinComponent implements OnInit, AfterViewInit {
     @ViewChild('itemNeverCircedStr') private itemNeverCircedStr: StringComponent;
     @ViewChild('backdateDialog') private backdateDialog: BackdateDialogComponent;
     @ViewChild('cancelTransitDialog') private cancelTransitDialog: CancelTransitDialogComponent;
-
-    constructor(
-        private router: Router,
-        private route: ActivatedRoute,
-        private ngLocation: Location,
-        private net: NetService,
-        private org: OrgService,
-        private auth: AuthService,
-        private store: ServerStoreService,
-        private circ: CircService,
-        private toast: ToastService,
-        private printer: PrintService,
-        private holdings: HoldingsService,
-        private anonCache: AnonCacheService,
-        public patronService: PatronService
-    ) {}
 
     ngOnInit() {
 
@@ -255,6 +261,16 @@ export class CheckinComponent implements OnInit, AfterViewInit {
         } else {
             this.store.removeItem('circ.checkin.strict_barcode');
         }
+    }
+
+    emailReceipt(): void {
+        this.circ.emailCheckinReceipt(this.checkins).pipe(
+            tap(message => this.toast.success(message)),
+            catchError(error => {
+                if (error) { this.toast.danger(error); }
+                return EMPTY;
+            })
+        ).subscribe();
     }
 
     printReceipt() {

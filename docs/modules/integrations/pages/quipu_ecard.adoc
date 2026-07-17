@@ -6,15 +6,17 @@ This bypasses the regular Pending Patrons workflow.
 
 Due to the nature of how Quipu configures eCARD on their end, it is strongly recommended that libraries work directly with Quipu to test before implementation.
 
+This work also includes integration of the Quipu eRENEW product.
+
 == eCARD form ==
 
-Activating the _Enable eCard registration feature in the OPAC_ setting described below will enable the eCARD URL, which by default lives at https://<your-evergreen-domain>/eg/opac/ecard/form. This page will load a Quipu-configured eCARD form. This will also update the link on the bottom of the OPAC to point to this form.
+Activating the _Enable eCARD registration feature in the OPAC_ setting described below will enable the eCARD URL, which by default lives at https://<your-evergreen-domain>/eg/opac/ecard/form. This page will load a Quipu-configured eCARD form. This will also update the link on the bottom of the OPAC to point to this form.
 
 The regular (non-eCARD) self-registration form at https://<your-evergreen-domain>/eg/opac/register is still available for libraries that do not use eCARD, but still wish to allow patron self-registration.
 
 The Quipu form is more extensive than the regular self-registration form. Using shapefiles, an Evergreen site can work with Quipu to establish certain patron statistical categories such as Municipality, Taxing District, etc. that can be updated via the eCARD registration process.
 
-Using the Quipu eCard form intentionally skips the Pending Patrons workflow since Quipu is taking on the role of “approving” newly registered patrons.
+Using the Quipu eCARD form intentionally skips the Pending Patrons workflow since Quipu is taking on the role of “approving” newly registered patrons.
 
 The eCARD workflow looks like this:
 
@@ -23,26 +25,28 @@ The eCARD workflow looks like this:
 . Quipu sends this information back to Evergreen and creates a user in Evergreen
 . Staff can see that the user is correctly assigned to a home library, profile group, stat cat, etc.
 
-If the optional eCard verification setting is enabled (along with email sending), after account creation the patron will receive a confirmation email. Once the patron accepts the confirmation, their profile will be updated according to the library setting _Patron permission profile after verification for Quipu eCard feature_.
+If the optional eCARD verification setting is enabled (along with email sending), after account creation the patron will receive a confirmation email. Once the patron accepts the confirmation, their profile will be updated according to the library setting _Patron permission profile after verification for Quipu eCARD feature_.
 
 The below screenshot is an example taken from a test system. Your form may look different depending on how it is configured with Quipu.
 
-image::images/quipu_ecard/ecard_form_example.png[Example of an eCARD form]
+image::quipu_ecard/ecard_form_example.png[Example of an eCARD form]
+
+The eCARD service will check for duplicate patron accounts at all organizational units using first name, surname, and birth year. If it finds any existing records that match all three of those, it will then see if any of the potential duplicates have an address that shares the name of the physical address supplied by Quipu. If a match is found, Quipu considers this to be a duplicate account. 
 
 == Library Settings ==
 
-The Quipu eCard implementation involves several new Library Settings, described below. In general, if the Quipu service is to be used globally within an Evergreen installation, it is recommended that all settings be set at the consortial level. The exception to this is the setting _Enable eCard registration feature in the OPAC_, which should explicitly be set to TRUE for all libraries using Quipu eCard.
+The Quipu eCARD implementation involves several new Library Settings, described below. In general, if the Quipu service is to be used globally within an Evergreen installation, it is recommended that all settings be set at the consortial level. The exception to this is the setting _Enable eCARD registration feature in the OPAC_, which should explicitly be set to TRUE for all libraries using Quipu eCARD.
 
 New settings:
 
-* _Enable eCard registration feature in the OPAC_ - True / False. Default (unset) value is false. Setting this to true will show the Quipu eCard registration form.
+* _Enable eCARD registration feature in the OPAC_ - True / False. Default (unset) value is false. Setting this to true will show the Quipu eCARD registration form.
 ** This will override the extant _Allow Patron Self-Registration_ setting and ensure that appropriate links point to the Quipu form and not the stock Self-Registration form.
-* _Quipu eCard Customer Account_ - Numeric - provided by Quipu. Recommended to set this at the CONS level.
+* _Quipu eCARD Customer Account_ - Numeric - provided by Quipu. Recommended to set this at the CONS level.
 ** This sets the context library to use for retrieving OPAC-related settings, based on domain name, IP address, and other variables. This defaults to the Consortial value when not logged in, and the user’s home library if logged in. This might matter if an existing patron is self-registering someone else.
 ** If individual libraries need their own values for this, an administrator will need to adjust the Apache configuration to make sure the catalog is loading the correct form & Organizational Unit setting(s).
-* _Quipu eCard Shared Secret_ - Text - Typically this is provided by Quipu but can be provided by the library; the only caveat is that the value held by Quipu needs to exactly match the value held in this library setting.
-* _Admin organizational unit for Quipu eCard feature_ - Dropdown (select Organizational Unit). The working location of the admin user for Evergreen-Quipu. This is consulted for permissions.
-* _Evergreen Admin username for the Quipu eCard feature_ - Text - enter the username of the admin user for Evergreen-Quipu.
+* _Quipu eCARD Shared Secret_ - Text - Typically this is provided by Quipu but can be provided by the library; the only caveat is that the value held by Quipu needs to exactly match the value held in this library setting.
+* _Admin organizational unit for Quipu eCARD feature_ - Dropdown (select Organizational Unit). The working location of the admin user for Evergreen-Quipu. This is consulted for permissions.
+* _Evergreen Admin username for the Quipu eCARD feature_ - Text - enter the username of the admin user for Evergreen-Quipu.
 ** **NOTE:** The password for this account cannot be set in the staff client and will require a database administrator to set the password, using a statement like:
 +
 [source,postgresql]
@@ -50,20 +54,37 @@ New settings:
 SELECT actor.set_passwd(USER ID HERE, 'ecard_vendor', 'PASSWORD HERE');
 ----
 +
-* _Patron permission profile for Quipu eCard feature_ - Dropdown (select patron profile group). Incoming eCard registrants will be assigned to this profile.
-* _Barcode length for Quipu eCard feature_ - Numeric - the total length of a patron barcode including prefix and check digit
-* _Barcode prefix for Quipu eCard feature_ - Numeric - the digits prefixing a patron barcode. As a best practice, this should be set for each library system using Quipu.
-* _Calculate barcode checkdigit for Quipu eCard feature_ - True / False. Default (unset) value is false.
+* _Patron permission profile for Quipu eCARD feature_ - Dropdown (select patron profile group). Incoming eCARD registrants will be assigned to this profile.
+* _Barcode length for Quipu eCARD feature_ - Numeric - the total length of a patron barcode including prefix and check digit
+* _Barcode prefix for Quipu eCARD feature_ - Numeric - the digits prefixing a patron barcode. As a best practice, this should be set for each library system using Quipu.
+* _Calculate barcode checkdigit for Quipu eCARD feature_ - True / False. Default (unset) value is false.
 ** Barcode settings in Evergreen are honored by Quipu and by default, the username will match the barcode. Quipu may override this when sending data back to Evergreen, if so configured on the Quipu side.
+* _Enable eCARD request renewal feature in the OPAC_ - True / False. Default (unset) value is false.
+** Setting this to True enables the eRENEW form in the OPAC and thus allows patrons to request a card renewal via the OPAC.
+* _Number of days before account expiration in which to offer an e-renewal_ - Numeric - the default (unset) value is 29.
+** The number of days before expiration that renewal options will be presented to the patron.
+* _Quipu eCARD/eRENEW Fully Qualified Domain Name_ - Default (unset) value is ecard.quipugroup.net
+** Used to set a fully qualified domain name (FQDN) for the external Quipu server used for eCARD and/or eRENEW services.
+* _Number of valid addresses needed to offer patron account e-renewal via Quipu_ - Numeric - specifies the number of valid addresses that a patron record must have in order to be eligible for e-renewal. The default (unset) value is 2.
+** Possible setting values:
+*** 0: Do not consider the patron's addresses when checking whether to offer e-renewal
+*** 1: Either the mailing address or the billing/physical address must be set and marked as valid for e-renewal to be offered.
+*** 2: Both the mailing address and the billing/physical address must be set and marked as valid.
 
 Related settings:
 
-* _Enable eCard verification feature in the OPAC_ - True / False. Default (unset) value is false. Specifies whether an eCard verification service is in use. This is an extant setting and is not specifically related to Quipu, nor is it required for Quipu to function. Enabling this setting will add email validation code insertion into the patron record.
+* _Enable eCARD verification feature in the OPAC_ - True / False. Default (unset) value is false. Specifies whether an eCARD verification service is in use. This is an extant setting and is not specifically related to Quipu, nor is it required for Quipu to function. Enabling this setting will add email validation code insertion into the patron record.
 ** There is an Action/Trigger template, _Send Ecard Verification Email_, that will need to be configured in order to send the email. This template is marked as inactive by default.
-* _Patron permission profile after verification for Quipu eCard feature_ - Dropdown (select patron profile group). Incoming eCard registrants will be assigned to this profile when they pass eCard verification. This is only consulted if the setting _Enable eCard verification feature in the OPAC_ is set to TRUE.
+* _Patron permission profile after verification for Quipu eCARD feature_ - Dropdown (select patron profile group). Incoming eCARD registrants will be assigned to this profile when they pass eCARD verification. This is only consulted if the setting _Enable eCARD verification feature in the OPAC_ is set to TRUE.
 
 This feature does not add any new permissions.
 
+== Renewal and Penalties ==
+
+The group E-RENEW has been added to the list of blocked actions available to assign to any standing penalty, which can be configured in Administration → Local Administration → Standing Penalties. This is not added by default to any standing penalty groups. Refer to documentation for more information on xref:admin:lsa-standing_penalties.adoc#blocked_actions[Blocked Actions].
+
+The PATRON_TEMP_RENEWAL penalty will show up in the staff view of patron accounts where patrons have renewed their card, but the renewal is still pending staff review.
+ 
 == Reporting and Administrative Interface ==
 
 There is a new table for reporting on the update history of patron records. This is labelled as `actor.usr_delta_history` in the database, and is available in the Reporter under the source _ILS User Change History_. This is disabled by default and will need to be set up by a database administrator to work.

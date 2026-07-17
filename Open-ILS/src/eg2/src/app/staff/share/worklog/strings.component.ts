@@ -1,6 +1,6 @@
-import {Component, OnInit, Output, Input, ViewChild, EventEmitter} from '@angular/core';
+import { Component, ViewChild, inject } from '@angular/core';
 import {StringComponent} from '@eg/share/string/string.component';
-import {WorkLogService, WorkLogEntry} from './worklog.service';
+import {WorkLogService} from './worklog.service';
 
 /** Component for housing strings related to the worklog service
  *
@@ -11,9 +11,12 @@ import {WorkLogService, WorkLogEntry} from './worklog.service';
 
 @Component({
     templateUrl: 'strings.component.html',
-    selector: 'eg-worklog-strings-components'
+    selector: 'eg-worklog-strings-components',
+    imports: [StringComponent]
 })
 export class WorkLogStringsComponent {
+    private worklog = inject(WorkLogService);
+
 
     // Worklog string variable names have to match "worklog_{{action}}"
     @ViewChild('worklog_checkout') worklog_checkout: StringComponent;
@@ -26,7 +29,7 @@ export class WorkLogStringsComponent {
     @ViewChild('worklog_registered_patron') worklog_registered_patron: StringComponent;
     @ViewChild('worklog_paid_bill') worklog_paid_bill: StringComponent;
 
-    constructor(private worklog: WorkLogService) {
+    constructor() {
         this.worklog.workLogStrings = this;
     }
 }

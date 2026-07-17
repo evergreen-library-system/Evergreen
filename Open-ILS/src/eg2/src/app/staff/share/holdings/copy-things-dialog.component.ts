@@ -1,4 +1,4 @@
-/* eslint-disable max-len */
+/* eslint-disable max-len, @angular-eslint/prefer-inject */
 import { Component, Input, ViewChild, TemplateRef, Optional, Inject, InjectionToken } from '@angular/core';
 import { lastValueFrom, Observable, throwError, from, tap, defaultIfEmpty, switchMap } from 'rxjs';
 import { IdlService, IdlObject } from '@eg/core/idl.service';
@@ -9,6 +9,7 @@ import { OrgService } from '@eg/core/org.service';
 import { StringComponent } from '@eg/share/string/string.component';
 import { DialogComponent } from '@eg/share/dialog/dialog.component';
 import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 /**
  * Base interface for methods we expect on all thing objects
@@ -50,7 +51,8 @@ export const THINGDATA_CONFIG = new InjectionToken<IThingConfig<any>>('THINGDATA
  * C = The changes tracking type
  */
 @Component({
-    templateUrl: './copy-things-dialog.component.html'
+    templateUrl: './copy-things-dialog.component.html',
+    imports: [StaffCommonModule]
 })
 export abstract class CopyThingsDialogComponent<
     T extends IThingObject,
@@ -87,7 +89,6 @@ export abstract class CopyThingsDialogComponent<
     @ViewChild('errorMsg', { static: true })
     protected errorMsg: StringComponent;
 
-    // protected config: IThingConfig<T>;
 
     constructor(
         protected modal: NgbModal,

@@ -39,38 +39,48 @@
     </div>
   </div>
   <div class="col org-unit-types-col-aside p-3">
-    <h3 *ngIf="active">
-          <span i18n>Custom Org Unit Tree (Active)</span>
-          <button type="button" class="btn btn-link p-0 ms-2" *ngIf="active" (click)="active = !active" i18n>Deactivate Tree</button>
-    </h3>
-    <h3 *ngIf="!active">
-          <span i18n>Custom Org Unit Tree (Inactive)</span>
-          <button type="button" class="btn btn-link p-0 ms-2" *ngIf="!active" (click)="active = !active" i18n>Activate Tree</button>
-    </h3>
+    @if (active) {
+      <h3>
+        <span i18n>Custom Org Unit Tree (Active)</span>
+        @if (active) {
+          <button type="button" class="btn btn-link p-0 ms-2" (click)="active = !active" i18n>Deactivate Tree</button>
+        }
+      </h3>
+    }
+    @if (!active) {
+      <h3>
+        <span i18n>Custom Org Unit Tree (Inactive)</span>
+        @if (!active) {
+          <button type="button" class="btn btn-link p-0 ms-2" (click)="active = !active" i18n>Activate Tree</button>
+        }
+      </h3>
+    }
     <div class="p-1" >
       <ng-template #selectedRowButtons let-node>
-        <div *ngIf="node.selected">
-          <button type="button" class="btn btn-link lh-1 py-1 px-0 text-dark" 
-            [disabled]="moveNodeUpDisabled" (click)="moveNodeUp(node)" 
-            i18n-title title="Move Up" i18n-aria-label aria-label="Move Up">
-            <span class="material-icons" aria-hidden="true">arrow_upward</span>
-          </button>
-          <button type="button" class="btn btn-link lh-1 py-1 px-0 text-dark" 
-            [disabled]="moveNodeDownDisabled" (click)="moveNodeDown(node)" 
-            i18n-title title="Move Down" i18n-aria-label aria-label="Move Down">
-            <span class="material-icons" aria-hidden="true">arrow_downward</span>
-          </button>
-          <button type="button" class="btn btn-link lh-1 py-1 px-0 text-dark" 
-            [disabled]="moveNodeElsewhereDisabled" (click)="moveNodeElsewhere(node)" 
-            i18n-title title="Move Elsewhere" i18n-aria-label aria-label="Move Elsewhere">
-            <span class="material-icons" aria-hidden="true">arrow_forward</span>
-          </button>
-          <button type="button" class="btn btn-link btn-destroy lh-1 py-1 px-0" 
-            [disabled]="!isDeleteSelectedNodeAllowed()" (click)="deleteNode(node)" 
-            i18n-title title="Delete" i18n-aria-label aria-label="Delete">
-            <span class="material-icons" aria-hidden="true">delete</span>
-          </button>
-        </div>
+        @if (node.selected) {
+          <div>
+            <button type="button" class="btn btn-link lh-1 py-1 px-0 text-dark"
+              [disabled]="moveNodeUpDisabled" (click)="moveNodeUp(node)"
+              i18n-title title="Move Up" i18n-aria-label aria-label="Move Up">
+              <span class="material-icons" aria-hidden="true">arrow_upward</span>
+            </button>
+            <button type="button" class="btn btn-link lh-1 py-1 px-0 text-dark"
+              [disabled]="moveNodeDownDisabled" (click)="moveNodeDown(node)"
+              i18n-title title="Move Down" i18n-aria-label aria-label="Move Down">
+              <span class="material-icons" aria-hidden="true">arrow_downward</span>
+            </button>
+            <button type="button" class="btn btn-link lh-1 py-1 px-0 text-dark"
+              [disabled]="moveNodeElsewhereDisabled" (click)="moveNodeElsewhere(node)"
+              i18n-title title="Move Elsewhere" i18n-aria-label aria-label="Move Elsewhere">
+              <span class="material-icons" aria-hidden="true">arrow_forward</span>
+            </button>
+            <button type="button" class="btn btn-link btn-destroy lh-1 py-1 px-0"
+              [disabled]="!isDeleteSelectedNodeAllowed()" (click)="deleteNode(node)"
+              i18n-title title="Delete" i18n-aria-label aria-label="Delete">
+              <span class="material-icons" aria-hidden="true">delete</span>
+            </button>
+          </div>
+        }
       </ng-template>
       <eg-tree
         [showSelectAll]="true"

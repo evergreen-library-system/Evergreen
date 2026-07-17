@@ -1,20 +1,30 @@
 /* eslint-disable no-empty */
 import {ComboboxEntry, ComboboxComponent} from '@eg/share/combobox/combobox.component';
-import {Component, Input, OnInit, OnDestroy, ViewChild, Renderer2} from '@angular/core';
+import { Component, Input, OnInit, OnDestroy, ViewChild, Renderer2, inject } from '@angular/core';
 import {GridContext} from '@eg/share/grid/grid';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
-import {NgForm} from '@angular/forms';
+import {FormsModule, NgForm} from '@angular/forms';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
 import {Subject, Subscription, debounceTime, distinctUntilChanged} from 'rxjs';
 
+
 @Component({
     selector: 'eg-grid-manage-filters-dialog',
-    templateUrl: './grid-manage-filters-dialog.component.html'
+    templateUrl: './grid-manage-filters-dialog.component.html',
+    imports: [
+        ComboboxComponent,
+        FormsModule
+    ]
 })
 
 export class GridManageFiltersDialogComponent extends DialogComponent implements OnInit, OnDestroy {
+    private modal: NgbModal;
+    private pcrud = inject(PcrudService);
+    private renderer = inject(Renderer2);
+    private store = inject(ServerStoreService);
+
 
     @Input() gridContext: GridContext;
 
@@ -29,13 +39,12 @@ export class GridManageFiltersDialogComponent extends DialogComponent implements
     @ViewChild('manageFiltersForm', { static: false}) manageFiltersForm: NgForm;
     @ViewChild('namedFilterSetSelector', { static: true}) namedFilterSetSelector: ComboboxComponent;
 
-    constructor(
-        private modal: NgbModal,
-        private pcrud: PcrudService,
-        private renderer: Renderer2,
-        private store: ServerStoreService,
-    ) {
+    constructor() {
+        const modal = inject(NgbModal);
+
         super(modal);
+        this.modal = modal;
+
         if (this.modal) {} // noop for delinting
     }
 

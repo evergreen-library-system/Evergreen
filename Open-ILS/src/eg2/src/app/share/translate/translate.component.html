@@ -3,67 +3,73 @@
     <h4 class="modal-title" i18n>
       {{idlClassDef.label}}
     </h4>
-    <button type="button" class="btn-close btn-close-white" 
-      i18n-aria-label aria-label="Close dialog" (click)="close()"></button>
+    <button type="button" class="btn-close btn-close-white"
+    i18n-aria-label aria-label="Close dialog" (click)="close()"></button>
   </div>
-  <div class="modal-body form-common form-validated" *ngIf="idlObj">
-    <div class="form-group row">
-      <label class="form-label col-form-label col-form-label col-lg-4 text-end fw-bold" 
+  @if (idlObj) {
+    <div class="modal-body form-common form-validated">
+      <div class="form-group row">
+        <label class="form-label col-form-label col-form-label col-lg-4 text-end fw-bold"
         i18n>Field Name</label>
-      <div class="col-lg-8">
-        <input 
-          type="text" 
-          [disabled]="true"
-          class="form-control"
-          value="{{idlClassDef.field_map[field].label}}">
+        <div class="col-lg-8">
+          <input
+            type="text"
+            [disabled]="true"
+            class="form-control"
+            value="{{idlClassDef.field_map[field].label}}">
+        </div>
       </div>
-    </div>
-    <div class="form-group row">
-      <label class="form-label col-form-label col-form-label col-lg-4 text-end fw-bold" 
+      <div class="form-group row">
+        <label class="form-label col-form-label col-form-label col-lg-4 text-end fw-bold"
         i18n>Current Value</label>
-      <div class="col-lg-8">
-        <input 
-          type="text" 
-          [disabled]="true"
-          class="form-control"
-          value="{{idlObj[field]()}}">
+        <div class="col-lg-8">
+          <input
+            type="text"
+            [disabled]="true"
+            class="form-control"
+            value="{{idlObj[field]()}}">
+        </div>
       </div>
-      
-    </div>
-    <div class="form-group row">
-      <label class="form-label col-form-label col-form-label col-lg-4 text-end fw-bold" 
+      <div class="form-group row">
+        <label class="form-label col-form-label col-form-label col-lg-4 text-end fw-bold"
         i18n>Select Locale</label>
-      <div class="col-lg-8">
-        <select class="form-control" 
-          (change)="localeChanged($event)"
-          [(ngModel)]="selectedLocale">
-          <option value="{{locale.code()}}" *ngFor="let locale of locales">
-            {{locale.name()}}
-          </option>
-        </select>
+        <div class="col-lg-8">
+          <select class="form-control"
+            (change)="localeChanged($event)"
+            [(ngModel)]="selectedLocale">
+            @for (locale of locales; track locale) {
+              <option value="{{locale.code()}}">
+                {{locale.name()}}
+              </option>
+            }
+          </select>
+        </div>
       </div>
-      
-    </div>
-    <div class="form-group row">
-      <label class="form-label col-form-label col-form-label col-lg-4 text-end fw-bold" i18n>Translation</label>
-      <div class="col-lg-8">
-        <input 
-          id='translation-input'
-          type="text" 
-          class="form-control"
-          required
-          i18n-placeholder
-          (keyup.enter)="translate()"
-          placeholder="Translation..." 
-          [(ngModel)]="translatedValue"/>
+      <div class="form-group row">
+        <label class="form-label col-form-label col-form-label col-lg-4 text-end fw-bold" i18n>Translation</label>
+        <div class="col-lg-8">
+          <input
+            id='translation-input'
+            type="text"
+            class="form-control"
+            required
+            i18n-placeholder
+            (keyup.enter)="translate()"
+            placeholder="Translation..."
+            [(ngModel)]="translatedValue"/>
+        </div>
       </div>
     </div>
-  </div>
+  }
   <div class="modal-footer">
-    <button type="button" *ngIf="prevString" (click)="prevString()" 
+    @if (prevString) {
+      <button type="button" (click)="prevString()"
       class="btn btn-info" i18n>Prev String</button>
-    <button type="button" *ngIf="nextString" (click)="nextString()" 
+    }
+    @if (nextString) {
+      <button type="button" (click)="nextString()"
       class="btn btn-info me-3" i18n>Next String</button>
+    }
     <button type="button" (click)="translate()" class="btn btn-info" i18n>Apply</button>
     <button type="button" (click)="close()" class="btn btn-normal ms-2" i18n>Cancel</button>
   </div>

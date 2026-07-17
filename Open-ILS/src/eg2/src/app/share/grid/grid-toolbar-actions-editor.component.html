@@ -1,8 +1,8 @@
 <ng-template #dialogContent>
   <div class="modal-header">
     <h4 class="modal-title" i18n>Grid Menu Configuration</h4>
-    <button type="button" class="btn-close btn-close-white" 
-      i18n-aria-label aria-label="Close dialog" (click)="close()"></button>
+    <button type="button" class="btn-close btn-close-white"
+    i18n-aria-label aria-label="Close dialog" (click)="close()"></button>
   </div>
   <div class="modal-body">
     <!-- This table needs borders turned off so you can see the dividers -->
@@ -14,35 +14,34 @@
         </tr>
       </thead>
       <tbody>
-        <tr class="eg-grid-row" 
-          *ngFor="let action of gridContext.toolbarActions; index as i">
-
-          <ng-container *ngIf="action.isGroup">
-            <td colspan="2" class="fw-bold fst-italic">{{action.label}}</td>
-          </ng-container>
-
-          <ng-container *ngIf="action.isSeparator">
-            <td colspan="2">
-              <div class="dropdown-divider"></div>
-            </td>
-          </ng-container>
-
-          <ng-container *ngIf="!action.isGroup && !action.isSeparator">
-            <th scope="row" class="eg-grid-cell eg-grid-checkbox-cell">
-              <input type="checkbox" id="toolbarAction-{{i}}"
-                (click)="showHideClicked(action)" [checked]="!action.hidden" />
-            </th>
-            <td class="eg-grid-cell eg-grid-body-cell px-2">
-              <label for="toolbarAction-{{i}}">{{action.label}}</label>
-            </td>
-          </ng-container>
-        </tr>
+        @for (action of gridContext.toolbarActions; track action; let i = $index) {
+          <tr class="eg-grid-row"
+            >
+            @if (action.isGroup) {
+              <td colspan="2" class="fw-bold fst-italic">{{action.label}}</td>
+            }
+            @if (action.isSeparator) {
+              <td colspan="2">
+                <div class="dropdown-divider"></div>
+              </td>
+            }
+            @if (!action.isGroup && !action.isSeparator) {
+              <th scope="row" class="eg-grid-cell eg-grid-checkbox-cell">
+                <input type="checkbox" id="toolbarAction-{{i}}"
+                  (click)="showHideClicked(action)" [checked]="!action.hidden" />
+              </th>
+              <td class="eg-grid-cell eg-grid-body-cell px-2">
+                <label for="toolbarAction-{{i}}">{{action.label}}</label>
+              </td>
+            }
+          </tr>
+        }
       </tbody>
     </table>
 
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-success ms-2" 
-      (click)="close('confirmed')" i18n>Close</button>
+    <button type="button" class="btn btn-success ms-2"
+    (click)="close('confirmed')" i18n>Close</button>
   </div>
 </ng-template>

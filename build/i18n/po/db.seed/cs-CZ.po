@@ -3,14 +3,14 @@ msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
 "POT-Creation-Date: 2025-10-29 12:29-0400\n"
-"PO-Revision-Date: 2025-11-18 22:01+0000\n"
+"PO-Revision-Date: 2026-02-17 15:08+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: UISK <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2025-11-19 08:10+0000\n"
-"X-Generator: Launchpad (build 1d08ffb47b836b8a4c9a0f11318dfdea7420ab6d)\n"
+"X-Launchpad-Export-Date: 2026-02-18 08:38+0000\n"
+"X-Generator: Launchpad (build 0cf96b78d7bf002eaf2ceebea991267c53522f61)\n"
 "X-Poedit-Language: Czech\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
 "X-Poedit-SourceCharset: utf-8\n"
@@ -3892,7 +3892,7 @@ msgstr "Čtenář osobně"
 
 #: 950.data.seed-values.sql:3084
 msgid "Staff forced"
-msgstr "Vynuceno personálem"
+msgstr "Rezervace zrušená personálem"
 
 #: 950.data.seed-values.sql:3085
 msgid "Patron via OPAC"
@@ -5829,54 +5829,59 @@ msgstr "ID účtu zákazníka Quipu pro registraci e-průkazu"
 
 #: 950.data.seed-values.sql:4812
 msgid "Quipu eCard/eRenew Fully Qualified Domain Name"
-msgstr ""
+msgstr "Plně kvalifikovaný název domény pro Quipu eCard/eRenew"
 
 #: 950.data.seed-values.sql:4815
 msgid ""
 "Quipu ecard/eRenew Fully Qualified Domain Name is the external hostname for "
 "the Quipu server. Defaults to ecard.quipugroup.net"
 msgstr ""
+"Plně kvalifikovaný název domény Quipu ecard/eRenew  je externí název "
+"hostitele serveru Quipu. Výchozí nastavení je ecard.quipugroup.net."
 
 #: 950.data.seed-values.sql:4820
 msgid "Quipu eCard Shared Secret"
-msgstr ""
+msgstr "Sdílené tajné pro heslo Quipu eCard"
 
 #: 950.data.seed-values.sql:4823
 msgid ""
 "Quipu Customer Account shared secret to be used for eCard authentication"
 msgstr ""
+"Sdílené tajné heslo zákaznického účtu Quipu, které se používá k ověření eCard"
 
 #: 950.data.seed-values.sql:4828
 msgid "Barcode prefix for Quipu eCard feature"
-msgstr ""
+msgstr "Prefix čárového kódu pro funkci Quipu eCard"
 
 #: 950.data.seed-values.sql:4831
 msgid "Set the barcode prefix for new Quipu eCard users"
 msgstr ""
+"Nastavit předponu čárového kódu pro nové uživatele elektronických karet Quipu"
 
 #: 950.data.seed-values.sql:4836
 msgid "Barcode length for Quipu eCard feature"
-msgstr ""
+msgstr "Délka čárového kódu pro funkci Quipu eCard"
 
 #: 950.data.seed-values.sql:4839
 msgid "Set the barcode length for new Quipu eCard users"
-msgstr ""
+msgstr "Nastavit délku čárového kódu pro nové uživatele Quipu eCard"
 
 #: 950.data.seed-values.sql:4844
 msgid "Calculate barcode checkdigit for Quipu eCard feature"
-msgstr ""
+msgstr "Vypočítat kontrolní číslici čárového kódu pro funkci Quipu eCard"
 
 #: 950.data.seed-values.sql:4847
 msgid "Calculate the barcode check digit for new Quipu eCard users"
 msgstr ""
+"Vypočítat kontrolní číslici čárového kódu pro nové uživatele  Quipu eCard"
 
 #: 950.data.seed-values.sql:4852 950.data.seed-values.sql:4855
 msgid "Patron permission profile for Quipu eCard feature"
-msgstr ""
+msgstr "Profil oprávnění čtenáře pro funkci Quipu eCard"
 
 #: 950.data.seed-values.sql:4860
 msgid "Patron permission profile after verification for Quipu eCard feature"
-msgstr ""
+msgstr "Profil oprávnění čtenáře  po ověření pro funkci Quipu eCard"
 
 #: 950.data.seed-values.sql:4863
 msgid ""
@@ -5884,26 +5889,33 @@ msgid ""
 "is only used if the setting \"Enable eCard verification feature in the "
 "OPAC\" is active."
 msgstr ""
+"Profil oprávnění čtenáře po ověření pro funkci Quipu eCard. Používá se pouze "
+"v případě, že je aktivní nastavení „Povolit funkci ověření eCard v OPAC“."
 
 #: 950.data.seed-values.sql:4868
 msgid "Evergreen Admin Username for the Quipu eCard feature"
 msgstr ""
+"Uživatelské jméno administrátorského účtu Evergreenu pro funkci Quipu eCard"
 
 #: 950.data.seed-values.sql:4871
 msgid ""
 "Username of the Evergreen admin account that will create new Quipu eCard "
 "users"
 msgstr ""
+"Uživatelské jméno administrátorského účtu Evergreenu, který bude vytvářet "
+"nové uživatele eCard Quipu."
 
 #: 950.data.seed-values.sql:4876
 msgid "Admin organizational unit for Quipu eCard feature"
-msgstr ""
+msgstr "Organizační jednotka administrátora pro funkci Quipu eCard"
 
 #: 950.data.seed-values.sql:4879
 msgid ""
 "Organizational unit used by the Evergreen admin user of the Quipu eCard "
 "feature"
 msgstr ""
+"Organizační jednotka používaná administrátorem Evergreenu pro funkce Quipu "
+"eCard"
 
 #: 950.data.seed-values.sql:4885
 msgid "Library information URL (such as \"http://example.com/about.html\")"
@@ -13575,35 +13587,35 @@ msgstr "tiskVelkýmPísmem"
 
 #: 950.data.seed-values.sql:9764
 msgid "horizontalWriting"
-msgstr ""
+msgstr "horizontálníPsaní"
 
 #: 950.data.seed-values.sql:9764
 msgid "Horizontal writing"
-msgstr ""
+msgstr "Horizontální psaní"
 
 #: 950.data.seed-values.sql:9765
 msgid "verticalWriting"
-msgstr ""
+msgstr "vertikálníPsaní"
 
 #: 950.data.seed-values.sql:9765
 msgid "VerticalWriting"
-msgstr ""
+msgstr "VertikálníPsaní"
 
 #: 950.data.seed-values.sql:9766
 msgid "withAdditionalWordSegmentation"
-msgstr ""
+msgstr "sDodatečnýmRozdělenímSlov"
 
 #: 950.data.seed-values.sql:9766
 msgid "With additional word segmentation"
-msgstr ""
+msgstr "S dodatečným rozdělením slov"
 
 #: 950.data.seed-values.sql:9767
 msgid "withoutAdditionalWordSegmentation"
-msgstr ""
+msgstr "bezDodatečnéhoRozděleníSlov"
 
 #: 950.data.seed-values.sql:9767
 msgid "Without additional word segmentation"
-msgstr ""
+msgstr "Bez dodatečného rozdělení slov"
 
 #: 950.data.seed-values.sql:9768
 msgid "highContrastDisplay"
@@ -17077,6 +17089,8 @@ msgstr ""
 #: 950.data.seed-values.sql:20828
 msgid "GUI: Show guardian email field on patron registration"
 msgstr ""
+"Grafické uživatelské rozhraní: Zobrazit pole E-mail rodiče/zákonného "
+"zástupce na kartě registračních údaje čtenáře"
 
 #: 950.data.seed-values.sql:20833
 msgid ""
@@ -17084,10 +17098,15 @@ msgid ""
 "Showing a field makes it appear with required fields even when not required. "
 "If the field is required this setting is ignored."
 msgstr ""
+"Pole E-mail rodiče/zákonného zástupce  se zobrazí na kartě registračních "
+"údajů čtenáře. Bude zobrazeno s povinnými poli dokonce i když není povinné. "
+"Pokud je pole povinné, toto nastavení bude ignorováno."
 
 #: 950.data.seed-values.sql:20841
 msgid "GUI: Suggest guardian email field on patron registration"
 msgstr ""
+"Grafické uživatelské rozhraní: Navrhnout pole E-mail rodiče/zákonného "
+"zástupce na kartě registračních údajů čtenáře"
 
 #: 950.data.seed-values.sql:20846
 msgid ""
@@ -17095,6 +17114,10 @@ msgid ""
 "screen. Suggesting a field makes it appear when suggested fields are shown. "
 "If the field is shown or required this setting is ignored."
 msgstr ""
+"Pole E-mail rodiče/zákonného zástupce bude na kartě registračních údajů "
+"čtenáře zobrazeno jako navrhované. Navrhovaná pole se zobrazí, pokud je "
+"aktivována volba Zobrazit navrhovaná pole. Pokud je pole zobrazeno nebo "
+"povinné, je toto nastavení ignorováno."
 
 #: 950.data.seed-values.sql:20853
 msgid "GUI: Show guardian field on patron registration"
@@ -17924,6 +17947,8 @@ msgid ""
 "Staff Catalog Search: Display shelving location groups inside the "
 "Organizational Unit Selector"
 msgstr ""
+"Vyhledávání ve služebním  katalogu: Zobrazit skupiny umístění regálů v rámci "
+"výběru organizační jednotkyddddddddddddddddddddddddddds"
 
 #: 950.data.seed-values.sql:22460
 msgid "Limit suggestion generation to searches with this many terms or less"

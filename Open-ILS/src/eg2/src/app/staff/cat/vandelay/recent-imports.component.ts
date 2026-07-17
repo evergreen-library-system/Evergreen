@@ -1,15 +1,22 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import {Observable, tap, concatMap} from 'rxjs';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {VandelayService} from './vandelay.service';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
-    templateUrl: 'recent-imports.component.html'
+    templateUrl: 'recent-imports.component.html',
+    imports: [StaffCommonModule]
 })
 
 export class RecentImportsComponent implements OnInit {
+    private idl = inject(IdlService);
+    private auth = inject(AuthService);
+    private pcrud = inject(PcrudService);
+    private vandelay = inject(VandelayService);
+
 
     trackers: IdlObject[];
     // eslint-disable-next-line no-magic-numbers
@@ -17,12 +24,7 @@ export class RecentImportsComponent implements OnInit {
     sinceDate: string;
     pollTimeout: any;
 
-    constructor(
-        private idl: IdlService,
-        private auth: AuthService,
-        private pcrud: PcrudService,
-        private vandelay: VandelayService
-    ) {
+    constructor() {
         this.trackers = [];
     }
 

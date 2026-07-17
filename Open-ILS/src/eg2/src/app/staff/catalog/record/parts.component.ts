@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, ViewChild} from '@angular/core';
+import { Component, OnInit, Input, ViewChild, inject } from '@angular/core';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {Pager} from '@eg/share/util/pager';
@@ -9,12 +9,24 @@ import {GridDataSource} from '@eg/share/grid/grid';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
 import {PartMergeDialogComponent} from './part-merge-dialog.component';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
     selector: 'eg-catalog-record-parts',
-    templateUrl: 'parts.component.html'
+    templateUrl: 'parts.component.html',
+    imports: [
+        FmRecordEditorComponent,
+        PartMergeDialogComponent,
+        StaffCommonModule
+    ]
 })
 export class PartsComponent implements OnInit {
+    private idl = inject(IdlService);
+    private org = inject(OrgService);
+    private pcrud = inject(PcrudService);
+    private auth = inject(AuthService);
+    private perm = inject(PermService);
+
 
     recId: number;
     gridDataSource: GridDataSource;
@@ -43,13 +55,7 @@ export class PartsComponent implements OnInit {
         return this.recId;
     }
 
-    constructor(
-        private idl: IdlService,
-        private org: OrgService,
-        private pcrud: PcrudService,
-        private auth: AuthService,
-        private perm: PermService
-    ) {
+    constructor() {
         this.permissions = {};
         this.gridDataSource = new GridDataSource();
     }

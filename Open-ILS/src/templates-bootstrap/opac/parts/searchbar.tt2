@@ -52,8 +52,6 @@ END;
                     data-instructions="[% l('Press down arrow for autocomplete') %]"
                     data-listbox-name="[% l('autocomplete') %]"
                     data-search-org="[% ctx.physical_loc || ctx.aou_tree.id %]"
-                [%- ELSE -%]
-                    [% IF basic_search != "f" AND is_home_page%] autofocus [% END %]
                 [%- END # autosuggest enabled %] />
         </div>
         </div>

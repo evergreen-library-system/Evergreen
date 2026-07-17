@@ -9,12 +9,10 @@ import {CodedValueMapsRoutingModule} from './coded-value-maps-routing.module';
 import {AdminPageModule} from '@eg/staff/share/admin-page/admin-page.module';
 
 @NgModule({
-    declarations: [
+    imports: [
         CodedValueMapsComponent,
         CompositeDefComponent,
         CompositeNewPointComponent,
-    ],
-    imports: [
         StaffCommonModule,
         FmRecordEditorModule,
         TreeModule,

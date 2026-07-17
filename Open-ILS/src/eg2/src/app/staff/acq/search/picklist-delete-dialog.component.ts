@@ -1,4 +1,4 @@
-import {Component, Input, ViewChild} from '@angular/core';
+import { Component, Input, ViewChild, inject } from '@angular/core';
 import {forkJoin} from 'rxjs';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
@@ -7,26 +7,34 @@ import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
+
 @Component({
     selector: 'eg-picklist-delete-dialog',
-    templateUrl: './picklist-delete-dialog.component.html'
+    templateUrl: './picklist-delete-dialog.component.html',
+    imports: [
+        AlertDialogComponent
+    ]
 })
 
 export class PicklistDeleteDialogComponent
     extends DialogComponent {
+    private evt = inject(EventService);
+    private net = inject(NetService);
+    private auth = inject(AuthService);
+    private modal: NgbModal;
+
 
   @Input() grid: any;
   listNames: string[];
 
   @ViewChild('fail', { static: true }) private fail: AlertDialogComponent;
 
-  constructor(
-    private evt: EventService,
-    private net: NetService,
-    private auth: AuthService,
-    private modal: NgbModal
-  ) {
+  constructor() {
+      const modal = inject(NgbModal);
+
       super(modal);
+
+      this.modal = modal;
   }
 
   update() {

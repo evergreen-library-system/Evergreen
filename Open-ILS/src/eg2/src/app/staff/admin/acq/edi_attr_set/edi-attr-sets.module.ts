@@ -8,13 +8,11 @@ import {EdiAttrSetProvidersComponent} from './edi-attr-set-providers.component';
 import {EdiAttrSetEditDialogComponent} from './edi-attr-set-edit-dialog.component';
 
 @NgModule({
-    declarations: [
-        EdiAttrSetsComponent,
-        EdiAttrSetProvidersDialogComponent,
-        EdiAttrSetProvidersComponent,
-        EdiAttrSetEditDialogComponent
-    ],
     imports: [
+        EdiAttrSetEditDialogComponent,
+        EdiAttrSetProvidersComponent,
+        EdiAttrSetProvidersDialogComponent,
+        EdiAttrSetsComponent,
         StaffCommonModule,
         AdminCommonModule,
         EdiAttrSetsRoutingModule

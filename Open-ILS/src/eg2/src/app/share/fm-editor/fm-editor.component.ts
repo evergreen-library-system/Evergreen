@@ -1,7 +1,6 @@
 /* eslint-disable */
-import {Component, OnInit, Input, ViewChild,
-    Output, EventEmitter, TemplateRef} from '@angular/core';
-import {NgForm} from '@angular/forms';
+import { Component, OnInit, Input, ViewChild, Output, EventEmitter, TemplateRef, inject } from '@angular/core';
+import {FormsModule, NgForm} from '@angular/forms';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {Observable} from 'rxjs';
 import {PcrudService} from '@eg/core/pcrud.service';
@@ -9,15 +8,20 @@ import {OrgService} from '@eg/core/org.service';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {StringComponent} from '@eg/share/string/string.component';
-import {NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
-import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
+import {NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
+import {ComboboxComponent, ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {FormatService} from '@eg/core/format.service';
 import {TranslateComponent} from '@eg/share/translate/translate.component';
 import {FmRecordEditorActionComponent} from './fm-editor-action.component';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
-import {BooleanSelectComponent} from '@eg/share/boolean-select/boolean-select.component';
-import {Directive, HostBinding} from '@angular/core';
-import {AbstractControl, NG_VALIDATORS, ValidationErrors, Validator, Validators} from '@angular/forms';
+import { CurrencyPipe, NgClass, NgTemplateOutlet } from '@angular/common';
+import { ProgressInlineComponent } from '../dialog/progress-inline.component';
+import { EgHelpPopoverComponent } from '../eg-help-popover/eg-help-popover.component';
+import { DateSelectComponent } from '../date-select/date-select.component';
+import { DateTimeSelectComponent } from '../datetime-select/datetime-select.component';
+import { OrgSelectComponent } from '../org-select/org-select.component';
+import { DatesInOrderValidatorDirective } from '../validators/dates_in_order_validator.directive';
+import { BooleanSelectComponent } from '../boolean-select/boolean-select.component';
 
 interface CustomFieldTemplate {
     template: TemplateRef<any>;
@@ -101,10 +105,33 @@ export interface FmFieldOptions {
 @Component({
     selector: 'eg-fm-record-editor',
     templateUrl: './fm-editor.component.html',
-    styleUrls: ['fm-editor.component.css']
+    styleUrls: ['fm-editor.component.css'],
+    imports: [
+    BooleanSelectComponent,
+    ComboboxComponent,
+    ConfirmDialogComponent,
+    CurrencyPipe,
+    DateSelectComponent,
+    DatesInOrderValidatorDirective,
+    DateTimeSelectComponent,
+    EgHelpPopoverComponent,
+    FormsModule,
+    NgClass,
+    NgTemplateOutlet,
+    OrgSelectComponent,
+    ProgressInlineComponent,
+    StringComponent,
+    TranslateComponent
+]
 })
 export class FmRecordEditorComponent
     extends DialogComponent implements OnInit {
+    private idl = inject(IdlService);
+    private toast = inject(ToastService);
+    private format = inject(FormatService);
+    private org = inject(OrgService);
+    private pcrud = inject(PcrudService);
+
 
     // IDL class hint (e.g. "aou")
     @Input() idlClass: string;
@@ -223,7 +250,7 @@ export class FmRecordEditorComponent
     // Record ID to view/update.
     _recordId: any = null;
     @Input() set recordId(id: any) {
-        if (id) {
+        if (id !== null && id !== undefined) {
             if (id !== this._recordId) {
                 this._recordId = id;
                 this._record = null; // force re-fetch
@@ -267,16 +294,6 @@ export class FmRecordEditorComponent
 
     // When true, show a delete button and support delete operations.
     @Input() showDelete: boolean;
-
-    constructor(
-      private modal: NgbModal, // required for passing to parent
-      private idl: IdlService,
-      private toast: ToastService,
-      private format: FormatService,
-      private org: OrgService,
-      private pcrud: PcrudService) {
-        super(modal);
-    }
 
     // Avoid fetching data on init since that may lead to unnecessary
     // data retrieval.
@@ -374,7 +391,7 @@ export class FmRecordEditorComponent
             let promise;
             if (this.record && this.recordId === null) {
                 promise = Promise.resolve(this.record);
-            } else if (this.recordId) {
+            } else if (this.recordId !== null && this.recordId !== undefined) {
                 promise =
                     this.pcrud.retrieve(this.idlClass, this.recordId).toPromise();
             } else {
@@ -404,12 +421,24 @@ export class FmRecordEditorComponent
             // NOTE: Set this._record (not this.record) to avoid
             // loop in initRecord()
             if (this.defaultNewRecord) {
-                // Clone to avoid polluting the stub record
+                // Clone to avoid polluting the stub record ...
                 this._record = this.idl.clone(this.defaultNewRecord);
+                // ... and make sure the pkey is empty
+                this._record[this.idl.classes[this.idlClass].pkey](null);
+            } else if (this.recordId) {
+                return this.pcrud.retrieve(this.idlClass, this.recordId)
+                    .toPromise().then( rec => {
+                        this._record = rec ? rec : this.idl.create(this.idlClass);
+                        this._record[this.idl.classes[this.idlClass].pkey](null);
+                        this.convertDatatypesToJs();
+                        this._recordId = null; // avoid future confusion
+                        return this.getFieldList();
+                    });
             } else {
                 this._record = this.idl.create(this.idlClass);
             }
         }
+        this.convertDatatypesToJs();
         this._recordId = null; // avoid future confusion
 
         return this.getFieldList();
@@ -782,35 +811,5 @@ export class FmRecordEditorComponent
 
     setToNull(field) {
         this.record[field.name](null);
-    }
-}
-
-// https://stackoverflow.com/a/57812865
-@Directive({
-    selector: 'input[type=number][egMin][formControlName],input[type=number][egMin][formControl],input[type=number][egMin][ngModel]',
-    providers: [{ provide: NG_VALIDATORS, useExisting: MinValidatorDirective, multi: true }]
-})
-export class MinValidatorDirective implements Validator {
-    @HostBinding('attr.egMin') @Input() egMin: number;
-
-    constructor() { }
-
-    validate(control: AbstractControl): ValidationErrors | null {
-        const validator = Validators.min(this.egMin);
-        return validator(control);
-    }
-}
-@Directive({
-    selector: 'input[type=number][egMax][formControlName],input[type=number][egMax][formControl],input[type=number][egMax][ngModel]',
-    providers: [{ provide: NG_VALIDATORS, useExisting: MaxValidatorDirective, multi: true }]
-})
-export class MaxValidatorDirective implements Validator {
-    @HostBinding('attr.egMax') @Input() egMax: number;
-
-    constructor() { }
-
-    validate(control: AbstractControl): ValidationErrors | null {
-        const validator = Validators.max(this.egMax);
-        return validator(control);
     }
 }

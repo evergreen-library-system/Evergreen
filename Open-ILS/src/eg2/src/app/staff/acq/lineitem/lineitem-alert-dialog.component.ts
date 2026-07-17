@@ -3,9 +3,13 @@ import {Observable} from 'rxjs';
 import {IdlObject} from '@eg/core/idl.service';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 
+
 @Component({
     selector: 'eg-lineitem-alert-dialog',
-    templateUrl: './lineitem-alert-dialog.component.html'
+    templateUrl: './lineitem-alert-dialog.component.html',
+    imports: [
+        ConfirmDialogComponent
+    ]
 })
 
 export class LineitemAlertDialogComponent {

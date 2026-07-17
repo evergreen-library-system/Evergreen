@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 import {empty, switchMap, tap} from 'rxjs';
 import {AuthService} from '@eg/core/auth.service';
@@ -7,25 +7,25 @@ import {NetService} from '@eg/core/net.service';
 import {IdlObject} from '@eg/core/idl.service';
 import {SckoService} from './scko.service';
 import {PrintService} from '@eg/share/print/print.service';
+import { CommonModule } from '@angular/common';
 
 
 @Component({
-    templateUrl: 'fines.component.html'
+    templateUrl: 'fines.component.html',
+    imports: [CommonModule]
 })
 
 export class SckoFinesComponent implements OnInit {
+    private router = inject(Router);
+    private route = inject(ActivatedRoute);
+    private net = inject(NetService);
+    private auth = inject(AuthService);
+    private pcrud = inject(PcrudService);
+    private printer = inject(PrintService);
+    scko = inject(SckoService);
+
 
     xacts: IdlObject[] = [];
-
-    constructor(
-        private router: Router,
-        private route: ActivatedRoute,
-        private net: NetService,
-        private auth: AuthService,
-        private pcrud: PcrudService,
-        private printer: PrintService,
-        public  scko: SckoService
-    ) {}
 
     ngOnInit() {
 

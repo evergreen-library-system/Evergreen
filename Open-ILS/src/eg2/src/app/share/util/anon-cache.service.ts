@@ -1,7 +1,7 @@
 /**
  * Service for communicating with the server-side "anonymous" cache.
  */
-import {Injectable} from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import {Observable} from 'rxjs';
 import {StoreService} from '@eg/core/store.service';
 import {NetService} from '@eg/core/net.service';
@@ -12,8 +12,9 @@ import {NetService} from '@eg/core/net.service';
 
 @Injectable()
 export class AnonCacheService {
+    private store = inject(StoreService);
+    private net = inject(NetService);
 
-    constructor(private store: StoreService, private net: NetService) {}
 
     getItem(cacheKey: string, attr: string): Promise<any> {
         return this.net.request(

@@ -1,5 +1,5 @@
 /* eslint-disable */
-import {Component, Input, Output, EventEmitter, OnInit, ViewEncapsulation} from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, ViewEncapsulation, inject } from '@angular/core';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
 import {AuthService} from '@eg/core/auth.service';
@@ -7,14 +7,30 @@ import {PcrudService} from '@eg/core/pcrud.service';
 import {ReporterService} from '../share/reporter.service';
 import {Tree, TreeNode} from '@eg/share/tree/tree';
 import {Md5} from 'ts-md5';
+import { StaffCommonModule } from '@eg/staff/common.module';
+import { OrgFamilySelectComponent } from '@eg/share/org-family-select/org-family-select.component';
+import { TreeComponent } from "@eg/share/tree/tree.component";
+import { TreeMultiselectComponent } from "@eg/share/tree/tree-multiselect.component";
 
 @Component({
     selector: 'eg-reporter-field',
     templateUrl: './reporter-field.component.html',
     styleUrls: ['./reporter-field.component.css'],
-    encapsulation: ViewEncapsulation.None
+    encapsulation: ViewEncapsulation.None,
+    imports: [
+    OrgFamilySelectComponent,
+    StaffCommonModule,
+    TreeComponent,
+    TreeMultiselectComponent
+]
 })
 export class ReporterFieldComponent implements OnInit {
+    private idl = inject(IdlService);
+    private org = inject(OrgService);
+    private auth = inject(AuthService);
+    private pcrud = inject(PcrudService);
+    private RSvc = inject(ReporterService);
+
 
     operators = [];
     transforms = [];
@@ -50,15 +66,6 @@ export class ReporterFieldComponent implements OnInit {
     @Input() disableUp = false;
     @Input() disableDown = false;
     @Input() disabled = false;
-
-    constructor(
-        private idl: IdlService,
-        private org: OrgService,
-        private auth: AuthService,
-        private pcrud: PcrudService,
-        private RSvc: ReporterService
-    ) {
-    }
 
     visibleTransforms() { return this.transforms.filter(t => !t.hidden); }
     visibleOperators() { return this.operators.filter(t => !t.hidden || !t.hidden.includes(this.field.transform?.final_datatype || this.field.datatype)); }

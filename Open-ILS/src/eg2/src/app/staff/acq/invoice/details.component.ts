@@ -1,5 +1,5 @@
 /* eslint-disable */
-import {Component, ViewEncapsulation, OnInit, AfterViewInit, OnDestroy, ViewChild} from '@angular/core';
+import { Component, ViewEncapsulation, OnInit, AfterViewInit, OnDestroy, ViewChild, inject } from '@angular/core';
 import {Router} from '@angular/router';
 import {Observable, Subscription, Subject} from 'rxjs';
 import {map, debounceTime, distinctUntilChanged, shareReplay} from 'rxjs/operators';
@@ -9,14 +9,31 @@ import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
 import {ServerStoreService} from '@eg/core/server-store.service';
 import {EgEvent} from '@eg/core/event.service';
 import {InvoiceService} from './invoice.service';
+import { ConfirmDialogComponent } from '@eg/share/dialog/confirm.component';
+import { CommonModule } from '@angular/common';
+import { ComboboxComponent } from '@eg/share/combobox/combobox.component';
+import { FormsModule } from '@angular/forms';
 
 @Component({
     templateUrl: 'details.component.html',
     styleUrls: ['details.component.css'],
     selector: 'eg-acq-invoice-details',
-    encapsulation: ViewEncapsulation.None
+    encapsulation: ViewEncapsulation.None,
+    imports: [
+        ComboboxComponent,
+        CommonModule,
+        ConfirmDialogComponent,
+        FmRecordEditorComponent,
+        FormsModule
+    ]
 })
 export class InvoiceDetailsComponent implements OnInit, OnDestroy {
+    private idl = inject(IdlService);
+    private pcrud = inject(PcrudService);
+    private store = inject(ServerStoreService);
+    private router = inject(Router);
+    private invoiceService = inject(InvoiceService);
+
 
     @ViewChild('recordEditor', { static: false }) recordEditor: FmRecordEditorComponent;
 
@@ -61,14 +78,6 @@ export class InvoiceDetailsComponent implements OnInit, OnDestroy {
         }
         return this.linkedFmObservables[fmclass][id];
     }
-
-    constructor(
-        private idl: IdlService,
-        private pcrud: PcrudService,
-        private store: ServerStoreService,
-        private router: Router,
-        private invoiceService: InvoiceService,
-    ) {}
 
     ngOnInit() {
         this.debouncedInputForRecord

@@ -40,7 +40,6 @@
         [%- ctx.metalinks.push('<meta property="og:title" content="' _ ctx.page_title _ '" />'); %]
         [%- ctx.metalinks.push('<meta property="og:site_name" content="' _ libname _ '" />'); %]
         [% FOREACH meta IN ctx.metalinks; meta _ "\n"; END; -%]
-        [% IF want_dojo %]
 
         [% IF !ctx.is_staff %]
             [% INCLUDE 'opac/parts/goog_analytics.tt2' %]

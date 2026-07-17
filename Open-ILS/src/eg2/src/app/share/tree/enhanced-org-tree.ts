@@ -15,7 +15,10 @@ const SHELVING_LOCATION_GROUPS_INCLUDED_BY_DEFAULT = true;
     providedIn: 'root'
 })
 export class EnhancedOrgTree {
-    constructor(private org: OrgService, private pcrud: PcrudService) {
+    private org = inject(OrgService);
+    private pcrud = inject(PcrudService);
+
+    constructor() {
         this.org.absorbTree();
     }
 

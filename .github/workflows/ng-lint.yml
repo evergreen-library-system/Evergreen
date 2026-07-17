@@ -2,9 +2,11 @@ name: Run ng lint
 on:
   push:
     paths:
+      - '.github/workflows/**'
       - 'Open-ILS/src/eg2/**'
   pull_request:
     paths:
+      - '.github/workflows/**'
       - 'Open-ILS/src/eg2/**'
 defaults:
   run:
@@ -15,9 +17,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v6
         with:
-          node-version: 22
+          node-version: 24
           cache: 'npm'
           cache-dependency-path: Open-ILS/src/eg2/package-lock.json
       - name: Install dependencies

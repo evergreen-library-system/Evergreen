@@ -1,0 +1,129 @@
+BEGIN;
+
+SELECT plan(16);
+
+UPDATE asset.call_number_class
+SET normalizer = 'asset.label_normalizer_generic'
+WHERE id = 1;
+
+UPDATE asset.call_number SET label = 'a    callnumber'
+WHERE id = 1;
+
+SELECT is(
+    (SELECT label_sortkey FROM asset.call_number WHERE id = 1),
+    'A CALLNUMBER', 'asset.label_normalizer still causes normalization'
+);
+
+PREPARE extract_marc_field_query AS
+    SELECT evergreen.extract_marc_field(
+        'biblio.record_entry where id = -1; select acq.create_acq_seq($$extract_marc_field$$, $$; INSERT INTO config.upgrade_log (version) VALUES (''lp2004058_evergreen.extract_marc_field''); CREATE sequence acq.extract_marc_field_2$$);select marc from biblio.record_entry',
+        1, '', ''
+    );
+
+SELECT throws_ok('extract_marc_field_query', NULL, NULL, 'Invalid evergreen.extract_marc_field should cause error');
+
+SELECT cmp_ok(
+    (SELECT COUNT(*) FROM config.upgrade_log WHERE version = 'lp2004058_evergreen.extract_marc_field'),
+    '<', '1', 'Injection fixed in evergreen.extract_marc_field'
+);
+
+SELECT is(
+    (SELECT evergreen.extract_marc_field('biblio.record_entry', -1, '//*[@tag="901"]/*[@code="c"][1]')),
+    '-1', 'evergreen.extract_marc_field still works'
+);
+
+-- this is just a regression test for actor.usr_merge_rows(), while
+-- was updated to remove problematic concatentation, it was not
+-- believed to be exploitable
+
+DELETE FROM actor.usr_setting WHERE usr IN (1, 2, 3, 4);
+INSERT INTO actor.usr_setting(usr, name, value) VALUES (1, 'opac.hits_per_page', '"10"');
+INSERT INTO actor.usr_setting(usr, name, value) VALUES (2, 'opac.hits_per_page', '"20"');
+INSERT INTO actor.usr_setting(usr, name, value) VALUES (3, 'opac.hits_per_page', '"30"');
+
+SELECT actor.usr_merge_rows('actor.usr_setting', 'usr', 1, 4);
+SELECT is(
+    (SELECT value FROM actor.usr_setting WHERE usr = 4),
+    '"10"',
+    'actor.usr_merge_rows: row moved from one usr to another'
+);
+SELECT is(
+    (SELECT COUNT(*) FROM actor.usr_setting WHERE usr = 1)::TEXT,
+    '0',
+    'actor.usr_merge_rows: ... leaving nothing behind for the source user'
+);
+
+SELECT actor.usr_merge_rows('actor.usr_setting', 'usr', 2, 3);
+SELECT is(
+    (SELECT value FROM actor.usr_setting WHERE usr = 3),
+    '"30"',
+    'actor.usr_merge_rows: if a unique contraint violation occurs, destination is not changed'
+);
+SELECT is(
+    (SELECT COUNT(*) FROM actor.usr_setting WHERE usr = 2)::TEXT,
+    '0',
+    'actor.usr_merge_rows: ... and value from source user is deleted'
+);
+
+PREPARE bad_usr_merge_rows AS
+    SELECT actor.usr_merge_rows('actor.does_not_exist', 'usr', 1, 4);
+SELECT throws_ok('bad_usr_merge_rows', NULL, NULL, 'actor.usr_merge_rows does not accept an invalid table');
+
+
+-- Auditor functions
+-- For better or worse, this doesn't blow up with the fixes in place, it just creates this mess of a sequence name:
+-- "auditor"."sneaky_seq; INSERT INTO config.upgrade_log (version)
+--    VALUES "
+SELECT auditor.create_auditor_seq($$sneaky_seq; INSERT INTO config.upgrade_log (version)
+    VALUES ('lp2004058_auditor.create_auditor_seq'); CREATE sequence auditor.sneaky_seq$$, 'again');
+
+SELECT cmp_ok(
+    (SELECT COUNT(*) FROM config.upgrade_log WHERE version = 'lp2004058_auditor.create_auditor_seq'),
+    '<', '1', 'Injection fixed in auditor.create_auditor_seq'
+);
+
+-- and acquisitions auditor functions
+SELECT acq.create_acq_seq($$sneaky_seq; INSERT INTO config.upgrade_log (version)
+    VALUES ('lp2004058_acq.create_acq_seq'); CREATE sequence acq.sneaky_seq$$, 'again');
+
+SELECT cmp_ok(
+    (SELECT COUNT(*) FROM config.upgrade_log WHERE version = 'lp2004058_acq.create_acq_seq'),
+    '<', '1', 'Injection fixed in acq.create_acq_seq'
+);
+
+-- For the next 5 tests we just verify that each component part of auditor creation continues to work
+-- as expected with the quote_* additions, so just call the top-level auditor.create_auditor and then
+-- verify each part
+
+SELECT auditor.create_auditor('serial','issuance');
+
+SELECT cmp_ok(
+    (SELECT COUNT(*) FROM information_schema.sequences WHERE sequence_schema = 'auditor' AND sequence_name = 'serial_issuance_pkey_seq'),
+    '=', '1', 'auditor.create_auditor_seq still creates expected sequence'
+);
+
+SELECT cmp_ok(
+    (SELECT COUNT(*) FROM information_schema.tables where table_schema = 'auditor' AND table_name = 'serial_issuance_history'),
+    '=', '1', 'auditor.create_auditor_history still creates the expected table'
+);
+
+SELECT cmp_ok(
+    (SELECT COUNT(*) FROM information_schema.routines where routine_schema = 'auditor' AND routine_name = 'audit_serial_issuance_func'),
+    '=', '1', 'auditor.create_auditor_func still creates the expected function'
+);
+
+-- There are 2 information_schema.triggers entries for auditor trigger functions; 1 for UPDATE and 1 for DELETE
+SELECT cmp_ok(
+    (SELECT COUNT(*) FROM information_schema.triggers where trigger_schema = 'serial' AND trigger_name = 'audit_serial_issuance_update_trigger'),
+    '=', '2', 'auditor.create_auditor_update_trigger still creates the expected triggers'
+);
+
+SELECT cmp_ok(
+    (SELECT COUNT(*) FROM information_schema.tables where table_schema = 'auditor' AND table_name = 'serial_issuance_lifecycle'),
+    '=', '1', 'auditor.create_auditor_lifecycle still creates the expected view'
+);
+
+
+SELECT * FROM finish();
+
+ROLLBACK;

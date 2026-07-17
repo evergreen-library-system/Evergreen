@@ -1,0 +1,125 @@
+BEGIN;
+
+SELECT plan(8);
+
+-- use default rule
+
+SELECT is(
+    crcd.normal,
+    '14 days'::INTERVAL,
+    'Hitting the default circulation policy for a BR1 item'
+)
+FROM action.find_circ_matrix_matchpoint(
+        4,    -- BR1
+        4112, -- item at BR1
+        1,    -- user
+        false -- not renewing
+     )
+JOIN config.rule_circ_duration crcd ON (crcd.id = (matchpoint).duration_rule);
+
+SELECT is(
+    crcd.normal,
+    '14 days'::INTERVAL,
+    'Hitting the default circulation policy for a BR2 item'
+)
+FROM action.find_circ_matrix_matchpoint(
+        5,    -- BR2
+        602,  -- item at BR2
+        1,    -- user
+        false -- not renewing
+     )
+JOIN config.rule_circ_duration crcd ON (crcd.id = (matchpoint).duration_rule);
+
+SELECT is(
+    chmm.holdable,
+    TRUE,
+    'Hitting the default hold policy for a BR1 item bound for BR1'
+)
+FROM action.find_hold_matrix_matchpoint(
+        4,    -- BR1 pickup OU
+        4,    -- BR1 request OU
+        4112, -- item at BR1
+        1,    -- user
+        1     -- requester
+     )
+JOIN config.hold_matrix_matchpoint chmm ON (chmm.id = find_hold_matrix_matchpoint)
+;
+
+SELECT is(
+    chmm.holdable,
+    TRUE,
+    'Hitting the default hold policy for a BR1 item bound for BR2'
+)
+FROM action.find_hold_matrix_matchpoint(
+        5,    -- BR2 pickup OU
+        5,    -- BR2 request OU
+        4112, -- item at BR1
+        1,    -- user
+        1     -- requester
+     )
+JOIN config.hold_matrix_matchpoint chmm ON (chmm.id = find_hold_matrix_matchpoint)
+;
+
+-- add a circ policy that selects for the "Even Branches" lassos and assigns a different duration
+INSERT INTO config.circ_matrix_matchpoint (org_unit, grp, copy_circ_lasso, duration_rule) VALUES (1, 1, 1000001, 7);
+
+-- add a hold policy that forbid pickup at "Even Branches"
+INSERT INTO config.hold_matrix_matchpoint (requestor_grp, pickup_lasso, holdable) VALUES (1, 1000001, FALSE);
+
+SELECT is(
+    crcd.normal,
+    '14 days'::INTERVAL,
+    'Still hitting the default circulation policy for a BR1 item'
+)
+FROM action.find_circ_matrix_matchpoint(
+        4,    -- BR1
+        4112, -- item at BR1
+        1,    -- user
+        false -- not renewing
+     )
+JOIN config.rule_circ_duration crcd ON (crcd.id = (matchpoint).duration_rule);
+
+SELECT is(
+    crcd.normal,
+    '7 days'::INTERVAL,
+    'Now hitting the Even Branches circulation policy for a BR2 item'
+)
+FROM action.find_circ_matrix_matchpoint(
+        5,    -- BR2
+        602,  -- item at BR2
+        1,    -- user
+        false -- not renewing
+     )
+JOIN config.rule_circ_duration crcd ON (crcd.id = (matchpoint).duration_rule);
+
+SELECT is(
+    chmm.holdable,
+    TRUE,
+    'Still hitting the default hold policy for a BR1 item bound for BR1'
+)
+FROM action.find_hold_matrix_matchpoint(
+        4,    -- BR1 pickup OU
+        4,    -- BR1 request OU
+        4112, -- item at BR1
+        1,    -- user
+        1     -- requester
+     )
+JOIN config.hold_matrix_matchpoint chmm ON (chmm.id = find_hold_matrix_matchpoint)
+;
+
+SELECT is(
+    chmm.holdable,
+    FALSE,
+    'Now hitting the Even Branches hold policy for a BR1 item bound for BR2'
+)
+FROM action.find_hold_matrix_matchpoint(
+        5,    -- BR2 pickup OU
+        5,    -- BR2 request OU
+        4112, -- item at BR1
+        1,    -- user
+        1     -- requester
+     )
+JOIN config.hold_matrix_matchpoint chmm ON (chmm.id = find_hold_matrix_matchpoint)
+;
+
+ROLLBACK;

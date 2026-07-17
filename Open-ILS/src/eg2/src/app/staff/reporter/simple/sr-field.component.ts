@@ -1,15 +1,31 @@
-import {Component, Input, Output, EventEmitter, OnInit} from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, inject } from '@angular/core';
 import {IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
 import {AuthService} from '@eg/core/auth.service';
 import {ReporterService} from '../share/reporter.service';
+import { StaffCommonModule } from '@eg/staff/common.module';
+import { OrgFamilySelectComponent } from '@eg/share/org-family-select/org-family-select.component';
+import { MultiSelectComponent } from '@eg/share/multi-select/multi-select.component';
+import { TextMultiSelectComponent } from '@eg/share/text-multi-select/text-multi-select.component';
+import { IntervalInputComponent } from '@eg/share/interval-input/interval-input.component';
 
 @Component({
     selector: 'eg-sr-field',
     templateUrl: './sr-field.component.html',
     styleUrls: ['./sr-field.component.css'],
+    imports: [
+        IntervalInputComponent,
+        MultiSelectComponent,
+        OrgFamilySelectComponent,
+        StaffCommonModule,
+        TextMultiSelectComponent,
+    ]
 })
 export class SRFieldComponent implements OnInit {
+    private org = inject(OrgService);
+    private auth = inject(AuthService);
+    private srSvc = inject(ReporterService);
+
 
     operators = [];
     transforms = [];
@@ -34,13 +50,6 @@ export class SRFieldComponent implements OnInit {
     @Output() downEvent = new EventEmitter();
     @Input() disableUp = false;
     @Input() disableDown = false;
-
-    constructor(
-        private org: OrgService,
-        private auth: AuthService,
-        private srSvc: ReporterService
-    ) {
-    }
 
     ngOnInit() {
 

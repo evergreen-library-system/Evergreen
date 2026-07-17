@@ -1,22 +1,29 @@
-import {Component, Input, ViewChild, OnInit} from '@angular/core';
+import { Component, Input, ViewChild, OnInit, inject } from '@angular/core';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
-import {EventService} from '@eg/core/event.service';
-import {NetService} from '@eg/core/net.service';
-import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {StringComponent} from '@eg/share/string/string.component';
-import {ToastService} from '@eg/share/toast/toast.service';
 import {PermService} from '@eg/core/perm.service';
+
+import { FormsModule } from '@angular/forms';
 
 @Component({
     selector: 'eg-exchange-rates-dialog',
-    templateUrl: './exchange-rates-dialog.component.html'
+    templateUrl: './exchange-rates-dialog.component.html',
+    imports: [
+        StringComponent,
+        FormsModule
+    ]
 })
 
 export class ExchangeRatesDialogComponent
     extends DialogComponent implements OnInit {
+    private idl = inject(IdlService);
+    private pcrud = inject(PcrudService);
+    private perm = inject(PermService);
+    private modal: NgbModal;
+
 
     @Input() currencyCode: string;
     currency: IdlObject;
@@ -32,17 +39,12 @@ export class ExchangeRatesDialogComponent
     @ViewChild('successString', { static: true }) successString: StringComponent;
     @ViewChild('updateFailedString', { static: false }) updateFailedString: StringComponent;
 
-    constructor(
-        private idl: IdlService,
-        private evt: EventService,
-        private net: NetService,
-        private auth: AuthService,
-        private pcrud: PcrudService,
-        private perm: PermService,
-        private toast: ToastService,
-        private modal: NgbModal
-    ) {
+    constructor() {
+        const modal = inject(NgbModal);
+
         super(modal);
+
+        this.modal = modal;
     }
 
     ngOnInit() {

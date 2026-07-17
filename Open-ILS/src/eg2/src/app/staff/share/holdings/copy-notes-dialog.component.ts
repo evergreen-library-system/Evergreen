@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import { Component, Input } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { IdlService, IdlObject } from '@eg/core/idl.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastService } from '@eg/share/toast/toast.service';
@@ -13,7 +13,11 @@ import {
     IThingChanges,
     IThingConfig
 } from './copy-things-dialog.component';
-import {FormsModule, AbstractControl, NG_VALIDATORS, ValidationErrors, Validator, Validators, ValidatorFn} from '@angular/forms';
+import {FormsModule} from '@angular/forms';
+import { StringComponent } from '@eg/share/string/string.component';
+
+import { CopyThingsDialogWrapperComponent } from './copy-things-dialog-wrapper.component';
+import { DatePipe } from '@angular/common';
 
 export interface ICopyNote extends IThingObject {
     title(val?: string): string;
@@ -36,7 +40,13 @@ export interface ICopyNoteChanges extends IThingChanges<ICopyNote> {
 @Component({
     selector: 'eg-copy-notes-dialog',
     templateUrl: 'copy-notes-dialog.component.html',
-    styleUrls: ['./copy-notes-dialog.component.css']
+    styleUrls: ['./copy-notes-dialog.component.css'],
+    imports: [
+        CopyThingsDialogWrapperComponent,
+        DatePipe,
+        FormsModule,
+        StringComponent
+    ]
 })
 export class CopyNotesDialogComponent extends
     CopyThingsDialogComponent<ICopyNote, ICopyNoteChanges> {
@@ -55,14 +65,14 @@ export class CopyNotesDialogComponent extends
 
     notes: IdlObject[] = [];
 
-    constructor(
-        modal: NgbModal,
-        toast: ToastService,
-        idl: IdlService,
-        pcrud: PcrudService,
-        org: OrgService,
-        auth: AuthService
-    ) {
+    constructor() {
+        const modal = inject(NgbModal);
+        const toast = inject(ToastService);
+        const idl = inject(IdlService);
+        const pcrud = inject(PcrudService);
+        const org = inject(OrgService);
+        const auth = inject(AuthService);
+
         const config: IThingConfig<ICopyNote> = {
             idlClass: 'acpn',
             thingField: 'notes',

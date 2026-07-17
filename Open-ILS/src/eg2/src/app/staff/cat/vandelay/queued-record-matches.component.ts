@@ -1,4 +1,4 @@
-import {Component, Input, ViewChild} from '@angular/core';
+import { Component, Input, ViewChild, inject } from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 import {Observable} from 'rxjs';
 import {Pager} from '@eg/share/util/pager';
@@ -11,12 +11,23 @@ import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {BibRecordService, BibRecordSummary} from '@eg/share/catalog/bib-record.service';
 import {VandelayService, VandelayImportSelection} from './vandelay.service';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
     selector: 'eg-queued-record-matches',
-    templateUrl: 'queued-record-matches.component.html'
+    templateUrl: 'queued-record-matches.component.html',
+    imports: [StaffCommonModule]
 })
 export class QueuedRecordMatchesComponent {
+    private router = inject(Router);
+    private route = inject(ActivatedRoute);
+    private evt = inject(EventService);
+    private net = inject(NetService);
+    private auth = inject(AuthService);
+    private pcrud = inject(PcrudService);
+    private bib = inject(BibRecordService);
+    private vandelay = inject(VandelayService);
+
 
     @Input() queueType: string;
     @Input() recordId: number;
@@ -32,15 +43,7 @@ export class QueuedRecordMatchesComponent {
 
     cellTextGenerator: GridCellTextGenerator;
 
-    constructor(
-        private router: Router,
-        private route: ActivatedRoute,
-        private evt: EventService,
-        private net: NetService,
-        private auth: AuthService,
-        private pcrud: PcrudService,
-        private bib: BibRecordService,
-        private vandelay: VandelayService) {
+    constructor() {
 
         this.bibDataSource = new GridDataSource();
         this.authDataSource = new GridDataSource();

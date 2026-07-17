@@ -1,5 +1,5 @@
 /* eslint-disable */
-import {Injectable, EventEmitter} from '@angular/core';
+import { Injectable, EventEmitter, inject } from '@angular/core';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {EventService} from '@eg/core/event.service';
 import {NetService} from '@eg/core/net.service';
@@ -8,7 +8,7 @@ import {PcrudService} from '@eg/core/pcrud.service';
 import {LineitemService, FleshCacheParams, BatchLineitemStruct} from '@eg/staff/acq/lineitem/lineitem.service';
 import {PoService} from '@eg/staff/acq/po/po.service';
 import {Subject} from 'rxjs';
-import * as moment from 'moment-timezone';
+import moment from 'moment-timezone';
 import {toArray, throwError, forkJoin, firstValueFrom, lastValueFrom, Observable} from 'rxjs';
 import {map, catchError} from 'rxjs/operators';
 
@@ -26,6 +26,14 @@ interface UpdateInvoiceOptions {
 
 @Injectable()
 export class InvoiceService {
+    private evt = inject(EventService);
+    private net = inject(NetService);
+    private pcrud = inject(PcrudService);
+    private auth = inject(AuthService);
+    private poService = inject(PoService);
+    private liService = inject(LineitemService);
+    private idl = inject(IdlService);
+
 
     currentInvoice: IdlObject; // this may be a new or pending changes invoice
 
@@ -43,15 +51,7 @@ export class InvoiceService {
 
     invoiceRetrieved: EventEmitter<IdlObject> = new EventEmitter<IdlObject>();
 
-    constructor(
-        private evt: EventService,
-        private net: NetService,
-        private pcrud: PcrudService,
-        private auth: AuthService,
-        private poService: PoService,
-        private liService: LineitemService,
-        private idl: IdlService,
-    ) {
+    constructor() {
         console.debug('InvoiceService',this);
     }
 
@@ -302,7 +302,7 @@ export class InvoiceService {
         return result;
     }
 
-    _touchInvoiceInDb(invoice: IdlObject, items: IdlObject[], entries: IdlObject[], finalizablePoIds: number[] = [], setCurrentInvoice = true, dry_run = false, override = false): Promise<boolean> {
+    private _touchInvoiceInDb(invoice: IdlObject, items: IdlObject[], entries: IdlObject[], finalizablePoIds: number[] = [], setCurrentInvoice = true, dry_run = false, override = false): Promise<boolean> {
 
         console.debug('InvoiceService, _touchInvoiceInDb(...)',
             'invoice', invoice,
@@ -370,12 +370,11 @@ export class InvoiceService {
         });
     }
 
-    _createInvoice() {
+    private _createInvoice() {
         this.currentInvoice = this.idl.create('acqinv');
         this.currentInvoice.isnew(true);
         this.currentInvoice.recv_method('PPR');
         this.currentInvoice.recv_date(moment().toDate().toISOString());
-        this.currentInvoice.receiver(this.auth.user().ws_ou());
     }
 
     async attachLiIdsAndPoItems(lineitem_ids: number[], po_items: IdlObject[], use_po_prices = false): Promise<void> {
@@ -413,7 +412,7 @@ export class InvoiceService {
         }
     }
 
-    async _attachLiIds(lineitem_ids: number[], use_po_prices = false): Promise<IdlObject[]> {
+    private async _attachLiIds(lineitem_ids: number[], use_po_prices = false): Promise<IdlObject[]> {
         console.debug('invoice.service, _attachLiIds', lineitem_ids, use_po_prices);
         const lineitemSet = new Set(lineitem_ids);
         const lineitemsObservable = this.liService.getFleshedLineitems(Array.from(lineitemSet));

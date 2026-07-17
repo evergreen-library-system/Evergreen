@@ -1,26 +1,24 @@
 import {NgModule} from '@angular/core';
 import {StaffCommonModule} from '@eg/staff/common.module';
 import {LinkTableComponent, LinkTableLinkComponent} from '@eg/staff/share/link-table/link-table.component';
-import {TranslateModule} from '@eg/share/translate/translate.module';
 import {FmRecordEditorModule} from '@eg/share/fm-editor/fm-editor.module';
 import {AdminPageModule} from '@eg/staff/share/admin-page/admin-page.module';
 import {BasicAdminPageComponent} from '@eg/staff/admin/basic-admin-page.component';
+import { TranslateComponent } from '@eg/share/translate/translate.component';
 
 @NgModule({
-    declarations: [
+    imports: [
+        BasicAdminPageComponent,
         LinkTableComponent,
         LinkTableLinkComponent,
-        BasicAdminPageComponent
-    ],
-    imports: [
         StaffCommonModule,
-        TranslateModule,
+        TranslateComponent,
         FmRecordEditorModule,
         AdminPageModule
     ],
     exports: [
         StaffCommonModule,
-        TranslateModule,
+        TranslateComponent,
         FmRecordEditorModule,
         AdminPageModule,
         LinkTableComponent,

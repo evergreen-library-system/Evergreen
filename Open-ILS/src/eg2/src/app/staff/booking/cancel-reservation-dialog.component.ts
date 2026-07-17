@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Output, ViewChild} from '@angular/core';
+import { Component, EventEmitter, Output, ViewChild, inject } from '@angular/core';
 import {switchMap} from 'rxjs';
 import {AuthService} from '@eg/core/auth.service';
 import {NetService} from '@eg/core/net.service';
@@ -19,17 +19,17 @@ import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
       {reservations.length, plural, =1 {this reservation} other {these {{reservations.length}} reservations}}?
     </span>
   </ng-template>
-  `
+  `,
+    imports: [
+        ConfirmDialogComponent
+    ]
 })
 
 export class CancelReservationDialogComponent {
+    private auth = inject(AuthService);
+    private net = inject(NetService);
+    private toast = inject(ToastService);
 
-    constructor(
-        private auth: AuthService,
-        private net: NetService,
-        private toast: ToastService
-    ) {
-    }
 
     reservations: number[];
 

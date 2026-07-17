@@ -1,21 +1,33 @@
-import {Component, OnInit} from '@angular/core';
-import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
-import {Location} from '@angular/common';
-import {Router, ActivatedRoute} from '@angular/router';
-import {AuthService, AuthWsState} from '@eg/core/auth.service';
+import { Component, OnInit, inject } from '@angular/core';
+import {NgbNavModule} from '@ng-bootstrap/ng-bootstrap';
+import { Location } from '@angular/common';
+import {ActivatedRoute} from '@angular/router';
+import {AuthService} from '@eg/core/auth.service';
 import {NetService} from '@eg/core/net.service';
-import {IdlObject, IdlService} from '@eg/core/idl.service';
+import {IdlObject} from '@eg/core/idl.service';
 import {OfflineService} from '@eg/staff/share/offline.service';
 import {StoreService} from '@eg/core/store.service';
 import {OrgService} from '@eg/core/org.service';
-import * as moment from 'moment-timezone';
+import moment from 'moment-timezone';
+import { QRCodeComponent } from 'angularx-qrcode';
 
 @Component({
     styleUrls: ['./mfa.component.css'],
-    templateUrl : './mfa.component.html'
+    templateUrl: './mfa.component.html',
+    imports: [
+        NgbNavModule,
+        QRCodeComponent
+    ]
 })
 
 export class StaffMFAComponent implements OnInit {
+    private net = inject(NetService);
+    private route = inject(ActivatedRoute);
+    private ngLocation = inject(Location);
+    private auth = inject(AuthService);
+    private org = inject(OrgService);
+    private offline = inject(OfflineService);
+
 
     active_factor = 'CONFIG';
     method_suffix = '';
@@ -47,16 +59,7 @@ export class StaffMFAComponent implements OnInit {
     sms_otp_phone = '';
     sms_otp_carrier: number;
 
-    constructor(
-      private net: NetService,
-      private router: Router,
-      private route: ActivatedRoute,
-      private ngLocation: Location,
-      private auth: AuthService,
-      private org: OrgService,
-      private store: StoreService,
-      private offline: OfflineService
-    ) {
+    constructor() {
         this.configured_factors = [];
         this.available_factors = [];
         this.hostname = window.location.hostname;

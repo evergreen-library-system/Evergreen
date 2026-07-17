@@ -1,5 +1,5 @@
 /* eslint-disable */
-import {Component, OnInit, AfterViewInit} from '@angular/core';
+import { Component, OnInit, AfterViewInit, inject } from '@angular/core';
 import {IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
@@ -30,22 +30,20 @@ const SORT_ORDERS = [
     templateUrl: 'print.component.html'
 })
 export class PrintComponent implements OnInit, AfterViewInit {
+    private idl = inject(IdlService);
+    private net = inject(NetService);
+    private auth = inject(AuthService);
+    private store = inject(ServerStoreService);
+    private invoiceService = inject(InvoiceService);
+    private liService = inject(LineitemService);
+    private broadcaster = inject(BroadcastService);
+    private printer = inject(PrintService);
+
 
     outlet: Element;
     printing: boolean;
     closing: boolean;
     initDone = false;
-
-    constructor(
-        private idl: IdlService,
-        private net: NetService,
-        private auth: AuthService,
-        private store: ServerStoreService,
-        private invoiceService: InvoiceService,
-        private liService: LineitemService,
-        private broadcaster: BroadcastService,
-        private printer: PrintService) {
-    }
 
     ngOnInit() {
         console.debug('PrintComponent, this', this);

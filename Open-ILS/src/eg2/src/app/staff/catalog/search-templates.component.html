@@ -17,57 +17,75 @@
 </eg-confirm-dialog>
 
 <ng-template #searchName let-tab="tab" let-query="query" i18n>
-  <ng-container [ngSwitch]="tab">
-    <span *ngSwitchCase="'term'">Search:</span>
-    <span *ngSwitchCase="'ident'">Identifier:</span>
-    <span *ngSwitchCase="'marc'">MARC:</span>
-    <span *ngSwitchCase="'browse'">Browse:</span>
-  </ng-container> {{query}}
+  
+@switch (tab) {
+    @case ('term') {
+<span>Search:</span>
+}
+    @case ('ident') {
+<span>Identifier:</span>
+}
+    @case ('marc') {
+<span>MARC:</span>
+}
+    @case ('browse') {
+<span>Browse:</span>
+}
+  }
+ {{query}}
 </ng-template>
 
 <eg-string key='eg.catalog.recent_search.label' [template]="searchName">
 </eg-string>
 
 <div class="d-flex justify-content-end">
-  
-  <ng-container *ngIf="recentSearchesCount > 0">
+
+  @if (recentSearchesCount > 0) {
     <div ngbDropdown placement="bottom-right">
       <button type="button" class="btn btn-light" id="recentSearches"
-        ngbDropdownToggle i18n>Recent Searches</button>
+      ngbDropdownToggle i18n>Recent Searches</button>
       <div ngbDropdownMenu aria-labelledby="recentSearches">
-      <button type="button" class="dropdown-item" (click)="deleteSearches()" 
+        <button type="button" class="dropdown-item" (click)="deleteSearches()"
         [disabled]="searches.length === 0" i18n>Clear Recent Searches</button>
-      <div class="dropdown-divider"></div>
-      <button type="button" [disabled]="true" *ngIf="searches.length === 0" 
-        class="dropdown-item fst-italic" i18n>No Recent Searches</button>
-      <button type="button" *ngFor="let search of sortSearches()"
-        class="dropdown-item" 
-        (click)="searchSelected(search)"
-        [routerLink]="getSearchPath(search)"
-        [queryParams]="search.params">{{search.name}}</button>
+        <div class="dropdown-divider"></div>
+        @if (searches.length === 0) {
+          <button type="button" [disabled]="true"
+          class="dropdown-item fst-italic" i18n>No Recent Searches</button>
+        }
+        @for (search of sortSearches(); track search) {
+          <button type="button"
+            class="dropdown-item"
+            (click)="searchSelected(search)"
+            [routerLink]="getSearchPath(search)"
+          [queryParams]="search.params">{{search.name}}</button>
+        }
       </div>
     </div>
-  </ng-container>
+  }
 
   <div ngbDropdown placement="bottom-right">
-    <button type="button" class="btn btn-light" id="searchTemplates" 
-      ngbDropdownToggle i18n>Search Templates</button>
+    <button type="button" class="btn btn-light" id="searchTemplates"
+    ngbDropdownToggle i18n>Search Templates</button>
     <div ngbDropdownMenu aria-labelledby="searchTemplates">
       <button type="button" class="dropdown-item" i18n (click)="open()"
-        [disabled]="searchTab === 'cnbrowse'">Save Template</button>
-      <button type="button" class="dropdown-item" (click)="deleteTemplate()" 
-        [disabled]="!selectedTemplate()" i18n>Delete Selected</button>
-      <button type="button" class="dropdown-item" (click)="deleteAllTemplates()" 
-        [disabled]="templates.length === 0" i18n>Delete All Templates</button>
+      [disabled]="searchTab === 'cnbrowse'">Save Template</button>
+      <button type="button" class="dropdown-item" (click)="deleteTemplate()"
+      [disabled]="!selectedTemplate()" i18n>Delete Selected</button>
+      <button type="button" class="dropdown-item" (click)="deleteAllTemplates()"
+      [disabled]="templates.length === 0" i18n>Delete All Templates</button>
       <div class="dropdown-divider"></div>
-      <button type="button" [disabled]="true" *ngIf="templates.length === 0" 
+      @if (templates.length === 0) {
+        <button type="button" [disabled]="true"
         class="dropdown-item fst-italic" i18n>No Saved Templates</button>
-      <button type="button" *ngFor="let tmpl of sortTemplates()"
-        class="dropdown-item" 
-        (click)="templateSelected(tmpl)"
-        [ngClass]="{'fw-bold': tmpl.name === selectedTemplate()}"
-        [routerLink]="getSearchPath(tmpl)"
+      }
+      @for (tmpl of sortTemplates(); track tmpl) {
+        <button type="button"
+          class="dropdown-item"
+          (click)="templateSelected(tmpl)"
+          [ngClass]="{'fw-bold': tmpl.name === selectedTemplate()}"
+          [routerLink]="getSearchPath(tmpl)"
         [queryParams]="tmpl.params">{{tmpl.name}}</button>
+      }
     </div>
   </div>
 </div>
@@ -75,8 +93,8 @@
 <ng-template #dialogContent>
   <div class="modal-header">
     <h4 class="modal-title" i18n>Save Template</h4>
-    <button type="button" class="btn-close btn-close-white" 
-      i18n-aria-label aria-label="Close dialog" (click)="close()"></button>
+    <button type="button" class="btn-close btn-close-white"
+    i18n-aria-label aria-label="Close dialog" (click)="close()"></button>
   </div>
   <div class="modal-body">
     <div class="row">
@@ -87,10 +105,10 @@
     </div>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-success" 
-      (click)="saveTemplate()" i18n>Save</button>
-    <button type="button" class="btn btn-normal" 
-      (click)="close()" i18n>Cancel</button>
+    <button type="button" class="btn btn-success"
+    (click)="saveTemplate()" i18n>Save</button>
+    <button type="button" class="btn btn-normal"
+    (click)="close()" i18n>Cancel</button>
   </div>
 </ng-template>
 

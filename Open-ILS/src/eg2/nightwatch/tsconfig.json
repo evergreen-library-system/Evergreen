@@ -5,10 +5,11 @@
     "target": "es2015",
     "types": ["node"],
     "baseUrl": "src",
-    "paths": {"@e2e/*": ["./*"]},
-    "lib": [
-      "es5", "es6", "dom", "dom.iterable"
-    ],
+    "paths": {
+      "@e2e/*": [
+        "./*"
+      ]
+    },
     "downlevelIteration": true
   },
   "include": ["src/**/*"]

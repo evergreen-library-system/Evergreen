@@ -328,6 +328,9 @@ the "field" column for a given classification scheme. Tag/subfield combinations
 are delimited by commas.
 $$;
 
+ALTER TABLE asset.call_number_class ADD CONSTRAINT asset_call_number_class_has_valid_normalizer
+    CHECK (evergreen.function_exists(normalizer));
+
 CREATE OR REPLACE FUNCTION asset.label_normalizer() RETURNS TRIGGER AS $func$
 DECLARE
     sortkey        TEXT := '';
@@ -343,8 +346,7 @@ BEGIN
         );
     END IF;
 
-    EXECUTE 'SELECT ' || acnc.normalizer || '(' || 
-       quote_literal( NEW.label ) || ')'
+    EXECUTE FORMAT('SELECT %s(%L)', acnc.normalizer::REGPROC, NEW.label)
        FROM asset.call_number_class acnc
        WHERE acnc.id = NEW.label_class
        INTO sortkey;

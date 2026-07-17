@@ -1,5 +1,5 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
-import {Router, ActivatedRoute, ParamMap} from '@angular/router';
+import { Component, Input, OnInit, ViewChild, inject } from '@angular/core';
+import {Router, ActivatedRoute, ParamMap, RouterModule} from '@angular/router';
 import {firstValueFrom, lastValueFrom, EMPTY, take, map, switchMap, catchError} from 'rxjs';
 import {AuthService} from '@eg/core/auth.service';
 import {StoreService} from '@eg/core/store.service';
@@ -19,6 +19,9 @@ import {RecordBucketExportDialogComponent} from '@eg/staff/share/buckets/record-
 import {RecordBucketItemUploadDialogComponent} from '@eg/staff/share/buckets/record-bucket-item-upload-dialog.component';
 import {HoldTransferViaBibsDialogComponent} from '@eg/staff/share/holds/transfer-via-bibs-dialog.component';
 import {BroadcastService} from '@eg/share/util/broadcast.service';
+import { GridModule } from '@eg/share/grid/grid.module';
+import { FormsModule } from '@angular/forms';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 /**
  * Record bucket item grid interface
@@ -27,10 +30,31 @@ import {BroadcastService} from '@eg/share/util/broadcast.service';
 @Component({
     selector: 'eg-record-bucket-item',
     templateUrl: 'record-bucket-item.component.html',
-    styleUrls: ['./record-bucket-item.component.css']
+    styleUrls: ['./record-bucket-item.component.css'],
+    imports: [
+        ConfirmDialogComponent,
+        FormsModule,
+        GridModule,
+        HoldTransferViaBibsDialogComponent,
+        RecordBucketExportDialogComponent,
+        RecordBucketItemUploadDialogComponent,
+        RouterModule,
+        StaffCommonModule
+    ]
 })
 
 export class RecordBucketItemComponent implements OnInit {
+    private router = inject(Router);
+    private route = inject(ActivatedRoute);
+    private auth = inject(AuthService);
+    private net = inject(NetService);
+    private evt = inject(EventService);
+    private idl = inject(IdlService);
+    private store = inject(StoreService);
+    private pcrud = inject(PcrudService);
+    private broadcaster = inject(BroadcastService);
+    private flatData = inject(GridFlatDataService);
+
 
     @Input() bucketId: number;
 
@@ -51,19 +75,6 @@ export class RecordBucketItemComponent implements OnInit {
     catSearchQuery: string;
     bucket: IdlObject;
     returnTo: string;
-
-    constructor(
-        private router: Router,
-        private route: ActivatedRoute,
-        private auth: AuthService,
-        private net: NetService,
-        private evt: EventService,
-        private idl: IdlService,
-        private store: StoreService,
-        private pcrud: PcrudService,
-        private broadcaster: BroadcastService,
-        private flatData: GridFlatDataService
-    ) {}
 
     ngOnInit() {
         console.debug('RecordBucketItemComponent: this', this);

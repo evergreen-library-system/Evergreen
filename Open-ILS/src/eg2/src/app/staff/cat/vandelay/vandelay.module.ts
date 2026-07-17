@@ -27,10 +27,11 @@ import {MatchSetExpressionComponent} from './match-set-expression.component';
 import {MatchSetQualityComponent} from './match-set-quality.component';
 import {MatchSetNewPointComponent} from './match-set-new-point.component';
 import {RecentImportsComponent} from './recent-imports.component';
-import {MarcEditModule} from '@eg/staff/share/marc-edit/marc-edit.module';
+import { FastAddSelectorComponent } from '@eg/staff/share/marc-edit/fast-add-selector.component';
 
 @NgModule({
-    declarations: [
+    imports: [
+        AcqCommonModule,
         VandelayComponent,
         ImportComponent,
         ExportComponent,
@@ -49,15 +50,14 @@ import {MarcEditModule} from '@eg/staff/share/marc-edit/marc-edit.module';
         MatchSetExpressionComponent,
         MatchSetQualityComponent,
         MatchSetNewPointComponent,
-        RecentImportsComponent
-    ],
-    imports: [
+        RecentImportsComponent,
         AcqCommonModule,
+        FastAddSelectorComponent,
+        RecentImportsComponent,
         TreeModule,
         StaffCommonModule,
         FmRecordEditorModule,
         AdminPageModule,
-        MarcEditModule,
         CatalogCommonModule,
         VandelayRoutingModule,
         HttpClientModule,

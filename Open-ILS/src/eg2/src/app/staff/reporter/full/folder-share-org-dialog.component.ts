@@ -1,29 +1,35 @@
 /* eslint-disable */
-import {Input, Component} from '@angular/core';
+import { Input, Component, inject } from '@angular/core';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {IdlObject} from '@eg/core/idl.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {OrgService} from '@eg/core/org.service';
 import {AuthService} from '@eg/core/auth.service';
 import {ReporterService} from '../share/reporter.service';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
     selector: 'folder-share-org-dialog',
-    templateUrl: './folder-share-org-dialog.component.html'
+    templateUrl: './folder-share-org-dialog.component.html',
+    imports: [StaffCommonModule]
 })
 
 export class FolderShareOrgDialogComponent extends DialogComponent {
+    private RSvc = inject(ReporterService);
+    private modal: NgbModal;
+    private org = inject(OrgService);
+    private auth = inject(AuthService);
+
 
     @Input() currentFolder: IdlObject = null;
     contextOrg = null;
 
-    constructor(
-        private RSvc: ReporterService,
-        private modal: NgbModal,
-        private org: OrgService,
-        private auth: AuthService
-    ) {
+    constructor() {
+        const modal = inject(NgbModal);
+
         super(modal);
+    
+        this.modal = modal;
     }
 
     notMyOrgs() {

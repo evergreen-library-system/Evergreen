@@ -1,31 +1,29 @@
-import {Component, OnInit, ViewEncapsulation} from '@angular/core';
-import {Router, ActivatedRoute, NavigationEnd} from '@angular/router';
-import {tap} from 'rxjs';
+import { Component, OnInit, inject } from '@angular/core';
+import {Router, ActivatedRoute} from '@angular/router';
 import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {NetService} from '@eg/core/net.service';
 import {IdlObject} from '@eg/core/idl.service';
 import {SckoService} from './scko.service';
-import {ServerStoreService} from '@eg/core/server-store.service';
 import {PrintService} from '@eg/share/print/print.service';
 
+
 @Component({
-    templateUrl: 'holds.component.html'
+    templateUrl: 'holds.component.html',
+    imports: []
 })
 
 export class SckoHoldsComponent implements OnInit {
+    private router = inject(Router);
+    private route = inject(ActivatedRoute);
+    private net = inject(NetService);
+    private auth = inject(AuthService);
+    private pcrud = inject(PcrudService);
+    private printer = inject(PrintService);
+    scko = inject(SckoService);
+
 
     holds: IdlObject[] = [];
-
-    constructor(
-        private router: Router,
-        private route: ActivatedRoute,
-        private net: NetService,
-        private auth: AuthService,
-        private pcrud: PcrudService,
-        private printer: PrintService,
-        public  scko: SckoService
-    ) {}
 
     ngOnInit() {
 

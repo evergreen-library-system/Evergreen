@@ -1,25 +1,28 @@
 
 
 <eg-string #successMsg
-    text="Successfully Made Item(s) Bookable" i18n-text></eg-string>
-<eg-string #errorMsg 
-    text="Failed To Make Item(s) Bookable" i18n-text></eg-string>
+text="Successfully Made Item(s) Bookable" i18n-text></eg-string>
+<eg-string #errorMsg
+text="Failed To Make Item(s) Bookable" i18n-text></eg-string>
 
 <ng-template #dialogContent>
-    <div class="modal-header">
-      <h4 class="modal-title">
-        <span i18n>Make Items Bookable</span>
-      </h4>
-      <button type="button" class="btn-close btn-close-white" 
-        i18n-aria-label aria-label="Close dialog" (click)="close()"></button>
-    </div>
-    <div class="modal-body">
-      <div class="row" *ngIf="!updateComplete">
+  <div class="modal-header">
+    <h4 class="modal-title">
+      <span i18n>Make Items Bookable</span>
+    </h4>
+    <button type="button" class="btn-close btn-close-white"
+    i18n-aria-label aria-label="Close dialog" (click)="close()"></button>
+  </div>
+  <div class="modal-body">
+    @if (!updateComplete) {
+      <div class="row">
         <div class="col-lg-12">
           <span i18n>Make {{copyIds.length}} Item(s) Bookable?</span>
         </div>
       </div>
-      <div class="row" *ngIf="updateComplete" role="status">
+    }
+    @if (updateComplete) {
+      <div class="row" role="status">
         <div class="col-lg-12 d-flex flex-column">
           <div i18n>{{numSucceeded}} Item(s) Made Bookable.</div>
           <div class="mt-2">
@@ -30,20 +33,21 @@
           </div>
         </div>
       </div>
-    </div>
-    <div class="modal-footer">
-      <ng-container>
-        <button type="button" class="btn btn-normal" 
-          (click)="close()" i18n>Cancel</button>
-        <ng-container *ngIf="!updateComplete">
-          <button type="button" class="btn btn-success" 
-            (click)="makeBookable()" i18n>Make Bookable</button>
-        </ng-container>
-        <ng-container *ngIf="updateComplete">
-          <button type="button" class="btn btn-success" 
-            (click)="close(numSucceeded > 0)" i18n>Done</button>
-        </ng-container>
-      </ng-container>
-    </div>
-  </ng-template>
-  
+    }
+  </div>
+  <div class="modal-footer">
+    <ng-container>
+      <button type="button" class="btn btn-normal"
+      (click)="close()" i18n>Cancel</button>
+      @if (!updateComplete) {
+        <button type="button" class="btn btn-success"
+        (click)="makeBookable()" i18n>Make Bookable</button>
+      }
+      @if (updateComplete) {
+        <button type="button" class="btn btn-success"
+        (click)="close(numSucceeded > 0)" i18n>Done</button>
+      }
+    </ng-container>
+  </div>
+</ng-template>
+

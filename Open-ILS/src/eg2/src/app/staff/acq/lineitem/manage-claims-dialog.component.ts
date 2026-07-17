@@ -1,21 +1,32 @@
-import {Component, Input, ViewChild, TemplateRef} from '@angular/core';
+import { Component, Input, ViewChild, TemplateRef, inject } from '@angular/core';
 import {Observable} from 'rxjs';
-import {NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
+import {NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
-import {IdlService, IdlObject} from '@eg/core/idl.service';
+import {IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {AuthService} from '@eg/core/auth.service';
-import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
-import {LineitemService} from '../lineitem/lineitem.service';
+import {ComboboxComponent, ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {PrintService} from '@eg/share/print/print.service';
+import { FormsModule } from '@angular/forms';
+import { FormatValuePipe } from '@eg/core/format.service';
 
 @Component({
     selector: 'eg-acq-manage-claims-dialog',
-    templateUrl: './manage-claims-dialog.component.html'
+    templateUrl: './manage-claims-dialog.component.html',
+    imports: [
+        ComboboxComponent,
+        FormatValuePipe,
+        FormsModule
+    ]
 })
 
 export class ManageClaimsDialogComponent extends DialogComponent {
+    private net = inject(NetService);
+    private auth = inject(AuthService);
+    private pcrud = inject(PcrudService);
+    private printer = inject(PrintService);
+
     @Input() li: IdlObject;
     @Input() lidIds: number[];
     @Input() insideBatch: boolean;
@@ -28,15 +39,6 @@ export class ManageClaimsDialogComponent extends DialogComponent {
     claimEventTypes: number[] = [];
     selectedClaimEventTypes: number[] = [];
     claimType: ComboboxEntry;
-
-    constructor(
-        private modal: NgbModal,
-        private net: NetService,
-        private auth: AuthService,
-        private pcrud: PcrudService,
-        private printer: PrintService,
-        private liService: LineitemService
-    ) { super(modal); }
 
     open(args?: NgbModalOptions): Observable<any> {
         if (!args) {

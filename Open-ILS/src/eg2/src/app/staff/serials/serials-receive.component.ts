@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
 import { IdlObject } from '@eg/core/idl.service';
-import { ItemLocationSelectModule } from '@eg/share/item-location-select/item-location-select.module';
-import { CommonModule } from '@angular/common';
+
 import { CommonWidgetsModule } from '@eg/share/common-widgets.module';
 import { AbstractControl, FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NetService } from '@eg/core/net.service';
@@ -15,12 +14,12 @@ import { Router } from '@angular/router';
 import { ComboboxEntry } from '@eg/share/combobox/combobox.component';
 import { SerialsNoteComponent } from './serials-note.component';
 import { SerialsService } from './serials.service';
+import { ItemLocationSelectComponent } from '@eg/share/item-location-select/item-location-select.component';
 
 
 @Component({
     selector: 'eg-serials-receive',
-    standalone: true,
-    imports: [CommonModule, ItemLocationSelectModule, CommonWidgetsModule, ReactiveFormsModule, SerialsNoteComponent],
+    imports: [ItemLocationSelectComponent, CommonWidgetsModule, ReactiveFormsModule, SerialsNoteComponent],
     providers: [SerialsService],
     templateUrl: './serials-receive.component.html',
     styles: [

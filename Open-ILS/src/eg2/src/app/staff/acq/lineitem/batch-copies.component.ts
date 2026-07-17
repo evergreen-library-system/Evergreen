@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, Output, EventEmitter, ViewChild} from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild, inject } from '@angular/core';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {EventService} from '@eg/core/event.service';
 import {NetService} from '@eg/core/net.service';
@@ -6,6 +6,8 @@ import {AuthService} from '@eg/core/auth.service';
 import {LineitemService} from './lineitem.service';
 import {CancelDialogComponent} from './cancel-dialog.component';
 import {LineitemAlertDialogComponent} from './lineitem-alert-dialog.component';
+import { LineitemCopyAttrsComponent } from './copy-attrs.component';
+import { CommonModule } from '@angular/common';
 
 const BATCH_FIELDS = [
     'owning_lib',
@@ -20,9 +22,21 @@ const BATCH_FIELDS = [
 @Component({
     templateUrl: 'batch-copies.component.html',
     selector: 'eg-lineitem-batch-copies',
-    styleUrls: ['batch-copies.component.css']
+    styleUrls: ['batch-copies.component.css'],
+    imports: [
+        CancelDialogComponent,
+        CommonModule,
+        LineitemAlertDialogComponent,
+        LineitemCopyAttrsComponent
+    ]
 })
 export class LineitemBatchCopiesComponent implements OnInit {
+    private evt = inject(EventService);
+    private idl = inject(IdlService);
+    private net = inject(NetService);
+    private auth = inject(AuthService);
+    private liService = inject(LineitemService);
+
 
     @Input() lineitem: IdlObject;
     @Input() batchAdd = false;
@@ -38,14 +52,6 @@ export class LineitemBatchCopiesComponent implements OnInit {
     liId: number;
     liTitle: string;
     alertComment: string;
-
-    constructor(
-        private evt: EventService,
-        private idl: IdlService,
-        private net: NetService,
-        private auth: AuthService,
-        private liService: LineitemService
-    ) {}
 
     ngOnInit() {
         if (!this.lineitem) {

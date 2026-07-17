@@ -5,17 +5,12 @@ import {StringService} from '@eg/share/string/string.service';
 
 
 @NgModule({
-    declarations: [
-        StringComponent
-    ],
     imports: [
-        EgCoreModule
+        EgCoreModule,
+        StringComponent
     ],
     exports: [
         StringComponent
-    ],
-    providers: [
-        StringService
     ]
 })
 

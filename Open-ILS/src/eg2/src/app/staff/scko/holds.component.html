@@ -17,26 +17,36 @@
       </tr>
     </thead>
     <tbody class='oils-selfck-item-table'>
-	    <tr *ngFor="let hold of holds">
-        <td><img i18n-alt alt="Jacket Image"
+      @for (hold of holds; track hold) {
+        <tr>
+          <td><img i18n-alt alt="Jacket Image"
           src="/opac/extras/ac/jacket/small/r/{{hold.record_id}}"/></td>
-        <td>{{hold.title}}</td>
-        <td>{{hold.author}}</td>
-        <td>
-          <ng-container *ngIf="hold.hold_status === 4" i18n>
+          <td>{{hold.title}}</td>
+          <td>{{hold.author}}</td>
+          <td>
+            @if (hold.hold_status === 4) {
+              <ng-container i18n>
             Ready for Pickup
           </ng-container>
-          <ng-container *ngIf="hold.hold_status === 7" i18n>
+            }
+            @if (hold.hold_status === 7) {
+              <ng-container i18n>
             Suspended
           </ng-container>
-          <ng-container *ngIf="hold.hold_status === 3 || hold.hold_status === 8" i18n>
+            }
+            @if (hold.hold_status === 3 || hold.hold_status === 8) {
+              <ng-container i18n>
             In Transit
           </ng-container>
-          <ng-container *ngIf="hold.hold_status < 3 || hold.hold_status === 5" i18n>
+            }
+            @if (hold.hold_status < 3 || hold.hold_status === 5) {
+              <ng-container i18n>
             #{{hold.relative_queue_position}} in line with {{hold.potentials}} copie(s)
           </ng-container>
-        </td>
-      </tr>
+            }
+          </td>
+        </tr>
+      }
     </tbody>
   </table>
 </div>

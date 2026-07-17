@@ -1,15 +1,28 @@
 /* eslint-disable @angular-eslint/component-selector */
-import {Component, Input, Host} from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import {GridContext} from './grid';
 import {GridComponent} from './grid.component';
 import {NgbPopover} from '@ng-bootstrap/ng-bootstrap';
+import { NgClass } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { GridBodyCellComponent } from './grid-body-cell.component';
+import { GridToolbarActionsMenuComponent } from './grid-toolbar-actions-menu.component';
 
 @Component({
     selector: 'tbody.eg-grid-body',
-    templateUrl: './grid-body.component.html'
+    templateUrl: './grid-body.component.html',
+    imports: [
+        FormsModule,
+        GridBodyCellComponent,
+        GridToolbarActionsMenuComponent,
+        NgbPopover,
+        NgClass
+    ]
 })
 
 export class GridBodyComponent {
+    private grid = inject(GridComponent, { host: true });
+
 
     @Input() context: GridContext;
 
@@ -17,7 +30,7 @@ export class GridBodyComponent {
     // when another popover is opened.
     contextMenus: NgbPopover[];
 
-    constructor(@Host() private grid: GridComponent) {
+    constructor() {
         this.contextMenus = [];
     }
 

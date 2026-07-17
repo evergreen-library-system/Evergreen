@@ -12,15 +12,17 @@
   </div>
 </div>
 
-<ul ngbNav #authTabs="ngbNav" [(activeId)]="authTab" 
+<ul ngbNav #authTabs="ngbNav" [(activeId)]="authTab"
   (navChange)="beforeNavChange($event)" [keyboard]="true" [roles]="false" role="tablist" class="nav-tabs">
   <li role="presentation" [ngbNavItem]="'bibs'">
     <a i18n ngbNavLink role="tab">Linked Bibs</a>
     <ng-template ngbNavContent>
-      <div class="pt-3" *ngIf="authMeta">
-        <eg-bib-list #bibList [bibIdSource]="linkedBibIdSource"
+      @if (authMeta) {
+        <div class="pt-3">
+          <eg-bib-list #bibList [bibIdSource]="linkedBibIdSource"
           gridPersistKey="cat.authority.manage.bibs"></eg-bib-list>
-      </div>
+        </div>
+      }
     </ng-template>
   </li>
   <li role="presentation" [ngbNavItem]="'edit'">

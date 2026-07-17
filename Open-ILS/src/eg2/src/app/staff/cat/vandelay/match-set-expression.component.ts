@@ -1,18 +1,30 @@
-import {Component, ViewChild, Input} from '@angular/core';
+import { Component, ViewChild, Input, inject } from '@angular/core';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
-import {OrgService} from '@eg/core/org.service';
 import {Tree, TreeNode} from '@eg/share/tree/tree';
 import {StringService} from '@eg/share/string/string.service';
 import {MatchSetNewPointComponent} from './match-set-new-point.component';
+import { StaffCommonModule } from '@eg/staff/common.module';
+import { TreeComponent } from '@eg/share/tree/tree.component';
 
 @Component({
     selector: 'eg-match-set-expression',
-    templateUrl: 'match-set-expression.component.html'
+    templateUrl: 'match-set-expression.component.html',
+    imports: [
+        MatchSetNewPointComponent,
+        StaffCommonModule,
+        TreeComponent
+    ]
 })
 export class MatchSetExpressionComponent {
+    private idl = inject(IdlService);
+    private pcrud = inject(PcrudService);
+    private net = inject(NetService);
+    private auth = inject(AuthService);
+    private strings = inject(StringService);
+
 
     // Match set arrives from parent async.
     matchSet_: IdlObject;
@@ -36,14 +48,7 @@ export class MatchSetExpressionComponent {
 
     @ViewChild('newPoint', { static: true }) newPoint: MatchSetNewPointComponent;
 
-    constructor(
-        private idl: IdlService,
-        private pcrud: PcrudService,
-        private net: NetService,
-        private auth: AuthService,
-        private org: OrgService,
-        private strings: StringService
-    ) {
+    constructor() {
         this.newId = -1;
     }
 

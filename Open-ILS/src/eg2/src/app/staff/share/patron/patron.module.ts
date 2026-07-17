@@ -11,15 +11,13 @@ import {PatronMergeDialogComponent} from './merge-dialog.component';
 import {PatronSummaryComponent} from './summary.component';
 
 @NgModule({
-    declarations: [
+    imports: [
+        PatronMergeDialogComponent,
+        PatronNoteDialogComponent,
         PatronSearchComponent,
         PatronSearchDialogComponent,
-        ProfileSelectComponent,
         PatronSummaryComponent,
-        PatronMergeDialogComponent,
-        PatronNoteDialogComponent
-    ],
-    imports: [
+        ProfileSelectComponent,
         StaffCommonModule,
         GridModule,
         BarcodesModule

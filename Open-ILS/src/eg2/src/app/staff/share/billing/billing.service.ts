@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import {IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {OrgService} from '@eg/core/org.service';
@@ -27,16 +27,14 @@ interface PaymentResponse {
 
 @Injectable()
 export class BillingService {
+    private evt = inject(EventService);
+    private org = inject(OrgService);
+    private net = inject(NetService);
+    private pcrud = inject(PcrudService);
+    private auth = inject(AuthService);
+
     billingTypes: IdlObject[];
     userBillingTypes: IdlObject[];
-
-    constructor(
-        private evt: EventService,
-        private org: OrgService,
-        private net: NetService,
-        private pcrud: PcrudService,
-        private auth: AuthService
-    ) {}
 
     // Returns billing types owned "here", excluding system types
     getUserBillingTypes(): Promise<IdlObject[]> {

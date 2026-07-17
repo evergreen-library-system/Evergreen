@@ -1,5 +1,4 @@
-import {Component, OnInit, Input, ViewChild, ViewEncapsulation
-} from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ViewEncapsulation, inject } from '@angular/core';
 import {Router} from '@angular/router';
 import {Observable, Observer, of, EMPTY, map, tap, concatMap} from 'rxjs';
 import {Pager} from '@eg/share/util/pager';
@@ -43,6 +42,7 @@ import {TransferHoldingsComponent
 } from '@eg/staff/share/holdings/transfer-holdings.component';
 import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
 import {BroadcastService} from '@eg/share/util/broadcast.service';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 
 // The holdings grid models a single HoldingsTree, composed of HoldingsTreeNodes
@@ -86,9 +86,36 @@ export class HoldingsEntry {
     selector: 'eg-holdings-maintenance',
     templateUrl: 'holdings.component.html',
     styleUrls: ['holdings.component.css'],
-    encapsulation: ViewEncapsulation.None
+    encapsulation: ViewEncapsulation.None,
+    imports: [
+        ConjoinedItemsDialogComponent,
+        CopyAlertsDialogComponent,
+        CopyNotesDialogComponent,
+        CopyTagsDialogComponent,
+        DeleteHoldingDialogComponent,
+        MakeBookableDialogComponent,
+        MarkDamagedDialogComponent,
+        MarkMissingDialogComponent,
+        ReplaceBarcodeDialogComponent,
+        StaffCommonModule,
+        TransferHoldingsComponent,
+        TransferItemsComponent
+    ]
 })
 export class HoldingsMaintenanceComponent implements OnInit {
+    private router = inject(Router);
+    private org = inject(OrgService);
+    private idl = inject(IdlService);
+    private pcrud = inject(PcrudService);
+    private net = inject(NetService);
+    private auth = inject(AuthService);
+    private staffCat = inject(StaffCatalogService);
+    private store = inject(ServerStoreService);
+    private localStore = inject(StoreService);
+    private holdings = inject(HoldingsService);
+    private broadcaster = inject(BroadcastService);
+    private anonCache = inject(AnonCacheService);
+
 
     initDone = false;
     gridDataSource: GridDataSource;
@@ -179,20 +206,7 @@ export class HoldingsMaintenanceComponent implements OnInit {
     // case) that the desired context org unit has been found.
     contextOrgLoaded = false;
 
-    constructor(
-        private router: Router,
-        private org: OrgService,
-        private idl: IdlService,
-        private pcrud: PcrudService,
-        private net: NetService,
-        private auth: AuthService,
-        private staffCat: StaffCatalogService,
-        private store: ServerStoreService,
-        private localStore: StoreService,
-        private holdings: HoldingsService,
-        private broadcaster: BroadcastService,
-        private anonCache: AnonCacheService
-    ) {
+    constructor() {
         // Set some sane defaults before settings are loaded.
         this.gridDataSource = new GridDataSource();
         this.refreshHoldings = true;

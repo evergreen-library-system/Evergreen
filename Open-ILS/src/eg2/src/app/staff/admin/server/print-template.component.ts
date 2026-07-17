@@ -1,5 +1,5 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {Observable, map} from 'rxjs';
+import { Component, OnInit, ViewChild, inject } from '@angular/core';
+import {Observable, firstValueFrom, map} from 'rxjs';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {AuthService} from '@eg/core/auth.service';
@@ -9,21 +9,46 @@ import {ComboboxComponent, ComboboxEntry
 } from '@eg/share/combobox/combobox.component';
 import {PrintService} from '@eg/share/print/print.service';
 import {LocaleService} from '@eg/core/locale.service';
-import {NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
+import {NgbNavChangeEvent, NgbNavModule} from '@ng-bootstrap/ng-bootstrap';
 import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
 import {SampleDataService} from '@eg/share/util/sample-data.service';
-import {OrgFamily} from '@eg/share/org-family-select/org-family-select.component';
+import {OrgFamily, OrgFamilySelectComponent} from '@eg/share/org-family-select/org-family-select.component';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
+import { TitleComponent } from '@eg/share/title/title.component';
+import { StaffBannerComponent } from '@eg/staff/share/staff-banner.component';
+
+import { ComboboxEntryComponent } from '@eg/share/combobox/combobox-entry.component';
+import { FormsModule } from '@angular/forms';
 
 /**
  * Print Template Admin Page
  */
 
 @Component({
-    templateUrl: 'print-template.component.html'
+    templateUrl: 'print-template.component.html',
+    imports: [
+        ComboboxComponent,
+        ComboboxEntryComponent,
+        ConfirmDialogComponent,
+        FmRecordEditorComponent,
+        FormsModule,
+        NgbNavModule,
+        OrgFamilySelectComponent,
+        StaffBannerComponent,
+        TitleComponent
+    ]
 })
 
 export class PrintTemplateComponent implements OnInit {
+    private idl = inject(IdlService);
+    private org = inject(OrgService);
+    private pcrud = inject(PcrudService);
+    private auth = inject(AuthService);
+    private store = inject(ServerStoreService);
+    private locale = inject(LocaleService);
+    private printer = inject(PrintService);
+    private samples = inject(SampleDataService);
+
 
     entries: ComboboxEntry[];
     template: IdlObject;
@@ -54,16 +79,7 @@ export class PrintTemplateComponent implements OnInit {
         serials_routing_list: {},
     };
 
-    constructor(
-        private idl: IdlService,
-        private org: OrgService,
-        private pcrud: PcrudService,
-        private auth: AuthService,
-        private store: ServerStoreService,
-        private locale: LocaleService,
-        private printer: PrintService,
-        private samples: SampleDataService
-    ) {
+    constructor() {
         this.entries = [];
         this.localeEntries = [];
     }
@@ -343,7 +359,8 @@ export class PrintTemplateComponent implements OnInit {
 
     applyChanges() {
         this.container().innerHTML = '';
-        this.pcrud.update(this.template).toPromise()
+        firstValueFrom(this.pcrud.update(this.template))
+            .then(() => firstValueFrom(this.printer.clearPrintTemplateCache(this.template.owner())))
             .then(() => this.refreshPreview());
     }
 

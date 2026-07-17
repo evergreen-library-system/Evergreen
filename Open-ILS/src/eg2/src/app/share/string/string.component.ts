@@ -7,24 +7,29 @@
  * this.helloStr.currrent().then(s => console.log(s));
  *
  */
-import {Component, Input, OnInit, ElementRef, TemplateRef} from '@angular/core';
+import { NgTemplateOutlet } from '@angular/common';
+import { Component, Input, OnInit, ElementRef, TemplateRef, inject } from '@angular/core';
 import {StringService} from '@eg/share/string/string.service';
 
 @Component({
     selector: 'eg-string',
     template: `
     <span style='display:none'>
-      <ng-container *ngIf="template">
+      @if (template) {
         <ng-container *ngTemplateOutlet="template; context:ctx"></ng-container>
-      </ng-container>
-      <ng-container *ngIf="!template">
+      }
+      @if (!template) {
         <span>{{text}}</span>
-      </ng-container>
+      }
     </span>
-  `
+    `,
+    imports: [NgTemplateOutlet]
 })
 
 export class StringComponent implements OnInit {
+    private elm = inject(ElementRef);
+    private strings = inject(StringService);
+
 
     // Storage key for future reference by the string service
     @Input() key: string;
@@ -39,7 +44,10 @@ export class StringComponent implements OnInit {
     // This supersedes 'template'
     @Input() text: string;
 
-    constructor(private elm: ElementRef, private strings: StringService) {
+    constructor() {
+        const elm = this.elm;
+        const strings = this.strings;
+
         this.elm = elm;
         this.strings = strings;
     }

@@ -6,13 +6,11 @@ import {OrgAddressComponent} from './org-addr.component';
 import {OrgUnitRoutingModule} from './org-unit-routing.module';
 
 @NgModule({
-    declarations: [
-        OrgUnitComponent,
-        OrgAddressComponent
-    ],
     imports: [
         AdminCommonModule,
         OrgUnitRoutingModule,
+        OrgUnitComponent,
+        OrgAddressComponent,
         TreeModule
     ],
     exports: [

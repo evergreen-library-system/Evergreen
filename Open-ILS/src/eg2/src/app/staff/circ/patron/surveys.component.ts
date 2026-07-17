@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import {Router} from '@angular/router';
 import {IdlObject} from '@eg/core/idl.service';
 import {EventService} from '@eg/core/event.service';
@@ -7,26 +7,26 @@ import {NetService} from '@eg/core/net.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {AuthService} from '@eg/core/auth.service';
 import {PatronService} from '@eg/staff/share/patron/patron.service';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
     templateUrl: 'surveys.component.html',
     selector: 'eg-patron-survey-responses',
-    styles: ['thead th { padding: 0.5rem; }']
+    styles: ['thead th { padding: 0.5rem; }'],
+    imports: [StaffCommonModule]
 })
 export class PatronSurveyResponsesComponent implements OnInit {
+    private router = inject(Router);
+    private evt = inject(EventService);
+    private net = inject(NetService);
+    private auth = inject(AuthService);
+    private org = inject(OrgService);
+    private pcrud = inject(PcrudService);
+    patronService = inject(PatronService);
+
 
     @Input() patronId: number;
     surveys: IdlObject[] = [];
-
-    constructor(
-        private router: Router,
-        private evt: EventService,
-        private net: NetService,
-        private auth: AuthService,
-        private org: OrgService,
-        private pcrud: PcrudService,
-        public patronService: PatronService
-    ) {}
 
     ngOnInit() {
         this.surveys = [];

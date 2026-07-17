@@ -1,4 +1,4 @@
-import {Component, OnInit, Renderer2} from '@angular/core';
+import { Component, OnInit, Renderer2, inject } from '@angular/core';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {HttpClient} from '@angular/common/http';
 import {tap} from 'rxjs';
@@ -9,6 +9,7 @@ import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {MarcRecord} from '@eg/staff/share/marc-edit/marcrecord';
 import {AnonCacheService} from '@eg/share/util/anon-cache.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 const SESSION_POLL_INTERVAL = 2; // seconds
 const MERGE_TEMPLATE_PATH = '/opac/extras/merge_template';
@@ -23,9 +24,20 @@ interface TemplateRule {
 }
 
 @Component({
-    templateUrl: 'marcbatch.component.html'
+    templateUrl: 'marcbatch.component.html',
+    imports: [StaffCommonModule]
 })
 export class MarcBatchComponent implements OnInit {
+    private router = inject(Router);
+    private route = inject(ActivatedRoute);
+    private http = inject(HttpClient);
+    private renderer = inject(Renderer2);
+    private net = inject(NetService);
+    private pcrud = inject(PcrudService);
+    private auth = inject(AuthService);
+    private store = inject(ServerStoreService);
+    private cache = inject(AnonCacheService);
+
 
     session: string;
     source: 'b' | 'c' | 'r' = 'b';
@@ -42,18 +54,6 @@ export class MarcBatchComponent implements OnInit {
     progressValue: number = null;
     numSucceeded = 0;
     numFailed = 0;
-
-    constructor(
-        private router: Router,
-        private route: ActivatedRoute,
-        private http: HttpClient,
-        private renderer: Renderer2,
-        private net: NetService,
-        private pcrud: PcrudService,
-        private auth: AuthService,
-        private store: ServerStoreService,
-        private cache: AnonCacheService
-    ) {}
 
     ngOnInit() {
 

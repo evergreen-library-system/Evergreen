@@ -1,9 +1,9 @@
-import {ChangeDetectorRef, Component, Input, OnInit, OnDestroy, ViewChild} from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit, OnDestroy, ViewChild, inject } from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {from, Observable, Subject, lastValueFrom, firstValueFrom, defaultIfEmpty, EMPTY,
     map, switchMap, takeUntil, take, catchError} from 'rxjs';
 import {AuthService} from '@eg/core/auth.service';
-import {IdlObject,IdlService} from '@eg/core/idl.service';
+import {IdlService} from '@eg/core/idl.service';
 import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
 import {NetService} from '@eg/core/net.service';
 import {EventService} from '@eg/core/event.service';
@@ -23,6 +23,7 @@ import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
 import {PromptDialogComponent} from '@eg/share/dialog/prompt.component';
 import {RecordBucketExportDialogComponent} from '@eg/staff/share/buckets/record-bucket-export-dialog.component';
 import {RecordBucketItemUploadDialogComponent} from '@eg/staff/share/buckets/record-bucket-item-upload-dialog.component';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 /**
  * Record bucket grid interface
@@ -43,10 +44,30 @@ interface BucketView {
 @Component({
     selector: 'eg-record-bucket',
     templateUrl: 'record-bucket.component.html',
-    styleUrls: ['./record-bucket.component.css']
+    styleUrls: ['./record-bucket.component.css'],
+    imports: [
+        BucketActionSummaryDialogComponent,
+        BucketShareDialogComponent,
+        BucketTransferDialogComponent,
+        FmRecordEditorComponent,
+        RecordBucketItemUploadDialogComponent,
+        RecordBucketExportDialogComponent,
+        StaffCommonModule
+    ]
 })
 
 export class RecordBucketComponent implements OnInit, OnDestroy {
+    private router = inject(Router);
+    private route = inject(ActivatedRoute);
+    private cdr = inject(ChangeDetectorRef);
+    private auth = inject(AuthService);
+    private idl = inject(IdlService);
+    private pcrud = inject(PcrudService);
+    private net = inject(NetService);
+    private evt = inject(EventService);
+    private flatData = inject(GridFlatDataService);
+    private bucketService = inject(BucketService);
+
 
     @Input() userId: Number;
 
@@ -81,19 +102,6 @@ export class RecordBucketComponent implements OnInit, OnDestroy {
     containerDeletionResultMap = {};
 
     catSearchQuery: string;
-
-    constructor(
-        private router: Router,
-        private route: ActivatedRoute,
-        private cdr: ChangeDetectorRef,
-        private auth: AuthService,
-        private idl: IdlService,
-        private pcrud: PcrudService,
-        private net: NetService,
-        private evt: EventService,
-        private flatData: GridFlatDataService,
-        private bucketService: BucketService,
-    ) {}
 
     async ngOnInit() {
         this.initInProgress = true; console.warn('initInProgress = true');

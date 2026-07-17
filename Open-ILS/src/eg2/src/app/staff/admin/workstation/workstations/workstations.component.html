@@ -4,8 +4,8 @@
 <eg-title i18n-prefix prefix="Manage Workstations"></eg-title>
 
 <!-- this will remain hidden until opened -->
-<eg-confirm-dialog 
-  #workstationExistsDialog 
+<eg-confirm-dialog
+  #workstationExistsDialog
   i18n-dialogTitle i18n-dialogBody
   dialogTitle="Workstation Exists"
   dialogBody='Workstation "{{newName}}" already exists.  Use it anyway?'>
@@ -13,12 +13,16 @@
 
 <div class="row">
   <div class="col-lg-8 offset-1 mt-3 position-relative" style="min-height: calc(100vh - 4rem)">
-    <div class="alert alert-warning" *ngIf="removeWorkstation" i18n>
+    @if (removeWorkstation) {
+      <div class="alert alert-warning" i18n>
       Workstation {{removeWorkstation}} is no longer valid.  Removing registration.
     </div>
-    <div class="alert alert-danger" *ngIf="workstations.length === 0">
-      <span i18n>Please register a workstation.</span>
-    </div>
+    }
+    @if (workstations.length === 0) {
+      <div class="alert alert-danger">
+        <span i18n>Please register a workstation.</span>
+      </div>
+    }
 
     <div class="row">
       <div class="col">
@@ -28,7 +32,7 @@
     <div class="row mt-2">
       <div class="col-lg-2">
         <label class="form-label" for="workstationSelect" i18n="Workstation registration: owning library">Library</label>
-        <eg-org-select 
+        <eg-org-select
           domId="workstationSelect"
           [applyDefault]="true"
           (onChange)="orgOnChange($event)"
@@ -44,7 +48,7 @@
           Workstation Name
         </label>
         <div class="input-group">
-          <input type='text' 
+          <input type='text'
             id="register-new-workstation-name"
             class='form-control'
             i18n-title
@@ -68,24 +72,30 @@
     <div class="row">
       <div class="col-lg-8">
         <select class="form-select" [(ngModel)]="selectedName" id="registeredWS">
-          <option *ngFor="let ws of workstations" value="{{ws.name}}">
-            <span *ngIf="ws.name === defaultName" i18n>
+          @for (ws of workstations; track ws) {
+            <option value="{{ws.name}}">
+              @if (ws.name === defaultName) {
+                <span i18n>
               {{ws.name}} (Default)
             </span>
-            <span *ngIf="ws.name !== defaultName">
-              {{ws.name}}
-            </span>
-          </option>
+              }
+              @if (ws.name !== defaultName) {
+                <span>
+                  {{ws.name}}
+                </span>
+              }
+            </option>
+          }
         </select>
       </div>
     </div>
     <div class="row mt-2">
       <div class="col-lg-6">
-        <button type="button" i18n class="btn btn-success me-2" 
+        <button type="button" i18n class="btn btn-success me-2"
           (click)="useNow()" [disabled]="!selected">
           Use Now
         </button>
-        <button type="button" i18n class="btn btn-outline-dark me-2" 
+        <button type="button" i18n class="btn btn-outline-dark me-2"
           (click)="setDefault()" [disabled]="!selected">
           Mark As Default
         </button>

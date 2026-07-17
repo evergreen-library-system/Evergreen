@@ -1,40 +1,50 @@
 <!-- eslint-disable -->
 <div class="row"><div class="col-12">
-<div class="input-group" *ngIf="!disabled && showLabelFilter && _tree">
-  <label class="input-group-text" for="{{_tree.treeId}}-filter" i18n>Filter:</label>
-  <input class="form-control" id="{{_tree.treeId}}-filter" [(ngModel)]="_labelFilter"
-    type="text" (input)="updateLabelFilter()" />
-  <button type="button" class="btn btn-link text-dark p-1 focus-border input-group-text"
-    (click)="updateLabelFilter(_labelFilter='')" aria-label="Clear Label Filter" i18n-aria-label>
-      <span class="material-icons" aria-hidden="true" title="Clear Label Filter" i18n-title>clear</span>
-  </button>
-</div>
+  @if (!disabled && showLabelFilter && _tree) {
+    <div class="input-group">
+      <label class="input-group-text" for="{{_tree.treeId}}-filter" i18n>Filter:</label>
+      <input class="form-control" id="{{_tree.treeId}}-filter" [(ngModel)]="_labelFilter"
+        type="text" (input)="updateLabelFilter()" />
+      <button type="button" class="btn btn-link text-dark p-1 focus-border input-group-text"
+        (click)="updateLabelFilter(_labelFilter='')" aria-label="Clear Label Filter" i18n-aria-label>
+        <span class="material-icons" aria-hidden="true" title="Clear Label Filter" i18n-title>clear</span>
+      </button>
+    </div>
+  }
 </div></div>
 
 <div class="eg-tree-node-wrapper d-flex">
-  <input *ngIf="showSelectAll" type="checkbox"
+  @if (showSelectAll) {
+    <input type="checkbox"
       (change)="toggleStateFlags($event)" />
-  <button *ngIf="showExpandAll" type="button" class="btn btn-link text-dark p-1 focus-border" (click)="expandAll()"
-    aria-label="Expand All" i18n-aria-label title="Expand All" i18n-title>
+  }
+  @if (showExpandAll) {
+    <button type="button" class="btn btn-link text-dark p-1 focus-border" (click)="expandAll()"
+      aria-label="Expand All" i18n-aria-label title="Expand All" i18n-title>
       <span class="material-icons" aria-hidden="true">expand_more</span>
-  </button>
-  <button *ngIf="showExpandAll" type="button" class="btn btn-link text-dark p-1 focus-border" (click)="collapseAll()"
-    aria-label="Collapse All" i18n-aria-label title="Collapse All" i18n-title>
+    </button>
+  }
+  @if (showExpandAll) {
+    <button type="button" class="btn btn-link text-dark p-1 focus-border" (click)="collapseAll()"
+      aria-label="Collapse All" i18n-aria-label title="Collapse All" i18n-title>
       <span class="material-icons" aria-hidden="true">expand_less</span>
-  </button>
+    </button>
+  }
   <ng-content select="[header]"></ng-content>
 </div>
 
 <div [attr.role]="showLabelFilter ? 'status' : null">
-<ul class="eg-tree" [ngClass]="{blurred: !wasLastClicked()}" *ngIf="rootNode()">
-  <ng-container *ngTemplateOutlet="tree;context:{tree_node:rootNode(),disableStateFlag:disableRootSelector}"></ng-container>
-</ul>
-<ng-content select="[footer]"></ng-content>
+  @if (rootNode()) {
+    <ul class="eg-tree" [ngClass]="{blurred: !wasLastClicked()}">
+      <ng-container *ngTemplateOutlet="tree;context:{tree_node:rootNode(),disableStateFlag:disableRootSelector}"></ng-container>
+    </ul>
+  }
+  <ng-content select="[footer]"></ng-content>
 </div>
 
 <ng-template #tree let-disableStateFlag="disableStateFlag" let-node="tree_node">
   <li class="eg-tree-node"
-  [ngClass]="{active : node.selected, open : node.expanded, haschildren : _tree.visibleChildren(node).length, nochildren: _tree.visibleChildren(node).length == 0}" tabindex="0" [attr.data-tree-node]="node.id"
+    [ngClass]="{active : node.selected, open : node.expanded, haschildren : _tree.visibleChildren(node).length, nochildren: _tree.visibleChildren(node).length === 0}" tabindex="0" [attr.data-tree-node]="node.id"
     (keydown)="treeKeyEvent(node, $event)">
     <div class="eg-tree-node-wrapper">
       <button style="visibility: {{_tree.visibleChildren(node).length ? 'visible' : 'hidden'}}" (click)="node.toggleExpand()"
@@ -45,30 +55,36 @@
         <span class="material-icons" aria-hidden="true">{{node.expanded? 'expand_less' : 'expand_more'}}</span>
       </button>
 
-      <span #stateFlagContainer *ngIf="(node.stateFlagLabel || showSelectAll || stateFlagTemplate) && !disableStateFlag">
-        <input *ngIf="!stateFlagTemplate" type='checkbox'
-		  [(ngModel)]="node.stateFlag"
-		  (click)="handleStateFlagClick(node, $event)"
-		  title="{{node.stateFlagLabel}}"
-		  tabindex="0"
-          [disabled]="disabled"
-		  [attr.aria-label]="node.stateFlagLabel" />
-        <ng-container [ngTemplateOutlet]="stateFlagTemplate" [ngTemplateOutletContext]="{ node:node }"></ng-container>
-      </span>
+      @if ((node.stateFlagLabel || showSelectAll || stateFlagTemplate) && !disableStateFlag) {
+        <span #stateFlagContainer>
+          @if (!stateFlagTemplate) {
+            <input type='checkbox'
+              [(ngModel)]="node.stateFlag"
+              (click)="handleStateFlagClick(node, $event)"
+              title="{{node.stateFlagLabel}}"
+              tabindex="0"
+              [disabled]="disabled"
+              [attr.aria-label]="node.stateFlagLabel" />
+          }
+          <ng-container [ngTemplateOutlet]="stateFlagTemplate" [ngTemplateOutletContext]="{ node:node }"></ng-container>
+        </span>
+      }
 
       <button class="btn btn-link eg-tree-node-label" #egTreeNode
-		id="{{_tree.treeId}}-{{node.id}}" 
+        id="{{_tree.treeId}}-{{node.id}}"
         [disabled]="disabled"
-		[attr.tabindex]="node.selected ? '0' : '-1'"
-		[attr.aria-label]="'Select ' + node.label" i18n-aria-label
-		(click)="handleNodeClick(node, $event)">{{node.label}}</button>
+        [attr.tabindex]="node.selected ? '0' : '-1'"
+        [attr.aria-label]="'Select ' + node.label" i18n-aria-label
+      (click)="handleNodeClick(node, $event)">{{node.label}}</button>
       <ng-container *ngTemplateOutlet="rowTrailingTemplate; context: {$implicit: node}"></ng-container>
-  </div>
-  <ul class="eg-tree-branch" *ngIf="node.expanded && _tree.visibleChildren(node).length">
-	  <ng-container *ngFor="let child of _tree.visibleChildren(node)">
-		  <ng-container *ngTemplateOutlet="tree;context:{tree_node:child}"></ng-container>
-	  </ng-container>
-	</ul>
+    </div>
+    @if (node.expanded && _tree.visibleChildren(node).length) {
+      <ul class="eg-tree-branch">
+        @for (child of _tree.visibleChildren(node); track child) {
+          <ng-container *ngTemplateOutlet="tree;context:{tree_node:child}"></ng-container>
+        }
+      </ul>
+    }
   </li>
 </ng-template>
 

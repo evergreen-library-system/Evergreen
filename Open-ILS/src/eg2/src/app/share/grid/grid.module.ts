@@ -20,26 +20,23 @@ import {GridManageFiltersDialogComponent} from './grid-manage-filters-dialog.com
 
 
 @NgModule({
-    declarations: [
-        // public + internal components
-        GridComponent,
-        GridColumnComponent,
-        GridHeaderComponent,
-        GridBodyComponent,
-        GridBodyCellComponent,
-        GridToolbarComponent,
-        GridToolbarButtonComponent,
-        GridToolbarCheckboxComponent,
-        GridToolbarActionComponent,
-        GridToolbarActionsMenuComponent,
-        GridColumnConfigComponent,
-        GridPrintComponent,
-        GridFilterControlComponent,
-        GridToolbarActionsEditorComponent,
-        GridManageFiltersDialogComponent
-    ],
     imports: [
         EgCommonModule,
+        GridBodyCellComponent,
+        GridBodyComponent,
+        GridColumnComponent,
+        GridColumnConfigComponent,
+        GridComponent,
+        GridFilterControlComponent,
+        GridHeaderComponent,
+        GridManageFiltersDialogComponent,
+        GridPrintComponent,
+        GridToolbarActionComponent,
+        GridToolbarActionsEditorComponent,
+        GridToolbarActionsMenuComponent,
+        GridToolbarButtonComponent,
+        GridToolbarCheckboxComponent,
+        GridToolbarComponent,
         CommonWidgetsModule
     ],
     exports: [

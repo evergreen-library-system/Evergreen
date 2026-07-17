@@ -1,5 +1,5 @@
-import {Component, Input, Output, OnInit, AfterViewInit, EventEmitter,
-    OnDestroy, ChangeDetectorRef, ViewChild, ViewEncapsulation} from '@angular/core';
+import { Component, Input, Output, OnInit, AfterViewInit, EventEmitter, OnDestroy,
+    ChangeDetectorRef, ViewChild, ViewEncapsulation, inject } from '@angular/core';
 import {IdlService} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
@@ -7,6 +7,12 @@ import {FormatService} from '@eg/core/format.service';
 import {GridContext, GridColumn, GridDataSource,
     GridCellTextGenerator, GridRowFlairEntry} from './grid';
 import {GridToolbarComponent} from './grid-toolbar.component';
+import { CommonModule } from '@angular/common';
+import { GridPrintComponent } from './grid-print.component';
+import { GridToolbarActionsMenuComponent } from './grid-toolbar-actions-menu.component';
+import { ProgressInlineComponent } from '../dialog/progress-inline.component';
+import { GridBodyComponent } from './grid-body.component';
+import { GridHeaderComponent } from './grid-header.component';
 
 /**
  * Main grid entry point.
@@ -19,10 +25,25 @@ import {GridToolbarComponent} from './grid-toolbar.component';
     // share grid css globally once imported so all grid component CSS
     // can live in grid.component.css and to avoid multiple copies of
     // the CSS when multiple grids are displayed.
-    encapsulation: ViewEncapsulation.None
+    encapsulation: ViewEncapsulation.None,
+    imports: [
+        GridBodyComponent,
+        GridHeaderComponent,
+        GridPrintComponent,
+        GridToolbarActionsMenuComponent,
+        GridToolbarComponent,
+        CommonModule,
+        ProgressInlineComponent,
+    ]
 })
 
 export class GridComponent implements OnInit, AfterViewInit, OnDestroy {
+    private idl = inject(IdlService);
+    private org = inject(OrgService);
+    private store = inject(ServerStoreService);
+    private format = inject(FormatService);
+    private cdr = inject(ChangeDetectorRef);
+
 
     // Source of row data.
     @Input() dataSource: GridDataSource;
@@ -166,13 +187,7 @@ export class GridComponent implements OnInit, AfterViewInit, OnDestroy {
 
     @ViewChild('toolbar', { static: true }) toolbar: GridToolbarComponent;
 
-    constructor(
-        private idl: IdlService,
-        private org: OrgService,
-        private store: ServerStoreService,
-        private format: FormatService,
-        private cdr: ChangeDetectorRef
-    ) {
+    constructor() {
         this.context =
             new GridContext(this.idl, this.org, this.store, this.format, this.cdr);
         this.onRowActivate = new EventEmitter<any>();

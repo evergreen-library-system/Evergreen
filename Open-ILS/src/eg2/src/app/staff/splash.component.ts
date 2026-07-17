@@ -1,31 +1,36 @@
-import {Component, OnInit, AfterViewInit, Directive, ElementRef, Renderer2, ViewChild} from '@angular/core';
+import { Component, OnInit, AfterViewInit, Directive, ElementRef, ViewChild, inject } from '@angular/core';
 import {OrgService} from '@eg/core/org.service';
 import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {StringComponent} from '@eg/share/string/string.component';
 import {Router} from '@angular/router';
+import { TitleComponent } from '@eg/share/title/title.component';
+
+import { FormsModule } from '@angular/forms';
 
 @Component({
     templateUrl: 'splash.component.html',
-    styleUrls: ['./splash.component.css']
+    styleUrls: ['./splash.component.css'],
+    imports: [
+        FormsModule,
+        StringComponent,
+        TitleComponent
+    ]
 })
 
 export class StaffSplashComponent implements OnInit {
+    private pcrud = inject(PcrudService);
+    private auth = inject(AuthService);
+    private org = inject(OrgService);
+    private router = inject(Router);
+    private toast = inject(ToastService);
+
 
     @ViewChild('noPermissionString', { static: true }) noPermissionString: StringComponent;
     catSearchQuery: string;
     portalEntries: any[][] = [];
     portalHeaders: any[] = [];
-
-    constructor(
-        private renderer: Renderer2,
-        private pcrud: PcrudService,
-        private auth: AuthService,
-        private org: OrgService,
-        private router: Router,
-        private toast: ToastService
-    ) {}
 
     ngOnInit() {
         const tmpPortalEntries: any[][] = [];
@@ -114,7 +119,8 @@ export class StaffSplashComponent implements OnInit {
     selector: '[egAutofocus]'
 })
 export class AutofocusDirective implements AfterViewInit {
-    constructor(private host: ElementRef) {}
+    private host = inject(ElementRef);
+
 
     ngAfterViewInit() {
         this.host.nativeElement.focus();

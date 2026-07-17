@@ -1,5 +1,4 @@
-import { Component, Input, Directive, HostBinding } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component, Directive, inject } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastService } from '@eg/share/toast/toast.service';
 import { IdlObject, IdlService } from '@eg/core/idl.service';
@@ -7,7 +6,7 @@ import { PcrudService } from '@eg/core/pcrud.service';
 import { OrgService } from '@eg/core/org.service';
 import { AuthService } from '@eg/core/auth.service';
 import { ServerStoreService } from '@eg/core/server-store.service';
-import {FormsModule, AbstractControl, NG_VALIDATORS, ValidationErrors, Validator, Validators, ValidatorFn} from '@angular/forms';
+import {FormsModule, AbstractControl, NG_VALIDATORS, Validator, ValidatorFn} from '@angular/forms';
 import { ComboboxComponent, ComboboxEntry } from '@eg/share/combobox/combobox.component';
 import {VolCopyContext} from '@eg/staff/cat/volcopy/volcopy';
 import {
@@ -16,6 +15,9 @@ import {
     IThingChanges,
     IThingConfig
 } from './copy-things-dialog.component';
+import { StringComponent } from '@eg/share/string/string.component';
+import { CopyThingsDialogWrapperComponent } from './copy-things-dialog-wrapper.component';
+import { DatePipe } from '@angular/common';
 
 export interface ICopyAlert extends IThingObject {
     alert_type(val?: number): number;
@@ -40,10 +42,19 @@ export interface ICopyAlertChanges extends IThingChanges<ICopyAlert> {
 
 @Component({
     selector: 'eg-copy-alerts-dialog',
-    templateUrl: 'copy-alerts-dialog.component.html'
+    templateUrl: 'copy-alerts-dialog.component.html',
+    imports: [
+        ComboboxComponent,
+        CopyThingsDialogWrapperComponent,
+        DatePipe,
+        FormsModule,
+        StringComponent
+    ]
 })
 export class CopyAlertsDialogComponent extends
     CopyThingsDialogComponent<ICopyAlert, ICopyAlertChanges> {
+    private serverStore = inject(ServerStoreService);
+
 
     protected thingType = 'alerts';
     protected successMessage = $localize`Successfully Modified Item Alerts`;
@@ -65,15 +76,14 @@ export class CopyAlertsDialogComponent extends
 
     alerts: IdlObject[] = [];
 
-    constructor(
-        modal: NgbModal,
-        toast: ToastService,
-        idl: IdlService,
-        pcrud: PcrudService,
-        org: OrgService,
-        auth: AuthService,
-        private serverStore: ServerStoreService
-    ) {
+    constructor() {
+        const modal = inject(NgbModal);
+        const toast = inject(ToastService);
+        const idl = inject(IdlService);
+        const pcrud = inject(PcrudService);
+        const org = inject(OrgService);
+        const auth = inject(AuthService);
+
         const config: IThingConfig<ICopyAlert> = {
             idlClass: 'aca',
             thingField: 'copy_alerts',
@@ -357,14 +367,14 @@ export function inactiveEntry(): ValidatorFn {
 }
 
 @Directive({
-// eslint-disable-next-line @angular-eslint/directive-selector
+    // eslint-disable-next-line @angular-eslint/directive-selector
     selector: '[validateDisabledSelection]',
-    providers: [{ provide: NG_VALIDATORS, useExisting: AlertTypeValidatorDirective, multi: true }]
+    providers: [{ provide: NG_VALIDATORS, useExisting: AlertTypeValidatorDirective, multi: true }],
 })
 
 export class AlertTypeValidatorDirective implements Validator {
+    private combobox = inject(ComboboxComponent);
 
-    constructor(private combobox: ComboboxComponent) {}
 
     validate(control: AbstractControl): { [key: string]: any } | null {
         return inactiveEntry()(control);

@@ -1,24 +1,32 @@
 /* eslint-disable no-bitwise, no-magic-numbers */
-import {Component, OnInit, Input, ViewChild} from '@angular/core';
+import { Component, OnInit, Input, ViewChild, inject } from '@angular/core';
 import {tap} from 'rxjs';
 import {NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
-import {OrgService} from '@eg/core/org.service';
 import {NetService} from '@eg/core/net.service';
-import {PcrudService} from '@eg/core/pcrud.service';
 import {AuthService} from '@eg/core/auth.service';
 import {PatronService} from '@eg/staff/share/patron/patron.service';
 import {PatronContextService} from './patron.service';
-import {CheckoutResult, CircService} from '@eg/staff/share/circ/circ.service';
-import {StoreService} from '@eg/core/store.service';
+import {CircService} from '@eg/staff/share/circ/circ.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
-import {AudioService} from '@eg/share/util/audio.service';
 import {CircGridComponent, CircGridEntry} from '@eg/staff/share/circ/grid.component';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
     templateUrl: 'items.component.html',
-    selector: 'eg-patron-items'
+    selector: 'eg-patron-items',
+    imports: [
+        CircGridComponent,
+        StaffCommonModule
+    ]
 })
 export class ItemsComponent implements OnInit {
+    private net = inject(NetService);
+    private auth = inject(AuthService);
+    circ = inject(CircService);
+    private serverStore = inject(ServerStoreService);
+    patronService = inject(PatronService);
+    context = inject(PatronContextService);
+
 
     // Note we can get the patron id from this.context.patron.id(), but
     // on a new page load, this requires us to wait for the arrival of
@@ -39,19 +47,6 @@ export class ItemsComponent implements OnInit {
     @ViewChild('checkoutsGrid') private checkoutsGrid: CircGridComponent;
     @ViewChild('otherGrid') private otherGrid: CircGridComponent;
     @ViewChild('nonCatGrid') private nonCatGrid: CircGridComponent;
-
-    constructor(
-        private org: OrgService,
-        private net: NetService,
-        private pcrud: PcrudService,
-        private auth: AuthService,
-        public circ: CircService,
-        private audio: AudioService,
-        private store: StoreService,
-        private serverStore: ServerStoreService,
-        public patronService: PatronService,
-        public context: PatronContextService
-    ) {}
 
     ngOnInit() {
         this.load(true);

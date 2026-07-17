@@ -1,11 +1,12 @@
 
-import {Component, OnInit, Input, EventEmitter} from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, inject } from '@angular/core';
 import {tap} from 'rxjs';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
 import {PatronSearchFieldSet} from '@eg/staff/share/patron/search.component';
 import {ServerStoreService} from '@eg/core/server-store.service';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 export enum VisibilityLevel {
     ALL_FIELDS = 0,
@@ -27,9 +28,15 @@ interface DupeSearch {
     selector: 'eg-patron-edit-toolbar',
     styles: [
         '.pointer-not-allowed:hover { cursor: not-allowed }'
-    ]
+    ],
+    imports: [StaffCommonModule]
 })
 export class EditToolbarComponent implements OnInit {
+    private idl = inject(IdlService);
+    private net = inject(NetService);
+    private store = inject(ServerStoreService);
+    private auth = inject(AuthService);
+
 
     @Input() patronId: number;
 
@@ -44,13 +51,6 @@ export class EditToolbarComponent implements OnInit {
 
     searches: {[category: string]: DupeSearch} = {};
     addressAlerts: IdlObject[] = [];
-
-    constructor(
-        private idl: IdlService,
-        private net: NetService,
-        private store: ServerStoreService,
-        private auth: AuthService,
-    ) {}
 
     ngOnInit() {
         // Check if suggested fields should be the default.

@@ -1,48 +1,50 @@
 import {Pager} from '@eg/share/util/pager';
-import {Component, OnInit, Input, ViewChild} from '@angular/core';
+import { Component, OnInit, Input, ViewChild, inject } from '@angular/core';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {GridDataSource} from '@eg/share/grid/grid';
 import {Router} from '@angular/router';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
-import {StringComponent} from '@eg/share/string/string.component';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
+import { FmRecordEditorModule } from '@eg/share/fm-editor/fm-editor.module';
+import { GridModule } from '@eg/share/grid/grid.module';
+import { StaffBannerComponent } from '@eg/staff/share/staff-banner.component';
+
+const DAYS_IN_WEEK = 7;
 
 @Component({
-    templateUrl: './survey.component.html'
+    templateUrl: './survey.component.html',
+    imports: [
+        FmRecordEditorModule,
+        GridModule,
+        FmRecordEditorComponent,
+        StaffBannerComponent
+    ]
 })
 
 export class SurveyComponent implements OnInit {
+    private auth = inject(AuthService);
+    private idl = inject(IdlService);
+    private net = inject(NetService);
+    private pcrud = inject(PcrudService);
+    private toast = inject(ToastService);
+    private router = inject(Router);
+
 
     defaultNewRecord: IdlObject;
     gridDataSource: GridDataSource;
 
     @ViewChild('editDialog', { static: true }) editDialog: FmRecordEditorComponent;
     @ViewChild('grid', { static: true }) grid: GridComponent;
-    @ViewChild('successString', { static: true }) successString: StringComponent;
-    @ViewChild('createString', { static: true }) createString: StringComponent;
-    @ViewChild('createErrString', { static: true }) createErrString: StringComponent;
-    @ViewChild('updateFailedString', { static: true }) updateFailedString: StringComponent;
-    @ViewChild('deleteFailedString', { static: true }) deleteFailedString: StringComponent;
-    @ViewChild('deleteSuccessString', { static: true }) deleteSuccessString: StringComponent;
-    @ViewChild('endSurveyFailedString', { static: true }) endSurveyFailedString: StringComponent;
-    @ViewChild('endSurveySuccessString', { static: true }) endSurveySuccessString: StringComponent;
 
     @Input() sortField: string;
     @Input() idlClass = 'asv';
     @Input() dialogSize: 'sm' | 'lg' = 'lg';
 
-    constructor(
-        private auth: AuthService,
-        private idl: IdlService,
-        private net: NetService,
-        private pcrud: PcrudService,
-        private toast: ToastService,
-        private router: Router
-    ) {
+    constructor() {
         this.gridDataSource = new GridDataSource();
     }
 
@@ -73,9 +75,10 @@ export class SurveyComponent implements OnInit {
         );
 
         this.defaultNewRecord = this.idl.create('asv');
+        const now = new Date();
         const nextWeek = new Date();
-        // eslint-disable-next-line no-magic-numbers
-        nextWeek.setDate(nextWeek.getDate() + 7);
+        nextWeek.setDate(nextWeek.getDate() + DAYS_IN_WEEK);
+        this.defaultNewRecord.start_date(now.toISOString());
         this.defaultNewRecord.end_date(nextWeek.toISOString());
     }
 
@@ -94,10 +97,10 @@ export class SurveyComponent implements OnInit {
             surveys[i].end_date(today);
             this.pcrud.update(surveys[i]).toPromise().then(
                 async (ok) => {
-                    this.toast.success(await this.endSurveySuccessString.current());
+                    this.toast.success($localize`Survey ended`);
                 },
                 async (err) => {
-                    this.toast.warning(await this.endSurveyFailedString.current());
+                    this.toast.warning($localize`Ending Survey failed or was not allowed`);
                 }
             );
         }
@@ -111,13 +114,11 @@ export class SurveyComponent implements OnInit {
                 'open-ils.circ.survey.delete.cascade.override',
                 this.auth.token(), idToDelete
             ).subscribe({ next: res => {
-                this.deleteSuccessString.current()
-                    .then(str => this.toast.success(str));
+                this.toast.success($localize`Delete of Survey succeeded`);
                 this.grid.reload();
                 return res;
             }, error: (err: unknown) => {
-                this.deleteFailedString.current()
-                    .then(str => this.toast.success(str));
+                this.toast.success($localize`Delete of Survey failed or was not allowed`);
             } });
         }
     };
@@ -131,13 +132,11 @@ export class SurveyComponent implements OnInit {
         this.editDialog.datetimeFields = 'start_date,end_date';
         this.editDialog.open({size: this.dialogSize}).subscribe(
             { next: ok => {
-                this.createString.current()
-                    .then(str => this.toast.success(str));
+                this.toast.success($localize`New Survey Added`);
                 this.grid.reload();
             }, error: (rejection: any) => {
                 if (!rejection.dismissed) {
-                    this.createErrString.current()
-                        .then(str => this.toast.danger(str));
+                    this.toast.danger($localize`Failed to Create New Survey`);
                 }
             } }
         );

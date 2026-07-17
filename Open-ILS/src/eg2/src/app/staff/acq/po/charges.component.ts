@@ -1,23 +1,40 @@
-import {Component, OnInit, OnDestroy, Input, ViewChild} from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, inject } from '@angular/core';
 import {Subscription} from 'rxjs';
-import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
 import {AuthService} from '@eg/core/auth.service';
 import {NetService} from '@eg/core/net.service';
 import {EventService} from '@eg/core/event.service';
 import {PcrudService} from '@eg/core/pcrud.service';
-import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {PoService} from './po.service';
 import {DisencumberChargeDialogComponent} from './disencumber-charge-dialog.component';
 import {PermService} from '@eg/core/perm.service';
+import { ComboboxComponent } from '@eg/share/combobox/combobox.component';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { FundLabelPipe } from '@eg/core/format.service';
 
 
 @Component({
     templateUrl: 'charges.component.html',
-    selector: 'eg-acq-po-charges'
+    selector: 'eg-acq-po-charges',
+    imports: [
+        ComboboxComponent,
+        CommonModule,
+        DisencumberChargeDialogComponent,
+        FormsModule,
+        FundLabelPipe
+    ]
 })
 export class PoChargesComponent implements OnInit, OnDestroy {
+    private idl = inject(IdlService);
+    private net = inject(NetService);
+    private evt = inject(EventService);
+    private auth = inject(AuthService);
+    private pcrud = inject(PcrudService);
+    poService = inject(PoService);
+    private perm = inject(PermService);
+
 
     showBody = false;
     canModify = false;
@@ -26,17 +43,6 @@ export class PoChargesComponent implements OnInit, OnDestroy {
     owners: number[] = [];
 
     @ViewChild('disencumberChargeDialog') disencumberChargeDialog: DisencumberChargeDialogComponent;
-
-    constructor(
-        private idl: IdlService,
-        private net: NetService,
-        private evt: EventService,
-        private auth: AuthService,
-        private pcrud: PcrudService,
-        private org: OrgService,
-        public  poService: PoService,
-        private perm: PermService
-    ) {}
 
     ngOnInit() {
         if (this.po()) {

@@ -1,12 +1,23 @@
-import { enableProdMode } from '@angular/core';
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+import { enableProdMode, importProvidersFrom, provideZoneChangeDetection } from '@angular/core';
 
-import { BaseModule } from './app/app.module';
 import { environment } from './environments/environment';
+import { EgCommonModule } from './app/common.module';
+import { BaseRoutingModule } from './app/routing.module';
+import { BrowserModule, bootstrapApplication } from '@angular/platform-browser';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { CookieModule } from 'ngx-cookie';
+import { BaseComponent } from './app/app.component';
+import { provideHttpClient } from '@angular/common/http';
 
 if (environment.production) {
     enableProdMode();
 }
 
-platformBrowserDynamic().bootstrapModule(BaseModule)
+bootstrapApplication(BaseComponent, {
+    providers: [
+        provideZoneChangeDetection(),
+        provideHttpClient(),
+        importProvidersFrom(EgCommonModule.forRoot(), BaseRoutingModule, BrowserModule, NgbModule, CookieModule.forRoot())
+    ]
+})
     .catch(err => console.log(err));

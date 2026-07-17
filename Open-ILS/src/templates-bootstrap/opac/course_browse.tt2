@@ -16,36 +16,43 @@
     depart_list = ['blimit', 'bterm', 'bpivot'];
     ctx.metalinks.push('<meta name="robots" content="noindex,follow">');
 %]
-<main id="main">
-<h2 class="sr-only">[% l('Course Browse') %]</h2>
 
-<div id="content-wrapper" class="my-5">
-  <div class="container mx-auto w-75">
-    <div id="browse-for-courses">
-      <div id="browse-controls" class='row'>
-        <form method="get" onsubmit="$('browse-submit-spinner').className = ''; return true" class="mx-auto">
-          <input type="hidden" name="blimit"
-            value="[% blimit | html %]" />
-          [% control_qtype = INCLUDE "opac/parts/course_search/qtype_selector.tt2"
-            id="browse-search-class" browse_only=1 plural=1 %]
+<div id="content-wrapper">
+  <div class="container">
+    <div id="browse-for-courses" role="search" aria-labelledby="browse-for-courses-header">
+      <div id="browse-controls">
+        <form method="get" onsubmit="$('browse-submit-spinner').className = ''; return true">
+          <h2 class="w-100" id="browse-for-courses-header">[% l('Course Browse') %]</h2>
 
-          [% control_bterm = BLOCK %]
-            <input type="text" name="bterm" id="browse-term" 
-              aria-label="[% l('Browse term') %]"
-              value="[% CGI.param('bterm') | html %]">
-          [% END; #control_bterm BLOCK %]
+          <input type="hidden" name="blimit" value="[% blimit | html %]" />
+          
+          <div class="row row-cols-auto" id="browse-for-courses-form">
+            <div class="col">
+                <label class="form-label" for="browse-search-class">[% l('Browse for') %]</label>
+                [% PROCESS "opac/parts/course_search/qtype_selector.tt2"
+                  id="browse-search-class" browse_only=1 plural=1 ariaLabel=0 %]
+            </div>
 
-          [% control_locg = INCLUDE build_org_selector id='browse-context'
-            show_log_groups=1 arialabel=l('Select owning Library') %]
-
-          [% l('Browse for [_1] starting with [_2] in [_3]',
-              control_qtype, control_bterm, control_locg) %]
-
-          <button id='search-submit-go' type="submit" class="btn btn-confirm my-2"><i class="fas fa-book-reader" aria-hidden="true"></i> [% l('Browse') %]</button>
-          <img id="browse-submit-spinner" class="hidden"
-            style="width: 16px; height: 16px;"
-            alt="[% l('Search in progress icon') %]"
-            src="[% ctx.media_prefix %]/opac/images/progressbar_green.gif[% ctx.cache_key %]" />
+            <div class="col">
+                <label class="form-label" for="browse-term">[% l('Starting with') %]</label>
+                <input type="text" name="bterm" id="browse-term" class="form-control"
+                  aria-label="[% l('Browse term') %]"
+                  value="[% CGI.param('bterm') | html %]">
+            </div>
+            <div class="col">
+                <label class="form-label" for="browse-context">[% l('In') %]</label>
+                [% PROCESS build_org_selector id='browse-context'
+                            show_log_groups=1 arialabel=0 %]
+            </div>
+                      
+            <div class="col">
+                <button id='search-submit-go' type="submit" class="btn btn-confirm"><i class="fas fa-book-reader" aria-hidden="true"></i> [% l('Browse') %]</button>
+                        <img id="browse-submit-spinner" class="hidden"
+                          style="width: 16px; height: 16px;"
+                          alt="[% l('Search in progress icon') %]"
+                          src="[% ctx.media_prefix %]/opac/images/progressbar_green.gif[% ctx.cache_key %]" />
+            </div>
+          </div>
         </form>
       </div>
 
@@ -88,10 +95,24 @@
         </div>
         [% END %]
       [% END %]
+    </div>
 
-      [% PROCESS browse_pager id=0 %]
-
+    <main id="main">
       <div id="browse-results">
+        [% PROCESS browse_pager id=0 %]
+
+        [% bterm_label = CGI.param('bterm') | html; %]
+
+        [% SWITCH CGI.param('qtype') %]
+          [% CASE 'name' %]
+            <h2>[% l('Browsing course names starting with <i>[_1]</i>', bterm_label) %]</h2>
+          [% CASE 'course_number' %]
+            <h2>[% l('Browsing course numbers starting with <i>[_1]</i>', bterm_label) %]</h2>
+          [% CASE 'instructor' %]
+            <h2>[% l('Browsing course instructors starting with <i>[_1]</i>', bterm_label) %]</h2>
+          [% CASE default %]
+        [% END %]
+
         [% IF ctx.browse_error %]
           <span class="browse-error">
             [% l("An error occurred browsing records. " _
@@ -139,11 +160,10 @@
       </div>
 
       [% PROCESS browse_pager id=1 %]
-    </div>
+    </main>
 
     <div class="common-full-pad"></div>
   </div>
 </div>
 
 [% END %]
-</main>

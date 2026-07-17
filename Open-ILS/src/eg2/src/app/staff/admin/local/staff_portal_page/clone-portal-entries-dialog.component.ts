@@ -1,22 +1,27 @@
-import {Component, Input, ViewChild, TemplateRef, OnInit} from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
-import {NgForm, NG_VALIDATORS} from '@angular/forms';
+import { StaffCommonModule } from '@eg/staff/common.module';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'eg-clone-portal-entries-dialog',
-    templateUrl: './clone-portal-entries-dialog.component.html'
+    templateUrl: './clone-portal-entries-dialog.component.html',
+    imports: [StaffCommonModule]
 })
 
 export class ClonePortalEntriesDialogComponent
     extends DialogComponent implements OnInit {
+    private modal: NgbModal;
+
 
     result = { };
 
-    constructor(
-        private modal: NgbModal
-    ) {
+    constructor() {
+        const modal = inject(NgbModal);
+
         super(modal);
+
+        this.modal = modal;
     }
 
     ngOnInit() {

@@ -1,8 +1,8 @@
 /* eslint-disable */
-import {Component, ViewChild, OnInit, Input, TemplateRef, Directive, AfterViewInit, ElementRef} from '@angular/core';
+import { Component, ViewChild, OnInit, Input, TemplateRef, Directive, ElementRef, inject } from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {FormBuilder, FormGroup, FormControl, Validators, FormArray} from '@angular/forms';
-import {map, mergeMap, defaultIfEmpty, last} from 'rxjs/operators';
+import {FormsModule} from '@angular/forms';
+import {map, mergeMap} from 'rxjs/operators';
 import {EMPTY, Observable, of, from, finalize} from 'rxjs';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 import {PromptDialogComponent} from '@eg/share/dialog/prompt.component';
@@ -17,17 +17,66 @@ import {Pager} from '@eg/share/util/pager';
 import {StoreService} from '@eg/core/store.service';
 import {Z3950SearchService} from './z3950.service';
 import {EventService} from '@eg/core/event.service';
+import {HoldingsModule} from '@eg/staff/share/holdings/holdings.module';
 import {HoldingsService} from '@eg/staff/share/holdings/holdings.service';
 import {ComboboxEntry, ComboboxComponent} from '@eg/share/combobox/combobox.component';
 import {ProgressInlineComponent} from '@eg/share/dialog/progress-inline.component';
+import { StaffBannerComponent } from '../staff-banner.component';
+import { TitleComponent } from '@eg/share/title/title.component';
+import { MarcEditorComponent } from '../marc-edit/editor.component';
+
+import { OrgSelectComponent } from '@eg/share/org-select/org-select.component';
+import { GridModule } from '@eg/share/grid/grid.module';
+import { MarcHtmlComponent } from '@eg/share/catalog/marc-html.component';
+import { FastAddSelectorComponent } from '../marc-edit/fast-add-selector.component';
+
+@Directive({
+    selector: '[egautofocus]'
+})
+export class AutofocusDirective implements OnInit {
+    private host = inject(ElementRef);
+
+    @Input() egautofocus: boolean;
+
+    ngOnInit() {
+        if (this.egautofocus) {this.host.nativeElement.focus();}
+    }
+}
 
 @Component({
     selector: 'eg-z3950-search',
     styleUrls: ['z3950-search.component.css'],
-    templateUrl: 'z3950-search.component.html'
+    templateUrl: 'z3950-search.component.html',
+    imports: [
+        AutofocusDirective,
+        ComboboxComponent,
+        ConfirmDialogComponent,
+        FastAddSelectorComponent,
+        FormsModule,
+        GridModule,
+        HoldingsModule,
+        MarcEditorComponent,
+        MarcHtmlComponent,
+        OrgSelectComponent,
+        ProgressInlineComponent,
+        PromptDialogComponent,
+        StaffBannerComponent,
+        TitleComponent
+    ]
 })
 
 export class Z3950SearchComponent implements OnInit {
+    private route = inject(ActivatedRoute);
+    private holdings = inject(HoldingsService);
+    private toast = inject(ToastService);
+    private net = inject(NetService);
+    private idl = inject(IdlService);
+    private pcrud = inject(PcrudService);
+    private store = inject(StoreService);
+    private zService = inject(Z3950SearchService);
+    private evt = inject(EventService);
+    private auth = inject(AuthService);
+
     static domId = 0;
 
     cellTextGenerator: GridCellTextGenerator;
@@ -96,18 +145,7 @@ export class Z3950SearchComponent implements OnInit {
         });
     }
 
-    constructor(
-        private route: ActivatedRoute,
-        private holdings: HoldingsService,
-        private toast: ToastService,
-        private net: NetService,
-        private idl: IdlService,
-        private pcrud: PcrudService,
-        private store: StoreService,
-        private zService: Z3950SearchService,
-        private evt: EventService,
-        private auth: AuthService
-    ) {
+    constructor() {
 
         this.overlayTarget = this.store.getLocalItem('eg.cat.marked_overlay_record');
         if (this.overlayTarget) {
@@ -784,18 +822,5 @@ export class Z3950SearchComponent implements OnInit {
             b = b['labels'][0].toLowerCase();
             return a < b ? -1 : (a > b ? 1 : 0);
         });
-    }
-}
-
-@Directive({
-    selector: '[egautofocus]'
-})
-export class AutofocusDirective implements OnInit {
-    @Input() egautofocus: boolean;
-
-    constructor(private host: ElementRef) {}
-
-    ngOnInit() {
-        if (this.egautofocus) {this.host.nativeElement.focus();}
     }
 }

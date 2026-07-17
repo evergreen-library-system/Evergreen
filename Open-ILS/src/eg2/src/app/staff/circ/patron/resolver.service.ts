@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import {Router, Resolve, RouterStateSnapshot,
     ActivatedRouteSnapshot} from '@angular/router';
 import {ServerStoreService} from '@eg/core/server-store.service';
@@ -10,12 +10,10 @@ import {CircService} from '@eg/staff/share/circ/circ.service';
 
 @Injectable()
 export class PatronResolver implements Resolve<Promise<any[]>> {
+    private store = inject(ServerStoreService);
+    private context = inject(PatronContextService);
+    private circ = inject(CircService);
 
-    constructor(
-        private store: ServerStoreService,
-        private context: PatronContextService,
-        private circ: CircService
-    ) {}
 
     resolve(
         route: ActivatedRouteSnapshot,
@@ -80,6 +78,9 @@ export class PatronResolver implements Resolve<Promise<any[]>> {
             'ui.patron.edit.au.ident_value.suggest',
             'ui.patron.edit.au.ident_value2.show',
             'ui.patron.edit.au.ident_value2.suggest',
+            'ui.patron.edit.au.photo_url.require',
+            'ui.patron.edit.au.photo_url.show',
+            'ui.patron.edit.au.photo_url.suggest',
             'ui.patron.edit.au.email.require',
             'ui.patron.edit.au.email.show',
             'ui.patron.edit.au.email.suggest',

@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import {Router} from '@angular/router';
 import {Observable, of, mergeMap, switchMap, tap} from 'rxjs';
 import {IdlObject} from '@eg/core/idl.service';
@@ -22,14 +22,11 @@ export interface CaptureInformation {
 
 @Injectable({providedIn: 'root'})
 export class ReservationActionsService {
+    private auth = inject(AuthService);
+    private pcrud = inject(PcrudService);
+    private printer = inject(PrintService);
+    private router = inject(Router);
 
-    constructor(
-        private auth: AuthService,
-        private pcrud: PcrudService,
-        private printer: PrintService,
-        private router: Router,
-    ) {
-    }
 
     manageReservationsByResource = (barcode: string) => {
         this.router.navigate(['/staff', 'booking', 'manage_reservations', 'by_resource', barcode]);

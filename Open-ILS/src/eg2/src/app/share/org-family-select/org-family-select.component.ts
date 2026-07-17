@@ -1,11 +1,12 @@
 /* eslint-disable no-unused-expressions */
-import {Component, EventEmitter, OnInit, Input, Output, ViewChildren, QueryList, forwardRef} from '@angular/core';
-import {ControlValueAccessor, FormGroup, FormControl, NG_VALUE_ACCESSOR} from '@angular/forms';
+import { Component, EventEmitter, OnInit, Input, Output, ViewChildren, QueryList, forwardRef, inject } from '@angular/core';
+import {ControlValueAccessor, FormGroup, FormControl, NG_VALUE_ACCESSOR, ReactiveFormsModule} from '@angular/forms';
 import {AuthService} from '@eg/core/auth.service';
 import {IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
 import {OrgSelectComponent} from '@eg/share/org-select/org-select.component';
 import {ServerStoreService} from '@eg/core/server-store.service';
+
 
 export interface OrgFamily {
   primaryOrgId: number;
@@ -23,9 +24,17 @@ export interface OrgFamily {
             useExisting: forwardRef(() => OrgFamilySelectComponent),
             multi: true
         }
+    ],
+    imports: [
+        OrgSelectComponent,
+        ReactiveFormsModule
     ]
 })
 export class OrgFamilySelectComponent implements ControlValueAccessor, OnInit {
+    private auth = inject(AuthService);
+    private org = inject(OrgService);
+    private serverStore = inject(ServerStoreService);
+
 
     // ARIA label for selector. Required if there is no <label> in the markup.
     @Input() ariaLabel?: string;
@@ -78,13 +87,6 @@ export class OrgFamilySelectComponent implements ControlValueAccessor, OnInit {
 
     propagateChange = (_: OrgFamily) => {};
     propagateTouch = () => {};
-
-    constructor(
-        private auth: AuthService,
-        private org: OrgService,
-        private serverStore: ServerStoreService
-    ) {
-    }
 
     ngOnInit() {
         if (this.selectedOrgId) {

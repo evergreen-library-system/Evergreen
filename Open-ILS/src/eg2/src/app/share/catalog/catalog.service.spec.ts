@@ -3,30 +3,37 @@ import { CatalogService } from './catalog.service';
 import { of } from 'rxjs';
 import { CatalogSearchContext } from './search-context';
 import { BibRecordService } from './bib-record.service';
+import { TestBed } from '@angular/core/testing';
+import { NetService } from '@eg/core/net.service';
+import { PermService } from '@eg/core/perm.service';
+import { OrgService } from '@eg/core/org.service';
+import { PcrudService } from '@eg/core/pcrud.service';
+import { BasketService } from './basket.service';
+import { ServerStoreService } from '@eg/core/server-store.service';
 
 describe('CatalogService', () => {
     describe('fetchBibSummaries', () => {
+        const mockBibNetService = MockGenerators.netService({
+            'open-ils.search.biblio.record.catalog_summary': of({
+                record: MockGenerators.idlObject({id: 248, deleted: false}),
+                urls: []
+            }),
+            'open-ils.search.staff.location_groups_with_lassos': of(true)
+        });
+        beforeEach(() => {
+            TestBed.configureTestingModule({providers: [
+                {provide: NetService, useValue: mockBibNetService},
+                {provide: OrgService, useValue: null},
+                {provide: PermService, useValue: MockGenerators.permService({PLACE_UNFILLABLE_HOLD: true})},
+                {provide: PcrudService, useValue: null},
+                {provide: BasketService, useValue: null},
+                {provide: ServerStoreService, useValue: MockGenerators.serverStoreService(true)},
+                BibRecordService,
+                CatalogService
+            ]});
+        });
         it('passes library group information to the record service', async () => {
-            const mockBibNetService = MockGenerators.netService({
-                'open-ils.search.biblio.record.catalog_summary': of({
-                    record: MockGenerators.idlObject({id: 248, deleted: false}),
-                    urls: []
-                })
-            });
-            const service = new CatalogService(
-                MockGenerators.netService({
-                    'open-ils.search.staff.location_groups_with_lassos': of(true)
-                }),
-                null,
-                null,
-                new BibRecordService(
-                    mockBibNetService,
-                    null,
-                    MockGenerators.permService({PLACE_UNFILLABLE_HOLD: true})
-                ),
-                null,
-                MockGenerators.serverStoreService(true)
-            );
+            const service = TestBed.inject(CatalogService);
             const context = new CatalogSearchContext();
             context.searchOrg = MockGenerators.idlObject({
                 id: 300,

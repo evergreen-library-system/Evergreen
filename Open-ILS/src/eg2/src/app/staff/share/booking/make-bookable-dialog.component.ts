@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy, Input, ViewChild} from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, ViewChild, inject } from '@angular/core';
 import {Subscription} from 'rxjs';
 import {IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
@@ -10,16 +10,29 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {StringComponent} from '@eg/share/string/string.component';
 
+import { RouterModule } from '@angular/router';
+
 /**
  * Dialog for making items bookable
  */
 
 @Component({
     selector: 'eg-make-bookable-dialog',
-    templateUrl: 'make-bookable-dialog.component.html'
+    templateUrl: 'make-bookable-dialog.component.html',
+    imports: [
+        RouterModule,
+        StringComponent
+    ]
 })
 export class MakeBookableDialogComponent
     extends DialogComponent implements OnInit, OnDestroy {
+    private modal: NgbModal;
+    private toast = inject(ToastService);
+    private net = inject(NetService);
+    private pcrud = inject(PcrudService);
+    private evt = inject(EventService);
+    private auth = inject(AuthService);
+
 
     // Note copyIds must refer to copies that belong to a single
     // bib record.
@@ -37,14 +50,12 @@ export class MakeBookableDialogComponent
     @ViewChild('successMsg', { static: true }) private successMsg: StringComponent;
     @ViewChild('errorMsg', { static: true }) private errorMsg: StringComponent;
 
-    constructor(
-        private modal: NgbModal, // required for passing to parent
-        private toast: ToastService,
-        private net: NetService,
-        private pcrud: PcrudService,
-        private evt: EventService,
-        private auth: AuthService) {
+    constructor() {
+        const modal = inject(NgbModal);
+
         super(modal); // required for subclassing
+
+        this.modal = modal;
     }
 
     ngOnInit() {

@@ -1,20 +1,22 @@
-import {Component, HostListener, OnDestroy, OnInit} from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit, inject } from '@angular/core';
 import {IdlObject} from '@eg/core/idl.service';
 import {StaffCatalogService} from './catalog.service';
-import {BasketService} from '@eg/share/catalog/basket.service';
 import {Subject, takeUntil} from 'rxjs';
+import { StaffCommonModule } from '../common.module';
+import { SearchFormComponent } from './search-form.component';
 
 @Component({
-    templateUrl: 'catalog.component.html'
+    templateUrl: 'catalog.component.html',
+    imports: [
+        SearchFormComponent,
+        StaffCommonModule
+    ]
 })
 export class CatalogComponent implements OnInit, OnDestroy {
+    private staffCat = inject(StaffCatalogService);
+
 
     private onDestroy = new Subject<null>();
-
-    constructor(
-        private basket: BasketService,
-        private staffCat: StaffCatalogService
-    ) {}
 
     ngOnInit() {
         // Create the search context that will be used by all of my

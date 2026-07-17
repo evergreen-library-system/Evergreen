@@ -18,20 +18,26 @@
       </tr>
     </thead>
     <tbody class='oils-selfck-item-table'>
-	    <tr *ngFor="let xact of xacts">
-        <td>
-          <ng-container *ngIf="xact.summary().xact_type() === 'circulation'" i18n>
+      @for (xact of xacts; track xact) {
+        <tr>
+          <td>
+            @if (xact.summary().xact_type() === 'circulation') {
+              <ng-container i18n>
             Circulation
           </ng-container>
-          <ng-container *ngIf="xact.summary().xact_type() !== 'circulation'" i18n>
+            }
+            @if (xact.summary().xact_type() !== 'circulation') {
+              <ng-container i18n>
             Miscellaneous
           </ng-container>
-        </td>
-        <td>{{getDetails(xact)}}</td>
-        <td>{{xact.summary().total_owed() | currency}}</td>
-        <td>{{xact.summary().total_paid() | currency}}</td>
-        <td>{{xact.summary().balance_owed() | currency}}</td>
-      </tr>
+            }
+          </td>
+          <td>{{getDetails(xact)}}</td>
+          <td>{{xact.summary().total_owed() | currency}}</td>
+          <td>{{xact.summary().total_paid() | currency}}</td>
+          <td>{{xact.summary().balance_owed() | currency}}</td>
+        </tr>
+      }
     </tbody>
   </table>
 </div>

@@ -1,5 +1,5 @@
 /* eslint-disable */
-import {Component, OnInit, AfterViewInit, Renderer2} from '@angular/core';
+import { Component, OnInit, AfterViewInit, Renderer2, inject } from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 import {IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
@@ -8,6 +8,11 @@ import {CatalogService} from '@eg/share/catalog/catalog.service';
 import {CatalogSearchContext, CatalogSearchState} from '@eg/share/catalog/search-context';
 import {StaffCatalogService} from './catalog.service';
 import {NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
+import { StaffCommonModule } from '../common.module';
+import { CatalogOrgSelectComponent } from './catalog-org-select/catalog-org-select.component';
+import { BasketActionsComponent } from './basket-actions.component';
+import { SearchTemplatesComponent } from './search-templates.component';
+import { SortOrderSelectComponent } from './sort-order-select/sort-order-select.component';
 
 // Maps opac-style default tab names to local tab names.
 const LEGACY_TAB_NAME_MAP = {
@@ -25,9 +30,24 @@ const COLLAPSE_ON_PAGES = [
 @Component({
     selector: 'eg-catalog-search-form',
     styleUrls: ['search-form.component.css'],
-    templateUrl: 'search-form.component.html'
+    templateUrl: 'search-form.component.html',
+    imports: [
+        BasketActionsComponent,
+        CatalogOrgSelectComponent,
+        SearchTemplatesComponent,
+        SortOrderSelectComponent,
+        StaffCommonModule
+    ]
 })
 export class SearchFormComponent implements OnInit, AfterViewInit {
+    private renderer = inject(Renderer2);
+    private router = inject(Router);
+    private route = inject(ActivatedRoute);
+    private org = inject(OrgService);
+    private cat = inject(CatalogService);
+    private store = inject(ServerStoreService);
+    private staffCat = inject(StaffCatalogService);
+
 
     context: CatalogSearchContext;
     ccvmMap: {[ccvm: string]: IdlObject[]} = {};
@@ -55,15 +75,7 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
     sortMethodSetting: string;
 
 
-    constructor(
-        private renderer: Renderer2,
-        private router: Router,
-        private route: ActivatedRoute,
-        private org: OrgService,
-        private cat: CatalogService,
-        private store: ServerStoreService,
-        private staffCat: StaffCatalogService
-    ) {
+    constructor() {
         this.copyLocations = [];
         this.copyLocationGroups = [];
         this.libraryGroups = [];

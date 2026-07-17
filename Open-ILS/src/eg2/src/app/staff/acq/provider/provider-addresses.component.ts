@@ -1,11 +1,8 @@
 
-import {Component, OnInit, AfterViewInit, OnDestroy, Input, ViewChild} from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy, Input, ViewChild, inject } from '@angular/core';
 import {EMPTY, throwError, from, Subscription, map} from 'rxjs';
-import {Router, ActivatedRoute} from '@angular/router';
 import {Pager} from '@eg/share/util/pager';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
-import {NetService} from '@eg/core/net.service';
-import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {EventService} from '@eg/core/event.service';
 import {GridComponent} from '@eg/share/grid/grid.component';
@@ -14,12 +11,24 @@ import {ProviderRecordService} from './provider-record.service';
 import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
 import {StringComponent} from '@eg/share/string/string.component';
 import {ToastService} from '@eg/share/toast/toast.service';
+import { GridModule } from '@eg/share/grid/grid.module';
 
 @Component({
     selector: 'eg-provider-addresses',
     templateUrl: 'provider-addresses.component.html',
+    imports: [
+        FmRecordEditorComponent,
+        GridModule,
+        StringComponent
+    ]
 })
 export class ProviderAddressesComponent implements OnInit, AfterViewInit, OnDestroy {
+    private evt = inject(EventService);
+    private pcrud = inject(PcrudService);
+    private idl = inject(IdlService);
+    private providerRecord = inject(ProviderRecordService);
+    private toast = inject(ToastService);
+
 
     addresses: any[] = [];
 
@@ -46,18 +55,6 @@ export class ProviderAddressesComponent implements OnInit, AfterViewInit, OnDest
 
     // Size of create/edito dialog.  Uses large by default.
     @Input() dialogSize: 'sm' | 'lg' = 'lg';
-
-    constructor(
-        private router: Router,
-        private route: ActivatedRoute,
-        private net: NetService,
-        private evt: EventService,
-        private pcrud: PcrudService,
-        private idl: IdlService,
-        private auth: AuthService,
-        private providerRecord: ProviderRecordService,
-        private toast: ToastService) {
-    }
 
     ngOnInit() {
         this.gridSource = this.getDataSource();

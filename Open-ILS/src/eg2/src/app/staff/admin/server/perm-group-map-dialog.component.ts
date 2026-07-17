@@ -1,18 +1,23 @@
 /* eslint-disable no-shadow, @typescript-eslint/member-ordering */
-import {Component, Input, OnDestroy, OnInit, Renderer2} from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, Renderer2, inject } from '@angular/core';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
-import {NgbModal, NgbTypeaheadSelectItemEvent} from '@ng-bootstrap/ng-bootstrap';
-import {FormArray, FormBuilder} from '@angular/forms';
+import {NgbModal, NgbTypeahead, NgbTypeaheadSelectItemEvent} from '@ng-bootstrap/ng-bootstrap';
+import {FormArray, FormBuilder, ReactiveFormsModule} from '@angular/forms';
 import {catchError, debounceTime, distinctUntilChanged, exhaustMap, map, takeUntil, tap, toArray,
     Observable, Subject, of, OperatorFunction} from 'rxjs';
+
 
 interface PermEntry { id: number; label: string; }
 
 @Component({
     selector: 'eg-perm-group-map-dialog',
-    templateUrl: './perm-group-map-dialog.component.html'
+    templateUrl: './perm-group-map-dialog.component.html',
+    imports: [
+        NgbTypeahead,
+        ReactiveFormsModule
+    ]
 })
 
 /**
@@ -20,6 +25,12 @@ interface PermEntry { id: number; label: string; }
  */
 export class PermGroupMapDialogComponent
     extends DialogComponent implements OnInit, OnDestroy {
+    private idl = inject(IdlService);
+    private pcrud = inject(PcrudService);
+    private modal: NgbModal;
+    private renderer = inject(Renderer2);
+    private fb = inject(FormBuilder);
+
 
     @Input() permGroup: IdlObject;
 
@@ -48,13 +59,12 @@ export class PermGroupMapDialogComponent
     onCreate = new Subject<void>();
     onDestroy = new Subject<void>();
 
-    constructor(
-        private idl: IdlService,
-        private pcrud: PcrudService,
-        private modal: NgbModal,
-        private renderer: Renderer2,
-        private fb: FormBuilder) {
+    constructor() {
+        const modal = inject(NgbModal);
+
         super(modal);
+
+        this.modal = modal;
     }
 
     ngOnInit() {

@@ -10,6 +10,7 @@ import { PrintService } from '@eg/share/print/print.service';
 import { ToastService } from '@eg/share/toast/toast.service';
 import { MockGenerators } from 'test_data/mock_generators';
 import { SerialsService } from './serials.service';
+import { ItemLocationService } from '@eg/share/item-location-select/item-location.service';
 
 const template = MockGenerators.idlObject({
     circ_modifier: 'DEFAULT',
@@ -46,6 +47,7 @@ describe('SerialsReceiveComponent', () => {
                 {provide: OrgService, useValue: jasmine.createSpyObj<OrgService>(['ancestors'])},
                 {provide: AuthService, useValue: MockGenerators.authService()},
                 {provide: PermService, useValue: null},
+                {provide: ItemLocationService, useValue: null},
                 {provide: PrintService, useValue: jasmine.createSpyObj<PrintService>(['print'])},
                 {provide: ToastService, useValue: jasmine.createSpyObj<ToastService>(['success'])},
                 {provide: SerialsService, useValue: MockGenerators.serialsService()},
@@ -85,7 +87,7 @@ describe('SerialsReceiveComponent', () => {
     });
     describe('when no receive unit template is set', () => {
         beforeEach(() => {
-            distribution.receive_unit_template.and.returnValue(null);
+            distribution.receive_unit_template(null);
             fixture.detectChanges();
         });
         it('includes a notice', () => {
@@ -95,7 +97,7 @@ describe('SerialsReceiveComponent', () => {
     });
     describe('when a receive unit template exists', () => {
         beforeEach(() => {
-            distribution.receive_unit_template.and.returnValue(template);
+            distribution.receive_unit_template(template);
             component.ngOnInit();
             fixture.detectChanges();
         });
@@ -161,14 +163,14 @@ describe('SerialsReceiveComponent', () => {
             it('sets the issuance unit to -1', fakeAsync(() => {
                 component.receiveItems$().subscribe();
                 tick();
-                expect(sitem.unit).toHaveBeenCalledWith(-1);
+                expect(sitem.unit()).toEqual(-1);
             }));
             describe('when barcode mode is off', () => {
                 it('does not set the issuance unit to -1', fakeAsync(() => {
                     component.barcodeModeOn = false;
                     component.receiveItems$().subscribe();
                     tick();
-                    expect(sitem.unit).not.toHaveBeenCalledWith(-1);
+                    expect(sitem.unit()).not.toEqual(-1);
                 }));
             });
         });
@@ -211,7 +213,7 @@ describe('SerialsReceiveComponent', () => {
     });
     describe('when a routing list exists', () => {
         beforeEach(() => {
-            stream.routing_list_users.and.returnValue(routingList);
+            stream.routing_list_users(routingList);
             component.ngOnInit();
             fixture.detectChanges();
         });
@@ -221,7 +223,7 @@ describe('SerialsReceiveComponent', () => {
     });
     describe('when no routing list exists', () => {
         beforeEach(() => {
-            stream.routing_list_users.and.returnValue([]);
+            stream.routing_list_users([]);
             component.ngOnInit();
             fixture.detectChanges();
         });

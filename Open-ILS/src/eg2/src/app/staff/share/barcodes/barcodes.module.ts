@@ -3,10 +3,8 @@ import {StaffCommonModule} from '@eg/staff/common.module';
 import {BarcodeSelectComponent} from './barcode-select.component';
 
 @NgModule({
-    declarations: [
-        BarcodeSelectComponent
-    ],
     imports: [
+        BarcodeSelectComponent,
         StaffCommonModule
     ],
     exports: [

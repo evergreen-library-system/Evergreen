@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, ViewChild} from '@angular/core';
+import { Component, OnInit, Input, ViewChild, inject } from '@angular/core';
 import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
 import {GridDataSource} from '@eg/share/grid/grid';
 import {GridComponent} from '@eg/share/grid/grid.component';
@@ -8,12 +8,20 @@ import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {StringComponent} from '@eg/share/string/string.component';
 import {ToastService} from '@eg/share/toast/toast.service';
+import { StaffCommonModule } from '@eg/staff/common.module';
+import { OrgFamilySelectComponent } from '@eg/share/org-family-select/org-family-select.component';
 
 @Component({
-    templateUrl: './field-documentation.component.html'
+    templateUrl: './field-documentation.component.html',
+    imports: [StaffCommonModule, FmRecordEditorComponent, OrgFamilySelectComponent]
 })
 
 export class FieldDocumentationComponent implements OnInit {
+    private auth = inject(AuthService);
+    private idl = inject(IdlService);
+    private pcrud = inject(PcrudService);
+    private toast = inject(ToastService);
+
 
     idlEntries: any[] = [];
     fieldOptions: any = {};
@@ -29,13 +37,6 @@ export class FieldDocumentationComponent implements OnInit {
     @ViewChild('createSuccessString', { static: false }) createSuccessString: StringComponent;
     @ViewChild('createFailedString', { static: false }) createFailedString: StringComponent;
     @ViewChild('updateFailedString', { static: false }) updateFailedString: StringComponent;
-
-    constructor(
-    private auth: AuthService,
-        private idl: IdlService,
-        private pcrud: PcrudService,
-        private toast: ToastService
-    ) {}
 
     ngOnInit() {
         this.gridDataSource = new GridDataSource();

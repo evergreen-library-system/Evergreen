@@ -144,7 +144,8 @@ sub fielder_fetch {
 }
 
 sub _fielder_fetch_query_is_bad {
-    my ($query, $depth) = @_;
+    my ($query, $depth, $op, $hash_depth) = @_;
+    $hash_depth ||= 0; # just tracking adjacent hash nesting
 
     if ($depth >= 10) {
         # arbitrarily assume that something naughty is going
@@ -156,12 +157,33 @@ sub _fielder_fetch_query_is_bad {
         return 1 if exists $query->{transform};
         return 1 if exists $query->{params};
         foreach my $key (keys %{ $query }) {
-            if (_fielder_fetch_query_is_bad($query->{$key}, $depth + 1)) {
+            my $hash_depth_inc = 1;
+            if ($key =~ /^\+\w+$/               # Table alias
+                or $key =~ /^-(?:not-)?exists$/ # Correlated filtering subquery
+                or $key =~ /^-(?:and|or|not)$/  # Explicit boolean operator
+            ) {
+                $hash_depth_inc--; # decrement hash_depth_inc here, before the increment below, so we don't break legit clauses
+            }
+            if (_fielder_fetch_query_is_bad($query->{$key}, $depth + 1, $key, $hash_depth + $hash_depth_inc)) {
                 return 1;
             }
         }
         return 0;
     } elsif (ref $query eq 'ARRAY') {
+        if ($depth > 0 and defined $op) { # might be a function construct
+
+            # These are the only valid operators that take an array.
+            return 0 if ($op =~ /^(?:not )?in$/ or $op =~ /^between$/);
+
+            # A caller can use an array of values directly against a field
+            # for IN, but a nested hash means it could be a function-as-value
+            # construct. Care is taken above to allow +-aliased class hints
+            # [NOT] EXISTS subqueries, and explicit booleans.
+            #
+            # EX: { id => [1, 2, 3] } is fine, vs
+            #     { id => { '=' => ['evil_function','with','some','params'] } } is BAD
+            return 1 if ($hash_depth > 1);
+        }
         foreach my $entry (@{ $query }) {
             if (_fielder_fetch_query_is_bad($entry, $depth + 1)) {
                 return 1;

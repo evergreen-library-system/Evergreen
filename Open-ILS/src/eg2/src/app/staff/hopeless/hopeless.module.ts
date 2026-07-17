@@ -6,10 +6,8 @@ import {HopelessComponent} from './hopeless.component';
 import {HoldsModule} from '@eg/staff/share/holds/holds.module';
 
 @NgModule({
-    declarations: [
-        HopelessComponent
-    ],
     imports: [
+        HopelessComponent,
         StaffCommonModule,
         CatalogCommonModule,
         HopelessRoutingModule,

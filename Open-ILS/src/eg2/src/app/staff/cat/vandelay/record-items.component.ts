@@ -1,4 +1,4 @@
-import {Component, Input, ViewChild} from '@angular/core';
+import { Component, Input, ViewChild, inject } from '@angular/core';
 import {Pager} from '@eg/share/util/pager';
 import {NetService} from '@eg/core/net.service';
 import {PcrudService} from '@eg/core/pcrud.service';
@@ -6,23 +6,26 @@ import {AuthService} from '@eg/core/auth.service';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {GridDataSource} from '@eg/share/grid/grid';
 import {VandelayService} from './vandelay.service';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
     selector: 'eg-queued-record-items',
-    templateUrl: 'record-items.component.html'
+    templateUrl: 'record-items.component.html',
+    imports: [StaffCommonModule]
 })
 export class RecordItemsComponent {
+    private net = inject(NetService);
+    private auth = inject(AuthService);
+    private pcrud = inject(PcrudService);
+    private vandelay = inject(VandelayService);
+
 
     @Input() recordId: number;
 
     gridSource: GridDataSource;
     @ViewChild('itemsGrid', { static: true }) itemsGrid: GridComponent;
 
-    constructor(
-        private net: NetService,
-        private auth: AuthService,
-        private pcrud: PcrudService,
-        private vandelay: VandelayService) {
+    constructor() {
 
         this.gridSource = new GridDataSource();
 

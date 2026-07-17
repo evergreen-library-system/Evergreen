@@ -5,7 +5,7 @@
   <div class="modal-header">
     <h4 class="modal-title" i18n>Secondary Permission Groups</h4>
     <button type="button" class="btn-close btn-close-white"
-      i18n-aria-label aria-label="Close dialog" (click)="close()"></button>
+    i18n-aria-label aria-label="Close dialog" (click)="close()"></button>
   </div>
   <div class="modal-body">
     <h5 i18n>
@@ -18,27 +18,35 @@
       <div class="col-lg-6 fw-bold" i18n>Action</div>
     </div>
 
-    <div class="row mt-2" *ngFor="let grp of secondaryGroups">
-      <div class="col-lg-6">{{grp.name()}}</div>
-      <div class="col-lg-6">
-        <button type="button" class="btn btn-destroy" *ngIf="!grp.isdeleted()"
-          (click)="grp.isdeleted(true)" i18n>Remove</button>
-        <button type="button" class="btn btn-normal" *ngIf="grp.isdeleted()"
-          (click)="grp.isdeleted(false)" i18n>Un-Delete</button>
+    @for (grp of secondaryGroups; track grp) {
+      <div class="row mt-2">
+        <div class="col-lg-6">{{grp.name()}}</div>
+        <div class="col-lg-6">
+          @if (!grp.isdeleted()) {
+            <button type="button" class="btn btn-destroy"
+            (click)="grp.isdeleted(true)" i18n>Remove</button>
+          }
+          @if (grp.isdeleted()) {
+            <button type="button" class="btn btn-normal"
+            (click)="grp.isdeleted(false)" i18n>Un-Delete</button>
+          }
+        </div>
       </div>
-    </div>
+    }
 
-    <div class="row mt-2" *ngFor="let grp of pendingGroups">
-      <div class="col-lg-6">{{grp.name()}}</div>
-      <div class="col-lg-6">
-        <button type="button" class="btn btn-destroy" 
+    @for (grp of pendingGroups; track grp) {
+      <div class="row mt-2">
+        <div class="col-lg-6">{{grp.name()}}</div>
+        <div class="col-lg-6">
+          <button type="button" class="btn btn-destroy"
           (click)="removePending(grp)" i18n>Remove Pending</button>
+        </div>
       </div>
-    </div>
+    }
 
     <div class="row mt-2">
       <div class="col-lg-6">
-        <eg-profile-select [(ngModel)]="selectedProfile"></eg-profile-select>  
+        <eg-profile-select [(ngModel)]="selectedProfile"></eg-profile-select>
       </div>
       <div class="col-lg-6">
         <button type="button" class="btn btn-success" (click)="add()" i18n>Add</button>
@@ -47,8 +55,8 @@
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-success"
-      (click)="applyChanges()" i18n>Apply Changes</button>
+    (click)="applyChanges()" i18n>Apply Changes</button>
     <button type="button" class="btn btn-normal"
-      (click)="close()" i18n>Cancel</button>
+    (click)="close()" i18n>Cancel</button>
   </div>
 </ng-template>

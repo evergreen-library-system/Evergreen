@@ -1,24 +1,26 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import { Component, Input, OnInit, ViewChild, inject } from '@angular/core';
 import {ToastService, ToastMessage} from '@eg/share/toast/toast.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
+
 
 const EG_TOAST_TIMEOUT = 10000;
 
 @Component({
     selector: 'eg-toast',
     templateUrl: './toast.component.html',
-    styleUrls: ['./toast.component.css']
+    styleUrls: ['./toast.component.css'],
+    imports: []
 })
 export class ToastComponent implements OnInit {
+    private toast = inject(ToastService);
+    private store = inject(ServerStoreService);
+
 
     messages: ToastMessage[] = [];
     duration: number = EG_TOAST_TIMEOUT;
 
     // track the most recent timeout event
     timeout: any;
-
-    constructor(private toast: ToastService, private store: ServerStoreService) {
-    }
 
     ngOnInit() {
         this.setDuration();

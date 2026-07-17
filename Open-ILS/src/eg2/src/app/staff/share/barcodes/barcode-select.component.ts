@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {NetService} from '@eg/core/net.service';
 import {OrgService} from '@eg/core/org.service';
 import {AuthService} from '@eg/core/auth.service';
@@ -6,6 +6,7 @@ import {PcrudService} from '@eg/core/pcrud.service';
 import {EventService} from '@eg/core/event.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 /* Support barcode completion for barcoded asset/actor data.
  *
@@ -32,22 +33,27 @@ export interface BarcodeSelectResult {
 @Component({
     selector: 'eg-barcode-select',
     templateUrl: './barcode-select.component.html',
+    imports: [StaffCommonModule]
 })
 
 export class BarcodeSelectComponent extends DialogComponent {
+    private modal: NgbModal;
+    private evt = inject(EventService);
+    private org = inject(OrgService);
+    private net = inject(NetService);
+    private pcrud = inject(PcrudService);
+    private auth = inject(AuthService);
+
 
     matches: BarcodeSelectResult[];
     selected: BarcodeSelectResult;
     inputs: {[id: number]: boolean};
 
-    constructor(
-        private modal: NgbModal,
-        private evt: EventService,
-        private org: OrgService,
-        private net: NetService,
-        private pcrud: PcrudService,
-        private auth: AuthService
-    ) { super(modal); }
+    constructor() {
+        const modal = inject(NgbModal);
+        super(modal);
+        this.modal = modal;
+    }
 
     selectionChanged() {
         const id = Object.keys(this.inputs).map(i => Number(i))

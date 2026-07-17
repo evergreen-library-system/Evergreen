@@ -4,10 +4,8 @@ import {CopyLocOrderRoutingModule} from './copy-loc-order-routing.module';
 import {CopyLocOrderComponent} from './copy-loc-order.component';
 
 @NgModule({
-    declarations: [
-        CopyLocOrderComponent
-    ],
     imports: [
+        CopyLocOrderComponent,
         AdminCommonModule,
         CopyLocOrderRoutingModule
     ],

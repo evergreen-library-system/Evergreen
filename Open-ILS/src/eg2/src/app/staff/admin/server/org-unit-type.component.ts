@@ -1,4 +1,4 @@
-import {Component, Input, ViewChild, OnInit} from '@angular/core';
+import { Component, Input, ViewChild, OnInit, inject } from '@angular/core';
 import {Tree, TreeNode} from '@eg/share/tree/tree';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
@@ -8,13 +8,29 @@ import {ToastService} from '@eg/share/toast/toast.service';
 import {StringComponent} from '@eg/share/string/string.component';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
+import { StaffBannerComponent } from '@eg/staff/share/staff-banner.component';
+
+import { TreeComponent } from '@eg/share/tree/tree.component';
 
 @Component({
     templateUrl: './org-unit-type.component.html',
-    styleUrls: [ './org-unit.component.css' ],
+    styleUrls: ['./org-unit.component.css'],
+    imports: [
+        ConfirmDialogComponent,
+        FmRecordEditorComponent,
+        StaffBannerComponent,
+        StringComponent,
+        TreeComponent
+    ]
 })
 
 export class OrgUnitTypeComponent implements OnInit {
+    private idl = inject(IdlService);
+    private org = inject(OrgService);
+    private auth = inject(AuthService);
+    private pcrud = inject(PcrudService);
+    private toast = inject(ToastService);
+
 
     tree: Tree;
     selected: TreeNode;
@@ -23,14 +39,6 @@ export class OrgUnitTypeComponent implements OnInit {
     @ViewChild('createString', { static: true }) createString: StringComponent;
     @ViewChild('errorString', { static: true }) errorString: StringComponent;
     @ViewChild('delConfirm', { static: true }) delConfirm: ConfirmDialogComponent;
-
-    constructor(
-        private idl: IdlService,
-        private org: OrgService,
-        private auth: AuthService,
-        private pcrud: PcrudService,
-        private toast: ToastService
-    ) {}
 
 
     ngOnInit() {

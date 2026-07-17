@@ -12,32 +12,22 @@ import {IdlService} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 
 @NgModule({
-    declarations: [
-        UploadComponent,
-        PoLabelComponent,
-    ],
     exports: [
         UploadComponent,
         PoLabelComponent,
     ],
     imports: [
+        PoLabelComponent,
         StaffCommonModule,
+        UploadComponent,
     ],
     providers: [
         LineitemService,
         PoService,
         {
             provide: InvoiceService,
-            useFactory: (
-                evt: EventService,
-                net: NetService,
-                pcrud: PcrudService,
-                auth: AuthService,
-                poService: PoService,
-                liService: LineitemService,
-                idl: IdlService
-            ) => {
-                const invoiceService = new InvoiceService(evt, net, pcrud, auth, poService, liService, idl);
+            useFactory: () => {
+                const invoiceService = new InvoiceService();
                 // Initialize the service before providing it
                 invoiceService.initialize().then();
                 return invoiceService;

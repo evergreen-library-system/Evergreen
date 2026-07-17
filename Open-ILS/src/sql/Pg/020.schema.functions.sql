@@ -132,7 +132,7 @@ CREATE OR REPLACE FUNCTION actor.org_unit_descendants( INT, INT ) RETURNS SETOF 
                 JOIN actor.org_unit_type out ON (out.id = ou.ou_type)
                 JOIN anscestor_depth ot ON (ot.parent_ou = ou.id)
     ) SELECT ou.* FROM actor.org_unit ou JOIN descendant_depth USING (id);
-$$ LANGUAGE SQL ROWS 1;
+$$ LANGUAGE SQL STABLE ROWS 1;
 
 CREATE OR REPLACE FUNCTION actor.org_unit_descendants( INT ) RETURNS SETOF actor.org_unit AS $$
     WITH RECURSIVE descendant_depth AS (
@@ -150,7 +150,7 @@ CREATE OR REPLACE FUNCTION actor.org_unit_descendants( INT ) RETURNS SETOF actor
                 JOIN actor.org_unit_type out ON (out.id = ou.ou_type)
                 JOIN descendant_depth ot ON (ot.id = ou.parent_ou)
     ) SELECT ou.* FROM actor.org_unit ou JOIN descendant_depth USING (id);
-$$ LANGUAGE SQL ROWS 1;
+$$ LANGUAGE SQL STABLE ROWS 1;
 
 CREATE OR REPLACE FUNCTION actor.org_unit_descendants_distance( INT ) RETURNS TABLE (id INT, distance INT) AS $$
     WITH RECURSIVE org_unit_descendants_distance(id, distance) AS (
@@ -171,7 +171,7 @@ CREATE OR REPLACE FUNCTION actor.org_unit_ancestors( INT ) RETURNS SETOF actor.o
             WHERE ou.parent_ou IS NOT NULL
     )
     SELECT ou.* FROM actor.org_unit ou JOIN org_unit_ancestors_distance ouad USING (id) ORDER BY ouad.distance DESC;
-$$ LANGUAGE SQL ROWS 1;
+$$ LANGUAGE SQL STABLE ROWS 1;
 
 CREATE OR REPLACE FUNCTION actor.org_unit_ancestor_at_depth ( INT,INT ) RETURNS actor.org_unit AS $$
 	SELECT	a.*

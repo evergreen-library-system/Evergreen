@@ -32,6 +32,7 @@ export DEBS = \
 	libbusiness-onlinepayment-authorizenet-perl\
 	libbusiness-onlinepayment-payflowpro-perl\
 	libbusiness-onlinepayment-perl\
+	libcbor-xs-perl \
 	libdate-manip-perl\
 	libdatetime-format-builder-perl\
 	libdatetime-format-iso8601-perl\
@@ -54,6 +55,7 @@ export DEBS = \
 	liblocale-maketext-lexicon-perl\
 	liblog-log4perl-perl\
 	libmarc-charset-perl \
+	libmouse-perl \
 	libncurses5-dev\
 	libnet-https-nb-perl\
 	libnet-ip-perl\
@@ -183,6 +185,12 @@ PGSQL_SERVER_DEBS_17 = \
         postgresql-plperl-17 \
         postgresql-server-dev-17
 
+PGSQL_SERVER_DEBS_18 = \
+        $(DEB_PGSQL_COMMON_MODS) \
+        postgresql-18 \
+        postgresql-plperl-18 \
+        postgresql-server-dev-18
+
 # note: some prereqs are repeated in the developer/packager 
 # sections to support building Evergreen packages on servers
 # where Evergreen and its prereqs are not installed.
@@ -248,6 +256,12 @@ install_postgres_server_17:
 	make -f $(DIR)/Makefile.debian DEBS="$(PGSQL_APT_REPO_DEBS)"
 	make -f $(DIR)/Makefile.debian debian_postgresql_repo
 	make -f $(DIR)/Makefile.debian DEBS="$(PGSQL_SERVER_DEBS_17)"
+	make -f $(DIR)/Makefile.common install_cpan_pgsql
+
+install_postgres_server_18:
+	make -f $(DIR)/Makefile.debian DEBS="$(PGSQL_APT_REPO_DEBS)"
+	make -f $(DIR)/Makefile.debian debian_postgresql_repo
+	make -f $(DIR)/Makefile.debian DEBS="$(PGSQL_SERVER_DEBS_18)"
 	make -f $(DIR)/Makefile.common install_cpan_pgsql
 
 # note: if/when grunt-cli is available as a

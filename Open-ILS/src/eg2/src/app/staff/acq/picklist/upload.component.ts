@@ -1,7 +1,6 @@
 /* eslint-disable */
-import {Component, AfterViewInit, Input,
-    ViewChild, OnDestroy} from '@angular/core';
-import {Router, ActivatedRoute} from '@angular/router';
+import { Component, AfterViewInit, Input, ViewChild, OnDestroy, inject } from '@angular/core';
+import {Router, ActivatedRoute, RouterModule} from '@angular/router';
 import {tap} from 'rxjs/operators';
 import {IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
@@ -21,6 +20,10 @@ import {ProgressInlineComponent} from '@eg/share/dialog/progress-inline.componen
 import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
 import {ServerStoreService} from '@eg/core/server-store.service';
 import {PicklistUploadService} from './upload.service';
+import { StaffBannerComponent } from '@eg/staff/share/staff-banner.component';
+
+import { FormsModule } from '@angular/forms';
+import { OrgSelectComponent } from '@eg/share/org-select/org-select.component';
 
 
 const TEMPLATE_SETTING_NAME = 'eg.acq.picklist.upload.templates';
@@ -61,9 +64,31 @@ const ORG_SETTINGS = [
 
 @Component({
     selector: 'eg-acq-upload',
-    templateUrl: './upload.component.html'
+    templateUrl: './upload.component.html',
+    imports: [
+    AlertDialogComponent,
+    ComboboxComponent,
+    FormsModule,
+    OrgSelectComponent,
+    ProgressInlineComponent,
+    RouterModule,
+    StaffBannerComponent,
+    StringComponent
+]
 })
 export class UploadComponent implements AfterViewInit, OnDestroy {
+    private http = inject(HttpClient);
+    private router = inject(Router);
+    private route = inject(ActivatedRoute);
+    private toast = inject(ToastService);
+    private evt = inject(EventService);
+    private net = inject(NetService);
+    private auth = inject(AuthService);
+    private org = inject(OrgService);
+    private perm = inject(PermService);
+    private store = inject(ServerStoreService);
+    private vlagent = inject(PicklistUploadService);
+
 
     // mode can be one of
     //  upload:          actually upload and process a MARC order file
@@ -155,19 +180,7 @@ export class UploadComponent implements AfterViewInit, OnDestroy {
     private loadMarcOrderTemplateSetAsDefaultString: StringComponent;
 
 
-    constructor(
-        private http: HttpClient,
-        private router: Router,
-        private route: ActivatedRoute,
-        private toast: ToastService,
-        private evt: EventService,
-        private net: NetService,
-        private auth: AuthService,
-        private org: OrgService,
-        private perm: PermService,
-        private store: ServerStoreService,
-        private vlagent: PicklistUploadService
-    ) {
+    constructor() {
         // If we're inside Vandelay, note that fact
         this.route.snapshot.pathFromRoot.forEach(p => {
             if (p.url.find(s => s.path === 'vandelay')) {

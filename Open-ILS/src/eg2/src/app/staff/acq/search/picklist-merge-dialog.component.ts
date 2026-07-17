@@ -1,19 +1,29 @@
-import {Component, Input, ViewChild} from '@angular/core';
+import { Component, Input, ViewChild, inject } from '@angular/core';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
-import {IdlService, IdlObject} from '@eg/core/idl.service';
+import {IdlObject} from '@eg/core/idl.service';
 import {EventService} from '@eg/core/event.service';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import { FormsModule } from '@angular/forms';
 
 @Component({
     selector: 'eg-picklist-merge-dialog',
-    templateUrl: './picklist-merge-dialog.component.html'
+    templateUrl: './picklist-merge-dialog.component.html',
+    imports: [
+        AlertDialogComponent,
+        FormsModule
+    ]
 })
 
 export class PicklistMergeDialogComponent
     extends DialogComponent {
+    private evt = inject(EventService);
+    private net = inject(NetService);
+    private auth = inject(AuthService);
+    private modal: NgbModal;
+
 
   @Input() grid: any;
   listNames: string[];
@@ -22,14 +32,12 @@ export class PicklistMergeDialogComponent
 
   @ViewChild('fail', { static: true }) private fail: AlertDialogComponent;
 
-  constructor(
-    private idl: IdlService,
-    private evt: EventService,
-    private net: NetService,
-    private auth: AuthService,
-    private modal: NgbModal
-  ) {
+  constructor() {
+      const modal = inject(NgbModal);
+
       super(modal);
+
+      this.modal = modal;
   }
 
   update() {

@@ -8,26 +8,30 @@
 <eg-string #removeErrorString [template]="removeErrorStrTmpl"></eg-string>
 
 <div class="row">
-  <div class="col" *ngFor="let ftm of tagMaps">
-    <button class="btn btn-sm btn-destroy material-icon-button" type="button"
-      (click)="removeTagMap(ftm)"
-      i18n-aria-label aria-label="Remove Tag"
-      i18n-title title="Remove Tag">
-      <span class="material-icons" aria-hidden="true">delete</span>
-    </button>
-    {{ftm.tag().name()}} ({{ftm.tag().owner().shortname()}})
-  </div>
+  @for (ftm of tagMaps; track ftm) {
+    <div class="col">
+      <button class="btn btn-sm btn-destroy material-icon-button" type="button"
+        (click)="removeTagMap(ftm)"
+        i18n-aria-label aria-label="Remove Tag"
+        i18n-title title="Remove Tag">
+        <span class="material-icons" aria-hidden="true">delete</span>
+      </button>
+      {{ftm.tag().name()}} ({{ftm.tag().owner().shortname()}})
+    </div>
+  }
   <div class="col-lg-4">
     <eg-combobox #tagSelector [asyncSupportsEmptyTermClick]="true"
       [(ngModel)]="newTag" [asyncDataSource]="tagSelectorDataSource"
-      i18n-placeholder placeholder="Select tag"></eg-combobox>
+    i18n-placeholder placeholder="Select tag"></eg-combobox>
   </div>
   <div class="col">
     <button type="button" class="btn btn-primary" [disabled]="!newTag || checkNewTagAlreadyMapped()"
       (click)="addTagMap()" i18n>Add Tag
     </button>
   </div>
-  <div class="col" *ngIf="newTag && checkNewTagAlreadyMapped()">
-    <span class="alert alert-warning" i18n>(tag is already assigned to this fund)</span>
-  </div>
-</div> 
+  @if (newTag && checkNewTagAlreadyMapped()) {
+    <div class="col">
+      <span class="alert alert-warning" i18n>(tag is already assigned to this fund)</span>
+    </div>
+  }
+</div>

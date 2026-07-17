@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, Output, ViewChild, EventEmitter} from '@angular/core';
+import { Component, OnInit, Input, Output, ViewChild, EventEmitter, inject } from '@angular/core';
 import {tap} from 'rxjs';
 import {IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
@@ -7,14 +7,31 @@ import {OrgService} from '@eg/core/org.service';
 import {AuthService} from '@eg/core/auth.service';
 import {HoldNoteDialogComponent} from './note-dialog.component';
 import {HoldNotifyDialogComponent} from './notify-dialog.component';
+import { BibSummaryComponent } from '../bib-summary/bib-summary.component';
+import { CommonModule } from '@angular/common';
+import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
+import { FormatValuePipe } from '@eg/core/format.service';
 
 /** Hold details read-only view */
 
 @Component({
     selector: 'eg-hold-detail',
-    templateUrl: 'detail.component.html'
+    templateUrl: 'detail.component.html',
+    imports: [
+        BibSummaryComponent,
+        CommonModule,
+        FormatValuePipe,
+        HoldNoteDialogComponent,
+        HoldNotifyDialogComponent,
+        NgbNavModule
+    ]
 })
 export class HoldDetailComponent implements OnInit {
+    private net = inject(NetService);
+    private pcrud = inject(PcrudService);
+    private org = inject(OrgService);
+    private auth = inject(AuthService);
+
     detailTab = 'notes';
     notes: IdlObject[] = [];
     notifies: IdlObject[] = [];
@@ -52,12 +69,7 @@ export class HoldDetailComponent implements OnInit {
     @ViewChild('noteDialog') noteDialog: HoldNoteDialogComponent;
     @ViewChild('notifyDialog') notifyDialog: HoldNotifyDialogComponent;
 
-    constructor(
-        private net: NetService,
-        private pcrud: PcrudService,
-        private org: OrgService,
-        private auth: AuthService,
-    ) {
+    constructor() {
         this.onShowList = new EventEmitter<any>();
     }
 

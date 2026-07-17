@@ -72,6 +72,14 @@ s.OVERRIDE_DELETE_ITEMS_FROM_CATALOG_TITLE =
   "[% l('One or more items could not be deleted. Override?') %]";
 s.OVERRIDE_DELETE_ITEMS_FROM_CATALOG_BODY =
   "[% l('Reason(s) include: [_1]', '{{evt_desc}}') %]";
+s.EMAIL_RECEIPT_NO_CIRC_DATA =
+  "[% l('All items were already checked in') %]";
+s.EMAIL_RECEIPT_INVALID_EMAIL =
+  "[% l('No valid email address on record') %]";
+s.EMAIL_RECEIPT_FAILED =
+  "[% l('Failed to send email receipt') %]";
+s.EMAIL_RECEIPT_SENT =
+  "[% l('Email receipt sent') %]";
 }]);
 </script>
 

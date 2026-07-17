@@ -1,5 +1,5 @@
 import {ActivatedRoute} from '@angular/router';
-import {Component, OnInit, ViewChild} from '@angular/core';
+import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import { of, switchMap, tap, finalize, catchError } from 'rxjs';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {GridDataSource} from '@eg/share/grid/grid';
@@ -7,11 +7,18 @@ import {GridFlatDataService} from '@eg/share/grid/grid-flat-data.service';
 import {IdlService} from '@eg/core/idl.service';
 import {Pager} from '@eg/share/util/pager';
 import {PcrudService} from '@eg/core/pcrud.service';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
-    templateUrl: 'attempts.component.html'
+    templateUrl: 'attempts.component.html',
+    imports: [StaffCommonModule]
 })
 export class LinkCheckerAttemptsComponent implements OnInit {
+    private flatData = inject(GridFlatDataService);
+    private idl = inject(IdlService);
+    private pcrud = inject(PcrudService);
+    private route = inject(ActivatedRoute);
+
 
     batches: number[] = [];
 
@@ -41,13 +48,6 @@ export class LinkCheckerAttemptsComponent implements OnInit {
     dataSource: GridDataSource = new GridDataSource();
     noSelectedRows: boolean;
     oneSelectedRow: boolean;
-
-    constructor(
-        private flatData: GridFlatDataService,
-        private idl: IdlService,
-        private pcrud: PcrudService,
-        private route: ActivatedRoute,
-    ) {}
 
     ngOnInit() {
 

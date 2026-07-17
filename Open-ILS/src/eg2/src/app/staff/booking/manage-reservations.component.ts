@@ -1,8 +1,8 @@
-import {Component, OnInit, ViewChild, OnDestroy} from '@angular/core';
-import {FormGroup, FormControl} from '@angular/forms';
+import { Component, OnInit, ViewChild, OnDestroy, inject } from '@angular/core';
+import {FormGroup, FormControl, ReactiveFormsModule} from '@angular/forms';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {Subscription, of, debounceTime, single, tap, switchMap} from 'rxjs';
-import {NgbNav} from '@ng-bootstrap/ng-bootstrap';
+import {NgbNav, NgbNavModule} from '@ng-bootstrap/ng-bootstrap';
 import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {ReservationsGridComponent} from './reservations-grid.component';
@@ -11,13 +11,36 @@ import {ToastService} from '@eg/share/toast/toast.service';
 import {NetService} from '@eg/core/net.service';
 import {PatronBarcodeValidator} from '@eg/share/validators/patron_barcode_validator.directive';
 import {BookingResourceBarcodeValidator} from './booking_resource_validator.directive';
-import {OrgFamily} from '@eg/share/org-family-select/org-family-select.component';
+import {OrgFamily, OrgFamilySelectComponent} from '@eg/share/org-family-select/org-family-select.component';
+import { StaffBannerComponent } from '../share/staff-banner.component';
+import { TitleComponent } from '@eg/share/title/title.component';
+import { ComboboxComponent } from '@eg/share/combobox/combobox.component';
+
 
 @Component({
     selector: 'eg-manage-reservations',
     templateUrl: './manage-reservations.component.html',
+    imports: [
+        ComboboxComponent,
+        NgbNavModule,
+        OrgFamilySelectComponent,
+        ReactiveFormsModule,
+        ReservationsGridComponent,
+        StaffBannerComponent,
+        TitleComponent
+    ]
 })
 export class ManageReservationsComponent implements OnInit, OnDestroy {
+    private route = inject(ActivatedRoute);
+    private router = inject(Router);
+    private auth = inject(AuthService);
+    private net = inject(NetService);
+    private pcrud = inject(PcrudService);
+    private store = inject(ServerStoreService);
+    private toast = inject(ToastService);
+    private patronValidator = inject(PatronBarcodeValidator);
+    private resourceValidator = inject(BookingResourceBarcodeValidator);
+
 
     patronId: number;
     resourceId: number;
@@ -31,17 +54,7 @@ export class ManageReservationsComponent implements OnInit, OnDestroy {
 
     removeFilters: () => void;
 
-    constructor(
-        private route: ActivatedRoute,
-        private router: Router,
-        private auth: AuthService,
-        private net: NetService,
-        private pcrud: PcrudService,
-        private store: ServerStoreService,
-        private toast: ToastService,
-        private patronValidator: PatronBarcodeValidator,
-        private resourceValidator: BookingResourceBarcodeValidator
-    ) {
+    constructor() {
         this.store.getItem('eg.booking.manage.selected_org_family').then((pickupLibs) => {
             if (pickupLibs) {
                 this.startingPickupOrgs = pickupLibs;

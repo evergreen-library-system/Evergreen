@@ -36,17 +36,14 @@
         record => ctx.bre_id, anchor => rec_anchor
     }, stop_parms));
 %]
-<li class="mylist_action w-100">
-    <button type="button" id="btnGroupDrop1" class="list-group-item-action btn btn-action mylist_action text-start" data-toggle="dropdown"
+<li class="list-group-item mylist_action">
+    <a type="button" id="btnGroupDrop1" class="list-group-item-action text-start btn btn-action" data-toggle="dropdown"
         aria-haspopup="true" aria-expanded="false" aria-describedby="[% rec_anchor %]">
         <span role="text">
             <i class="fas fa-list" aria-hidden="true"></i>
             <span>[% l("Add to my list") %]</span>
-            <span class="result_count hidden">
-                [%- l('([_1])', ctx.mylist.size); -%]
-            </span>
         </span>
-    </button>
+    </a>
     <!--Removal-->
 <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
     <li class="dropdown-item"><a href="[% href %]">[% l('Temporary List') %]</a></li>
@@ -71,13 +68,13 @@
            i = i + 1;
            IF i == ctx.bookbags.size;
     %]
-    <li class="dropdown-divider"></li>
         [%- END -%]
-    <li class="dropdown-item"><a href="[% href %]" data-recid="[% ctx.bre_id %]" data-action="add">[% bag.name %]</a></li>
+    <li class="dropdown-item"><a href="[% href %]" data-recid="[% ctx.bre_id %]" data-action="add">[% bag.name | html %]</a></li>
     [%
        END;
        END
     %]
+    <li class="dropdown-divider"></li>
     <li class="dropdown-item"><a href="[% opac_wrap(mkurl(ctx.opac_root _ '/myopac/lists', {
             limit => ctx.bookbag_count, add_rec => ctx.bre_id,
             anchor => rec_anchor })) %]"

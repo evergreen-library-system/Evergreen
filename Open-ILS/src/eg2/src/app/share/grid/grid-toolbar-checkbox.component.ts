@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, Host, Output, EventEmitter} from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter, inject } from '@angular/core';
 import {GridToolbarCheckbox} from './grid';
 import {GridComponent} from './grid.component';
 
@@ -8,6 +8,8 @@ import {GridComponent} from './grid.component';
 })
 
 export class GridToolbarCheckboxComponent implements OnInit {
+    private grid = inject(GridComponent, { host: true });
+
 
     // Note most input fields should match class fields for GridColumn
     @Input() label: string;
@@ -22,7 +24,7 @@ export class GridToolbarCheckboxComponent implements OnInit {
     private cb: GridToolbarCheckbox;
 
     // get a reference to our container grid.
-    constructor(@Host() private grid: GridComponent) {
+    constructor() {
         this.onChange = new EventEmitter<boolean>();
 
         // Create in constructor so we can accept values before the

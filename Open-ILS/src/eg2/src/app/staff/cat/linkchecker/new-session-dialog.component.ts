@@ -1,7 +1,7 @@
 import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
 import {AuthService} from '@eg/core/auth.service';
 import {ComboboxEntry, ComboboxComponent} from '@eg/share/combobox/combobox.component';
-import {Component, Input, OnInit, ViewChild, Renderer2, OnDestroy} from '@angular/core';
+import { Component, Input, OnInit, ViewChild, Renderer2, OnDestroy, inject } from '@angular/core';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {EventService} from '@eg/core/event.service';
@@ -11,13 +11,23 @@ import {NgForm} from '@angular/forms';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {ProgressDialogComponent} from '@eg/share/dialog/progress.component';
 import {Subject, Subscription, Observable, debounceTime, distinctUntilChanged} from 'rxjs';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
     selector: 'eg-new-session-dialog',
-    templateUrl: './new-session-dialog.component.html'
+    templateUrl: './new-session-dialog.component.html',
+    imports: [StaffCommonModule]
 })
 
 export class NewSessionDialogComponent extends DialogComponent implements OnInit, OnDestroy {
+    private modal: NgbModal;
+    private auth = inject(AuthService);
+    private evt = inject(EventService);
+    private net = inject(NetService);
+    private idl = inject(IdlService);
+    private pcrud = inject(PcrudService);
+    private renderer = inject(Renderer2);
+
 
     @Input() sessionToClone: any; // not really a "session", but a combined session/batch view
 
@@ -51,16 +61,12 @@ export class NewSessionDialogComponent extends DialogComponent implements OnInit
     @ViewChild('fail', { static: true }) private fail: AlertDialogComponent;
     @ViewChild('progress', { static: true }) private progress: ProgressDialogComponent;
 
-    constructor(
-        private modal: NgbModal,
-        private auth: AuthService,
-        private evt: EventService,
-        private net: NetService,
-        private idl: IdlService,
-        private pcrud: PcrudService,
-        private renderer: Renderer2,
-    ) {
+    constructor() {
+        const modal = inject(NgbModal);
+
         super(modal);
+        this.modal = modal;
+
         if (this.modal) { /* empty */ } // noop for linting
     }
 

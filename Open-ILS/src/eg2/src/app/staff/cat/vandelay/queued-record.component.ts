@@ -1,13 +1,31 @@
-import {Component} from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
-import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
+import {NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {IdlObject} from '@eg/core/idl.service';
+import { StaffCommonModule } from '@eg/staff/common.module';
+import { FastAddSelectorComponent } from '@eg/staff/share/marc-edit/fast-add-selector.component';
+import { MarcEditorComponent } from '@eg/staff/share/marc-edit/editor.component';
+import { MarcHtmlComponent } from '@eg/share/catalog/marc-html.component';
+import { QueuedRecordMatchesComponent } from './queued-record-matches.component';
+import { RecordItemsComponent } from './record-items.component';
 
 @Component({
-    templateUrl: 'queued-record.component.html'
+    templateUrl: 'queued-record.component.html',
+    imports: [
+        MarcEditorComponent,
+        MarcHtmlComponent,
+        StaffCommonModule,
+        FastAddSelectorComponent,
+        QueuedRecordMatchesComponent,
+        RecordItemsComponent
+    ]
 })
 export class QueuedRecordComponent {
+    private router = inject(Router);
+    private route = inject(ActivatedRoute);
+    private pcrud = inject(PcrudService);
+
 
     queueId: number;
     queueType: string;
@@ -15,10 +33,7 @@ export class QueuedRecordComponent {
     recordTab: string;
     queuedRecord: IdlObject;
 
-    constructor(
-        private router: Router,
-        private route: ActivatedRoute,
-        private pcrud: PcrudService) {
+    constructor() {
 
         this.route.paramMap.subscribe((params: ParamMap) => {
             this.queueId = +params.get('id');

@@ -1,23 +1,29 @@
 /* eslint-disable */
-import {Component, OnInit, ViewChild} from '@angular/core';
+import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
-import {Location} from '@angular/common';
 import {of} from 'rxjs';
 import {NgbNav} from '@ng-bootstrap/ng-bootstrap';
-import {EventService} from '@eg/core/event.service';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
-import {IdlService, IdlObject} from '@eg/core/idl.service';
-import {PcrudService} from '@eg/core/pcrud.service';
+import {IdlObject} from '@eg/core/idl.service';
 import {StringComponent} from '@eg/share/string/string.component';
 import {ReporterService, SRTemplate} from '../share/reporter.service';
+import { StaffCommonModule } from '@eg/staff/common.module';
+import { ReporterFieldComponent } from './reporter-field.component';
+import { ReporterOutputOptionsComponent } from './reporter-output-options.component';
 
 @Component({
     templateUrl: './definition.component.html',
     styleUrls: ['./definition.component.css'],
+    imports: [StaffCommonModule, ReporterFieldComponent, ReporterOutputOptionsComponent]
 })
 
 export class FullReporterDefinitionComponent implements OnInit {
+    private route = inject(ActivatedRoute);
+    private router = inject(Router);
+    private toast = inject(ToastService);
+    private RSvc = inject(ReporterService);
+
 
     selectedTab = 'rptFilterFields';
     rptType = '';
@@ -48,16 +54,7 @@ export class FullReporterDefinitionComponent implements OnInit {
     @ViewChild('changeTypeDialog', { static: false }) changeTypeDialog: ConfirmDialogComponent;
     @ViewChild('closeFormDialog', { static: false }) closeFormDialog: ConfirmDialogComponent;
 
-    constructor(
-        private route: ActivatedRoute,
-        private router: Router,
-        private location: Location,
-        private toast: ToastService,
-        private evt: EventService,
-        private idl: IdlService,
-        private pcrud: PcrudService,
-        private RSvc: ReporterService
-    ) {
+    constructor() {
         const t_id = this.route.snapshot.paramMap.get('t_id');
         const r_id = this.route.snapshot.paramMap.get('r_id');
         this.RSvc.outputFolder = null;
@@ -110,14 +107,14 @@ export class FullReporterDefinitionComponent implements OnInit {
     }
 
     setOrHasLength (x: any) {
-        if (x === null) {
+        if (x === null || x === undefined) {
             return false;
         } else if (Array.isArray(x)) {
             return x.length > 0;
         } else if (typeof x === 'object') {
             return Object.keys(x).length > 0;
         }
-        return !!x;
+        return x !== '' && x !== false;
     }
 
     filtersWithoutValues () {

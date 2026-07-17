@@ -8,6 +8,8 @@ import {StringComponent} from '@eg/share/string/string.component';
 import {TagTable} from './tagtable.service';
 import {ComboboxComponent, ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {NgbTypeahead} from '@ng-bootstrap/ng-bootstrap';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 /**
  * MARC Editable Content Component
@@ -17,7 +19,13 @@ import {NgbTypeahead} from '@ng-bootstrap/ng-bootstrap';
     selector: 'eg-marc-editable-content',
     templateUrl: './editable-content.component.html',
     styleUrls: ['./editable-content.component.css'],
-    encapsulation: ViewEncapsulation.None
+    encapsulation: ViewEncapsulation.None,
+    imports: [
+        ComboboxComponent,
+        CommonModule,
+        FormsModule,
+        StringComponent,
+    ]
 })
 
 export class EditableContentComponent

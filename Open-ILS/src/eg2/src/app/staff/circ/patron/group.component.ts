@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import { Component, Input, OnInit, ViewChild, inject } from '@angular/core';
 import {Location} from '@angular/common';
 import {Router} from '@angular/router';
 import {from, concatMap} from 'rxjs';
@@ -15,18 +15,31 @@ import {GridComponent} from '@eg/share/grid/grid.component';
 import {Pager} from '@eg/share/util/pager';
 import {PromptDialogComponent} from '@eg/share/dialog/prompt.component';
 import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
     templateUrl: 'group.component.html',
-    selector: 'eg-patron-group'
+    selector: 'eg-patron-group',
+    imports: [StaffCommonModule]
 })
 export class PatronGroupComponent implements OnInit {
+    private router = inject(Router);
+    private evt = inject(EventService);
+    private net = inject(NetService);
+    private auth = inject(AuthService);
+    private org = inject(OrgService);
+    private pcrud = inject(PcrudService);
+    private ngLocation = inject(Location);
+    private patronService = inject(PatronService);
+    private context = inject(PatronContextService);
+
 
     @Input() patronId: number;
     patrons: IdlObject[] = [];
     totalOwed = 0;
     totalOut = 0;
     totalOverdue = 0;
+    totalLost = 0;
     usergroup: number;
 
     cellTextGenerator: GridCellTextGenerator;
@@ -34,18 +47,6 @@ export class PatronGroupComponent implements OnInit {
     @ViewChild('groupGrid') private groupGrid: GridComponent;
     @ViewChild('moveToGroupDialog') private moveToGroupDialog: PromptDialogComponent;
     @ViewChild('userNotFoundDialog') private userNotFoundDialog: AlertDialogComponent;
-
-    constructor(
-        private router: Router,
-        private evt: EventService,
-        private net: NetService,
-        private auth: AuthService,
-        private org: OrgService,
-        private pcrud: PcrudService,
-        private ngLocation: Location,
-        private patronService: PatronService,
-        private context: PatronContextService
-    ) {}
 
     ngOnInit() {
 
@@ -75,10 +76,12 @@ export class PatronGroupComponent implements OnInit {
             {authoritative: true})
             .pipe(concatMap(u => {
 
+                u.home_ou(this.org.get(u.home_ou()));
                 const promise = this.patronService.getVitalStats(u)
                     .then(stats => {
                         this.totalOwed += stats.fines.balance_owed;
                         this.totalOut += stats.checkouts.total_out;
+                        this.totalLost += stats.checkouts.lost;
                         this.totalOverdue += stats.checkouts.overdue;
                         u._stats = stats;
                         this.patrons.push(u);

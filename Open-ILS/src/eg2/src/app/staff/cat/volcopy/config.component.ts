@@ -1,25 +1,25 @@
-import {Component, Input, OnInit, DoCheck} from '@angular/core';
+import { Component, Input, OnInit, DoCheck, inject } from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 import {IdlService} from '@eg/core/idl.service';
 import {VolCopyContext} from './volcopy';
 import {VolCopyService} from './volcopy.service';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
     selector: 'eg-volcopy-config',
-    templateUrl: 'config.component.html'
+    templateUrl: 'config.component.html',
+    imports: [StaffCommonModule]
 })
 export class VolCopyConfigComponent implements OnInit, DoCheck {
+    private router = inject(Router);
+    private route = inject(ActivatedRoute);
+    private idl = inject(IdlService);
+    volcopy = inject(VolCopyService);
+
 
     @Input() context: VolCopyContext;
 
     defaultsCopy: any;
-
-    constructor(
-        private router: Router,
-        private route: ActivatedRoute,
-        private idl: IdlService,
-        public  volcopy: VolCopyService
-    ) {}
 
     ngOnInit() {
         console.debug('DEFAULTS', this.volcopy.defaults);

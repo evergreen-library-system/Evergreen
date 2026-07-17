@@ -1,19 +1,23 @@
 <ng-template #dialogContent>
   <div class="modal-body modal-alert" tabindex="-1" role="status">
     <h2 class="modal-title text-reset mb-3">
-      <span *ngIf="!dialogTitle" i18n>Could not complete the action</span>
-      <span *ngIf="dialogTitle">{{dialogTitle}}</span>
+      @if (!dialogTitle) {
+        <span i18n>Could not complete the action</span>
+      }
+      @if (dialogTitle) {
+        <span>{{dialogTitle}}</span>
+      }
     </h2>
-    <ng-container *ngIf="!dialogBodyTemplate">
+    @if (!dialogBodyTemplate) {
       <div class="alert" [ngClass]="'alert-' + alertType">{{dialogBody}}</div>
-    </ng-container>
-    <ng-container *ngIf="dialogBodyTemplate">
+    }
+    @if (dialogBodyTemplate) {
       <ng-container *ngTemplateOutlet="dialogBodyTemplate"></ng-container>
-    </ng-container>
+    }
     <ng-content><!-- Place for projected content; for example: <eg-alert-dialog><ul><li>render me too!</li></ul></eg-alert-dialog> --></ng-content>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-normal" 
-      (click)="close()" i18n>OK</button>
+    <button type="button" class="btn btn-normal"
+    (click)="close()" i18n>OK</button>
   </div>
 </ng-template>

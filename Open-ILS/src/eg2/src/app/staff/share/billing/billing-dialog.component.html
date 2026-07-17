@@ -3,8 +3,8 @@
 
 <!-- putting this here guarantees it's available to ViewChild before open -->
 <ng-template #bTypes>
-  <eg-combobox #bTypeCbox domId="billing_type" [entries]="billingTypes" 
-    [required]="true" (onChange)="btChanged($event)"></eg-combobox>
+  <eg-combobox #bTypeCbox domId="billing_type" [entries]="billingTypes"
+  [required]="true" (onChange)="btChanged($event)"></eg-combobox>
 </ng-template>
 
 <ng-template #dialogContent>
@@ -16,11 +16,11 @@
         {{patron.card().barcode()}}
     </h4>
     <button type="button" class="btn-close btn-close-white"
-      i18n-aria-label aria-label="Close dialog" (click)="close()"></button>
+    i18n-aria-label aria-label="Close dialog" (click)="close()"></button>
   </div>
   <div class="modal-body">
 
-    <ng-container *ngIf="xact">
+    @if (xact) {
       <div class="row">
         <div class="col-lg-2" i18n>Bill #</div>
         <div class="col-lg-4">{{xact.id()}}</div>
@@ -45,7 +45,7 @@
         <div class="col-lg-4" i18n>Renewal?</div>
         <div class="col-lg-2"><eg-bool [value]="isRenewal()"></eg-bool></div>
       </div>
-    </ng-container>
+    }
 
     <hr/>
 
@@ -78,8 +78,8 @@
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-success" [disabled]="!saveable()"
-      (click)="submit()" i18n>Submit Bill</button>
+    (click)="submit()" i18n>Submit Bill</button>
     <button type="button" class="btn btn-normal"
-      (click)="close()" i18n>Cancel</button>
+    (click)="close()" i18n>Cancel</button>
   </div>
 </ng-template>

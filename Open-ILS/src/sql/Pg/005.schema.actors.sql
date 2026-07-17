@@ -182,7 +182,9 @@ BEGIN
         COALESCE(NEW.pref_family_name, '')       || ' ' || 
         COALESCE(evergreen.unaccent_and_squash(NEW.pref_family_name), '') || ' ' || 
         COALESCE(NEW.pref_suffix, '')            || ' ' || 
-        COALESCE(NEW.name_keywords, '')
+        COALESCE(NEW.name_keywords, '')          || ' ' || 
+        COALESCE(NEW.guardian, '')               || ' ' || 
+        COALESCE(evergreen.unaccent_and_squash(NEW.guardian), '')
     );
     RETURN NEW;
 END;

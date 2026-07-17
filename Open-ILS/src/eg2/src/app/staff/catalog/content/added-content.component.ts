@@ -1,20 +1,25 @@
 import { of } from 'rxjs';
-import { Component, OnInit, Input } from '@angular/core';
-import { OrgService } from '@eg/core/org.service';
+import { Component, OnInit, Input, inject } from '@angular/core';
 import {
     BibRecordService, BibRecordSummary
 } from '@eg/share/catalog/bib-record.service';
 import { ServerStoreService } from '@eg/core/server-store.service';
-import { CatalogService } from '@eg/share/catalog/catalog.service';
 import { StaffCatalogService } from '@eg/staff/catalog/catalog.service';
 import { ScriptService } from '@eg/share/util/script.service';
+
 
 @Component({
     selector: 'eg-catalog-added-content',
     templateUrl: './added-content.component.html',
-    styleUrls: ['./added-content.component.css']
+    styleUrls: ['./added-content.component.css'],
+    imports: []
 })
 export class AddedContentComponent implements OnInit {
+    private bib = inject(BibRecordService);
+    private store = inject(ServerStoreService);
+    private staffCat = inject(StaffCatalogService);
+    private script = inject(ScriptService);
+
 
     recId: number;
     initDone = false;
@@ -32,15 +37,6 @@ export class AddedContentComponent implements OnInit {
   @Input() set bibSummary(s: any) {
       this.summary = s;
   }
-
-  constructor(
-    private bib: BibRecordService,
-    private org: OrgService,
-    private store: ServerStoreService,
-    private cat: CatalogService,
-    private staffCat: StaffCatalogService,
-    private script: ScriptService
-  ) { }
 
   ngOnInit() {
       // NovelistSelect settings

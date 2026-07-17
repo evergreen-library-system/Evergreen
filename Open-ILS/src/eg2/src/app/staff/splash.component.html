@@ -12,57 +12,73 @@
   </div>
 
   <div class="row" id="splash-nav">
-    <div class="col-lg-4" *ngFor="let header of portalHeaders; index as i">
-      <div class="card">
-        <div class="card-header" *ngIf="header">
-          <h2 class="panel-title text-center" i18n>{{header.label()}}</h2>
-        </div>
-        <div class="card-body">
-          <div class="list-group">
-            <ng-container *ngFor="let entry of portalEntries[i]">
-              <div class="list-group-item border-0 p-2" *ngIf="entry.entry_type() === 'menuitem'">
-                <a href="{{entry.target_url()}}" target="{{entry.url_newtab() === 't' ? '_blank' : null}}" i18n>
+    @for (header of portalHeaders; track header; let i = $index) {
+      <div class="col-lg-4">
+        <div class="card">
+          @if (header) {
+            <div class="card-header">
+              <h2 class="panel-title text-center" i18n>{{header.label()}}</h2>
+            </div>
+          }
+          <div class="card-body">
+            <div class="list-group">
+              @for (entry of portalEntries[i]; track entry) {
+                @if (entry.entry_type() === 'menuitem') {
+                  <div class="list-group-item border-0 p-2">
+                    <a href="{{entry.target_url()}}" target="{{entry.url_newtab() === 't' ? '_blank' : null}}" i18n>
                   <img src="{{entry.image_url()}}" alt="" role="presentation"/>
                   {{entry.label()}}
                 </a>
-              </div>
-              <div class="list-group-item border-0 p-2" *ngIf="entry.entry_type() === 'catalogsearch'">
-                <div class="input-group">
-                  <input type="text" class="form-control" 
-                    [(ngModel)]="catSearchQuery"
-                    id='catalog-search-input'
-                    egAutofocus
-                    (keyup.enter)="searchCatalog()"
-                    i18n-placeholder placeholder="Search for..."
-                    i18n-aria-label aria-label="Search for...">
-                  <span class="input-group-btn">
-                    <button class="btn btn-outline-secondary" 
-                      (click)="searchCatalog()" type="submit" i18n>
+                  </div>
+                }
+                @if (entry.entry_type() === 'catalogsearch') {
+                  <div class="list-group-item border-0 p-2">
+                    <div class="input-group">
+                      <input type="text" class="form-control"
+                        [(ngModel)]="catSearchQuery"
+                        id='catalog-search-input'
+                        egAutofocus
+                        (keyup.enter)="searchCatalog()"
+                        i18n-placeholder placeholder="Search for..."
+                        i18n-aria-label aria-label="Search for...">
+                      <span class="input-group-btn">
+                        <button class="btn btn-outline-secondary"
+                          (click)="searchCatalog()" type="submit" i18n>
                       {{entry.label()}}
                     </button>
-                  </span>
-                </div>
-              </div>
-              <div class="list-group-item border-0 p-2" *ngIf="entry.entry_type() === 'link'">
-                <a target="{{entry.url_newtab() === 't' ? '_blank' : '_top'}}" href="{{entry.target_url()}}" i18n>
+                      </span>
+                    </div>
+                  </div>
+                }
+                @if (entry.entry_type() === 'link') {
+                  <div class="list-group-item border-0 p-2">
+                    <a target="{{entry.url_newtab() === 't' ? '_blank' : '_top'}}" href="{{entry.target_url()}}" i18n>
                   <img src="{{entry.image_url()}}" alt="" role="presentation"/>
                   {{entry.label()}}
                 </a>
-              </div>
-              <div class="list-group-item border-0 p-2" *ngIf="entry.entry_type() === 'text'">
-                <h3 class="text-center" *ngIf="entry.label()" i18n>{{entry.label()}}</h3>
-                <div class="row">
-                  <div class="col-2" *ngIf="entry.image_url()">
-                    <img src="{{entry.image_url()}}" alt="" role="presentation"/>
                   </div>
-                  <div class="col" [innerHtml]="entry.entry_text()"></div>
-                </div>
-              </div>
-            </ng-container>
+                }
+                @if (entry.entry_type() === 'text') {
+                  <div class="list-group-item border-0 p-2">
+                    @if (entry.label()) {
+                      <h3 class="text-center" i18n>{{entry.label()}}</h3>
+                    }
+                    <div class="row">
+                      @if (entry.image_url()) {
+                        <div class="col-2">
+                          <img src="{{entry.image_url()}}" alt="" role="presentation"/>
+                        </div>
+                      }
+                      <div class="col" [innerHtml]="entry.entry_text()"></div>
+                    </div>
+                  </div>
+                }
+              }
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    }
   </div>
 
 </div>

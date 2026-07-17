@@ -2,13 +2,16 @@
  * <eg-multi-select idlClass="acpl" linkedLibraryLabel="owning_lib" idlKey="id">
  * </eg-multi-select>
  */
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, inject } from '@angular/core';
 import { map } from 'rxjs';
-import { StoreService } from '@eg/core/store.service';
 import { PcrudService } from '@eg/core/pcrud.service';
 import { IdlService } from '@eg/core/idl.service';
 import { OrgService } from '@eg/core/org.service';
-import { ComboboxEntry } from '@eg/share/combobox/combobox.component';
+import { ComboboxComponent, ComboboxEntry } from '@eg/share/combobox/combobox.component';
+import { ItemLocationSelectComponent } from '../item-location-select/item-location-select.component';
+import { OrgSelectComponent } from '../org-select/org-select.component';
+import { FormsModule } from '@angular/forms';
+
 
 @Component({
     selector: 'eg-multi-select',
@@ -16,9 +19,19 @@ import { ComboboxEntry } from '@eg/share/combobox/combobox.component';
     styles: [`
     .icons {margin-inline-start:-18px}
     .material-icons {font-size: 16px;font-weight:bold}
-  `]
+  `],
+    imports: [
+        ComboboxComponent,
+        FormsModule,
+        ItemLocationSelectComponent,
+        OrgSelectComponent
+    ]
 })
 export class MultiSelectComponent implements OnInit {
+    private pcrud = inject(PcrudService);
+    private org = inject(OrgService);
+    private idl = inject(IdlService);
+
 
     selected: ComboboxEntry;
     entrylist: ComboboxEntry[];
@@ -39,12 +52,7 @@ export class MultiSelectComponent implements OnInit {
     acplContextOrgId: number;
     acplIncludeDescendants: boolean;
 
-    constructor(
-        private store: StoreService,
-        private pcrud: PcrudService,
-        private org: OrgService,
-        private idl: IdlService,
-    ) {
+    constructor() {
         this.entrylist = [];
         this.onChange = new EventEmitter<string>();
     }

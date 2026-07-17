@@ -1,8 +1,8 @@
 /* eslint-disable */
 /* eslint-disable rxjs/no-implicit-any-catch, rxjs/no-nested-subscribe */
-import {Component, Input, OnInit, TemplateRef, ViewChild} from '@angular/core';
+import { Component, Input, OnInit, TemplateRef, ViewChild, inject } from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {Location} from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {FormatService} from '@eg/core/format.service';
 import {GridDataSource, GridColumn} from '@eg/share/grid/grid';
@@ -19,7 +19,9 @@ import {BroadcastService} from '@eg/share/util/broadcast.service';
 import {FmRecordEditorComponent, FmFieldOptions
 } from '@eg/share/fm-editor/fm-editor.component';
 import {StringComponent} from '@eg/share/string/string.component';
-import {OrgFamily} from '@eg/share/org-family-select/org-family-select.component';
+import {OrgFamily, OrgFamilySelectComponent} from '@eg/share/org-family-select/org-family-select.component';
+import { GridModule } from '@eg/share/grid/grid.module';
+import { FormsModule } from '@angular/forms';
 
 /**
  * General purpose CRUD interface for IDL objects
@@ -29,10 +31,31 @@ import {OrgFamily} from '@eg/share/org-family-select/org-family-select.component
 
 @Component({
     selector: 'eg-admin-page',
-    templateUrl: './admin-page.component.html'
+    templateUrl: './admin-page.component.html',
+    imports: [
+        CommonModule,
+        ConfirmDialogComponent,
+        FmRecordEditorComponent,
+        FormsModule,
+        GridModule,
+        OrgFamilySelectComponent,
+        StringComponent,
+        TranslateComponent,
+    ]
 })
 
 export class AdminPageComponent implements OnInit {
+    private route = inject(ActivatedRoute);
+    private ngLocation = inject(Location);
+    private format = inject(FormatService);
+    idl = inject(IdlService);
+    private org = inject(OrgService);
+    auth = inject(AuthService);
+    pcrud = inject(PcrudService);
+    private perm = inject(PermService);
+    toast = inject(ToastService);
+    broadcaster = inject(BroadcastService);
+
 
     @Input() idlClass: string;
 
@@ -191,18 +214,7 @@ export class AdminPageComponent implements OnInit {
     // They are used to augment the grid data search query.
     gridFilters: {[key: string]: string | number};
 
-    constructor(
-        private route: ActivatedRoute,
-        private ngLocation: Location,
-        private format: FormatService,
-        public idl: IdlService,
-        private org: OrgService,
-        public auth: AuthService,
-        public pcrud: PcrudService,
-        private perm: PermService,
-        public toast: ToastService,
-        public broadcaster: BroadcastService
-    ) {
+    constructor() {
         this.translatableFields = [];
         this.configFields = [];
     }

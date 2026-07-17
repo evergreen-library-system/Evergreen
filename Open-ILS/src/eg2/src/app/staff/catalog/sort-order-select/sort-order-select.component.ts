@@ -1,6 +1,5 @@
 import { Component, EventEmitter, forwardRef, Input, Output} from '@angular/core';
-import { CatalogService } from '@eg/share/catalog/catalog.service';
-import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
     selector: 'eg-sort-order-select',
@@ -11,7 +10,8 @@ import { NG_VALUE_ACCESSOR } from '@angular/forms';
             useExisting: forwardRef(() => SortOrderSelectComponent),
             multi: true
         }
-    ]
+    ],
+    imports: [FormsModule]
 })
 export class SortOrderSelectComponent {
 

@@ -14,26 +14,28 @@
   <div class="ps-2 mt-3" role="region" attr.aria-label="Receipt" i18n-aria-label>
     <h2 class="me-2 d-inline" i18n>Type of Receipt:</h2>
     <div class="receipt-option-wrapper">
-        <div class="receipt-option" *ngIf="showEmailOption">
-          <input class="btn-check" name="receipt-type" type="radio" 
+      @if (showEmailOption) {
+        <div class="receipt-option">
+          <input class="btn-check" name="receipt-type" type="radio"
             [(ngModel)]="receiptType" id="receipt-email" value="email">
           <label class="btn btn-check-label btn-outline-success m1" for="receipt-email" i18n
-            [ngClass]="{'active': receiptType === 'email'}">Email</label>
+          [ngClass]="{'active': receiptType === 'email'}">Email</label>
         </div>
+      }
 
-        <div class="receipt-option">
-          <input class="btn-check" name="receipt-type" type="radio" 
-            [(ngModel)]="receiptType" id="receipt-print" value="print">
-          <label class="btn btn-check-label btn-outline-success m1" for="receipt-print" i18n
-            [ngClass]="{'active': receiptType === 'print'}">Print</label>
-        </div>
+      <div class="receipt-option">
+        <input class="btn-check" name="receipt-type" type="radio"
+          [(ngModel)]="receiptType" id="receipt-print" value="print">
+        <label class="btn btn-check-label btn-outline-success m1" for="receipt-print" i18n
+        [ngClass]="{'active': receiptType === 'print'}">Print</label>
+      </div>
 
-        <div class="receipt-option">
-          <input class="btn-check" name="receipt-type" type="radio" 
-            [(ngModel)]="receiptType" id="receipt-none" value="none">
-          <label class="btn btn-check-label btn-outline-success m1" for="receipt-none" i18n
-            [ngClass]="{'active': receiptType === 'none'}">None</label>
-        </div>
+      <div class="receipt-option">
+        <input class="btn-check" name="receipt-type" type="radio"
+          [(ngModel)]="receiptType" id="receipt-none" value="none">
+        <label class="btn btn-check-label btn-outline-success m1" for="receipt-none" i18n
+        [ngClass]="{'active': receiptType === 'none'}">None</label>
+      </div>
     </div>
   </div>
 

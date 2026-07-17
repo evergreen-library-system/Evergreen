@@ -1,12 +1,15 @@
-import {Injectable, EventEmitter, TemplateRef} from '@angular/core';
+import { Injectable, EventEmitter, TemplateRef, inject } from '@angular/core';
 import {StoreService} from '@eg/core/store.service';
 import {LocaleService} from '@eg/core/locale.service';
 import {AuthService} from '@eg/core/auth.service';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 declare var js2JSON: (jsThing: any) => string; // eslint-disable-line no-var
 declare var OpenSRF; // eslint-disable-line no-var
 
 const PRINT_TEMPLATE_PATH = '/print_template';
+const PRINT_TEMPLATE_CACHE_CLEAR_PATH = '/print_template_cache_clear';
 
 export interface PrintRequest {
     template?: TemplateRef<any>;
@@ -27,6 +30,10 @@ export interface PrintTemplateResponse {
 
 @Injectable()
 export class PrintService {
+    private auth = inject(AuthService);
+    private http = inject(HttpClient);
+    private locale = inject(LocaleService);
+    private store = inject(StoreService);
 
     onPrintRequest$: EventEmitter<PrintRequest>;
 
@@ -35,11 +42,7 @@ export class PrintService {
     // is not necessarily an indication the job has completed.
     printJobQueued$: EventEmitter<PrintRequest>;
 
-    constructor(
-        private locale: LocaleService,
-        private auth: AuthService,
-        private store: StoreService
-    ) {
+    constructor() {
         this.onPrintRequest$ = new EventEmitter<PrintRequest>();
         this.printJobQueued$ = new EventEmitter<PrintRequest>();
     }
@@ -111,6 +114,11 @@ export class PrintService {
         });
         /* eslint-enable no-magic-numbers */
 
+    }
+    clearPrintTemplateCache(orgUnitId: number): Observable<any> {
+        const formData = new FormData();
+        formData.append('template_owner', orgUnitId.toString());
+        return this.http.post<any>(PRINT_TEMPLATE_CACHE_CLEAR_PATH, formData);
     }
 }
 

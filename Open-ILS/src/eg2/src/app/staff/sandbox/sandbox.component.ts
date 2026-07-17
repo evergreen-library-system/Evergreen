@@ -1,7 +1,7 @@
 /* eslint-disable no-magic-numbers */
 
 import {timer as observableTimer, Observable, map, take} from 'rxjs';
-import {Component, OnInit, ViewChild, Input, TemplateRef} from '@angular/core';
+import { Component, OnInit, ViewChild, Input, TemplateRef, inject } from '@angular/core';
 import {ProgressDialogComponent} from '@eg/share/dialog/progress.component';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {StringService} from '@eg/share/string/string.service';
@@ -21,18 +21,39 @@ import {PatronNoteDialogComponent} from '@eg/staff/share/patron/note-dialog.comp
 import {FormatService} from '@eg/core/format.service';
 import {StringComponent} from '@eg/share/string/string.component';
 import {GridComponent} from '@eg/share/grid/grid.component';
-import * as Moment from 'moment-timezone';
+import moment from 'moment-timezone';
 import {SampleDataService} from '@eg/share/util/sample-data.service';
 import {HtmlToTxtService} from '@eg/share/util/htmltotxt.service';
-import {Z3950SearchComponent} from '@eg/staff/share/z3950-search/z3950-search.component';
+import { StaffCommonModule } from '../common.module';
+import { OrgFamilySelectComponent } from '@eg/share/org-family-select/org-family-select.component';
+import { TranslateComponent } from '@eg/share/translate/translate.component';
+import { Z3950SearchComponent } from '../share/z3950-search/z3950-search.component';
 
 @Component({
     templateUrl: 'sandbox.component.html',
     styles: ['.date-time-input.ng-invalid {border: 5px purple solid;}',
         '.date-time-input.ng-valid {border: 5px green solid; animation: slide 5s linear 1s infinite alternate;}',
-        '@keyframes slide {0% {margin-inline-start:0px;} 50% {margin-inline-start:200px;}}']
+        '@keyframes slide {0% {margin-inline-start:0px;} 50% {margin-inline-start:200px;}}'],
+    imports: [
+        FmRecordEditorComponent,
+        OrgFamilySelectComponent,
+        PatronNoteDialogComponent,
+        StaffCommonModule,
+        TranslateComponent,
+        Z3950SearchComponent
+    ]
 })
 export class SandboxComponent implements OnInit {
+    private idl = inject(IdlService);
+    private org = inject(OrgService);
+    private pcrud = inject(PcrudService);
+    private strings = inject(StringService);
+    private toast = inject(ToastService);
+    private format = inject(FormatService);
+    private printer = inject(PrintService);
+    private samples = inject(SampleDataService);
+    private h2txt = inject(HtmlToTxtService);
+
 
     @ViewChild('progressDialog', { static: true })
     private progressDialog: ProgressDialogComponent;
@@ -122,17 +143,7 @@ export class SandboxComponent implements OnInit {
     circDaily: IdlObject;
     circHourly: IdlObject;
 
-    constructor(
-        private idl: IdlService,
-        private org: OrgService,
-        private pcrud: PcrudService,
-        private strings: StringService,
-        private toast: ToastService,
-        private format: FormatService,
-        private printer: PrintService,
-        private samples: SampleDataService,
-        private h2txt: HtmlToTxtService
-    ) {
+    constructor() {
         // BroadcastChannel is not yet defined in PhantomJS and elsewhere
         this.sbChannel = (typeof BroadcastChannel === 'undefined') ?
             {} : new BroadcastChannel('eg.sbChannel');
@@ -321,7 +332,7 @@ export class SandboxComponent implements OnInit {
         this.bresvEditor.record = b;
 
         this.myTimeForm = new FormGroup({
-            'datetime': new FormControl(Moment([]), (c: FormControl) => {
+            'datetime': new FormControl(moment([]), (c: FormControl) => {
                 // An Angular custom validator
                 if (c.value.year() < 2019) {
                     return { tooLongAgo: 'That\'s before 2019' };

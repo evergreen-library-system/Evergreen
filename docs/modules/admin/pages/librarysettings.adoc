@@ -305,6 +305,7 @@ xref:#_settings_overview[Return to Settings Overview]
 !Format Dates with this pattern.!Format Dates with this pattern (examples: "yyyy-MM-dd" for "2010-04-26, "MMM d, yyyy" for "Apr 26, 2010"). Formats are effective in display (not editing) area.!Text!
 !Format Times with this pattern.!Format Times with this pattern '(examples: "h:m:s.SSS a z" for "2:07:20.666 PM Eastern Daylight Time", "HH:mm" for "14:07")'. Formats are effective in display (not editing) area.!Text!
 !GUI: Hide these fields within the Item Attribute Editor.!Sets which fields in the Item Attribute Editor to hide in the staff client.!Text!This is useful to hide attributes that are not used.
+!Hide the Clear These Holds button!Hide the Clear These Holds button from the Holds Shelf interface.!True/False!Default = False
 !Horizontal layout for Volume/Copy Creator/Editor.!The main entry point for this interface is in Holdings Maintenance, Actions for Selected Rows, Edit Item Attributes / Call Numbers / Replace Barcodes. This setting changes the top and bottom panes (if FALSE) for that interface into left and right panes (if TRUE).!True/False!
 !Idle timeout!If you want staff client windows to be minimized after a certain amount of system idle time, set this to the number of seconds of idle time that you want to allow before minimizing (requires staff client restart).!Number!
 !Items Out Claims Returned display setting!Value is a numeric code, describing which list the circulation should appear while checked out and whether the circulation should continue to appear in the bottom list, when checked in with outstanding fines. 1 = top list, bottom list. 2 = bottom list, bottom list. 5 = top list, do not display. 6 = bottom list, do not display.!Number!
@@ -395,7 +396,6 @@ xref:#_settings_overview[Return to Settings Overview]
 |Soft stalling interval|For this amount of time, holds will not be opportunistically captured at non-pickup branches.|Duration|
 For multiple branch libraries
 |Use Active Date for age protection|When calculating age protection rules use the Active date instead of the Creation Date.|True/False|Default TRUE
-|Use weight-based hold targeting|Use library weight based hold targeting|True/False|
 |=====
 
 xref:#_settings_overview[Return to Settings Overview]
@@ -431,7 +431,7 @@ xref:#_settings_overview[Return to Settings Overview]
 |Setting|Description|Data type|Notes
 |Allow Patron Self-Registration|Allow patrons to self-register, creating pending user accounts|True/False|
 |Allow pending addresses|If true patrons can edit their addresses in the OPAC. Changes must be approved by staff|True/False|
-|Auto-Override Permitted Hold Blocks (Patrons)|This will allow patrons with the permission "HOLD_ITEM_CHECKED_OUT.override" to automatically override permitted holds.|True/False|When a patron places a hold in the OPAC that fails, and the patron has the permission to override the failed hold, this automatically overrides the failed hold rather than requiring the patron to manually override the hold. Default is False.
+|Auto-Override Permitted Hold Blocks (Patrons)|When a patron places a hold in the OPAC that fails, and the patron has the permission to override the failed hold, this automatically overrides the failed hold rather than requiring the patron to manually override the hold.|True/False|Default is False.
 |Jump to details on 1 hit (OPAC)|When a search yields only 1 result, jump directly to the record details page. This setting only affects the public OPAC|True/False|
 |Jump to details on 1 hit (staff client)|When a search yields only 1 result, jump directly to the record details page. This setting only affects the PAC within the staff client|True/False|
 |OPAC: Number of staff client saved searches to display on left side of results and record details pages|If unset, the OPAC (only when wrapped in the staff client!) will default to showing you your ten most recent searches on the left side of the results and record details pages. If you actually don't want to see this feature at all, set this value to zero at the top of your organizational tree.|Number|

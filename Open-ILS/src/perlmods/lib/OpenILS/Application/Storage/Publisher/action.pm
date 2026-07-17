@@ -2172,6 +2172,11 @@ sub wide_hold_data {
     my $last_captured_hold = delete($$restrictions{last_captured_hold}) || 'false';
     $last_captured_hold = $last_captured_hold eq 'true' ? 1 : 0;
 
+    # option to filter by the cancel time display age setting
+    my $cancel_age = ref($$restrictions{cancel_time}) eq 'HASH'
+        && $$restrictions{cancel_time}{'>='}
+        && ${delete($$restrictions{cancel_time})}{'>='};
+
     # option to filter for hopeless holds by date range
     my $hopeless_holds = delete($$restrictions{hopeless_holds}) || 'false';
 
@@ -2187,6 +2192,22 @@ sub wide_hold_data {
                   LIMIT 1
             )))
         SQL
+    }
+
+    my @bind_values;
+
+    if ($cancel_age) {
+        my $cancel_time;
+        eval {
+            $cancel_time = DateTime::Format::ISO8601->parse_datetime($cancel_age);
+            $cancel_time->set_time_zone('UTC');
+        };
+        if ($@) {
+            $log->error("Restriction cancel_time is invalid: $@");
+            return 0;
+        }
+        push(@bind_values, $cancel_time->iso8601() . 'Z');
+        $initial_condition .= " AND h.cancel_time >= ?";
     }
 
     if (ref($hopeless_holds) =~ /HASH/ && $$hopeless_holds{start_date} && $$hopeless_holds{end_date}) {
@@ -2512,7 +2533,7 @@ SELECT  h.id, h.request_time, h.capture_time, h.fulfillment_time, h.checkin_time
     $select .= ' OFFSET ' . $offset if ($offset and $offset =~ /^\d+$/);
 
     my $sth = action::hold_request->db_Main->prepare($select);
-    $sth->execute();
+    $sth->execute(@bind_values);
 
     my @list = $sth->fetchall_hash;
     $client->respond(int(scalar(@list))); # send the row count first, for progress tracking

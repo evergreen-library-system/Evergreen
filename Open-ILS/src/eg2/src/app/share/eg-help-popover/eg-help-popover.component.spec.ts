@@ -8,8 +8,7 @@ describe('EgHelpPopoverComponent', () => {
 
     beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
-            declarations: [ EgHelpPopoverComponent ],
-            imports: [NgbPopoverModule]
+            imports: [EgHelpPopoverComponent, NgbPopoverModule]
         })
             .compileComponents();
     }));

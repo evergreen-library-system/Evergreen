@@ -1,0 +1,38 @@
+.dl-grid {
+  align-items: baseline;
+  grid-template-columns: max-content minmax(max-content, 20rem);
+}
+
+.dl-grid .form-label {
+  font-weight: bold;
+}
+
+.dl-grid .btn-primary,
+.dl-grid .alert-container,
+.dl-grid .input-group {
+  grid-column: 2;
+}
+
+.nav-tabs.flex-column {
+  border-block-end: 0;
+}
+
+.nav-tabs.flex-column .nav-link {
+  padding-inline-end: 1.25rem;
+}
+
+.nav-tabs.flex-column .nav-item.show .nav-link,
+.nav-tabs.flex-column .nav-link.active {
+  background-color: var(--bs-body-bg-alt);
+  font-weight: normal;
+}
+
+.alert .material-icons {
+  font-size: 1.35rem;
+  margin-inline-end: 0.25rem;
+  vertical-align: sub;
+}
+
+textarea.class-tag-subfield {
+  height: 13rem;
+}

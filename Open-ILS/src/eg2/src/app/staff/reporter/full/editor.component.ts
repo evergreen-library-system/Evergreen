@@ -1,10 +1,9 @@
 /* eslint-disable */
-import {Component, OnInit, ViewChild} from '@angular/core';
+import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 import {Location} from '@angular/common';
 import {of} from 'rxjs';
 import {NgbNav} from '@ng-bootstrap/ng-bootstrap';
-import {EventService} from '@eg/core/event.service';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
@@ -12,13 +11,31 @@ import {PcrudService} from '@eg/core/pcrud.service';
 import {StringComponent} from '@eg/share/string/string.component';
 import {ReporterService, SRTemplate} from '../share/reporter.service';
 import {Tree, TreeNode} from '@eg/share/tree/tree';
+import { StaffCommonModule } from '@eg/staff/common.module';
+import { TreeComponent } from '@eg/share/tree/tree.component';
+import { ReporterFieldChooserComponent } from './reporter-field-chooser.component';
+import { ReporterSortOrderComponent } from './reporter-sort-order.component';
 
 @Component({
     templateUrl: './editor.component.html',
     styleUrls: ['./editor.component.css'],
+    imports: [
+        ReporterFieldChooserComponent,
+        ReporterSortOrderComponent,
+        StaffCommonModule,
+        TreeComponent
+    ]
 })
 
 export class FullReporterEditorComponent implements OnInit {
+    private route = inject(ActivatedRoute);
+    private router = inject(Router);
+    private location = inject(Location);
+    private toast = inject(ToastService);
+    private idl = inject(IdlService);
+    private pcrud = inject(PcrudService);
+    RSvc = inject(ReporterService);
+
 
     currentIdlTree: Tree = null;
     currentIdlNode: TreeNode = null;
@@ -51,16 +68,7 @@ export class FullReporterEditorComponent implements OnInit {
     @ViewChild('closeFormDialog', { static: false }) closeFormDialog: ConfirmDialogComponent;
 
 
-    constructor(
-        private route: ActivatedRoute,
-        private router: Router,
-        private location: Location,
-        private toast: ToastService,
-        private evt: EventService,
-        private idl: IdlService,
-        private pcrud: PcrudService,
-        public RSvc: ReporterService
-    ) {
+    constructor() {
         this.folderParam = Number(this.route.snapshot.paramMap.get('folder')) || null;
         if (this.folderParam) {
             this.pcrud

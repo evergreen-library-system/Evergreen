@@ -1,12 +1,11 @@
 /* eslint-disable */
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import { Component, Input, OnInit, ViewChild, inject } from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 import {map, concatMap} from 'rxjs/operators';
 import {from} from 'rxjs';
 import {AuthService} from '@eg/core/auth.service';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
-import {Pager} from '@eg/share/util/pager';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {GridDataSource, GridCellTextGenerator} from '@eg/share/grid/grid';
 import {ReporterService, SRTemplate} from '../share/reporter.service';
@@ -17,14 +16,29 @@ import {PromptDialogComponent} from '@eg/share/dialog/prompt.component';
 import {FolderShareOrgDialogComponent} from './folder-share-org-dialog.component';
 import {ChangeFolderDialogComponent} from './change-folder-dialog.component';
 import {NetService} from '@eg/core/net.service';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
     selector: 'eg-reporter-templates',
     templateUrl: 'my-templates.component.html',
     styleUrls: ['./my-templates.component.css'],
+    imports: [
+        ChangeFolderDialogComponent,
+        FolderShareOrgDialogComponent,
+        StaffCommonModule
+    ]
 })
 
 export class ReportTemplatesComponent implements OnInit {
+	private router = inject(Router);
+	private route = inject(ActivatedRoute);
+	private auth = inject(AuthService);
+	private pcrud = inject(PcrudService);
+	private idl = inject(IdlService);
+	RSvc = inject(ReporterService);
+	private toast = inject(ToastService);
+	private net = inject(NetService);
+
 
 	@Input() currentFolder: IdlObject = null;
 	@Input() searchFolder: IdlObject = null;
@@ -53,18 +67,6 @@ export class ReportTemplatesComponent implements OnInit {
 
 
     cellTextGenerator: GridCellTextGenerator;
-
-    constructor(
-        private router: Router,
-        private route: ActivatedRoute,
-        private auth: AuthService,
-        private pcrud: PcrudService,
-        private idl: IdlService,
-        public RSvc: ReporterService,
-        private toast: ToastService,
-        private net: NetService
-    ) {
-    }
 
     ngOnInit() {
         if (this.currentFolder) {

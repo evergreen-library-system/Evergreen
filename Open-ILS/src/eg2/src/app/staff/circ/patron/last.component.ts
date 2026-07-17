@@ -1,19 +1,18 @@
-import {Component, Input, OnInit, AfterViewInit, ViewChild} from '@angular/core';
-import {Router, ActivatedRoute, ParamMap} from '@angular/router';
-import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
+import { Component, OnInit, inject } from '@angular/core';
+import {Router, ActivatedRoute} from '@angular/router';
 import {StoreService} from '@eg/core/store.service';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
-    templateUrl: 'last.component.html'
+    templateUrl: 'last.component.html',
+    imports: [StaffCommonModule]
 })
 export class LastPatronComponent implements OnInit {
-    noRecents = false;
+    private router = inject(Router);
+    private route = inject(ActivatedRoute);
+    private store = inject(StoreService);
 
-    constructor(
-        private router: Router,
-        private route: ActivatedRoute,
-        private store: StoreService
-    ) {}
+    noRecents = false;
 
     ngOnInit() {
 

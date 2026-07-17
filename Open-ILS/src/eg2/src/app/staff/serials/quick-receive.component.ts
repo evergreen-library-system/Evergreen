@@ -9,7 +9,6 @@ import { IdlObject } from '@eg/core/idl.service';
 import { SerialsReceiveComponent } from './serials-receive.component';
 
 @Component({
-    standalone: true,
     selector: 'eg-quick-receive',
     imports: [StaffCommonModule, SubscriptionSelectorComponent, SerialsReceiveComponent],
     templateUrl: './quick-receive.component.html'

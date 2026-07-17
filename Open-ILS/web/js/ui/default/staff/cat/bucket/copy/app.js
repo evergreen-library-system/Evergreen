@@ -18,7 +18,7 @@ angular.module('egCatCopyBuckets',
 .config(function($routeProvider, $locationProvider, $compileProvider) {
     $locationProvider.html5Mode(true);
     $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|mailto|blob):/); // grid export
-	
+
     var resolver = {delay : function(egStartup) {return egStartup.go()}};
 
     $routeProvider.when('/cat/bucket/copy/pending/:id', {
@@ -234,9 +234,9 @@ angular.module('egCatCopyBuckets',
  */
 .controller('CopyBucketCtrl',
        ['$scope','$location','$q','$timeout','$uibModal',
-        '$window','egCore','bucketSvc','egProgressDialog',
+        '$window','egCore','bucketSvc','egProgressDialog','egAlertDialog',
 function($scope,  $location,  $q,  $timeout,  $uibModal,  
-         $window,  egCore,  bucketSvc , egProgressDialog) {
+         $window,  egCore,  bucketSvc , egProgressDialog, egAlertDialog) {
 
     $scope.bucketSvc = bucketSvc;
     $scope.bucket = function() { return bucketSvc.currentBucket }
@@ -267,7 +267,7 @@ function($scope,  $location,  $q,  $timeout,  $uibModal,
 
         egProgressDialog.open();
 
-        egCore.net.request(
+        return egCore.net.request(
             'open-ils.actor',
             'open-ils.actor.container.item.create.batch',
             egCore.auth.token(), 'copy',
@@ -288,6 +288,44 @@ function($scope,  $location,  $q,  $timeout,  $uibModal,
         );
     }
 
+    $scope.readFile = function(file, deleted) {
+        return new Promise((resolve, reject) => {
+            let fr = new FileReader();
+            fr.onload = () => {
+                let barcodes = fr.result;
+                let barcodes_array = [];
+                angular.forEach(barcodes.split(/\r?\n/), function(line) {
+                    // delete whitespace and commas
+                    line = line.replace(/[\s,]+/g,'');
+                    if (!line) return;
+                    barcodes_array.push(line);
+                });
+
+                if(!barcodes_array.length) {
+                    return egAlertDialog.open(
+                        egCore.strings.FAILURE_FILE_NO_BARCODES);
+                }
+
+                let searchParams = {barcode: barcodes_array};
+                if(!deleted)
+                    searchParams.deleted = 'f';
+
+                egCore.pcrud.search('acp', searchParams, null, {atomic: true}).then( (res) => {
+                    let recs = res.map((rec) => Object.create({'id': rec.id()}));
+                    if(recs.length) {
+                        $scope.addToBucket(recs).then(() => resolve(fr.result));
+                    }
+                    else {
+                        return egAlertDialog.open(
+                            egCore.strings.FAILURE_FILE_NO_BARCODES);
+                    }
+                });
+            };
+            fr.onerror = reject;
+            fr.readAsText(file);
+        });
+    }
+
     $scope.openCreateBucketDialog = function() {
         $uibModal.open({
             templateUrl: './cat/bucket/share/t_bucket_create',
@@ -295,7 +333,14 @@ function($scope,  $location,  $q,  $timeout,  $uibModal,
             controller: 
                 ['$scope', '$uibModalInstance', function($scope, $uibModalInstance) {
                 $scope.focusMe = true;
-                $scope.ok = function(args) { $uibModalInstance.close(args) }
+                $scope.allow_upload = true;
+                $scope.ok = function(args) {
+                    //ng-model doesn't work with file inputs
+                    args.file = document
+                        .getElementById("edit-bucket-file-input")
+                        .files[0];
+                    $uibModalInstance.close(args);
+                }
                 $scope.cancel = function () { $uibModalInstance.dismiss() }
             }]
         }).result.then(function (args) {
@@ -306,8 +351,15 @@ function($scope,  $location,  $q,  $timeout,  $uibModal,
                     bucketSvc.viewList = [];
                     bucketSvc.allBuckets = []; // reset
                     bucketSvc.currentBucket = null;
-                    $location.path(
-                        '/cat/bucket/copy/' + $scope.tab + '/' + id);
+                    let newPath = '/cat/bucket/copy/' + $scope.tab + '/' + id;
+                    if(args.file) {
+                        //fetch the bucket and load it up with items from the file
+                        bucketSvc.fetchBucket(id).then( () =>
+                            $scope.readFile(args.file, args.deleted)
+                                .then( () => $location.path(newPath))
+                        );
+                    } else
+                        $location.path(newPath);
                 }
             );
         });
@@ -320,6 +372,7 @@ function($scope,  $location,  $q,  $timeout,  $uibModal,
             controller: 
                 ['$scope', '$uibModalInstance', function($scope, $uibModalInstance) {
                 $scope.focusMe = true;
+                $scope.allow_upload = true;
                 $scope.args = {
                     name : bucketSvc.currentBucket.name(),
                     desc : bucketSvc.currentBucket.description(),
@@ -327,14 +380,24 @@ function($scope,  $location,  $q,  $timeout,  $uibModal,
                 };
                 $scope.ok = function(args) { 
                     if (!args) return;
+                    args.file = document
+                        .getElementById("edit-bucket-file-input")
+                        .files[0];
                     $scope.actionPending = true;
                     args.pub = args.pub ? 't' : 'f';
                     // close the dialog after edit has completed
                     bucketSvc.editBucket(args).then(
-                        function() { $uibModalInstance.close() });
+                        function() {  $uibModalInstance.close(args) });
                 }
                 $scope.cancel = function () { $uibModalInstance.dismiss() }
             }]
+        }).result.then((args) => {
+            if(args.file) {
+                let newPath =
+                    '/cat/bucket/copy/' + $scope.tab + '/' + bucketSvc.currentBucket.id();
+                $scope.readFile(args.file, args.deleted)
+                .then( () =>  $window.location.reload());
+            }
         })
     }
 

@@ -1,23 +1,26 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
 import {ItemEventGridComponent} from './event-grid.component';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
-    templateUrl: 'event-log.component.html'
+    templateUrl: 'event-log.component.html',
+    imports: [
+        StaffCommonModule,
+        ItemEventGridComponent
+    ]
 })
 
 export class ItemEventLogComponent implements OnInit {
+    private route = inject(ActivatedRoute);
+    private net = inject(NetService);
+    private auth = inject(AuthService);
+
     itemId: number;
 
     @ViewChild('itemEventGrid', { static: true }) itemEventGrid: ItemEventGridComponent;
-
-    constructor(
-        private route: ActivatedRoute,
-        private net: NetService,
-        private auth: AuthService
-    ) {}
 
     ngOnInit() {
         // Note: if this is not supplied, the grid will show recent events

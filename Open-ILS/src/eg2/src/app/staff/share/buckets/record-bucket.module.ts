@@ -17,7 +17,7 @@ import {RecordBucketRoutingModule} from './record-bucket-routing.module';
 import {HoldsModule} from '@eg/staff/share/holds/holds.module';
 
 @NgModule({
-    declarations: [
+    imports: [
         BucketTransferDialogComponent,
         BucketShareDialogComponent,
         BucketUserShareComponent,
@@ -25,9 +25,7 @@ import {HoldsModule} from '@eg/staff/share/holds/holds.module';
         RecordBucketComponent,
         RecordBucketExportDialogComponent,
         RecordBucketItemUploadDialogComponent,
-        RecordBucketItemComponent
-    ],
-    imports: [
+        RecordBucketItemComponent,
         StaffCommonModule,
         AdminPageModule,
         PatronModule,

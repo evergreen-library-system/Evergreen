@@ -1,27 +1,24 @@
-import {Injectable} from '@angular/core';
-import {Subject, Observable, of, lastValueFrom} from 'rxjs';
+import { Injectable, inject } from '@angular/core';
+import {Subject, Observable, of, lastValueFrom, firstValueFrom, toArray, map} from 'rxjs';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
-// import {ServerStoreService} from '@eg/core/server-store.service';
 import {StoreService} from '@eg/core/store.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {IdlService,IdlObject} from '@eg/core/idl.service';
 
 @Injectable()
 export class BucketService {
+    private store = inject(StoreService);
+    private net = inject(NetService);
+    private auth = inject(AuthService);
+    private pcrud = inject(PcrudService);
+    private idl = inject(IdlService);
+
     maxRecentRecordBuckets = 10;
     private favoriteRecordBucketFlags: {[bucketId: number]: IdlObject} = {};
 
     private bibBucketsRefreshRequested = new Subject<void>();
     bibBucketsRefreshRequested$ = this.bibBucketsRefreshRequested.asObservable();
-
-    constructor(
-        private store: StoreService,
-        private net: NetService,
-        private auth: AuthService,
-        private pcrud: PcrudService,
-        private idl: IdlService,
-    ) {}
 
     requestBibBucketsRefresh() {
         this.bibBucketsRefreshRequested.next();
@@ -67,7 +64,9 @@ export class BucketService {
             item.target_biblio_record_entry(itemId);
             items.push(item);
         });
-        return this.pcrud.create(items).toPromise().then(l => l.map(i => i.id()));
+        return firstValueFrom(
+            this.pcrud.create(items).pipe(map((bucketItem: IdlObject) => bucketItem.id()), toArray())
+        );
     }
 
     async removeBibsFromRecordBucket(bucketId: number, bibIds: number[]): Promise<any> {

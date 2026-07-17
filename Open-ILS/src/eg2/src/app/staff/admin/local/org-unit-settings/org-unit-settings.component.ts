@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, ViewChild} from '@angular/core';
+import { Component, OnInit, Input, ViewChild, inject } from '@angular/core';
 import {EMPTY, Observable, Observer} from 'rxjs';
 import {Pager} from '@eg/share/util/pager';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
@@ -18,6 +18,7 @@ import {OuSettingHistoryDialogComponent
 } from '@eg/staff/admin/local/org-unit-settings/org-unit-setting-history-dialog.component';
 import {OuSettingJsonDialogComponent
 } from '@eg/staff/admin/local/org-unit-settings/org-unit-setting-json-dialog.component';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 export class OrgUnitSetting {
     name: string;
@@ -36,10 +37,24 @@ export class OrgUnitSetting {
 }
 
 @Component({
-    templateUrl: './org-unit-settings.component.html'
+    templateUrl: './org-unit-settings.component.html',
+    imports: [
+        StaffCommonModule,
+        EditOuSettingDialogComponent,
+        OuSettingHistoryDialogComponent,
+        OuSettingJsonDialogComponent
+    ]
 })
 
 export class OrgUnitSettingsComponent implements OnInit {
+    private org = inject(OrgService);
+    private pcrud = inject(PcrudService);
+    private auth = inject(AuthService);
+    private toast = inject(ToastService);
+    private locale = inject(LocaleService);
+    private net = inject(NetService);
+    private idl = inject(IdlService);
+
 
     contextOrg: IdlObject;
 
@@ -69,15 +84,7 @@ export class OrgUnitSettingsComponent implements OnInit {
 
     @Input() filterString: string;
 
-    constructor(
-        private org: OrgService,
-        private pcrud: PcrudService,
-        private auth: AuthService,
-        private toast: ToastService,
-        private locale: LocaleService,
-        private net: NetService,
-        private idl: IdlService
-    ) {
+    constructor() {
         this.gridDataSource = new GridDataSource();
         this.refreshSettings = true;
         this.renderFromPrefs = true;

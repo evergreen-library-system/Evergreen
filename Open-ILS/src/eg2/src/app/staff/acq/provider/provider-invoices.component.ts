@@ -1,6 +1,5 @@
-import {Component, OnInit, AfterViewInit, OnDestroy, Input, ViewChild} from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy, Input, ViewChild, inject } from '@angular/core';
 import {Subscription} from 'rxjs';
-import {Router, ActivatedRoute} from '@angular/router';
 import {IdlObject} from '@eg/core/idl.service';
 import {EventService} from '@eg/core/event.service';
 import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
@@ -12,13 +11,27 @@ import {GridDataSource, GridCellTextGenerator} from '@eg/share/grid/grid';
 import {AcqSearchService, AcqSearchTerm} from '../search/acq-search.service';
 import {AttrDefsService} from '../search/attr-defs.service';
 import {ProviderRecordService} from './provider-record.service';
+import { RouterModule } from '@angular/router';
+import { GridModule } from '@eg/share/grid/grid.module';
 
 @Component({
     selector: 'eg-provider-invoices',
     templateUrl: 'provider-invoices.component.html',
-    providers: [AcqSearchService, AttrDefsService]
+    providers: [AcqSearchService, AttrDefsService],
+    imports: [
+        AlertDialogComponent,
+        GridModule,
+        RouterModule,
+    ]
 })
 export class ProviderInvoicesComponent implements OnInit, AfterViewInit, OnDestroy {
+    private printer = inject(PrintService);
+    private evt = inject(EventService);
+    private net = inject(NetService);
+    private auth = inject(AuthService);
+    private providerRecord = inject(ProviderRecordService);
+    private acqSearch = inject(AcqSearchService);
+
 
     @Input() initialSearchTerms: AcqSearchTerm[] = [];
 
@@ -31,17 +44,6 @@ export class ProviderInvoicesComponent implements OnInit, AfterViewInit, OnDestr
     cellTextGenerator: GridCellTextGenerator;
 
     subscription: Subscription;
-
-    constructor(
-        private router: Router,
-        private route: ActivatedRoute,
-        private printer: PrintService,
-        private evt: EventService,
-        private net: NetService,
-        private auth: AuthService,
-        private providerRecord: ProviderRecordService,
-        private acqSearch: AcqSearchService) {
-    }
 
     ngOnInit() {
         this.gridSource = this.acqSearch.getAcqSearchDataSource('invoice');

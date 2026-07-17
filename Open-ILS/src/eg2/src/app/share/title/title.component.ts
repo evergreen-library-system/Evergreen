@@ -1,4 +1,5 @@
-import {Component, Input, AfterViewInit, ViewChild} from '@angular/core';
+import { SlicePipe } from '@angular/common';
+import { Component, Input, AfterViewInit, ViewChild, inject } from '@angular/core';
 import {Title} from '@angular/platform-browser';
 import {StringComponent} from '@eg/share/string/string.component';
 
@@ -13,10 +14,16 @@ import {StringComponent} from '@eg/share/string/string.component';
 
 @Component({
     selector: 'eg-title',
-    templateUrl: 'title.component.html'
+    templateUrl: 'title.component.html',
+    imports: [
+        SlicePipe,
+        StringComponent
+    ]
 })
 
 export class TitleComponent implements AfterViewInit {
+    private title = inject(Title);
+
 
     initDone: boolean;
 
@@ -33,8 +40,6 @@ export class TitleComponent implements AfterViewInit {
     }
 
     @ViewChild('titleString', { static: true }) titleString: StringComponent;
-
-    constructor(private title: Title) {}
 
     ngAfterViewInit() {
         this.initDone = true;

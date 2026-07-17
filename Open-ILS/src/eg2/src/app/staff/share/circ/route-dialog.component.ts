@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {of, from, Observable, concatMap} from 'rxjs';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {OrgService} from '@eg/core/org.service';
@@ -7,28 +7,35 @@ import {NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {ServerStoreService} from '@eg/core/server-store.service';
 import {PrintService} from '@eg/share/print/print.service';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 /** Route Item Dialog */
 
 @Component({
     templateUrl: 'route-dialog.component.html',
-    selector: 'eg-circ-route-dialog'
+    selector: 'eg-circ-route-dialog',
+    imports: [StaffCommonModule]
 })
 export class RouteDialogComponent extends DialogComponent {
+    private modal: NgbModal;
+    private pcrud = inject(PcrudService);
+    private org = inject(OrgService);
+    private circ = inject(CircService);
+    private printer = inject(PrintService);
+    private serverStore = inject(ServerStoreService);
+
 
     checkin: CheckinResult;
     noAutoPrint: {[template: string]: boolean} = {};
     slip: string;
     today = new Date();
 
-    constructor(
-        private modal: NgbModal,
-        private pcrud: PcrudService,
-        private org: OrgService,
-        private circ: CircService,
-        private printer: PrintService,
-        private serverStore: ServerStoreService) {
+    constructor() {
+        const modal = inject(NgbModal);
+
         super(modal);
+
+        this.modal = modal;
     }
 
     open(ops?: NgbModalOptions): Observable<any> {

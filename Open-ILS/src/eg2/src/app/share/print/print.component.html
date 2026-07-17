@@ -1,5 +1,5 @@
-<!-- 
-Global print container.  
+<!--
+Global print container.
 There should only be one print component active in a page.
 -->
 
@@ -13,13 +13,13 @@ Error generating print content for template name="{{name}}" / id="{{id}}"
 </ng-template>
 <eg-string key='eg.print.template.error' [template]="notWorking"></eg-string>
 
-<div id='eg-print-container'>
+<div id="print-div">
 
   <!-- container for inline template compilation -->
-  <ng-container *ngIf="template">
+  @if (template) {
     <ng-container *ngTemplateOutlet="template; context:context">
     </ng-container>
-  </ng-container>
+  }
 
   <!-- container for pre-compiled HTML -->
   <div id='eg-print-html-container'> </div>

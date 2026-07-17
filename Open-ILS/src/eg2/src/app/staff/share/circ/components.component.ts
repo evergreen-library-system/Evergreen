@@ -1,4 +1,4 @@
-import {Component, OnInit, Output, Input, ViewChild, EventEmitter} from '@angular/core';
+import { Component, ViewChild, inject } from '@angular/core';
 import {CircService} from './circ.service';
 import {PrecatCheckoutDialogComponent} from './precat-dialog.component';
 import {CircEventsComponent} from './events-dialog.component';
@@ -10,6 +10,8 @@ import {CopyInTransitDialogComponent} from './in-transit-dialog.component';
 import {CopyAlertManagerDialogComponent
 } from '@eg/staff/share/holdings/copy-alert-manager.component';
 import {BadBarcodeDialogComponent} from './bad-barcode-dialog.component';
+import {CircEmailReceiptDialogComponent} from './circ-email-receipt-dialog.component';
+import {ProgressDialogComponent} from '@eg/share/dialog/progress.component';
 
 /* Container component for sub-components used by circulation actions.
  *
@@ -20,9 +22,24 @@ import {BadBarcodeDialogComponent} from './bad-barcode-dialog.component';
 
 @Component({
     templateUrl: 'components.component.html',
-    selector: 'eg-circ-components'
+    selector: 'eg-circ-components',
+    imports: [
+        AlertDialogComponent,
+        BadBarcodeDialogComponent,
+        CircEmailReceiptDialogComponent,
+        CircEventsComponent,
+        CopyAlertManagerDialogComponent,
+        CopyInTransitDialogComponent,
+        RouteDialogComponent,
+        OpenCircDialogComponent,
+        PrecatCheckoutDialogComponent,
+        ProgressDialogComponent,
+        StringComponent
+    ]
 })
 export class CircComponentsComponent {
+    private circ = inject(CircService);
+
 
     @ViewChild('precatDialog') precatDialog: PrecatCheckoutDialogComponent;
     @ViewChild('circEventsDialog') circEventsDialog: CircEventsComponent;
@@ -39,7 +56,20 @@ export class CircComponentsComponent {
     @ViewChild('catalogingStr') catalogingStr: StringComponent;
     @ViewChild('badBarcodeDialog') badBarcodeDialog: BadBarcodeDialogComponent;
 
-    constructor(private circ: CircService) {
+    @ViewChild('emailReceiptProgressDialog')
+        emailReceiptProgressDialog: ProgressDialogComponent;
+    @ViewChild('emailReceiptDialog')
+        emailReceiptDialog: CircEmailReceiptDialogComponent;
+    @ViewChild('emailReceiptSentStr')
+        emailReceiptSentStr: StringComponent;
+    @ViewChild('emailReceiptNoCircStr')
+        emailReceiptNoCircStr: StringComponent;
+    @ViewChild('emailReceiptInvalidEmailStr')
+        emailReceiptInvalidEmailStr: StringComponent;
+    @ViewChild('emailReceiptFailedStr')
+        emailReceiptFailedStr: StringComponent;
+
+    constructor() {
         this.circ.components = this;
     }
 }

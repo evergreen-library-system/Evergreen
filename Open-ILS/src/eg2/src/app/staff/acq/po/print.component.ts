@@ -1,4 +1,4 @@
-import {Component, OnInit, AfterViewInit} from '@angular/core';
+import { Component, OnInit, AfterViewInit, inject } from '@angular/core';
 import {ActivatedRoute, ParamMap} from '@angular/router';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
@@ -34,6 +34,18 @@ const ORDER_IDENT_ATTRS = [
     templateUrl: 'print.component.html'
 })
 export class PrintComponent implements OnInit, AfterViewInit {
+    private route = inject(ActivatedRoute);
+    private idl = inject(IdlService);
+    private org = inject(OrgService);
+    private net = inject(NetService);
+    private auth = inject(AuthService);
+    private store = inject(ServerStoreService);
+    private pcrud = inject(PcrudService);
+    private poService = inject(PoService);
+    private liService = inject(LineitemService);
+    private broadcaster = inject(BroadcastService);
+    private printer = inject(PrintService);
+
 
     poId: number;
     outlet: Element;
@@ -41,20 +53,6 @@ export class PrintComponent implements OnInit, AfterViewInit {
     printing: boolean;
     closing: boolean;
     initDone = false;
-
-    constructor(
-        private route: ActivatedRoute,
-        private idl: IdlService,
-        private org: OrgService,
-        private net: NetService,
-        private auth: AuthService,
-        private store: ServerStoreService,
-        private pcrud: PcrudService,
-        private poService: PoService,
-        private liService: LineitemService,
-        private broadcaster: BroadcastService,
-        private printer: PrintService) {
-    }
 
     ngOnInit() {
         this.route.parent.paramMap.subscribe((params: ParamMap) => {

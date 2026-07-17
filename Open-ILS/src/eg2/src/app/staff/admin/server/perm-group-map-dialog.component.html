@@ -1,9 +1,9 @@
 <ng-template #dialogContent>
   <div class="modal-header">
     <h4 class="modal-title" i18n>Add New Permission Group Mapping</h4>
-    <button type="button" class="btn-close btn-close-white" 
-      i18n-aria-label aria-label="Close dialog" 
-      (click)="close()"></button>
+    <button type="button" class="btn-close btn-close-white"
+      i18n-aria-label aria-label="Close dialog"
+    (click)="close()"></button>
   </div>
   <div class="modal-body">
     <div class="row">
@@ -21,42 +21,44 @@
           (selectItem)="select($event); selectPerms.value=''">
       </div>
     </div>
-    <ng-container *ngFor="let map of newPermMaps.controls; let i = index">
+    @for (map of newPermMaps.controls; track map; let i = $index) {
       <ng-container [formGroup]="map">
         <hr>
-        <div class="row mt-1 pt-1">
-          <div class="col-lg-12">
-            <h5 i18n>{{map.controls.label.value}}</h5>
+          <div class="row mt-1 pt-1">
+            <div class="col-lg-12">
+              <h5 i18n>{{map.controls.label.value}}</h5>
+            </div>
           </div>
-        </div>
-        <div class="row row-cols-5 mt-1 pt-1">
-          <label class="col-form-label" for="depth-{{map.controls.id.value}}" i18n>Depth</label>
-          <div class="col">
-            <select formControlName="depth" class="p-1"
-              id="depth-{{map.controls.id.value}}">
-              <option *ngFor="let d of orgDepths" value="{{d}}">{{d}}</option>
-            </select>
-          </div>
-          <label class="col-form-lalel" for="grantable-{{map.controls.id.value}}" i18n>Grantable</label>
-          <div class="col">
-            <input type="checkbox" formControlName="grantable"
-              id="grantable-{{map.controls.id.value}}">
-          </div>
-          <div class="col">
-            <button type="button" class="btn btn-danger"
-              (click)="remove(i)"
-              i18n>Remove
+          <div class="row row-cols-5 mt-1 pt-1">
+            <label class="col-form-label" for="depth-{{map.controls.id.value}}" i18n>Depth</label>
+            <div class="col">
+              <select formControlName="depth" class="p-1"
+                id="depth-{{map.controls.id.value}}">
+                @for (d of orgDepths; track d) {
+                  <option value="{{d}}">{{d}}</option>
+                }
+              </select>
+            </div>
+            <label class="col-form-lalel" for="grantable-{{map.controls.id.value}}" i18n>Grantable</label>
+            <div class="col">
+              <input type="checkbox" formControlName="grantable"
+                id="grantable-{{map.controls.id.value}}">
+            </div>
+            <div class="col">
+              <button type="button" class="btn btn-danger"
+                (click)="remove(i)"
+                i18n>Remove
             </button>
+            </div>
           </div>
-        </div>
-      </ng-container>
-    </ng-container>
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-success" 
-      [disabled]="!selectedPermEntries.length"
+        </ng-container>
+      }
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-success"
+        [disabled]="!selectedPermEntries.length"
       (click)="onCreate.next()" i18n>Create</button>
-    <button type="button" class="btn btn-normal" 
+      <button type="button" class="btn btn-normal"
       (click)="close()" i18n>Cancel</button>
-  </div>
-</ng-template>
+    </div>
+  </ng-template>

@@ -1,26 +1,39 @@
-import {Component, ViewChild, OnInit} from '@angular/core';
-import {Location} from '@angular/common';
-import {FormatService} from '@eg/core/format.service';
+import { Component, ViewChild, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import {GridDataSource, GridCellTextGenerator} from '@eg/share/grid/grid';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {AdminPageComponent} from '@eg/staff/share/admin-page/admin-page.component';
 import {Pager} from '@eg/share/util/pager';
-import {ActivatedRoute} from '@angular/router';
-import {IdlService, IdlObject} from '@eg/core/idl.service';
-import {ToastService} from '@eg/share/toast/toast.service';
-import {PcrudService} from '@eg/core/pcrud.service';
-import {OrgService} from '@eg/core/org.service';
-import {PermService} from '@eg/core/perm.service';
-import {AuthService} from '@eg/core/auth.service';
-import {BroadcastService} from '@eg/share/util/broadcast.service';
-import {NetService} from '@eg/core/net.service';
+import {IdlObject} from '@eg/core/idl.service';
 import {ExchangeRatesDialogComponent} from './exchange-rates-dialog.component';
 import {forkJoin} from 'rxjs';
 import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
+import { StaffBannerComponent } from '@eg/staff/share/staff-banner.component';
+import { TitleComponent } from '@eg/share/title/title.component';
+import { StringComponent } from '@eg/share/string/string.component';
+import { OrgFamilySelectComponent } from '@eg/share/org-family-select/org-family-select.component';
+import { TranslateComponent } from '@eg/share/translate/translate.component';
+import { GridModule } from '@eg/share/grid/grid.module';
+import { FmRecordEditorComponent } from '@eg/share/fm-editor/fm-editor.component';
+import { FormsModule } from '@angular/forms';
 
 @Component({
-    templateUrl: './currencies.component.html'
+    templateUrl: './currencies.component.html',
+    imports: [
+        AlertDialogComponent,
+        CommonModule,
+        ConfirmDialogComponent,
+        ExchangeRatesDialogComponent,
+        FmRecordEditorComponent,
+        FormsModule,
+        GridModule,
+        OrgFamilySelectComponent,
+        StaffBannerComponent,
+        StringComponent,
+        TitleComponent,
+        TranslateComponent,
+    ]
 })
 
 export class CurrenciesComponent extends AdminPageComponent implements OnInit {
@@ -35,22 +48,7 @@ export class CurrenciesComponent extends AdminPageComponent implements OnInit {
     cellTextGenerator: GridCellTextGenerator;
     notOneSelectedRow: (rows: IdlObject[]) => boolean;
 
-    constructor(
-        route: ActivatedRoute,
-        ngLocation: Location,
-        format: FormatService,
-        idl: IdlService,
-        org: OrgService,
-        auth: AuthService,
-        pcrud: PcrudService,
-        perm: PermService,
-        toast: ToastService,
-        private net: NetService,
-        broadcaster: BroadcastService
-    ) {
-        super(route, ngLocation, format, idl, org, auth, pcrud, perm, toast, broadcaster);
-        this.dataSource = new GridDataSource();
-    }
+    dataSource = new GridDataSource();
 
     ngOnInit() {
         this.notOneSelectedRow = (rows: IdlObject[]) => (rows.length !== 1);

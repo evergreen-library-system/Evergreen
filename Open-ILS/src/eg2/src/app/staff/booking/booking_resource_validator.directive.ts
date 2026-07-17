@@ -1,13 +1,12 @@
-import {Directive, forwardRef, Injectable} from '@angular/core';
+import { Directive, forwardRef, Injectable, inject } from '@angular/core';
 import {NG_ASYNC_VALIDATORS, AsyncValidator, FormControl} from '@angular/forms';
 import {of, switchMap, catchError} from 'rxjs';
 import {PcrudService} from '@eg/core/pcrud.service';
 
 @Injectable({providedIn: 'root'})
 export class BookingResourceBarcodeValidator implements AsyncValidator {
-    constructor(
-        private pcrud: PcrudService) {
-    }
+    private pcrud = inject(PcrudService);
+
 
     validate = (control: FormControl) => {
         return this.pcrud.search('brsrc',
@@ -30,9 +29,8 @@ export class BookingResourceBarcodeValidator implements AsyncValidator {
 })
 
 export class BookingResourceBarcodeValidatorDirective {
-    constructor(
-        private validator: BookingResourceBarcodeValidator
-    ) { }
+    private validator = inject(BookingResourceBarcodeValidator);
+
 
     validate = (control: FormControl) => {
         this.validator.validate(control);

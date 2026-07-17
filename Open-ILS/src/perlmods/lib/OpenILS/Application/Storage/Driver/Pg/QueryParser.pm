@@ -813,7 +813,11 @@ sub dynamic_filter_compile {
 
     my $attr_objects = $e->$method({ $attr_field => $filter, $value_field => $params });
     $common = scalar(grep { exists($_dfilter_stats_cache{$_->id}) } @$attr_objects) unless $common;
-    
+
+    if (!@$attr_objects) { # none of the record attr values asked for by the user exist in the data
+        return (undef, $common);
+    }
+
     return (sprintf('%s(%s)', $negate,
         join(
             '|', 
@@ -1542,6 +1546,7 @@ sub flatten {
             "search.calculate_visibility_attribute_test('luri_org','{".join(',', @$lorgs)."}',$negate)";
     }
 
+    my $local_uses_mrv = 0;
     my @dlist = ();
     my $common = 0;
     # for each dynamic filter, build more of the WHERE clause
@@ -1559,9 +1564,11 @@ sub flatten {
             ($vlist_query, $common) = $self->dynamic_filter_compile( $fname, $filter->args, $filter->negate );
 
             # bool joiner for intra-plan nodes/filters
-            push(@dlist, $self->joiner) if @dlist;
-            push(@dlist, $vlist_query);
-            $uses_mrv = 1;
+            if ($vlist_query) {
+                push(@dlist, $self->joiner) if @dlist;
+                push(@dlist, $vlist_query);
+            }
+            $local_uses_mrv = $uses_mrv = 1;
         } else {
             if ($filter->name eq 'before') {
                 if (@{$filter->args} == 1) {
@@ -1802,6 +1809,12 @@ sub flatten {
                 join('', @dlist)
             );
         }
+    } elsif ($local_uses_mrv) {
+        $where .= $joiner if $where ne '';
+        # This forces the whole WHERE clause to be staticly false in the face
+        # of dynamic-filter search where the user-requested filter values are
+        # not represented in the dataset.
+        $where .= 'FALSE';
     }
 
     warn "flatten(): full filter where => $where\n" if $self->QueryParser->debug;

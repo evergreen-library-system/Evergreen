@@ -1,5 +1,5 @@
 /* eslint-disable max-len, no-prototype-builtins */
-import {Component, OnInit, OnDestroy, ViewChild} from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, inject } from '@angular/core';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {BehaviorSubject, Subject, filter, take, takeUntil} from 'rxjs';
 import {IdlService} from '@eg/core/idl.service';
@@ -8,13 +8,25 @@ import {AuthService} from '@eg/core/auth.service';
 import {VolCopyContext} from './volcopy';
 import {VolCopyService} from './volcopy.service';
 import {CopyAttrsComponent} from './copy-attrs.component';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
     selector: 'eg-volcopy-template-edit',
     templateUrl: 'template-edit.component.html',
-    styles: ['::ng-deep body:has(eg-volcopy-template-edit) { background-color: var(--bs-body-bg-highlight) }']
+    styles: ['::ng-deep body:has(eg-volcopy-template-edit) { background-color: var(--bs-body-bg-highlight) }'],
+    imports: [
+        CopyAttrsComponent,
+        StaffCommonModule
+    ]
 })
 export class VolCopyTemplateEditComponent implements OnInit, OnDestroy {
+    private router = inject(Router);
+    private route = inject(ActivatedRoute);
+    private idl = inject(IdlService);
+    private org = inject(OrgService);
+    private auth = inject(AuthService);
+    volcopy = inject(VolCopyService);
+
 
     private destroy$ = new Subject<void>();
 
@@ -29,15 +41,6 @@ export class VolCopyTemplateEditComponent implements OnInit, OnDestroy {
     @ViewChild('copyAttrs', {static: false}) copyAttrs: CopyAttrsComponent;
 
     loading = true;
-
-    constructor(
-        private router: Router,
-        private route: ActivatedRoute,
-        private idl: IdlService,
-        private org: OrgService,
-        private auth: AuthService,
-        public  volcopy: VolCopyService
-    ) {}
 
     ngOnInit() {
         // console.debug('VolCopyTemplateEditComponent, ngOnInit, this', this);

@@ -1,6 +1,6 @@
 import {Router, ActivatedRoute} from '@angular/router';
 import {AuthService} from '@eg/core/auth.service';
-import {Component, ChangeDetectorRef, OnInit, ViewChild} from '@angular/core';
+import { Component, ChangeDetectorRef, OnInit, ViewChild, inject } from '@angular/core';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {GridDataSource} from '@eg/share/grid/grid';
 import {GridFlatDataService} from '@eg/share/grid/grid-flat-data.service';
@@ -9,11 +9,22 @@ import {NetService} from '@eg/core/net.service';
 import {Pager} from '@eg/share/util/pager';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {ProgressDialogComponent} from '@eg/share/dialog/progress.component';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
-    templateUrl: 'urls.component.html'
+    templateUrl: 'urls.component.html',
+    imports: [StaffCommonModule]
 })
 export class LinkCheckerUrlsComponent implements OnInit {
+    private auth = inject(AuthService);
+    private flatData = inject(GridFlatDataService);
+    private idl = inject(IdlService);
+    private net = inject(NetService);
+    private pcrud = inject(PcrudService);
+    private route = inject(ActivatedRoute);
+    private router = inject(Router);
+    private cdr = inject(ChangeDetectorRef);
+
 
     sessions: number[];
     session_names: string[] = [];
@@ -44,17 +55,6 @@ export class LinkCheckerUrlsComponent implements OnInit {
     dataSource: GridDataSource = new GridDataSource();
     noSelectedRows: boolean;
     oneSelectedRow: boolean;
-
-    constructor(
-        private auth: AuthService,
-        private flatData: GridFlatDataService,
-        private idl: IdlService,
-        private net: NetService,
-        private pcrud: PcrudService,
-        private route: ActivatedRoute,
-        private router: Router,
-        private cdr: ChangeDetectorRef,
-    ) {}
 
     ngOnInit() {
         this.route.queryParams.subscribe( params => {

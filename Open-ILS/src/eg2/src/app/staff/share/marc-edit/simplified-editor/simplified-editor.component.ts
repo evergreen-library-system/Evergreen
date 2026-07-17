@@ -1,9 +1,11 @@
-import {AfterViewInit, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {FormGroup, FormControl} from '@angular/forms';
+import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
+import {FormGroup, FormControl, ReactiveFormsModule} from '@angular/forms';
 import {MarcField, MarcRecord} from '../marcrecord';
 import {TagTableService} from '../tagtable.service';
 import {NetService} from '@eg/core/net.service';
-import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
+import {ComboboxComponent, ComboboxEntry} from '@eg/share/combobox/combobox.component';
+import { ComboboxEntryComponent } from '@eg/share/combobox/combobox-entry.component';
+
 
 const DEFAULT_RECORD_TYPE = 'BKS';
 
@@ -14,9 +16,18 @@ const DEFAULT_RECORD_TYPE = 'BKS';
 
 @Component({
     selector: 'eg-marc-simplified-editor',
-    templateUrl: './simplified-editor.component.html'
+    templateUrl: './simplified-editor.component.html',
+    imports: [
+        ComboboxComponent,
+        ComboboxEntryComponent,
+        ReactiveFormsModule
+    ],
+    providers: [TagTableService]
 })
 export class MarcSimplifiedEditorComponent implements AfterViewInit, OnInit {
+    private net = inject(NetService);
+    private tagTable = inject(TagTableService);
+
 
     @Input() buttonLabel: string;
     @Output() xmlRecordEvent = new EventEmitter<string>();
@@ -36,11 +47,6 @@ export class MarcSimplifiedEditorComponent implements AfterViewInit, OnInit {
     addField: (field: MarcField) => void;
 
     editorFieldIdentifier: (field: MarcField, subfield: Array<any>) => string;
-
-    constructor(
-        private net: NetService,
-        private tagTable: TagTableService
-    ) {}
 
     ngOnInit() {
         // Add some randomness to the generated DOM IDs to ensure against clobbering

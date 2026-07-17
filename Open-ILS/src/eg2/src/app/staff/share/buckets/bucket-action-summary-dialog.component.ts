@@ -1,5 +1,6 @@
 import {Component, Input, ViewChild} from '@angular/core';
 import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
     selector: 'eg-bucket-action-summary-dialog',
@@ -9,12 +10,15 @@ import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
     [dialogBodyTemplate]="actionResults">
   </eg-alert-dialog>
   <ng-template #actionResults>
-    <div div="row" *ngFor="let container of containers">
-      <div class="col" i18n>Bucket #{{container.id}}</div>
-      <div class="col">{{containerActionResultMap[container.id]}}</div>
-    </div>
+    @for (container of containers; track container) {
+      <div div="row">
+        <div class="col" i18n>Bucket #{{container.id}}</div>
+        <div class="col">{{containerActionResultMap[container.id]}}</div>
+      </div>
+    }
   </ng-template>
-  `
+  `,
+    imports: [StaffCommonModule]
 })
 
 export class BucketActionSummaryDialogComponent {

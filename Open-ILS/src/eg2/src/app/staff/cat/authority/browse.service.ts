@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import {Observable, EMPTY, map, switchMap} from 'rxjs';
 import {NetService} from '@eg/core/net.service';
 import {PcrudService} from '@eg/core/pcrud.service';
@@ -9,6 +9,10 @@ import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 
 @Injectable()
 export class BrowseService {
+    private net = inject(NetService);
+    private org = inject(OrgService);
+    private pcrud = inject(PcrudService);
+
 
     // Grid paging is disabled in this UI to support browsing in
     // both directions.  Define our own paging trackers.
@@ -20,12 +24,6 @@ export class BrowseService {
     authorityAxis: string;
     authorityAxes: ComboboxEntry[];
     markedForMerge: {[id: number]: boolean} = {};
-
-    constructor(
-        private net: NetService,
-        private org: OrgService,
-        private pcrud: PcrudService
-    ) {}
 
     fetchAxes(): Promise<any> {
         if (this.authorityAxes) {

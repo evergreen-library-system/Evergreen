@@ -3,7 +3,9 @@
 
 indexterm:[copy tags]
 
-TODO: words here
+Item tags, notes, and alerts are all ways to add additional information to items. Item tags and item alerts typically rely on a pre-defined set, and item notes are free text. Item alerts are configured to display at certain circulation points.
+
+Item tags, notes, and alerts are described individually in the sections below.
 
 [[item_tags]]
 == Item Tags

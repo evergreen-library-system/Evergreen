@@ -1,8 +1,7 @@
 /* eslint-disable no-case-declarations, no-magic-numbers, no-shadow */
 /* eslint-disable max-len */
-import {Component, Input, OnInit, OnDestroy, AfterViewInit, ViewChild,
-    EventEmitter, Output, QueryList, ViewChildren} from '@angular/core';
-import {firstValueFrom,BehaviorSubject,Subject,Observable,take,takeUntil,filter} from 'rxjs';
+import { Component, Input, OnInit, OnDestroy, AfterViewInit, ViewChild, EventEmitter, Output, QueryList, ViewChildren, inject } from '@angular/core';
+import {firstValueFrom,BehaviorSubject,Subject,Observable,take,takeUntil,filter, interval, tap} from 'rxjs';
 import {SafeUrl} from '@angular/platform-browser';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
@@ -23,18 +22,37 @@ import {ICopyNote, CopyNotesDialogComponent
 import {ComboboxComponent, ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {BatchItemAttrComponent, BatchChangeSelection
 } from '@eg/staff/share/holdings/batch-item-attr.component';
-import {FileExportService} from '@eg/share/util/file-export.service';
 import {ToastService} from '@eg/share/toast/toast.service';
+import { StaffCommonModule } from '@eg/staff/common.module';
+import { ItemLocationSelectComponent } from '@eg/share/item-location-select/item-location-select.component';
 
 @Component({
     selector: 'eg-copy-attrs',
     templateUrl: 'copy-attrs.component.html',
-    styleUrls: ['copy-attrs.component.css']
+    styleUrls: ['copy-attrs.component.css'],
+    imports: [
+        StaffCommonModule,
+        BatchItemAttrComponent,
+        CopyAlertsDialogComponent,
+        CopyNotesDialogComponent,
+        CopyTagsDialogComponent,
+        ItemLocationSelectComponent,
+    ]
 })
 export class CopyAttrsComponent implements OnInit, OnDestroy, AfterViewInit {
+    private idl = inject(IdlService);
+    private org = inject(OrgService);
+    private auth = inject(AuthService);
+    private perm = inject(PermService);
+    private pcrud = inject(PcrudService);
+    private format = inject(FormatService);
+    private store = inject(StoreService);
+    private toast = inject(ToastService);
+    volcopy = inject(VolCopyService);
+
 
     @Input() context: VolCopyContext;
-    @Input() contextChanged: Observable<VolCopyContext>;
+    @Input() contextChanged: Observable<VolCopyContext>; // Doesn't fire every time, just on page load (at the moment)
     @Input() templateOnlyMode = false; // expect to use this for styling
     @Input() template: string; // in templateOnlyMode, the name of the template we're editing
     showSaveInEditor = false; // overriden by an org setting
@@ -43,6 +61,7 @@ export class CopyAttrsComponent implements OnInit, OnDestroy, AfterViewInit {
         { label: $localize`Yes`, value: 't' },
         { label: $localize`No`, value: 'f' },
     ];
+    workingBarcodeFilter: BatchChangeSelection = {'': true};
 
     private _initialized$ = new BehaviorSubject<boolean>(false);
     public initialized$ = new BehaviorSubject<boolean>(false);
@@ -62,6 +81,11 @@ export class CopyAttrsComponent implements OnInit, OnDestroy, AfterViewInit {
     fineLevelLabelMap: {[level: number]: string} = {};
 
     statCatFilter: number;
+
+    canUnset = new Set(['copy_number', 'prefix', 'suffix',
+        'age_protect', 'floating', 'circ_as_type', 'circ_modifier',
+        'price', 'cost'
+    ]);
 
     @ViewChild('loanDurationShort', {static: false})
         loanDurationShort: StringComponent;
@@ -110,18 +134,6 @@ export class CopyAttrsComponent implements OnInit, OnDestroy, AfterViewInit {
 
     userMayEdit = true;
 
-    constructor(
-        private idl: IdlService,
-        private org: OrgService,
-        private auth: AuthService,
-        private perm: PermService,
-        private pcrud: PcrudService,
-        private format: FormatService,
-        private store: StoreService,
-        private toast: ToastService,
-        public  volcopy: VolCopyService
-    ) { }
-
     ngOnInit() {
         // console.debug('CopyAttrsComponent, ngOnInit, this', this);
 
@@ -148,6 +160,20 @@ export class CopyAttrsComponent implements OnInit, OnDestroy, AfterViewInit {
                 }
             });
         }
+
+        // In the absence of rigorous change detection for this.context.copyList(),
+        // I'm going to update the local value for it multiple times per second - enough that it looks instant to people but isn't rough for computers
+        // I chose 6 times per second arbitrarily.
+        // This is necessary because the copies can be created or destroyed, or have filtered values changed,
+        // and this doesn't trigger change detection, because they're derived from a tree in a function rather than stored in a field that can receive input binding.
+        // (As far as I know, doing this 'the right way' involves a rewrite of VolcopyContext to use either computedsignals or behaviorsubjects)
+        // If it's stupid and it works, it ain't stupid
+        interval(167).pipe(
+            tap(() => {
+                this.updateCopyList(this.context.copyList());
+            }),
+            takeUntil(this.destroy$)
+        ).subscribe();
     }
 
     private initialize() {
@@ -278,6 +304,9 @@ export class CopyAttrsComponent implements OnInit, OnDestroy, AfterViewInit {
     private backupOriginalState() {
         if (!this.context) {return;}
 
+        this.context.copyList().forEach(copy => {
+            this.workingBarcodeFilter[copy.barcode()] = true;
+        });
         this.local_copyList = this.context.copyList();
 
         // Backup copies
@@ -611,13 +640,38 @@ export class CopyAttrsComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     applyCopyFilter(changeSelection: BatchChangeSelection) {
-        const changeThese = Object.keys(changeSelection).filter(k => changeSelection[k]);
-        this.local_copyList = this.context.copyList().filter(cp => changeThese.includes(cp.barcode()));
+        this.workingBarcodeFilter = changeSelection;
+        this.updateCopyList();
+    }
+
+    updateCopyList(newCopyList?: IdlObject[]) {
+        if (!newCopyList) {
+            newCopyList = this.context.copyList();
+        }
+
+        if (!this.workingBarcodeFilter) {
+            this.local_copyList = newCopyList;
+        } else {
+            this.local_copyList = newCopyList.filter(copy => this.workingBarcodeFilter[copy.barcode()]);
+        }
     }
 
     applyCopyValue(field: string, value?: any, changeSelection?: BatchChangeSelection) {
         if (value === undefined) {
             value = this.values[field];
+        } else {
+            this.values[field] = value;
+        }
+
+        // Some fields aren't IDL required, but won't save if null.
+        if (value === null && !this.templateOnlyMode && !this.canUnset.has(field)) {
+            this.cancelValueChange(field);
+            return;
+        }
+
+        if (field === 'owning_lib' || field === 'prefix' || field === 'suffix' || field === 'label_class') {
+            this.somethingOnCallNumberChanged(field, value, changeSelection);
+
         } else {
             // If the field is number-ish, the empty string means null. Force that here.
             // ??? Should all fields be forced to null on empty string?
@@ -626,13 +680,6 @@ export class CopyAttrsComponent implements OnInit, OnDestroy, AfterViewInit {
             ) {
                 value = null;
             }
-            this.values[field] = value;
-        }
-
-        if (field === 'owning_lib' || field === 'prefix' || field === 'suffix' || field === 'label_class') {
-            this.somethingOnCallNumberChanged(field, value, changeSelection);
-
-        } else {
 
             this.local_copyList.forEach(copy => {
                 if (!copy[field] || copy[field]() === value) { return; }
@@ -657,8 +704,14 @@ export class CopyAttrsComponent implements OnInit, OnDestroy, AfterViewInit {
 
     somethingOnCallNumberChanged(field: string, value: any, changeSelection?: BatchChangeSelection) {
         console.debug('somethingOnCallNumberChanged', field, value, changeSelection);
-        if (!value && (field === 'prefix' || field === 'suffix')) { value = -1; }
-        if (!value) { return; }
+        if (!value) {
+            if (field === 'prefix' || field === 'suffix') {
+                value = -1;
+            } else {
+                this.cancelValueChange(field);
+                return;
+            }
+        }
 
         // Map existing vol IDs to their replacments.
         const newVols: any = {};
@@ -743,6 +796,7 @@ export class CopyAttrsComponent implements OnInit, OnDestroy, AfterViewInit {
         catId = Number(catId);
 
         const entryId = this.statCatValues[catId];
+        if (entryId === null || entryId === undefined) { clear = true; }
 
         if (!clear && (!entryId || !this.volcopy.statCatEntryMap[entryId])) {
             console.warn(
@@ -802,8 +856,10 @@ export class CopyAttrsComponent implements OnInit, OnDestroy, AfterViewInit {
         attr.hasChanged = false;
         attr.editing = false;
         attr.checkValuesForCSS();
+        this.cancelValueChange(fieldName, false);
         // console.debug('attr ' + attr.name, attr);
         if (this.context) {
+
             // Restore copies from backup
             this.local_copyList.forEach(copy => {
                 const originalCopy = this.originalCopies[copy.id()];
@@ -872,6 +928,7 @@ export class CopyAttrsComponent implements OnInit, OnDestroy, AfterViewInit {
         }
         // "new" values new conditions
         attr.checkValuesForCSS();
+        this.emitSaveChange();
     }
 
     valueClearedForStatCat(catId: number) {
@@ -1571,6 +1628,43 @@ export class CopyAttrsComponent implements OnInit, OnDestroy, AfterViewInit {
         this.batchAttrs.filter(attr => attr.editing && attr.name === field).forEach(attr => attr.cancel());
     }
 
+    // If a field edit was canceled, unset, or reset, make sure
+    // the batch attr input isn't out of sync and revert it to
+    // the current value (or null if there are multiple values).
+    cancelValueChange(field: string, checkValueForCSS = true): void {
+        const copies = this.local_copyList;
+        if (!copies?.length) { return; }
+
+        const callNumFields = [
+            'owning_lib', 'prefix', 'suffix', 'label_class'
+        ];
+        if (callNumFields.indexOf(field) !== -1) {
+            const firstVal = copies[0]?.call_number()?.[field]();
+            const firstValId = this.idl.pkeyValue(firstVal);
+            const multipleValues = copies.find(copy => {
+                const callNumVal = copy?.call_number()?.[field]();
+                return this.idl.pkeyValue(callNumVal) !== firstValId;
+            });
+            this.values[field] = multipleValues ? null : firstVal;
+
+        } else {
+            const firstVal = copies[0]?.[field]();
+            const firstValId = this.idl.pkeyValue(firstVal);
+            const multipleValues = copies.find(copy =>
+                this.idl.pkeyValue(copy[field]()) !== firstValId
+            );
+            this.values[field] = multipleValues ? null : firstVal;
+        }
+
+        if (checkValueForCSS) {
+            const attr = this.batchAttrs.find(attr => attr.name === field);
+            if (attr) {
+                attr.hasChanged = false;
+                attr.checkValuesForCSS();
+            }
+        }
+    }
+
     applyPendingChanges() {
         // console.debug('applyPendingChanges()');
         // If a user has left any changes in the 'editing' state, this
@@ -1643,6 +1737,7 @@ export class CopyAttrsComponent implements OnInit, OnDestroy, AfterViewInit {
         }
 
         if (this.context) {
+
             // Restore copies from backup
             this.local_copyList.forEach(copy => {
                 const originalCopy = this.originalCopies[copy.id()];
@@ -1703,6 +1798,17 @@ export class CopyAttrsComponent implements OnInit, OnDestroy, AfterViewInit {
 
         // console.debug('countTotalTags: ', existing.length, this.context.newTagMaps.length, this.context.deletedTagMaps.length);
         return existing.length + this.context.newTagMaps.length - this.context.deletedTagMaps.length;
+    }
+
+    updateFilterFromChangedBarcode(change: {old: string, new:string}) {
+        // If we already decided yes/no for showing what the item used to be, carry that over
+        if (this.workingBarcodeFilter[change.old] !== undefined) {
+            this.workingBarcodeFilter[change.new] = this.workingBarcodeFilter[change.old];
+        } else {
+            this.workingBarcodeFilter[change.new] = true;
+        }
+
+        this.updateCopyList();
     }
 }
 

@@ -8,33 +8,35 @@
       <span i18n>Mark Claims Returned</span>
     </h4>
     <button type="button" class="btn-close btn-close-white"
-      i18n-aria-label aria-label="Close dialog" (click)="close()"></button>
+    i18n-aria-label aria-label="Close dialog" (click)="close()"></button>
   </div>
   <div class="modal-body">
     <h5 i18n>Marking Claims Returned for {{barcodes.length}} Item(s)</h5>
     <div class="row mt-3">
       <label class="col-lg-6 col-form-label" for="returnDate" i18n>Enter Claims Returned Date</label>
       <div class="col-lg-6">
-        <eg-datetime-select domId="returnDate" [required]="true" [initialIso]="returnDate" 
+        <eg-datetime-select domId="returnDate" [required]="true" [initialIso]="returnDate"
           (onChangeAsIso)="returnDate = $event">
         </eg-datetime-select>
       </div>
     </div>
-    <div *ngIf="patronExceeds" class="row mt-3 mb-3 d-flex" role="status">
-      <div class="flex-1 p-2 me-2 alert alert-danger" i18n>
+    @if (patronExceeds) {
+      <div class="row mt-3 mb-3 d-flex" role="status">
+        <div class="flex-1 p-2 me-2 alert alert-danger" i18n>
         Patron exceeds claims returned count.  Force this action?
       </div>
-      <div>
-        <button type="button" class="btn btn-normal me-2" 
+        <div>
+          <button type="button" class="btn btn-normal me-2"
           (click)="confirmExceeds()" i18n>Confirm</button>
+        </div>
       </div>
-    </div>
+    }
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-success" 
+    <button type="button" class="btn btn-success"
       [disabled]="!returnDate || patronExceeds"
-      (click)="modifyBatch()" i18n>Submit</button>
+    (click)="modifyBatch()" i18n>Submit</button>
     <button type="button" class="btn btn-normal"
-      (click)="close()" i18n>Cancel</button>
+    (click)="close()" i18n>Cancel</button>
   </div>
 </ng-template>

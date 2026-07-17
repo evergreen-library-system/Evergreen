@@ -1,7 +1,11 @@
-import {Component, HostListener, OnInit, ViewChild, TemplateRef} from '@angular/core';
+import { Component, HostListener, OnInit, ViewChild, TemplateRef, inject } from '@angular/core';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
-import {NgbModal, NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
+import {NgbModal, NgbNav, NgbNavChangeEvent, NgbNavModule} from '@ng-bootstrap/ng-bootstrap';
 import {ServerStoreService} from '@eg/core/server-store.service';
+
+import { CharsCanadianComponent } from './chars-canadian.component';
+import { CharsLatinComponent } from './chars-latin.component';
+import { CharsPunctuationComponent } from './chars-punctuation.component';
 
 /**
  * Special Characters Map Dialog
@@ -10,18 +14,28 @@ import {ServerStoreService} from '@eg/core/server-store.service';
 @Component({
     selector: 'eg-charmap-dialog',
     templateUrl: './charmap-dialog.component.html',
-    styleUrls: ['charmap-dialog.component.css']
+    styleUrls: ['charmap-dialog.component.css'],
+    imports: [
+        CharsCanadianComponent,
+        CharsLatinComponent,
+        CharsPunctuationComponent,
+        NgbNavModule
+    ]
 })
 
 export class CharMapDialogComponent extends DialogComponent implements OnInit {
+    private modal: NgbModal;
+    private store = inject(ServerStoreService);
+
 
     copy = '';
     disableAccessKeys = true;
 
-    constructor(
-        private modal: NgbModal,
-        private store: ServerStoreService
-    ) { super(modal); }
+    constructor() {
+        const modal = inject(NgbModal);
+        super(modal);
+        this.modal = modal;
+    }
 
     async ngOnInit(): Promise<void> {
         this.disableAccessKeys = await this.checkAccessKeys();

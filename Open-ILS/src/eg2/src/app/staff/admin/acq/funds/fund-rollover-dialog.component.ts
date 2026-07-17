@@ -1,25 +1,30 @@
-import {Component, Input, ViewChild, OnInit} from '@angular/core';
+import { Component, Input, ViewChild, OnInit, inject } from '@angular/core';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
-import {IdlService, IdlObject} from '@eg/core/idl.service';
-import {EventService} from '@eg/core/event.service';
+import {IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
-import {PcrudService} from '@eg/core/pcrud.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {StringComponent} from '@eg/share/string/string.component';
 import {ToastService} from '@eg/share/toast/toast.service';
-import {PermService} from '@eg/core/perm.service';
 import {OrgService} from '@eg/core/org.service';
 import {ProgressInlineComponent} from '@eg/share/dialog/progress-inline.component';
 import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
     selector: 'eg-fund-rollover-dialog',
-    templateUrl: './fund-rollover-dialog.component.html'
+    templateUrl: './fund-rollover-dialog.component.html',
+    imports: [StaffCommonModule]
 })
 
 export class FundRolloverDialogComponent
     extends DialogComponent implements OnInit {
+    private net = inject(NetService);
+    private auth = inject(AuthService);
+    private toast = inject(ToastService);
+    private org = inject(OrgService);
+    private modal: NgbModal;
+
 
     doneLoading = false;
 
@@ -45,18 +50,12 @@ export class FundRolloverDialogComponent
     amount_rolled: number;
     encumb_rolled: number;
 
-    constructor(
-        private idl: IdlService,
-        private evt: EventService,
-        private net: NetService,
-        private auth: AuthService,
-        private pcrud: PcrudService,
-        private perm: PermService,
-        private toast: ToastService,
-        private org: OrgService,
-        private modal: NgbModal
-    ) {
+    constructor() {
+        const modal = inject(NgbModal);
+
         super(modal);
+
+        this.modal = modal;
     }
 
     ngOnInit() {

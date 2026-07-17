@@ -1,5 +1,5 @@
-import {Component, OnInit, Input, ViewChild} from '@angular/core';
-import {Router, ActivatedRoute} from '@angular/router';
+import { Component, OnInit, Input, ViewChild, inject } from '@angular/core';
+import {RouterModule} from '@angular/router';
 import {IdlObject} from '@eg/core/idl.service';
 import {EventService} from '@eg/core/event.service';
 import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
@@ -10,12 +10,27 @@ import {GridComponent} from '@eg/share/grid/grid.component';
 import {GridDataSource, GridCellTextGenerator} from '@eg/share/grid/grid';
 import {AcqSearchService, AcqSearchTerm, AcqSearch} from './acq-search.service';
 import {AcqSearchFormComponent} from './acq-search-form.component';
+import { GridModule } from '@eg/share/grid/grid.module';
+import { CurrencyPipe } from '@angular/common';
 
 @Component({
     selector: 'eg-invoice-results',
-    templateUrl: 'invoice-results.component.html'
+    templateUrl: 'invoice-results.component.html',
+    imports: [
+        AcqSearchFormComponent,
+        AlertDialogComponent,
+        CurrencyPipe,
+        GridModule,
+        RouterModule,
+    ]
 })
 export class InvoiceResultsComponent implements OnInit {
+    private printer = inject(PrintService);
+    private evt = inject(EventService);
+    private net = inject(NetService);
+    private auth = inject(AuthService);
+    private acqSearch = inject(AcqSearchService);
+
 
     @Input() initialSearchTerms: AcqSearchTerm[] = [];
 
@@ -39,16 +54,6 @@ export class InvoiceResultsComponent implements OnInit {
         value1: null,
         value2: ''
     }];
-
-    constructor(
-        private router: Router,
-        private route: ActivatedRoute,
-        private printer: PrintService,
-        private evt: EventService,
-        private net: NetService,
-        private auth: AuthService,
-        private acqSearch: AcqSearchService) {
-    }
 
     ngOnInit() {
         this.gridSource = this.acqSearch.getAcqSearchDataSource('invoice');

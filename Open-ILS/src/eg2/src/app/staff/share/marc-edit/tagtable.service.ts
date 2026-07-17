@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {map, tap, distinct} from 'rxjs';
 import {StoreService} from '@eg/core/store.service';
 import {IdlObject} from '@eg/core/idl.service';
@@ -177,7 +177,9 @@ export class TagTable {
 
         this.tagMap = this.store.getLocalItem(cacheKey);
 
-        if (this.tagMap) {
+        // ignore arrays - user may have a previously cached version
+        // missing keys with leading zeros (ex: 001, etc)
+        if (this.tagMap && !Array.isArray(this.tagMap)) {
             return Promise.resolve(this.tagMap);
         }
 
@@ -188,7 +190,7 @@ export class TagTable {
     }
 
     fetchTagTable(): Promise<any> {
-        this.tagMap = [];
+        this.tagMap = {};
         return this.net.request(
             'open-ils.cat',
             'open-ils.cat.tag_table.all.retrieve.local',
@@ -202,13 +204,18 @@ export class TagTable {
     getSubfieldCodes(tag: string): ComboboxEntry[] {
         if (!tag || !this.tagMap[tag]) { return null; }
 
-        const cached = this.fromCache('sfcodes', tag);
-
         const list = this.tagMap[tag].subfields.map(sf => ({
             id: sf.code,
             label: sf.description
-        }))
-            .sort((a, b) => a.id < b.id ? -1 : 1);
+        })).sort((a, b) => {
+            const aid = String(a.id ?? '');
+            const bid = String(b.id ?? '');
+            const aNum = /^\d/.test(aid);
+            const bNum = /^\d/.test(bid);
+            if (aNum !== bNum) { return aNum ? 1 : -1; }
+            if (aid === bid) { return 0; }
+            return aid < bid ? -1 : 1;
+        });
 
         return this.toCache('sfcodes', tag, null, list);
     }
@@ -380,12 +387,10 @@ export class TagTableService {
     tagTables: {[marcRecordType: string]: TagTable} = {};
     controlledBibTags: string[];
 
-    constructor(
-        private store: StoreService,
-        private auth: AuthService,
-        private net: NetService,
-        private pcrud: PcrudService,
-    ) {}
+    private store = inject(StoreService);
+    private auth = inject(AuthService);
+    private net = inject(NetService);
+    private pcrud = inject(PcrudService);
 
     loadTags(selector: TagTableSelector): Promise<TagTable> {
         if (!selector.marcFormat) {

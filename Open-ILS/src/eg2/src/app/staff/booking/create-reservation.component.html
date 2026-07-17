@@ -8,15 +8,21 @@
         <div class="input-group">
           <label class="form-label input-group-text" for="ideal-reservation-type" i18n>Reservation type</label>
           <select class="form-select" id="ideal-reservation-type" formControlName="reservationType">
-            <option *ngFor="let type of reservationTypes" [ngValue]="type" i18n>{{type.name}}</option>
+            @for (type of reservationTypes; track type) {
+              <option [ngValue]="type" i18n>{{type.name}}</option>
+            }
           </select>
         </div>
       </div>
       <div class="col">
         <div class="input-group">
           <label class="form-label input-group-text" for="ideal-reservation-date" i18n>Reservation date</label>
-          <eg-date-select *ngIf="!multiday" #dateLimiter domId="ideal-reservation-date" formControlName="idealDate"></eg-date-select>
-          <eg-daterange-select *ngIf="multiday" formControlName="idealDateRange"></eg-daterange-select>
+          @if (!multiday) {
+            <eg-date-select #dateLimiter domId="ideal-reservation-date" formControlName="idealDate"></eg-date-select>
+          }
+          @if (multiday) {
+            <eg-daterange-select formControlName="idealDateRange"></eg-daterange-select>
+          }
         </div>
       </div>
     </div>
@@ -44,10 +50,10 @@
               <div class="col">
                 <div class="input-group">
                   <label class="form-label input-group-text" for="owningLibrary" i18n>Owning library</label>
-                  <eg-org-family-select 
-                    [hideAncestorSelector]="true" 
+                  <eg-org-family-select
+                    [hideAncestorSelector]="true"
                     domId="owningLibrary"
-                    ariaLabel="Owning library" i18n-ariaLabel 
+                    ariaLabel="Owning library" i18n-ariaLabel
                     formControlName="owningLibrary">
                   </eg-org-family-select>
                 </div>
@@ -81,16 +87,20 @@
         </a>
         <ng-template ngbNavContent>
           <ul class="list-group list-group-flush" formArrayName="selectedAttributes">
-            <li *ngFor="let attribute of attributes; let i = index" class="list-group-item">
-              <span class="input-group">
-                <label class="form-label input-group-text" for="attribute-{{attribute.id()}}" i18n>{{attribute.name()}}</label>
-                <eg-combobox [formControlName]="i">
-                  <eg-combobox-entry *ngFor="let value of attribute.valid_values()"
-                    [entryId]="value.id()" [entryLabel]="value.valid_value()">
-                  </eg-combobox-entry>
-                </eg-combobox>
-              </span>
-            </li>
+            @for (attribute of attributes; track attribute; let i = $index) {
+              <li class="list-group-item">
+                <span class="input-group">
+                  <label class="form-label input-group-text" for="attribute-{{attribute.id()}}" i18n>{{attribute.name()}}</label>
+                  <eg-combobox [formControlName]="i">
+                    @for (value of attribute.valid_values(); track value) {
+                      <eg-combobox-entry
+                        [entryId]="value.id()" [entryLabel]="value.valid_value()">
+                      </eg-combobox-entry>
+                    }
+                  </eg-combobox>
+                </span>
+              </li>
+            }
           </ul>
         </ng-template>
       </li>
@@ -104,32 +114,34 @@
           <ul class="list-group list-group-flush">
             <li class="list-group-item">
               <span class="input-group">
-                  <label class="form-label input-group-text" for="start-time" i18n>Start time</label>
+                <label class="form-label input-group-text" for="start-time" i18n>Start time</label>
                 <ngb-timepicker formControlName="startOfDay" [minuteStep]="minuteStep()" [meridian]="true"></ngb-timepicker>
               </span>
             </li>
             <li class="list-group-item">
               <span class="input-group">
-                  <label class="form-label input-group-text" for="end-time" i18n>End time</label>
+                <label class="form-label input-group-text" for="end-time" i18n>End time</label>
                 <ngb-timepicker formControlName="endOfDay" [minuteStep]="minuteStep()" [meridian]="true"></ngb-timepicker>
               </span>
             </li>
-            <li *ngIf="criteria.errors && criteria.errors.startOfDayNotBeforeEndOfDay" class="list-group-item">
-              <div role="alert" class="alert alert-danger">
-                <span class="material-icons" aria-hidden="true">error</span>
-                <span i18n>Start time must be before end time</span>
-              </div>
-            </li>
+            @if (criteria.errors && criteria.errors.startOfDayNotBeforeEndOfDay) {
+              <li class="list-group-item">
+                <div role="alert" class="alert alert-danger">
+                  <span class="material-icons" aria-hidden="true">error</span>
+                  <span i18n>Start time must be before end time</span>
+                </div>
+              </li>
+            }
             <li class="list-group-item">
               <span class="input-group">
-                  <label class="form-label input-group-text" for="granularity" i18n>Granularity</label>
+                <label class="form-label input-group-text" for="granularity" i18n>Granularity</label>
                 <eg-combobox (onChange)="changeGranularity($event)" [startId]="granularity ? granularity : 30">
                   <eg-combobox-entry [entryId]="15" entryLabel="15 minutes"
-                    i18n-entryLabel></eg-combobox-entry>
+                  i18n-entryLabel></eg-combobox-entry>
                   <eg-combobox-entry [entryId]="30" entryLabel="30 minutes"
-                    i18n-entryLabel></eg-combobox-entry>
+                  i18n-entryLabel></eg-combobox-entry>
                   <eg-combobox-entry [entryId]="60" entryLabel="60 minutes"
-                    i18n-entryLabel></eg-combobox-entry>
+                  i18n-entryLabel></eg-combobox-entry>
                 </eg-combobox>
               </span>
             </li>
@@ -142,72 +154,80 @@
   </div>
 </form>
 
-<ng-container *ngIf="resources.length">
+@if (resources.length) {
   <hr>
-  <div class="row" *ngIf="idealDate && !multiday">
-    <button type="button" class="btn btn-info col-sm-2 offset-sm-3" (click)="addDays(-1)">
-        <span class="material-icons mat-icon-in-button" aria-hidden="true">keyboard_arrow_left</span>
-        <span i18n>Previous day</span>
-    </button>
-    <h2 class="col-sm-2 text-center" i18n>{{idealDate | formatValue:'timestamp'}}</h2>
-    <button type="button" class="btn btn-info col-sm-2" (click)="addDays(1)">
-      <span i18n>Next day</span>
-      <span class="material-icons mat-icon-in-button" aria-hidden="true">keyboard_arrow_right</span>
-    </button>
-  </div>
-  <eg-grid #scheduleGrid
-    [cellTextGenerator]="cellTextGenerator"
-    [sortable]="false"
-    (onRowActivate)="openTheDialog([$event])"
-    [dataSource]="scheduleSource"
-    [rowFlairIsEnabled]="true"
-    [rowFlairCallback]="resourceAvailabilityIcon"
-    [disablePaging]="true"
-    persistKey="disabled">
-    <eg-grid-toolbar-button label="Create Reservation" i18n-label (onClick)="openTheDialog($event)"></eg-grid-toolbar-button>
-    <eg-grid-toolbar-action label="Create Reservation" i18n-label (onClick)="openTheDialog($event)"></eg-grid-toolbar-action>
-    <eg-grid-column path="time" [index]="true" name="Time" i18n-name [cellTemplate]="timeTemplate" ></eg-grid-column>
-    <eg-grid-column *ngFor="let resource of resources" path="{{resource.barcode()}}" [cellTemplate]="reservationsTemplate" [name]="resource.barcode()" [disableTooltip]="true"></eg-grid-column>
-  </eg-grid>
-</ng-container>
-<div class="text-sm-center" *ngIf="this.resourceType.value && !resources.length" i18n>
+    @if (idealDate && !multiday) {
+      <div class="row">
+        <button type="button" class="btn btn-info col-sm-2 offset-sm-3" (click)="addDays(-1)">
+          <span class="material-icons mat-icon-in-button" aria-hidden="true">keyboard_arrow_left</span>
+          <span i18n>Previous day</span>
+        </button>
+        <h2 class="col-sm-2 text-center" i18n>{{idealDate | formatValue:'timestamp'}}</h2>
+        <button type="button" class="btn btn-info col-sm-2" (click)="addDays(1)">
+          <span i18n>Next day</span>
+          <span class="material-icons mat-icon-in-button" aria-hidden="true">keyboard_arrow_right</span>
+        </button>
+      </div>
+    }
+    <eg-grid #scheduleGrid
+      [cellTextGenerator]="cellTextGenerator"
+      [sortable]="false"
+      (onRowActivate)="openTheDialog([$event])"
+      [dataSource]="scheduleSource"
+      [rowFlairIsEnabled]="true"
+      [rowFlairCallback]="resourceAvailabilityIcon"
+      [disablePaging]="true"
+      persistKey="disabled">
+      <eg-grid-toolbar-button label="Create Reservation" i18n-label (onClick)="openTheDialog($event)"></eg-grid-toolbar-button>
+      <eg-grid-toolbar-action label="Create Reservation" i18n-label (onClick)="openTheDialog($event)"></eg-grid-toolbar-action>
+      <eg-grid-column path="time" [index]="true" name="Time" i18n-name [cellTemplate]="timeTemplate" ></eg-grid-column>
+      @for (resource of resources; track resource) {
+        <eg-grid-column path="{{resource.barcode()}}" [cellTemplate]="reservationsTemplate" [name]="resource.barcode()" [disableTooltip]="true"></eg-grid-column>
+      }
+    </eg-grid>
+  }
+  @if (this.resourceType.value && !resources.length) {
+    <div class="text-sm-center" i18n>
   There are no bookable resources that match your criteria.
   Would you like to create <a [routerLink]="['/staff', 'admin', 'booking', 'splash']">some new resources</a>?
 </div>
+  }
 
-<eg-create-reservation-dialog #createDialog
-  (reservationRequestCompleted)="fetchData()"
-  [patronId]="patronId"
-  [targetResourceBarcode]="resourceBarcode"
-  [targetResource]="resourceId"
-  [targetResourceType]="resourceType.value"
-  [attributes]="flattenedSelectedAttributes"
-  [resources]="resources">
-</eg-create-reservation-dialog>
+  <eg-create-reservation-dialog #createDialog
+    (reservationRequestCompleted)="fetchData()"
+    [patronId]="patronId"
+    [targetResourceBarcode]="resourceBarcode"
+    [targetResource]="resourceId"
+    [targetResourceType]="resourceType.value"
+    [attributes]="flattenedSelectedAttributes"
+    [resources]="resources">
+  </eg-create-reservation-dialog>
 
-<ng-template #reservationsTemplate let-row="row" let-col="col">
-  <ng-container *ngIf="row.patrons && row.patrons[col.name]">
-    <ul class="list-unstyled">
-      <li *ngFor="let reservation of row.patrons[col.name]">
-        <button type="button" class="btn btn-info" (click)="openReservationViewer(reservation['reservationId'])">
-          {{reservation['patronLabel']}}
-        </button>
-      </li>
-    </ul>
-  </ng-container>
-</ng-template>
-<ng-template #timeTemplate let-row="row" let-col="col">
-  <ng-container *ngIf="!multiday">
-    {{row['time'].format('LT')}}
-  </ng-container>
-  <ng-container *ngIf="multiday">
-    {{row['time'] | formatValue:'timestamp'}}
-  </ng-container>
-</ng-template>
-<eg-fm-record-editor #viewReservation
-  idlClass="bresv"
-  datetimeFields="start_time,end_time"
-  hiddenFields="xact_start,xact_finish,cancel_time,booking_interval">
-</eg-fm-record-editor>
-<eg-no-timezone-set-dialog #noTimezoneSetDialog>
-</eg-no-timezone-set-dialog>
+  <ng-template #reservationsTemplate let-row="row" let-col="col">
+    @if (row.patrons && row.patrons[col.name]) {
+      <ul class="list-unstyled">
+        @for (reservation of row.patrons[col.name]; track reservation) {
+          <li>
+            <button type="button" class="btn btn-info" (click)="openReservationViewer(reservation['reservationId'])">
+              {{reservation['patronLabel']}}
+            </button>
+          </li>
+        }
+      </ul>
+    }
+  </ng-template>
+  <ng-template #timeTemplate let-row="row" let-col="col">
+    @if (!multiday) {
+      {{row['time'].format('LT')}}
+    }
+    @if (multiday) {
+      {{row['time'] | formatValue:'timestamp'}}
+    }
+  </ng-template>
+  <eg-fm-record-editor #viewReservation
+    idlClass="bresv"
+    datetimeFields="start_time,end_time"
+    hiddenFields="xact_start,xact_finish,cancel_time,booking_interval">
+  </eg-fm-record-editor>
+  <eg-no-timezone-set-dialog #noTimezoneSetDialog>
+  </eg-no-timezone-set-dialog>

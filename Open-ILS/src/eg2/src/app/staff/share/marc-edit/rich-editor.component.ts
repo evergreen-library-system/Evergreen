@@ -1,6 +1,5 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import { Component, Input, OnInit, ViewChild, inject } from '@angular/core';
 import {filter} from 'rxjs';
-import {IdlService} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {OrgService} from '@eg/core/org.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
@@ -10,6 +9,12 @@ import {MarcEditContext} from './editor-context';
 import {AuthorityLinkingDialogComponent} from './authority-linking-dialog.component';
 import {PhysCharDialogComponent} from './phys-char-dialog.component';
 import {CharMapDialogComponent} from './charmap/charmap-dialog.component';
+import { CommonModule } from '@angular/common';
+import { EditableContentComponent } from './editable-content.component';
+import { FixedFieldsEditorComponent } from './fixed-fields-editor.component';
+import { ProgressInlineComponent } from '@eg/share/dialog/progress-inline.component';
+import { FormsModule } from '@angular/forms';
+import { AccessKeyDirective } from '@eg/share/accesskey/accesskey.directive';
 
 
 /**
@@ -19,10 +24,26 @@ import {CharMapDialogComponent} from './charmap/charmap-dialog.component';
 @Component({
     selector: 'eg-marc-rich-editor',
     templateUrl: './rich-editor.component.html',
-    styleUrls: ['rich-editor.component.css', 'rich-editor-colors.css']
+    styleUrls: ['rich-editor.component.css', 'rich-editor-colors.css'],
+    imports: [
+        AccessKeyDirective,
+        AuthorityLinkingDialogComponent,
+        CharMapDialogComponent,
+        CommonModule,
+        EditableContentComponent,
+        FixedFieldsEditorComponent,
+        FormsModule,
+        PhysCharDialogComponent,
+        ProgressInlineComponent
+    ], providers: [TagTableService]
 })
 
 export class MarcRichEditorComponent implements OnInit {
+    private net = inject(NetService);
+    private org = inject(OrgService);
+    private store = inject(ServerStoreService);
+    private tagTable = inject(TagTableService);
+
 
     @Input() context: MarcEditContext;
     get record(): MarcRecord { return this.context.record; }
@@ -45,14 +66,6 @@ export class MarcRichEditorComponent implements OnInit {
 
     @ViewChild('charMapDialog', {static: false})
         CharMapDialog: CharMapDialogComponent;
-
-    constructor(
-        private idl: IdlService,
-        private net: NetService,
-        private org: OrgService,
-        private store: ServerStoreService,
-        private tagTable: TagTableService
-    ) {}
 
     ngOnInit() {
 

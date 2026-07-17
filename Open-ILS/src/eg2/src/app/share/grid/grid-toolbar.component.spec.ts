@@ -4,6 +4,9 @@ import { Pager } from '../util/pager';
 import { GridToolbarComponent } from './grid-toolbar.component';
 import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { PcrudService } from '@eg/core/pcrud.service';
+import { ServerStoreService } from '@eg/core/server-store.service';
+import { MockGenerators } from 'test_data/mock_generators';
 
 describe('GridToolbarComponent', () => {
     let component: GridToolbarComponent;
@@ -11,8 +14,12 @@ describe('GridToolbarComponent', () => {
 
     beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
-            declarations: [GridToolbarComponent],
-            schemas: [CUSTOM_ELEMENTS_SCHEMA]
+            imports: [GridToolbarComponent],
+            schemas: [CUSTOM_ELEMENTS_SCHEMA],
+            providers: [
+                {provide:PcrudService, useValue:null},
+                {provide:ServerStoreService, useValue:MockGenerators.serverStoreService(null)},
+            ]
         });
     }));
     beforeEach(() => {

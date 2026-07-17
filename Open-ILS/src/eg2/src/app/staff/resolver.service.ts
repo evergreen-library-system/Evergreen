@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import {Location} from '@angular/common';
 import {Observable, Observer, of} from 'rxjs';
 import {Router, Resolve, RouterStateSnapshot,
@@ -28,22 +28,20 @@ const STAFF_LOGIN_SESSION_KEYS = [
  */
 @Injectable()
 export class StaffResolver implements Resolve<Observable<any>> {
+    private router = inject(Router);
+    private route = inject(ActivatedRoute);
+    private ngLocation = inject(Location);
+    private hatch = inject(HatchService);
+    private store = inject(StoreService);
+    private org = inject(OrgService);
+    private net = inject(NetService);
+    private auth = inject(AuthService);
+    private perm = inject(PermService);
+    private format = inject(FormatService);
+
 
     // Tracks the primary resolve observable.
     observer: Observer<any>;
-
-    constructor(
-        private router: Router,
-        private route: ActivatedRoute,
-        private ngLocation: Location,
-        private hatch: HatchService,
-        private store: StoreService,
-        private org: OrgService,
-        private net: NetService,
-        private auth: AuthService,
-        private perm: PermService,
-        private format: FormatService
-    ) {}
 
     resolve(
         route: ActivatedRouteSnapshot,

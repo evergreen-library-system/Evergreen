@@ -12,6 +12,8 @@ import { IdlObject } from '@eg/core/idl.service';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 import { TitleComponent } from '@eg/share/title/title.component';
+import { StringService } from '@eg/share/string/string.service';
+import { CommonModule } from '@angular/common';
 
 describe('RecordComponent', () => {
     let fixture: ComponentFixture<RecordComponent>;
@@ -32,9 +34,6 @@ describe('RecordComponent', () => {
 
     beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
-            declarations: [RecordComponent, TitleComponent],
-            schemas: [CUSTOM_ELEMENTS_SCHEMA],
-            imports: [ NgbNavModule ],
             providers: [
                 { provide: Router, useValue: null},
                 { provide: ActivatedRoute, useValue: { paramMap: of(convertToParamMap({id: 1})) }},
@@ -43,8 +42,12 @@ describe('RecordComponent', () => {
                 { provide: StaffCatalogService, useValue: mockStaffCatService },
                 { provide: HoldingsService, useValue: null },
                 { provide: StoreService, useValue: mockStoreService },
-                { provide: ServerStoreService, useValue: {getItemBatch: () => Promise.resolve([])} }
-            ]}).compileComponents();
+                { provide: ServerStoreService, useValue: {getItemBatch: () => Promise.resolve([])} },
+                { provide: StringService, useValue: null }
+            ]}).overrideComponent(RecordComponent, {set: {
+            schemas: [CUSTOM_ELEMENTS_SCHEMA],
+            imports: [ CommonModule, NgbNavModule, TitleComponent]
+        }}).compileComponents();
         fixture = TestBed.createComponent(RecordComponent);
         fixture.detectChanges();
     }));

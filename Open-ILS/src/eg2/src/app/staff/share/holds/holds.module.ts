@@ -16,20 +16,18 @@ import {HoldCopyLocationsDialogComponent} from './copy-locations-dialog.componen
 import {WorkLogModule} from '@eg/staff/share/worklog/worklog.module';
 
 @NgModule({
-    declarations: [
-        HoldsGridComponent,
+    imports: [
+        HoldCancelDialogComponent,
+        HoldCopyLocationsDialogComponent,
         HoldDetailComponent,
         HoldManageComponent,
-        HoldRetargetDialogComponent,
-        HoldTransferDialogComponent,
-        HoldTransferViaBibsDialogComponent,
-        HoldCancelDialogComponent,
         HoldManageDialogComponent,
         HoldNoteDialogComponent,
         HoldNotifyDialogComponent,
-        HoldCopyLocationsDialogComponent
-    ],
-    imports: [
+        HoldRetargetDialogComponent,
+        HoldsGridComponent,
+        HoldTransferDialogComponent,
+        HoldTransferViaBibsDialogComponent,
         StaffCommonModule,
         HoldingsModule,
         WorkLogModule

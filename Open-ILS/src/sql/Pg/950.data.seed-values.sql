@@ -561,39 +561,39 @@ INSERT INTO config.net_access_level (id, name) VALUES
 SELECT SETVAL('config.net_access_level_id_seq'::TEXT, 100);
 
 -- available locales
-INSERT INTO config.i18n_locale (code,marc_code,name,description)
+INSERT INTO config.i18n_locale (code,marc_code,name,description,staff_client)
     VALUES ('en-US', 'eng', oils_i18n_gettext('en-US', 'English (US)', 'i18n_l', 'name'),
-	oils_i18n_gettext('en-US', 'American English', 'i18n_l', 'description'));
-INSERT INTO config.i18n_locale (code,marc_code,name,description)
+	oils_i18n_gettext('en-US', 'American English', 'i18n_l', 'description'),true);
+INSERT INTO config.i18n_locale (code,marc_code,name,description,staff_client)
     VALUES ('cs-CZ', 'cze', oils_i18n_gettext('cs-CZ', 'Czech', 'i18n_l', 'name'),
-	oils_i18n_gettext('cs-CZ', 'Czech', 'i18n_l', 'description'));
-INSERT INTO config.i18n_locale (code,marc_code,name,description)
+	oils_i18n_gettext('cs-CZ', 'Czech', 'i18n_l', 'description'),false);
+INSERT INTO config.i18n_locale (code,marc_code,name,description,staff_client)
     VALUES ('en-CA', 'eng', oils_i18n_gettext('en-CA', 'English (Canada)', 'i18n_l', 'name'),
-	oils_i18n_gettext('en-CA', 'Canadian English', 'i18n_l', 'description'));
-INSERT INTO config.i18n_locale (code,marc_code,name,description)
+	oils_i18n_gettext('en-CA', 'Canadian English', 'i18n_l', 'description'),false);
+INSERT INTO config.i18n_locale (code,marc_code,name,description,staff_client)
     VALUES ('fi-FI', 'fin', oils_i18n_gettext('fi-FI', 'Finnish', 'i18n_l', 'name'),
-	oils_i18n_gettext('fi-FI', 'Finnish', 'i18n_l', 'description'));
-INSERT INTO config.i18n_locale (code,marc_code,name,description)
+	oils_i18n_gettext('fi-FI', 'Finnish', 'i18n_l', 'description'),false);
+INSERT INTO config.i18n_locale (code,marc_code,name,description,staff_client)
     VALUES ('fr-CA', 'fre', oils_i18n_gettext('fr-CA', 'French (Canada)', 'i18n_l', 'name'),
-	oils_i18n_gettext('fr-CA', 'Canadian French', 'i18n_l', 'description'));
-INSERT INTO config.i18n_locale (code,marc_code,name,description)
+	oils_i18n_gettext('fr-CA', 'Canadian French', 'i18n_l', 'description'),false);
+INSERT INTO config.i18n_locale (code,marc_code,name,description,staff_client)
     VALUES ('hy-AM', 'arm', oils_i18n_gettext('hy-AM', 'Armenian', 'i18n_l', 'name'),
-	oils_i18n_gettext('hy-AM', 'Armenian', 'i18n_l', 'description'));
-INSERT INTO config.i18n_locale (code,marc_code,name,description)
+	oils_i18n_gettext('hy-AM', 'Armenian', 'i18n_l', 'description'),false);
+INSERT INTO config.i18n_locale (code,marc_code,name,description,staff_client)
     VALUES ('es-ES', 'spa', oils_i18n_gettext('es-ES', 'Spanish', 'i18n_l', 'name'),
-	oils_i18n_gettext('es-ES', 'Spanish', 'i18n_l', 'description'));
---INSERT INTO config.i18n_locale (code,marc_code,name,description)
+	oils_i18n_gettext('es-ES', 'Spanish', 'i18n_l', 'description'),false);
+--INSERT INTO config.i18n_locale (code,marc_code,name,description,staff_client)
 --    VALUES ('es-US', 'spa', oils_i18n_gettext('es-US', 'Spanish (US)', 'i18n_l', 'name'),
---	oils_i18n_gettext('es-US', 'American Spanish', 'i18n_l', 'description'));
---INSERT INTO config.i18n_locale (code,marc_code,name,description)
+--	oils_i18n_gettext('es-US', 'American Spanish', 'i18n_l', 'description'),false);
+--INSERT INTO config.i18n_locale (code,marc_code,name,description,staff_client)
 --    VALUES ('es-MX', 'spa', oils_i18n_gettext('es-MX', 'Spanish (Mexico)', 'i18n_l', 'name'),
---	oils_i18n_gettext('es-MX', 'Mexican Spanish', 'i18n_l', 'description'));
-INSERT INTO config.i18n_locale (code,marc_code,name,description)
+--	oils_i18n_gettext('es-MX', 'Mexican Spanish', 'i18n_l', 'description'),false);
+INSERT INTO config.i18n_locale (code,marc_code,name,description,staff_client)
     VALUES ('ru-RU', 'rus', oils_i18n_gettext('ru-RU', 'Russian', 'i18n_l', 'name'),
-	oils_i18n_gettext('ru-RU', 'Russian', 'i18n_l', 'description'));
-INSERT INTO config.i18n_locale (code,marc_code,name,description,rtl)
+	oils_i18n_gettext('ru-RU', 'Russian', 'i18n_l', 'description'),false);
+INSERT INTO config.i18n_locale (code,marc_code,name,description,staff_client,rtl)
     VALUES ('ar-JO', 'ara', oils_i18n_gettext('ar-JO', 'Arabic (Jordan)', 'i18n_l', 'name'),
-	oils_i18n_gettext('ar-JO', 'Arabic (Jordan)', 'i18n_l', 'description'), 'true');
+	oils_i18n_gettext('ar-JO', 'Arabic (Jordan)', 'i18n_l', 'description'),false, 'true');
 
 -- Z39.50 server attributes
 
@@ -2059,11 +2059,13 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
  ( 692, 'CREATE_HARD_DUE_DATE_VALUE', oils_i18n_gettext(692,
      'Allow create hard due date values', 'ppl', 'description')),
  ( 693, 'DELETE_HARD_DUE_DATE_VALUE', oils_i18n_gettext(693,
-     'Allow delete hard due date values', 'ppl', 'description'))
+     'Allow delete hard due date values', 'ppl', 'description')),
+ ( 694, 'ADMIN_CALL_NUMBER_CLASS', oils_i18n_gettext(694,
+     'Allow updates to call number classification names, normalizers, and fields.', 'ppl', 'description'))
 ;
 
 INSERT INTO permission.perm_list (id,code) VALUES
- (677,'ADMIN_OPENAPI'),
+ (694,'ADMIN_OPENAPI'),
  (678,'API_LOGIN'),
  (679,'REST.api'),
  (680,'REST.api.patrons'),
@@ -3093,20 +3095,20 @@ SELECT SETVAL('action.hold_request_cancel_cause_id_seq', 100);
 -- circ matrix
 INSERT INTO config.circ_matrix_matchpoint (org_unit,grp,circulate,duration_rule,recurring_fine_rule,max_fine_rule) VALUES (1,1,true,11,1,1);
 
-INSERT INTO config.circ_matrix_weights(name, org_unit, grp, circ_modifier, copy_location, marc_type, marc_form, marc_bib_level, marc_vr_format, copy_circ_lib, copy_owning_lib, user_home_ou, ref_flag, juvenile_flag, is_renewal, usr_age_upper_bound, usr_age_lower_bound, item_age) VALUES 
-    ('Default', 10.0, 11.0, 5.0, 5.0, 4.0, 3.0, 2.0, 2.0, 8.0, 8.0, 8.0, 1.0, 6.0, 7.0, 0.0, 0.0, 0.0),
-    ('Org_Unit_First', 11.0, 10.0, 5.0, 5.0, 4.0, 3.0, 2.0, 2.0, 8.0, 8.0, 8.0, 1.0, 6.0, 7.0, 0.0, 0.0, 0.0),
-    ('Item_Owner_First', 8.0, 8.0, 5.0, 5.0, 4.0, 3.0, 2.0, 2.0, 10.0, 11.0, 8.0, 1.0, 6.0, 7.0, 0.0, 0.0, 0.0),
-    ('All_Equal', 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+INSERT INTO config.circ_matrix_weights(name, org_unit, grp, circ_modifier, copy_location, marc_type, marc_form, marc_bib_level, marc_vr_format, copy_circ_lib, copy_owning_lib, user_home_ou, ref_flag, juvenile_flag, is_renewal, usr_age_upper_bound, usr_age_lower_bound, item_age, org_lasso, copy_circ_lasso, copy_owning_lasso, user_home_lasso) VALUES
+    ('Default', 10.0, 11.0, 5.0, 5.0, 4.0, 3.0, 2.0, 2.0, 8.0, 8.0, 8.0, 1.0, 6.0, 7.0, 0.0, 0.0, 0.0, 10.0, 8.0, 8.0, 8.0),
+    ('Org_Unit_First', 11.0, 10.0, 5.0, 5.0, 4.0, 3.0, 2.0, 2.0, 8.0, 8.0, 8.0, 1.0, 6.0, 7.0, 0.0, 0.0, 0.0, 10.0, 8.0, 8.0, 8.0),
+    ('Item_Owner_First', 8.0, 8.0, 5.0, 5.0, 4.0, 3.0, 2.0, 2.0, 10.0, 11.0, 8.0, 1.0, 6.0, 7.0, 0.0, 0.0, 0.0, 10.0, 8.0, 8.0, 8.0),
+    ('All_Equal', 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 10.0, 8.0, 8.0, 8.0);
 
 -- hold matrix - 110.hold_matrix.sql:
 INSERT INTO config.hold_matrix_matchpoint (requestor_grp) VALUES (1);
 
-INSERT INTO config.hold_matrix_weights(name, user_home_ou, request_ou, pickup_ou, item_owning_ou, item_circ_ou, usr_grp, requestor_grp, circ_modifier, copy_location, marc_type, marc_form, marc_bib_level, marc_vr_format, juvenile_flag, ref_flag, item_age) VALUES
-    ('Default', 5.0, 5.0, 5.0, 5.0, 5.0, 7.0, 8.0, 4.0, 4.0, 3.0, 2.0, 1.0, 1.0, 4.0, 0.0, 0.0),
-    ('Item_Owner_First', 5.0, 5.0, 5.0, 8.0, 7.0, 5.0, 5.0, 4.0, 4.0, 3.0, 2.0, 1.0, 1.0, 4.0, 0.0, 0.0),
-    ('User_Before_Requestor', 5.0, 5.0, 5.0, 5.0, 5.0, 8.0, 7.0, 4.0, 4.0, 3.0, 2.0, 1.0, 1.0, 4.0, 0.0, 0.0),
-    ('All_Equal', 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+INSERT INTO config.hold_matrix_weights(name, user_home_ou, request_ou, pickup_ou, item_owning_ou, item_circ_ou, usr_grp, requestor_grp, circ_modifier, copy_location, marc_type, marc_form, marc_bib_level, marc_vr_format, juvenile_flag, ref_flag, item_age, user_home_lasso, request_lasso, pickup_lasso, item_owning_lasso, item_circ_lasso) VALUES
+    ('Default', 5.0, 5.0, 5.0, 5.0, 5.0, 7.0, 8.0, 4.0, 4.0, 3.0, 2.0, 1.0, 1.0, 4.0, 0.0, 0.0, 5.0, 5.0, 5.0, 5.0, 5.0),
+    ('Item_Owner_First', 5.0, 5.0, 5.0, 8.0, 7.0, 5.0, 5.0, 4.0, 4.0, 3.0, 2.0, 1.0, 1.0, 4.0, 0.0, 0.0, 5.0, 5.0, 5.0, 5.0, 5.0),
+    ('User_Before_Requestor', 5.0, 5.0, 5.0, 5.0, 5.0, 8.0, 7.0, 4.0, 4.0, 3.0, 2.0, 1.0, 1.0, 4.0, 0.0, 0.0, 5.0, 5.0, 5.0, 5.0, 5.0),
+    ('All_Equal', 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 5.0, 5.0, 5.0, 5.0, 5.0);
 
 -- dynamic weight associations
 INSERT INTO config.weight_assoc(active, org_unit, circ_weights, hold_weights) VALUES
@@ -3977,15 +3979,6 @@ INSERT into config.org_unit_setting_type
         'Recalls: A hold placed on an item with a circulation duration longer than this will trigger a recall. For example, "14 days" or "3 weeks".',
         'coust', 'description'),
     'interval', null)
-
-,( 'circ.holds.target_holds_by_org_unit_weight', 'holds',
-    oils_i18n_gettext('circ.holds.target_holds_by_org_unit_weight',
-        'Use weight-based hold targeting',
-        'coust', 'label'),
-    oils_i18n_gettext('circ.holds.target_holds_by_org_unit_weight',
-        'Use library weight based hold targeting',
-        'coust', 'description'),
-    'bool', null)
 
 ,( 'circ.holds.target_skip_me', 'holds',
     oils_i18n_gettext('circ.holds.target_skip_me',
@@ -4880,6 +4873,14 @@ INSERT into config.org_unit_setting_type
         'Organizational unit used by the Evergreen admin user of the Quipu eCard feature',
         'coust', 'description'),
     'link', 'aou')
+,( 'vendor.quipu.erenew.num_addresses_required', 'lib',
+    oils_i18n_gettext('vendor.quipu.erenew.num_addresses_required',
+        'Number of valid addresses needed to offer patron account e-renewal via Quipu',
+        'coust', 'label'),
+    oils_i18n_gettext('vendor.quipu.erenew.num_addresses_required',
+        'Number of valid addresses that a patron record must have in order to offer e-renewal via Quipu. Zero means that the patron record address are not considered; one means that either the mailing or billing/physical address must be set and marked as valid; two means that both the mailing and billing/physical address must be set and marked as valid. Default value is two (2).',
+        'coust', 'description'),
+    'integer', null)
 
 ,( 'lib.info_url', 'lib',
     oils_i18n_gettext('lib.info_url',
@@ -13655,6 +13656,10 @@ INSERT INTO vandelay.import_error ( code, description ) VALUES (
     'import.item.invalid.stat_cat_format', oils_i18n_gettext('import.item.invalid.stat_cat_format', 'Bad format for stat cat data, should be like: CAT 1|VALUE 1', 'vie', 'description') );
 INSERT INTO vandelay.import_error ( code, description ) VALUES (
     'import.item.invalid.stat_cat_data', oils_i18n_gettext('import.item.invalid.stat_cat_data', 'Invalid stat cat data', 'vie', 'description') );
+INSERT INTO vandelay.import_error ( code, description ) VALUES (
+    'import.item.invalid.age_protect', oils_i18n_gettext('import.item.invalid.age_protect', 'Invalid Age Protection Rule', 'vie', 'description') );
+INSERT INTO vandelay.import_error ( code, description ) VALUES (
+    'import.item.invalid.floating', oils_i18n_gettext('import.item.invalid.floating', 'Invalid Floating Group', 'vie', 'description') );
 
 -- Event def for email notice for hold cancelled due to lack of target -----
 
@@ -18020,6 +18025,205 @@ INSERT INTO action_trigger.environment (
     'circ_lib'
 );
 
+INSERT INTO action_trigger.hook (key, core_type, description, passive)
+VALUES (
+    'circ.checkin.batch_notify',
+    'circ',
+    oils_i18n_gettext(
+        'circ.checkin.batch_notify',
+        'Notification of a group of check ins',
+        'ath',
+        'description'
+    ),
+    FALSE
+), (
+    'circ.items_out.batch_notify',
+    'circ',
+    oils_i18n_gettext(
+        'circ.items_out.batch_notify',
+        'Notification of a group of items out',
+        'ath',
+        'description'
+    ),
+    FALSE
+), (
+    'circ.renew.batch_notify',
+    'circ',
+    oils_i18n_gettext(
+        'circ.renew.batch_notify',
+        'Notification of a group of renewals',
+        'ath',
+        'description'
+    ),
+    FALSE
+);
+
+INSERT INTO action_trigger.event_definition (
+    active,
+    owner,
+    name,
+    hook,
+    validator,
+    reactor,
+    usr_field,
+    opt_in_setting,
+    group_field,
+    template
+) VALUES (
+    TRUE,
+    1,
+    'Email Check In Receipt',
+    'circ.checkin.batch_notify',
+    'NOOP_True',
+    'SendEmail',
+    'usr',
+    'circ.send_email_checkout_receipts',
+    'usr',
+    $$[%- user = target.0.usr -%]
+To: [%- params.recipient_email || user.email %]
+From: [%- helpers.get_org_setting(target.0.checkin_lib.id, 'org.bounced_emails') || params.sender_email || default_sender %]
+Subject: Check In Receipt
+Auto-Submitted: auto-generated
+
+You checked in the following items:
+
+[% FOR circ IN target %]
+    [%- copy_details = helpers.get_copy_bib_basics(circ.target_copy.id) -%]
+    Title: [% copy_details.title %]
+    Author: [% copy_details.author %]
+    Call Number: [% circ.target_copy.call_number.label %]
+    Barcode: [% circ.target_copy.barcode %]
+    Library: [% circ.checkin_lib.name %]
+
+[% END %]
+$$);
+
+INSERT INTO action_trigger.environment (
+    event_def,
+    path
+) VALUES (
+    currval('action_trigger.event_definition_id_seq'),
+    'target_copy.call_number'
+), (
+    currval('action_trigger.event_definition_id_seq'),
+    'usr'
+), (
+    currval('action_trigger.event_definition_id_seq'),
+    'checkin_lib'
+);
+
+INSERT INTO action_trigger.event_definition (
+    active,
+    owner,
+    name,
+    hook,
+    validator,
+    reactor,
+    usr_field,
+    opt_in_setting,
+    group_field,
+    template
+) VALUES (
+    TRUE,
+    1,
+    'Email Items Out Receipt',
+    'circ.items_out.batch_notify',
+    'NOOP_True',
+    'SendEmail',
+    'usr',
+    'circ.send_email_checkout_receipts',
+    'usr',
+    $$[%- USE date -%]
+[%- user = target.0.usr -%]
+To: [%- params.recipient_email || user.email %]
+From: [%- helpers.get_org_setting(target.0.circ_lib.id, 'org.bounced_emails') || params.sender_email || default_sender %]
+Subject: Items Out Receipt
+Auto-Submitted: auto-generated
+
+You have the following items:
+
+[% FOR circ IN target %]
+    [%- copy_details = helpers.get_copy_bib_basics(circ.target_copy.id) -%]
+    Title: [% copy_details.title %]
+    Author: [% copy_details.author %]
+    Call Number: [% circ.target_copy.call_number.label %]
+    Barcode: [% circ.target_copy.barcode %]
+    Due: [% date.format(helpers.format_date(circ.due_date), '%Y-%m-%d') %]
+    Library: [% circ.circ_lib.name %]
+
+[% END %]
+$$);
+
+INSERT INTO action_trigger.environment (
+    event_def,
+    path
+) VALUES (
+    currval('action_trigger.event_definition_id_seq'),
+    'target_copy.call_number'
+), (
+    currval('action_trigger.event_definition_id_seq'),
+    'usr'
+), (
+    currval('action_trigger.event_definition_id_seq'),
+    'circ_lib'
+);
+
+INSERT INTO action_trigger.event_definition (
+    active,
+    owner,
+    name,
+    hook,
+    validator,
+    reactor,
+    usr_field,
+    opt_in_setting,
+    group_field,
+    template
+) VALUES (
+    TRUE,
+    1,
+    'Email Renewal Receipt',
+    'circ.renew.batch_notify',
+    'NOOP_True',
+    'SendEmail',
+    'usr',
+    'circ.send_email_checkout_receipts',
+    'usr',
+    $$[%- USE date -%]
+[%- user = target.0.usr -%]
+To: [%- params.recipient_email || user.email %]
+From: [%- helpers.get_org_setting(target.0.circ_lib.id, 'org.bounced_emails') || params.sender_email || default_sender %]
+Subject: Renewal Receipt
+Auto-Submitted: auto-generated
+
+You renewed the following items:
+
+[% FOR circ IN target %]
+    [%- copy_details = helpers.get_copy_bib_basics(circ.target_copy.id) -%]
+    Title: [% copy_details.title %]
+    Author: [% copy_details.author %]
+    Call Number: [% circ.target_copy.call_number.label %]
+    Barcode: [% circ.target_copy.barcode %]
+    Due: [% date.format(helpers.format_date(circ.due_date), '%Y-%m-%d') %]
+    Library: [% circ.circ_lib.name %]
+
+[% END %]
+$$);
+
+INSERT INTO action_trigger.environment (
+    event_def,
+    path
+) VALUES (
+    currval('action_trigger.event_definition_id_seq'),
+    'target_copy.call_number'
+), (
+    currval('action_trigger.event_definition_id_seq'),
+    'usr'
+), (
+    currval('action_trigger.event_definition_id_seq'),
+    'circ_lib'
+);
+
 INSERT INTO action_trigger.event_definition (active, owner, name, hook, validator, reactor, delay, template)
 VALUES (
     't', 1, 'Send Test Email', 'au.email.test', 'NOOP_True', 'SendEmail', '00:01:00',
@@ -19717,6 +19921,13 @@ VALUES (
     oils_i18n_gettext(
         'eg.circ.patron.summary.collapse',
         'Collaps Patron Summary Display',
+        'cwst', 'label'
+    )
+), (
+    'eg.circ.patron.nav.collapse', 'circ', 'bool',
+    oils_i18n_gettext(
+        'eg.circ.patron.nav.collapse',
+        'Collapse Patron Navigation Display',
         'cwst', 'label'
     )
 ), (
@@ -24323,6 +24534,16 @@ VALUES (
 );
 
 INSERT INTO config.workstation_setting_type (name, grp, datatype, label)
+VALUES (
+    'eg.grid.admin.config.hold_matrix_matchpoint', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.config.hold_matrix_matchpoint',
+        'Grid Config: admin.config.hold_matrix_matchpoint',
+        'cwst', 'label'
+    )
+);
+
+INSERT INTO config.workstation_setting_type (name, grp, datatype, label)
 VALUES 
 (
     'acq.lineitem.sort_order.claims', 'gui', 'integer',
@@ -25565,7 +25786,7 @@ INSERT INTO openapi.endpoint_param (endpoint,name,in_part,schema_type,schema_for
 ON CONFLICT DO NOTHING;
 INSERT INTO openapi.endpoint_response (endpoint,schema_type) VALUES ('authenticateUser','object') ON CONFLICT DO NOTHING;
 INSERT INTO openapi.endpoint_response (endpoint,content_type) VALUES ('authenticateUser','text/plain') ON CONFLICT DO NOTHING;
-INSERT INTO openapi.endpoint_response (endpoint,schema_type) VALUES ('logoutUser','object') ON CONFLICT DO NOTHING;
+INSERT INTO openapi.endpoint_response (endpoint,schema_type) VALUES ('logoutUser','string') ON CONFLICT DO NOTHING;
 INSERT INTO openapi.endpoint_response (endpoint,content_type) VALUES ('logoutUser','text/plain') ON CONFLICT DO NOTHING;
 
 -- ===== self-service
@@ -26543,3 +26764,32 @@ VALUES (currval('action_trigger.event_definition_id_seq'), 'home_ou'),
 INSERT into action_trigger.hook (key, core_type, description) VALUES
 ( 'au.erenewal', 'au', 'A patron has been renewed via Erenewal');
 
+------- STACKMAP ADDED CONTENT ------
+
+INSERT into config.org_unit_setting_type
+    (name, grp, label, description, datatype)
+VALUES (
+    'opac.stackmap_enable',
+    'opac',
+    oils_i18n_gettext('opac.stackmap_enable',
+    'Stackmap: Enable',
+    'coust', 'label'),
+    oils_i18n_gettext('opac.stackmap_enable',
+    'Enable Stackmap in the OPAC. Default is false.',
+    'coust', 'description'),
+    'bool'
+);
+
+INSERT into config.org_unit_setting_type
+    (name, grp, label, description, datatype)
+VALUES (
+    'opac.stackmap_identifier',
+    'opac',
+    oils_i18n_gettext('opac.stackmap_identifier',
+    'Stackmap: Identifier',
+    'coust', 'label'),
+    oils_i18n_gettext('opac.stackmap_identifier',
+    'Account code provided by Stackmap. (Example: pines-evergreen)',
+    'coust', 'description'),
+    'string'
+);

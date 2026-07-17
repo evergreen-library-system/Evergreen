@@ -1,8 +1,7 @@
-import {Component, OnInit, OnDestroy, Input, ViewChild} from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, ViewChild, inject } from '@angular/core';
 import {Subject, BehaviorSubject, Subscription, lastValueFrom, EMPTY, Observable,
     catchError, takeUntil} from 'rxjs';
 import {Router} from '@angular/router';
-import {OrgService} from '@eg/core/org.service';
 import {IdlObject} from '@eg/core/idl.service';
 import {CatalogService} from '@eg/share/catalog/catalog.service';
 import {BibRecordSummary, HoldingsSummary} from '@eg/share/catalog/bib-record.service';
@@ -15,14 +14,25 @@ import {CourseService} from '@eg/staff/share/course.service';
 import {AuthService} from '@eg/core/auth.service';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {BucketDialogComponent} from '@eg/staff/share/buckets/bucket-dialog.component';
-import {ResultFacetsComponent} from './facets.component';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
     selector: 'eg-catalog-result-record',
     templateUrl: 'record.component.html',
-    styleUrls: ['record.component.css']
+    styleUrls: ['record.component.css'],
+    imports: [StaffCommonModule]
 })
 export class ResultRecordComponent implements OnInit, OnDestroy {
+    private router = inject(Router);
+    private cat = inject(CatalogService);
+    private catUrl = inject(CatalogUrlService);
+    private staffCat = inject(StaffCatalogService);
+    private basket = inject(BasketService);
+    private course = inject(CourseService);
+    private bucketService = inject(BucketService);
+    private auth = inject(AuthService);
+    private toast = inject(ToastService);
+
 
     @ViewChild('addRecordToBucketDialog', { static: true })
         addToBucketDialog: BucketDialogComponent;
@@ -48,19 +58,6 @@ export class ResultRecordComponent implements OnInit, OnDestroy {
     favoriteBucketIds: number[] = [];
     recentBucketIds: number[] = [];
     recordIds: number[] = [];
-
-    constructor(
-        private router: Router,
-        private org: OrgService,
-        private cat: CatalogService,
-        private catUrl: CatalogUrlService,
-        private staffCat: StaffCatalogService,
-        private basket: BasketService,
-        private course: CourseService,
-        private bucketService: BucketService,
-        private auth: AuthService,
-        private toast: ToastService,
-    ) {}
 
     async ngOnInit() {
         this.searchContext = this.staffCat.searchContext;
@@ -170,16 +167,6 @@ export class ResultRecordComponent implements OnInit, OnDestroy {
             return this.basket.addRecordIds([this.summary.id]);
         } else {
             return this.basket.removeRecordIds([this.summary.id]);
-        }
-    }
-
-    async toggleRecordInBucket(bibId: number, bucketId: number) {
-        const bibIds = new Array(bibId);
-        const inBucket = await this.bucketService.checkForBibInRecordBuckets(bibId, new Array(bucketId));
-        if (inBucket) {
-            await this.bucketService.removeBibsFromRecordBucket(bucketId, bibIds);
-        } else {
-            await this.bucketService.addBibsToRecordBucket(bucketId, bibIds);
         }
     }
 

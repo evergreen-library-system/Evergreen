@@ -1,19 +1,28 @@
-import {Component, OnInit, Input, Renderer2} from '@angular/core';
+import { Component, OnInit, Input, Renderer2, inject } from '@angular/core';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
-import {ToastService} from '@eg/share/toast/toast.service';
 import {LocaleService} from '@eg/core/locale.service';
-import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
+import { FormsModule } from '@angular/forms';
+
 @Component({
     selector: 'eg-translate',
-    templateUrl: 'translate.component.html'
+    templateUrl: 'translate.component.html',
+    imports: [
+        FormsModule
+    ]
 })
 
 export class TranslateComponent
     extends DialogComponent implements OnInit {
+    private modal: NgbModal;
+    private renderer = inject(Renderer2);
+    private idl = inject(IdlService);
+    private locale = inject(LocaleService);
+    private pcrud = inject(PcrudService);
+
 
     idlClassDef: any;
     locales: IdlObject[];
@@ -42,15 +51,12 @@ export class TranslateComponent
         this.field = n;
     }
 
-    constructor(
-        private modal: NgbModal, // required for passing to parent
-        private renderer: Renderer2,
-        private idl: IdlService,
-        private toast: ToastService,
-        private locale: LocaleService,
-        private pcrud: PcrudService,
-        private auth: AuthService) {
+    constructor() {
+        const modal = inject(NgbModal);
+
         super(modal);
+
+        this.modal = modal;
     }
 
     ngOnInit() {

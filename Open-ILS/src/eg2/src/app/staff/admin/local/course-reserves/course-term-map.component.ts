@@ -1,5 +1,7 @@
-import {Component} from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
+import { StaffCommonModule } from '@eg/staff/common.module';
+import { CourseTermMapGridComponent } from './course-term-map-grid.component';
 
 /**
  * Very basic page for editing course/term map
@@ -20,13 +22,16 @@ import {ActivatedRoute} from '@angular/router';
             </div>
         </div>
         <eg-course-term-map-grid [courseId]="courseId"></eg-course-term-map-grid>
-    `
+    `,
+    imports: [CourseTermMapGridComponent, StaffCommonModule]
 })
 
 export class CourseTermMapComponent {
+    private route = inject(ActivatedRoute);
+
     public courseId: number;
 
-    constructor(private route: ActivatedRoute) {
+    constructor() {
         const filters = this.route.snapshot.queryParamMap.get('gridFilters');
         this.courseId = JSON.parse(filters)['course'] || 1;
     }

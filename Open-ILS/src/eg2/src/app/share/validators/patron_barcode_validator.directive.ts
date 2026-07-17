@@ -1,4 +1,4 @@
-import { Directive, forwardRef, Injectable } from '@angular/core';
+import { Directive, forwardRef, Injectable, inject } from '@angular/core';
 import { NG_ASYNC_VALIDATORS, AsyncValidator, FormControl } from '@angular/forms';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
@@ -6,10 +6,9 @@ import {EmptyError, Observable, SequenceError, of, single, switchMap, catchError
 
 @Injectable({providedIn: 'root'})
 export class PatronBarcodeValidator implements AsyncValidator {
-    constructor(
-        private auth: AuthService,
-        private net: NetService) {
-    }
+    private auth = inject(AuthService);
+    private net = inject(NetService);
+
 
     validate = (control: FormControl) => {
         return this.parseActorCall(this.net.request(
@@ -43,9 +42,8 @@ export class PatronBarcodeValidator implements AsyncValidator {
     }]
 })
 export class PatronBarcodeValidatorDirective {
-    constructor(
-        private pbv: PatronBarcodeValidator
-    ) { }
+    private pbv = inject(PatronBarcodeValidator);
+
 
     validate = (control: FormControl) => {
         this.pbv.validate(control);

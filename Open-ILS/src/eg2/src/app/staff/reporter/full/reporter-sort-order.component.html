@@ -10,7 +10,7 @@
         <div ngbAccordionBody>
           <ng-template>
             <div id="field-sorter-display-fields">
-              <ng-container *ngFor="let f of fields; index as idx">
+              @for (f of fields; track f; let idx = $index) {
                 <eg-reporter-field
                   [field]=f
                   [editorMode]="'none'"
@@ -23,9 +23,9 @@
                   (fieldChange)="updateField($event)"
                   (upEvent)="moveDisplayUp(idx)"
                   (downEvent)="moveDisplayDown(idx)"
-                >
+                  >
                 </eg-reporter-field>
-              </ng-container>
+              }
             </div>
           </ng-template>
         </div>
@@ -42,7 +42,7 @@
         <div ngbAccordionBody>
           <ng-template>
             <div id="field-sorter-sort-order">
-              <ng-container *ngFor="let f of fieldsInOrderByOrder(); index as idx">
+              @for (f of fieldsInOrderByOrder(); track f; let idx = $index) {
                 <eg-reporter-field
                   [field]=f
                   [editorMode]="'none'"
@@ -56,9 +56,9 @@
                   (fieldChange)="updateField($event)"
                   (upEvent)="moveOrderUp(idx)"
                   (downEvent)="moveOrderDown(idx)"
-                >
+                  >
                 </eg-reporter-field>
-              </ng-container>
+              }
             </div>
           </ng-template>
         </div>

@@ -5,11 +5,11 @@
 
 <div class="row">
   <div class="col-lg-12 d-flex align-items-center">
-      <label for="context_library" class="me-2" i18n>Context Org Unit</label>
-      <eg-org-select domId="context_library"
-        (onChange)="orgChanged($event)" [initialOrgId]="contextOrg">
-      </eg-org-select>
-    
+    <label for="context_library" class="me-2" i18n>Context Org Unit</label>
+    <eg-org-select domId="context_library"
+      (onChange)="orgChanged($event)" [initialOrgId]="contextOrg">
+    </eg-org-select>
+
     <div class="ms-3">
       <button type="button" (click)="up()" i18n-title title="Move Selected Location Up"
         i18n-aria-label aria-label="Move Selected Location Up"
@@ -31,14 +31,16 @@
         class="me-2 btn btn-sm btn-outline-dark mat-icon-shrunk-in-button">
         <span class="material-icons" aria-hidden="true">vertical_align_bottom</span>
       </button>
-      <span class="ms-2 fst-italic" *ngIf="selected()">
-        Selected: {{selected().location().name()}} 
+      @if (selected()) {
+        <span class="ms-2 fst-italic">
+          Selected: {{selected().location().name()}}
           ({{orgSn(selected().location().owning_lib())}})
-      </span>
+        </span>
+      }
     </div>
     <div class="flex-1"></div>
     <button type="button" class="btn btn-outline-dark" (click)="save()" type="submit"
-      [disabled]="!changesPending()" i18n>Save Changes</button>
+    [disabled]="!changesPending()" i18n>Save Changes</button>
   </div>
 </div>
 
@@ -47,20 +49,24 @@
 </div>
 
 <ol class="mt-3">
-  <li *ngFor="let entry of entries">
-    <div class="row p-1">
-      <div class="col-lg-12">
-        <input type="radio" name="selected-entry" id="entry-location-{{entry.id()}}"
-          [value]="entry.id()" [(ngModel)]="selectedEntry"/>
-        <label class="flex-1 ms-1 p-1" for="entry-location-{{entry.id()}}">
-          <button type="button" class="btn btn-link" (click)="selectedEntry = entry.id()"
-            [ngClass]="{'border border-primary rounded': selectedEntry === entry.id()}">
-            <span i18n>{{entry.location().name()}} ({{orgSn(entry.location().owning_lib())}})</span>
-            <span i18n *ngIf="entry.isnew()" class="ms-2 fst-italic text-info">(unsaved)</span>
-          </button>
-        </label>
+  @for (entry of entries; track entry) {
+    <li>
+      <div class="row p-1">
+        <div class="col-lg-12">
+          <input type="radio" name="selected-entry" id="entry-location-{{entry.id()}}"
+            [value]="entry.id()" [(ngModel)]="selectedEntry"/>
+          <label class="flex-1 ms-1 p-1" for="entry-location-{{entry.id()}}">
+            <button type="button" class="btn btn-link" (click)="selectedEntry = entry.id()"
+              [ngClass]="{'border border-primary rounded': selectedEntry === entry.id()}">
+              <span i18n>{{entry.location().name()}} ({{orgSn(entry.location().owning_lib())}})</span>
+              @if (entry.isnew()) {
+                <span i18n class="ms-2 fst-italic text-info">(unsaved)</span>
+              }
+            </button>
+          </label>
+        </div>
       </div>
-    </div>
-  </li>
+    </li>
+  }
 </ol>
 

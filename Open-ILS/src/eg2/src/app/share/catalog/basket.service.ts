@@ -1,4 +1,4 @@
-import {Injectable, EventEmitter} from '@angular/core';
+import { Injectable, EventEmitter, inject } from '@angular/core';
 import {Observable} from 'rxjs';
 import {StoreService} from '@eg/core/store.service';
 import {NetService} from '@eg/core/net.service';
@@ -14,20 +14,20 @@ import {AnonCacheService} from '@eg/share/util/anon-cache.service';
 const BASKET_CACHE_KEY_COOKIE = 'basket';
 const BASKET_CACHE_ATTR = 'recordIds';
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class BasketService {
+    private net = inject(NetService);
+    private pcrud = inject(PcrudService);
+    private store = inject(StoreService);
+    private anonCache = inject(AnonCacheService);
+
 
     idList: number[];
 
     // Fired every time our list of ID's are updated.
     onChange: EventEmitter<number[]>;
 
-    constructor(
-        private net: NetService,
-        private pcrud: PcrudService,
-        private store: StoreService,
-        private anonCache: AnonCacheService
-    ) {
+    constructor() {
         this.idList = [];
         this.onChange = new EventEmitter<number[]>();
 

@@ -1,4 +1,4 @@
-import {Component, ViewChild} from '@angular/core';
+import { Component, ViewChild, inject } from '@angular/core';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {Pager} from '@eg/share/util/pager';
 import {NetService} from '@eg/core/net.service';
@@ -6,11 +6,19 @@ import {AuthService} from '@eg/core/auth.service';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {GridDataSource} from '@eg/share/grid/grid';
 import {VandelayService} from './vandelay.service';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
-    templateUrl: 'queue-items.component.html'
+    templateUrl: 'queue-items.component.html',
+    imports: [StaffCommonModule]
 })
 export class QueueItemsComponent {
+    private router = inject(Router);
+    private route = inject(ActivatedRoute);
+    private net = inject(NetService);
+    private auth = inject(AuthService);
+    private vandelay = inject(VandelayService);
+
 
     queueType: string;
     queueId: number;
@@ -19,12 +27,7 @@ export class QueueItemsComponent {
     gridSource: GridDataSource;
     @ViewChild('itemsGrid', { static: true }) itemsGrid: GridComponent;
 
-    constructor(
-        private router: Router,
-        private route: ActivatedRoute,
-        private net: NetService,
-        private auth: AuthService,
-        private vandelay: VandelayService) {
+    constructor() {
 
         this.route.paramMap.subscribe((params: ParamMap) => {
             this.queueId = +params.get('id');

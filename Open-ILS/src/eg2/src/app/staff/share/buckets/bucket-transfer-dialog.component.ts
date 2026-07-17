@@ -1,4 +1,4 @@
-import {Component, Input, Output, OnInit, OnDestroy, ViewChild, EventEmitter} from '@angular/core';
+import { Component, Input, Output, OnInit, OnDestroy, ViewChild, EventEmitter, inject } from '@angular/core';
 import {Subscription, Observable, of, tap} from 'rxjs';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {AuthService} from '@eg/core/auth.service';
@@ -11,14 +11,28 @@ import {PatronSearchDialogComponent} from '@eg/staff/share/patron/search-dialog.
 import {ToastService} from '@eg/share/toast/toast.service';
 import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
 import {BucketActionSummaryDialogComponent} from './bucket-action-summary-dialog.component';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
     selector: 'eg-bucket-transfer-dialog',
-    templateUrl: './bucket-transfer-dialog.component.html'
+    templateUrl: './bucket-transfer-dialog.component.html',
+    imports: [
+        BucketActionSummaryDialogComponent,
+        PatronSearchDialogComponent,
+        StaffCommonModule
+    ]
 })
 
 export class BucketTransferDialogComponent
     extends DialogComponent implements OnInit, OnDestroy {
+    private auth = inject(AuthService);
+    private net = inject(NetService);
+    private evt = inject(EventService);
+    private pcrud = inject(PcrudService);
+    private modal: NgbModal;
+    private pbv = inject(PatronBarcodeValidator);
+    private toast = inject(ToastService);
+
 
     subscriptions: Subscription[] = []; // unsubscribed from in ngOnDestroy
 
@@ -35,19 +49,12 @@ export class BucketTransferDialogComponent
     @ViewChild('results', { static: true }) results: BucketActionSummaryDialogComponent;
     @ViewChild('patronSearch') patronSearch: PatronSearchDialogComponent;
 
-    constructor(
-        private auth: AuthService,
-        // private format: FormatService,
-        private net: NetService,
-        private evt: EventService,
-        // private org: OrgService,
-        private pcrud: PcrudService,
-        // private router: Router,
-        private modal: NgbModal,
-        private pbv: PatronBarcodeValidator,
-        private toast: ToastService
-    ) {
+    constructor() {
+        const modal = inject(NgbModal);
+
         super(modal);
+        this.modal = modal;
+
         this.transferRequestCompleted = new EventEmitter<boolean>();
     }
 

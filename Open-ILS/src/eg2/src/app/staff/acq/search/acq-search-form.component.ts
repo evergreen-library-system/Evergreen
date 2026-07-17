@@ -1,6 +1,5 @@
 /* eslint-disable */
-import {Component, OnInit, Input, Output, EventEmitter, ViewChild,
-    OnChanges, SimpleChanges} from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild, OnChanges, SimpleChanges, inject } from '@angular/core';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {StringComponent} from '@eg/share/string/string.component';
@@ -8,13 +7,32 @@ import {ToastService} from '@eg/share/toast/toast.service';
 import {AcqSearchTerm, AcqSearch} from './acq-search.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
 
+import { FormsModule } from '@angular/forms';
+import { ComboboxComponent } from '@eg/share/combobox/combobox.component';
+import { OrgSelectComponent } from '@eg/share/org-select/org-select.component';
+import { DateSelectComponent } from '@eg/share/date-select/date-select.component';
+import { IntervalInputComponent } from '@eg/share/interval-input/interval-input.component';
+
 @Component({
     selector: 'eg-acq-search-form',
     styleUrls: ['acq-search-form.component.css'],
-    templateUrl: './acq-search-form.component.html'
+    templateUrl: './acq-search-form.component.html',
+    imports: [
+    ComboboxComponent,
+    DateSelectComponent,
+    FormsModule,
+    IntervalInputComponent,
+    OrgSelectComponent,
+    StringComponent
+]
 })
 
 export class AcqSearchFormComponent implements OnInit, OnChanges {
+    private pcrud = inject(PcrudService);
+    private store = inject(ServerStoreService);
+    private idl = inject(IdlService);
+    private toast = inject(ToastService);
+
 
     @Input() initialSearchTerms: AcqSearchTerm[] = [];
     @Input() fallbackSearchTerms: AcqSearchTerm[] = [];
@@ -62,13 +80,6 @@ export class AcqSearchFormComponent implements OnInit, OnChanges {
     trimList = false;
 
     searchTerms: AcqSearchTerm[] = [];
-
-    constructor(
-        private pcrud: PcrudService,
-        private store: ServerStoreService,
-        private idl: IdlService,
-        private toast: ToastService
-    ) {}
 
     loadRunImmediatelySettingAndMaybeRun() {
         const self = this;

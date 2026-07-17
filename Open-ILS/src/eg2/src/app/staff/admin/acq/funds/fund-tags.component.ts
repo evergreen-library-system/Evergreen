@@ -1,20 +1,24 @@
-import {Component, OnInit, Input, ViewChild} from '@angular/core';
+import { Component, OnInit, Input, ViewChild, inject } from '@angular/core';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
-import {EventService} from '@eg/core/event.service';
-import {NetService} from '@eg/core/net.service';
-import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {OrgService} from '@eg/core/org.service';
 import {StringComponent} from '@eg/share/string/string.component';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {ComboboxComponent, ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {Observable, map} from 'rxjs';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
     selector: 'eg-fund-tags',
-    templateUrl: './fund-tags.component.html'
+    templateUrl: './fund-tags.component.html',
+    imports: [StaffCommonModule]
 })
 export class FundTagsComponent implements OnInit {
+    private idl = inject(IdlService);
+    private pcrud = inject(PcrudService);
+    private org = inject(OrgService);
+    private toast = inject(ToastService);
+
 
     @Input() fundId: number;
     @Input() fundOwner: number;
@@ -28,16 +32,6 @@ export class FundTagsComponent implements OnInit {
     tagMaps: IdlObject[];
     newTag: ComboboxEntry = null;
     tagSelectorDataSource: (term: string) => Observable<ComboboxEntry>;
-
-    constructor(
-        private idl: IdlService,
-        private evt: EventService,
-        private net: NetService,
-        private auth: AuthService,
-        private pcrud: PcrudService,
-        private org: OrgService,
-        private toast: ToastService
-    ) {}
 
     ngOnInit() {
         this._loadTagMaps();

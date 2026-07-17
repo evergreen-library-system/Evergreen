@@ -649,28 +649,26 @@ Items are sorted by (in order): library, call number/item notes, barcode, shelvi
 
 indexterm:[search results, placing holds]
 
-Holds can be placed on either title results or search results page. If the item 
-is available, it will be pulled from the shelf and held for you. If all items 
-at your local library are checked out, you will be placed on a waiting list and 
-you will be notified when items become available. 
+Holds can be placed from either the title results or search results pages. If the item is available, it will be pulled from the shelf and held for you. If all items at your local library are checked out, you will be placed on a waiting list and you will be notified when items become available.
 
-On title details page, you can select the _Place Hold_ link in the upper right 
-corner of the record to reserve the item. You will need your library account 
-user name and password. You may choose to be notified by phone or email.
+To place a hold, select the Place Hold button. If you are not already signed in, you will need to log in with your username (or barcode) and password. 
 
-If you have a phone number and/or email set up for your notifications, they will show up in
-the checkboxes.  Make sure the checked boxes corespond to the notification method you want.  Boxes
-will be grayed out if you don't have anything for the field.  In this example, _Email_ is grayed
-out because the account doesn't have an email.  You can always edit the phone number for notification.  
-To adjust your notification settings, go to your account in the OPAC and _Preferences_ and _Notifications_.
+Once on the Place Hold screen, you can confirm the title you are placing a hold on and that the hold preferences are correct:
 
-You can view and cancel a hold at anytime. Before your hold is captured, which 
-means an item has been held waiting for you to pick up, you can edit, suspend or activate it.
+* _Pickup location_: This will default to your home library, or the library you have set as your default pickup location in your account preferences. A green checkmark indicates the library is a valid pickup location. If there is a red _X_ in the field, this may mean the library is temporarily closed or unable to be a pickup location; please choose a different location.
+* _Notify when hold is ready for pickup?_:  If you have a phone number and/or email set up for your notifications, the corresponding checkboxes will be selected and the values displayed by default. Make sure the checked boxes correspond to the notification method you want. If you opt not to select any of the notification options, you will see a pop-up asking to confirm this preference once you place the hold.
+** _Notify by email_: This option will be grayed out if the account does not have an email associated with it. You can click the _Add an email address_ link to update your email in your account. 
+** _Notify by phone_: If there is not a hold notice email in your account, this will not be grayed out. You can always select the option and edit the phone number for notification.
+ *_Suspend this hold?_: Select the checkbox if you would not like your hold to be filled at the current time. If you would like the hold to automatically activate at a later date, select the calendar widget and choose the date from the calendar. If you do not add a date, you can manually activate a hold through your account.
+* _Advanced Hold Options_: Clicking this link displays additional formats and/or languages the title is available in. 
 
-If you want to suspend the hold to be filled at a specific date, check off _Suspend this Hold?_ and _Set activiation date_
-to bring up the calendar tool.  From your account you can also suspend and activate holds that are already placed.
+Once the form is filled out, click *Submit.*
 
-image::using_the_public_access_catalog/placing_holds.jpg[Placing Holds]
+image::using_the_public_access_catalog/opac_place_hold_3.16.png[Place Hold form in public catalog]
+
+An alert message appears that the hold was successfully placed. If the hold was not successfully placed, you will receive an error message.
+
+You can manage holds at any time through *My Account*> *Holds* > *Items on Hold*. Before your hold is captured, which means an item has been held waiting for you to pick up, you can edit, suspend, or activate it.
 
 === Printing and Emailing Records ===
 

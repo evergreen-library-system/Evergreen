@@ -1,17 +1,31 @@
-import {Component, OnInit, Input} from '@angular/core';
+import { Component, OnInit, Input, inject } from '@angular/core';
 import {OrgService} from '@eg/core/org.service';
 import {CourseService} from '@eg/staff/share/course.service';
 import {BibRecordService, BibRecordSummary
 } from '@eg/share/catalog/bib-record.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
 import {CatalogService} from '@eg/share/catalog/catalog.service';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { BibDisplayFieldComponent } from '@eg/share/catalog/bib-display-field.component';
 
 @Component({
     selector: 'eg-bib-summary',
     templateUrl: 'bib-summary.component.html',
-    styleUrls: ['bib-summary.component.css']
+    styleUrls: ['bib-summary.component.css'],
+    imports: [
+        BibDisplayFieldComponent,
+        CommonModule,
+        RouterModule
+    ]
 })
 export class BibSummaryComponent implements OnInit {
+    private bib = inject(BibRecordService);
+    private org = inject(OrgService);
+    private store = inject(ServerStoreService);
+    private cat = inject(CatalogService);
+    private course = inject(CourseService);
+
 
     initDone = false;
     hasCourse = false;
@@ -39,14 +53,6 @@ export class BibSummaryComponent implements OnInit {
             this.loadCourseInformation(this.summary.record.id());
         }
     }
-
-    constructor(
-        private bib: BibRecordService,
-        private org: OrgService,
-        private store: ServerStoreService,
-        private cat: CatalogService,
-        private course: CourseService
-    ) {}
 
     ngOnInit() {
 

@@ -5,7 +5,7 @@ import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {LocaleService} from '@eg/core/locale.service';
-import * as moment from 'moment-timezone';
+import moment from 'moment-timezone';
 import {DateUtil} from '@eg/share/util/date';
 
 /**
@@ -34,13 +34,13 @@ export class FormatService {
     wsOrgTimezone: string = inject(WS_ORG_TIMEZONE);
     tzCache: {[orgId: number]: string} = {};
 
-    constructor(
-        private datePipe: DatePipe,
-        private decimalPipe: DecimalPipe,
-        private idl: IdlService,
-        private org: OrgService,
-        private locale: LocaleService
-    ) {
+    private datePipe = inject(DatePipe);
+    private decimalPipe = inject(DecimalPipe);
+    private idl = inject(IdlService);
+    private locale = inject(LocaleService);
+    private org = inject(OrgService);
+
+    constructor() {
 
         // Create an inilne polyfill for Number.isNaN, which is
         // not available in PhantomJS for unit testing.
@@ -373,18 +373,24 @@ export class FormatService {
 
 
 // Pipe-ify the above formating logic for use in templates
-@Pipe({name: 'formatValue'})
+@Pipe({
+    name: 'formatValue'
+})
 export class FormatValuePipe implements PipeTransform {
-    constructor(private formatter: FormatService) {}
+    private formatter = inject(FormatService);
+
     // Add other filter params as needed to fill in the FormatParams
     transform(value: string, datatype: string): string {
         return this.formatter.transform({value: value, datatype: datatype});
     }
 }
 
-@Pipe({name: 'egOrgDateInContext'})
+@Pipe({
+    name: 'egOrgDateInContext'
+})
 export class OrgDateInContextPipe implements PipeTransform {
-    constructor(private formatter: FormatService) {}
+    private formatter = inject(FormatService);
+
 
     transform(value: string, orgId?: number, interval?: string ): string {
         return this.formatter.transform({
@@ -396,9 +402,12 @@ export class OrgDateInContextPipe implements PipeTransform {
     }
 }
 
-@Pipe({name: 'egDueDate'})
+@Pipe({
+    name: 'egDueDate'
+})
 export class DueDatePipe implements PipeTransform {
-    constructor(private formatter: FormatService) {}
+    private formatter = inject(FormatService);
+
 
     transform(circ: IdlObject): string {
         return this.formatter.transform({
@@ -410,7 +419,9 @@ export class DueDatePipe implements PipeTransform {
     }
 }
 
-@Pipe({name: 'egOrUnderscores'})
+@Pipe({
+    name: 'egOrUnderscores'
+})
 export class OrUnderscoresPipe implements PipeTransform {
     constructor() {}
     // Add other filter params as needed to fill in the FormatParams
@@ -419,7 +430,9 @@ export class OrUnderscoresPipe implements PipeTransform {
     }
 }
 
-@Pipe({ name: 'js2json'})
+@Pipe({
+    name: 'js2json'
+})
 export class Js2JsonPipe implements PipeTransform {
     transform(value: any): string {
         return JSON.stringify(value, null, 2); // spacing level = 2
@@ -427,11 +440,14 @@ export class Js2JsonPipe implements PipeTransform {
 }
 
 /* TODO: this should probably be moved elsewhere, within the acq/ hierarchy */
-@Pipe({ name: 'fundLabel', pure: false })
+@Pipe({
+    name: 'fundLabel', pure: false
+})
 export class FundLabelPipe implements PipeTransform {
-    private cache = new Map<number, string>();
+    private pcrud = inject(PcrudService);
+    private org = inject(OrgService);
 
-    constructor(private pcrud: PcrudService, private org: OrgService,) {}
+    private cache = new Map<number, string>();
 
     transform(fundId: number): string {
         if (this.cache.has(fundId)) {
@@ -452,7 +468,9 @@ export class FundLabelPipe implements PipeTransform {
 
 }
 
-@Pipe({ name: 'usrnameOrId' })
+@Pipe({
+    name: 'usrnameOrId'
+})
 export class UsrnameOrIdPipe implements PipeTransform {
     transform(user: IdlObject): any {
         return user && typeof user.usrname === 'function' ? user.usrname() : user;

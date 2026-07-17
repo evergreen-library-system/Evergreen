@@ -1,16 +1,14 @@
 
 <eg-progress-dialog #progressDlg
-  dialogTitle="Deleting Queue..." i18n-dialogTitle></eg-progress-dialog>
+dialogTitle="Deleting Queue..." i18n-dialogTitle></eg-progress-dialog>
 
-<ng-container *ngIf="queueSummary && queueSummary.queue">
-
+@if (queueSummary && queueSummary.queue) {
   <eg-confirm-dialog
     #confirmDelDlg
     i18n-dialogTitle i18n-dialogBody
     dialogTitle="Confirm Delete"
     dialogBody="Delete Queue {{queueSummary.queue.name()}}?">
   </eg-confirm-dialog>
-
   <h2 i18n>Queue {{queueSummary.queue.name()}}</h2>
   <div class="row pb-4">
     <div class="col-lg-6">
@@ -52,7 +50,7 @@
             <div class="d-flex">
               <div class="flex-1">
                 <button type="button" class="btn btn-link p-0" (click)="importSelected()"
-                  i18n>Import Selected Records</button>
+                i18n>Import Selected Records</button>
               </div>
               <div class="flex-1">
                 <button type="button" class="btn btn-link p-0" (click)="importAll()" i18n>Import All Records</button>
@@ -69,7 +67,7 @@
               </div>
               <div class="flex-1">
                 <button type="button" class="btn btn-link p-0" (click)="exportNonImported()"
-                  i18n>Export Non-Imported Records</button>
+                i18n>Export Non-Imported Records</button>
               </div>
             </div>
           </li>
@@ -91,7 +89,7 @@
       </div>
     </div>
   </div>
-</ng-container>
+}
 
 <ng-template #matchesTmpl let-row="row">
   <a i18n [ngClass]="{'fw-bold': hasOverlayTarget(row.id)}"
@@ -102,24 +100,34 @@
 </ng-template>
 
 <ng-template #errorsTmpl let-row="row">
-  <div *ngIf="row.error_detail">
-    <b class="text-danger" title="{{row.error_detail}}">{{row.import_error}}</b>
-  </div>
-  <div *ngIf="row.error_items.length">
-    <b class="text-danger">Items ({{row.error_items.length}})</b>
-  </div>
+  @if (row.error_detail) {
+    <div>
+      <b class="text-danger" title="{{row.error_detail}}">{{row.import_error}}</b>
+    </div>
+  }
+  @if (row.error_items.length) {
+    <div>
+      <b class="text-danger">Items ({{row.error_items.length}})</b>
+    </div>
+  }
 </ng-template>
 
 <ng-template #importedAsTmpl let-row="row">
-  <a *ngIf="queueType==='acq'" target="_blank" routerLink="/staff/catalog/record/{{row.imported_as}}">
-    {{row.imported_as}}
-  </a>
-  <a *ngIf="queueType==='bib'" target="_blank" routerLink="/staff/catalog/record/{{row.imported_as}}">
-    {{row.imported_as}}
-  </a>
-  <a *ngIf="queueType==='auth'" target="_blank" routerLink="/staff/cat/authority/edit/{{row.imported_as}}">
-    {{row.imported_as}}
-  </a>
+  @if (queueType==='acq') {
+    <a target="_blank" routerLink="/staff/catalog/record/{{row.imported_as}}">
+      {{row.imported_as}}
+    </a>
+  }
+  @if (queueType==='bib') {
+    <a target="_blank" routerLink="/staff/catalog/record/{{row.imported_as}}">
+      {{row.imported_as}}
+    </a>
+  }
+  @if (queueType==='auth') {
+    <a target="_blank" routerLink="/staff/cat/authority/edit/{{row.imported_as}}">
+      {{row.imported_as}}
+    </a>
+  }
 </ng-template>
 
 
@@ -136,22 +144,22 @@ because there are a lot of them.
   hideFields="language,pagination,price,rec_identifier,eg_tcn_source,eg_identifier,item_barcode,zsource">
 
   <eg-grid-toolbar-checkbox i18n-label label="Records With Matches"
-    (onChange)="limitToMatches($event)"></eg-grid-toolbar-checkbox>
+  (onChange)="limitToMatches($event)"></eg-grid-toolbar-checkbox>
 
   <eg-grid-toolbar-checkbox i18n-label label="Non-Imported Records"
-    (onChange)="limitToNonImported($event)"></eg-grid-toolbar-checkbox>
+  (onChange)="limitToNonImported($event)"></eg-grid-toolbar-checkbox>
 
   <eg-grid-toolbar-checkbox i18n-label label="Records with Import Errors"
-    (onChange)="limitToImportErrors($event)"></eg-grid-toolbar-checkbox>
+  (onChange)="limitToImportErrors($event)"></eg-grid-toolbar-checkbox>
 
   <eg-grid-column name="id" [index]="true" [hidden]="true"></eg-grid-column>
-  <eg-grid-column i18n-label label="Matches" name="+matches" 
-    [cellTemplate]="matchesTmpl"></eg-grid-column>
+  <eg-grid-column i18n-label label="Matches" name="+matches"
+  [cellTemplate]="matchesTmpl"></eg-grid-column>
   <eg-grid-column name="import_error" i18n-label
-    label="Import Errors" [cellTemplate]="errorsTmpl"></eg-grid-column>
+  label="Import Errors" [cellTemplate]="errorsTmpl"></eg-grid-column>
   <eg-grid-column name="import_time" i18n-label
-    label="Import Date" datatype="timestamp"></eg-grid-column>
-  <eg-grid-column name="imported_as" i18n-label label="Imported As" 
-    [cellTemplate]="importedAsTmpl"></eg-grid-column>
+  label="Import Date" datatype="timestamp"></eg-grid-column>
+  <eg-grid-column name="imported_as" i18n-label label="Imported As"
+  [cellTemplate]="importedAsTmpl"></eg-grid-column>
 </eg-grid>
 

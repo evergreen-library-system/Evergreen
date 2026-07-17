@@ -91,7 +91,7 @@ typedef struct {
 
 static void show_bind_variables( osrfHash* vars );
 static void show_msgs( const osrfStringArray* sa );
-static dbi_conn connect_db( Opts* opts );
+static dbi_conn connect_db( Opts* opts, dbi_inst* instance );
 static int load_pw( growing_buffer* buf, FILE* in );
 static int prompt_password( growing_buffer* buf );
 static void initialize_opts( Opts * pOpts );
@@ -108,7 +108,9 @@ int main( int argc, char* argv[] ) {
 	}
 
 	// Connect to the database
-	dbi_conn dbhandle = connect_db( &opts );
+	dbi_inst instance;
+	dbi_initialize_r(NULL, &instance);
+	dbi_conn dbhandle = connect_db( &opts, &instance );
 	if( NULL == dbhandle )
 		return EXIT_FAILURE;
 
@@ -285,10 +287,9 @@ static void show_msgs( const osrfStringArray* sa ) {
 	@brief Connect to the database.
 	@return If successful, a database handle; otherwise NULL;
 */
-static dbi_conn connect_db( Opts* opts ) {
+static dbi_conn connect_db( Opts* opts, dbi_inst* instance ) {
 	// Get a database handle
-	dbi_initialize( NULL );
-	dbi_conn dbhandle = dbi_conn_new( opts->driver );
+	dbi_conn dbhandle = dbi_conn_new_r( opts->driver, *instance );
 	if( !dbhandle ) {
 		fprintf( stderr, "Error loading database driver [%s]", opts->driver );
 		return NULL;

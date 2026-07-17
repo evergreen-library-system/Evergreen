@@ -1,16 +1,16 @@
-import {Component, ViewChild} from '@angular/core';
+import { Component, ViewChild, inject } from '@angular/core';
 import {Observable, from, concatMap} from 'rxjs';
-import {NetService} from '@eg/core/net.service';
-import {IdlService, IdlObject} from '@eg/core/idl.service';
-import {ToastService} from '@eg/share/toast/toast.service';
+import {IdlObject} from '@eg/core/idl.service';
 import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';
-import {OrgService} from '@eg/core/org.service';
 import {StringService} from '@eg/share/string/string.service';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
-import {NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
+import {NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 import {HoldingsService} from './holdings.service';
 import {CopyAlertsDialogComponent} from '@eg/staff/share/holdings/copy-alerts-dialog.component';
+import { StringComponent } from '@eg/share/string/string.component';
+import { FormsModule } from '@angular/forms';
+
 
 /**
  * Dialog for managing copy alerts.
@@ -19,10 +19,20 @@ import {CopyAlertsDialogComponent} from '@eg/staff/share/holdings/copy-alerts-di
 @Component({
     selector: 'eg-copy-alert-manager',
     templateUrl: 'copy-alert-manager.component.html',
-    styles: ['.acknowledged {text-decoration: line-through }']
+    styles: ['.acknowledged {text-decoration: line-through }'],
+    imports: [
+        CopyAlertsDialogComponent,
+        FormsModule,
+        StringComponent
+    ]
 })
 
 export class CopyAlertManagerDialogComponent extends DialogComponent {
+    private pcrud = inject(PcrudService);
+    private auth = inject(AuthService);
+    private strings = inject(StringService);
+    private holdings = inject(HoldingsService);
+
 
     mode: string;
     alerts: IdlObject[];
@@ -31,18 +41,6 @@ export class CopyAlertManagerDialogComponent extends DialogComponent {
     newAlertsAdded = false;
 
     @ViewChild('copyAlertsDialog') private copyAlertsDialog: CopyAlertsDialogComponent;
-
-    constructor(
-        private modal: NgbModal,
-        private toast: ToastService,
-        private net: NetService,
-        private idl: IdlService,
-        private pcrud: PcrudService,
-        private org: OrgService,
-        private auth: AuthService,
-        private strings: StringService,
-        private holdings: HoldingsService
-    ) { super(modal); console.log('CopyAlertManagerDialogComponent, this',this); }
 
     open(ops?: NgbModalOptions): Observable<any> {
 

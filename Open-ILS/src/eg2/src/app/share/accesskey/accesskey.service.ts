@@ -77,14 +77,11 @@ export class AccessKeyService {
     }
 
     /**
-     * Returns a simplified key assignment list containing just
-     * the key spec and the description.  Useful for inspecting
-     * without exposing the actions.
+     * Returns a simplified key assignment list.
+     * Useful for inspecting without exposing the actions.
      */
-    infoIze(): any[] {
-        return this.assignments.map(a => {
-            return {key: a.key, desc: a.desc, ctx: a.ctx};
-        });
+    infoIze(): Omit<AccessKeyAssignment, 'action'>[] {
+        return this.assignments.map(({ action, ...partial }) => partial);
     }
 
 }

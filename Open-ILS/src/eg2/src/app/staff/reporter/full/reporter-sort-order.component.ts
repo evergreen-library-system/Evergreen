@@ -1,23 +1,20 @@
-import {Component, Input, Output, EventEmitter} from '@angular/core';
-import {IdlService, IdlObject} from '@eg/core/idl.service';
+import { Component, Input, Output, EventEmitter, inject } from '@angular/core';
+import {IdlObject} from '@eg/core/idl.service';
+import { StaffCommonModule } from '@eg/staff/common.module';
+import { ReporterFieldComponent } from './reporter-field.component';
 
 @Component({
     selector: 'eg-reporter-sort-order',
     styleUrls: ['./reporter-sort-order.component.css'],
-    templateUrl: './reporter-sort-order.component.html'
+    templateUrl: './reporter-sort-order.component.html',
+    imports: [StaffCommonModule, ReporterFieldComponent]
 })
 
 export class ReporterSortOrderComponent {
-
     @Input() fields: IdlObject[] = [];
     @Output() fieldsChange = new EventEmitter<IdlObject[]>();
     @Input() orderByNames: string[] = [];
     @Output() orderByNamesChange = new EventEmitter<string[]>();
-
-    constructor(
-        private idl: IdlService
-    ) {
-    }
 
     updateField(field: IdlObject) {
         const idx = this.fields.findIndex(el => el.treeNodeId === field.treeNodeId);

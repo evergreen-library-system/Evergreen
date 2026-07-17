@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import {Observable, tap} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {saveAs} from 'file-saver';
@@ -27,6 +27,15 @@ export class VandelayImportSelection {
 
 @Injectable()
 export class VandelayService {
+    private http = inject(HttpClient);
+    private idl = inject(IdlService);
+    private org = inject(OrgService);
+    private evt = inject(EventService);
+    private net = inject(NetService);
+    private auth = inject(AuthService);
+    private pcrud = inject(PcrudService);
+    private perm = inject(PermService);
+
 
     allQueues: {[qtype: string]: IdlObject[]};
     attrDefs: {[atype: string]: IdlObject[]};
@@ -47,16 +56,7 @@ export class VandelayService {
     // going to the matches page.
     queuePageOffset: number;
 
-    constructor(
-        private http: HttpClient,
-        private idl: IdlService,
-        private org: OrgService,
-        private evt: EventService,
-        private net: NetService,
-        private auth: AuthService,
-        private pcrud: PcrudService,
-        private perm: PermService
-    ) {
+    constructor() {
         this.attrDefs = {};
         this.allQueues = {};
         this.matchSets = {};

@@ -467,7 +467,7 @@ int oilsAuthInternalUpgradeProvisionalSession(osrfMethodContext* ctx) {
         }
 
         free(authKey);
-        free(authToken);
+        free((void *)authToken);
 
     } else {
         // No provisional session auth token passed to us

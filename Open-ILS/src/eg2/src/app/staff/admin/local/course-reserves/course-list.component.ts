@@ -1,31 +1,55 @@
-import {Component, Input, ViewChild, OnInit, AfterViewInit} from '@angular/core';
+import {Component, Input, ViewChild, OnInit, AfterViewInit, InjectionToken, inject} from '@angular/core';
 import {Router} from '@angular/router';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {CourseService} from '@eg/staff/share/course.service';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {Pager} from '@eg/share/util/pager';
-import {GridDataSource, GridColumn} from '@eg/share/grid/grid';
+import {GridDataSource} from '@eg/share/grid/grid';
 import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
 import {StringComponent} from '@eg/share/string/string.component';
 import {ToastService} from '@eg/share/toast/toast.service';
-import {LocaleService} from '@eg/core/locale.service';
 import {AuthService} from '@eg/core/auth.service';
 import {OrgService} from '@eg/core/org.service';
-import {OrgFamily} from '@eg/share/org-family-select/org-family-select.component';
+import {OrgFamily, OrgFamilySelectComponent} from '@eg/share/org-family-select/org-family-select.component';
+import { StaffCommonModule } from '@eg/staff/common.module';
+import { AdminPageComponent } from '@eg/staff/share/admin-page/admin-page.component';
+import { TermListComponent } from './course-term-grid.component';
+import { noSuch } from '@eg/share/util/no-such';
 
-import {CourseAssociateMaterialComponent
-} from './course-associate-material.component';
+export function courseCanBeArchived (course: IdlObject) {
+    return course.is_archived() === 'f';
+}
 
-import {CourseAssociateUsersComponent
-} from './course-associate-users.component';
+export function courseCanBeUnArchived (course: IdlObject) {
+    return course.is_archived() === 't';
+}
+
+
+export const WINDOW = new InjectionToken<Window>('Browser window', {  providedIn: 'root',  factory: () => window});
 
 @Component({
     templateUrl: './course-list.component.html',
-    styleUrls: ['./course-page.component.css']
+    styleUrls: ['./course-page.component.css'],
+    imports: [
+        AdminPageComponent,
+        FmRecordEditorComponent,
+        OrgFamilySelectComponent,
+        StaffCommonModule,
+        TermListComponent
+    ]
 })
 
 export class CourseListComponent implements OnInit, AfterViewInit {
+    private courseSvc = inject(CourseService);
+    private auth = inject(AuthService);
+    private idl = inject(IdlService);
+    private org = inject(OrgService);
+    private pcrud = inject(PcrudService);
+    private router = inject(Router);
+    private toast = inject(ToastService);
+    private window = inject(WINDOW);
+
 
     @ViewChild('editDialog', { static: true }) editDialog: FmRecordEditorComponent;
     @ViewChild('grid') grid: GridComponent;
@@ -41,10 +65,6 @@ export class CourseListComponent implements OnInit, AfterViewInit {
     @ViewChild('unarchiveSuccessString', { static: true }) unarchiveSuccessString: StringComponent;
     @ViewChild('duplicateFailedString', { static: true }) duplicateFailedString: StringComponent;
     @ViewChild('duplicateSuccessString', { static: true }) duplicateSuccessString: StringComponent;
-    @ViewChild('courseMaterialDialog', {static: true})
-    private courseMaterialDialog: CourseAssociateMaterialComponent;
-    @ViewChild('courseUserDialog', {static: true})
-    private courseUserDialog: CourseAssociateUsersComponent;
 
     @Input() sortField: string;
     @Input() idlClass = 'acmc';
@@ -56,18 +76,8 @@ export class CourseListComponent implements OnInit, AfterViewInit {
     defaultOuId: number;
     searchOrgs: OrgFamily;
     defaultTerm: IdlObject;
-
-
-    constructor(
-        private courseSvc: CourseService,
-        private locale: LocaleService,
-        private auth: AuthService,
-        private idl: IdlService,
-        private org: OrgService,
-        private pcrud: PcrudService,
-        private router: Router,
-        private toast: ToastService
-    ) {}
+    protected noCourseCanBeArchived = noSuch(courseCanBeArchived);
+    protected noCourseCanBeUnarchived = noSuch(courseCanBeUnArchived);
 
     ngOnInit() {
         this.getSource();
@@ -117,18 +127,13 @@ export class CourseListComponent implements OnInit, AfterViewInit {
         };
     }
 
-    navigateToCoursePage(id_arr: IdlObject[]) {
+    private navigateToCoursePage(id_arr: IdlObject[]) {
         if (typeof id_arr === 'number') { id_arr = [id_arr]; }
-        const urls = [];
-        id_arr.forEach(id => {
-            console.log(this.router.url);
-            urls.push([this.locale.currentLocaleCode() + this.router.url + '/' +  id]);
-        });
         if (id_arr.length === 1) {
             this.router.navigate([this.router.url + '/' + id_arr[0]]);
         } else {
-            urls.forEach(url => {
-                window.open(url);
+            id_arr.forEach(id => {
+                this.window.open(`${this.window.location.href}/${id}`, `course-${id}`);
             });
         }
     }
@@ -183,15 +188,6 @@ export class CourseListComponent implements OnInit, AfterViewInit {
                     this.grid.reload();
                 } }
             );
-        });
-    }
-
-    courseArchiveableOrNot(course: IdlObject[], archiveBool) {
-        course.forEach(courseToMod => {
-            // eslint-disable-next-line eqeqeq
-            if (archiveBool == false) {return courseToMod.is_archived() == 't';}
-            // eslint-disable-next-line eqeqeq
-            return courseToMod.is_archived() == 'f';
         });
     }
 

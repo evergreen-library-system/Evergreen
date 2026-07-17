@@ -1,6 +1,6 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {Router, ActivatedRoute} from '@angular/router';
-import {Location} from '@angular/common';
+import { Component, OnInit, ViewChild, inject } from '@angular/core';
+import {Router, ActivatedRoute, RouterModule} from '@angular/router';
+import { CommonModule, Location } from '@angular/common';
 import {from, tap} from 'rxjs';
 import {IdlObject} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
@@ -11,6 +11,9 @@ import {Pager} from '@eg/share/util/pager';
 import {GridDataSource} from '@eg/share/grid/grid';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {ProgressInlineComponent} from '@eg/share/dialog/progress-inline.component';
+import { StaffBannerComponent } from '@eg/staff/share/staff-banner.component';
+import { FormsModule } from '@angular/forms';
+import { GridModule } from '@eg/share/grid/grid.module';
 
 interface ReceiveResponse {
     progress: number;
@@ -20,9 +23,25 @@ interface ReceiveResponse {
 }
 
 @Component({
-    templateUrl: 'receive.component.html'
+    templateUrl: 'receive.component.html',
+    imports: [
+        CommonModule,
+        FormsModule,
+        GridModule,
+        ProgressInlineComponent,
+        RouterModule,
+        StaffBannerComponent,
+    ]
 })
 export class AsnReceiveComponent implements OnInit {
+    private route = inject(ActivatedRoute);
+    private router = inject(Router);
+    private ngLocation = inject(Location);
+    private pcrud = inject(PcrudService);
+    private net = inject(NetService);
+    private auth = inject(AuthService);
+    private li = inject(LineitemService);
+
 
     barcode = '';
     receiving = false;
@@ -43,16 +62,6 @@ export class AsnReceiveComponent implements OnInit {
     @ViewChild('progress') private progress: ProgressInlineComponent;
 
     gridDataSource: GridDataSource = new GridDataSource();
-
-    constructor(
-        private route: ActivatedRoute,
-        private router: Router,
-        private ngLocation: Location,
-        private pcrud: PcrudService,
-        private net: NetService,
-        private auth: AuthService,
-        private li: LineitemService
-    ) {}
 
     ngOnInit() {
         this.barcode = this.route.snapshot.paramMap.get('containerCode') || '';

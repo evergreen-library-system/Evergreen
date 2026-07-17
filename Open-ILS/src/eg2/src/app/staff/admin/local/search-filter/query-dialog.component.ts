@@ -1,18 +1,25 @@
-import {Component, OnInit, Input} from '@angular/core';
+import { Component, OnInit, Input, inject } from '@angular/core';
 import {NetService} from '@eg/core/net.service';
 import {ActivatedRoute} from '@angular/router';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {AuthService} from '@eg/core/auth.service';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {NgForm} from '@angular/forms';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
     selector: 'eg-query-dialog',
-    templateUrl: './query-dialog.component.html'
+    templateUrl: './query-dialog.component.html',
+    imports: [StaffCommonModule]
 })
 
 export class QueryDialogComponent extends DialogComponent implements OnInit {
+    private modal: NgbModal;
+    private route = inject(ActivatedRoute);
+    private idl = inject(IdlService);
+    private net = inject(NetService);
+    private auth = inject(AuthService);
+
 
     currentId: number;
     newAsq: IdlObject;
@@ -25,14 +32,12 @@ export class QueryDialogComponent extends DialogComponent implements OnInit {
     @Input() newQueryText: string;
     @Input() newQueryPosition: string;
 
-    constructor(
-        private modal: NgbModal, // required for passing to parent
-        private route: ActivatedRoute,
-        private idl: IdlService,
-        private net: NetService,
-        private auth: AuthService
-    ) {
+    constructor() {
+        const modal = inject(NgbModal);
+
         super(modal); // required for subclassing
+
+        this.modal = modal;
     }
 
     ngOnInit() {

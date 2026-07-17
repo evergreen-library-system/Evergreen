@@ -1,4 +1,4 @@
-import {Component, Input, ViewChild} from '@angular/core';
+import { Component, Input, ViewChild, inject } from '@angular/core';
 import {Observable, throwError} from 'rxjs';
 import {NetService} from '@eg/core/net.service';
 import {StoreService} from '@eg/core/store.service';
@@ -10,17 +10,28 @@ import {NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 import {StringComponent} from '@eg/share/string/string.component';
 
 
+
 /**
  * Dialog for transferring holds.
  */
 
 @Component({
     selector: 'eg-hold-transfer-via-bibs-dialog',
-    templateUrl: 'transfer-via-bibs-dialog.component.html'
+    templateUrl: 'transfer-via-bibs-dialog.component.html',
+    imports: [
+        StringComponent
+    ]
 })
 
 export class HoldTransferViaBibsDialogComponent
     extends DialogComponent {
+    private modal: NgbModal;
+    private toast = inject(ToastService);
+    private store = inject(StoreService);
+    private net = inject(NetService);
+    private evt = inject(EventService);
+    private auth = inject(AuthService);
+
 
     @Input() bibIds: number | number[];
 
@@ -33,14 +44,12 @@ export class HoldTransferViaBibsDialogComponent
     numSucceeded: number;
     numFailed: number;
 
-    constructor(
-        private modal: NgbModal, // required for passing to parent
-        private toast: ToastService,
-        private store: StoreService,
-        private net: NetService,
-        private evt: EventService,
-        private auth: AuthService) {
+    constructor() {
+        const modal = inject(NgbModal);
+
         super(modal); // required for subclassing
+
+        this.modal = modal;
     }
 
     open(args: NgbModalOptions): Observable<boolean> {

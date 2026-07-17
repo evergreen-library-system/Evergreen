@@ -1,0 +1,68 @@
+<form ng-submit="ok()" ng-keydown="preventEnterSubmit($event)">
+  <div class="modal-header">
+    <button type="button" class="close"
+      ng-click="cancel()" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <h4 class="modal-title alert alert-info">
+      [% l('Email Item Receipt') %]
+    </h4>
+  </div>
+
+  <div class="modal-body" ng-if="options.length === 1">
+    <div class="row">
+      <div class="col-md-12">
+        <p>
+          [% l('Send an email receipt to') %]
+          {{ options[0].patron.first_given_name() }}
+          {{ options[0].patron.family_name() }}?
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-body" ng-if="options.length > 1">
+    <div class="row">
+      <div class="col-md-12">
+        <p>
+          [% l('Select the patron you would like to send an email receipt to:') %]
+        </p>
+      </div>
+    </div>
+
+    <div class="row" ng-repeat="option in options">
+      <div class="col-md-12">
+        <input type="radio" id="email_receipt_{{option.patron.id()}}"
+          name="email_receipt_option"
+          ng-model="selected.patronId"
+          ng-disabled="option.disabled"
+          ng-value="option.patron.id()">
+        <label for="email_receipt_{{option.patron.id()}}">
+          {{ option.patron.first_given_name() }}
+          {{ option.patron.family_name() }}
+          <span ng-if="option.disabled">
+            ([% l('no email address') %])
+          </span>
+          <span ng-if="!option.disabled">
+            ({{ option.circIds.length }}
+            <span ng-if="option.circIds.length === 1">
+              [% l('item') %]
+            </span>
+            <span ng-if="option.circIds.length !== 1">
+              [% l('items') %]
+            </span>)
+          </span>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <button type="submit" class="btn btn-primary"
+      ng-disabled="!selected.patronId">[% l('Send') %]
+    </button>
+    <button type="button" class="btn btn-normal"
+      ng-click="cancel()">[% l('Cancel') %]
+    </button>
+  </div>
+</form>

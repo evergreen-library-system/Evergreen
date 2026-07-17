@@ -1,5 +1,5 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {Router, ActivatedRoute, ParamMap} from '@angular/router';
+import { Component, OnInit, ViewChild, inject } from '@angular/core';
+import {Router, ActivatedRoute, ParamMap, RouterModule} from '@angular/router';
 import {tap} from 'rxjs';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {EventService} from '@eg/core/event.service';
@@ -8,12 +8,33 @@ import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {PromptDialogComponent} from '@eg/share/dialog/prompt.component';
 import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
-import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
+import {ComboboxComponent, ComboboxEntry} from '@eg/share/combobox/combobox.component';
+import { StaffBannerComponent } from '@eg/staff/share/staff-banner.component';
+import { BibSummaryComponent } from '@eg/staff/share/bib-summary/bib-summary.component';
+import { FormsModule } from '@angular/forms';
+
 
 @Component({
-    templateUrl: 'related.component.html'
+    templateUrl: 'related.component.html',
+    imports: [
+        AlertDialogComponent,
+        BibSummaryComponent,
+        ComboboxComponent,
+        FormsModule,
+        PromptDialogComponent,
+        RouterModule,
+        StaffBannerComponent
+    ]
 })
 export class RelatedComponent implements OnInit {
+    private router = inject(Router);
+    private route = inject(ActivatedRoute);
+    private idl = inject(IdlService);
+    private evt = inject(EventService);
+    private net = inject(NetService);
+    private auth = inject(AuthService);
+    private pcrud = inject(PcrudService);
+
 
     recordId: number;
     addingToPl = false;
@@ -23,16 +44,6 @@ export class RelatedComponent implements OnInit {
 
     @ViewChild('newPlDialog') newPlDialog: PromptDialogComponent;
     @ViewChild('plNameExists') plNameExists: AlertDialogComponent;
-
-    constructor(
-        private router: Router,
-        private route: ActivatedRoute,
-        private idl: IdlService,
-        private evt: EventService,
-        private net: NetService,
-        private auth: AuthService,
-        private pcrud: PcrudService
-    ) {}
 
     ngOnInit() {
         this.route.paramMap.subscribe((params: ParamMap) => {

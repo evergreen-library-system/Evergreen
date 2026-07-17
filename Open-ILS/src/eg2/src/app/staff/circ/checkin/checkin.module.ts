@@ -6,17 +6,15 @@ import {HoldsModule} from '@eg/staff/share/holds/holds.module';
 import {BillingModule} from '@eg/staff/share/billing/billing.module';
 import {CircModule} from '@eg/staff/share/circ/circ.module';
 import {HoldingsModule} from '@eg/staff/share/holdings/holdings.module';
-import {BookingModule} from '@eg/staff/share/booking/booking.module';
 import {PatronModule} from '@eg/staff/share/patron/patron.module';
 import {BarcodesModule} from '@eg/staff/share/barcodes/barcodes.module';
 import {CheckinComponent} from './checkin.component';
 import {WorkLogModule} from '@eg/staff/share/worklog/worklog.module';
+import { MakeBookableDialogComponent } from '@eg/staff/share/booking/make-bookable-dialog.component';
 
 @NgModule({
-    declarations: [
-        CheckinComponent
-    ],
     imports: [
+        CheckinComponent,
         StaffCommonModule,
         CheckinRoutingModule,
         FmRecordEditorModule,
@@ -24,7 +22,7 @@ import {WorkLogModule} from '@eg/staff/share/worklog/worklog.module';
         CircModule,
         HoldsModule,
         HoldingsModule,
-        BookingModule,
+        MakeBookableDialogComponent,
         PatronModule,
         BarcodesModule,
         WorkLogModule

@@ -1,4 +1,4 @@
-import {Component, Input, ViewChild} from '@angular/core';
+import { Component, Input, ViewChild, inject } from '@angular/core';
 import {Observable, throwError, from, switchMap} from 'rxjs';
 import {NetService} from '@eg/core/net.service';
 import {IdlObject} from '@eg/core/idl.service';
@@ -6,13 +6,15 @@ import {EventService} from '@eg/core/event.service';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';
-import {OrgService} from '@eg/core/org.service';
 import {StringComponent} from '@eg/share/string/string.component';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
-import {NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
+import {NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 import {BibRecordService, BibRecordSummary} from '@eg/share/catalog/bib-record.service';
-import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
+import {ComboboxComponent, ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {BillingService} from '@eg/staff/share/billing/billing.service';
+import { FormsModule } from '@angular/forms';
+import { CurrencyPipe, DatePipe } from '@angular/common';
+import { FormatValuePipe } from '@eg/core/format.service';
 
 /**
  * Dialog for marking items damaged and asessing related bills.
@@ -20,11 +22,27 @@ import {BillingService} from '@eg/staff/share/billing/billing.service';
 
 @Component({
     selector: 'eg-mark-damaged-dialog',
-    templateUrl: 'mark-damaged-dialog.component.html'
+    templateUrl: 'mark-damaged-dialog.component.html',
+    imports: [
+        ComboboxComponent,
+        CurrencyPipe,
+        DatePipe,
+        FormatValuePipe,
+        FormsModule,
+        StringComponent
+    ]
 })
 
 export class MarkDamagedDialogComponent
     extends DialogComponent {
+    private toast = inject(ToastService);
+    private net = inject(NetService);
+    private evt = inject(EventService);
+    private pcrud = inject(PcrudService);
+    private billing = inject(BillingService);
+    private bib = inject(BibRecordService);
+    private auth = inject(AuthService);
+
 
     @Input() copyId: number;
 
@@ -47,19 +65,6 @@ export class MarkDamagedDialogComponent
 
     // Charge data returned from the server requesting additional charge info.
     chargeResponse: any;
-
-    constructor(
-        private modal: NgbModal, // required for passing to parent
-        private toast: ToastService,
-        private net: NetService,
-        private evt: EventService,
-        private pcrud: PcrudService,
-        private org: OrgService,
-        private billing: BillingService,
-        private bib: BibRecordService,
-        private auth: AuthService) {
-        super(modal); // required for subclassing
-    }
 
     /**
      * Fetch the item/record, then open the dialog.

@@ -1,4 +1,4 @@
-import {Component, Input, ViewChild} from '@angular/core';
+import { Component, Input, ViewChild, inject } from '@angular/core';
 import {Observable} from 'rxjs';
 import {NetService} from '@eg/core/net.service';
 import {EventService} from '@eg/core/event.service';
@@ -8,8 +8,11 @@ import {AuthService} from '@eg/core/auth.service';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 import {StringComponent} from '@eg/share/string/string.component';
-import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
+import {ComboboxComponent, ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {WorkLogService, WorkLogEntry} from '@eg/staff/share/worklog/worklog.service';
+import { WorkLogStringsComponent } from '../worklog/strings.component';
+import { FormsModule } from '@angular/forms';
+
 
 /**
  * Dialog for canceling hold requests.
@@ -17,11 +20,24 @@ import {WorkLogService, WorkLogEntry} from '@eg/staff/share/worklog/worklog.serv
 
 @Component({
     selector: 'eg-hold-cancel-dialog',
-    templateUrl: 'cancel-dialog.component.html'
+    templateUrl: 'cancel-dialog.component.html',
+    imports: [
+        ComboboxComponent,
+        FormsModule,
+        StringComponent,
+        WorkLogStringsComponent
+    ]
 })
 
 export class HoldCancelDialogComponent
     extends DialogComponent {
+    private toast = inject(ToastService);
+    private net = inject(NetService);
+    private evt = inject(EventService);
+    private pcrud = inject(PcrudService);
+    private auth = inject(AuthService);
+    private worklog = inject(WorkLogService);
+
 
     @Input() holdIds: number[];
     @ViewChild('successMsg', { static: true }) private successMsg: StringComponent;
@@ -31,20 +47,8 @@ export class HoldCancelDialogComponent
     numSucceeded: number;
     numFailed: number;
     cancelReason: number;
-    cancelReasons: ComboboxEntry[];
+    cancelReasons: ComboboxEntry[] = [];
     cancelNote: string;
-
-    constructor(
-        private modal: NgbModal, // required for passing to parent
-        private toast: ToastService,
-        private net: NetService,
-        private evt: EventService,
-        private pcrud: PcrudService,
-        private auth: AuthService,
-        private worklog: WorkLogService) {
-        super(modal); // required for subclassing
-        this.cancelReasons = [];
-    }
 
     // Avoid fetching cancel reasons in ngOnInit becaues that causes
     // them to load regardless of whether the dialog is ever used.

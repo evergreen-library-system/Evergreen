@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import {IdlObject} from '@eg/core/idl.service';
 import {StaffCatalogService} from './catalog.service';
 import { CatalogService } from '@eg/share/catalog/catalog.service';
@@ -6,6 +6,9 @@ import {ServerStoreService} from '@eg/core/server-store.service';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {StringComponent} from '@eg/share/string/string.component';
 import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
+import { StaffCommonModule } from '../common.module';
+import { SortOrderSelectComponent } from './sort-order-select/sort-order-select.component';
+import { SearchFormComponent } from './search-form.component';
 
 /* Component for managing catalog preferences */
 
@@ -24,21 +27,24 @@ const CATALOG_PREFS = [
 ];
 
 @Component({
-    templateUrl: 'prefs.component.html'
+    templateUrl: 'prefs.component.html',
+    imports: [
+        SearchFormComponent,
+        SortOrderSelectComponent,
+        StaffCommonModule
+    ]
 })
 export class PreferencesComponent implements OnInit {
+    private store = inject(ServerStoreService);
+    private toast = inject(ToastService);
+    private staffCat = inject(StaffCatalogService);
+    private cat = inject(CatalogService);
+
 
     settings: Object = {};
 
     @ViewChild('successMsg', {static: false}) successMsg: StringComponent;
     @ViewChild('failMsg', {static: false}) failMsg: StringComponent;
-
-    constructor(
-        private store: ServerStoreService,
-        private toast: ToastService,
-        private staffCat: StaffCatalogService,
-        private cat: CatalogService
-    ) {}
 
     ngOnInit() {
         this.staffCat.createContext();

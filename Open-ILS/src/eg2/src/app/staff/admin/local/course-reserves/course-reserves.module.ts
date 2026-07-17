@@ -7,28 +7,26 @@ import {CoursePageComponent} from './course-page.component';
 import {CourseAssociateMaterialComponent} from './course-associate-material.component';
 import {CourseAssociateUsersComponent} from './course-associate-users.component';
 import {CourseReservesRoutingModule} from './routing.module';
-import {ItemLocationSelectModule} from '@eg/share/item-location-select/item-location-select.module';
 import {MarcSimplifiedEditorModule} from '@eg/staff/share/marc-edit/simplified-editor/simplified-editor.module';
 import {PatronModule} from '@eg/staff/share/patron/patron.module';
 import {CourseTermMapComponent} from './course-term-map.component';
 import {CourseTermMapGridComponent} from './course-term-map-grid.component';
 import {TermListComponent} from './course-term-grid.component';
+import { ItemLocationSelectComponent } from '@eg/share/item-location-select/item-location-select.component';
 
 @NgModule({
-    declarations: [
+    imports: [
         CourseListComponent,
         CoursePageComponent,
         CourseAssociateMaterialComponent,
         CourseAssociateUsersComponent,
         CourseTermMapComponent,
         CourseTermMapGridComponent,
-        TermListComponent
-    ],
-    imports: [
+        TermListComponent,
         StaffCommonModule,
         AdminCommonModule,
         CourseReservesRoutingModule,
-        ItemLocationSelectModule,
+        ItemLocationSelectComponent,
         MarcSimplifiedEditorModule,
         PatronModule,
         TreeModule

@@ -1,27 +1,35 @@
-import {Component, Input, ViewChild, TemplateRef, OnInit} from '@angular/core';
+import { Component, Input, ViewChild, OnInit, inject } from '@angular/core';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {FormatService} from '@eg/core/format.service';
-import {EventService} from '@eg/core/event.service';
-import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
 import {GridDataSource, GridCellTextGenerator} from '@eg/share/grid/grid';
 import {Pager} from '@eg/share/util/pager';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {StringComponent} from '@eg/share/string/string.component';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {OrgService} from '@eg/core/org.service';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
     selector: 'eg-funding-source-transactions-dialog',
-    templateUrl: './funding-source-transactions-dialog.component.html'
+    templateUrl: './funding-source-transactions-dialog.component.html',
+    imports: [
+        FmRecordEditorComponent,
+        StaffCommonModule
+    ]
 })
 
 export class FundingSourceTransactionsDialogComponent
     extends DialogComponent implements OnInit {
+    private idl = inject(IdlService);
+    private auth = inject(AuthService);
+    private pcrud = inject(PcrudService);
+    private org = inject(OrgService);
+    private format = inject(FormatService);
+    private toast = inject(ToastService);
 
     @Input() fundingSourceId: number;
     @Input() activeTab = 'credits';
@@ -37,25 +45,11 @@ export class FundingSourceTransactionsDialogComponent
     @ViewChild('successString', { static: true }) successString: StringComponent;
     @ViewChild('updateFailedString', { static: false }) updateFailedString: StringComponent;
 
-    constructor(
-        private idl: IdlService,
-        private evt: EventService,
-        private net: NetService,
-        private auth: AuthService,
-        private pcrud: PcrudService,
-        private org: OrgService,
-        private format: FormatService,
-        private toast: ToastService,
-        private modal: NgbModal
-    ) {
-        super(modal);
-    }
-
     ngOnInit() {
         this.cellTextGenerator = {
             fund: row => {
-                return row.code() + ' (' + row.year() + ') (' +
-                    this.getOrgShortname(row.org()) + ')';
+                const fundData = row.fund();
+                return `${fundData?.code()} (${fundData?.year()}) (${this.getOrgShortname(fundData?.org())})`;
             }
         };
         this.fundingSource = null;

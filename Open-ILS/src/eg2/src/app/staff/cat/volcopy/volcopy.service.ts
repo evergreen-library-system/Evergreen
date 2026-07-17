@@ -1,12 +1,11 @@
 /* eslint-disable max-len, no-prototype-builtins */
-import {Injectable, EventEmitter, OnDestroy} from '@angular/core';
-import {Subject, tap, takeUntil, toArray, lastValueFrom, Observable, Subscription} from 'rxjs';
+import { Injectable, EventEmitter, OnDestroy, inject } from '@angular/core';
+import {Subject, tap, takeUntil, toArray, lastValueFrom, Observable, Subscription, firstValueFrom} from 'rxjs';
 import {SafeUrl} from '@angular/platform-browser';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {OrgService} from '@eg/core/org.service';
 import {PcrudService} from '@eg/core/pcrud.service';
-import {EventService} from '@eg/core/event.service';
 import {AuthService} from '@eg/core/auth.service';
 import {VolCopyContext} from './volcopy';
 import {HoldingsService} from '@eg/staff/share/holdings/holdings.service';
@@ -14,6 +13,8 @@ import {FileExportService} from '@eg/share/util/file-export.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
 import {StoreService} from '@eg/core/store.service';
 import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
+import { ItemLocationService } from '@eg/share/item-location-select/item-location.service';
+import { EventService } from '@eg/core/event.service';
 
 /* Managing volcopy data */
 
@@ -28,6 +29,17 @@ interface VolCopyDefaults {
 
 @Injectable()
 export class VolCopyService implements OnDestroy {
+    private evt = inject(EventService);
+    private net = inject(NetService);
+    private idl = inject(IdlService);
+    private org = inject(OrgService);
+    private auth = inject(AuthService);
+    private pcrud = inject(PcrudService);
+    private holdings = inject(HoldingsService);
+    private fileExport = inject(FileExportService);
+    private store = inject(StoreService);
+    private serverStore = inject(ServerStoreService);
+
 
     autoId = -1;
 
@@ -64,18 +76,7 @@ export class VolCopyService implements OnDestroy {
     // Currently spans from volcopy.component to vol-edit.component.
     genBarcodesRequested: EventEmitter<void> = new EventEmitter<void>();
 
-    constructor(
-        private evt: EventService,
-        private net: NetService,
-        private idl: IdlService,
-        private org: OrgService,
-        private auth: AuthService,
-        private pcrud: PcrudService,
-        private holdings: HoldingsService,
-        private fileExport: FileExportService,
-        private store: StoreService,
-        private serverStore: ServerStoreService
-    ) {
+    constructor() {
         // Listen for ServerStoreService cache invalidation completions within this tab
         this.serverStore.cacheCleared$
             .pipe(takeUntil(this.destroy$))
@@ -85,6 +86,8 @@ export class VolCopyService implements OnDestroy {
                 });
             });
     }
+
+    private loc = inject(ItemLocationService);
 
     ngOnDestroy() {
         this.destroy$.next();
@@ -186,12 +189,7 @@ export class VolCopyService implements OnDestroy {
             return Promise.resolve(this.copyLocationMap[id]);
         }
 
-        return this.pcrud.retrieve('acpl', id)
-            .pipe(tap(loc => {
-                console.debug(`getLocation(${id})`,loc);
-                this.copyLocationMap[loc.id()] = loc;
-            }))
-            .toPromise();
+        return firstValueFrom(this.loc.getById(id));
     }
 
     fetchTemplates(): Promise<any> {

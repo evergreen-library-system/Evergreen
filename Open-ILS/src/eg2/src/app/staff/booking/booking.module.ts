@@ -20,25 +20,23 @@ import {OrgFamilySelectModule} from '@eg/share/org-family-select/org-family-sele
 
 @NgModule({
     imports: [
-        StaffCommonModule,
-        BookingRoutingModule,
-        ReactiveFormsModule,
-        FmRecordEditorModule,
-        OrgFamilySelectModule,
-        PatronModule
-    ],
-    declarations: [
+        BookingResourceBarcodeValidatorDirective,
         CancelReservationDialogComponent,
         CaptureComponent,
         CreateReservationComponent,
         CreateReservationDialogComponent,
+        StaffCommonModule,
+        BookingRoutingModule,
+        ReactiveFormsModule,
+        FmRecordEditorModule,
         ManageReservationsComponent,
         NoTimezoneSetComponent,
+        OrgFamilySelectModule,
+        PatronModule,
         PickupComponent,
         PullListComponent,
         ReservationsGridComponent,
         ReturnComponent,
-        BookingResourceBarcodeValidatorDirective
     ],
     exports: [
         BookingResourceBarcodeValidatorDirective

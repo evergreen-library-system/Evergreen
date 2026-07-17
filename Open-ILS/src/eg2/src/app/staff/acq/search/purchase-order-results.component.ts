@@ -1,17 +1,25 @@
-import {Component, OnInit, Input, ViewChild} from '@angular/core';
-import {Router, ActivatedRoute, ParamMap} from '@angular/router';
-import {NetService} from '@eg/core/net.service';
+import { Component, OnInit, Input, ViewChild, inject } from '@angular/core';
+import {RouterModule} from '@angular/router';
 import {AuthService} from '@eg/core/auth.service';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {GridDataSource, GridCellTextGenerator} from '@eg/share/grid/grid';
 import {AcqSearchService, AcqSearchTerm, AcqSearch} from './acq-search.service';
 import {AcqSearchFormComponent} from './acq-search-form.component';
+import { GridModule } from '@eg/share/grid/grid.module';
 
 @Component({
     selector: 'eg-purchase-order-results',
     templateUrl: 'purchase-order-results.component.html',
+    imports: [
+        AcqSearchFormComponent,
+        GridModule,
+        RouterModule,
+    ]
 })
 export class PurchaseOrderResultsComponent implements OnInit {
+    private auth = inject(AuthService);
+    private acqSearch = inject(AcqSearchService);
+
 
     @Input() initialSearchTerms: AcqSearchTerm[] = [];
 
@@ -32,14 +40,6 @@ export class PurchaseOrderResultsComponent implements OnInit {
         value1: 'on-order',
         value2: ''
     }];
-
-    constructor(
-        private router: Router,
-        private route: ActivatedRoute,
-        private net: NetService,
-        private auth: AuthService,
-        private acqSearch: AcqSearchService) {
-    }
 
     ngOnInit() {
         this.gridSource = this.acqSearch.getAcqSearchDataSource('purchase_order');

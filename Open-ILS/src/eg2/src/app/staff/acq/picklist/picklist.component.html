@@ -2,9 +2,11 @@
 
 <eg-acq-picklist-summary [picklistId]="picklistId"></eg-acq-picklist-summary>
 
-<div class="mt-2" *ngIf="!isBasePage()">
-  <a routerLink="/staff/acq/picklist/{{picklistId}}" queryParamsHandling="merge" class="btn btn-sm btn-info" i18n>Return</a>
-</div>
+@if (!isBasePage()) {
+  <div class="mt-2">
+    <a routerLink="/staff/acq/picklist/{{picklistId}}" queryParamsHandling="merge" class="btn btn-sm btn-info" i18n>Return</a>
+  </div>
+}
 
 <router-outlet></router-outlet>
 

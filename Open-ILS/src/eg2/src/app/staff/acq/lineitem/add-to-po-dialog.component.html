@@ -3,29 +3,35 @@
     <div class="modal-header">
       <h3 class="modal-title" i18n>Add Line Items to Purchase order</h3>
       <button type="button" class="btn-close btn-close-white"
-        i18n-aria-label aria-label="Close dialog" (click)="close()"></button>
+      i18n-aria-label aria-label="Close dialog" (click)="close()"></button>
     </div>
     <div class="modal-body">
-      <h4 i18n *ngIf="liIds && liIds.length">Line Item(s) selected:
-        <span *ngFor="let id of liIds; last as isLast">
-          {{id}}<span *ngIf="!isLast">,</span>
+      @if (liIds && liIds.length) {
+        <h4 i18n>Line Item(s) selected:
+        @for (id of liIds; track id; let isLast = $last) {
+<span>
+          {{id}}@if (!isLast) {
+<span>,</span>
+}
         </span>
+}
       </h4>
-      <h4 i18n>Please select a PO and click "Add to Purchase Order" to add the line items,
+    }
+    <h4 i18n>Please select a PO and click "Add to Purchase Order" to add the line items,
         or "Exit Dialog" to exit without adding the line items to a PO.</h4>
-      <label class="form-label" i18n>PO:</label>
-      <eg-combobox domId="acq-add-to-po-dialog" name="acq-add-to-po-dialog" 
-        [asyncSupportsEmptyTermClick]="true" domId="po_to_add"
-        idlClass="acqpo" [idlQueryAnd]="{state: ['new', 'pending']}"
-        idlIncludeLibraryInLabel="ordering_agency"
-        [(ngModel)]="po"></eg-combobox>
-    </div>
-    <div class="modal-footer">
-      <button type="button" class="btn btn-success" [disabled]="!po" 
-        (click)="close(po.id)" i18n>Add to Purchase Order</button>
-      <button type="button" class="btn btn-normal"
-        (click)="close()" i18n>Exit Dialog</button>
-    </div>
-  </form>
+    <label class="form-label" i18n>PO:</label>
+    <eg-combobox domId="acq-add-to-po-dialog" name="acq-add-to-po-dialog"
+      [asyncSupportsEmptyTermClick]="true" domId="po_to_add"
+      idlClass="acqpo" [idlQueryAnd]="{state: ['new', 'pending']}"
+      idlIncludeLibraryInLabel="ordering_agency"
+    [(ngModel)]="po"></eg-combobox>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-success" [disabled]="!po"
+    (click)="close(po.id)" i18n>Add to Purchase Order</button>
+    <button type="button" class="btn btn-normal"
+    (click)="close()" i18n>Exit Dialog</button>
+  </div>
+</form>
 </ng-template>
 

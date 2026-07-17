@@ -3,10 +3,8 @@ import {StaffCommonModule} from '@eg/staff/common.module';
 import {BibListComponent} from './bib-list.component';
 
 @NgModule({
-    declarations: [
-        BibListComponent
-    ],
     imports: [
+        BibListComponent,
         StaffCommonModule
     ],
     exports: [

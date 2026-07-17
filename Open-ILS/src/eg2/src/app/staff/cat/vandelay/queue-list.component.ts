@@ -1,4 +1,4 @@
-import {Component, ViewChild} from '@angular/core';
+import { Component, ViewChild, inject } from '@angular/core';
 import {firstValueFrom, Observable, of} from 'rxjs';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {Pager} from '@eg/share/util/pager';
@@ -9,10 +9,19 @@ import {GridComponent} from '@eg/share/grid/grid.component';
 import {GridDataSource, GridCellTextGenerator} from '@eg/share/grid/grid';
 import {VandelayService} from './vandelay.service';
 import { PcrudService } from '@eg/core/pcrud.service';
+import { StaffCommonModule } from '@eg/staff/common.module';
 @Component({
-    templateUrl: 'queue-list.component.html'
+    templateUrl: 'queue-list.component.html',
+    imports: [StaffCommonModule]
 })
 export class QueueListComponent {
+    private router = inject(Router);
+    private route = inject(ActivatedRoute);
+    private net = inject(NetService);
+    private auth = inject(AuthService);
+    private pcrud = inject(PcrudService);
+    private vandelay = inject(VandelayService);
+
 
     queueType: string; // bib / auth / bib-acq
     queueSource: GridDataSource;
@@ -26,13 +35,7 @@ export class QueueListComponent {
     @ViewChild('bibQueueGrid', { static: false }) bibQueueGrid: GridComponent;
     @ViewChild('authQueueGrid', { static: false }) authQueueGrid: GridComponent;
 
-    constructor(
-        private router: Router,
-        private route: ActivatedRoute,
-        private net: NetService,
-        private auth: AuthService,
-        private pcrud: PcrudService,
-        private vandelay: VandelayService) {
+    constructor() {
 
         this.queueType = 'bib';
         this.queueSource = new GridDataSource();

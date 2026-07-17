@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-=over
+=head1 SYNOPSIS
 
 use Data::Dumper;
 

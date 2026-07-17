@@ -2,132 +2,142 @@
   i18n-dialogBody dialogBody="Edit note for #{{noteTargets}}">
 </eg-prompt-dialog>
 
-<eg-confirm-dialog #voidBillsDialog i18n-dialogBody 
+<eg-confirm-dialog #voidBillsDialog i18n-dialogBody
   dialogBody="Are you sure you would like to void {{voidAmount | currency}} 
     for these line-item billings? {{voidTargets}}">
 </eg-confirm-dialog>
 
 <h3 i18n>Transaction: #{{xactId}}</h3>
 
-<div *ngIf="statement" class="striped-rows-odd">
-  <div class="row p-1">
-    <div class="col-lg-2" i18n>Billing Location</div>
-    <div class="col-lg-2">
-      <a target="_blank" 
-        href="/eg/opac/library/{{context.orgSn(statement.billing_location)}}">
-        {{context.orgSn(statement.billing_location)}}
-      </a>
-    </div>
-    <div class="col-lg-2" i18n>Total Billed</div>
-    <div class="col-lg-1">{{totalBilled() | currency}}</div>
-    <div class="col-lg-2" i18n>Title</div>
-    <div class="col-lg-3">
-      <ng-container *ngIf="statement.title_id">
-        <a target="_blank" routerLink="/staff/catalog/record/{{statement.title_id}}">
-          {{statement.title}}
+@if (statement) {
+  <div class="striped-rows-odd">
+    <div class="row p-1">
+      <div class="col-lg-2" i18n>Billing Location</div>
+      <div class="col-lg-2">
+        <a target="_blank"
+          href="/eg/opac/library/{{context.orgSn(statement.billing_location)}}">
+          {{context.orgSn(statement.billing_location)}}
         </a>
-      </ng-container>
-      <ng-container *ngIf="!statement.title_id">{{statement.title}}</ng-container>
+      </div>
+      <div class="col-lg-2" i18n>Total Billed</div>
+      <div class="col-lg-1">{{totalBilled() | currency}}</div>
+      <div class="col-lg-2" i18n>Title</div>
+      <div class="col-lg-3">
+        @if (statement.title_id) {
+          <a target="_blank" routerLink="/staff/catalog/record/{{statement.title_id}}">
+            {{statement.title}}
+          </a>
+        }
+        @if (!statement.title_id) {
+          {{statement.title}}
+        }
+      </div>
+    </div>
+    <div class="row mt-1 p-1">
+      <div class="col-lg-2" i18n>Type</div>
+      <div class="col-lg-2">
+        @if (statement.xact.circulation()) {
+          <span i18n>Circulation</span>
+        }
+        @if (!statement.xact.circulation()) {
+          <span i18n>Grocery</span>
+        }
+      </div>
+      <div class="col-lg-2" i18n>Total Paid / Credited</div>
+      <div class="col-lg-1">{{statement.summary.payment_total | currency}}</div>
+      <div class="col-lg-2" i18n>Checked Out</div>
+      <div class="col-lg-3">
+        @if (statement.xact.circulation()) {
+          {{statement.xact.xact_start() | date:'short'}}
+        }
+      </div>
+    </div>
+    <div class="row mt-1 p-1">
+      <div class="col-lg-2" i18n>Started</div>
+      <div class="col-lg-2">{{statement.xact.xact_start() | date:'short'}}</div>
+      <div class="col-lg-2" i18n>Balance Due</div>
+      <div class="col-lg-1">{{statement.summary.balance_due | currency}}</div>
+      <div class="col-lg-2" i18n>Due Date</div>
+      <div class="col-lg-3">
+        @if (statement.xact.circulation()) {
+          {{statement.xact.circulation().due_date() | date:'short'}}
+        }
+      </div>
+    </div>
+    <div class="row mt-1 p-1">
+      <div class="col-lg-2" i18n>Finished</div>
+      <div class="col-lg-2">{{statement.xact.xact_finish() | date:'short'}}</div>
+      <div class="col-lg-2" i18n>Renewal?</div>
+      <div class="col-lg-1">
+        @if (statement.xact.circulation()) {
+          <eg-bool [value]="statement.xact.circulation().parent_circ() !== null">
+          </eg-bool>
+        }
+      </div>
+      <div class="col-lg-2" i18n>Checked In</div>
+      <div class="col-lg-3">
+        @if (statement.xact.circulation()) {
+          {{statement.xact.circulation().checkin_time() | date:'short'}}
+        }
+      </div>
     </div>
   </div>
-  <div class="row mt-1 p-1">
-    <div class="col-lg-2" i18n>Type</div>
-    <div class="col-lg-2">
-      <span *ngIf="statement.xact.circulation()" i18n>Circulation</span>
-      <span *ngIf="!statement.xact.circulation()" i18n>Grocery</span>
-    </div>
-    <div class="col-lg-2" i18n>Total Paid / Credited</div>
-    <div class="col-lg-1">{{statement.summary.payment_total | currency}}</div>
-    <div class="col-lg-2" i18n>Checked Out</div>
-    <div class="col-lg-3">
-      <ng-container *ngIf="statement.xact.circulation()">
-        {{statement.xact.xact_start() | date:'short'}}
-      </ng-container>
-    </div>
-  </div>
-  <div class="row mt-1 p-1">
-    <div class="col-lg-2" i18n>Started</div>
-    <div class="col-lg-2">{{statement.xact.xact_start() | date:'short'}}</div>
-    <div class="col-lg-2" i18n>Balance Due</div>
-    <div class="col-lg-1">{{statement.summary.balance_due | currency}}</div>
-    <div class="col-lg-2" i18n>Due Date</div>
-    <div class="col-lg-3">
-      <ng-container *ngIf="statement.xact.circulation()">
-        {{statement.xact.circulation().due_date() | date:'short'}}
-      </ng-container>
-    </div>
-  </div>
-  <div class="row mt-1 p-1">
-    <div class="col-lg-2" i18n>Finished</div>
-    <div class="col-lg-2">{{statement.xact.xact_finish() | date:'short'}}</div>
-    <div class="col-lg-2" i18n>Renewal?</div>
-    <div class="col-lg-1">
-      <ng-container *ngIf="statement.xact.circulation()">
-        <eg-bool [value]="statement.xact.circulation().parent_circ() !== null">
-        </eg-bool>
-      </ng-container>
-    </div>
-    <div class="col-lg-2" i18n>Checked In</div>
-    <div class="col-lg-3">
-      <ng-container *ngIf="statement.xact.circulation()">
-        {{statement.xact.circulation().checkin_time() | date:'short'}}
-      </ng-container>
-    </div>
-  </div>
-</div>
+}
 
 <h3 class="mt-4 mb-4" i18n>Item Summary</h3>
 
-<div *ngIf="copy()" class="striped-rows-odd">
-  <div class="row p-1">
-    <div class="col-lg-2" i18n>Barcode</div>
-    <div class="col-lg-2">
-      <a target="_blank" href="/eg/staff/cat/item/{{copy().id()}}">
-        {{copy().barcode()}}
-      </a>
+@if (copy()) {
+  <div class="striped-rows-odd">
+    <div class="row p-1">
+      <div class="col-lg-2" i18n>Barcode</div>
+      <div class="col-lg-2">
+        <a target="_blank" href="/eg/staff/cat/item/{{copy().id()}}">
+          {{copy().barcode()}}
+        </a>
+      </div>
+      <div class="col-lg-2" i18n>Location</div>
+      <div class="col-lg-2">{{copy().location().name()}}</div>
+      <div class="col-lg-2" i18n>Call Number</div>
+      <div class="col-lg-2">
+        {{copy().call_number().prefix().label()}}
+        {{copy().call_number().label()}}
+        {{copy().call_number().suffix().label()}}
+      </div>
     </div>
-    <div class="col-lg-2" i18n>Location</div>
-    <div class="col-lg-2">{{copy().location().name()}}</div>
-    <div class="col-lg-2" i18n>Call Number</div>
-    <div class="col-lg-2">
-      {{copy().call_number().prefix().label()}}
-      {{copy().call_number().label()}}
-      {{copy().call_number().suffix().label()}}
+    <div class="row p-1">
+      <div class="col-lg-2" i18n>Status</div>
+      <div class="col-lg-2">{{copy().status().name()}}</div>
+      <div class="col-lg-2" i18n>Circulate</div>
+      <div class="col-lg-2"><eg-bool [value]="copy().circulate()"></eg-bool></div>
+      <div class="col-lg-2" i18n>Reference</div>
+      <div class="col-lg-2"><eg-bool [value]="copy().ref()"></eg-bool></div>
+    </div>
+    <div class="row p-1">
+      <div class="col-lg-2" i18n>Holdable</div>
+      <div class="col-lg-2"><eg-bool [value]="copy().holdable()"></eg-bool></div>
+      <div class="col-lg-2" i18n>OPAC Visible</div>
+      <div class="col-lg-2"><eg-bool [value]="copy().opac_visible()"></eg-bool></div>
+      <div class="col-lg-2" i18n>Created</div>
+      <div class="col-lg-2">{{copy().create_date() | date:'short'}}</div>
+    </div>
+    <div class="row p-1">
+      <div class="col-lg-2" i18n>Edited</div>
+      <div class="col-lg-2">{{copy().edit_date() | date:'short'}}</div>
+      <div class="col-lg-2" i18n>Age Protect</div>
+      <div class="col-lg-2">
+        @if (copy().age_protect()) {
+          {{copy().age_protect().name()}}
+        }
+      </div>
+      <div class="col-lg-2" i18n>Total Circulations</div>
+      <div class="col-lg-2">{{copy().total_circ_count().circ_count()}}</div>
+    </div>
+    <div class="row p-1">
+      <div class="col-lg-2" i18n>Owning Library</div>
+      <div class="col-lg-2">{{context.orgSn(copy().call_number().owning_lib())}}</div>
     </div>
   </div>
-  <div class="row p-1">
-    <div class="col-lg-2" i18n>Status</div>
-    <div class="col-lg-2">{{copy().status().name()}}</div>
-    <div class="col-lg-2" i18n>Circulate</div>
-    <div class="col-lg-2"><eg-bool [value]="copy().circulate()"></eg-bool></div>
-    <div class="col-lg-2" i18n>Reference</div>
-    <div class="col-lg-2"><eg-bool [value]="copy().ref()"></eg-bool></div>
-  </div>
-  <div class="row p-1">
-    <div class="col-lg-2" i18n>Holdable</div>
-    <div class="col-lg-2"><eg-bool [value]="copy().holdable()"></eg-bool></div>
-    <div class="col-lg-2" i18n>OPAC Visible</div>
-    <div class="col-lg-2"><eg-bool [value]="copy().opac_visible()"></eg-bool></div>
-    <div class="col-lg-2" i18n>Created</div>
-    <div class="col-lg-2">{{copy().create_date() | date:'short'}}</div>
-  </div>
-  <div class="row p-1">
-    <div class="col-lg-2" i18n>Edited</div>
-    <div class="col-lg-2">{{copy().edit_date() | date:'short'}}</div>
-    <div class="col-lg-2" i18n>Age Protect</div>
-    <div class="col-lg-2">
-      <ng-container *ngIf="copy().age_protect()">
-        {{copy().age_protect().name()}}
-      </ng-container>
-    </div>
-    <div class="col-lg-2" i18n>Total Circulations</div>
-    <div class="col-lg-2">{{copy().total_circ_count().circ_count()}}</div>
-  </div>
-  <div class="row p-1">
-    <div class="col-lg-2" i18n>Owning Library</div>
-    <div class="col-lg-2">{{context.orgSn(copy().call_number().owning_lib())}}</div>
-  </div>
-</div>
+}
 
 <hr class="p-2 m-2"/>
 
@@ -147,94 +157,118 @@
         </div>
         <div class="card-body">
           <div class="striped-rows-even">
-            <div class="row mb-1" *ngFor="let line of statement.lines">
-              <div class="col-lg-2" [ngSwitch]="line.type">
-                <span *ngSwitchCase="'billing'" i18n>Billing</span>
-                <span *ngSwitchCase="'payment'" i18n>Payment</span>
-                <span *ngSwitchCase="'account_adjustment'" i18n>Adjustment</span>
-                <span *ngSwitchCase="'void'" i18n>Void</span>
-              </div>
-              <div class="col-lg-4">
-                <div *ngIf="line.billing_type" class="fw-bold">
-                  {{line.billing_type}}
+            @for (line of statement.lines; track line) {
+              <div class="row mb-1">
+                <div class="col-lg-2">
+                  @switch (line.type) {
+                    @case ('billing') {
+                      <span i18n>Billing</span>
+                    }
+                    @case ('payment') {
+                      <span i18n>Payment</span>
+                    }
+                    @case ('account_adjustment') {
+                      <span i18n>Adjustment</span>
+                    }
+                    @case ('void') {
+                      <span i18n>Void</span>
+                    }
+                  }
                 </div>
-                <div [ngClass]="{'fw-bold' : !line.billing_type}"
-                  *ngIf="line.note.length">{{line.note.join(', ')}}</div>
-                <div>
-                  <span>{{line.start_date  | date:'short'}}</span>
-                  <span *ngIf="line.end_date"> - {{line.end_date  | date:'short'}}</span>
+                <div class="col-lg-4">
+                  @if (line.billing_type) {
+                    <div class="fw-bold">
+                      {{line.billing_type}}
+                    </div>
+                  }
+                  @if (line.note.length) {
+                    <div [ngClass]="{'fw-bold' : !line.billing_type}"
+                    >{{line.note.join(', ')}}</div>
+                  }
+                  <div>
+                    <span>{{line.start_date  | date:'short'}}</span>
+                    @if (line.end_date) {
+                      <span> - {{line.end_date  | date:'short'}}</span>
+                    }
+                  </div>
                 </div>
-              </div>
-              <div class="col-lg-2" [ngClass]="{'text-danger': line.type !== 'billing'}">
-                <span *ngIf="line.type !== 'billing'">-</span>{{line.amount | currency}}
-              </div>
-              <div class="col-lg-2">{{line.running_balance | currency}}</div>
+                <div class="col-lg-2" [ngClass]="{'text-danger': line.type !== 'billing'}">
+                  @if (line.type !== 'billing') {
+                    <span>-</span>
+                    }{{line.amount | currency}}
+                  </div>
+                  <div class="col-lg-2">{{line.running_balance | currency}}</div>
+                </div>
+              }
             </div>
-          </div>
 
-          <hr class="m-2 p-2"/>
-          
-          <div class="row">
-            <div class="col-lg-2 offset-lg-8" i18n>Total Charges</div>
-            <div class="col-lg-2">{{statement.summary.billing_total | currency}}</div>
-          </div>
-          <div class="row">
-            <div class="col-lg-2 offset-lg-8" i18n>Total Payments</div>
-            <div class="col-lg-2">{{statement.summary.payment_total | currency}}</div>
-          </div>
-          <div class="row">
-            <div class="col-lg-2 offset-lg-8" i18n>Total Nonrefundable</div>
-            <div class="col-lg-2">{{statement.summary.nonrefundable_total | currency}}</div>
-          </div>
-          <div class="row" *ngIf="statement.summary.account_adjustment_total > 0">
-            <div class="col-lg-2 offset-lg-8" i18n>Total Adjustements</div>
-            <div class="col-lg-2">{{statement.summary.account_adjustment_total | currency}}</div>
-          </div>
-          <div class="row" *ngIf="statement.summary.void_total > 0">
-            <div class="col-lg-2 offset-lg-8" i18n>Total Voids</div>
-            <div class="col-lg-2">{{statement.summary.void_total | currency}}</div>
-          </div>
+            <hr class="m-2 p-2"/>
 
-          <hr class="m-2 p-2"/>
+            <div class="row">
+              <div class="col-lg-2 offset-lg-8" i18n>Total Charges</div>
+              <div class="col-lg-2">{{statement.summary.billing_total | currency}}</div>
+            </div>
+            <div class="row">
+              <div class="col-lg-2 offset-lg-8" i18n>Total Payments</div>
+              <div class="col-lg-2">{{statement.summary.payment_total | currency}}</div>
+            </div>
+            <div class="row">
+              <div class="col-lg-2 offset-lg-8" i18n>Total Nonrefundable</div>
+              <div class="col-lg-2">{{statement.summary.nonrefundable_total | currency}}</div>
+            </div>
+            @if (statement.summary.account_adjustment_total > 0) {
+              <div class="row">
+                <div class="col-lg-2 offset-lg-8" i18n>Total Adjustements</div>
+                <div class="col-lg-2">{{statement.summary.account_adjustment_total | currency}}</div>
+              </div>
+            }
+            @if (statement.summary.void_total > 0) {
+              <div class="row">
+                <div class="col-lg-2 offset-lg-8" i18n>Total Voids</div>
+                <div class="col-lg-2">{{statement.summary.void_total | currency}}</div>
+              </div>
+            }
 
-          <div class="row fw-bold">
-            <div class="col-lg-2 offset-lg-8" i18n>Balance Due</div>
-            <div class="col-lg-2">{{statement.summary.balance_due | currency}}</div>
+            <hr class="m-2 p-2"/>
+
+            <div class="row fw-bold">
+              <div class="col-lg-2 offset-lg-8" i18n>Balance Due</div>
+              <div class="col-lg-2">{{statement.summary.balance_due | currency}}</div>
+            </div>
+
           </div>
-
         </div>
-      </div>
-    </ng-template>
-  </li>
-  <li role="presentation" ngbNavItem="details">
-    <a role="tab" ngbNavLink i18n>Details</a>
-    <ng-template ngbNavContent>
-      <div class="mt-3">
-        <eg-grid idlClass="mb" #billingGrid toolbarLabel="Bills" 
-          persistKey="circ.patron.xact_details_details_bills"
-          i18n-toolbarLabel [dataSource]="billingDataSource" [sortable]="true">
-          <eg-grid-toolbar-action label="Edit Note" i18n-label
-            (onClick)="openNoteDialog($event)">
-          </eg-grid-toolbar-action>
-          <eg-grid-toolbar-action label="Void Billings" i18n-label
-            (onClick)="openVoidDialog($event)">
-          </eg-grid-toolbar-action>
-        </eg-grid>
-      </div>
-      <div class="mt-3">
-        <eg-grid idlClass="mbp" [dataSource]="paymentDataSource" 
-          persistKey="circ.patron.xact_details_details_payments"
-          i18n-toolbarLabel toolbarLabel="Payments" [sortable]="true">
-          <eg-grid-toolbar-action label="Edit Note" i18n-label
-            (onClick)="openNoteDialog($event)">
-          </eg-grid-toolbar-action>
-        </eg-grid>
-      </div>
-    </ng-template>
-  </li>
-</ul>
+      </ng-template>
+    </li>
+    <li role="presentation" ngbNavItem="details">
+      <a role="tab" ngbNavLink i18n>Details</a>
+      <ng-template ngbNavContent>
+        <div class="mt-3">
+          <eg-grid idlClass="mb" #billingGrid toolbarLabel="Bills"
+            persistKey="circ.patron.xact_details_details_bills"
+            i18n-toolbarLabel [dataSource]="billingDataSource" [sortable]="true">
+            <eg-grid-toolbar-action label="Edit Note" i18n-label
+              (onClick)="openNoteDialog($event)">
+            </eg-grid-toolbar-action>
+            <eg-grid-toolbar-action label="Void Billings" i18n-label
+              (onClick)="openVoidDialog($event)">
+            </eg-grid-toolbar-action>
+          </eg-grid>
+        </div>
+        <div class="mt-3">
+          <eg-grid idlClass="mbp" [dataSource]="paymentDataSource"
+            persistKey="circ.patron.xact_details_details_payments"
+            i18n-toolbarLabel toolbarLabel="Payments" [sortable]="true">
+            <eg-grid-toolbar-action label="Edit Note" i18n-label
+              (onClick)="openNoteDialog($event)">
+            </eg-grid-toolbar-action>
+          </eg-grid>
+        </div>
+      </ng-template>
+    </li>
+  </ul>
 
-<ng-container *ngIf="statement">
-  <div [ngbNavOutlet]="statementNav"></div>
-</ng-container>
+  @if (statement) {
+    <div [ngbNavOutlet]="statementNav"></div>
+  }
 

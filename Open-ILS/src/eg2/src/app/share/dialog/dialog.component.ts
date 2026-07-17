@@ -1,5 +1,5 @@
-import {DOCUMENT} from '@angular/common';
-import {Component, Input, OnInit, ViewChild, TemplateRef, EventEmitter, Inject, ElementRef} from '@angular/core';
+
+import { Component, Input, OnInit, ViewChild, TemplateRef, EventEmitter, ElementRef, DOCUMENT, inject } from '@angular/core';
 import {Observable, Observer} from 'rxjs';
 import {NgbModal, NgbModalRef, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 
@@ -33,6 +33,15 @@ import {NgbModal, NgbModalRef, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap
     template: '<ng-template></ng-template>'
 })
 export class DialogComponent implements OnInit {
+    private modalService = inject(NgbModal);
+    private _document = inject(DOCUMENT) ?? document;
+    private _elRef = inject<ElementRef<HTMLElement>>(ElementRef) ?? null;
+
+    // For backwards-compatibility.  We can remove once all subclasses stop
+    // calling super(modal)
+    // eslint-disable-next-line @angular-eslint/prefer-inject
+    constructor(_modal?: NgbModal) {}
+
 
     // Track instances so we can refer to them later in closeAll()
     // NOTE this could also be done by importing router and subscribing
@@ -62,12 +71,6 @@ export class DialogComponent implements OnInit {
     protected modalRef: NgbModalRef = null;
 
     public focusable: string;
-
-    constructor(
-        private modalService: NgbModal,
-        @Inject(DOCUMENT) private _document: any = document,
-        private _elRef: ElementRef<HTMLElement> = null
-    ) {}
 
     // Close all active dialogs
     static closeAll() {

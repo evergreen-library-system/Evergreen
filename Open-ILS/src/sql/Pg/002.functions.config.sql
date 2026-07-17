@@ -228,23 +228,24 @@ END;
 
 $function$ LANGUAGE PLPGSQL;
 
-CREATE OR REPLACE FUNCTION extract_marc_field ( TEXT, BIGINT, TEXT, TEXT ) RETURNS TEXT AS $$
+CREATE OR REPLACE FUNCTION evergreen.extract_marc_field ( TEXT, BIGINT, TEXT, TEXT ) RETURNS TEXT AS $$
 DECLARE
     query TEXT;
     output TEXT;
 BEGIN
-    query := $q$
+    query := FORMAT($q$
         SELECT  regexp_replace(
                     oils_xpath_string(
-                        $q$ || quote_literal($3) || $q$,
+                        %L,
                         marc,
                         ' '
                     ),
-                    $q$ || quote_literal($4) || $q$,
+                    %L,
                     '',
                     'g')
-          FROM  $q$ || $1 || $q$
-          WHERE id = $q$ || $2;
+          FROM %s
+          WHERE id = %L
+    $q$, $3, $4, $1::REGCLASS, $2);
 
     EXECUTE query INTO output;
 
@@ -277,7 +278,7 @@ END;
 $$ LANGUAGE PLPGSQL IMMUTABLE;
 
 
-CREATE OR REPLACE FUNCTION extract_marc_field ( TEXT, BIGINT, TEXT ) RETURNS TEXT AS $$
+CREATE OR REPLACE FUNCTION evergreen.extract_marc_field ( TEXT, BIGINT, TEXT ) RETURNS TEXT AS $$
     SELECT extract_marc_field($1,$2,$3,'');
 $$ LANGUAGE SQL IMMUTABLE;
 

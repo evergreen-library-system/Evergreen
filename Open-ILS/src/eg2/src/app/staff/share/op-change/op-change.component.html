@@ -1,72 +1,74 @@
 <ng-template #dialogContent>
   <div class="modal-header">
     <h4 class="modal-title" i18n>Change Operator</h4>
-    <button type="button" class="btn-close btn-close-white" 
-      i18n-aria-label aria-label="Close dialog" (click)="my_close()"></button>
+    <button type="button" class="btn-close btn-close-white"
+    i18n-aria-label aria-label="Close dialog" (click)="my_close()"></button>
   </div>
   <div class="modal-body">
 
     <!-- let the user know why the change operator dialog suddenly
-        appeared when a permission failure occurs. -->
-    <div *ngIf="requestToEscalate" class="alert alert-warning mt-2 mb-4" i18n>
+    appeared when a permission failure occurs. -->
+    @if (requestToEscalate) {
+      <div class="alert alert-warning mt-2 mb-4" i18n>
       Permission denied.  Please enter credentials for an account that has
       the {{requestToEscalate.evt.ilsperm}} permission.
     </div>
+    }
 
     <form class="form-validated">
       <div class="form-group row">
         <label class="form-label col-form-label col-lg-4 text-end fw-bold" for="username" i18n>Username</label>
         <div class="col-lg-8">
-          <input 
-            type="text" 
+          <input
+            type="text"
             class="form-control"
-            id="username" 
+            id="username"
             name="username"
             required
             (keyup.enter)="login()"
             autocomplete="username"
             spellcheck="false"
             i18n-placeholder
-            placeholder="Username" 
+            placeholder="Username"
             [(ngModel)]="username"/>
         </div>
       </div>
 
       <div class="form-group row">
-        <label class="form-label col-form-label col-lg-4 text-end fw-bold" 
-            for="password" i18n>Password</label>
+        <label class="form-label col-form-label col-lg-4 text-end fw-bold"
+        for="password" i18n>Password</label>
         <div class="col-lg-8">
-          <input 
-            type="password" 
+          <input
+            type="password"
             class="form-control"
-            id="password" 
+            id="password"
             name="password"
             required
             (keyup.enter)="login()"
             autocomplete="current-password"
             spellcheck="false"
             i18n-placeholder
-            placeholder="Password" 
+            placeholder="Password"
             [(ngModel)]="password"/>
         </div>
-        
+
       </div>
 
       <div class="form-group row">
-        <label class="form-label col-form-label col-lg-4 text-end fw-bold" 
-            for="loginType" i18n>Login Type</label>
+        <label class="form-label col-form-label col-lg-4 text-end fw-bold"
+        for="loginType" i18n>Login Type</label>
         <div class="col-lg-8">
-          <select 
-            class="form-control" 
-            id="loginType" 
+          <select
+            class="form-control"
+            id="loginType"
             name="loginType"
             placeholder="Login Type"
             i18n-placeholder
             required
             [(ngModel)]="loginType">
-              <option value="temp" selected i18n>Temporary</option>                   
-              <option value="staff" i18n>Staff</option>             
-              <option value="persist" i18n>Persistent</option>      
+            <option value="temp" selected i18n>Temporary</option>
+            <option value="staff" i18n>Staff</option>
+            <option value="persist" i18n>Persistent</option>
           </select>
         </div>
       </div>

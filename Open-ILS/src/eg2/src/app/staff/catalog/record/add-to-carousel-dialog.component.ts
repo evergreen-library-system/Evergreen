@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import { Component, Input, OnInit, ViewChild, inject } from '@angular/core';
 import {FormControl} from '@angular/forms';
 import {takeLast} from 'rxjs';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
@@ -9,14 +9,22 @@ import {ToastService} from '@eg/share/toast/toast.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {StringComponent} from '@eg/share/string/string.component';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
     selector: 'eg-add-to-carousel-dialog',
-    templateUrl: './add-to-carousel-dialog.component.html'
+    templateUrl: './add-to-carousel-dialog.component.html',
+    imports: [StaffCommonModule]
 })
 
 
 export class AddToCarouselDialogComponent extends DialogComponent implements OnInit {
+    private modal: NgbModal;
+    private auth = inject(AuthService);
+    private evt = inject(EventService);
+    private net = inject(NetService);
+    private toast = inject(ToastService);
+
 
     // IDs of records to add to the carousel
     @Input() recordIds: number[];
@@ -32,14 +40,12 @@ export class AddToCarouselDialogComponent extends DialogComponent implements OnI
     public addToCarousel: () => void;
     private reset: () => void;
 
-    constructor(
-        private modal: NgbModal,
-        private auth: AuthService,
-        private evt: EventService,
-        private net: NetService,
-        private toast: ToastService
-    ) {
+    constructor() {
+        const modal = inject(NgbModal);
+
         super(modal);
+
+        this.modal = modal;
     }
 
     ngOnInit() {

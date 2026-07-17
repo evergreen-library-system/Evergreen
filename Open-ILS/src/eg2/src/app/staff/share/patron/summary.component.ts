@@ -1,19 +1,25 @@
-import {Component, OnInit, Input} from '@angular/core';
-import {Router, ActivatedRoute, ParamMap} from '@angular/router';
-import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
+import {Component, OnInit, Input, inject, Output, EventEmitter} from '@angular/core';
 import {OrgService} from '@eg/core/org.service';
 import {IdlObject} from '@eg/core/idl.service';
-import {NetService} from '@eg/core/net.service';
 import {PrintService} from '@eg/share/print/print.service';
 import {PatronService, PatronSummary} from './patron.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
     templateUrl: 'summary.component.html',
     styleUrls: ['summary.component.css'],
-    selector: 'eg-patron-summary'
+    selector: 'eg-patron-summary',
+    imports: [
+        CommonModule
+    ]
 })
 export class PatronSummaryComponent implements OnInit {
+    private org = inject(OrgService);
+    private printer = inject(PrintService);
+    private serverStore = inject(ServerStoreService);
+    patronService = inject(PatronService);
+
 
     private _summary: PatronSummary;
     @Input() set summary(s: PatronSummary) {
@@ -31,15 +37,18 @@ export class PatronSummaryComponent implements OnInit {
     showDob = false;
     penalties = 0;
 
-    @Input() showSummaryPane = true;
+    showSummaryPane = true;
 
-    constructor(
-        private org: OrgService,
-        private net: NetService,
-        private printer: PrintService,
-        private serverStore: ServerStoreService,
-        public patronService: PatronService
-    ) {}
+    // The photo_url that has actually loaded.  We reveal the <img> only
+    // once it matches the current photo_url, so a missing/slow/broken
+    // image never flashes a broken icon -- and switching to a new URL
+    // hides the old photo immediately rather than after a load timeout.
+    private loadedPhotoUrl?: string;
+
+    @Input() set showPane(show: boolean) {
+        this.showSummaryPane = show;
+    }
+    @Output() showPaneChange = new EventEmitter<boolean>();
 
     ngOnInit() {
         this.serverStore.getItem('circ.obscure_dob').then(hide => {
@@ -51,6 +60,10 @@ export class PatronSummaryComponent implements OnInit {
         return this.summary ? this.summary.patron : null;
     }
 
+    photoLoaded() {
+        this.loadedPhotoUrl = this.p()?.photo_url();
+    }
+
     hasPrefName(): boolean {
         if (this.p()) {
             return (
@@ -59,6 +72,20 @@ export class PatronSummaryComponent implements OnInit {
                 this.p().pref_family_name()
             );
         }
+    }
+
+    legalName(): string {
+        if (!this.p()) { return ''; }
+        return [
+            this.p().first_given_name(),
+            this.p().second_given_name(),
+            this.p().family_name()
+        ].filter(Boolean).join(' ');
+    }
+
+    preferredLanguage(): string {
+        const locale = this.p()?.locale();
+        return locale ? locale.name() : '';
     }
 
     penaltyLabel(pen: IdlObject): string {
@@ -140,7 +167,6 @@ export class PatronSummaryComponent implements OnInit {
             codes.push('PATRON_HAS_LOST');
         }
 
-        let penalty: string;
         let penaltyCount = 0;
 
         patron.standing_penalties().some(p => {
@@ -156,7 +182,6 @@ export class PatronSummaryComponent implements OnInit {
                 case 'PATRON_EXCEEDS_CHECKOUT_COUNT':
                 case 'PATRON_EXCEEDS_OVERDUE_COUNT':
                 case 'PATRON_EXCEEDS_FINES':
-                    penalty = name;
                     codes.push(name);
             }
         });
@@ -180,6 +205,17 @@ export class PatronSummaryComponent implements OnInit {
         }
 
         return codes;
+    }
+
+    toggleShowSummaryPane(): void {
+        this.showSummaryPane = !this.showSummaryPane;
+        this.showPaneChange.emit(this.showSummaryPane);
+    }
+
+    summaryPaneButtonLabel(): string {
+        return this.showSummaryPane
+            ? $localize`Hide Patron Summary`
+            : $localize`Show Patron Summary`;
     }
 }
 

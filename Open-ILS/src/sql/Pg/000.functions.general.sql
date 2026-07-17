@@ -13,13 +13,13 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION evergreen.change_db_setting(setting_name TEXT, settings TEXT[]) RETURNS VOID AS $$
+DO $$
 BEGIN
-    EXECUTE 'ALTER DATABASE ' || quote_ident(current_database()) || ' SET ' || quote_ident(setting_name) || ' = ' || array_to_string(settings, ',');
-END;
-$$ LANGUAGE plpgsql;
-
-SELECT evergreen.change_db_setting('search_path', ARRAY['evergreen','public','pg_catalog']);
+    EXECUTE FORMAT('ALTER DATABASE %I SET search_path = evergreen,public,pg_catalog', current_database());
+    SET search_path = evergreen,public,pg_catalog; -- and ensure it's set for current session;
+                                                   -- changing a setting via ALTER DATABASE takes effect only
+                                                   -- for new connections
+END $$;
 
 CREATE OR REPLACE FUNCTION evergreen.lowercase( TEXT ) RETURNS TEXT AS $$
     return lc(shift);
@@ -159,5 +159,11 @@ BEGIN
 
 END;
 $$ STRICT LANGUAGE PLPGSQL;
+
+CREATE OR REPLACE FUNCTION evergreen.function_exists(function_name TEXT) RETURNS BOOLEAN AS $$
+  SELECT EXISTS (SELECT 1 FROM information_schema.routines WHERE CONCAT(routine_schema, '.', routine_name) = function_name);
+$$
+LANGUAGE SQL
+VOLATILE;
 
 COMMIT;

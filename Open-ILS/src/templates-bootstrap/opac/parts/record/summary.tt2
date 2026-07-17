@@ -347,7 +347,7 @@ ctx.metalinks.push('
                 )
                 %]
                 <li class="list-group-item">
-                    <a class="list-group-item-action" href="[% mkurl(ctx.opac_root _ '/place_hold',
+                    <a class="list-group-item-action btn btn-action" href="[% mkurl(ctx.opac_root _ '/place_hold',
                     {hold_target => ctx.bre_id, hold_type => 'T', hold_source_page => mkurl()}, stop_parms) %]"
                     aria-describedby="rdetail_title">
                         <span class="place_hold">
@@ -360,7 +360,7 @@ ctx.metalinks.push('
 
                 [%- IF ebook_api.enabled == 'true' && args.ebook %]
                     <li id="[%- ctx.bre_id -%]_ebook_checkout" class="rdetail_aux_utils ebook_action hidden list-group-item">
-                        <a class="list-group-item-action hidden" href="[% mkurl(ctx.opac_root _ '/myopac/ebook_checkout',
+                        <a class="list-group-item-action hidden btn btn-action" href="[% mkurl(ctx.opac_root _ '/myopac/ebook_checkout',
                     {title => args.ebook.ebook_id, vendor => args.ebook.vendor, action => 'checkout'}, stop_parms) %]"
                             rel="nofollow" vocab="" aria-describedby="rdetail_title">
                             <span class="place_hold"><i class="fas fa-check" aria-hidden="true"></i>
@@ -368,7 +368,7 @@ ctx.metalinks.push('
                         </a>
                     </li>
                     <li id="[%- ctx.bre_id -%]_ebook_place_hold" class="rdetail_aux_utils ebook_action hidden list-group-item">
-                        <a class="list-group-item-action hidden" href="[% mkurl(ctx.opac_root _ '/myopac/ebook_place_hold',
+                        <a class="list-group-item-action hidden btn btn-action" href="[% mkurl(ctx.opac_root _ '/myopac/ebook_place_hold',
                     {title => args.ebook.ebook_id, vendor => args.ebook.vendor, action => 'place_hold'}, stop_parms) %]"
                             rel="nofollow" vocab="" aria-describedby="rdetail_title">
                             <span class="place_hold"><i class="fas fa-check" aria-hidden="true"></i>
@@ -383,7 +383,7 @@ ctx.metalinks.push('
                 <li class="list-group-item">
                     <a href="[% addhref %]" id="mylist_add_[% ctx.bre_id %]"
                         data-recid="[% ctx.bre_id %]" data-action="add"
-                        class="list-group-item-action mylist_action"
+                        class="list-group-item-action mylist_action btn btn-action"
                         rel="nofollow" vocab="" aria-describedby="rdetail_title">
                         <i class="fas fa-shopping-basket" aria-hidden="true"></i>
                         [% l("Add to basket") %]
@@ -392,7 +392,7 @@ ctx.metalinks.push('
                 <li class="list-group-item">
                     <a href="[% delhref %]" id="mylist_delete_[% ctx.bre_id %]"
                         data-recid="[% ctx.bre_id %]" data-action="delete"
-                        class="list-group-item-action mylist_action"
+                        class="list-group-item-action mylist_action btn btn-action"
                         rel="nofollow" vocab="" aria-describedby="rdetail_title">
                         <i class="fas fa-minus-circle" aria-hidden="true"></i>
                         [% l("Remove from basket") %]
@@ -404,7 +404,7 @@ ctx.metalinks.push('
                         basketurl = mkurl(ctx.opac_root _ '/mylist');
                     END %]
                 <li class="list-group-item">
-                    <a href="[% basketurl %]" id="mybasket" class="list-group-item-action mylist_action"
+                    <a href="[% basketurl %]" id="mybasket" class="list-group-item-action mylist_action btn btn-action"
                         rel="nofollow" vocab="">
                         <i class="fas fa-glasses" aria-hidden="true"></i>
                         [% l(' View Basket') %]
@@ -416,14 +416,16 @@ ctx.metalinks.push('
                     [% END %]
                 [% END %]
                 <li class="list-group-item">
-                    <a href="[% mkurl(ctx.opac_root _ '/record/print_preview/' _ ctx.bre_id) %]" class="list-group-item-action"  rel="nofollow"
+                    <a href="[% mkurl(ctx.opac_root _ '/record/print_preview/' _ ctx.bre_id) %]" class="list-group-item-action btn btn-action"
+                        rel="nofollow"
                         vocab="">
                         <i class="fas fa-print" aria-hidden="true"></i>
                         [% l('Print') %]
                     </a> 
                 </li>
                 <li class="list-group-item">
-                    <a href="[% mkurl(ctx.opac_root _ '/record/email_preview/' _ ctx.bre_id) %]" class="list-group-item-action"  rel="nofollow"
+                    <a href="[% mkurl(ctx.opac_root _ '/record/email_preview/' _ ctx.bre_id) %]" class="list-group-item-action btn btn-action"
+                        rel="nofollow"
                         vocab="">
                         <i class="fas fa-envelope-open-text" aria-hidden="true"></i>
                         [% l('Email') %]
@@ -435,7 +437,7 @@ ctx.metalinks.push('
                 [% IF !ctx.is_staff %]
                 <li class="list-group-item">
                     <a href="[% mkurl('', {locg =>CGI.param('locg'), copy_depth =>CGI.param('copy_depth')}, 1) %]"
-                        class="list-group-item-action" aria-describedby="rdetail_title">
+                        class="list-group-item-action btn btn-action" aria-describedby="rdetail_title">
                         <i class="fas fa-link" aria-hidden="true"></i>
                         [% l('Permalink') %]
                     </a>
@@ -446,7 +448,7 @@ ctx.metalinks.push('
                     [% IF !show_highlight %]
                     <a class="list-group-item-action"  href="[% mkurl('', {show_highlight => '1'}) %]">
                     [% ELSE %]
-                    <a href="[% mkurl('', {show_highlight => '0'}) %]" class="list-group-item-action" >
+                    <a href="[% mkurl('', {show_highlight => '0'}) %]" class="list-group-item-action btn btn-action" >
                     [% END %]
                         <i class="fas fa-highlighter" aria-hidden="true"></i>
                         [% !show_highlight ? l('Enable Highlighting') : l('Disable Highlighting') %]
@@ -455,7 +457,7 @@ ctx.metalinks.push('
                 [%- IF ctx.is_staff %]
                 <li class="list-group-item">
                     <a href="[% ctx.media_prefix %]/opac/extras/ac/clearcache/all/r/[% ctx.bre_id | uri %]"
-                        class="list-group-item-action"  target="_blank">
+                        class="list-group-item-action btn btn-action"  target="_blank">
                         <i class="fas fa-sync-alt" aria-hidden="true"></i>
                         [% l('Clear Added Content Cache') %]
                     </a>

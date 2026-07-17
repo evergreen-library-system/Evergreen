@@ -1,17 +1,40 @@
-import {AfterViewInit, ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, Input, OnInit, inject } from '@angular/core';
 import {Router} from '@angular/router';
 import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
 import {GridToolbarButton, GridToolbarAction, GridContext} from '@eg/share/grid/grid';
 import {GridPrintComponent} from './grid-print.component';
 import {GridColumn} from './grid';
+import { GridToolbarActionsEditorComponent } from './grid-toolbar-actions-editor.component';
+import { GridManageFiltersDialogComponent } from './grid-manage-filters-dialog.component';
+import { NgClass, NgTemplateOutlet } from '@angular/common';
+import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+import { GridToolbarActionsMenuComponent } from './grid-toolbar-actions-menu.component';
+import { GridColumnConfigComponent } from './grid-column-config.component';
+import { ButtonStyleDirective } from '../util/button-style.directive';
+import { FormsModule } from '@angular/forms';
 
 @Component({
     selector: 'eg-grid-toolbar',
     templateUrl: 'grid-toolbar.component.html',
-    styleUrls: ['grid-toolbar.component.css']
+    styleUrls: ['grid-toolbar.component.css'],
+    imports: [
+        ButtonStyleDirective,
+        FormsModule,
+        GridColumnConfigComponent,
+        GridManageFiltersDialogComponent,
+        GridToolbarActionsEditorComponent,
+        GridToolbarActionsMenuComponent,
+        NgbDropdownModule,
+        NgClass,
+        NgTemplateOutlet
+    ]
 })
 
 export class GridToolbarComponent implements OnInit, AfterViewInit {
+    private router = inject(Router);
+    private sanitizer = inject(DomSanitizer);
+    private cd = inject(ChangeDetectorRef);
+
 
     @Input() gridContext: GridContext;
     @Input() gridPrinter: GridPrintComponent;
@@ -22,12 +45,6 @@ export class GridToolbarComponent implements OnInit, AfterViewInit {
     csvExportInProgress: boolean;
     csvExportUrl: SafeUrl;
     csvExportFileName: string;
-
-    constructor(
-        private router: Router,
-        private sanitizer: DomSanitizer,
-        private cd: ChangeDetectorRef
-    ) {}
 
     ngOnInit() {
         this.sortActions();

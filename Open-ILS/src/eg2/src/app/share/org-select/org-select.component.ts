@@ -1,5 +1,5 @@
 /** TODO PORT ME TO <eg-combobox> */
-import {Component, OnInit, Input, Output, ViewChild, EventEmitter, AfterViewInit} from '@angular/core';
+import { Component, OnInit, Input, Output, ViewChild, EventEmitter, AfterViewInit, inject } from '@angular/core';
 import {Observable, Subject, map, mapTo, debounceTime, distinctUntilChanged, mergeWith as merge, filter} from 'rxjs';
 import {AuthService} from '@eg/core/auth.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
@@ -7,7 +7,8 @@ import {OrgService} from '@eg/core/org.service';
 import {IdlObject} from '@eg/core/idl.service';
 import {PermService} from '@eg/core/perm.service';
 import {NgbTypeahead, NgbTypeaheadSelectItemEvent} from '@ng-bootstrap/ng-bootstrap';
-import {FormControl, FormGroup} from '@angular/forms';
+import {FormControl, FormGroup, FormsModule, ReactiveFormsModule} from '@angular/forms';
+
 
 /** Org unit selector
  *
@@ -35,9 +36,15 @@ interface OrgDisplay {
 
 @Component({
     selector: 'eg-org-select',
-    templateUrl: './org-select.component.html'
+    templateUrl: './org-select.component.html',
+    imports: [NgbTypeahead, FormsModule, ReactiveFormsModule]
 })
 export class OrgSelectComponent implements OnInit, AfterViewInit {
+    private auth = inject(AuthService);
+    private serverStore = inject(ServerStoreService);
+    private org = inject(OrgService);
+    private perm = inject(PermService);
+
     static _domId = 0;
 
     showCombinedNames = false; // Managed via user/workstation setting
@@ -199,12 +206,7 @@ export class OrgSelectComponent implements OnInit, AfterViewInit {
         return this.selected ? this.selected.id : null;
     }
 
-    constructor(
-      private auth: AuthService,
-      private serverStore: ServerStoreService,
-      private org: OrgService,
-      private perm: PermService,
-    ) {
+    constructor() {
         this.orgClassCallback = (orgId: number): string => '';
         this.orgSelectGroup = new FormGroup({
             orgSelect: new FormControl()
@@ -424,7 +426,7 @@ export class OrgSelectComponent implements OnInit, AfterViewInit {
         // adapted from https://github.com/ng-bootstrap/ng-bootstrap/issues/4789
         if (!this.controller) {return;}
 
-        const listbox = document.getElementById(this.controller.getAttribute('aria-owns'));
+        const listbox = document.getElementById(this.controller.getAttribute('aria-controls'));
         // console.debug("Listbox: ", listbox);
 
         const activeItem = document.getElementById(this.controller.getAttribute('aria-activedescendant'));
@@ -440,6 +442,19 @@ export class OrgSelectComponent implements OnInit, AfterViewInit {
     // NgbTypeahead doesn't offer a way to style the dropdown
     // button directly, so we have to reach up and style it ourselves.
     applyDisableStyle() {
+        // DOM nodes may be reused when filtering, so clear styles first
+        const listbox = document.getElementById(
+            this.instance?.['_nativeElement']?.getAttribute('aria-controls')
+        );
+        if (listbox) {
+            const buttons = listbox.querySelectorAll('button.disabled');
+            if (buttons) {
+                buttons.forEach(button => {
+                    button.classList.remove('disabled');
+                });
+            }
+        }
+
         this.disableOrgs.forEach(id => {
             const node = document.getElementById(`${this.domId}-${id}`);
             if (node) {

@@ -131,8 +131,10 @@ function($scope,  $q,  $routeParams,  egCore,  egUser,  patronSvc,
                 fulfillment_time  : null,
                 'h.usr': $scope.patron_id
         };
+        var options;
         if ($scope.holds_display == 'alt') {
             restrictions['cancel_time'] = { not : null };
+            options = { recently_canceled: true };
         }
         console.log('restrictions',restrictions);
 
@@ -197,8 +199,7 @@ function($scope,  $q,  $routeParams,  egCore,  egUser,  patronSvc,
         // egProgressDialog.open({max : 1, value : 0});
         var first = true;
         return egHolds.fetch_wide_holds(
-            restrictions,
-            order_by
+            restrictions, order_by, undefined, undefined, options
         ).then(function () {
                 return provider.arrayNotifier(patronSvc.holds, offset, count);
             },

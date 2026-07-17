@@ -384,7 +384,7 @@ Novelist Styling
     color: [% css_colors.action_button_text %];
     display: flex;
     gap: 0.5rem;
-    justify-content: space-between;
+    justify-content: start;
     padding: .75rem 1rem;
     text-align: start;
     text-decoration: none;
@@ -3555,18 +3555,8 @@ a.preflib_change {
     min-width: 8rem;
 }
 
-#browse-controls button {
-    margin-left: 0.5rem;
-}
-
-#browse-controls .row .col {
-    display: flex;
-    flex-wrap: nowrap;
-    gap: 0.5rem;
-}
-
-#browse-controls .row .col label {
-    white-space: nowrap;
+#browse-for-courses-form {
+    align-items: end;
 }
 
 .browse-pager-spinner {
@@ -4582,10 +4572,14 @@ padding: 15px;
     border: 1px solid [% css_colors.border_table %];
 }
 
+.proxy-grid {
+    min-width:16rem;
+}
+
 .pointer {
     cursor: pointer;
 }
-#loginModal #show_password {
+.show-password-toggle {
     border-top: 1px solid [% css_colors.show_password_border %];
     border-right: 1px solid [% css_colors.show_password_border %];
     border-bottom: 1px solid [% css_colors.show_password_border %];

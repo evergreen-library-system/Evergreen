@@ -1,4 +1,4 @@
-import {Component, AfterViewInit, ViewChild} from '@angular/core';
+import { Component, AfterViewInit, ViewChild, inject } from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {IdlObject} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
@@ -8,11 +8,24 @@ import {PrintService} from '@eg/share/print/print.service';
 import {HoldingsService} from '@eg/staff/share/holdings/holdings.service';
 import {EventService} from '@eg/core/event.service';
 import {PatronNoteDialogComponent} from '@eg/staff/share/patron/note-dialog.component';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
-    templateUrl: 'missing-pieces.component.html'
+    templateUrl: 'missing-pieces.component.html',
+    imports: [
+        PatronNoteDialogComponent,
+        StaffCommonModule
+    ]
 })
 export class MarkItemMissingPiecesComponent implements AfterViewInit {
+    private route = inject(ActivatedRoute);
+    private net = inject(NetService);
+    private printer = inject(PrintService);
+    private pcrud = inject(PcrudService);
+    private auth = inject(AuthService);
+    private evt = inject(EventService);
+    private holdings = inject(HoldingsService);
+
 
     itemId: number;
     itemBarcode: string;
@@ -26,15 +39,7 @@ export class MarkItemMissingPiecesComponent implements AfterViewInit {
     @ViewChild('noteDialog', {static: false})
         noteDialog: PatronNoteDialogComponent;
 
-    constructor(
-        private route: ActivatedRoute,
-        private net: NetService,
-        private printer: PrintService,
-        private pcrud: PcrudService,
-        private auth: AuthService,
-        private evt: EventService,
-        private holdings: HoldingsService
-    ) {
+    constructor() {
         this.itemId = +this.route.snapshot.paramMap.get('id');
     }
 

@@ -1,6 +1,8 @@
 /* eslint-disable */
 import {Component, Input, Output, ViewChildren, QueryList, ElementRef, EventEmitter, TemplateRef} from '@angular/core';
 import {Tree, TreeNode} from './tree';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 /*
 Tree Widget:
@@ -35,7 +37,11 @@ nodeClicked(node: TreeNode) {
 @Component({
     selector: 'eg-tree',
     templateUrl: 'tree.component.html',
-    styleUrls: ['tree.component.css']
+    styleUrls: ['tree.component.css'],
+    imports: [
+        CommonModule,
+        FormsModule,
+    ]
 })
 export class TreeComponent {
 

@@ -3,24 +3,28 @@
     <div class="modal-header">
       <h3 class="modal-title" i18n>Confirm Deletion of Line Items</h3>
       <button type="button" class="btn-close btn-close-white"
-        i18n-aria-label aria-label="Close dialog" (click)="close()"></button>
+      i18n-aria-label aria-label="Close dialog" (click)="close()"></button>
     </div>
     <div class="modal-body">
       <h4 i18n>Line Item(s) selected:
-        <span *ngFor="let id of ids; last as isLast">
-          {{id}}<span *ngIf="!isLast">,</span>
+        @for (id of ids; track id; let isLast = $last) {
+<span>
+          {{id}}@if (!isLast) {
+<span>,</span>
+}
         </span>
+}
       </h4>
-      <h4 i18n>Are you sure you want to delete the selected line items?</h4>
-      <h4 i18n>Please click "Apply" to delete line items or "Exit Dialog"
+    <h4 i18n>Are you sure you want to delete the selected line items?</h4>
+    <h4 i18n>Please click "Apply" to delete line items or "Exit Dialog"
                to exit without deleting line items.</h4>
-    </div>
-    <div class="modal-footer">
-      <button type="button" class="btn btn-success"
-        (click)="close(true)" i18n>Apply</button>
-      <button type="button" class="btn btn-normal"
-        (click)="close()" i18n>Exit Dialog</button>
-    </div>
-  </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-success"
+    (click)="close(true)" i18n>Apply</button>
+    <button type="button" class="btn btn-normal"
+    (click)="close()" i18n>Exit Dialog</button>
+  </div>
+</form>
 </ng-template>
 

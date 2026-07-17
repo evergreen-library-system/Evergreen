@@ -5,10 +5,8 @@ import {BibByIdentComponent} from './bib-by-ident.component';
 import {Z3950SearchModule} from '@eg/staff/share/z3950-search/z3950-search.module';
 
 @NgModule({
-    declarations: [
-        BibByIdentComponent
-    ],
     imports: [
+        BibByIdentComponent,
         StaffCommonModule,
         Z3950SearchModule,
         CatRoutingModule

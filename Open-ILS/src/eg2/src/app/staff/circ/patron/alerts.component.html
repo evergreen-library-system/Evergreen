@@ -1,63 +1,75 @@
 
-<div *ngIf="alerts()">
-
-  <div class="alert alert-info" *ngIf="alerts().holdsReady > 0" i18n>
+@if (alerts()) {
+  <div>
+    @if (alerts().holdsReady > 0) {
+      <div class="alert alert-info" i18n>
     Holds available: {{alerts().holdsReady}}
   </div>
-
-  <div class="mt-2 alert alert-warning" *ngIf="alerts().accountExpired" i18n>
+    }
+    @if (alerts().accountExpired) {
+      <div class="mt-2 alert alert-warning" i18n>
     Patron account is EXPIRED.
   </div>
-
-  <div class="mt-2 alert alert-warning" *ngIf="alerts().accountExpiresSoon" i18n>
+    }
+    @if (alerts().accountExpiresSoon) {
+      <div class="mt-2 alert alert-warning" i18n>
     Patron account will expire soon.  Please renew.
   </div>
-
-  <div class="mt-2 alert alert-danger" *ngIf="alerts().patronBarred" i18n>
+    }
+    @if (alerts().patronBarred) {
+      <div class="mt-2 alert alert-danger" i18n>
     Patron account is BARRED
   </div>
-
-  <div class="mt-2 alert alert-warning" *ngIf="alerts().patronInactive" i18n>
+    }
+    @if (alerts().patronInactive) {
+      <div class="mt-2 alert alert-warning" i18n>
     Patron account is INACTIVE
   </div>
-
-  <div class="mt-2 alert alert-warning" *ngIf="alerts().retrievedWithInactive" i18n>
+    }
+    @if (alerts().retrievedWithInactive) {
+      <div class="mt-2 alert alert-warning" i18n>
     Patron account retrieved with an INACTIVE card.
   </div>
-
-  <div class="mt-2 alert alert-warning" *ngIf="alerts().invalidAddress" i18n>
+    }
+    @if (alerts().invalidAddress) {
+      <div class="mt-2 alert alert-warning" i18n>
     Patron account has invalid addresses.
   </div>
-
-  <!-- penalties -->
-  <div class="row" *ngIf="alerts().alertPenalties.length">
-    <div class="col-lg-12">
-      <div class="card">
-        <div class="card-header" i18n>Alerts</div>
-        <div class="card-body">
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item" 
-              *ngFor="let penalty of alerts().alertPenalties">
-              <div class="row">
-                <div class="col-lg-2">
-                  {{context.orgSn(penalty.org_unit())}}
-                </div>
-                <div class="col-lg-8"
-                  title="{{penalty.standing_penalty().name()}}">
-                  {{penalty.usr_message().title() || penalty.standing_penalty().label()}}
-                  <div>{{penalty.usr_message().message()}}</div><!-- force newline -->
-                </div>
-                <div class="col-lg-2">
-                  {{penalty.set_date() | date:'short'}}
-                </div>
-              </div>
-            </li>
-          </ul>
+    }
+    <!-- penalties -->
+    @if (alerts().alertPenalties.length) {
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="card">
+            <div class="card-header" i18n>Alerts</div>
+            <div class="card-body">
+              <ul class="list-group list-group-flush">
+                @for (penalty of alerts().alertPenalties; track penalty) {
+                  <li class="list-group-item"
+                    >
+                    <div class="row">
+                      <div class="col-lg-2">
+                        {{context.orgSn(penalty.org_unit())}}
+                      </div>
+                      <div class="col-lg-8"
+                        title="{{penalty.standing_penalty().name()}}">
+                        {{penalty.usr_message().title() || penalty.standing_penalty().label()}}
+                        <div>{{penalty.usr_message().message()}}</div><!-- force newline -->
+                      </div>
+                      <div class="col-lg-2">
+                        {{penalty.set_date() | date:'short'}}
+                      </div>
+                    </div>
+                  </li>
+                }
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
-  <div class="mt-4 well-value" i18n>
+    }
+    <div class="mt-4 well-value" i18n>
     Select a tab above (for example, Check Out) to clear this alert.
   </div>
-</div>
+  </div>
+}

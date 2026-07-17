@@ -1,26 +1,33 @@
-import {Component, Input, ViewChild, OnInit, AfterViewInit} from '@angular/core';
-import {Router} from '@angular/router';
+import { Component, Input, ViewChild, OnInit, AfterViewInit, inject } from '@angular/core';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {CourseService} from '@eg/staff/share/course.service';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {Pager} from '@eg/share/util/pager';
-import {GridDataSource, GridColumn} from '@eg/share/grid/grid';
+import {GridDataSource} from '@eg/share/grid/grid';
 import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 import {StringComponent} from '@eg/share/string/string.component';
 import {ToastService} from '@eg/share/toast/toast.service';
-import {LocaleService} from '@eg/core/locale.service';
 import {AuthService} from '@eg/core/auth.service';
 import {OrgService} from '@eg/core/org.service';
-import {OrgFamily} from '@eg/share/org-family-select/org-family-select.component';
+import {OrgFamily, OrgFamilySelectComponent} from '@eg/share/org-family-select/org-family-select.component';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
     selector: 'eg-course-term-grid',
-    templateUrl: './course-term-grid.component.html'
+    templateUrl: './course-term-grid.component.html',
+    imports: [FmRecordEditorComponent, OrgFamilySelectComponent, StaffCommonModule]
 })
 
 export class TermListComponent implements OnInit, AfterViewInit {
+    private courseSvc = inject(CourseService);
+    private auth = inject(AuthService);
+    private idl = inject(IdlService);
+    private org = inject(OrgService);
+    private pcrud = inject(PcrudService);
+    private toast = inject(ToastService);
+
 
     @ViewChild('editDialog', { static: true }) editDialog: FmRecordEditorComponent;
     @ViewChild('deleteLinkedTermWarning', { static: true }) deleteLinkedTermWarning: ConfirmDialogComponent;
@@ -44,18 +51,6 @@ export class TermListComponent implements OnInit, AfterViewInit {
     searchOrgs: OrgFamily;
     defaultTerm: IdlObject;
     termToDelete: String;
-
-
-    constructor(
-        private courseSvc: CourseService,
-        private locale: LocaleService,
-        private auth: AuthService,
-        private idl: IdlService,
-        private org: OrgService,
-        private pcrud: PcrudService,
-        private router: Router,
-        private toast: ToastService
-    ) {}
 
     ngOnInit() {
         this.getSource();

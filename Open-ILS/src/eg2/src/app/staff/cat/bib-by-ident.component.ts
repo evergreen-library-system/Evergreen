@@ -1,15 +1,22 @@
-import {Component, OnInit, AfterViewInit} from '@angular/core';
+import { Component, OnInit, AfterViewInit, inject } from '@angular/core';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {NetService} from '@eg/core/net.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {FormControl, FormGroup} from '@angular/forms';
+import { StaffCommonModule } from '../common.module';
 
 /* Component for retrieving bib records by ID, TCN */
 
 @Component({
-    templateUrl: 'bib-by-ident.component.html'
+    templateUrl: 'bib-by-ident.component.html',
+    imports: [StaffCommonModule]
 })
 export class BibByIdentComponent implements OnInit, AfterViewInit {
+    private router = inject(Router);
+    private route = inject(ActivatedRoute);
+    private net = inject(NetService);
+    private pcrud = inject(PcrudService);
+
 
     identType: 'id' | 'tcn' = 'id';
     identValue: string;
@@ -18,13 +25,6 @@ export class BibByIdentComponent implements OnInit, AfterViewInit {
     bibIdentGroup: FormGroup;
     searchInProgress = false;
     queryError = false;
-
-    constructor(
-        private router: Router,
-        private route: ActivatedRoute,
-        private net: NetService,
-        private pcrud: PcrudService
-    ) {}
 
     ngOnInit() {
         this.bibIdentGroup = new FormGroup({

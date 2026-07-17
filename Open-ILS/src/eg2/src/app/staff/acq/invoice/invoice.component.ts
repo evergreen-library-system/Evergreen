@@ -1,8 +1,8 @@
 /* eslint-disable */
-import {Component, OnInit, OnDestroy, QueryList, ViewChild, ViewChildren} from '@angular/core';
-import {ActivatedRoute, ParamMap, Router} from '@angular/router';
+import { Component, OnInit, OnDestroy, QueryList, ViewChild, ViewChildren, inject } from '@angular/core';
+import {ActivatedRoute, ParamMap, Router, RouterModule} from '@angular/router';
 import {CanComponentDeactivate} from '@eg/share/util/can-deactivate.guard';
-import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
+import {NgbNav, NgbNavChangeEvent, NgbNavModule} from '@ng-bootstrap/ng-bootstrap';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {EventService} from '@eg/core/event.service';
 import {AuthService} from '@eg/core/auth.service';
@@ -16,12 +16,45 @@ import {PoService} from '../po/po.service';
 import {LineitemResultsComponent} from '@eg/staff/acq/search/lineitem-results.component';
 import {firstValueFrom, Subscription} from 'rxjs';
 import { ServerStoreService } from '@eg/core/server-store.service';
+import { StaffBannerComponent } from '@eg/staff/share/staff-banner.component';
+import { CommonModule } from '@angular/common';
+import { HoldingsService } from '@eg/staff/share/holdings/holdings.service';
+import { InvoiceBatchReceiveComponent } from './batch_receive.component';
+import { PrintComponent } from './print.component';
+import { PoLabelComponent } from "../po/label.component";
+import { FormsModule } from '@angular/forms';
 
 @Component({
     templateUrl: 'invoice.component.html',
-    styleUrls:  ['invoice.component.css']
+    styleUrls: ['invoice.component.css'],
+    imports: [
+    CommonModule,
+    FormsModule,
+    InvoiceBatchReceiveComponent,
+    InvoiceChargesComponent,
+    InvoiceDetailsComponent,
+    LineitemListComponent,
+    LineitemResultsComponent,
+    NgbNavModule,
+    PrintComponent,
+    RouterModule,
+    StaffBannerComponent,
+    PoLabelComponent
+],
+    providers: [HoldingsService]
 })
 export class InvoiceComponent implements OnInit, OnDestroy, CanComponentDeactivate {
+    private route = inject(ActivatedRoute);
+    private router = inject(Router);
+    private idl = inject(IdlService);
+    private evt = inject(EventService);
+    private auth = inject(AuthService);
+    private perm = inject(PermService);
+    private pcrud = inject(PcrudService);
+    invoiceService = inject(InvoiceService);
+    poService = inject(PoService);
+    store = inject(ServerStoreService);
+
 
     private angularNavigation = false;
     private permissions: any;
@@ -46,21 +79,6 @@ export class InvoiceComponent implements OnInit, OnDestroy, CanComponentDeactiva
     @ViewChild(LineitemListComponent, { static: false }) invoiceEntries: LineitemListComponent;
     @ViewChild(InvoiceChargesComponent, { static: false }) invoiceCharges: InvoiceChargesComponent;
     @ViewChild(NgbNav, { static: false }) acqInvoiceTabs: NgbNav;
-
-    // isNavigating = false;
-
-    constructor(
-        private route: ActivatedRoute,
-        private router: Router,
-        private idl: IdlService,
-        private evt: EventService,
-        private auth: AuthService,
-        private perm: PermService,
-        private pcrud: PcrudService,
-        public  invoiceService: InvoiceService,
-        public  poService: PoService,
-        public  store: ServerStoreService
-    ) {}
 
     ngOnInit() {
         console.warn('InvoiceComponent, this', this);

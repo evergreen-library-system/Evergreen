@@ -1,4 +1,4 @@
-import {Injectable, EventEmitter, NgZone} from '@angular/core';
+import { Injectable, EventEmitter, NgZone, inject } from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 import {IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
@@ -18,6 +18,15 @@ const HOLD_FOR_PATRON_KEY = 'eg.circ.patron_hold_target';
 
 @Injectable()
 export class StaffCatalogService {
+    private router = inject(Router);
+    private route = inject(ActivatedRoute);
+    private store = inject(StoreService);
+    private org = inject(OrgService);
+    private patron = inject(PatronService);
+    private catUrl = inject(CatalogUrlService);
+    private broadcaster = inject(BroadcastService);
+    private zone = inject(NgZone);
+
 
     searchContext: CatalogSearchContext;
     routeIndex = 0;
@@ -69,17 +78,6 @@ export class StaffCatalogService {
 
     // discovery layer URL to display an item in "patron view"
     patronViewUrl = '';
-
-    constructor(
-        private router: Router,
-        private route: ActivatedRoute,
-        private store: StoreService,
-        private org: OrgService,
-        private patron: PatronService,
-        private catUrl: CatalogUrlService,
-        private broadcaster: BroadcastService,
-        private zone: NgZone
-    ) { }
 
     createContext(): void {
         // Initialize the search context from the load-time URL params.

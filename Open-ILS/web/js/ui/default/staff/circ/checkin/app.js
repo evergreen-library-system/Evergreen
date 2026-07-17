@@ -34,8 +34,12 @@ angular.module('egCheckinApp', ['ngRoute', 'ui.bootstrap',
  * Manages checkin
  */
 .controller('CheckinCtrl',
-       ['$scope','$q','$window','$location', '$timeout','egCore','checkinSvc','egGridDataProvider','egCirc', 'egItem',
-function($scope , $q , $window , $location , $timeout , egCore , checkinSvc , egGridDataProvider , egCirc, itemSvc)  {
+       ['$scope','$q','$window','$location', '$timeout','egCore',
+        'checkinSvc','egGridDataProvider','egCirc', 'egItem',
+        'ngToast',
+function($scope , $q , $window , $location , $timeout , egCore ,
+         checkinSvc , egGridDataProvider , egCirc, itemSvc,
+         ngToast) {
 
     $scope.focusMe = true;
     $scope.checkins = checkinSvc.checkins;
@@ -286,6 +290,16 @@ function($scope , $q , $window , $location , $timeout , egCore , checkinSvc , eg
             $scope.focusMe = true;
         });
     }
+
+    $scope.email_receipt = function() {
+        return egCirc.email_checkin_receipt(
+            checkinSvc.checkins
+        ).then(function(msg) {
+            if (msg) { ngToast.create(msg) };
+        }).catch(function(errorMsg) {
+            if (errorMsg) { ngToast.danger(errorMsg); }
+        });
+    };
 
     $scope.print_receipt = function() {
         var print_data = {checkins : []}

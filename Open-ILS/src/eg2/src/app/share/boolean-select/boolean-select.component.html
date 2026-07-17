@@ -1,16 +1,18 @@
-<div *ngFor="let option of options; let i = index" [ngClass]="{'required': required}">
-  <input
-    type="radio"
-    [name]="name"
-    [value]="option.value"
-    [(ngModel)]="_value"
-    (change)="value = (i === 0)"
-    [checked]="_value === (i === 0)"
-    [required]="required"
-    [disabled]="disabled"
-    [id]="name + '-' + option.value"
-    [attr.aria-required]="required ? 'true' : 'false'"
-    [attr.aria-describedby]="idPrefix + '-' + name + '-help'"
-  />
-  <label [for]="name + '-' + option.value">{{ option.label }}</label>
-</div>
+@for (option of options; track option; let i = $index) {
+  <div [ngClass]="{'required': required}">
+    <input
+      type="radio"
+      [name]="name"
+      [value]="option.value"
+      [(ngModel)]="_value"
+      (change)="value = (i === 0)"
+      [checked]="_value === (i === 0)"
+      [required]="required"
+      [disabled]="disabled"
+      [id]="name + '-' + option.value"
+      [attr.aria-required]="required ? 'true' : 'false'"
+      [attr.aria-describedby]="idPrefix + '-' + name + '-help'"
+      />
+    <label [for]="name + '-' + option.value">{{ option.label }}</label>
+  </div>
+}

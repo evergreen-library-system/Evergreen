@@ -1,5 +1,5 @@
 
-import {Injectable} from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import {EMPTY, throwError, map} from 'rxjs';
 import {AuthService} from '@eg/core/auth.service';
 import {GridDataSource} from '@eg/share/grid/grid';
@@ -21,16 +21,16 @@ export interface AcqProviderSearch {
 
 @Injectable()
 export class AcqProviderSearchService {
+    private evt = inject(EventService);
+    private auth = inject(AuthService);
+    private pcrud = inject(PcrudService);
+    private providerRecord = inject(ProviderRecordService);
+
 
     _terms: AcqProviderSearchTerm[] = [];
     firstRun = true;
 
-    constructor(
-        private evt: EventService,
-        private auth: AuthService,
-        private pcrud: PcrudService,
-        private providerRecord: ProviderRecordService
-    ) {
+    constructor() {
         this.firstRun = true;
     }
 

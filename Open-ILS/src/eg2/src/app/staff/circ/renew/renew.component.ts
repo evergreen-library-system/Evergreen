@@ -1,8 +1,8 @@
 /* eslint-disable no-magic-numbers */
-import {Component, ViewChild, OnInit, AfterViewInit} from '@angular/core';
+import { Component, ViewChild, OnInit, AfterViewInit, inject } from '@angular/core';
 import {Location} from '@angular/common';
 import {Router, ActivatedRoute} from '@angular/router';
-import {empty, from, concatMap} from 'rxjs';
+import {empty, from, concatMap, EMPTY, catchError, tap} from 'rxjs';
 import {IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {OrgService} from '@eg/core/org.service';
@@ -27,6 +27,9 @@ import {CancelTransitDialogComponent
 } from '@eg/staff/share/circ/cancel-transit-dialog.component';
 import {HoldingsService} from '@eg/staff/share/holdings/holdings.service';
 import {AnonCacheService} from '@eg/share/util/anon-cache.service';
+import { StaffCommonModule } from '@eg/staff/common.module';
+import { WorkLogStringsComponent } from '@eg/staff/share/worklog/strings.component';
+import { CircComponentsComponent } from '@eg/staff/share/circ/components.component';
 
 
 interface RenewGridEntry extends CheckoutResult {
@@ -38,9 +41,31 @@ const TRIM_LIST_TO = 20;
 
 @Component({
     templateUrl: 'renew.component.html',
-    styleUrls: ['renew.component.css']
+    styleUrls: ['renew.component.css'],
+    imports: [
+        BarcodeSelectComponent,
+        CancelTransitDialogComponent,
+        CircComponentsComponent,
+        CopyAlertsDialogComponent,
+        StaffCommonModule,
+        WorkLogStringsComponent
+    ]
 })
 export class RenewComponent implements OnInit, AfterViewInit {
+    private router = inject(Router);
+    private route = inject(ActivatedRoute);
+    private ngLocation = inject(Location);
+    private net = inject(NetService);
+    private org = inject(OrgService);
+    private auth = inject(AuthService);
+    private store = inject(ServerStoreService);
+    private circ = inject(CircService);
+    private toast = inject(ToastService);
+    private printer = inject(PrintService);
+    private holdings = inject(HoldingsService);
+    private anonCache = inject(AnonCacheService);
+    patronService = inject(PatronService);
+
     renewals: RenewGridEntry[] = [];
     autoIndex = 0;
 
@@ -63,22 +88,6 @@ export class RenewComponent implements OnInit, AfterViewInit {
     @ViewChild('copyAlertsDialog') private copyAlertsDialog: CopyAlertsDialogComponent;
     @ViewChild('itemNeverCircedStr') private itemNeverCircedStr: StringComponent;
     @ViewChild('cancelTransitDialog') private cancelTransitDialog: CancelTransitDialogComponent;
-
-    constructor(
-        private router: Router,
-        private route: ActivatedRoute,
-        private ngLocation: Location,
-        private net: NetService,
-        private org: OrgService,
-        private auth: AuthService,
-        private store: ServerStoreService,
-        private circ: CircService,
-        private toast: ToastService,
-        private printer: PrintService,
-        private holdings: HoldingsService,
-        private anonCache: AnonCacheService,
-        public patronService: PatronService
-    ) {}
 
     ngOnInit() {
 
@@ -193,6 +202,16 @@ export class RenewComponent implements OnInit, AfterViewInit {
             templateName: 'renew',
             contextData: {renewals: this.renewals}
         });
+    }
+
+    emailReceipt(): void {
+        this.circ.emailRenewReceipt(this.renewals).pipe(
+            tap(message => this.toast.success(message)),
+            catchError(error => {
+                if (error) { this.toast.danger(error); }
+                return EMPTY;
+            })
+        ).subscribe();
     }
 
     getCopyIds(rows: RenewGridEntry[], skipStatus?: number): number[] {

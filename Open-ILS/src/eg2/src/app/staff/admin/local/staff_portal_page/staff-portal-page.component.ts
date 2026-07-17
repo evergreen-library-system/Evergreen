@@ -1,29 +1,28 @@
-import {Component, Input, ViewChild, OnInit} from '@angular/core';
-import {Location} from '@angular/common';
-import {FormatService} from '@eg/core/format.service';
+import { Component, ViewChild, OnInit, inject } from '@angular/core';
 import {AdminPageComponent} from '@eg/staff/share/admin-page/admin-page.component';
-import {ActivatedRoute} from '@angular/router';
-import {IdlService, IdlObject} from '@eg/core/idl.service';
-import {ToastService} from '@eg/share/toast/toast.service';
-import {PcrudService} from '@eg/core/pcrud.service';
-import {OrgService} from '@eg/core/org.service';
-import {PermService} from '@eg/core/perm.service';
-import {AuthService} from '@eg/core/auth.service';
-import {BroadcastService} from '@eg/share/util/broadcast.service';
-import {NetService} from '@eg/core/net.service';
+import {IdlObject} from '@eg/core/idl.service';
 import {GridCellTextGenerator} from '@eg/share/grid/grid';
 import {StringComponent} from '@eg/share/string/string.component';
-import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
 import {ClonePortalEntriesDialogComponent} from './clone-portal-entries-dialog.component';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
-import {merge, Observable, EMPTY} from 'rxjs';
+import {merge, EMPTY} from 'rxjs';
+import { StaffCommonModule } from '@eg/staff/common.module';
+import { FmRecordEditorComponent } from '@eg/share/fm-editor/fm-editor.component';
+import { TranslateComponent } from '@eg/share/translate/translate.component';
+import { OrgFamilySelectComponent } from '@eg/share/org-family-select/org-family-select.component';
 
 @Component({
-    templateUrl: './staff-portal-page.component.html'
+    templateUrl: './staff-portal-page.component.html',
+    imports: [
+        StaffCommonModule,
+        ClonePortalEntriesDialogComponent,
+        FmRecordEditorComponent,
+        TranslateComponent,
+        OrgFamilySelectComponent
+    ]
 })
 
 export class AdminStaffPortalPageComponent extends AdminPageComponent implements OnInit {
-
     idlClass = 'cusppe';
     fieldOrder = 'label,entry_type,target_url,url_newtab,entry_text,image_url,page_col,col_pos,owner,id';
     classLabel: string;
@@ -38,22 +37,6 @@ export class AdminStaffPortalPageComponent extends AdminPageComponent implements
     @ViewChild('cloneFailedString', { static: true }) cloneFailedString: StringComponent;
     @ViewChild('cloneDialog', { static: true}) cloneDialog: ClonePortalEntriesDialogComponent;
     @ViewChild('delConfirm', { static: true }) delConfirm: ConfirmDialogComponent;
-
-    constructor(
-        route: ActivatedRoute,
-        ngLocation: Location,
-        format: FormatService,
-        idl: IdlService,
-        org: OrgService,
-        auth: AuthService,
-        pcrud: PcrudService,
-        perm: PermService,
-        toast: ToastService,
-        private net: NetService,
-        broadcaster: BroadcastService
-    ) {
-        super(route, ngLocation, format, idl, org, auth, pcrud, perm, toast, broadcaster);
-    }
 
     ngOnInit() {
         super.ngOnInit();

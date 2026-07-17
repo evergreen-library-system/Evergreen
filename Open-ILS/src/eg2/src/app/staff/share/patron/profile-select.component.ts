@@ -1,5 +1,4 @@
-import {Component, Input, Output, OnInit,
-    EventEmitter, ViewChild, forwardRef} from '@angular/core';
+import { Component, Input, Output, OnInit, EventEmitter, ViewChild, forwardRef, inject } from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
@@ -25,10 +24,17 @@ const PAD_SPACE = ' '; // U+2007
     providers: [{
         provide: NG_VALUE_ACCESSOR,
         useExisting: forwardRef(() => ProfileSelectComponent),
-        multi: true
-    }]
+        multi: true,
+
+    }],
+    imports: [ComboboxComponent]
 })
 export class ProfileSelectComponent implements ControlValueAccessor, OnInit {
+    private org = inject(OrgService);
+    private idl = inject(IdlService);
+    private auth = inject(AuthService);
+    private pcrud = inject(PcrudService);
+
 
     // If true, attempt to build the selector from
     // permission.grp_tree_display_entry's for the current org unit.
@@ -56,11 +62,7 @@ export class ProfileSelectComponent implements ControlValueAccessor, OnInit {
     propagateChange = (_: any) => {};
     propagateTouch = () => {};
 
-    constructor(
-        private org: OrgService,
-        private idl: IdlService,
-        private auth: AuthService,
-        private pcrud: PcrudService) {
+    constructor() {
         this.profileChange = new EventEmitter<IdlObject>();
     }
 

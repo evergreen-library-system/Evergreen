@@ -3,49 +3,53 @@
 <ul class="nav nav-tabs pb-4">
   <li class="nav-item">
     <a class="nav-link" [ngClass]="{active: tab==='export'}"
-      routerLink="/staff/cat/vandelay/export" i18n>Export</a>
+    routerLink="/staff/cat/vandelay/export" i18n>Export</a>
   </li>
-  <li class="nav-item" *ngIf="importTabSetting === 'cat' || importTabSetting === 'both'">
-    <a class="nav-link" [ngClass]="{active: tab==='import'}"
+  @if (importTabSetting === 'cat' || importTabSetting === 'both') {
+    <li class="nav-item">
+      <a class="nav-link" [ngClass]="{active: tab==='import'}"
       routerLink="/staff/cat/vandelay/import" i18n>Import for Cataloging</a>
-  </li>
-  <li class="nav-item" *ngIf="importTabSetting === 'acq' || importTabSetting === 'both'">
-    <a class="nav-link" [ngClass]="{active: tab==='acqimport'}"
+    </li>
+  }
+  @if (importTabSetting === 'acq' || importTabSetting === 'both') {
+    <li class="nav-item">
+      <a class="nav-link" [ngClass]="{active: tab==='acqimport'}"
       routerLink="/staff/cat/vandelay/acqimport" i18n>Import for Acquisitions</a>
-  </li>
+    </li>
+  }
   <li class="nav-item">
     <a class="nav-link" [ngClass]="{active: tab==='queue'}"
-      routerLink="/staff/cat/vandelay/queue" i18n>Inspect Queue</a>
+    routerLink="/staff/cat/vandelay/queue" i18n>Inspect Queue</a>
   </li>
   <li class="nav-item">
     <a class="nav-link" [ngClass]="{active: tab==='display_attrs'}"
-      routerLink="/staff/cat/vandelay/display_attrs/bib" 
-        i18n>Record Display Attributes</a>
+      routerLink="/staff/cat/vandelay/display_attrs/bib"
+    i18n>Record Display Attributes</a>
   </li>
   <li class="nav-item">
     <a class="nav-link" [ngClass]="{active: tab==='merge_profiles'}"
-      routerLink="/staff/cat/vandelay/merge_profiles" 
-        i18n>Merge / Overlay Profiles</a>
+      routerLink="/staff/cat/vandelay/merge_profiles"
+    i18n>Merge / Overlay Profiles</a>
   </li>
   <li class="nav-item">
     <a class="nav-link" [ngClass]="{active: tab==='match_sets'}"
-      routerLink="/staff/cat/vandelay/match_sets" 
-        i18n>Record Match Sets</a>
+      routerLink="/staff/cat/vandelay/match_sets"
+    i18n>Record Match Sets</a>
   </li>
   <li class="nav-item">
     <a class="nav-link" [ngClass]="{active: tab==='holdings_profiles'}"
-      routerLink="/staff/cat/vandelay/holdings_profiles" 
-      i18n>Holdings Import Profiles</a>
+      routerLink="/staff/cat/vandelay/holdings_profiles"
+    i18n>Holdings Import Profiles</a>
   </li>
   <li class="nav-item">
     <a class="nav-link" [ngClass]="{active: tab==='active_imports'}"
-      routerLink="/staff/cat/vandelay/active_imports" 
-      i18n>Recent Imports</a>
+      routerLink="/staff/cat/vandelay/active_imports"
+    i18n>Recent Imports</a>
   </li>
   <li class="nav-item">
     <a class="nav-link" [ngClass]="{active: tab==='background-import'}"
-      routerLink="/staff/cat/vandelay/background-import" 
-      i18n>Background Imports</a>
+      routerLink="/staff/cat/vandelay/background-import"
+    i18n>Background Imports</a>
   </li>
 </ul>
 

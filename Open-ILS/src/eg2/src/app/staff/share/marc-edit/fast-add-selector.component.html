@@ -1,0 +1,15 @@
+<form [formGroup]="form">
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" id="fast-add-item" formControlName="fastAddItem" />
+        <label class="form-label form-check-label" for="fast-add-item">
+            Add Item
+        </label>
+    </div>
+
+    @if(showFields) {
+        <div class="form-inline">
+            <input type="text" class="form-control ms-2" placeholder="Call Number" i18n-placeholder aria-label="Call Number" i18n-aria-label formControlName="callNumber" />
+            <input type="text" class="form-control ms-2" placeholder="Barcode" i18n-placeholder aria-label="Barcode" i18n-aria-label formControlName="barcode" />
+        </div>
+    }
+</form>

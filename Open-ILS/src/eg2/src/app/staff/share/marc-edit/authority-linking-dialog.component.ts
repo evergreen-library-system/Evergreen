@@ -1,14 +1,16 @@
-import {Component, ViewChild, Input, OnInit} from '@angular/core';
+import { Component, ViewChild, Input, OnInit, forwardRef, inject } from '@angular/core';
 import {NetService} from '@eg/core/net.service';
 import {OrgService} from '@eg/core/org.service';
 import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {MarcField} from './marcrecord';
 import {MarcEditContext} from './editor-context';
 import {Pager} from '@eg/share/util/pager';
 import {MarcEditorDialogComponent} from './editor-dialog.component';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 
 /**
  * MARC Authority Linking Dialog
@@ -16,11 +18,21 @@ import {MarcEditorDialogComponent} from './editor-dialog.component';
 
 @Component({
     selector: 'eg-authority-linking-dialog',
-    templateUrl: './authority-linking-dialog.component.html'
+    templateUrl: './authority-linking-dialog.component.html',
+    imports: [
+        CommonModule,
+        FormsModule,
+        RouterModule,
+        forwardRef(() => MarcEditorDialogComponent)
+    ]
 })
 
 export class AuthorityLinkingDialogComponent
     extends DialogComponent implements OnInit {
+    private auth = inject(AuthService);
+    private org = inject(OrgService);
+    private pcrud = inject(PcrudService);
+    private net = inject(NetService);
 
     @Input() bibField: MarcField;
     @Input() thesauri: string = null;
@@ -41,15 +53,6 @@ export class AuthorityLinkingDialogComponent
 
     @ViewChild('marcEditDialog', {static: false})
         marcEditDialog: MarcEditorDialogComponent;
-
-    constructor(
-        private modal: NgbModal,
-        private auth: AuthService,
-        private org: OrgService,
-        private pcrud: PcrudService,
-        private net: NetService) {
-        super(modal);
-    }
 
     ngOnInit() {
         if (!this.pager) {

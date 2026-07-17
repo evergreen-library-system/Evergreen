@@ -140,15 +140,16 @@ int main( int argc, char* argv[] ) {
 	// Load a database driver, connect to it, and install the connection in
 	// the cstore module.  We don't actually connect to a database, but we
 	// need the driver to process quoted strings correctly.
-	if( dbi_initialize( NULL ) < 0 ) {
+	dbi_inst instance;
+	if( dbi_initialize_r( NULL, &instance ) < 0 ) {
 		printf( "Unable to load database driver\n" );
 		return EXIT_FAILURE;
 	};
 
-	dbi_conn conn = dbi_conn_new( "pgsql" );  // change string if ever necessary
+	dbi_conn conn = dbi_conn_new_r( "pgsql", instance );  // change string if ever necessary
 	if( !conn ) {
 		printf( "Unable to establish dbi connection\n" );
-		dbi_shutdown();
+		dbi_shutdown_r(instance);
 		return EXIT_FAILURE;
 	}
 
@@ -163,7 +164,7 @@ int main( int argc, char* argv[] ) {
 	int rc = test_json_query( json_query );
 
 	dbi_conn_close( conn );
-	dbi_shutdown();
+	dbi_shutdown_r( instance );
 	if( loaded_json )
 		free( loaded_json );
 

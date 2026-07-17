@@ -42,16 +42,15 @@ table.table.eg-grid > :not(caption) > tbody > tr.eg-grid-row {
   grid-template-columns: 1fr 5fr;
 }
 
+#patron-grid.search-form-no-patron {
+  grid-template-columns: 0 1fr;
+  column-gap: 0;
+}
+
 @media screen and (min-width: 768px) {
   /* if the button toggle is all that's showing */
-  #patron-grid:not(.show-nav) {
+  #patron-grid {
     grid-template-columns: 2.4rem 5fr;
-  }
-
-  /* if the nav is not showing, it should not take up space */
-  #patron-grid:has(.patron-search-form) {
-    grid-template-columns: 0 5fr;
-    column-gap: 1rem;
   }
 
   #patron-grid.show-nav {

@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import {Observable, EMPTY} from 'rxjs';
 import {Pager} from '@eg/share/util/pager';
 import {NetService} from '@eg/core/net.service';
@@ -11,14 +11,24 @@ import {ComboboxEntry, ComboboxComponent} from '@eg/share/combobox/combobox.comp
 import {BrowseService} from './browse.service';
 import {StringComponent} from '@eg/share/string/string.component';
 import {AuthorityMergeDialogComponent} from './merge-dialog.component';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 /* Find, merge, and edit authority records */
 
 @Component({
     templateUrl: 'browse.component.html',
-    styles: ['#offset-input { width: 4em; }']
+    styles: ['#offset-input { width: 4em; }'],
+    imports: [
+        AuthorityMergeDialogComponent,
+        StaffCommonModule
+    ]
 })
 export class BrowseAuthorityComponent implements OnInit {
+    private net = inject(NetService);
+    private org = inject(OrgService);
+    private pcrud = inject(PcrudService);
+    browse = inject(BrowseService);
+
 
     authorityAxis: ComboboxEntry;
     dataSource: GridDataSource;
@@ -31,13 +41,6 @@ export class BrowseAuthorityComponent implements OnInit {
     @ViewChild('rowSelected', {static: false}) rowSelected: StringComponent;
     @ViewChild('mergeDialog', {static: false})
         mergeDialog: AuthorityMergeDialogComponent;
-
-    constructor(
-        private net: NetService,
-        private org: OrgService,
-        private pcrud: PcrudService,
-        public browse: BrowseService
-    ) {}
 
     ngOnInit() {
         this.browse.fetchAxes();

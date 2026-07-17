@@ -3,10 +3,10 @@
 /* Light mode: assets/css/light.css; dark mode: assets/css/dark.css */
 /* These have to be imported to preserve the webpack paths: */
 /* bootstrap CSS only -- JS bits come from ng-bootstrap */
-@import '~bootstrap/dist/css/bootstrap.min.css';
+@import 'bootstrap/dist/css/bootstrap.min.css';
 
 /* Locally served material icon fonts  */
-@import '~material-design-icons-iconfont/dist/material-design-icons.css';
+@import 'material-design-icons-iconfont/dist/material-design-icons.css';
 
 :root {
   /* Spacing options, based on bootstrap's spacing utility
@@ -20,7 +20,7 @@
 }
 
 /** BS default fonts are huge */
-body, .form-control, .btn, .input-group-text {
+body, .form-control:not(.form-control-lg), .btn, .input-group-text {
   /* This more or less matches the font size of the angularjs client.
    * The default BS4 font of 1rem is comically large.
    */
@@ -63,7 +63,7 @@ dl {
   grid-template-columns: repeat(4, max-content);
 }
 
-.dl-grid > div {
+.dl-grid > .subgrid {
   display: grid;
   grid-column: 1 / -1;
   grid-template-columns: subgrid;
@@ -243,7 +243,18 @@ a[target="_blank"]:not(:has(img)):after {
 
 .material-icons {
   /** default is 24px which is pretty chunky */
+  font-size: 1rem;
+  opacity: .65;
+  margin-right: .35em;
+  vertical-align: text-bottom;
+}
+
+.label-with-material-icon .material-icons,
+button .material-icons {
   font-size: 22px;
+  opacity: 1;
+  margin-right: 0;
+  vertical-align: baseline;
 }
 
 /* allow spans/labels to vertically orient with material icons */
@@ -311,7 +322,7 @@ a[target="_blank"]:not(:has(img)):after {
  * Invalid fields are left-border styled in red-ish.
  */
 
-.form-validated .ng-valid[required]:not(:is(fieldset, form)),
+.form-validated .ng-valid[required]:not(:is(fieldset, form, eg-date-select, eg-datetime-select)),
 .form-validated .ng-valid.required, 
 .form-validated input[formcontrolname].ng-valid.required {
   border-left: 5px solid var(--bs-form-valid-border-color);
@@ -321,7 +332,7 @@ a[target="_blank"]:not(:has(img)):after {
 	animation-duration: 0.35s;
 }
 
-.form-validated .ng-invalid:not(:is(fieldset, form)),
+.form-validated .ng-invalid:not(:is(fieldset, form, eg-date-select, eg-datetime-select)),
 .form-validated input[formcontrolname].ng-invalid,
 .form-validated .invalid:not(:is(form)) {
   border-left: 5px solid var(--bs-form-invalid-border-color);
@@ -463,13 +474,13 @@ input[type="checkbox"]:focus {
 /**
  * Only display the print container when printing
  */
-#eg-print-container {
+#print-div {
     display: none;
 }
 @media print {
   head {display: none} /* just to be safe */
-  /* Display ONLY eg-print-container; Hide literally everything that is not above, below, or itself eg-print-container */
-  *:not(:has(#eg-print-container)):not(#eg-print-container *):not(#eg-print-container) {
+  /* Display ONLY print-div; Hide literally everything that is not above, below, or itself print-div */
+  *:not(:has(#print-div)):not(#print-div *):not(#print-div) {
     display: none
   }
   @page {size: auto} /* work around Bootrap 4's default
@@ -477,8 +488,8 @@ input[type="checkbox"]:focus {
                         size stops browsers from letting
                         the user choose portrait or
                         landscape. LP#1986725 */
-  #eg-print-container {display: block}
-  #eg-print-container pre {border: none}
+  #print-div {display: block}
+  #print-div pre {border: none}
 }
 
 /**

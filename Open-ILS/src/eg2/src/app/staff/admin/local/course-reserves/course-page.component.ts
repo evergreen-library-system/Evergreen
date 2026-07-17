@@ -1,4 +1,4 @@
-import {Component, ViewChild, OnInit} from '@angular/core';
+import { Component, ViewChild, OnInit, inject } from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {IdlObject} from '@eg/core/idl.service';
@@ -7,13 +7,28 @@ import {ToastService} from '@eg/share/toast/toast.service';
 import {CourseService} from '@eg/staff/share/course.service';
 import {CourseAssociateUsersComponent} from './course-associate-users.component';
 import {CourseAssociateMaterialComponent} from './course-associate-material.component';
+import { StaffCommonModule } from '@eg/staff/common.module';
+import { FmRecordEditorComponent } from '@eg/share/fm-editor/fm-editor.component';
+import { CourseTermMapGridComponent } from './course-term-map-grid.component';
 
 @Component({
     selector: 'eg-course-page',
-    templateUrl: './course-page.component.html'
+    templateUrl: './course-page.component.html',
+    imports: [
+        CourseAssociateMaterialComponent,
+        CourseAssociateUsersComponent,
+        CourseTermMapGridComponent,
+        FmRecordEditorComponent,
+        StaffCommonModule
+    ]
 })
 
 export class CoursePageComponent implements OnInit {
+    private course = inject(CourseService);
+    private pcrud = inject(PcrudService);
+    private route = inject(ActivatedRoute);
+    private toast = inject(ToastService);
+
 
     currentCourse: IdlObject;
     courseId: any;
@@ -34,14 +49,6 @@ export class CoursePageComponent implements OnInit {
         unarchiveFailedString: StringComponent;
     @ViewChild('unarchiveSuccessString', { static: true })
         unarchiveSuccessString: StringComponent;
-
-    constructor(
-        private course: CourseService,
-        private pcrud: PcrudService,
-        private route: ActivatedRoute,
-        private toast: ToastService
-    ) {
-    }
 
     ngOnInit() {
         this.courseId = +this.route.snapshot.paramMap.get('id');

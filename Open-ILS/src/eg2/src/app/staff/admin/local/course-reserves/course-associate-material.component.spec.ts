@@ -10,6 +10,8 @@ import {NgbModal, NgbNav} from '@ng-bootstrap/ng-bootstrap';
 import { of } from 'rxjs';
 import { DialogComponent } from '@eg/share/dialog/dialog.component';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { FmRecordEditorComponent } from '@eg/share/fm-editor/fm-editor.component';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 
 describe('CourseAssociateMaterialComponent', () => {
@@ -68,6 +70,9 @@ describe('CourseAssociateMaterialComponent', () => {
             ],
             schemas: [NO_ERRORS_SCHEMA],
             imports: [NgbNav]
+        }).overrideComponent(CourseAssociateMaterialComponent, {
+            add: {schemas: [NO_ERRORS_SCHEMA]},
+            remove: {imports: [FmRecordEditorComponent, StaffCommonModule]}
         }).compileComponents();
     }));
 

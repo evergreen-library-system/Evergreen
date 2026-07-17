@@ -20,7 +20,7 @@
  * Each response is relayed via Observable.next().  The interface is
  * the same for streaming and atomic requests.
  */
-import {Injectable, EventEmitter} from '@angular/core';
+import { Injectable, EventEmitter, inject } from '@angular/core';
 import {Observable, Observer} from 'rxjs';
 import {EventService, EgEvent} from './event.service';
 
@@ -69,6 +69,8 @@ export interface AuthExpiredEvent {
 
 @Injectable({providedIn: 'root'})
 export class NetService {
+    private egEvt = inject(EventService);
+
 
     permFailed$: EventEmitter<NetRequest>;
     authExpired$: EventEmitter<AuthExpiredEvent>;
@@ -77,9 +79,7 @@ export class NetService {
     // and the active request is marked as superseded.
     permFailedHasHandler: Boolean = false;
 
-    constructor(
-        private egEvt: EventService
-    ) {
+    constructor() {
         this.permFailed$ = new EventEmitter<NetRequest>();
         this.authExpired$ = new EventEmitter<AuthExpiredEvent>();
     }

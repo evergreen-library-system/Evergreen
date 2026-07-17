@@ -1,5 +1,5 @@
 /* eslint-disable no-empty */
-import {Component, Input, OnInit, OnDestroy, ViewChild} from '@angular/core';
+import { Component, Input, OnInit, OnDestroy, ViewChild, inject } from '@angular/core';
 import {Subscription, Observable, of, from, firstValueFrom, tap} from 'rxjs';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {Tree, TreeNode} from '@eg/share/tree/tree';
@@ -19,14 +19,31 @@ import {Pager} from '@eg/share/util/pager';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
+import { StaffCommonModule } from '@eg/staff/common.module';
+import { TreeComponent } from '@eg/share/tree/tree.component';
 
 @Component({
     selector: 'eg-bucket-share-dialog',
-    templateUrl: './bucket-share-dialog.component.html'
+    templateUrl: './bucket-share-dialog.component.html',
+    imports: [
+        PatronSearchDialogComponent,
+        StaffCommonModule,
+        BucketUserShareComponent,
+        TreeComponent
+    ]
 })
 
 export class BucketShareDialogComponent
     extends DialogComponent implements OnInit, OnDestroy {
+    private auth = inject(AuthService);
+    private org = inject(OrgService);
+    private net = inject(NetService);
+    private pcrud = inject(PcrudService);
+    private evt = inject(EventService);
+    private idl = inject(IdlService);
+    private modal: NgbModal;
+    private toast = inject(ToastService);
+
 
     subscriptions: Subscription[] = []; // unsubscribed from in ngOnDestroy
 
@@ -61,17 +78,12 @@ export class BucketShareDialogComponent
     users_touchedEditPermGrid = false;
     orgsTouched = false;
 
-    constructor(
-        private auth: AuthService,
-        private org: OrgService,
-        private net: NetService,
-        private pcrud: PcrudService,
-        private evt: EventService,
-        private idl: IdlService,
-        private modal: NgbModal,
-        private toast: ToastService
-    ) {
+    constructor() {
+        const modal = inject(NgbModal);
+
         super(modal);
+        this.modal = modal;
+
         if (this.modal) {} // de-lint
     }
 

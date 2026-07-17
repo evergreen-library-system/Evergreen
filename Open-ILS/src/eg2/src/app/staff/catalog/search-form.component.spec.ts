@@ -8,6 +8,7 @@ import { StaffCatalogService } from './catalog.service';
 import { SearchFormComponent } from './search-form.component';
 import { IdlObject } from '@eg/core/idl.service';
 import { CatalogSearchContext } from '@eg/share/catalog/search-context';
+import { PcrudService } from '@eg/core/pcrud.service';
 
 describe('SearchFormComponent', () => {
     let fixture;
@@ -20,11 +21,15 @@ describe('SearchFormComponent', () => {
                 { provide: Router, useValue: null },
                 { provide: ActivatedRoute, useValue: null},
                 { provide: OrgService, useValue: null},
-                { provide: CatalogService, useValue: null},
+                { provide: PcrudService, useValue: null },
                 { provide: ServerStoreService, useValue: null},
                 { provide: StaffCatalogService, useValue: null }
             ]
-        }).compileComponents();
+        }).overrideComponent(SearchFormComponent, {
+            remove: {providers: [CatalogService]},
+            add: {providers: [{ provide: CatalogService, useValue: null}]}
+        })
+            .compileComponents();
         fixture = TestBed.createComponent(SearchFormComponent);
         component = fixture.debugElement.componentInstance;
     });

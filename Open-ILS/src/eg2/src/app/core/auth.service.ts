@@ -1,5 +1,5 @@
 /* eslint-disable no-magic-numbers */
-import {Injectable, EventEmitter} from '@angular/core';
+import {Injectable, EventEmitter, inject} from '@angular/core';
 import {NetService} from './net.service';
 import {EventService, EgEvent} from './event.service';
 import {IdlService, IdlObject} from './idl.service';
@@ -62,10 +62,11 @@ export class AuthService {
     // reference to active auth validity setTimeout handler.
     pollTimeout: any;
 
+    private egEvt = inject(EventService);
+    private net = inject(NetService);
+    private store = inject(StoreService);
+
     constructor(
-        private egEvt: EventService,
-        private net: NetService,
-        private store: StoreService
     ) {
 
         // BroadcastChannel is not yet defined in PhantomJS and elsewhere

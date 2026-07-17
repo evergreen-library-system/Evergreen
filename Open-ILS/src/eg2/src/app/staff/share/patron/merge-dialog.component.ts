@@ -1,10 +1,14 @@
-import {Component, OnInit, Input} from '@angular/core';
+import { Component, OnInit, Input, inject } from '@angular/core';
 import {AuthService} from '@eg/core/auth.service';
 import {NetService} from '@eg/core/net.service';
 import {EventService} from '@eg/core/event.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {PatronService, PatronSummary} from './patron.service';
+import { ProgressInlineComponent } from '@eg/share/dialog/progress-inline.component';
+
+import { FormsModule } from '@angular/forms';
+import { PatronSummaryComponent } from './summary.component';
 
 /**
  * Dialog for merging 2 patron accounts.
@@ -25,16 +29,28 @@ const PATRON_FLESH_FIELDS = [
     'net_access_level',
     'ident_type',
     'ident_type2',
+    'locale',
     'groups'
 ];
 
 @Component({
     selector: 'eg-patron-merge-dialog',
-    templateUrl: 'merge-dialog.component.html'
+    templateUrl: 'merge-dialog.component.html',
+    imports: [
+        FormsModule,
+        PatronSummaryComponent,
+        ProgressInlineComponent
+    ]
 })
 
 export class PatronMergeDialogComponent
     extends DialogComponent implements OnInit {
+    private modal: NgbModal;
+    private auth = inject(AuthService);
+    private net = inject(NetService);
+    private evt = inject(EventService);
+    private patrons = inject(PatronService);
+
 
     @Input() patronIds: [number, number];
 
@@ -44,13 +60,11 @@ export class PatronMergeDialogComponent
     leadAccount: number = null;
     loading = true;
 
-    constructor(
-        private modal: NgbModal,
-        private auth: AuthService,
-        private net: NetService,
-        private evt: EventService,
-        private patrons: PatronService
-    ) { super(modal); }
+    constructor() {
+        const modal = inject(NgbModal);
+        super(modal);
+        this.modal = modal;
+    }
 
     ngOnInit() {
         this.onOpen$.subscribe(_ => {

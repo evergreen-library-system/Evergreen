@@ -1,5 +1,5 @@
 /* eslint-disable no-magic-numbers */
-import {Injectable} from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 
 /** Service for generating sample data for testing, demo, etc. */
@@ -122,8 +122,8 @@ const DATA = {
 
 @Injectable()
 export class SampleDataService {
+    private idl = inject(IdlService);
 
-    constructor(private idl: IdlService) {}
 
     randomValue(list: any[], field: string): string {
         return list[Math.floor(Math.random() * list.length)][field];

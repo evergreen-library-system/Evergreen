@@ -1,16 +1,18 @@
 <ul [style.--columnCount]="this.columnCount">
-  <li *ngFor="let link of this.links; let linkIdx = index">
-    <ng-container *ngIf="link.url">
+  @for (link of this.links; track link; let linkIdx = $index) {
+    <li>
+      @if (link.url) {
         <a [href]="link.url" class="with-material-icon">
           <span class="material-icons" aria-hidden="true">edit</span>
           <span>{{link.label}}</span>
         </a>
-      </ng-container>
-      <ng-container *ngIf="link.routerLink">
+      }
+      @if (link.routerLink) {
         <a [routerLink]="link.routerLink" class="with-material-icon">
           <span class="material-icons" aria-hidden="true">edit</span>
           <span>{{link.label}}</span>
         </a>
-      </ng-container>
-  </li>
+      }
+    </li>
+  }
 </ul>

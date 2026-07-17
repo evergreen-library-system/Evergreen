@@ -1,18 +1,25 @@
-import {Component, OnInit, Input} from '@angular/core';
+import { Component, OnInit, Input, inject } from '@angular/core';
 import {Router} from '@angular/router';
 import {CatalogService} from '@eg/share/catalog/catalog.service';
 import {CatalogSearchContext} from '@eg/share/catalog/search-context';
 import {CatalogUrlService} from '@eg/share/catalog/catalog-url.service';
 import {StaffCatalogService} from '../catalog.service';
 import {Pager} from '@eg/share/util/pager';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 
 @Component({
     selector: 'eg-catalog-record-pagination',
     templateUrl: 'pagination.component.html',
-    styleUrls: ['pagination.component.css']
+    styleUrls: ['pagination.component.css'],
+    imports: [StaffCommonModule]
 })
 export class RecordPaginationComponent implements OnInit {
+    private router = inject(Router);
+    private cat = inject(CatalogService);
+    private catUrl = inject(CatalogUrlService);
+    private staffCat = inject(StaffCatalogService);
+
 
     id: number;
     index: number;
@@ -34,13 +41,6 @@ export class RecordPaginationComponent implements OnInit {
             this.setIndex();
         }
     }
-
-    constructor(
-        private router: Router,
-        private cat: CatalogService,
-        private catUrl: CatalogUrlService,
-        private staffCat: StaffCatalogService,
-    ) {}
 
     ngOnInit() {
         this.initDone = true;

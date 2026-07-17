@@ -135,6 +135,9 @@ our %tableColumnOverride = (
     'permission.grp_tree' => {
         'comp' => [ 'name' ]
     },
+    'actor.passwd_type' => {
+        'comp' => [ 'code' ]
+    },
     # Waiting for the coded value map in 3.13 to be resolved before we decide what to do here.
     # 'config.coded_value_map' => {
     #     'comp' => ['ctype', 'code', 'value'],
@@ -619,7 +622,9 @@ IF NOT skip_date_carry THEN
     PERFORM evergreen.concerto_date_carry_tbl_col('actor.usr_standing_penalty', 'stop_date', datediff);
 
     -- asset.call_number
+    ALTER TABLE asset.call_number DISABLE TRIGGER protect_acn_id_neg1;
     PERFORM evergreen.concerto_date_carry_tbl_col('asset.call_number', 'create_date', datediff);
+    ALTER TABLE asset.call_number ENABLE TRIGGER protect_acn_id_neg1;
 
     -- asset.copy
     PERFORM evergreen.concerto_date_carry_tbl_col('asset.copy', 'create_date', datediff);
@@ -724,6 +729,10 @@ CREATE TABLE IF NOT EXISTS evergreen.tvar_carry_date(tvar BOOLEAN);
 INSERT INTO evergreen.tvar_carry_date(tvar)
 VALUES(:skip_date_carry::boolean);
 
+-- This needs to be done outside of the transaction because biblio.record_entry has so many trigger function
+-- And re-enabling this trigger isn't allowed because there are "pending triggers" during the transaction
+ALTER TABLE biblio.record_entry DISABLE TRIGGER protect_bre_id_neg1;
+
 BEGIN;
 
 DO $$
@@ -741,6 +750,8 @@ END;
 $$;
 
 COMMIT;
+
+ALTER TABLE biblio.record_entry ENABLE TRIGGER protect_bre_id_neg1;
 
 DROP FUNCTION evergreen.concerto_date_carry_all(BOOLEAN);
 DROP FUNCTION evergreen.concerto_date_carry_tbl_col(TEXT, TEXT, INTERVAL);

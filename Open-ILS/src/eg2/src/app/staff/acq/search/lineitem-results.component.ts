@@ -1,10 +1,9 @@
 /* eslint-disable */
 /* eslint-disable rxjs/no-nested-subscribe */
-import {Component, OnInit, OnDestroy, Input, ViewChild, TemplateRef} from '@angular/core';
-import {Observable, from, of, Subscription, BehaviorSubject, combineLatest} from 'rxjs';
-import {map, concatMap} from 'rxjs/operators';
-import {Router, ActivatedRoute, ParamMap} from '@angular/router';
-import {Pager} from '@eg/share/util/pager';
+import { Component, OnInit, OnDestroy, Input, ViewChild, TemplateRef, inject } from '@angular/core';
+import {from, of, Subscription, BehaviorSubject, combineLatest} from 'rxjs';
+import {concatMap} from 'rxjs/operators';
+import {Router, RouterModule} from '@angular/router';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
@@ -24,14 +23,43 @@ import {AddToPoDialogComponent} from '../lineitem/add-to-po-dialog.component';
 import {DeleteLineitemsDialogComponent} from '../lineitem/delete-lineitems-dialog.component';
 import {LinkInvoiceDialogComponent} from '../lineitem/link-invoice-dialog.component';
 import {LineitemAlertDialogComponent} from '../lineitem/lineitem-alert-dialog.component';
-import {ComboboxEntry, ComboboxComponent} from '@eg/share/combobox/combobox.component';
+import {ComboboxComponent, ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {EventService} from '@eg/core/event.service';
+
+import { GridModule } from '@eg/share/grid/grid.module';
+import { FormsModule } from '@angular/forms';
 
 @Component({
     selector: 'eg-lineitem-results',
-    templateUrl: 'lineitem-results.component.html'
+    templateUrl: 'lineitem-results.component.html',
+    imports: [
+    AcqSearchFormComponent,
+    AddToPoDialogComponent,
+    AlertDialogComponent,
+    CancelDialogComponent,
+    ClaimPolicyDialogComponent,
+    ComboboxComponent,
+    ConfirmDialogComponent,
+    DeleteLineitemsDialogComponent,
+    ExportAttributesDialogComponent,
+    FormsModule,
+    GridModule,
+    LineitemAlertDialogComponent,
+    LinkInvoiceDialogComponent,
+    RouterModule,
+    StringComponent
+]
 })
 export class LineitemResultsComponent implements OnInit, OnDestroy {
+    private idl = inject(IdlService);
+    private evt = inject(EventService);
+    private router = inject(Router);
+    private net = inject(NetService);
+    private auth = inject(AuthService);
+    private toast = inject(ToastService);
+    private liService = inject(LineitemService);
+    private acqSearch = inject(AcqSearchService);
+
 
     @Input() initialSearchTerms: AcqSearchTerm[] = [];
     @Input() callbackButtonLabel: string;
@@ -69,18 +97,6 @@ export class LineitemResultsComponent implements OnInit, OnDestroy {
     rowsNotOkayForInvoice: (rows: IdlObject[]) => boolean;
 
     cellTextGenerator: GridCellTextGenerator;
-
-    constructor(
-        private idl: IdlService,
-        private evt: EventService,
-        private router: Router,
-        private route: ActivatedRoute,
-        private net: NetService,
-        private auth: AuthService,
-        private toast: ToastService,
-        private liService: LineitemService,
-        private acqSearch: AcqSearchService) {
-    }
 
     keepResultSub: Subscription;
     keepResultsReceived = new BehaviorSubject(false);

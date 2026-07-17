@@ -1,7 +1,11 @@
-import {Component, OnInit} from '@angular/core';
+
+import { Component, OnInit, inject } from '@angular/core';
 import {ActivatedRoute, ParamMap} from '@angular/router';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
+import { TitleComponent } from '@eg/share/title/title.component';
 import {Observable, tap, switchMap} from 'rxjs';
+import { StaffBannerComponent } from '../share/staff-banner.component';
+import { AdminPageComponent } from '../share/admin-page/admin-page.component';
 
 /**
  * Generic IDL class editor page.
@@ -9,33 +13,41 @@ import {Observable, tap, switchMap} from 'rxjs';
 
 @Component({
     template: `
-      <ng-container *ngIf="idlClass">
-      <eg-title i18n-prefix prefix="{{ recordTitle || recordLabel || classLabel}} Administration">
-      </eg-title>
-      <eg-staff-banner bannerText="{{ recordTitle || recordLabel || classLabel}}" i18n-bannerText>
-      </eg-staff-banner>
-      <eg-admin-page persistKeyPfx="{{persistKeyPfx}}" idlClass="{{idlClass}}"
-        configLinkBasePath="{{configLinkBasePath}}"
-        fieldOrder="{{fieldOrder}}"
-        [fieldOptions]="fieldOptions"
-        readonlyFields="{{readonlyFields}}"
-        recordLabel="{{recordLabel}}"
-        orgDefaultAllowed="{{orgDefaultAllowed}}"
-        orgFieldsDefaultingToContextOrg="{{orgFieldsDefaultingToContextOrg}}"
-        contextOrgSelectorPersistKey="{{contextOrgSelectorPersistKey}}"
-        [hideClearFilters]="hideClearFilters"
-        [initialFilterValues]="initialFilterValues"
-        [defaultNewRecord]="defaultNewRecordIdl"
-        [enableUndelete]="enableUndelete"
-        [disableDelete]="disableDelete"
-        [deleteConfirmation]="deleteConfirmation"
-        [disableEdit]="disableEdit"
+      @if (idlClass) {
+        <eg-title i18n-prefix prefix="{{ recordTitle || recordLabel || classLabel}} Administration">
+        </eg-title>
+        <eg-staff-banner bannerText="{{ recordTitle || recordLabel || classLabel}}" i18n-bannerText>
+        </eg-staff-banner>
+        <eg-admin-page persistKeyPfx="{{persistKeyPfx}}" idlClass="{{idlClass}}"
+          configLinkBasePath="{{configLinkBasePath}}"
+          fieldOrder="{{fieldOrder}}"
+          [fieldOptions]="fieldOptions"
+          readonlyFields="{{readonlyFields}}"
+          recordLabel="{{recordLabel}}"
+          orgDefaultAllowed="{{orgDefaultAllowed}}"
+          orgFieldsDefaultingToContextOrg="{{orgFieldsDefaultingToContextOrg}}"
+          contextOrgSelectorPersistKey="{{contextOrgSelectorPersistKey}}"
+          [hideClearFilters]="hideClearFilters"
+          [initialFilterValues]="initialFilterValues"
+          [defaultNewRecord]="defaultNewRecordIdl"
+          [enableUndelete]="enableUndelete"
+          [disableDelete]="disableDelete"
+          [deleteConfirmation]="deleteConfirmation"
+          [disableEdit]="disableEdit"
         [disableOrgFilter]="disableOrgFilter"></eg-admin-page>
-      </ng-container>
-    `
+      }
+      `,
+    imports: [
+        AdminPageComponent,
+        StaffBannerComponent,
+        TitleComponent
+    ]
 })
 
 export class BasicAdminPageComponent implements OnInit {
+    private route = inject(ActivatedRoute);
+    private idl = inject(IdlService);
+
 
     idlClass: string;
     classLabel: string;
@@ -69,12 +81,6 @@ export class BasicAdminPageComponent implements OnInit {
     private schema: string;
     private table: string;
     private defaultNewRecord: Record<string, any>;
-
-    constructor(
-        private route: ActivatedRoute,
-        private idl: IdlService
-    ) {
-    }
 
     ngOnInit() {
         console.log('BasicAdminPageComponent, this', this);

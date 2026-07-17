@@ -11,12 +11,12 @@ function($uibModal , $q , egCore , egConfirmDialog , egAlertDialog , egWorkLog) 
 
     var service = {};
 
-    service.fetch_wide_holds = function(restrictions, order_by, limit, offset) {
+    service.fetch_wide_holds = function(restrictions, order_by, limit, offset, options) {
         return egCore.net.request(
             'open-ils.circ',
             'open-ils.circ.hold.wide_hash.stream',
             egCore.auth.token(),
-            restrictions, order_by, limit, offset
+            restrictions, order_by, limit, offset, options
         );
     }
 

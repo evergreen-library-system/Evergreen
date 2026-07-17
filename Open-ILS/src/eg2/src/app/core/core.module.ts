@@ -10,17 +10,15 @@ import {FormatValuePipe, OrgDateInContextPipe, DueDatePipe,
     OrUnderscoresPipe, Js2JsonPipe, FundLabelPipe, UsrnameOrIdPipe} from './format.service';
 
 @NgModule({
-    declarations: [
-        FormatValuePipe,
-        OrgDateInContextPipe,
-        DueDatePipe,
-        OrUnderscoresPipe,
-        Js2JsonPipe,
-        FundLabelPipe,
-        UsrnameOrIdPipe,
-    ],
     imports: [
-        CommonModule
+        CommonModule,
+        DueDatePipe,
+        FormatValuePipe,
+        FundLabelPipe,
+        Js2JsonPipe,
+        OrgDateInContextPipe,
+        OrUnderscoresPipe,
+        UsrnameOrIdPipe,
     ],
     exports: [
         CommonModule,

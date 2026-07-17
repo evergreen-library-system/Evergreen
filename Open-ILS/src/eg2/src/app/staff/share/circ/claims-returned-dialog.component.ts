@@ -1,29 +1,35 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import {of, from, throwError, concatMap, mergeMap} from 'rxjs';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
 import {EventService} from '@eg/core/event.service';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
     templateUrl: 'claims-returned-dialog.component.html',
-    selector: 'eg-claims-returned-dialog'
+    selector: 'eg-claims-returned-dialog',
+    imports: [StaffCommonModule]
 })
 export class ClaimsReturnedDialogComponent
     extends DialogComponent implements OnInit {
+    private modal: NgbModal;
+    private net = inject(NetService);
+    private auth = inject(AuthService);
+    private evt = inject(EventService);
+
 
     barcodes: string[];
     returnDate: string;
     patronExceeds: boolean;
     completed: {[barcode: string]: boolean} = {};
 
-    constructor(
-        private modal: NgbModal,
-        private net: NetService,
-        private auth: AuthService,
-        private evt: EventService
-    ) { super(modal); }
+    constructor() {
+        const modal = inject(NgbModal);
+        super(modal);
+        this.modal = modal;
+    }
 
     ngOnInit() {
         this.onOpen$.subscribe(_ => {

@@ -6,19 +6,15 @@ import {OrgFamilySelectComponent} from './org-family-select.component';
 import {ReactiveFormsModule} from '@angular/forms';
 
 @NgModule({
-    declarations: [
-        OrgFamilySelectComponent
-    ],
     imports: [
         EgCommonModule,
         EgCoreModule,
         CommonWidgetsModule,
+        OrgFamilySelectComponent,
         ReactiveFormsModule
     ],
     exports: [
         OrgFamilySelectComponent
-    ],
-    providers: [
     ]
 })
 

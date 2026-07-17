@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 import {Location} from '@angular/common';
 import {of} from 'rxjs';
@@ -10,13 +10,32 @@ import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {StringComponent} from '@eg/share/string/string.component';
 import {ReporterService, SRTemplate} from '../share/reporter.service';
+import { StaffCommonModule } from '@eg/staff/common.module';
+import { SRFieldChooserComponent } from './sr-field-chooser.component';
+import { SRSortOrderComponent } from './sr-sort-order.component';
+import { SROutputOptionsComponent } from './sr-output-options.component';
 
 @Component({
     templateUrl: './sr-editor.component.html',
     styleUrls: ['./sr-editor.component.css'],
+    imports: [
+        SROutputOptionsComponent,
+        SRFieldChooserComponent,
+        SRSortOrderComponent,
+        StaffCommonModule
+    ]
 })
 
 export class SREditorComponent implements OnInit {
+    private route = inject(ActivatedRoute);
+    private router = inject(Router);
+    private location = inject(Location);
+    private toast = inject(ToastService);
+    private evt = inject(EventService);
+    private idl = inject(IdlService);
+    private pcrud = inject(PcrudService);
+    private srSvc = inject(ReporterService);
+
 
     rptType = '';
     oldRptType = '';
@@ -39,16 +58,7 @@ export class SREditorComponent implements OnInit {
     @ViewChild('closeFormDialog', { static: false }) closeFormDialog: ConfirmDialogComponent;
 
 
-    constructor(
-        private route: ActivatedRoute,
-        private router: Router,
-        private location: Location,
-        private toast: ToastService,
-        private evt: EventService,
-        private idl: IdlService,
-        private pcrud: PcrudService,
-        private srSvc: ReporterService
-    ) {
+    constructor() {
         const id = this.route.snapshot.paramMap.get('id');
         if ( id === null ) {
             this.templ = new SRTemplate();

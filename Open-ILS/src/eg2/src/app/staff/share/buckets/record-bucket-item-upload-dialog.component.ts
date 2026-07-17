@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import {Component, Input, OnInit, OnDestroy, ViewChild} from '@angular/core';
+import { Component, Input, OnInit, OnDestroy, ViewChild, inject } from '@angular/core';
 import {firstValueFrom} from 'rxjs';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
@@ -10,13 +10,22 @@ import {PcrudService} from '@eg/core/pcrud.service';
 import {EventService} from '@eg/core/event.service';
 import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
     selector: 'eg-record-bucket-item-upload-dialog',
-    templateUrl: './record-bucket-item-upload-dialog.component.html'
+    templateUrl: './record-bucket-item-upload-dialog.component.html',
+    imports: [StaffCommonModule]
 })
 export class RecordBucketItemUploadDialogComponent
     extends DialogComponent implements OnInit, OnDestroy {
+    private auth = inject(AuthService);
+    private net = inject(NetService);
+    private pcrud = inject(PcrudService);
+    private evt = inject(EventService);
+    private idl = inject(IdlService);
+    private modal: NgbModal;
+
 
     @Input() containerObjects: any[];
     @Input() bucketLabel: string;
@@ -32,15 +41,12 @@ export class RecordBucketItemUploadDialogComponent
     csvColumnNumber = 1;
     maxCsvColumns = 100;
 
-    constructor(
-        private auth: AuthService,
-        private net: NetService,
-        private pcrud: PcrudService,
-        private evt: EventService,
-        private idl: IdlService,
-        private modal: NgbModal
-    ) {
+    constructor() {
+        const modal = inject(NgbModal);
+
         super(modal);
+
+        this.modal = modal;
     }
 
     ngOnInit() {

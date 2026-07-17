@@ -1,5 +1,5 @@
 /* eslint-disable no-magic-numbers */
-import {Injectable} from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import {OrgService} from '@eg/core/org.service';
 
 /*
@@ -20,8 +20,8 @@ interface UnapiParams {
 
 @Injectable()
 export class UnapiService {
+    private org = inject(OrgService);
 
-    constructor(private org: OrgService) {}
 
     createUrl(params: UnapiParams): string {
         const depth = params.depth || 0;

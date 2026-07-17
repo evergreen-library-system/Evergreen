@@ -1,4 +1,4 @@
-import {Component, Input, ViewChild, Renderer2} from '@angular/core';
+import { Component, Input, ViewChild, Renderer2, inject } from '@angular/core';
 import {Observable, switchMap, map, tap} from 'rxjs';
 import {AuthService} from '@eg/core/auth.service';
 import {IdlObject} from '@eg/core/idl.service';
@@ -6,9 +6,11 @@ import {EventService} from '@eg/core/event.service';
 import {NetService} from '@eg/core/net.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {ToastService} from '@eg/share/toast/toast.service';
-import {NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
+import {NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {StringComponent} from '@eg/share/string/string.component';
+import { FormsModule } from '@angular/forms';
+
 
 
 /**
@@ -17,11 +19,22 @@ import {StringComponent} from '@eg/share/string/string.component';
 
 @Component({
     selector: 'eg-replace-barcode-dialog',
-    templateUrl: 'replace-barcode-dialog.component.html'
+    templateUrl: 'replace-barcode-dialog.component.html',
+    imports: [
+        FormsModule,
+        StringComponent
+    ]
 })
 
 export class ReplaceBarcodeDialogComponent
     extends DialogComponent {
+    private toast = inject(ToastService);
+    private auth = inject(AuthService);
+    private net = inject(NetService);
+    private evt = inject(EventService);
+    private pcrud = inject(PcrudService);
+    private renderer = inject(Renderer2);
+
 
     @Input() copyIds: number[];
     ids: number[]; // copy of list so we can pop()
@@ -38,17 +51,6 @@ export class ReplaceBarcodeDialogComponent
 
     @ViewChild('errorMsg', { static: true })
     private errorMsg: StringComponent;
-
-    constructor(
-        private modal: NgbModal, // required for passing to parent
-        private toast: ToastService,
-        private auth: AuthService,
-        private net: NetService,
-        private evt: EventService,
-        private pcrud: PcrudService,
-        private renderer: Renderer2) {
-        super(modal); // required for subclassing
-    }
 
     open(args: NgbModalOptions): Observable<boolean> {
         this.ids = [].concat(this.copyIds);

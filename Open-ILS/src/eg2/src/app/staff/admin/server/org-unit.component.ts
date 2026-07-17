@@ -1,10 +1,9 @@
 /* eslint-disable eqeqeq, max-len, no-magic-numbers */
-import {Component, ViewChild, OnInit} from '@angular/core';
+import { Component, ViewChild, OnInit, inject } from '@angular/core';
 import {Tree, TreeNode} from '@eg/share/tree/tree';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
-import {NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
+import {NgbNavChangeEvent, NgbNavModule} from '@ng-bootstrap/ng-bootstrap';
 import {OrgService} from '@eg/core/org.service';
-import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {StringComponent} from '@eg/share/string/string.component';
@@ -12,12 +11,30 @@ import {StringService} from '@eg/share/string/string.service';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {PermService} from '@eg/core/perm.service';
+import { StaffCommonModule } from '@eg/staff/common.module';
+import { TreeComponent } from '@eg/share/tree/tree.component';
+import { FmRecordEditorModule } from '@eg/share/fm-editor/fm-editor.module';
+import { OrgAddressComponent } from './org-addr.component';
 
 @Component({
     templateUrl: './org-unit.component.html',
-    styleUrls: [ './org-unit.component.css' ],
+    styleUrls: ['./org-unit.component.css'],
+    imports: [
+        FmRecordEditorModule,
+        NgbNavModule,
+        StaffCommonModule,
+        TreeComponent,
+        OrgAddressComponent
+    ]
 })
 export class OrgUnitComponent implements OnInit {
+    private idl = inject(IdlService);
+    private org = inject(OrgService);
+    private pcrud = inject(PcrudService);
+    private strings = inject(StringService);
+    private toast = inject(ToastService);
+    private perm = inject(PermService);
+
 
     tree: Tree;
     selected: TreeNode;
@@ -28,16 +45,6 @@ export class OrgUnitComponent implements OnInit {
     @ViewChild('editString', { static: true }) editString: StringComponent;
     @ViewChild('errorString', { static: true }) errorString: StringComponent;
     @ViewChild('delConfirm', { static: true }) delConfirm: ConfirmDialogComponent;
-
-    constructor(
-        private idl: IdlService,
-        private org: OrgService,
-        private auth: AuthService,
-        private pcrud: PcrudService,
-        private strings: StringService,
-        private toast: ToastService,
-        private perm: PermService,
-    ) {}
 
 
     ngOnInit() {

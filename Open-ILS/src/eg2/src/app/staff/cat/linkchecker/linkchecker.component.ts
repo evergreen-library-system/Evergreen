@@ -1,6 +1,6 @@
 import {Router, ActivatedRoute} from '@angular/router';
 import {AuthService} from '@eg/core/auth.service';
-import {Component, OnInit, ViewChild} from '@angular/core';
+import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 import {NewSessionDialogComponent} from './new-session-dialog.component';
 import {GridComponent} from '@eg/share/grid/grid.component';
@@ -8,16 +8,31 @@ import {GridDataSource} from '@eg/share/grid/grid';
 import {GridFlatDataService} from '@eg/share/grid/grid-flat-data.service';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
-import {OrgFamily} from '@eg/share/org-family-select/org-family-select.component';
+import {OrgFamily, OrgFamilySelectComponent} from '@eg/share/org-family-select/org-family-select.component';
 import {OrgService} from '@eg/core/org.service';
 import {Pager} from '@eg/share/util/pager';
 import {PermService} from '@eg/core/perm.service';
 import {StringComponent} from '@eg/share/string/string.component';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
-    templateUrl: 'linkchecker.component.html'
+    templateUrl: 'linkchecker.component.html',
+    imports: [
+        NewSessionDialogComponent,
+        OrgFamilySelectComponent,
+        StaffCommonModule
+    ]
 })
 export class LinkCheckerComponent implements OnInit {
+    private auth = inject(AuthService);
+    private flatData = inject(GridFlatDataService);
+    private idl = inject(IdlService);
+    private net = inject(NetService);
+    private org = inject(OrgService);
+    private perm = inject(PermService);
+    private route = inject(ActivatedRoute);
+    private router = inject(Router);
+
 
     viewIdlClass = 'uvsa';
     viewSortField = 'name';
@@ -51,17 +66,6 @@ export class LinkCheckerComponent implements OnInit {
     @ViewChild('createSuccessString', { static: false }) createSuccessString: StringComponent;
     @ViewChild('createFailedString', { static: false }) createFailedString: StringComponent;
     @ViewChild('deleteSessionConfirmDialog', { static: true }) deleteSessionConfirmDialog: ConfirmDialogComponent;
-
-    constructor(
-        private auth: AuthService,
-        private flatData: GridFlatDataService,
-        private idl: IdlService,
-        private net: NetService,
-        private org: OrgService,
-        private perm: PermService,
-        private route: ActivatedRoute,
-        private router: Router,
-    ) {}
 
     ngOnInit() {
 

@@ -1,7 +1,8 @@
-import {Component, OnInit, Input, ViewChild} from '@angular/core';
+import { Component, OnInit, Input, ViewChild, inject } from '@angular/core';
 import {IdlObject} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {ComboboxComponent, ComboboxEntry} from '@eg/share/combobox/combobox.component';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 export class CompositeNewPointValues {
     pointType: string;
@@ -14,9 +15,12 @@ export class CompositeNewPointValues {
 
 @Component({
     selector: 'eg-composite-new-point',
-    templateUrl: 'composite-new.component.html'
+    templateUrl: 'composite-new.component.html',
+    imports: [StaffCommonModule]
 })
 export class CompositeNewPointComponent implements OnInit {
+    private pcrud = inject(PcrudService);
+
 
     public values: CompositeNewPointValues;
 
@@ -36,9 +40,7 @@ export class CompositeNewPointComponent implements OnInit {
 
     @ViewChild('valComboBox', {static: false}) valComboBox: ComboboxComponent;
 
-    constructor(
-        private pcrud: PcrudService
-    ) {
+    constructor() {
         this.values = new CompositeNewPointValues();
         this.attrTypeDefs = [];
         this.attrTypes = [];

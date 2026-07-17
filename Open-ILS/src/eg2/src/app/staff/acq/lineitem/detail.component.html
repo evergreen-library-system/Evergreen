@@ -4,41 +4,45 @@
   <li role="presentation" ngbNavItem="attrs">
     <a role="tab" ngbNavLink i18n role="tab">Attributes</a>
     <ng-template ngbNavContent>
-      <ng-container *ngIf="lineitem">
+      @if (lineitem) {
         <div class="mt-3">
-          <div class="row" *ngFor="let attr of lineitem.attributes()">
-            <div class="col-lg-2">{{attrLabel(attr)}}</div>
-            <div class="col-lg-10 border-start">{{attr.attr_value()}}</div>
-          </div>
+          @for (attr of lineitem.attributes(); track attr) {
+            <div class="row">
+              <div class="col-lg-2">{{attrLabel(attr)}}</div>
+              <div class="col-lg-10 border-start">{{attr.attr_value()}}</div>
+            </div>
+          }
         </div>
-      </ng-container>
+      }
     </ng-template>
   </li>
   <li role="presentation" ngbNavItem="marc-html">
     <a role="tab" ngbNavLink i18n>MARC View</a>
     <ng-template ngbNavContent>
-      <ng-container *ngIf="lineitem">
+      @if (lineitem) {
         <div class="mt-3">
-          <eg-marc-html recordType="bib" [recordId]="lineitem.eg_bib_id()" 
-            [recordXml]="lineitem.marc()"> </eg-marc-html>
+          <eg-marc-html recordType="bib" [recordId]="lineitem.eg_bib_id()"
+          [recordXml]="lineitem.marc()"> </eg-marc-html>
         </div>
-      </ng-container>
+      }
     </ng-template>
   </li>
   <li role="presentation" ngbNavItem="marc-edit">
     <a role="tab" ngbNavLink i18n>MARC Edit</a>
     <ng-template ngbNavContent>
-      <ng-container *ngIf="lineitem">
+      @if (lineitem) {
         <div class="mt-3">
-          <div *ngIf="lineitem.eg_bib_id()" class="alert alert-warning" i18n>
+          @if (lineitem.eg_bib_id()) {
+            <div class="alert alert-warning" i18n>
             Changes to line items that are linked to catalog records will
             not result in changes to the cataloged record.
           </div>
+          }
           <eg-marc-editor [recordXml]="lineitem.marc()" [inPlaceMode]="true"
             [recordType]="lineitem" (recordSaved)="saveMarcChanges($event)">
           </eg-marc-editor>
         </div>
-      </ng-container>
+      }
     </ng-template>
   </li>
 </ul>

@@ -2,7 +2,9 @@
 
 <ng-template #contactTmpl let-provider="row">
   <ul>
-    <li *ngFor="let c of provider.contacts()">{{c.name()}}</li>
+    @for (c of provider.contacts(); track c) {
+      <li>{{c.name()}}</li>
+    }
   </ul>
 </ng-template>
 

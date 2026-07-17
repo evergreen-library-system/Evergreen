@@ -1408,7 +1408,7 @@ function($scope,  $routeParams , $q , $window , $timeout,  $location , egCore ,
 
     var usr_id = $routeParams.id;
 
-    $scope.totals = {owed : 0, total_out : 0, overdue : 0}
+    $scope.totals = {owed : 0, total_out : 0, overdue : 0, lost : 0}
 
     var grid = $scope.gridControls = {
         activateItem : function(item) {
@@ -1425,6 +1425,7 @@ function($scope,  $routeParams , $q , $window , $timeout,  $location , egCore ,
                     item.stats = stats;
                     $scope.totals.total_out += stats.checkouts.total_out; 
                     $scope.totals.overdue += stats.checkouts.overdue; 
+                    $scope.totals.lost += stats.checkouts.lost;
                 });
             }
         },

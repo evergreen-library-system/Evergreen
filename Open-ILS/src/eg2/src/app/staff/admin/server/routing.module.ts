@@ -6,6 +6,7 @@ import {OrgUnitTypeComponent} from './org-unit-type.component';
 import {CustomOrgUnitTreesComponent} from './custom-org-unit-trees.component';
 import {PrintTemplateComponent} from './print-template.component';
 import {PermGroupTreeComponent} from './perm-group-tree.component';
+import {CallNumberClassComponent} from '@eg/staff/admin/server/call-number-class/call-number-class.component';
 
 const routes: Routes = [{
     path: 'splash',
@@ -110,6 +111,9 @@ const routes: Routes = [{
     component: BasicAdminPageComponent,
     data: [{schema: 'asset',
         table: 'call_number_prefix', readonlyFields: 'label_sortkey'}]
+}, {
+    path: 'asset/call_number_class',
+    component: CallNumberClassComponent
 }, {
     path: 'asset/call_number_suffix',
     component: BasicAdminPageComponent,

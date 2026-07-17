@@ -1,6 +1,6 @@
 /* eslint-disable no-self-assign, no-magic-numbers */
-import {Component, Input, OnInit, OnDestroy, ViewChild} from '@angular/core';
-import {Router} from '@angular/router';
+import { Component, Input, OnInit, OnDestroy, ViewChild, inject } from '@angular/core';
+import {Router, RouterModule} from '@angular/router';
 import {Subscription, tap} from 'rxjs';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
@@ -15,6 +15,11 @@ import {PoService} from './po.service';
 import {LineitemService} from '../lineitem/lineitem.service';
 import {CancelDialogComponent} from '../lineitem/cancel-dialog.component';
 import {LinkInvoiceDialogComponent} from '../lineitem/link-invoice-dialog.component';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { PoNotesComponent } from './notes.component';
+import { BoolDisplayComponent } from '@eg/share/util/bool.component';
+import { ProgressInlineComponent } from '@eg/share/dialog/progress-inline.component';
 
 const PO_ACTIVATION_WARNINGS = [
     'ACQ_FUND_EXCEEDS_WARN_PERCENT'
@@ -22,10 +27,33 @@ const PO_ACTIVATION_WARNINGS = [
 
 @Component({
     templateUrl: 'summary.component.html',
-    styleUrls: [ './summary.component.css' ],
-    selector: 'eg-acq-po-summary'
+    styleUrls: ['./summary.component.css'],
+    selector: 'eg-acq-po-summary',
+    imports: [
+        BoolDisplayComponent,
+        CancelDialogComponent,
+        CommonModule,
+        ConfirmDialogComponent,
+        FormsModule,
+        LinkInvoiceDialogComponent,
+        PoNotesComponent,
+        ProgressDialogComponent,
+        ProgressInlineComponent,
+        RouterModule,
+    ]
 })
 export class PoSummaryComponent implements OnInit, OnDestroy {
+    private router = inject(Router);
+    private evt = inject(EventService);
+    private idl = inject(IdlService);
+    private net = inject(NetService);
+    private org = inject(OrgService);
+    private pcrud = inject(PcrudService);
+    private auth = inject(AuthService);
+    private store = inject(ServerStoreService);
+    private liService = inject(LineitemService);
+    private poService = inject(PoService);
+
 
     private _poId: number;
     @Input() set poId(id: number) {
@@ -63,19 +91,6 @@ export class PoSummaryComponent implements OnInit, OnDestroy {
     @ViewChild('progressDialog') progressDialog: ProgressDialogComponent;
     @ViewChild('confirmFinalize') confirmFinalize: ConfirmDialogComponent;
     @ViewChild('confirmActivate') confirmActivate: ConfirmDialogComponent;
-
-    constructor(
-        private router: Router,
-        private evt: EventService,
-        private idl: IdlService,
-        private net: NetService,
-        private org: OrgService,
-        private pcrud: PcrudService,
-        private auth: AuthService,
-        private store: ServerStoreService,
-        private liService: LineitemService,
-        private poService: PoService
-    ) {}
 
     ngOnInit() {
         this.load().then(_ => this.initDone = true);

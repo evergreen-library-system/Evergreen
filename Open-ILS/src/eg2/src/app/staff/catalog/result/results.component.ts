@@ -1,15 +1,21 @@
-import {Component, OnInit, OnDestroy, HostListener} from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener, inject } from '@angular/core';
 import {Subscription} from 'rxjs';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {CatalogService} from '@eg/share/catalog/catalog.service';
-import {BibRecordService} from '@eg/share/catalog/bib-record.service';
 import {CatalogUrlService} from '@eg/share/catalog/catalog-url.service';
 import {CatalogSearchContext, CatalogSearchState} from '@eg/share/catalog/search-context';
-import {PcrudService} from '@eg/core/pcrud.service';
 import {StaffCatalogService} from '../catalog.service';
 import {IdlObject} from '@eg/core/idl.service';
 import {BasketService} from '@eg/share/catalog/basket.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
+import { ResultPaginationComponent } from './pagination.component';
+import { ResultFacetsComponent } from './facets.component';
+import { ResultRecordComponent } from './record.component';
+import { CommonModule } from '@angular/common';
+import { TitleComponent } from '@eg/share/title/title.component';
+import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
+import { FormsModule } from '@angular/forms';
+import { BrowsePagerComponent } from './browse-pager.component';
 
 /* eslint-disable no-magic-numbers */
 const resultsCols = [10,12];
@@ -19,9 +25,27 @@ const mobileWidth = 992;
 @Component({
     selector: 'eg-catalog-results',
     templateUrl: 'results.component.html',
-    styleUrls: ['results.component.css']
+    styleUrls: ['results.component.css'],
+    imports: [
+        CommonModule,
+        FormsModule,
+        NgbCollapseModule,
+        ResultFacetsComponent,
+        ResultRecordComponent,
+        ResultPaginationComponent,
+        TitleComponent,
+        BrowsePagerComponent
+    ]
 })
 export class ResultsComponent implements OnInit, OnDestroy {
+    private route = inject(ActivatedRoute);
+    private cat = inject(CatalogService);
+    private catUrl = inject(CatalogUrlService);
+    private staffCat = inject(StaffCatalogService);
+    private serverStore = inject(ServerStoreService);
+    private basket = inject(BasketService);
+    private router = inject(Router);
+
 
     searchContext: CatalogSearchContext;
 
@@ -45,18 +69,6 @@ export class ResultsComponent implements OnInit, OnDestroy {
         this.facetsHorizontal =
         event.target.innerWidth > mobileWidth;
     }
-
-    constructor(
-        private route: ActivatedRoute,
-        private pcrud: PcrudService,
-        private cat: CatalogService,
-        private bib: BibRecordService,
-        private catUrl: CatalogUrlService,
-        private staffCat: StaffCatalogService,
-        private serverStore: ServerStoreService,
-        private basket: BasketService,
-        private router: Router
-    ) {}
 
     ngOnInit() {
         this.searchContext = this.staffCat.searchContext;

@@ -1,13 +1,13 @@
 <!-- drop-down toggle link -->
 <ng-template #dropdownToggle>
-  <ng-container *ngIf="!col.isFiltered">
+  @if (!col.isFiltered) {
     <span id="filter_toggle_{{col.name}}" i18n hidden>Filter by {{col.headerLabel}}</span>
     <span class="material-icons mat-icon-in-button" attr.aria-hidden="true" title="Filter by {{col.headerLabel}}" i18n-title>filter_list</span>
-  </ng-container>
-  <ng-container *ngIf="col.isFiltered">
+  }
+  @if (col.isFiltered) {
     <span id="filter_toggle_{{col.name}}" i18n hidden>Edit {{col.headerLabel}} filter</span>
     <span class="material-icons mat-icon-in-button" attr.aria-hidden="true" title="Edit {{col.headerLabel}} filter" i18n-title>create</span>
-  </ng-container>
+  }
 </ng-template>
 
 <!-- apply/clear actions are the same for all filter types -->
@@ -23,7 +23,7 @@
 
 <!-- various number filters all use the same operators -->
 <ng-template #numericOperators>
-  <select id="eg-filter-op-select-{{col.name}}" class="form-control" 
+  <select id="eg-filter-op-select-{{col.name}}" class="form-control"
     [(ngModel)]="col.filterOperator" (change)="operatorChanged(col)">
     <option value="=" i18n>Is exactly</option>
     <option value="!=" i18n>Is not</option>
@@ -61,70 +61,79 @@
   </div>
 </ng-template>
 
-<div *ngIf="col.isFilterable" class="eg-grid-filter-control">
-  <div [ngSwitch]="col.datatype">
-    <div *ngSwitchCase="'link'">
-      <div class="input-group">
-        <div ngbDropdown container="body" class="d-inline-block py-1" autoClose="outside" placement="bottom-left" 
-          [ngClass]="{'border rounded border-secondary eg-grid-col-is-filtered' : col.isFiltered}">
-          <button type="button" ngbDropdownToggle class="no-dropdown-caret btn">
-            <ng-container *ngTemplateOutlet="dropdownToggle"></ng-container>
-          </button>
-          <div ngbDropdownMenu class="eg-grid-filter-menu">
-            <div class="dropdown-item">
-              <div>
-                <eg-combobox [asyncSupportsEmptyTermClick]="col.asyncSupportsEmptyTermClick" 
-                  [(ngModel)]="linkFilterEntry" [idlClass]="col.idlFieldDef.class"
-                  (ngModelChange)="applyFilterCommon(col)"
-                  [disabled]="col.filterInputDisabled || context.dataSource.requestingData"
-                  i18n-placeholder placeholder="Enter value to filter by"></eg-combobox>
+@if (col.isFilterable) {
+  <div class="eg-grid-filter-control">
+    <div>
+      @switch (col.datatype) {
+        @case ('link') {
+          <div>
+            <div class="input-group">
+              <div ngbDropdown container="body" class="d-inline-block py-1" autoClose="outside" placement="bottom-left"
+                [ngClass]="{'border rounded border-secondary eg-grid-col-is-filtered' : col.isFiltered}">
+                <button type="button" ngbDropdownToggle class="no-dropdown-caret btn">
+                  <ng-container *ngTemplateOutlet="dropdownToggle"></ng-container>
+                </button>
+                <div ngbDropdownMenu class="eg-grid-filter-menu">
+                  <div class="dropdown-item">
+                    <div>
+                      <eg-combobox [asyncSupportsEmptyTermClick]="col.asyncSupportsEmptyTermClick"
+                        [(ngModel)]="linkFilterEntry" [idlClass]="col.idlFieldDef.class"
+                        (ngModelChange)="applyFilterCommon(col)"
+                        [disabled]="col.filterInputDisabled || context.dataSource.requestingData"
+                      i18n-placeholder placeholder="Enter value to filter by"></eg-combobox>
+                    </div>
+                    <ng-container *ngTemplateOutlet="actionsTemplate"></ng-container>
+                  </div>
+                </div>
               </div>
-              <ng-container *ngTemplateOutlet="actionsTemplate"></ng-container>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
-    <div *ngSwitchCase="'bool'">
-      <div class="input-group">
-        <div ngbDropdown container="body" class="d-inline-block py-1" autoClose="outside" placement="bottom-left" 
-          [ngClass]="{'border rounded border-secondary eg-grid-col-is-filtered' : col.isFiltered}">
-          <button type="button" ngbDropdownToggle class="no-dropdown-caret btn">
-            <ng-container *ngTemplateOutlet="dropdownToggle"></ng-container>
-          </button>
-          <div ngbDropdownMenu class="eg-grid-filter-menu">
-            <div class="dropdown-item">
-              <div>
-                <select class="form-select" [(ngModel)]="col.filterValue"
-                  (change)="applyFilterCommon(col)"
-                  [disabled]="col.filterInputDisabled || context.dataSource.requestingData">
-                  <option value="" i18n>Any</option>
-                  <option value="t" i18n>Yes</option>
-                  <option value="f" i18n>No</option>
-                </select>
+        }
+        @case ('bool') {
+          <div>
+            <div class="input-group">
+              <div ngbDropdown container="body" class="d-inline-block py-1" autoClose="outside" placement="bottom-left"
+                [ngClass]="{'border rounded border-secondary eg-grid-col-is-filtered' : col.isFiltered}">
+                <button type="button" ngbDropdownToggle class="no-dropdown-caret btn">
+                  <ng-container *ngTemplateOutlet="dropdownToggle"></ng-container>
+                </button>
+                <div ngbDropdownMenu class="eg-grid-filter-menu">
+                  <div class="dropdown-item">
+                    <div>
+                      <select class="form-select" [(ngModel)]="col.filterValue"
+                        (change)="applyFilterCommon(col)"
+                        [disabled]="col.filterInputDisabled || context.dataSource.requestingData">
+                        <option value="" i18n>Any</option>
+                        <option value="t" i18n>Yes</option>
+                        <option value="f" i18n>No</option>
+                      </select>
+                    </div>
+                    <ng-container *ngTemplateOutlet="actionsTemplate"></ng-container>
+                  </div>
+                </div>
               </div>
-              <ng-container *ngTemplateOutlet="actionsTemplate"></ng-container>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
-    <div *ngSwitchCase="'text'">
-      <div class="input-group">
-        <div ngbDropdown container="body" class="d-inline-block py-1" autoClose="outside" placement="bottom-left" 
-          [ngClass]="{'border rounded border-secondary eg-grid-col-is-filtered' : col.isFiltered}">
-          <button type="button" ngbDropdownToggle class="no-dropdown-caret btn">
-            <ng-container *ngTemplateOutlet="dropdownToggle"></ng-container>
-          </button>
-          <div ngbDropdownMenu class="eg-grid-filter-menu">
-            <div class="dropdown-item">
-              <div>
-                <label class="form-label" for="eg-filter-op-select-{{col.name}}" i18n>Operator</label>
-                <select id="eg-filter-op-select-{{col.name}}" class="form-control" 
-                  [(ngModel)]="col.filterOperator" (change)="operatorChanged(col)">
+        }
+        @case ('text') {
+          <div>
+            <div class="input-group">
+              <div ngbDropdown container="body" class="d-inline-block py-1" autoClose="outside" placement="bottom-left"
+                [ngClass]="{'border rounded border-secondary eg-grid-col-is-filtered' : col.isFiltered}">
+                <button type="button" ngbDropdownToggle class="no-dropdown-caret btn">
+                  <ng-container *ngTemplateOutlet="dropdownToggle"></ng-container>
+                </button>
+                <div ngbDropdownMenu class="eg-grid-filter-menu">
+                  <div class="dropdown-item">
+                    <div>
+                      <label class="form-label" for="eg-filter-op-select-{{col.name}}" i18n>Operator</label>
+                      <select id="eg-filter-op-select-{{col.name}}" class="form-control"
+                        [(ngModel)]="col.filterOperator" (change)="operatorChanged(col)">
                   <option value="=" i18n>Is exactly</option>
                   <option value="!=" i18n>Is not</option>
-                  <option *ngIf="col.allowFilterILike" value="ilike" i18n>Contains</option>
+                  @if (col.allowFilterILike) {
+<option value="ilike" i18n>Contains</option>
+}
                   <option value="like" i18n>Contains (case-sensitive)</option>
                   <option value="not like" i18n>Does not contain</option>
                   <option value="startswith" i18n>Starts with</option>
@@ -140,109 +149,121 @@
               <div class="pt-2">
                 <input type="text" class="form-control" 
                   [(ngModel)]="col.filterValue" (change)="applyFilterCommon(col)"
-                  [disabled]="col.filterInputDisabled || context.dataSource.requestingData" 
-                  i18n-placeholder placeholder="Enter value to filter by">
+                        [disabled]="col.filterInputDisabled || context.dataSource.requestingData"
+                        i18n-placeholder placeholder="Enter value to filter by">
+                    </div>
+                    <ng-container *ngTemplateOutlet="actionsTemplate"></ng-container>
+                  </div>
+                </div>
               </div>
-              <ng-container *ngTemplateOutlet="actionsTemplate"></ng-container>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
-    <div *ngSwitchCase="'int'">
-      <div class="input-group">
-        <div ngbDropdown container="body" class="d-inline-block py-1" autoClose="outside" placement="bottom-left" 
-          [ngClass]="{'border rounded border-secondary eg-grid-col-is-filtered' : col.isFiltered}">
-          <button type="button" ngbDropdownToggle class="no-dropdown-caret btn">
-            <ng-container *ngTemplateOutlet="dropdownToggle"></ng-container>
-          </button>
-          <div ngbDropdownMenu class="eg-grid-filter-menu">
-            <div class="dropdown-item">
-              <div>
-                <label class="form-label" for="eg-filter-op-select-{{col.name}}" i18n>Operator</label>
-                <ng-container *ngTemplateOutlet="numericOperators"></ng-container>
+        }
+        @case ('int') {
+          <div>
+            <div class="input-group">
+              <div ngbDropdown container="body" class="d-inline-block py-1" autoClose="outside" placement="bottom-left"
+                [ngClass]="{'border rounded border-secondary eg-grid-col-is-filtered' : col.isFiltered}">
+                <button type="button" ngbDropdownToggle class="no-dropdown-caret btn">
+                  <ng-container *ngTemplateOutlet="dropdownToggle"></ng-container>
+                </button>
+                <div ngbDropdownMenu class="eg-grid-filter-menu">
+                  <div class="dropdown-item">
+                    <div>
+                      <label class="form-label" for="eg-filter-op-select-{{col.name}}" i18n>Operator</label>
+                      <ng-container *ngTemplateOutlet="numericOperators"></ng-container>
+                    </div>
+                    <div class="pt-2">
+                      <input type="number" min="0" step="1" class="form-control"
+                        [(ngModel)]="col.filterValue" (change)="applyFilterCommon(col)"
+                        [disabled]="col.filterInputDisabled || context.dataSource.requestingData"/>
+                    </div>
+                    <ng-container *ngTemplateOutlet="actionsTemplate"></ng-container>
+                  </div>
+                </div>
               </div>
-              <div class="pt-2">
-                <input type="number" min="0" step="1" class="form-control" 
-                  [(ngModel)]="col.filterValue" (change)="applyFilterCommon(col)"
-                  [disabled]="col.filterInputDisabled || context.dataSource.requestingData"/>
-              </div>
-              <ng-container *ngTemplateOutlet="actionsTemplate"></ng-container>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
-    <div *ngSwitchCase="'id'">
-      <div class="input-group">
-        <div ngbDropdown container="body" class="d-inline-block py-1" autoClose="outside" placement="bottom-left" 
-          [ngClass]="{'border rounded border-secondary eg-grid-col-is-filtered' : col.isFiltered}">
-          <button type="button" ngbDropdownToggle class="no-dropdown-caret btn">
-            <ng-container *ngTemplateOutlet="dropdownToggle"></ng-container>
-          </button>
-          <div ngbDropdownMenu class="eg-grid-filter-menu">
-            <div class="dropdown-item">
-              <div>
-                <label class="form-label" for="eg-filter-op-select-{{col.name}}" i18n>Operator</label>
-                <ng-container *ngTemplateOutlet="numericOperators"></ng-container>
+        }
+        @case ('id') {
+          <div>
+            <div class="input-group">
+              <div ngbDropdown container="body" class="d-inline-block py-1" autoClose="outside" placement="bottom-left"
+                [ngClass]="{'border rounded border-secondary eg-grid-col-is-filtered' : col.isFiltered}">
+                <button type="button" ngbDropdownToggle class="no-dropdown-caret btn">
+                  <ng-container *ngTemplateOutlet="dropdownToggle"></ng-container>
+                </button>
+                <div ngbDropdownMenu class="eg-grid-filter-menu">
+                  <div class="dropdown-item">
+                    <div>
+                      <label class="form-label" for="eg-filter-op-select-{{col.name}}" i18n>Operator</label>
+                      <ng-container *ngTemplateOutlet="numericOperators"></ng-container>
+                    </div>
+                    <div class="pt-2">
+                      <input type="number" min="0" step="1" class="form-control"
+                        [(ngModel)]="col.filterValue" (change)="applyFilterCommon(col)"
+                        [disabled]="col.filterInputDisabled || context.dataSource.requestingData">
+                    </div>
+                    <ng-container *ngTemplateOutlet="actionsTemplate"></ng-container>
+                  </div>
+                </div>
               </div>
-              <div class="pt-2">
-                <input type="number" min="0" step="1" class="form-control" 
-                  [(ngModel)]="col.filterValue" (change)="applyFilterCommon(col)"
-                  [disabled]="col.filterInputDisabled || context.dataSource.requestingData">
-              </div>
-              <ng-container *ngTemplateOutlet="actionsTemplate"></ng-container>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
-    <div *ngSwitchCase="'float'">
-      <ng-container *ngTemplateOutlet="numericFilter"></ng-container>
-    </div>
-    <div *ngSwitchCase="'number'">
-      <ng-container *ngTemplateOutlet="numericFilter"></ng-container>
-    </div>
-    <div *ngSwitchCase="'money'">
-      <div class="input-group">
-        <div ngbDropdown container="body" class="d-inline-block py-1" autoClose="outside" placement="bottom-left" 
-          [ngClass]="{'border rounded border-secondary eg-grid-col-is-filtered' : col.isFiltered}">
-          <button type="button" ngbDropdownToggle class="no-dropdown-caret btn">
-            <ng-container *ngTemplateOutlet="dropdownToggle"></ng-container>
-          </button>
-          <div ngbDropdownMenu class="eg-grid-filter-menu">
-            <div class="dropdown-item">
-              <div>
-                <label class="form-label" for="eg-filter-op-select-{{col.name}}" i18n>Operator</label>
-                <ng-container *ngTemplateOutlet="numericOperators"></ng-container>
+        }
+        @case ('float') {
+          <div>
+            <ng-container *ngTemplateOutlet="numericFilter"></ng-container>
+          </div>
+        }
+        @case ('number') {
+          <div>
+            <ng-container *ngTemplateOutlet="numericFilter"></ng-container>
+          </div>
+        }
+        @case ('money') {
+          <div>
+            <div class="input-group">
+              <div ngbDropdown container="body" class="d-inline-block py-1" autoClose="outside" placement="bottom-left"
+                [ngClass]="{'border rounded border-secondary eg-grid-col-is-filtered' : col.isFiltered}">
+                <button type="button" ngbDropdownToggle class="no-dropdown-caret btn">
+                  <ng-container *ngTemplateOutlet="dropdownToggle"></ng-container>
+                </button>
+                <div ngbDropdownMenu class="eg-grid-filter-menu">
+                  <div class="dropdown-item">
+                    <div>
+                      <label class="form-label" for="eg-filter-op-select-{{col.name}}" i18n>Operator</label>
+                      <ng-container *ngTemplateOutlet="numericOperators"></ng-container>
+                    </div>
+                    <div class="pt-2">
+                      <input type="number" step="0.01" class="form-control"
+                        [(ngModel)]="col.filterValue" (change)="applyFilterCommon(col)"
+                        [disabled]="col.filterInputDisabled || context.dataSource.requestingData"/>
+                    </div>
+                    <ng-container *ngTemplateOutlet="actionsTemplate"></ng-container>
+                  </div>
+                </div>
               </div>
-              <div class="pt-2">
-                <input type="number" step="0.01" class="form-control" 
-                  [(ngModel)]="col.filterValue" (change)="applyFilterCommon(col)"
-                  [disabled]="col.filterInputDisabled || context.dataSource.requestingData"/>
-              </div>
-              <ng-container *ngTemplateOutlet="actionsTemplate"></ng-container>
             </div>
-         </div>
-        </div>
-      </div>
-    </div>
-    <div *ngSwitchCase="'timestamp'">
-      <div class="input-group">
-        <!-- autoClose="outside" because editing the date widgets, which open
-             their open popups, registers to the dropdown as clicking 
-             outside the dropdown -->
-        <div ngbDropdown container="body" class="d-inline-block py-1" autoClose="outside" placement="bottom-left" 
-          [ngClass]="{'border rounded border-secondary eg-grid-col-is-filtered' : col.isFiltered}">
-          <button type="button" ngbDropdownToggle class="no-dropdown-caret btn">
-            <ng-container *ngTemplateOutlet="dropdownToggle"></ng-container>
-          </button>
-          <div ngbDropdownMenu class="eg-grid-filter-menu">
-            <div class="dropdown-item">
-              <div>
-                <label class="form-label" for="eg-filter-op-select-{{col.name}}" i18n>Operator</label>
-                <select id="eg-filter-op-select-{{col.name}}" class="form-control" 
-                  [(ngModel)]="col.filterOperator" (change)="operatorChanged(col)">
+          </div>
+        }
+        @case ('timestamp') {
+          <div>
+            <div class="input-group">
+              <!-- autoClose="outside" because editing the date widgets, which open
+              their open popups, registers to the dropdown as clicking
+              outside the dropdown -->
+              <div ngbDropdown container="body" class="d-inline-block py-1" autoClose="outside" placement="bottom-left"
+                [ngClass]="{'border rounded border-secondary eg-grid-col-is-filtered' : col.isFiltered}">
+                <button type="button" ngbDropdownToggle class="no-dropdown-caret btn">
+                  <ng-container *ngTemplateOutlet="dropdownToggle"></ng-container>
+                </button>
+                <div ngbDropdownMenu class="eg-grid-filter-menu">
+                  <div class="dropdown-item">
+                    <div>
+                      <label class="form-label" for="eg-filter-op-select-{{col.name}}" i18n>Operator</label>
+                      <select id="eg-filter-op-select-{{col.name}}" class="form-control"
+                        [(ngModel)]="col.filterOperator" (change)="operatorChanged(col)">
                   <option value="=" i18n>Is exactly</option>
                   <option value="!=" i18n>Is not</option>
                   <option value="not null" i18n>Exists</option>
@@ -257,34 +278,36 @@
               <div class="pt-2">
                 <eg-date-select [initialYmd]="col.filterValue" #dateSelectOne
                   (onChangeAsYmd)="applyFilterCommon(col)"
-                  [disabled]="col.filterInputDisabled || context.dataSource.requestingData"></eg-date-select>
-                <div [hidden]="col.filterOperator !== 'between'" class="form-inline form-group">
-                  <label class="form-label" for="eg-filter-end-date-select-{{col.name}}" style="width: 3em;" i18n>and</label>
-                  <eg-date-select [hidden]="col.filterOperator !== 'between'" #dateSelectTwo
-                    (onChangeAsYmd)="applyFilterCommon(col)"
-                    [disabled]="col.filterInputDisabled || context.dataSource.requestingData"
-                    [required]="col.filterOperator === 'between'"></eg-date-select>
+                      [disabled]="col.filterInputDisabled || context.dataSource.requestingData"></eg-date-select>
+                      <div [hidden]="col.filterOperator !== 'between'" class="form-inline form-group">
+                        <label class="form-label" for="eg-filter-end-date-select-{{col.name}}" style="width: 3em;" i18n>and</label>
+                        <eg-date-select [hidden]="col.filterOperator !== 'between'" #dateSelectTwo
+                          (onChangeAsYmd)="applyFilterCommon(col)"
+                          [disabled]="col.filterInputDisabled || context.dataSource.requestingData"
+                        [required]="col.filterOperator === 'between'"></eg-date-select>
+                      </div>
+                    </div>
+                    <ng-container *ngTemplateOutlet="actionsTemplate"></ng-container>
+                  </div>
                 </div>
               </div>
-              <ng-container *ngTemplateOutlet="actionsTemplate"></ng-container>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
-    <div *ngSwitchCase="'org_unit'">
-      <div class="input-group">
-        <div ngbDropdown container="body" class="d-inline-block py-1" autoClose="outside" placement="bottom-left" 
-          [ngClass]="{'border rounded border-secondary eg-grid-col-is-filtered' : col.isFiltered}">
-          <button type="button" ngbDropdownToggle class="no-dropdown-caret btn">
-            <ng-container *ngTemplateOutlet="dropdownToggle"></ng-container>
-          </button>
-          <div ngbDropdownMenu class="eg-grid-filter-menu">
-            <div class="dropdown-item">
-              <div>
-                <label class="form-label" for="eg-filter-op-select-{{col.name}}" i18n>Operator</label>
-                <select id="eg-filter-op-select-{{col.name}}" class="form-control" 
-                  [(ngModel)]="col.filterOperator" (change)="operatorChanged(col)">
+        }
+        @case ('org_unit') {
+          <div>
+            <div class="input-group">
+              <div ngbDropdown container="body" class="d-inline-block py-1" autoClose="outside" placement="bottom-left"
+                [ngClass]="{'border rounded border-secondary eg-grid-col-is-filtered' : col.isFiltered}">
+                <button type="button" ngbDropdownToggle class="no-dropdown-caret btn">
+                  <ng-container *ngTemplateOutlet="dropdownToggle"></ng-container>
+                </button>
+                <div ngbDropdownMenu class="eg-grid-filter-menu">
+                  <div class="dropdown-item">
+                    <div>
+                      <label class="form-label" for="eg-filter-op-select-{{col.name}}" i18n>Operator</label>
+                      <select id="eg-filter-op-select-{{col.name}}" class="form-control"
+                        [(ngModel)]="col.filterOperator" (change)="operatorChanged(col)">
                   <option value="=" i18n>Is (or includes)</option>
                   <option value="!=" i18n>Is not (or excludes)</option>
                 </select>
@@ -293,35 +316,41 @@
                 <div class="form-check">
                   <input type="checkbox"
                     [(ngModel)]="col.filterIncludeOrgAncestors"
-                    class="form-check-input" id="include-ancestors">
-                  <label class="form-label form-check-label" for="include-ancestors" i18n>+ Ancestors</label>
-                </div>
-                <div class="form-check">
-                  <input type="checkbox"
-                    [(ngModel)]="col.filterIncludeOrgDescendants"
-                    class="form-check-input" id="include-descendants">
-                  <label class="form-label form-check-label" for="include-descendants" i18n>+ Descendants</label>
+                          class="form-check-input" id="include-ancestors">
+                        <label class="form-label form-check-label" for="include-ancestors" i18n>+ Ancestors</label>
+                      </div>
+                      <div class="form-check">
+                        <input type="checkbox"
+                          [(ngModel)]="col.filterIncludeOrgDescendants"
+                          class="form-check-input" id="include-descendants">
+                        <label class="form-label form-check-label" for="include-descendants" i18n>+ Descendants</label>
+                      </div>
+                    </div>
+                    <div class="pt-2">
+                      <eg-org-select ariaLabel="Filter by" i18n-ariaLabel [applyOrgId]="col.filterValue"
+                        (onChange)="col.filterValue = $event; applyFilterCommon(col)"
+                        [disabled]="col.filterInputDisabled || context.dataSource.requestingData"
+                      i18n-placeholder placeholder="Enter library to filter by" #ousel></eg-org-select>
+                    </div>
+                    <ng-container *ngTemplateOutlet="actionsTemplate"></ng-container>
+                  </div>
                 </div>
               </div>
-              <div class="pt-2">
-                <eg-org-select ariaLabel="Filter by" i18n-ariaLabel [applyOrgId]="col.filterValue" 
-                  (onChange)="col.filterValue = $event; applyFilterCommon(col)"
-                  [disabled]="col.filterInputDisabled || context.dataSource.requestingData"
-                  i18n-placeholder placeholder="Enter library to filter by" #ousel></eg-org-select>
-              </div>
-              <ng-container *ngTemplateOutlet="actionsTemplate"></ng-container>
             </div>
           </div>
-        </div>
-      </div>
+        }
+        @case ('interval') {
+          <div>
+            <!-- this is a short-term fix to prevent *ngSwitchDefault from displaying -->
+          </div>
+        }
+        @default {
+          <div>I don't know how to filter {{col.name}} - {{col.datatype}}</div>
+        }
+      }
     </div>
-    <div *ngSwitchCase="'interval'">
-      <!-- this is a short-term fix to prevent *ngSwitchDefault from displaying -->
-    </div>
-    <div *ngSwitchDefault>I don't know how to filter {{col.name}} - {{col.datatype}}</div>
-  </div>
-  <!--
-  <span *ngIf="col.datatype !== 'org_unit'" class="eg-grid-filter-operator"><ng-container i18n>Operator:</ng-container>
+    <!--
+    <span *ngIf="col.datatype !== 'org_unit'" class="eg-grid-filter-operator"><ng-container i18n>Operator:</ng-container>
     <span [ngSwitch]="col.filterOperator">
       <span *ngSwitchCase="'='" i18n>Is exactly</span>
       <span *ngSwitchCase="'!='" i18n>Is not</span>
@@ -346,3 +375,4 @@
   </span>
   -->
 </div>
+}

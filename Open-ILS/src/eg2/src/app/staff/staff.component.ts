@@ -1,10 +1,14 @@
-import {Component, OnInit, NgZone, HostListener} from '@angular/core';
-import {Location} from '@angular/common';
-import {Router, ActivatedRoute, NavigationEnd} from '@angular/router';
+import { Component, OnInit, NgZone, HostListener, inject } from '@angular/core';
+import {Router, ActivatedRoute, NavigationEnd, RouterModule} from '@angular/router';
 import {AuthService, AuthWsState} from '@eg/core/auth.service';
 import {NetService} from '@eg/core/net.service';
 import {AccessKeyService} from '@eg/share/accesskey/accesskey.service';
 import {AccessKeyInfoComponent} from '@eg/share/accesskey/accesskey-info.component';
+import { StaffNavComponent } from './nav.component';
+import { ToastComponent } from '@eg/share/toast/toast.component';
+import { PrintComponent } from '@eg/share/print/print.component';
+import { ContextMenuContainerComponent } from '@eg/share/context-menu/context-menu-container.component';
+import { AccessKeyDirective } from '@eg/share/accesskey/accesskey.directive';
 
 const MFA_PATH = '/staff/mfa';
 const LOGIN_PATH = '/staff/login';
@@ -13,20 +17,26 @@ const WS_MANAGE_PATH = '/staff/admin/workstation/workstations/manage';
 
 @Component({
     templateUrl: 'staff.component.html',
-    styleUrls: ['staff.component.css']
+    styleUrls: ['staff.component.css'],
+    imports: [
+        AccessKeyDirective,
+        AccessKeyInfoComponent,
+        ContextMenuContainerComponent,
+        PrintComponent,
+        RouterModule,
+        StaffNavComponent,
+        ToastComponent,
+    ]
 })
 
 export class StaffComponent implements OnInit {
+    private router = inject(Router);
+    private route = inject(ActivatedRoute);
+    private zone = inject(NgZone);
+    private net = inject(NetService);
+    private auth = inject(AuthService);
+    private keys = inject(AccessKeyService);
 
-    constructor(
-        private router: Router,
-        private route: ActivatedRoute,
-        private ngLocation: Location,
-        private zone: NgZone,
-        private net: NetService,
-        private auth: AuthService,
-        private keys: AccessKeyService
-    ) {}
 
     ngOnInit() {
 

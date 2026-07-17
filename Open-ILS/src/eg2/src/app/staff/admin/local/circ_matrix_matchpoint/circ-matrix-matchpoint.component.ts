@@ -1,10 +1,9 @@
 
 import {Pager} from '@eg/share/util/pager';
-import {Component, OnInit, AfterViewInit, Input, ViewChild, ElementRef} from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef, inject } from '@angular/core';
 import {GridComponent} from '@eg/share/grid/grid.component';
-import {GridDataSource, GridColumn, GridRowFlairEntry} from '@eg/share/grid/grid';
+import {GridDataSource} from '@eg/share/grid/grid';
 import {ActivatedRoute} from '@angular/router';
-import {Location} from '@angular/common';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
 import {LinkedCircLimitSetsComponent} from './linked-circ-limit-sets.component';
@@ -15,12 +14,28 @@ import {ToastService} from '@eg/share/toast/toast.service';
 import {AuthService} from '@eg/core/auth.service';
 import {PermService} from '@eg/core/perm.service';
 import {OrgService} from '@eg/core/org.service';
-import {OrgFamily} from '@eg/share/org-family-select/org-family-select.component';
+import {OrgFamily, OrgFamilySelectComponent} from '@eg/share/org-family-select/org-family-select.component';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
   @Component({
-      templateUrl: './circ-matrix-matchpoint.component.html'
+      templateUrl: './circ-matrix-matchpoint.component.html',
+      imports: [
+          CircMatrixMatchpointDialogComponent,
+          FmRecordEditorComponent,
+          LinkedCircLimitSetsComponent,
+          OrgFamilySelectComponent,
+          StaffCommonModule
+      ]
   })
 export class CircMatrixMatchpointComponent implements OnInit {
+    private route = inject(ActivatedRoute);
+    private pcrud = inject(PcrudService);
+    private toast = inject(ToastService);
+    idl = inject(IdlService);
+    private org = inject(OrgService);
+    auth = inject(AuthService);
+    private perm = inject(PermService);
+
     recId: number;
     orgField = 'org_unit';
     disableOrgFilter = false;
@@ -28,6 +43,8 @@ export class CircMatrixMatchpointComponent implements OnInit {
     dataSource: GridDataSource;
     gridFilters: {[key: string]: string | number};
     showLinkLimitSets = false;
+    cloneMode = false;
+    cloneLS = true;
     usedSetLimitList = {};
     linkedLimitSets = [];
     limitSetNames = {};
@@ -61,16 +78,6 @@ export class CircMatrixMatchpointComponent implements OnInit {
     orgFieldLabel: string;
     viewPerms: string;
     canCreate: boolean;
-
-    constructor(
-        private route: ActivatedRoute,
-        private pcrud: PcrudService,
-        private toast: ToastService,
-        public idl: IdlService,
-        private org: OrgService,
-        public auth: AuthService,
-        private perm: PermService
-    ) {}
 
     ngOnInit() {
         this.initDone = true;
@@ -212,11 +219,23 @@ export class CircMatrixMatchpointComponent implements OnInit {
         editOneThing(fields.shift());
     }
 
+    cloneSelected(fields: IdlObject[]) {
+        // Edit each IDL thing one at a time
+        const cloneOneThing = (field: IdlObject) => {
+            if (!field) { return; }
+            this.showCloneDialog(field).then(
+                () => cloneOneThing(fields.shift()));
+        };
+        cloneOneThing(fields.shift());
+    }
+
     showEditDialog(field: IdlObject): Promise<any> {
         this.limitSetsComponent.showLinkLimitSets = true;
         this.getLimitSets(field.id());
+        this.cloneMode = false;
         this.editDialog.mode = 'update';
         this.editDialog.recordId = field['id']();
+        this.editDialog.defaultNewRecord = null;
         return new Promise((resolve, reject) => {
             this.matchpointDialog.open({size: this.dialogSize}).subscribe(
                 result => {
@@ -234,12 +253,48 @@ export class CircMatrixMatchpointComponent implements OnInit {
         });
     }
 
+    idFromMaybeObject(thing: any): any {
+        if (!thing) { return null; }
+        if (typeof thing === 'number' || typeof thing === 'string') { return thing; }
+        return thing.id();
+    }
+
+    showCloneDialog(field: IdlObject): Promise<any> {
+        return this.pcrud.retrieve('ccmm', field.id()).toPromise().then( clean_obj => {
+            this.limitSetsComponent.showLinkLimitSets = true;
+            this.getLimitSets(clean_obj.id());
+            this.cloneMode = true;
+            this.editDialog.mode = 'create';
+            this.editDialog.recordId = null;
+            this.editDialog.record = null;
+            this.editDialog.defaultNewRecord = clean_obj;
+            this.editDialog.handleRecordChange();
+            return new Promise((resolve, reject) => {
+                this.matchpointDialog.open({size: this.dialogSize}).subscribe(
+                    result => {
+                        this.successString.current()
+                            .then(str => this.toast.success(str));
+                        this.grid.reload();
+                        resolve(result);
+                    },
+                    (error: unknown) => {
+                        this.updateFailedString.current()
+                            .then(str => this.toast.danger(str));
+                        reject(error);
+                    }
+                );
+            });
+        });
+    }
+
     createNew() {
         this.getLimitSets(null);
         this.limitSetsComponent.showLinkLimitSets = true;
+        this.cloneMode = false;
         this.editDialog.mode = 'create';
         this.editDialog.recordId = null;
         this.editDialog.record = null;
+        this.editDialog.defaultNewRecord = null;
         this.editDialog.handleRecordChange();
         // We reuse the same editor for all actions.  Be sure
         // create action does not try to modify an existing record.
@@ -269,6 +324,17 @@ export class CircMatrixMatchpointComponent implements OnInit {
      * @param matchpoint
      */
     configureLimitSets(matchpoint) {
+        console.debug('configureLimitSets',this.limitSetsComponent);
+        if (this.cloneMode && this.cloneLS) {
+            this.setLimitSets(this.limitSetsComponent.linkedSetList);
+            this.linkedLimitSets.forEach(l => {
+                l.isNew = l.created = true;
+                l.linkedLimitSet.id(null);
+            });
+            this.cloneMode = false;
+            console.debug('...cloning these',this.linkedLimitSets);
+        }
+
         const linkedSets = this.linkedLimitSets;
         Object.keys(linkedSets).forEach((key) => {
             const ls = linkedSets[key];
@@ -286,15 +352,8 @@ export class CircMatrixMatchpointComponent implements OnInit {
 
     getLimitSets(id) {
         this.clearLinkedCircLimitSets();
-        this.pcrud.retrieveAll('ccmlsm').subscribe((res) => {
-            /**
-             * If the limit set's matchpoint equals the matchpoint given
-             * by the user, then add that to the set limit list
-             */
-            this.limitSetsComponent.usedSetLimitList[res.limit_set()] = res.id();
-            if (res.matchpoint() === id) {
-                this.limitSetsComponent.createFilledLimitSetObject(res);
-            }
+        this.pcrud.search('ccmlsm', {matchpoint:id}).subscribe((res) => {
+            this.limitSetsComponent.createFilledLimitSetObject(res);
         });
         /**
          * Retrives all limit set names

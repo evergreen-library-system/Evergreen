@@ -1,5 +1,5 @@
 
-import {Component, ViewChild, OnInit} from '@angular/core';
+import { Component, ViewChild, OnInit, inject } from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 import {Tree, TreeNode} from '@eg/share/tree/tree';
 import {IdlService} from '@eg/core/idl.service';
@@ -7,12 +7,25 @@ import {ToastService} from '@eg/share/toast/toast.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {CompositeNewPointComponent} from './composite-new.component';
 import {StringComponent} from '@eg/share/string/string.component';
+import { StaffCommonModule } from '@eg/staff/common.module';
+import { TreeComponent } from '@eg/share/tree/tree.component';
 
 @Component({
-    templateUrl: './composite-def.component.html'
+    templateUrl: './composite-def.component.html',
+    imports: [
+        CompositeNewPointComponent,
+        StaffCommonModule,
+        TreeComponent
+    ]
 })
 
 export class CompositeDefComponent implements OnInit {
+    private pcrud = inject(PcrudService);
+    private router = inject(Router);
+    private route = inject(ActivatedRoute);
+    private idl = inject(IdlService);
+    private toast = inject(ToastService);
+
     currentId: number; // ccvm id
 
     // these values displayed at top of page
@@ -36,15 +49,6 @@ export class CompositeDefComponent implements OnInit {
 
     @ViewChild('saveSuccess', { static: true }) saveSuccess: StringComponent;
     @ViewChild('saveFail', { static: true }) saveFail: StringComponent;
-
-    constructor(
-        private pcrud: PcrudService,
-        private router: Router,
-        private route: ActivatedRoute,
-        private idl: IdlService,
-        private toast: ToastService,
-    ) {
-    }
 
     ngOnInit() {
         this.currentId = parseInt(this.route.snapshot.paramMap.get('id'), 10);
@@ -386,6 +390,7 @@ export class CompositeDefComponent implements OnInit {
             );
         } else {
             this.pcrud.update(recordToSave).subscribe(
+                // eslint-disable-next-line rxjs-x/no-async-subscribe
                 { next: async (ok) => {
                     this.saveSuccess.current().then(str => this.toast.success(str));
                 }, error: async (err: unknown) => {

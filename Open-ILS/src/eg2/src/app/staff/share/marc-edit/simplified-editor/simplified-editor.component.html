@@ -1,4 +1,4 @@
-<ng-container *ngIf="editor && subfieldLabels && marcForms && marcTypes">
+@if (editor && subfieldLabels && marcForms && marcTypes) {
   <form [formGroup]="editor">
     <div class="row">
       <div class="col-lg-3"><label class="form-label" i18n for="{{idPrefix}}-form">Form</label></div>
@@ -17,24 +17,30 @@
         </eg-combobox>
       </div>
     </div>
-    <ng-container *ngFor="let field of fields">
-      <div class="row" *ngFor="let subfield of field.subfields">
-        <ng-container *ngIf="!subfield[1]">
-          <div class="col-lg-3">
-            <label for="{{idPrefix}}-{{editorFieldIdentifier(field, subfield)}}">
-              {{subfieldLabels[editorFieldIdentifier(field, subfield)]}}
-            </label>
-          </div>
-          <div class="col-lg-9">
-            <input id="{{idPrefix}}-{{editorFieldIdentifier(field, subfield)}}" formControlName="{{editorFieldIdentifier(field, subfield)}}" />
-          </div>
-        </ng-container>
-      </div>
-    </ng-container>
+    @for (field of fields; track field) {
+      @for (subfield of field.subfields; track subfield) {
+        <div class="row">
+          @if (!subfield[1]) {
+            <div class="col-lg-3">
+              <label for="{{idPrefix}}-{{editorFieldIdentifier(field, subfield)}}">
+                {{subfieldLabels[editorFieldIdentifier(field, subfield)]}}
+              </label>
+            </div>
+            <div class="col-lg-9">
+              <input id="{{idPrefix}}-{{editorFieldIdentifier(field, subfield)}}" formControlName="{{editorFieldIdentifier(field, subfield)}}" />
+            </div>
+          }
+        </div>
+      }
+    }
     <button type="button" class="btn btn-primary" (click)="emitXml()">
-      <ng-container *ngIf="buttonLabel">{{buttonLabel}}</ng-container>
-      <ng-container *ngIf="!buttonLabel" i18n>Save</ng-container>
+      @if (buttonLabel) {
+        {{buttonLabel}}
+      }
+      @if (!buttonLabel) {
+        <ng-container i18n>Save</ng-container>
+      }
     </button>
   </form>
-</ng-container>
+}
 

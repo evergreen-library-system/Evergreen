@@ -1,33 +1,30 @@
-import {Component, Input, ViewChild, OnInit} from '@angular/core';
+import { Component, ViewChild, OnInit, inject } from '@angular/core';
 import {Router} from '@angular/router';
-import {Observable, of} from 'rxjs';
-import {IdlService, IdlObject} from '@eg/core/idl.service';
-import {OrgService} from '@eg/core/org.service';
-import {AuthService} from '@eg/core/auth.service';
+import {Observable} from 'rxjs';
 import {PcrudService} from '@eg/core/pcrud.service';
-import {ToastService} from '@eg/share/toast/toast.service';
-import {StringComponent} from '@eg/share/string/string.component';
-import {StringService} from '@eg/share/string/string.service';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
-import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
-import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {GridDataSource} from '@eg/share/grid/grid';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {Pager} from '@eg/share/util/pager';
+import { StaffBannerComponent } from '@eg/staff/share/staff-banner.component';
+import { GridModule } from '@eg/share/grid/grid.module';
 
 @Component({
-    templateUrl: './account-list.component.html'
+    templateUrl: './account-list.component.html',
+    imports: [
+        ConfirmDialogComponent,
+        GridModule,
+        StaffBannerComponent
+    ]
 })
 export class SipAccountListComponent implements OnInit {
+    private router = inject(Router);
+    private pcrud = inject(PcrudService);
+
 
     gridSource: GridDataSource = new GridDataSource();
     @ViewChild('grid') grid: GridComponent;
     @ViewChild('confirmDelete') confirmDelete: ConfirmDialogComponent;
-
-    constructor(
-        private router: Router,
-        private pcrud: PcrudService
-    ) {}
 
     ngOnInit() {
         this.gridSource.getRows = (pager: Pager, sort: any[]) => {

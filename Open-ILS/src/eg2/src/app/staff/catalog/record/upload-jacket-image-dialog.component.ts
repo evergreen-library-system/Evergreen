@@ -1,5 +1,5 @@
 /* eslint-disable no-self-assign */
-import {Component, Input, OnInit} from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {AuthService} from '@eg/core/auth.service';
 import {NetService} from '@eg/core/net.service';
@@ -7,14 +7,23 @@ import {EventService} from '@eg/core/event.service';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {HttpClient, HttpResponse} from '@angular/common/http';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
     selector: 'eg-upload-jacket-image-dialog',
-    templateUrl: './upload-jacket-image-dialog.component.html'
+    templateUrl: './upload-jacket-image-dialog.component.html',
+    imports: [StaffCommonModule]
 })
 
 
 export class UploadJacketImageDialogComponent extends DialogComponent implements OnInit {
+    private modal: NgbModal;
+    private auth = inject(AuthService);
+    private evt = inject(EventService);
+    private net = inject(NetService);
+    private toast = inject(ToastService);
+    private http = inject(HttpClient);
+
 
     // ID of bib record for jacket image
     @Input() recordId: number;
@@ -34,15 +43,12 @@ export class UploadJacketImageDialogComponent extends DialogComponent implements
 
     private fileEvent: any;
 
-    constructor(
-        private modal: NgbModal,
-        private auth: AuthService,
-        private evt: EventService,
-        private net: NetService,
-        private toast: ToastService,
-        private http: HttpClient
-    ) {
+    constructor() {
+        const modal = inject(NgbModal);
+
         super(modal);
+
+        this.modal = modal;
     }
 
     clearErrors() {

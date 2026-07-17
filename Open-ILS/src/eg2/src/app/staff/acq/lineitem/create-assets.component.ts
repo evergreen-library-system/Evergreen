@@ -1,12 +1,11 @@
-import {Component, OnInit, Input, Output} from '@angular/core';
-import {ActivatedRoute, Router, ParamMap, NavigationStart} from '@angular/router';
-import {IdlService, IdlObject} from '@eg/core/idl.service';
+import { Component, OnInit, inject } from '@angular/core';
+import {ActivatedRoute, Router, ParamMap} from '@angular/router';
 import {NetService} from '@eg/core/net.service';
 import {EventService, EgEvent} from '@eg/core/event.service';
-import {PcrudService} from '@eg/core/pcrud.service';
 import {AuthService} from '@eg/core/auth.service';
-import {LineitemService} from './lineitem.service';
-import {UploadComponent} from '../picklist/upload.component';
+import { UploadComponent } from '../picklist/upload.component';
+import { ProgressInlineComponent } from '@eg/share/dialog/progress-inline.component';
+
 
 
 interface AssetCreationResponse {
@@ -19,9 +18,19 @@ interface AssetCreationResponse {
 }
 
 @Component({
-    templateUrl: 'create-assets.component.html'
+    templateUrl: 'create-assets.component.html',
+    imports: [
+        ProgressInlineComponent,
+        UploadComponent
+    ]
 })
 export class CreateAssetsComponent implements OnInit {
+    private router = inject(Router);
+    private route = inject(ActivatedRoute);
+    private auth = inject(AuthService);
+    private net = inject(NetService);
+    private evt = inject(EventService);
+
 
     targetPo: number;
     creationRequested = false;
@@ -37,17 +46,6 @@ export class CreateAssetsComponent implements OnInit {
         copiesProcessed: 0
     };
     creationErrors: EgEvent[] = [];
-
-    constructor(
-        private router: Router,
-        private route: ActivatedRoute,
-        private idl: IdlService,
-        private auth: AuthService,
-        private net: NetService,
-        private evt: EventService,
-        private pcrud: PcrudService,
-        private liService: LineitemService
-    ) { }
 
     ngOnInit() {
         this.activatePo = history.state.activatePo ? true : false;

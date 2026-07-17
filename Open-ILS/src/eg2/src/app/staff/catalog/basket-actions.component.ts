@@ -1,4 +1,4 @@
-import {Component, ViewChild, OnInit} from '@angular/core';
+import { Component, ViewChild, OnInit, inject } from '@angular/core';
 import {BasketService} from '@eg/share/catalog/basket.service';
 import {Router} from '@angular/router';
 import {NetService} from '@eg/core/net.service';
@@ -9,14 +9,24 @@ import {StaffCatalogService} from './catalog.service';
 import {BucketDialogComponent
 } from '@eg/staff/share/buckets/bucket-dialog.component';
 import {ProgressDialogComponent} from '@eg/share/dialog/progress.component';
+import { StaffCommonModule } from '../common.module';
 
 const MAX_FROM_SEARCH_RESULTS = 1000;
 
 @Component({
     selector: 'eg-catalog-basket-actions',
-    templateUrl: 'basket-actions.component.html'
+    templateUrl: 'basket-actions.component.html',
+    imports: [StaffCommonModule]
 })
 export class BasketActionsComponent implements OnInit {
+    private router = inject(Router);
+    private net = inject(NetService);
+    private auth = inject(AuthService);
+    private printer = inject(PrintService);
+    private basket = inject(BasketService);
+    private cat = inject(CatalogService);
+    private staffCat = inject(StaffCatalogService);
+
 
     basketAction: string;
     recordId: number;
@@ -28,15 +38,7 @@ export class BasketActionsComponent implements OnInit {
     @ViewChild('addAllProgress', {static: true})
         addAllProgress: ProgressDialogComponent;
 
-    constructor(
-        private router: Router,
-        private net: NetService,
-        private auth: AuthService,
-        private printer: PrintService,
-        private basket: BasketService,
-        private cat: CatalogService,
-        private staffCat: StaffCatalogService,
-    ) {
+    constructor() {
         this.basketAction = '';
     }
 

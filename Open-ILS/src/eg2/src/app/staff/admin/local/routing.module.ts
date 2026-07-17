@@ -16,17 +16,8 @@ const routes: Routes = [{
     component: AdminLocalSplashComponent
 }, {
     path: 'config/hold_matrix_matchpoint',
-    component: BasicAdminPageComponent,
-    data: [{
-        schema: 'config',
-        table: 'hold_matrix_matchpoint',
-        disableOrgFilter: true,
-        fieldOrder: 'description,active,item_owning_ou,item_circ_ou,circ_modifier,' +
-          'copy_location,marc_type,marc_form,marc_bib_level,marc_vr_format,ref_flag,item_age,' +
-          'user_home_ou,usr_grp,stop_blocked_user,holdable,age_hold_protect_rule,' +
-          'max_holds,include_frozen_holds,request_ou,pickup_ou,strict_ou_match,' +
-          'transit_range,distance_is_from_owner,requestor_grp,id'
-    }]
+    loadChildren: () =>
+        import('./hold_matrix_matchpoint/hold-matrix-matchpoint.module').then(m => m.HoldMatrixMatchpointModule)
 }, {
     path: 'actor/address_alert',
     component: AddressAlertComponent

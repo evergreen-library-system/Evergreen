@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output, OnChanges, OnInit, ViewChild} from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnChanges, OnInit, ViewChild, inject } from '@angular/core';
 import {Router} from '@angular/router';
 import {Observable, from, of, tap, switchMap, mergeMap} from 'rxjs';
 import {AuthService} from '@eg/core/auth.service';
@@ -16,15 +16,41 @@ import {NoTimezoneSetComponent} from './no-timezone-set.component';
 import {ReservationActionsService} from './reservation-actions.service';
 import {CancelReservationDialogComponent} from './cancel-reservation-dialog.component';
 
-import * as moment from 'moment-timezone';
+import moment from 'moment-timezone';
+import { GridToolbarActionComponent } from '@eg/share/grid/grid-toolbar-action.component';
+import { GridToolbarButtonComponent } from '@eg/share/grid/grid-toolbar-button.component';
+import { GridColumnComponent } from '@eg/share/grid/grid-column.component';
+
+import { DateTimeSelectComponent } from '@eg/share/datetime-select/datetime-select.component';
+import { NotBeforeMomentValidatorDirective } from '@eg/share/validators/not_before_moment_validator.directive';
 
 // A filterable grid of reservations used in various booking interfaces
 
 @Component({
     selector: 'eg-reservations-grid',
     templateUrl: './reservations-grid.component.html',
+    imports: [
+        CancelReservationDialogComponent,
+        DateTimeSelectComponent,
+        FmRecordEditorComponent,
+        GridColumnComponent,
+        GridComponent,
+        GridToolbarActionComponent,
+        GridToolbarButtonComponent,
+        NoTimezoneSetComponent,
+        NotBeforeMomentValidatorDirective
+    ]
 })
 export class ReservationsGridComponent implements OnChanges, OnInit {
+    private auth = inject(AuthService);
+    private format = inject(FormatService);
+    private pcrud = inject(PcrudService);
+    private router = inject(Router);
+    private toast = inject(ToastService);
+    private net = inject(NetService);
+    private org = inject(OrgService);
+    private actions = inject(ReservationActionsService);
+
 
     @Input() patron: number;
     @Input() resourceBarcode: string;
@@ -72,19 +98,6 @@ export class ReservationsGridComponent implements OnChanges, OnInit {
     reprintNotAppropriate: (rows: IdlObject[]) => boolean;
     editNotAppropriate: (rows: IdlObject[]) => boolean;
     returnNotAppropriate: (rows: IdlObject[]) => boolean;
-
-    constructor(
-        private auth: AuthService,
-        private format: FormatService,
-        private pcrud: PcrudService,
-        private router: Router,
-        private toast: ToastService,
-        private net: NetService,
-        private org: OrgService,
-        private actions: ReservationActionsService,
-    ) {
-
-    }
 
     ngOnInit() {
         if (!(this.format.wsOrgTimezone)) {

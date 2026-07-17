@@ -17,7 +17,7 @@ import {FullReporterRoutingModule} from './routing.module';
 import {TreeModule} from '@eg/share/tree/tree.module';
 
 @NgModule({
-    declarations: [
+    imports: [
         FullReporterComponent,
         FullReporterOutputsComponent,
         ReporterFieldChooserComponent,
@@ -29,9 +29,7 @@ import {TreeModule} from '@eg/share/tree/tree.module';
         ReportTemplatesComponent,
         ReportReportsComponent,
         ChangeFolderDialogComponent,
-        FolderShareOrgDialogComponent
-    ],
-    imports: [
+        FolderShareOrgDialogComponent,
         TreeModule,
         StaffCommonModule,
         FullReporterRoutingModule,

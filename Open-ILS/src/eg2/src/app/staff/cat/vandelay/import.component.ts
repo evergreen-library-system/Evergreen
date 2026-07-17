@@ -1,6 +1,5 @@
 /* eslint-disable */
-import {Component, OnInit, AfterViewInit,
-    ViewChild, OnDestroy} from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, OnDestroy, inject } from '@angular/core';
 import {tap} from 'rxjs/operators';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
@@ -18,6 +17,7 @@ import {HttpClient, HttpRequest, HttpEventType,
 import {ProgressInlineComponent} from '@eg/share/dialog/progress-inline.component';
 import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
 import {ServerStoreService} from '@eg/core/server-store.service';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 const TEMPLATE_SETTING_NAME = 'eg.cat.vandelay.import.templates';
 
@@ -66,9 +66,21 @@ interface ImportOptions {
 }
 
 @Component({
-    templateUrl: 'import.component.html'
+    templateUrl: 'import.component.html',
+    imports: [StaffCommonModule]
 })
 export class ImportComponent implements OnInit, AfterViewInit, OnDestroy {
+    private http = inject(HttpClient);
+    private toast = inject(ToastService);
+    private evt = inject(EventService);
+    private idl = inject(IdlService);
+    private net = inject(NetService);
+    private auth = inject(AuthService);
+    private org = inject(OrgService);
+    private store = inject(ServerStoreService);
+    private perm = inject(PermService);
+    private vandelay = inject(VandelayService);
+
 
     recordType: string;
     selectedQueue: ComboboxEntry; // freetext enabled
@@ -152,20 +164,6 @@ export class ImportComponent implements OnInit, AfterViewInit, OnDestroy {
 
     @ViewChild('dupeQueueAlert', { static: true })
     private dupeQueueAlert: AlertDialogComponent;
-
-    constructor(
-        private http: HttpClient,
-        private toast: ToastService,
-        private evt: EventService,
-        private idl: IdlService,
-        private net: NetService,
-        private auth: AuthService,
-        private org: OrgService,
-        private store: ServerStoreService,
-        private perm: PermService,
-        private vandelay: VandelayService
-    ) {
-    }
 
     applyDefaults() {
         this.minQualityRatio = 0;

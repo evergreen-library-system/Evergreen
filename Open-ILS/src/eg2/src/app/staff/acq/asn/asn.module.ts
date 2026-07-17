@@ -11,11 +11,9 @@ import {AsnReceiveComponent} from './receive.component';
 
 
 @NgModule({
-    declarations: [
-        AsnComponent,
-        AsnReceiveComponent
-    ],
     imports: [
+        AsnComponent,
+        AsnReceiveComponent,
         StaffCommonModule,
         CatalogCommonModule,
         LineitemModule,

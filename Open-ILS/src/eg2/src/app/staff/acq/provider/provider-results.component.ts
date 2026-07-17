@@ -1,19 +1,25 @@
-import {Component, OnInit, AfterViewInit, Output, EventEmitter, ViewChild, ElementRef} from '@angular/core';
-import {Router, ActivatedRoute} from '@angular/router';
+import { Component, OnInit, AfterViewInit, Output, EventEmitter, ViewChild, ElementRef, inject } from '@angular/core';
 import {IdlObject} from '@eg/core/idl.service';
-import {NetService} from '@eg/core/net.service';
-import {AuthService} from '@eg/core/auth.service';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {GridDataSource, GridCellTextGenerator} from '@eg/share/grid/grid';
 import {AcqProviderSearchService, AcqProviderSearch} from './acq-provider-search.service';
 import {AcqProviderSearchFormComponent} from './acq-provider-search-form.component';
+import { GridModule } from '@eg/share/grid/grid.module';
+
 
 @Component({
     selector: 'eg-provider-results',
     templateUrl: 'provider-results.component.html',
-    providers: [AcqProviderSearchService]
+    providers: [AcqProviderSearchService],
+    imports: [
+        AcqProviderSearchFormComponent,
+        GridModule
+    ]
 })
 export class ProviderResultsComponent implements OnInit, AfterViewInit {
+    private elementRef = inject(ElementRef);
+    private providerSearch = inject(AcqProviderSearchService);
+
 
     gridSource: GridDataSource;
     @ViewChild('acqSearchProviderGrid', { static: true }) providerResultsGrid: GridComponent;
@@ -23,15 +29,6 @@ export class ProviderResultsComponent implements OnInit, AfterViewInit {
     @Output() previewRow: (row: any, hideSearchForm?: boolean) => void;
     @Output() desireSummarize: EventEmitter<number> = new EventEmitter<number>();
     @Output() summarizeSearchFormOpen: EventEmitter<number> = new EventEmitter<number>();
-
-    constructor(
-        private elementRef: ElementRef,
-        private router: Router,
-        private route: ActivatedRoute,
-        private net: NetService,
-        private auth: AuthService,
-        private providerSearch: AcqProviderSearchService) {
-    }
 
     ngOnInit() {
         this.gridSource = this.providerSearch.getDataSource();

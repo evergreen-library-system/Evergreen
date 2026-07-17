@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {tap} from 'rxjs';
 import {IdlObject} from './idl.service';
 import {NetService} from './net.service';
@@ -31,12 +31,10 @@ export class OrgService {
     private orgTypeMap: {[id: number]: IdlObject} = {};
     private orgTypeList: IdlObject[] = [];
 
-    constructor(
-        private db: DbStoreService,
-        private net: NetService,
-        private auth: AuthService,
-        private pcrud: PcrudService
-    ) {}
+    private auth = inject(AuthService);
+    private db = inject(DbStoreService);
+    private net = inject(NetService);
+    private pcrud = inject(PcrudService);
 
     get(nodeOrId: OrgNodeOrId): IdlObject {
         // eslint-disable-next-line eqeqeq

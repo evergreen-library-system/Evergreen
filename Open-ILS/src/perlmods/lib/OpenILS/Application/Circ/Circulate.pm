@@ -202,8 +202,6 @@ sub run_method {
                         { barcode => $bc, deleted => 'f' }, $MK_ENV_FLESH
                     ])->[0]) { # got a copy
                         $copy->status( $transit->copy_status );
-                        $copy->editor($circulator->editor->requestor->id);
-                        $copy->edit_date('now');
                         $circulator->editor->update_asset_copy($copy);
                         $success_event->{"payload"}->{"record"} =
                             $U->record_to_mvr($copy->call_number->record);
@@ -1768,12 +1766,12 @@ sub update_copy {
     my $stat = $copy->status if ref $copy->status;
     my $loc = $copy->location if ref $copy->location;
     my $circ_lib = $copy->circ_lib if ref $copy->circ_lib;
+    my $copy_editor = $copy->editor if ref $copy->editor;
 
     $copy->status($stat->id) if $stat;
     $copy->location($loc->id) if $loc;
     $copy->circ_lib($circ_lib->id) if $circ_lib;
-    $copy->editor($self->editor->requestor->id);
-    $copy->edit_date('now');
+    $copy->editor($copy_editor->id) if $copy_editor;
     $copy->age_protect($copy->age_protect->id) if ref $copy->age_protect;
 
     return $self->bail_on_events($self->editor->event)
@@ -1782,6 +1780,7 @@ sub update_copy {
     $copy->status($U->copy_status($copy->status));
     $copy->location($loc) if $loc;
     $copy->circ_lib($circ_lib) if $circ_lib;
+    $copy->editor($copy_editor) if $copy_editor;
 }
 
 sub update_reservation {
@@ -2480,6 +2479,18 @@ sub extend_renewal_due_date {
 sub create_due_date {
     my( $self, $duration, $date_ceiling, $force_date, $start_time ) = @_;
 
+    # should do date arithmetic in UTC to avoid potential
+    # crashes if the new due time falls in a DST transition hour
+    my $due_date = $start_time ?
+        DateTime::Format::ISO8601
+            ->new
+            ->parse_datetime(clean_ISO8601($start_time))
+            ->set_time_zone('UTC') :
+        DateTime->now(time_zone => 'UTC');
+
+    # add the circ duration
+    $due_date->add(seconds => OpenILS::Utils::DateTime->interval_to_seconds($duration, $due_date));
+
     # Look up circulating library's TZ, or else use client TZ, falling
     # back to server TZ
     my $tz = $U->ou_ancestor_setting_value(
@@ -2488,15 +2499,8 @@ sub create_due_date {
         $self->editor
     ) || 'local';
 
-    my $due_date = $start_time ?
-        DateTime::Format::ISO8601
-            ->new
-            ->parse_datetime(clean_ISO8601($start_time))
-            ->set_time_zone($tz) :
-        DateTime->now(time_zone => $tz);
-
-    # add the circ duration
-    $due_date->add(seconds => OpenILS::Utils::DateTime->interval_to_seconds($duration, $due_date));
+    # use the library's TZ for the due date going forward
+    $due_date->set_time_zone($tz);
 
     if($date_ceiling) {
         my $cdate = DateTime::Format::ISO8601
@@ -3062,6 +3066,9 @@ sub do_checkin {
                 if ($can_float && ($self->manual_float || !$U->is_true($self->copy->floating->manual)) && !$self->remote_hold) { # Yep, floating, stick here
                     $self->checkin_changed(1);
                     $self->copy->circ_lib( $self->circ_lib );
+                    # update editor and edit_date because we changed the circ_lib.
+                    $self->copy->editor($self->editor->requestor->id);
+                    $self->copy->edit_date('now');
                     $self->update_copy;
                 } else {
                     my $bc = $self->copy->barcode;
@@ -3074,9 +3081,13 @@ sub do_checkin {
         }
     } else { # no-op checkin
         # XXX floating items still stick where they are even with no-op checkin?
-        if ($self->copy->floating && $can_float) {
+        my $clib = ref($self->copy->circ_lib) ? $self->copy->circ_lib->id : $self->copy->circ_lib;
+        if ($self->copy->floating && $can_float && $clib != $self->circ_lib) {
             $self->checkin_changed(1);
             $self->copy->circ_lib( $self->circ_lib );
+            # update editor and edit_date because we changed the circ_lib.
+            $self->copy->editor($self->editor->requestor->id);
+            $self->copy->edit_date('now');
             $self->update_copy;
         }
     }

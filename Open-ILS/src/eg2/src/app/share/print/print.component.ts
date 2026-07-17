@@ -1,4 +1,4 @@
-import {Component, OnInit, TemplateRef, ElementRef, Renderer2} from '@angular/core';
+import { Component, OnInit, TemplateRef, ElementRef, Renderer2, inject } from '@angular/core';
 import {PrintService, PrintRequest} from './print.service';
 import {StoreService} from '@eg/core/store.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
@@ -6,16 +6,30 @@ import {HatchService, HatchMessage} from '@eg/core/hatch.service';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {StringService} from '@eg/share/string/string.service';
 import {HtmlToTxtService} from '@eg/share/util/htmltotxt.service';
+import { StringModule } from '../string/string.module';
+import { CommonModule } from '@angular/common';
+
 
 const HATCH_FILE_WRITER_PRINTER = 'hatch_file_writer';
 const HATCH_BROWSER_PRINTING_PRINTER = 'hatch_browser_printing';
 
 @Component({
     selector: 'eg-print',
-    templateUrl: './print.component.html'
+    templateUrl: './print.component.html',
+    imports: [CommonModule, StringModule]
 })
 
 export class PrintComponent implements OnInit {
+    private renderer = inject(Renderer2);
+    private elm = inject(ElementRef);
+    private store = inject(StoreService);
+    private serverStore = inject(ServerStoreService);
+    private h2txt = inject(HtmlToTxtService);
+    private hatch = inject(HatchService);
+    private toast = inject(ToastService);
+    private strings = inject(StringService);
+    private printer = inject(PrintService);
+
 
     // Template that requires local processing
     template: TemplateRef<any>;
@@ -33,16 +47,7 @@ export class PrintComponent implements OnInit {
     // True if Hatch printing is enabled and we're able to talk to Hatch.
     useHatchPrinting: boolean = null;
 
-    constructor(
-        private renderer: Renderer2,
-        private elm: ElementRef,
-        private store: StoreService,
-        private serverStore: ServerStoreService,
-        private h2txt: HtmlToTxtService,
-        private hatch: HatchService,
-        private toast: ToastService,
-        private strings: StringService,
-        private printer: PrintService) {
+    constructor() {
         this.isPrinting = false;
         this.printQueue = [];
     }
@@ -214,7 +219,7 @@ export class PrintComponent implements OnInit {
 
             // Extract the print container div from our component markup.
             const container =
-                this.elm.nativeElement.querySelector('#eg-print-container');
+                this.elm.nativeElement.querySelector('#print-div');
 
             // Sometimes the results come from an externally-parsed HTML
             // template, other times they come from an in-page template.

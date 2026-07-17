@@ -1,10 +1,10 @@
-import {Component, ViewChild, Input, Output, OnInit, EventEmitter} from '@angular/core';
-import {IdlService, IdlObject} from '@eg/core/idl.service';
+import { Component, Input, OnInit, inject } from '@angular/core';
+import {IdlObject} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {MarcEditorDialogComponent} from './editor-dialog.component';
-import {ComboboxComponent, ComboboxEntry} from '@eg/share/combobox/combobox.component';
+import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
+import { FormsModule } from '@angular/forms';
+
 
 /**
  * 007 Physical Characteristics Dialog
@@ -16,11 +16,14 @@ import {ComboboxComponent, ComboboxEntry} from '@eg/share/combobox/combobox.comp
 
 @Component({
     selector: 'eg-phys-char-dialog',
-    templateUrl: './phys-char-dialog.component.html'
+    templateUrl: './phys-char-dialog.component.html',
+    imports: [FormsModule]
 })
 
 export class PhysCharDialogComponent
     extends DialogComponent implements OnInit {
+    private pcrud = inject(PcrudService);
+
 
     // The 007 data
     @Input() fieldData = '';
@@ -48,13 +51,6 @@ export class PhysCharDialogComponent
     // active position
     slotOffset = 0;
     slotSize = 1;
-
-    constructor(
-        private modal: NgbModal,
-        private idl: IdlService,
-        private pcrud: PcrudService) {
-        super(modal);
-    }
 
     ngOnInit() {
         this.onOpen$.subscribe(_ => {

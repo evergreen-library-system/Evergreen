@@ -4,18 +4,18 @@ import {StaffCommonModule} from '@eg/staff/common.module';
 import {GridModule} from '@eg/share/grid/grid.module';
 import {Z3950SearchComponent, AutofocusDirective} from './z3950-search.component';
 import {Z3950SearchService} from './z3950.service';
-import {MarcEditModule} from '@eg/staff/share/marc-edit/marc-edit.module';
+import { FastAddSelectorComponent } from '../marc-edit/fast-add-selector.component';
+import { MarcEditorDialogComponent } from '../marc-edit/editor-dialog.component';
 
 @NgModule({
-    declarations: [
-        Z3950SearchComponent,
-        AutofocusDirective
-    ],
     imports: [
-        MarcEditModule,
+        FastAddSelectorComponent,
+        AutofocusDirective,
+        MarcEditorDialogComponent,
         StaffCommonModule,
         GridModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        Z3950SearchComponent,
     ],
     exports: [
         Z3950SearchComponent,

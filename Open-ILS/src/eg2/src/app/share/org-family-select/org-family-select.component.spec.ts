@@ -1,22 +1,13 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
-import {Component, DebugElement, Input} from '@angular/core';
+import {DebugElement} from '@angular/core';
 import {By} from '@angular/platform-browser';
 import {OrgFamilySelectComponent} from './org-family-select.component';
 import {ReactiveFormsModule} from '@angular/forms';
 import {CookieService} from 'ngx-cookie';
 import {OrgService} from '@eg/core/org.service';
+import { OrgSelectComponent } from '../org-select/org-select.component';
+import { MockOrgSelectComponent } from 'test_data/mock-components';
 
-@Component({
-    selector: 'eg-org-select',
-    template: ''
-})
-class MockOrgSelectComponent {
-    @Input() disabled?: boolean;
-    @Input() domId: string;
-    @Input() limitPerms: string;
-    @Input() ariaLabel?: string;
-    @Input() applyOrgId(id: number) {}
-}
 
 describe('Component: OrgFamilySelect', () => {
     let component: OrgFamilySelectComponent;
@@ -36,6 +27,8 @@ describe('Component: OrgFamilySelect', () => {
                     a: [],
                     classname: 'aou',
                     _isfieldmapper: true,
+                    shortname: () => 'ROOT',
+                    name: () => 'My Root',
                     id: () => 1};
             },
             get: (ouId: number) => {
@@ -43,20 +36,24 @@ describe('Component: OrgFamilySelect', () => {
                     a: [],
                     classname: 'aou',
                     _isfieldmapper: true,
+                    shortname: () => 'LIB',
+                    name: () => 'My Library',
                     children: () => Array() };
             }
         };
         cookieServiceStub = {};
         TestBed.configureTestingModule({
             imports: [
+                MockOrgSelectComponent,
+                OrgFamilySelectComponent,
                 ReactiveFormsModule,
             ], providers: [
                 { provide: CookieService, useValue: cookieServiceStub },
                 { provide: OrgService, useValue: orgServiceStub},
-            ], declarations: [
-                OrgFamilySelectComponent,
-                MockOrgSelectComponent,
-            ]});
+            ]}).overrideComponent(OrgFamilySelectComponent, {
+            remove: {imports: [OrgSelectComponent]},
+            add: {imports: [MockOrgSelectComponent]}
+        });
         fixture = TestBed.createComponent(OrgFamilySelectComponent);
         component = fixture.componentInstance;
         component.domId = 'family-test';

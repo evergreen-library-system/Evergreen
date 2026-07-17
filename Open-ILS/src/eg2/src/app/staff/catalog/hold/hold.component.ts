@@ -1,5 +1,5 @@
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {ActivatedRoute, ParamMap} from '@angular/router';
+import { Component, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
+import {ActivatedRoute, ParamMap, RouterModule} from '@angular/router';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';
@@ -23,6 +23,11 @@ import {WorkLogService} from '@eg/staff/share/worklog/worklog.service';
 import {getI18nString} from '@eg/share/util/i18ns';
 import {StoreService} from '@eg/core/store.service';
 import {firstValueFrom, lastValueFrom, tap, toArray} from 'rxjs';
+import { WorkLogStringsComponent } from '@eg/staff/share/worklog/strings.component';
+import { OrgSelectComponent } from '@eg/share/org-select/org-select.component';
+import { CommonModule } from '@angular/common';
+import { DateSelectComponent } from '@eg/share/date-select/date-select.component';
+import { FormsModule } from '@angular/forms';
 
 export class HoldRequestStats {
     private successes = 0;
@@ -106,9 +111,35 @@ class HoldContext {
 }
 
 @Component({
-    templateUrl: 'hold.component.html'
+    templateUrl: 'hold.component.html',
+    imports: [
+        AlertDialogComponent,
+        BarcodeSelectComponent,
+        ComboboxComponent,
+        CommonModule,
+        DateSelectComponent,
+        FormsModule,
+        OrgSelectComponent,
+        PatronSearchDialogComponent,
+        RouterModule,
+        WorkLogStringsComponent,
+    ]
 })
 export class HoldComponent implements OnInit, OnDestroy {
+    private route = inject(ActivatedRoute);
+    private net = inject(NetService);
+    private org = inject(OrgService);
+    private store = inject(ServerStoreService);
+    private auth = inject(AuthService);
+    private pcrud = inject(PcrudService);
+    private cat = inject(CatalogService);
+    private staffCat = inject(StaffCatalogService);
+    private holds = inject(HoldsService);
+    private patron = inject(PatronService);
+    private perm = inject(PermService);
+    private worklog = inject(WorkLogService);
+    private sessionStore = inject(StoreService);
+
 
     holdType: string;
     holdTargets: number[];
@@ -127,6 +158,10 @@ export class HoldComponent implements OnInit, OnDestroy {
     activeDateYmd: string;
     activeDate: Date;
     activeDateInvalid = false;
+    expireDateStr: string;
+    expireDateYmd: string;
+    expireDate: Date;
+    expireDateInvalid = false;
     anyPartLabel = $localize`All Parts`;
 
     holdContexts: HoldContext[];
@@ -170,22 +205,9 @@ export class HoldComponent implements OnInit, OnDestroy {
     @ViewChild('barcodeSelect') private barcodeSelect: BarcodeSelectComponent;
 
     @ViewChild('activeDateAlert') private activeDateAlert: AlertDialogComponent;
+    @ViewChild('expireDateAlert') private expireDateAlert: AlertDialogComponent;
 
-    constructor(
-        private route: ActivatedRoute,
-        private net: NetService,
-        private org: OrgService,
-        private store: ServerStoreService,
-        private auth: AuthService,
-        private pcrud: PcrudService,
-        private cat: CatalogService,
-        private staffCat: StaffCatalogService,
-        private holds: HoldsService,
-        private patron: PatronService,
-        private perm: PermService,
-        private worklog: WorkLogService,
-        private sessionStore: StoreService
-    ) {
+    constructor() {
         this.holdContexts = [];
         this.smsCarriers = [];
     }
@@ -433,6 +455,20 @@ export class HoldComponent implements OnInit, OnDestroy {
         }
     }
 
+    expireDateSelected(dateStr: string) {
+        this.expireDateStr = dateStr;
+    }
+
+    setExpireDate(date: Date) {
+        this.expireDate = date;
+        if (date && date < new Date()) {
+            this.expireDateInvalid = true;
+            this.expireDateAlert.open();
+        } else {
+            this.expireDateInvalid = false;
+        }
+    }
+
     // Note this is called before this.userBarcode has its latest value.
     debounceUserBarcodeLookup(barcode: string | ClipboardEvent) {
         clearTimeout(this.userBarcodeTimeout);
@@ -518,12 +554,18 @@ export class HoldComponent implements OnInit, OnDestroy {
         this.smsValue = '';
         this.activeDate = null;
         this.activeDateStr = null;
+        this.expireDate = null;
+        this.expireDateStr = null;
         this.suspend = false;
         if (this.smsCbox) { this.smsCbox.selectedId = null; }
 
         // Avoid clearing the barcode in cases where the form is
         // reset as the result of a barcode change.
         if (!keepBarcode) { this.userBarcode = null; }
+    }
+
+    onReset(): Promise<void> {
+        return this.resetForm().then(() => { this.holdFor = 'patron'; });
     }
 
     resetForm(keepBarcode?: boolean): Promise<any> {
@@ -619,10 +661,13 @@ export class HoldComponent implements OnInit, OnDestroy {
         if (this.placeHoldsClicked || this.activeDateInvalid) {
             return false;
         }
+        if (this.placeHoldsClicked || this.expireDateInvalid) {
+            return false;
+        }
         if (!this.pickupLib || this.disableOrgs.includes(this.pickupLib)) {
             return false;
         }
-        if (this.holdFor === 'patron' && !this.user) {
+        if (this.holdFor !== 'group' && !this.user) {
             return false;
         }
         if (this.holdFor === 'group' && !this.selectedHoldGroup) {
@@ -735,6 +780,7 @@ export class HoldComponent implements OnInit, OnDestroy {
             notifySms: this.smsEnabled && this.notifySms ? this.smsValue : null,
             smsCarrier: this.smsCbox ? this.smsCbox.selectedId : null,
             thawDate: this.suspend ? this.activeDateStr : null,
+            expireDate: this.expireDateStr,
             holdGroup: Boolean(this.holdFor === 'group' && this.selectedHoldGroup),
             holdGroupId: (this.holdFor === 'group' && this.selectedHoldGroup) ? this.selectedHoldGroup.id : null,
             frozen: this.suspend,

@@ -5,6 +5,7 @@ use OpenILS::Application::AppUtils;
 use OpenILS::Utils::CStoreEditor q/:funcs/;
 use OpenSRF::Utils::Logger q/$logger/;
 use OpenSRF::EX qw(:try);
+use List::Util qw/sum0/;
 my $U = "OpenILS::Application::AppUtils";
 
 sub initialize { return 1; }
@@ -24,9 +25,7 @@ sub group_money_summary {
     my $e = new_editor(authtoken=>$auth);
     return $e->event unless $e->checkauth;
     return $e->event unless $e->allowed('VIEW_USER');
-
-    my $users = $e->search_actor_user(
-        {usrgroup => $group_id, deleted => 'f'}, {idlist => 1});
+    my $users = _group_member_ids($e, $group_id);
     my @mous;
 
     for my $uid ( @$users ) {
@@ -57,8 +56,7 @@ sub get_users_from_usergroup {
     my $e = new_editor(authtoken=>$auth);
     return $e->event unless $e->checkauth;
     return $e->event unless $e->allowed('VIEW_USER'); # XXX reley on editor perm
-    return $e->search_actor_user(
-        {usrgroup => $usergroup, deleted => 'f'}, {idlist => 1});
+    return _group_member_ids($e, $usergroup);
 }
 
 
@@ -124,7 +122,34 @@ sub reset_group {
     return $groupid;
 }
 
+__PACKAGE__->register_method(
+    method => 'group_overdue_count',
+    api_name    => 'open-ils.actor.usergroup.members.overdue_count',
+    authoritative => 1,
+    signature   => q/
+        Returns the total number of overdue circulations within a user group
+        @param authtoken
+        @param group_id The id of the user group (you can find a user's group from the usrgroup column in actor.usr)
+        @return integer
+    /
+);
 
+sub group_overdue_count {
+    my($self, $conn, $auth, $group_id) = @_;
+    my $e = new_editor(authtoken=>$auth);
+    return $e->event unless $e->checkauth;
+    return $e->event unless $e->allowed('VIEW_USER');
+
+    my $users = _group_member_ids($e, $group_id);
+    my $all_summaries = $e->search_action_open_circ_count({usr => $users});
+    return sum0 map { $_->overdue } @{$all_summaries};
+}
+
+sub _group_member_ids {
+    my ($editor, $group_id) = @_;
+    return $editor->search_actor_user(
+        {usrgroup => $group_id, deleted => 'f'}, {idlist => 1});
+}
 
 
 1;

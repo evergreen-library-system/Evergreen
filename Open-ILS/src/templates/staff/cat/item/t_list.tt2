@@ -118,6 +118,7 @@
   <eg-grid-field label="[% l('Circulate?') %]"            path="circulate" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Circulation Library') %]"   path="circ_lib.shortname" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Circulation Modifier') %]"  path="circ_modifier.name" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Is Mint Condition?') %]"    path="mint_condition" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Item ID') %]"               path="id" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Item Number') %]"           path="copy_number" hidden></eg-grid-field>
 
@@ -144,7 +145,7 @@
   <eg-grid-field label="[% l('Fines Stopped Time') %]"    path="_circ_summary.last_stop_fines_time" datatype="timestamp" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Floating Group') %]"        path="floating.name" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Holdable?') %]"             path="holdable" hidden></eg-grid-field>
-  <eg-grid-field label="[% l('Holds Count') %]"           path="holds_count" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Holds Count') %]"           path="holds_count.count" hidden></eg-grid-field>
   <eg-grid-field label="[% l('In-House Uses') %]"         path="_inHouseUseCount" hidden></eg-grid-field>
   <eg-grid-field label="[% l('ISBN') %]"                  path="call_number.record.simple_record.isbn" hidden>
     {{item['call_number.record.simple_record.isbn'] || item['dummy_isbn']}}
@@ -159,7 +160,7 @@
   <eg-grid-field label="[% l('Price') %]"                 path="price" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Publication Date') %]"      path="call_number.record.simple_record.pubdate" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Publisher') %]"             path="call_number.record.simple_record.publisher" hidden></eg-grid-field>
-  <eg-grid-field label="[% l('Quality') %]"               path="call_number.record.simple_record.quality" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Record Quality') %]"        path="call_number.record.simple_record.quality" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Reference?') %]"            path="ref" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Remaining Renewals') %]"    path="_circ.renewal_remaining" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Status Changed Time') %]"   path="status_changed_time" datatype="timestamp" hidden></eg-grid-field>

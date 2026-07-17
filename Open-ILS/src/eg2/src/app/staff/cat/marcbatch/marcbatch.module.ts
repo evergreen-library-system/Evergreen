@@ -6,10 +6,8 @@ import {MarcBatchComponent} from './marcbatch.component';
 import {HttpClientModule} from '@angular/common/http';
 
 @NgModule({
-    declarations: [
-        MarcBatchComponent
-    ],
     imports: [
+        MarcBatchComponent,
         StaffCommonModule,
         HttpClientModule,
         CommonWidgetsModule,

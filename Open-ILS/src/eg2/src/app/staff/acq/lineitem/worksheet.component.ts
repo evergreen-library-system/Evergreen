@@ -1,4 +1,4 @@
-import {Component, OnInit, AfterViewInit} from '@angular/core';
+import { Component, OnInit, AfterViewInit, inject } from '@angular/core';
 import {ActivatedRoute, ParamMap} from '@angular/router';
 import {IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
@@ -12,6 +12,14 @@ import {PrintService} from '@eg/share/print/print.service';
     templateUrl: 'worksheet.component.html'
 })
 export class LineitemWorksheetComponent implements OnInit, AfterViewInit {
+    private route = inject(ActivatedRoute);
+    private org = inject(OrgService);
+    private net = inject(NetService);
+    private auth = inject(AuthService);
+    private pcrud = inject(PcrudService);
+    private printer = inject(PrintService);
+    private liService = inject(LineitemService);
+
 
     outlet: Element;
     lineitemId: number;
@@ -19,16 +27,6 @@ export class LineitemWorksheetComponent implements OnInit, AfterViewInit {
     holdCount: number;
     printing: boolean;
     closing: boolean;
-
-    constructor(
-        private route: ActivatedRoute,
-        private org: OrgService,
-        private net: NetService,
-        private auth: AuthService,
-        private pcrud: PcrudService,
-        private printer: PrintService,
-        private liService: LineitemService
-    ) { }
 
     ngOnInit() {
 

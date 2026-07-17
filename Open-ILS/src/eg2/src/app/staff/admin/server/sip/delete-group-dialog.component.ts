@@ -1,28 +1,36 @@
-import {Component, Input, OnInit} from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import {IdlObject} from '@eg/core/idl.service';
 import {AuthService} from '@eg/core/auth.service';
 import {NetService} from '@eg/core/net.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
-import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
+import {ComboboxComponent, ComboboxEntry} from '@eg/share/combobox/combobox.component';
+
 
 @Component({
     templateUrl: './delete-group-dialog.component.html',
-    selector: 'eg-sip-group-delete-dialog'
+    selector: 'eg-sip-group-delete-dialog',
+    imports: [
+        ComboboxComponent
+    ]
 })
 export class DeleteGroupDialogComponent extends DialogComponent implements OnInit {
+    private modal: NgbModal;
+    private auth = inject(AuthService);
+    private net = inject(NetService);
+
 
     @Input() group: IdlObject;
     @Input() settingGroups: ComboboxEntry[];
     targetGroup = 1;  // Default to the 'Default Settings' group.
     trimmedSettingGroups: ComboboxEntry[];
 
-    constructor(
-        private modal: NgbModal,
-        private auth: AuthService,
-        private net: NetService
-    ) {
+    constructor() {
+        const modal = inject(NgbModal);
+
         super(modal);
+
+        this.modal = modal;
     }
 
     ngOnInit() {

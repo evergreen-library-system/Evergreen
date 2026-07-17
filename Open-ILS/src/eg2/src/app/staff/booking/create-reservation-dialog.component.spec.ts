@@ -5,7 +5,7 @@ import { PatronBarcodeValidator } from '@eg/share/validators/patron_barcode_vali
 import { NetService } from '@eg/core/net.service';
 import { of } from 'rxjs';
 import { AuthService } from '@eg/core/auth.service';
-import * as moment from 'moment';
+import moment from 'moment';
 import { TestBed } from '@angular/core/testing';
 import { OrgService } from '@eg/core/org.service';
 import { PcrudService } from '@eg/core/pcrud.service';

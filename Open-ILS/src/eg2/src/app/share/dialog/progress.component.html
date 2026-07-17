@@ -1,31 +1,39 @@
 <ng-template #dialogContent>
   <div class="modal-header">
-    <h4 *ngIf="dialogTitle" class="modal-title">{{dialogTitle}}</h4>
-    <button type="button" class="btn-close btn-close-white" 
-      i18n-aria-label aria-label="Close dialog" 
-      (click)="close()"></button>
+    @if (dialogTitle) {
+      <h4 class="modal-title">{{dialogTitle}}</h4>
+    }
+    <button type="button" class="btn-close btn-close-white"
+      i18n-aria-label aria-label="Close dialog"
+    (click)="close()"></button>
   </div>
 
   <div class="modal-body eg-progress-dialog">
 
-    <div *ngIf="hasValue() && hasMax()">
-      <!-- determinate progress bar.  shows max/value progress -->
-      <div class="col-lg-10">
-        <progress max="{{max}}" value="{{value}}"></progress>
+    @if (hasValue() && hasMax()) {
+      <div>
+        <!-- determinate progress bar.  shows max/value progress -->
+        <div class="col-lg-10">
+          <progress max="{{max}}" value="{{value}}"></progress>
+        </div>
+        <div class="col-lg-2">{{percent()}}%</div>
       </div>
-      <div class="col-lg-2">{{percent()}}%</div>
-    </div>
+    }
 
-    <div *ngIf="hasValue() && !hasMax()">
-      <!-- semi-determinate progress bar.  shows value -->
-      <div class="col-lg-10"><progress max="1"></progress></div>
-      <div class="col-lg-2">{{value}}...</div>
-    </div>
+    @if (hasValue() && !hasMax()) {
+      <div>
+        <!-- semi-determinate progress bar.  shows value -->
+        <div class="col-lg-10"><progress max="1"></progress></div>
+        <div class="col-lg-2">{{value}}...</div>
+      </div>
+    }
 
-    <div *ngIf="!hasValue()">
-      <!-- indeterminate -->
-      <div class="col-lg-12"><progress max="1"></progress></div>
-    </div>
+    @if (!hasValue()) {
+      <div>
+        <!-- indeterminate -->
+        <div class="col-lg-12"><progress max="1"></progress></div>
+      </div>
+    }
 
   </div>
 </ng-template>

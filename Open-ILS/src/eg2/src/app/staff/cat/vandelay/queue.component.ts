@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-expressions */
-import {Component, AfterViewInit, ViewChild} from '@angular/core';
+import { Component, AfterViewInit, ViewChild, inject } from '@angular/core';
 import {Observable, map, filter} from 'rxjs';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {Pager} from '@eg/share/util/pager';
@@ -12,11 +12,20 @@ import {ProgressDialogComponent} from '@eg/share/dialog/progress.component';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {GridDataSource, GridColumn, GridCellTextGenerator} from '@eg/share/grid/grid';
 import {VandelayService, VandelayImportSelection} from './vandelay.service';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
-    templateUrl: 'queue.component.html'
+    templateUrl: 'queue.component.html',
+    imports: [StaffCommonModule]
 })
 export class QueueComponent implements AfterViewInit {
+    private router = inject(Router);
+    private route = inject(ActivatedRoute);
+    private evt = inject(EventService);
+    private net = inject(NetService);
+    private auth = inject(AuthService);
+    private vandelay = inject(VandelayService);
+
 
     queueId: number;
     queueType: string; // bib / authority
@@ -39,13 +48,7 @@ export class QueueComponent implements AfterViewInit {
 
     cellTextGenerator: GridCellTextGenerator;
 
-    constructor(
-        private router: Router,
-        private route: ActivatedRoute,
-        private evt: EventService,
-        private net: NetService,
-        private auth: AuthService,
-        private vandelay: VandelayService) {
+    constructor() {
 
         this.route.paramMap.subscribe((params: ParamMap) => {
             this.queueType = params.get('qtype');

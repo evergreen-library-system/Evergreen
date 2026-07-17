@@ -1,10 +1,9 @@
-import {Component, OnInit, OnDestroy, QueryList, ViewChild, ViewChildren} from '@angular/core';
-import {Router} from '@angular/router';
-import {ViewportScroller} from '@angular/common';
+import { Component, OnInit, OnDestroy, QueryList, ViewChild, ViewChildren, inject } from '@angular/core';
+import {Router, RouterModule} from '@angular/router';
+import { NgClass, ViewportScroller } from '@angular/common';
 import {Subscription} from 'rxjs';
 import {OrgService} from '@eg/core/org.service';
 import {AuthService} from '@eg/core/auth.service';
-import {PcrudService} from '@eg/core/pcrud.service';
 import {LocaleService} from '@eg/core/locale.service';
 import {PrintService} from '@eg/share/print/print.service';
 import {StoreService} from '@eg/core/store.service';
@@ -12,16 +11,40 @@ import {NetRequest, NetService} from '@eg/core/net.service';
 import {OpChangeComponent} from '@eg/staff/share/op-change/op-change.component';
 import {PermService} from '@eg/core/perm.service';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
-import {NgbCollapseModule, NgbDropdown} from '@ng-bootstrap/ng-bootstrap';
+import {NgbCollapseModule, NgbDropdown, NgbDropdownItem, NgbDropdownMenu, NgbDropdownToggle} from '@ng-bootstrap/ng-bootstrap';
 import {AccessKeyInfoComponent} from '@eg/share/accesskey/accesskey-info.component';
+import {AccessKeyDirective} from '@eg/share/accesskey/accesskey.directive';
 
 @Component({
     selector: 'eg-staff-nav-bar',
     styleUrls: ['nav.component.css'],
-    templateUrl: 'nav.component.html'
+    templateUrl: 'nav.component.html',
+    imports: [
+        AccessKeyDirective,
+        AccessKeyInfoComponent,
+        ConfirmDialogComponent,
+        NgbCollapseModule,
+        NgbDropdown,
+        NgbDropdownItem,
+        NgbDropdownMenu,
+        NgbDropdownToggle,
+        NgClass,
+        OpChangeComponent,
+        RouterModule
+    ]
 })
 
 export class StaffNavComponent implements OnInit, OnDestroy {
+    private router = inject(Router);
+    private store = inject(StoreService);
+    private net = inject(NetService);
+    private org = inject(OrgService);
+    private auth = inject(AuthService);
+    private perm = inject(PermService);
+    private locale = inject(LocaleService);
+    private printer = inject(PrintService);
+    protected vs = inject(ViewportScroller);
+
 
     // Locales that have Angular staff translations
     locales: any[];
@@ -45,18 +68,7 @@ export class StaffNavComponent implements OnInit, OnDestroy {
     @ViewChild('egAccessKeyInfo', {static: true}) egAccessKeyInfo: AccessKeyInfoComponent;
     permFailedSub: Subscription;
 
-    constructor(
-        private router: Router,
-        private store: StoreService,
-        private net: NetService,
-        private org: OrgService,
-        private auth: AuthService,
-        private perm: PermService,
-        private pcrud: PcrudService,
-        private locale: LocaleService,
-        private printer: PrintService,
-        protected vs: ViewportScroller
-    ) {
+    constructor() {
         this.locales = [];
     }
 

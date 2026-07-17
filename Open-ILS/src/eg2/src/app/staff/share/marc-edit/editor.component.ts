@@ -1,9 +1,7 @@
-import {Component, Input, Output, OnInit, EventEmitter, ViewChild} from '@angular/core';
-import {IdlService} from '@eg/core/idl.service';
+import {Component, Input, Output, OnInit, EventEmitter, ViewChild, AfterContentInit, ContentChild, inject} from '@angular/core';
 import {EventService} from '@eg/core/event.service';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
-import {OrgService} from '@eg/core/org.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
@@ -13,8 +11,16 @@ import {ComboboxEntry, ComboboxComponent
 } from '@eg/share/combobox/combobox.component';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 import {MarcEditContext, MARC_RECORD_TYPE} from './editor-context';
-import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
+import {NgbNavChangeEvent, NgbNavModule} from '@ng-bootstrap/ng-bootstrap';
 import {HoldingsService} from '@eg/staff/share/holdings/holdings.service';
+
+import { FormsModule } from '@angular/forms';
+import { AlertDialogComponent } from '@eg/share/dialog/alert.component';
+import { ProgressInlineComponent } from '@eg/share/dialog/progress-inline.component';
+import { MarcFlatEditorComponent } from './flat-editor.component';
+import { MarcRichEditorComponent } from './rich-editor.component';
+import { FastAddItem, FastAddSelectorComponent } from './fast-add-selector.component';
+import { Maybe, None } from '@eg/share/maybe';
 
 
 export interface MarcSavedEvent {
@@ -31,10 +37,29 @@ export interface MarcSavedEvent {
 @Component({
     selector: 'eg-marc-editor',
     templateUrl: './editor.component.html',
-    styleUrls: ['editor.component.css', 'rich-editor-colors.css']
+    styleUrls: ['editor.component.css', 'rich-editor-colors.css'],
+    imports: [
+        AlertDialogComponent,
+        ComboboxComponent,
+        ConfirmDialogComponent,
+        FormsModule,
+        MarcFlatEditorComponent,
+        MarcRichEditorComponent,
+        NgbNavModule,
+        ProgressInlineComponent,
+        StringComponent
+    ]
 })
 
-export class MarcEditorComponent implements OnInit {
+export class MarcEditorComponent implements OnInit, AfterContentInit {
+    private evt = inject(EventService);
+    private net = inject(NetService);
+    private auth = inject(AuthService);
+    private pcrud = inject(PcrudService);
+    private toast = inject(ToastService);
+    private holdings = inject(HoldingsService);
+    private store = inject(ServerStoreService);
+
 
     editorTab: 'rich' | 'flat';
     sources: ComboboxEntry[];
@@ -96,22 +121,12 @@ export class MarcEditorComponent implements OnInit {
     @ViewChild('successMsg', {static: false}) successMsg: StringComponent;
     @ViewChild('failMsg', {static: false}) failMsg: StringComponent;
 
-    fastItemLabel: string;
-    fastItemBarcode: string;
-    showFastAdd: boolean;
-    initCalled = false;
+    @ContentChild(FastAddSelectorComponent) fastAddSelector: FastAddSelectorComponent;
 
-    constructor(
-        private evt: EventService,
-        private idl: IdlService,
-        private net: NetService,
-        private auth: AuthService,
-        private org: OrgService,
-        private pcrud: PcrudService,
-        private toast: ToastService,
-        private holdings: HoldingsService,
-        private store: ServerStoreService
-    ) {
+    initCalled = false;
+    private fastAddIntent: Maybe<FastAddItem> = new None();
+
+    constructor() {
         this.sources = [];
         this.recordSaved = new EventEmitter<MarcSavedEvent>();
         this.context = new MarcEditContext();
@@ -131,6 +146,10 @@ export class MarcEditorComponent implements OnInit {
         if (!this.record && this.recordId) {
             this.fromId(this.recordId);
         }
+    }
+
+    ngAfterContentInit(): void {
+        this.fastAddSelector?.fastAddItemChange?.subscribe(intent => this.fastAddIntent = intent);
     }
 
     changesPending(): boolean {
@@ -177,13 +196,7 @@ export class MarcEditorComponent implements OnInit {
         const emission = {
             marcXml: xml, bibSource: sourceId, recordId: this.recordId};
 
-        if (this.showFastAdd && this.fastItemLabel && this.fastItemBarcode) {
-            emission['fastItem'] = {
-                label: this.fastItemLabel,
-                barcode: this.fastItemBarcode,
-                fast_add: true
-            };
-        }
+        this.fastAddIntent.whenSome((item: FastAddItem) => emission['fastItem'] = item);
 
         if (this.inPlaceMode) {
             // Let the caller have the modified XML and move on.
@@ -399,16 +412,9 @@ export class MarcEditorComponent implements OnInit {
     // Spawns the copy editor with the requested barcode and
     // call number label.  Called after our record is saved.
     fastAdd() {
-        if (this.showFastAdd && this.fastItemLabel && this.fastItemBarcode) {
-
-            const fastItem = {
-                label: this.fastItemLabel,
-                barcode: this.fastItemBarcode,
-                fast_add: true
-            };
-
-            this.holdings.spawnAddHoldingsUi(this.recordId, null, [fastItem]);
-        }
+        this.fastAddIntent.whenSome((item: FastAddItem) => {
+            this.holdings.spawnAddHoldingsUi(this.recordId, null, [item]);
+        });
     }
 }
 

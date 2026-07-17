@@ -1,9 +1,11 @@
-import {Component, Input, OnInit} from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import {IdlService} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
 import {MarcRecord} from './marcrecord';
 import {MarcEditContext} from './editor-context';
+
+import { FormsModule } from '@angular/forms';
 
 /**
  * MARC Record flat text (marc-breaker) editor.
@@ -12,21 +14,20 @@ import {MarcEditContext} from './editor-context';
 @Component({
     selector: 'eg-marc-flat-editor',
     templateUrl: './flat-editor.component.html',
-    styleUrls: ['flat-editor.component.css']
+    styleUrls: ['flat-editor.component.css'],
+    imports: [FormsModule]
 })
 
 export class MarcFlatEditorComponent implements OnInit {
+    private idl = inject(IdlService);
+    private org = inject(OrgService);
+    private store = inject(ServerStoreService);
+
 
     @Input() context: MarcEditContext;
     get record(): MarcRecord {
         return this.context.record;
     }
-
-    constructor(
-        private idl: IdlService,
-        private org: OrgService,
-        private store: ServerStoreService
-    ) {}
 
     ngOnInit() {
         // Be sure changes made in the enriched editor are

@@ -7,9 +7,9 @@ angular.module('egCoreMod')
 .factory('egCirc',
 
        ['$uibModal','$q','egCore','egAlertDialog','egConfirmDialog','egAddCopyAlertDialog','egCopyAlertManagerDialog','egCopyAlertEditorDialog',
-        'egWorkLog',
+        'egWorkLog','egProgressDialog',
 function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAlertDialog , egCopyAlertManagerDialog,  egCopyAlertEditorDialog ,
-         egWorkLog) {
+         egWorkLog , egProgressDialog) {
 
     var service = {
         // auto-override these events after the first override
@@ -2458,6 +2458,117 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
             }
         );
     }
+
+    function group_email_receipt_options(items, receiptType) {
+        var options = [];
+        var patronIds = [];
+        angular.forEach(items, function(item) {
+            if (!item.au || !item.circ) { return };
+            var patronId = item.au.id();
+            var email = item.au.email();
+            var index = patronIds.indexOf(patronId);
+            if (index === -1) {
+                options.push({
+                    patron: item.au,
+                    circIds: [],
+                    disabled: !email || !email.includes('@'),
+                    type: receiptType
+                });
+                index = options.length - 1;
+                patronIds.push(patronId);
+            }
+            options[index].circIds.push(item.circ.id());
+        });
+        return options;
+    }
+
+    service.send_email_receipt = function(receiptData) {
+        return egProgressDialog.open().opened.then(function() {
+            return egCore.net.request(
+                'open-ils.circ',
+                'open-ils.circ.'+receiptData.type+'.batch_notify.atomic',
+                egCore.auth.token(),
+                receiptData.patron.id(),
+                receiptData.circIds
+            ).then(function(resp) {
+                if (!resp || !resp.length) { return false; }
+                if (resp[0].textcode) {
+                    console.error(resp[0].textcode);
+                    return false;
+                }
+                return true;
+            }).catch(function(error) {
+                console.error(error);
+                return false;
+            }).finally(function() {
+                egProgressDialog.close();
+            });
+        });
+    }
+
+    service.email_receipt = function(items, receiptType) {
+        if (!items.length) { return $q.reject(); }
+        var options = group_email_receipt_options(items, receiptType);
+        if (!options.length) {
+            return $q.reject(egCore.strings.EMAIL_RECEIPT_NO_CIRC_DATA);
+        }
+        var selectable = options.filter(function(o) { return !o.disabled });
+        if (!selectable.length) {
+            return $q.reject(egCore.strings.EMAIL_RECEIPT_INVALID_EMAIL);
+        }
+        return $uibModal.open({
+            templateUrl: './circ/share/t_email_receipt_dialog',
+            controller:
+                   ['$scope','$uibModalInstance',
+            function($scope , $uibModalInstance) {
+                $scope.options = options;
+                $scope.selected = { patronId: selectable[0].patron.id() };
+                // only submit on enter if on a button
+                $scope.preventEnterSubmit = function(event) {
+                    if (event.key === 'Enter' || event.keyCode === 13) {
+                        var tagName = event.target.tagName.toLowerCase();
+                        if (tagName !== 'button') {
+                            event.preventDefault();
+                        }
+                    }
+                };
+                $scope.ok = function() {
+                    var selection = $scope.options.filter(function(option) {
+                        return option.patron.id() === $scope.selected.patronId;
+                    });
+                    if (!selection.length) { return; }
+                    return service.send_email_receipt(selection[0]).then(
+                        function(success) {
+                            if (success) {
+                                $uibModalInstance.close(
+                                    egCore.strings.EMAIL_RECEIPT_SENT
+                                );
+                            } else {
+                                $uibModalInstance.dismiss(
+                                    egCore.strings.EMAIL_RECEIPT_FAILED
+                                );
+                            }
+                        }
+                    );
+                };
+                $scope.cancel = function() {
+                    $uibModalInstance.dismiss();
+                };
+            }]
+        }).result;
+    };
+
+    service.email_checkin_receipt = function(checkins) {
+        return service.email_receipt(checkins, 'checkin');
+    };
+
+    service.email_items_out_receipt = function(itemsOut) {
+        return service.email_receipt(itemsOut, 'items_out');
+    }
+
+    service.email_renew_receipt = function(renewals) {
+        return service.email_receipt(renewals, 'renew');
+    };
 
     return service;
 

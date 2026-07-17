@@ -325,7 +325,7 @@ sub show_state {
 
 sub details {
     $state{details} = $state{details} ? 0 : 1;
-    print ' ! Global Detail Dispaly: '. ($state{details} ? 'On' : 'Off'). "\n" if !$from_command;
+    print ' ! Global Detail Display: '. ($state{details} ? 'On' : 'Off'). "\n" if !$from_command;
 }
 
 sub control {
@@ -334,7 +334,7 @@ sub control {
 
 sub control_details {
     $state{control_details} = $state{control_details} ? 0 : 1;
-    print ' ! Control Detail Dispaly: '. ($state{control_details} ? 'On' : 'Off'). "\n" if !$from_command;
+    print ' ! Control Detail Display: '. ($state{control_details} ? 'On' : 'Off'). "\n" if !$from_command;
 }
 
 sub control_perm_sets {
@@ -380,7 +380,7 @@ sub control_perm_sets_permissions_remove {
 
 sub control_perm_sets_details {
     $state{control_perm_sets_details} = $state{control_perm_sets_details} ? 0 : 1;
-    print ' ! Control Detail Dispaly: '. ($state{control_perm_sets_details} ? 'On' : 'Off'). "\n" if !$from_command;
+    print ' ! Control Detail Display: '. ($state{control_perm_sets_details} ? 'On' : 'Off'). "\n" if !$from_command;
 }
 
 sub control_perm_sets_list {
@@ -465,7 +465,7 @@ sub control_rate_limit {
 
 sub control_rate_limit_details {
     $state{control_rate_limit_details} = $state{control_rate_limit_details} ? 0 : 1;
-    print ' ! Control Detail Dispaly: '. ($state{control_rate_limit_details} ? 'On' : 'Off'). "\n" if !$from_command;
+    print ' ! Control Detail Display: '. ($state{control_rate_limit_details} ? 'On' : 'Off'). "\n" if !$from_command;
 }
 
 sub control_rate_limit_list {
@@ -569,7 +569,7 @@ sub api {
 
 sub api_details {
     $state{api_details} = $state{api_details} ? 0 : 1;
-    print ' ! API Detail Dispaly: '. ($state{api_details} ? 'On' : 'Off'). "\n" if !$from_command;
+    print ' ! API Detail Display: '. ($state{api_details} ? 'On' : 'Off'). "\n" if !$from_command;
 }
 
 sub api_endpoints {
@@ -652,7 +652,7 @@ sub api_endpoints_add {
 
 sub api_endpoints_details {
     $state{api_endpoints_details} = $state{api_endpoints_details} ? 0 : 1;
-    print ' ! API Endpoint Detail Dispaly: '. ($state{api_endpoints_details} ? 'On' : 'Off'). "\n" if !$from_command;
+    print ' ! API Endpoint Detail Display: '. ($state{api_endpoints_details} ? 'On' : 'Off'). "\n" if !$from_command;
 }
 
 sub api_endpoints_list {
@@ -1205,7 +1205,7 @@ sub api_sets_edit {
 
 sub api_sets_details {
     $state{api_sets_details} = $state{api_sets_details} ? 0 : 1;
-    print ' ! API Endpoint Set Detail Dispaly: '. ($state{api_sets_details} ? 'On' : 'Off'). "\n" if !$from_command;
+    print ' ! API Endpoint Set Detail Display: '. ($state{api_sets_details} ? 'On' : 'Off'). "\n" if !$from_command;
 }
 
 sub api_sets_list {
@@ -1814,7 +1814,7 @@ sub integrator_groups_remove {
 
 sub integrator_details {
     $state{integrator_details} = $state{integrator_details} ? 0 : 1;
-    print ' ! Integrator Detail Dispaly: '. ($state{integrator_details} ? 'On' : 'Off'). "\n" if !$from_command;
+    print ' ! Integrator Detail Display: '. ($state{integrator_details} ? 'On' : 'Off'). "\n" if !$from_command;
 }
 
 sub integrator_unload {

@@ -1,21 +1,28 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import {AuthService} from '@eg/core/auth.service';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {StringComponent} from '@eg/share/string/string.component';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
-import {Pager} from '@eg/share/util/pager';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {GridDataSource, GridCellTextGenerator} from '@eg/share/grid/grid';
 import {ReporterService} from '../share/reporter.service';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
     selector: 'eg-sr-outputs',
     templateUrl: 'sr-my-outputs.component.html',
+    imports: [StaffCommonModule]
 })
 
 export class SROutputsComponent implements OnInit {
+    private auth = inject(AuthService);
+    private pcrud = inject(PcrudService);
+    private idl = inject(IdlService);
+    private toast = inject(ToastService);
+    private srSvc = inject(ReporterService);
+
 
     gridSource: GridDataSource;
     @ViewChild('srOutputsGrid', { static: true }) outputsGrid: GridComponent;
@@ -25,13 +32,7 @@ export class SROutputsComponent implements OnInit {
 
     cellTextGenerator: GridCellTextGenerator;
 
-    constructor(
-        private auth: AuthService,
-        private pcrud: PcrudService,
-        private idl: IdlService,
-        private toast: ToastService,
-        private srSvc: ReporterService,
-    ) {
+    constructor() {
         // These values are all replaced via custom templates and cause warnings if not specified here.
         this.cellTextGenerator = {
             _output: row => ''

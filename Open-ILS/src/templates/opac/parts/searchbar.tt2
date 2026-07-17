@@ -64,7 +64,7 @@ END;
                     data-listbox-name="[% l('autocomplete') %]"
                     data-search-org="[% ctx.physical_loc || ctx.aou_tree.id %]"
                 [%- ELSE -%]
-                    [% IF basic_search != "f" AND is_home_page %] autofocus [% END %] x-webkit-speech
+                    x-webkit-speech
                 [%- END # autosuggest enabled %] />
             </label>
         </span>

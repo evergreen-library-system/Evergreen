@@ -1,4 +1,4 @@
-import {Component, AfterViewInit, ViewChild, Renderer2, OnInit} from '@angular/core';
+import { Component, AfterViewInit, ViewChild, Renderer2, OnInit, inject } from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {HttpClient, HttpRequest, HttpEventType,
     HttpResponse, HttpErrorResponse} from '@angular/common/http';
@@ -8,12 +8,21 @@ import {ToastService} from '@eg/share/toast/toast.service';
 import {ProgressInlineComponent} from '@eg/share/dialog/progress-inline.component';
 import {VANDELAY_EXPORT_PATH} from './vandelay.service';
 import {BasketService} from '@eg/share/catalog/basket.service';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 
 @Component({
-    templateUrl: 'export.component.html'
+    templateUrl: 'export.component.html',
+    imports: [StaffCommonModule]
 })
 export class ExportComponent implements AfterViewInit, OnInit {
+    private renderer = inject(Renderer2);
+    private route = inject(ActivatedRoute);
+    private http = inject(HttpClient);
+    private toast = inject(ToastService);
+    private auth = inject(AuthService);
+    private basket = inject(BasketService);
+
 
     recordSource = 'csv';
     fieldNumber: number;
@@ -32,14 +41,7 @@ export class ExportComponent implements AfterViewInit, OnInit {
     @ViewChild('exportProgress', { static: true })
     private exportProgress: ProgressInlineComponent;
 
-    constructor(
-        private renderer: Renderer2,
-        private route: ActivatedRoute,
-        private http: HttpClient,
-        private toast: ToastService,
-        private auth: AuthService,
-        private basket: BasketService
-    ) {
+    constructor() {
         this.recordType = 'biblio';
         this.recordFormat = 'USMARC';
         this.recordEncoding = 'UTF-8';
@@ -103,7 +105,7 @@ export class ExportComponent implements AfterViewInit, OnInit {
                 case 'csv':
                     formData.append('idcolumn', '' + this.fieldNumber);
                     formData.append('idfile',
-                        this.selectedFile, this.selectedFile.name);
+                        this.selectedFile, this.selectedFile?.name);
                     break;
 
                 case 'record-id':

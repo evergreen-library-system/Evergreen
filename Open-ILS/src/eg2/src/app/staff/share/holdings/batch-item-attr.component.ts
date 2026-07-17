@@ -1,6 +1,8 @@
 /* eslint-disable no-magic-numbers */
+import { CommonModule } from '@angular/common';
 import {Component, OnInit, Input, Output, TemplateRef,
     EventEmitter} from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 /**
  * Displays attribute values and associated copy counts for managing
@@ -17,7 +19,11 @@ export interface BatchChangeSelection {
 @Component({
     selector: 'eg-batch-item-attr',
     templateUrl: 'batch-item-attr.component.html',
-    styleUrls: ['batch-item-attr.component.css', '../../cat/volcopy/copy-attrs.component.css']
+    styleUrls: ['batch-item-attr.component.css', '../../cat/volcopy/copy-attrs.component.css'],
+    imports: [
+        CommonModule,
+        FormsModule
+    ]
 })
 
 export class BatchItemAttrComponent implements OnInit {
@@ -59,6 +65,10 @@ export class BatchItemAttrComponent implements OnInit {
     requiredNotMet = false;
     aValueIsUnset = false;
 
+    // some fields aren't IDL required, but shouldn't be null,
+    // so explicitly decide if the unset button is enabled or not
+    @Input() canUnset = false;
+
     // If true, a value of '' is considered unset for display and
     // valueRequired purposes.
     @Input() emptyStringIsUnset = true;
@@ -74,6 +84,7 @@ export class BatchItemAttrComponent implements OnInit {
         new EventEmitter<BatchChangeSelection>();
 
     @Output() changesCanceled: EventEmitter<void> = new EventEmitter<void>();
+    @Output() valueUnset: EventEmitter<void> = new EventEmitter<void>();
     @Output() valueCleared: EventEmitter<void> = new EventEmitter<void>();
 
     // Is the editTtemplate visible?
@@ -142,6 +153,17 @@ export class BatchItemAttrComponent implements OnInit {
         Object.keys(this.labelCounts).forEach(key => this.editValues[key] = false);
     }
 
+    unset($event?: Event): void {
+        if ($event) {
+            $event.preventDefault();
+            $event.stopPropagation();
+        }
+        this.hasChanged = true;
+        this.editing = false;
+        this.checkValuesForCSS();
+        this.valueUnset.emit();
+        this.focusLabel();
+    }
 
     clear($event?: Event) {
         if ($event) {

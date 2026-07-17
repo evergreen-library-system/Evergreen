@@ -1,12 +1,11 @@
-import {Directive, Injectable} from '@angular/core';
+import { Directive, Injectable, inject } from '@angular/core';
 import {NG_VALIDATORS, FormControl, Validator} from '@angular/forms';
 import {FormatService} from '@eg/core/format.service';
 
 @Injectable({providedIn: 'root'})
 export class DatetimeValidator implements Validator {
-    constructor(
-        private format: FormatService) {
-    }
+    private format = inject(FormatService);
+
 
     validate = (control: FormControl) => {
         try {
@@ -27,9 +26,8 @@ export class DatetimeValidator implements Validator {
     }]
 })
 export class DatetimeValidatorDirective {
-    constructor(
-        private dtv: DatetimeValidator
-    ) { }
+    private dtv = inject(DatetimeValidator);
+
 
     validate = (control: FormControl) => {
         this.dtv.validate(control);

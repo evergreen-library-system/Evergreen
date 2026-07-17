@@ -1194,8 +1194,6 @@ set of OpenSRF services:
   * `open-ils.pcrud`: Supports access to Evergreen fieldmapper objects,
   restricted by staff user permissions. This is a private service.
     objects.
-  * `open-ils.permacrud`: Supports access to Evergreen fieldmapper objects,
-  restricted by staff user permissions. This is a private service.
   * `open-ils.reporter`: Supports the creation and scheduling of reports.
   * `open-ils.reporter-store`: Supports access to Evergreen fieldmapper objects
     for the reporting service. This is a private service.

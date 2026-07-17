@@ -1,14 +1,13 @@
-import {Component, OnInit, AfterViewInit, Input, Output, ViewChild,
-    EventEmitter, forwardRef} from '@angular/core';
+import { Component, OnInit, AfterViewInit, Input, Output, ViewChild, EventEmitter, forwardRef, inject } from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
-import {Observable, from, of, map, switchMap} from 'rxjs';
+import {Observable, from, of, map, switchMap, firstValueFrom} from 'rxjs';
 import {IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
 import {AuthService} from '@eg/core/auth.service';
 import {PermService} from '@eg/core/perm.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {ComboboxComponent, ComboboxEntry} from '@eg/share/combobox/combobox.component';
-import {ItemLocationService} from './item-location-select.service';
+import {ItemLocationService} from './item-location.service';
 
 /**
  * Item (Copy) Location Selector.
@@ -21,14 +20,24 @@ import {ItemLocationService} from './item-location-select.service';
 @Component({
     selector: 'eg-item-location-select',
     templateUrl: './item-location-select.component.html',
-    providers: [{
-        provide: NG_VALUE_ACCESSOR,
-        useExisting: forwardRef(() => ItemLocationSelectComponent),
-        multi: true
-    }]
+    providers: [
+        ItemLocationService, {
+            provide: NG_VALUE_ACCESSOR,
+            useExisting: forwardRef(() => ItemLocationSelectComponent),
+            multi: true
+        }],
+    imports: [
+        ComboboxComponent
+    ]
 })
 export class ItemLocationSelectComponent
 implements OnInit, AfterViewInit, ControlValueAccessor {
+    private org = inject(OrgService);
+    private auth = inject(AuthService);
+    private perm = inject(PermService);
+    private pcrud = inject(PcrudService);
+    private loc = inject(ItemLocationService);
+
     static domIdAuto = 0;
 
     // Limit copy locations to those owned at or above org units where
@@ -117,13 +126,7 @@ implements OnInit, AfterViewInit, ControlValueAccessor {
 
     getLocationsAsyncHandler = term => this.getLocationsAsync(term);
 
-    constructor(
-        private org: OrgService,
-        private auth: AuthService,
-        private perm: PermService,
-        private pcrud: PcrudService,
-        private loc: ItemLocationService
-    ) {
+    constructor() {
         this.valueChange = new EventEmitter<IdlObject>();
         this.entryChange = new EventEmitter<ComboboxEntry>();
     }
@@ -268,9 +271,7 @@ implements OnInit, AfterViewInit, ControlValueAccessor {
     getOneLocation(id: number) {
         if (!id) { return Promise.resolve(); }
 
-        const promise = this.loc.locationCache[id] ?
-            Promise.resolve(this.loc.locationCache[id]) :
-            this.pcrud.retrieve('acpl', id).toPromise();
+        const promise = firstValueFrom(this.loc.getById(id));
 
         return promise.then(loc => {
 

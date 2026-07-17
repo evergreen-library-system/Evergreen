@@ -18,7 +18,7 @@ export const rule = createEslintRule({
     const parserServices = getTemplateParserServices(context);
 
     return {
-      'Element$1[name="eg-grid-column"]': (column) => {
+      'Element[name="eg-grid-column"]': (column) => {
         const labelCannotBeTranslated = column.attributes.some(attribute => attribute.name == 'label' && !attribute.i18n);
         if(labelCannotBeTranslated) {
           const loc = parserServices.convertNodeSourceSpanToLoc(

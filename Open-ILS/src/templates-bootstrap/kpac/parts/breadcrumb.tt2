@@ -76,12 +76,10 @@
 
     [% ELSIF ctx.page == 'getit' OR ctx.page == 'list' OR CGI.param('hold_failed') OR CGI.param('hold') OR CGI.param('listsuccess') %]
         <!-- hold pages -->
-        &nbsp; <span aria-hidden="true">&raquo;</span> &nbsp; <a href="[% mkurl(ctx.kpac_root _ '/results', {}, clear_params) %]">
+        &nbsp; <span aria-hidden="true">&raquo;</span> &nbsp; <a href="[% mkurl(ctx.kpac_root _ '/results', {query = CGI.param('query')}, clear_params) %]">
             [% l('Search Results') %]
         </a>
         &nbsp; <span aria-hidden="true">&raquo;</span> &nbsp; 
         <a href="[% mkurl(ctx.kpac_root _ '/record/' _ ctx.bre_id, {}, clear_params) %]">[% attrs.title | html %]</a>
     [% END %]
 </div>
-
-

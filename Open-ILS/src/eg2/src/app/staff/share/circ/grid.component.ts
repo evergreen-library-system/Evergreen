@@ -1,5 +1,7 @@
-import {Component, OnInit, Output, Input, ViewChild, EventEmitter} from '@angular/core';
-import {Observable, empty, from, map, concatWith as concat, ignoreElements, tap, concatMap} from 'rxjs';
+import { Component, OnInit, Output, Input, ViewChild, EventEmitter, inject } from '@angular/core';
+import {Observable, empty, from, map, concatWith as concat,
+    ignoreElements, tap, concatMap, EMPTY, catchError
+} from 'rxjs';
 import {IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
 import {NetService} from '@eg/core/net.service';
@@ -26,6 +28,9 @@ import {MarkDamagedDialogComponent
 import {ClaimsReturnedDialogComponent} from './claims-returned-dialog.component';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {AddBillingDialogComponent} from '@eg/staff/share/billing/billing-dialog.component';
+import { GridModule } from '@eg/share/grid/grid.module';
+
+import { RouterModule } from '@angular/router';
 
 export interface CircGridEntry extends CircDisplayInfo {
     index: string; // class + id -- row index
@@ -61,9 +66,32 @@ const CIRC_FLESH_FIELDS = {
 
 @Component({
     templateUrl: 'grid.component.html',
-    selector: 'eg-circ-grid'
+    selector: 'eg-circ-grid',
+    imports: [
+        AddBillingDialogComponent,
+        ClaimsReturnedDialogComponent,
+        ConfirmDialogComponent,
+        CopyAlertsDialogComponent,
+        DueDateDialogComponent,
+        GridModule,
+        MarkDamagedDialogComponent,
+        ProgressDialogComponent,
+        RouterModule,
+        StringComponent
+    ]
 })
 export class CircGridComponent implements OnInit {
+    private org = inject(OrgService);
+    private net = inject(NetService);
+    private auth = inject(AuthService);
+    private pcrud = inject(PcrudService);
+    circ = inject(CircService);
+    private audio = inject(AudioService);
+    private store = inject(StoreService);
+    private printer = inject(PrintService);
+    private toast = inject(ToastService);
+    private serverStore = inject(ServerStoreService);
+
 
     @Input() persistKey: string;
     @Input() printTemplate: string; // defaults to items_out
@@ -73,6 +101,8 @@ export class CircGridComponent implements OnInit {
 
     // Override default grid page size
     @Input() pageSize: number = null;
+
+    @Input() patron?: IdlObject;
 
     // Emitted when a grid action modified data in a way that could
     // affect which cirulcations should appear in the grid.  Caller
@@ -108,19 +138,6 @@ export class CircGridComponent implements OnInit {
     private claimsReturnedDialog: ClaimsReturnedDialogComponent;
     @ViewChild('addBillingDialog')
     private addBillingDialog: AddBillingDialogComponent;
-
-    constructor(
-        private org: OrgService,
-        private net: NetService,
-        private auth: AuthService,
-        private pcrud: PcrudService,
-        public circ: CircService,
-        private audio: AudioService,
-        private store: StoreService,
-        private printer: PrintService,
-        private toast: ToastService,
-        private serverStore: ServerStoreService
-    ) {}
 
     ngOnInit() {
 
@@ -305,10 +322,24 @@ export class CircGridComponent implements OnInit {
         }
     }
 
+    emailReceipts(rows: any[]): void {
+        this.circ.emailItemsOutReceipt(rows.map(({ circ }) => ({
+            circ: circ, patron: this.patron
+        }))).pipe(
+            tap(message => this.toast.success(message)),
+            catchError(error => {
+                if (error) { this.toast.danger(error); }
+                return EMPTY;
+            })
+        ).subscribe();
+    }
+
     editDueDate(rows: any) {
         const ids = this.getCircIds(rows);
         if (ids.length === 0) { return; }
 
+        this.dueDateDialog.isRenewal = false;
+        this.dueDateDialog.circs = this.getCircs(rows);
         this.dueDateDialog.open().subscribe(isoDate => {
             if (!isoDate) { return; } // canceled
 
@@ -419,6 +450,8 @@ export class CircGridComponent implements OnInit {
         const ids = this.getCopyIds(rows);
         if (ids.length === 0) { return; }
 
+        this.dueDateDialog.isRenewal = true;
+        this.dueDateDialog.circs = this.getCircs(rows);
         this.dueDateDialog.open().subscribe(isoDate => {
             if (!isoDate) { return; } // canceled
 
@@ -427,7 +460,7 @@ export class CircGridComponent implements OnInit {
 
             let refreshNeeded = false;
             // eslint-disable-next-line rxjs-x/no-nested-subscribe
-            this.circ.renewBatch(ids).subscribe(
+            this.circ.renewBatch(ids, params).subscribe(
                 { next: resp => {
                     if (resp.success) { refreshNeeded = true; }
                     dialog.increment();

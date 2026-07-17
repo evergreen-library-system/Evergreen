@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import {Observable} from 'rxjs';
 import {NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
@@ -8,13 +8,28 @@ import {IdlObject} from '@eg/core/idl.service';
 import {LineitemService} from './lineitem.service';
 import {BibRecordService, BibRecordSummary} from '@eg/share/catalog/bib-record.service';
 
+import { FormsModule } from '@angular/forms';
+import { MarcHtmlComponent } from '@eg/share/catalog/marc-html.component';
+import { ProgressInlineComponent } from '@eg/share/dialog/progress-inline.component';
+
 @Component({
     selector: 'eg-acq-bib-finder-dialog',
     styleUrls: ['./bib-finder-dialog.component.css'],
-    templateUrl: './bib-finder-dialog.component.html'
+    templateUrl: './bib-finder-dialog.component.html',
+    imports: [
+        FormsModule,
+        MarcHtmlComponent,
+        ProgressInlineComponent
+    ]
 })
 
 export class BibFinderDialogComponent extends DialogComponent {
+    private modal: NgbModal;
+    private net = inject(NetService);
+    private evt = inject(EventService);
+    private bib = inject(BibRecordService);
+    private liService = inject(LineitemService);
+
     @Input() liId: number;
 
     queryString: string;
@@ -23,14 +38,12 @@ export class BibFinderDialogComponent extends DialogComponent {
     doingSearch = false;
     bibToDisplay: number;
 
-    constructor(
-        private modal: NgbModal,
-        private net: NetService,
-        private evt: EventService,
-        private bib: BibRecordService,
-        private liService: LineitemService
-    ) {
+    constructor() {
+        const modal = inject(NgbModal);
+
         super(modal);
+
+        this.modal = modal;
     }
 
     open(args?: NgbModalOptions): Observable<any> {

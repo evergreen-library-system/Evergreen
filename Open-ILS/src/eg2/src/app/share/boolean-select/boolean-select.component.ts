@@ -1,6 +1,7 @@
 /* eslint-disable */
-import { Component, ChangeDetectorRef, forwardRef, OnInit, Input, Output } from '@angular/core';
-import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
+import { NgClass } from '@angular/common';
+import { Component, ChangeDetectorRef, forwardRef, OnInit, Input, Output, inject } from '@angular/core';
+import {ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR} from '@angular/forms';
 
 @Component({
     selector: 'eg-bool-select',
@@ -12,10 +13,13 @@ import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
             useExisting: forwardRef(() => BooleanSelectComponent),
             multi: true
         }
-    ]
+    ],
+    imports: [NgClass, FormsModule]
 })
 
 export class BooleanSelectComponent implements ControlValueAccessor {
+  cdr = inject(ChangeDetectorRef);
+
 
   @Input() label: string;
   @Input() name: string;
@@ -76,8 +80,6 @@ export class BooleanSelectComponent implements ControlValueAccessor {
   setRequiredState?(isRequired: boolean): void {
       this.required = isRequired;
   }
-
-  constructor(public cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {}
 

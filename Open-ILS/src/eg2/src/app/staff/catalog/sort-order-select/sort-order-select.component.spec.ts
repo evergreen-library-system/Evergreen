@@ -9,8 +9,7 @@ describe('SortOrderSelectComponent', () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            declarations: [ SortOrderSelectComponent ],
-            imports: [FormsModule]
+            imports: [SortOrderSelectComponent]
         })
             .compileComponents();
 

@@ -1,9 +1,11 @@
-import {Component, Input, ViewChild, OnInit, TemplateRef} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 
 @Component({
     selector: 'eg-prompt-dialog',
-    templateUrl: './prompt.component.html'
+    templateUrl: './prompt.component.html',
+    imports: [FormsModule, ]
 })
 
 /**

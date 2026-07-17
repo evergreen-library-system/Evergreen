@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy, Input, ViewChild, Renderer2} from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, ViewChild, Renderer2, inject } from '@angular/core';
 import {Subscription} from 'rxjs';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
@@ -7,7 +7,7 @@ import {StoreService} from '@eg/core/store.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {StringComponent} from '@eg/share/string/string.component';
-import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
+import {ComboboxComponent, ComboboxEntry} from '@eg/share/combobox/combobox.component';
 
 
 /**
@@ -16,11 +16,21 @@ import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 
 @Component({
     selector: 'eg-conjoined-items-dialog',
-    templateUrl: 'conjoined-items-dialog.component.html'
+    templateUrl: 'conjoined-items-dialog.component.html',
+    imports: [
+        ComboboxComponent,
+        StringComponent
+    ]
 })
 
 export class ConjoinedItemsDialogComponent
     extends DialogComponent implements OnInit, OnDestroy {
+    private modal: NgbModal;
+    private toast = inject(ToastService);
+    private idl = inject(IdlService);
+    private pcrud = inject(PcrudService);
+    private localStore = inject(StoreService);
+
 
     @Input() copyIds: number[];
 
@@ -41,13 +51,12 @@ export class ConjoinedItemsDialogComponent
     @ViewChild('successMsg', { static: true }) private successMsg: StringComponent;
     @ViewChild('errorMsg', { static: true }) private errorMsg: StringComponent;
 
-    constructor(
-        private modal: NgbModal, // required for passing to parent
-        private toast: ToastService,
-        private idl: IdlService,
-        private pcrud: PcrudService,
-        private localStore: StoreService) {
-        super(modal); // required for subclassing
+    constructor() {
+        const modal = inject(NgbModal);
+
+        super(modal);
+        this.modal = modal;
+        // required for subclassing
         this.peerTypes = [];
         this.copyIds = [];
     }

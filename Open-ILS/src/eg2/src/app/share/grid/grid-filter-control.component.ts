@@ -1,20 +1,35 @@
 /* eslint-disable eqeqeq */
-import {Component, Input, OnInit, QueryList, ViewChild, ViewChildren} from '@angular/core';
+import { Component, Input, OnInit, QueryList, ViewChild, ViewChildren, inject } from '@angular/core';
 import {GridContext, GridColumn} from './grid';
 import {IdlObject} from '@eg/core/idl.service';
 import {ComboboxComponent, ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {DateSelectComponent} from '@eg/share/date-select/date-select.component';
 import {OrgSelectComponent} from '@eg/share/org-select/org-select.component';
 import {OrgService} from '@eg/core/org.service';
-import {NgbDropdown} from '@ng-bootstrap/ng-bootstrap';
+import {NgbDropdown, NgbDropdownMenu, NgbDropdownToggle} from '@ng-bootstrap/ng-bootstrap';
+import { FormsModule } from '@angular/forms';
+import { NgClass, NgTemplateOutlet } from '@angular/common';
 
 @Component({
     selector: 'eg-grid-filter-control',
     templateUrl: './grid-filter-control.component.html',
-    styleUrls: ['grid-filter-control.component.css']
+    styleUrls: ['grid-filter-control.component.css'],
+    imports: [
+        ComboboxComponent,
+        DateSelectComponent,
+        FormsModule,
+        NgbDropdown,
+        NgbDropdownMenu,
+        NgbDropdownToggle,
+        NgClass,
+        NgTemplateOutlet,
+        OrgSelectComponent
+    ]
 })
 
 export class GridFilterControlComponent implements OnInit {
+    private org = inject(OrgService);
+
 
     @Input() context: GridContext;
     @Input() col:     GridColumn;
@@ -29,10 +44,6 @@ export class GridFilterControlComponent implements OnInit {
 
     // So we can use (ngModelChange) on the link combobox
     linkFilterEntry: ComboboxEntry = null;
-
-    constructor(
-        private org: OrgService
-    ) {}
 
     ngOnInit() {
         if (this.col.filterValue !== undefined) {

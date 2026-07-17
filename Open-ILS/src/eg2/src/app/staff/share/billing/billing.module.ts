@@ -5,11 +5,9 @@ import {AddBillingDialogComponent} from './billing-dialog.component';
 import {CreditCardDialogComponent} from './credit-card-dialog.component';
 
 @NgModule({
-    declarations: [
-        CreditCardDialogComponent,
-        AddBillingDialogComponent
-    ],
     imports: [
+        AddBillingDialogComponent,
+        CreditCardDialogComponent,
         StaffCommonModule
     ],
     exports: [

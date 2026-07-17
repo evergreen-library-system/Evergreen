@@ -420,7 +420,7 @@ msgstr ""
 msgid "Additional Physical Form available Note: "
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/base.tt2:65
+#: ../../Open-ILS/src/templates/opac/parts/base.tt2:60
 msgid "Additional Resources"
 msgstr ""
 
@@ -847,7 +847,7 @@ msgstr ""
 msgid "Book artist"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/misc_util.tt2:864
+#: ../../Open-ILS/src/templates/opac/parts/misc_util.tt2:865
 msgid "Book cover"
 msgstr ""
 
@@ -1016,7 +1016,7 @@ msgstr ""
 msgid "Casting director"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/base.tt2:60
+#: ../../Open-ILS/src/templates/opac/parts/base.tt2:55
 msgid "Catalog"
 msgstr ""
 
@@ -4093,7 +4093,7 @@ msgstr ""
 msgid "Read Less"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/i18n_strings.tt2:25 ../../Open-ILS/src/templates/opac/parts/misc_util.tt2:900
+#: ../../Open-ILS/src/templates/opac/i18n_strings.tt2:25 ../../Open-ILS/src/templates/opac/parts/misc_util.tt2:901
 msgid "Read More"
 msgstr ""
 
@@ -4887,7 +4887,7 @@ msgstr ""
 msgid "Single Sign On service"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/base.tt2:58
+#: ../../Open-ILS/src/templates/opac/parts/base.tt2:53
 msgid "Skip to main content"
 msgstr ""
 
@@ -5909,11 +5909,11 @@ msgstr ""
 msgid "here"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/misc_util.tt2:873
+#: ../../Open-ILS/src/templates/opac/parts/misc_util.tt2:874
 msgid "next"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/misc_util.tt2:872
+#: ../../Open-ILS/src/templates/opac/parts/misc_util.tt2:873
 msgid "prev"
 msgstr ""
 

@@ -11,11 +11,9 @@ import {AcqCommonModule} from '../acq-common.module';
 import {Z3950SearchModule} from '@eg/staff/share/z3950-search/z3950-search.module';
 
 @NgModule({
-    declarations: [
-        PicklistComponent,
-        PicklistSummaryComponent
-    ],
     imports: [
+        PicklistComponent,
+        PicklistSummaryComponent,
         Z3950SearchModule,
         StaffCommonModule,
         CatalogCommonModule,

@@ -1,4 +1,4 @@
-import {Component, Input, ViewChild, Renderer2} from '@angular/core';
+import { Component, Input, ViewChild, Renderer2, inject } from '@angular/core';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
@@ -6,14 +6,26 @@ import {EventService} from '@eg/core/event.service';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import { FormsModule } from '@angular/forms';
 
 @Component({
     selector: 'eg-picklist-clone-dialog',
-    templateUrl: './picklist-clone-dialog.component.html'
+    templateUrl: './picklist-clone-dialog.component.html',
+    imports: [
+        AlertDialogComponent,
+        FormsModule,
+    ]
 })
 
 export class PicklistCloneDialogComponent
     extends DialogComponent {
+    private renderer = inject(Renderer2);
+    private idl = inject(IdlService);
+    private evt = inject(EventService);
+    private net = inject(NetService);
+    private auth = inject(AuthService);
+    private modal: NgbModal;
+
 
   @Input() grid: any;
   selectionListName: String;
@@ -22,15 +34,12 @@ export class PicklistCloneDialogComponent
 
   @ViewChild('fail', { static: true }) private fail: AlertDialogComponent;
 
-  constructor(
-    private renderer: Renderer2,
-    private idl: IdlService,
-    private evt: EventService,
-    private net: NetService,
-    private auth: AuthService,
-    private modal: NgbModal
-  ) {
+  constructor() {
+      const modal = inject(NgbModal);
+
       super(modal);
+
+      this.modal = modal;
   }
 
   update() {

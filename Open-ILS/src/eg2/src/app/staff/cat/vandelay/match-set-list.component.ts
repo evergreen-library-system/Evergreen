@@ -1,4 +1,4 @@
-import {Component, AfterViewInit, ViewChild} from '@angular/core';
+import { Component, AfterViewInit, ViewChild, inject } from '@angular/core';
 import {Router} from '@angular/router';
 import {Pager} from '@eg/share/util/pager';
 import {IdlObject} from '@eg/core/idl.service';
@@ -8,11 +8,21 @@ import {AuthService} from '@eg/core/auth.service';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {GridDataSource, GridCellTextGenerator} from '@eg/share/grid/grid';
 import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
-    templateUrl: 'match-set-list.component.html'
+    templateUrl: 'match-set-list.component.html',
+    imports: [
+        FmRecordEditorComponent,
+        StaffCommonModule
+    ]
 })
 export class MatchSetListComponent implements AfterViewInit {
+    private router = inject(Router);
+    private pcrud = inject(PcrudService);
+    private auth = inject(AuthService);
+    private org = inject(OrgService);
+
 
     contextOrg: IdlObject;
     gridSource: GridDataSource;
@@ -23,11 +33,7 @@ export class MatchSetListComponent implements AfterViewInit {
 
     cellTextGenerator: GridCellTextGenerator;
 
-    constructor(
-        private router: Router,
-        private pcrud: PcrudService,
-        private auth: AuthService,
-        private org: OrgService) {
+    constructor() {
 
         this.gridSource = new GridDataSource();
         this.contextOrg = this.org.get(this.auth.user().ws_ou());

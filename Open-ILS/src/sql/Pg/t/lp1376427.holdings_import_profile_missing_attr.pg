@@ -1,0 +1,70 @@
+BEGIN;
+
+SELECT plan(1);
+-- The list of all columns that asset.copy has which cannot be set when importing through vandelay.
+-- Except for all the columns that shouldn't be settable. Of course.
+CREATE TEMP TABLE missing_columns AS
+    SELECT  
+        column_name
+    FROM 
+        information_schema.columns
+    WHERE   
+        table_schema = 'asset'
+        AND table_name = 'copy'
+        -- List of asset.copy columns that the importer should NOT be allowed to set.
+        AND column_name <> ALL(ARRAY[
+            'cost',                 -- Only used by acquisitions to keep track of how expensive something was inside a purchase order.
+                                    -- Wouldn't be displayed anywhere. For most things, price is used instead.
+            'creator',              -- creator shouldn't be definable because the creator should always be the person doing the import
+            'create_date',          -- create_date is always determined by evergreen automatically, and shouldn't be messed with
+            'editor',               -- editor updates all the time, but still should be determined automatically
+            'edit_date',            -- edit_date is also always handled by evergreen automatically
+            'status_changed_time',  -- another time. Nobody would want to enter a timestamp on a bib record. No.
+            'active_date',          -- timestamp.
+            'deleted',              -- Why would someone import a deleted copy?
+            'dummy_title',          -- Dummy fields on asset.copy exist for precats. If you're importing a copy, it shouldn't be a precat (anymore?), so this should always be null
+            'dummy_author',         -- Dummy
+            'dummy_isbn'            -- Dummy
+        ])
+        AND column_name NOT IN (
+            SELECT  
+                column_name
+            FROM 
+                information_schema.columns
+            WHERE   
+                table_schema = 'vandelay'
+                AND table_name = 'import_item'
+        );
+
+SELECT is_empty(
+    'SELECT * FROM missing_columns',
+    'asset.copy columns should be settable when importing in MARC Batch Import'
+);
+
+
+SELECT CASE WHEN EXISTS(SELECT * FROM missing_columns) THEN
+    diag('
+    Someone probably just added a new column to asset.copy.
+    Ideally, all information about an asset.copy can be set when someone imports a record in vandelay.
+    
+    Does the new column contain information that is managed automatically, and never set directly by a user?
+    If so, go ahead and add it to the list of ignored columns in this test.
+
+    Otherwise, you need to:
+        [1] Add a new column with the same datatype to vandelay.import_item
+        [2] Add a new string column to vandelay.import_item_attr_definition. (So people can set it in their Holdings Import Profile)
+        [3] Update vii and viiad in fm_IDL.xml
+        [4] Add the column to vandelay.ingest_items(), and define how to create a new import_item from the text on an imported record.
+            (This usually means ''attr_set.new_column := tmp_attr_set.new_column'', but may mean searching Evergreen to convert a name into an ID)
+        [5] Add an error code to vandelay.import_error, if the column has to search Evergreen for information it might be unable to find
+        [6] Add the new column to vandelay.ingest_bib_items()
+
+    ')
+ELSE
+    diag('')
+END;
+
+
+SELECT * FROM finish();
+
+ROLLBACK;

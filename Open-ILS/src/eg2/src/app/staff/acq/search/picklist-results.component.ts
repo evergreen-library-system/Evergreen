@@ -1,9 +1,8 @@
-import {Component, OnInit, Input, ViewChild} from '@angular/core';
-import {Router, ActivatedRoute} from '@angular/router';
+import { Component, OnInit, Input, ViewChild, inject } from '@angular/core';
+import {RouterModule} from '@angular/router';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {StringComponent} from '@eg/share/string/string.component';
 import {IdlObject} from '@eg/core/idl.service';
-import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
 import {PermService} from '@eg/core/perm.service';
 import {GridComponent} from '@eg/share/grid/grid.component';
@@ -14,12 +13,28 @@ import {PicklistCloneDialogComponent} from './picklist-clone-dialog.component';
 import {PicklistDeleteDialogComponent} from './picklist-delete-dialog.component';
 import {PicklistMergeDialogComponent} from './picklist-merge-dialog.component';
 import {AcqSearchFormComponent} from './acq-search-form.component';
+import { GridModule } from '@eg/share/grid/grid.module';
 
 @Component({
     selector: 'eg-picklist-results',
-    templateUrl: 'picklist-results.component.html'
+    templateUrl: 'picklist-results.component.html',
+    imports: [
+        AcqSearchFormComponent,
+        GridModule,
+        RouterModule,
+        PicklistCloneDialogComponent,
+        PicklistCreateDialogComponent,
+        PicklistDeleteDialogComponent,
+        PicklistMergeDialogComponent,
+        StringComponent
+    ]
 })
 export class PicklistResultsComponent implements OnInit {
+    private toast = inject(ToastService);
+    private auth = inject(AuthService);
+    private acqSearch = inject(AcqSearchService);
+    private perm = inject(PermService);
+
 
     @Input() initialSearchTerms: AcqSearchTerm[] = [];
 
@@ -52,15 +67,7 @@ export class PicklistResultsComponent implements OnInit {
         value2: ''
     }];
 
-    constructor(
-        private router: Router,
-        private route: ActivatedRoute,
-        private toast: ToastService,
-        private net: NetService,
-        private auth: AuthService,
-        private acqSearch: AcqSearchService,
-        private perm: PermService
-    ) {
+    constructor() {
         this.permissions = {};
     }
 

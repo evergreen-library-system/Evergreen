@@ -7,6 +7,7 @@ import { PcrudService } from '@eg/core/pcrud.service';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { MockGenerators } from 'test_data/mock_generators';
 import { IdlService } from '@eg/core/idl.service';
+import { AdminPageComponent } from '@eg/staff/share/admin-page/admin-page.component';
 
 describe('CopyAlertTypesComponent', () => {
     let component: CopyAlertTypesComponent;
@@ -14,15 +15,18 @@ describe('CopyAlertTypesComponent', () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            declarations: [ CopyAlertTypesComponent ],
+            imports: [ CopyAlertTypesComponent ],
             providers: [
                 {provide: AuthService, useValue: MockGenerators.authService()},
                 {provide: IdlService, useValue: MockGenerators.idlService({ccat: {pkey: 'id'}})},
                 {provide: OrgService, useValue: MockGenerators.orgService()},
                 {provide: PcrudService, useValue: MockGenerators.pcrudService({})},
-            ],
-            schemas: [CUSTOM_ELEMENTS_SCHEMA]
+            ]
         })
+            .overrideComponent(CopyAlertTypesComponent,
+                {remove: {imports: [AdminPageComponent]},
+                    add: {schemas: [CUSTOM_ELEMENTS_SCHEMA]}
+                })
             .compileComponents();
 
         fixture = TestBed.createComponent(CopyAlertTypesComponent);

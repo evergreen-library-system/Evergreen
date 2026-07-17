@@ -1,27 +1,27 @@
-import {Component, OnInit, OnDestroy} from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import {ActivatedRoute, ParamMap} from '@angular/router';
 import {Subscription} from 'rxjs';
 import {CatalogService} from '@eg/share/catalog/catalog.service';
 import {CatalogUrlService} from '@eg/share/catalog/catalog-url.service';
 import {CatalogSearchContext, CatalogSearchState} from '@eg/share/catalog/search-context';
 import {StaffCatalogService} from '../catalog.service';
+import { StaffCommonModule } from '@eg/staff/common.module';
 
 @Component({
     selector: 'eg-catalog-browse-results',
-    templateUrl: 'results.component.html'
+    templateUrl: 'results.component.html',
+    imports: [StaffCommonModule]
 })
 export class BrowseResultsComponent implements OnInit, OnDestroy {
+    private route = inject(ActivatedRoute);
+    private cat = inject(CatalogService);
+    private catUrl = inject(CatalogUrlService);
+    private staffCat = inject(StaffCatalogService);
+
 
     searchContext: CatalogSearchContext;
     results: any[];
     routeSub: Subscription;
-
-    constructor(
-        private route: ActivatedRoute,
-        private cat: CatalogService,
-        private catUrl: CatalogUrlService,
-        private staffCat: StaffCatalogService
-    ) {}
 
     ngOnInit() {
         this.searchContext = this.staffCat.searchContext;

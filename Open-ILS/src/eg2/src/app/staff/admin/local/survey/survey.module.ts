@@ -6,18 +6,12 @@ import {SurveyEditComponent} from './survey-edit.component';
 import {SurveyRoutingModule} from './survey-routing.module';
 
 @NgModule({
-    declarations: [
-        SurveyComponent,
-        SurveyEditComponent
-    ],
     imports: [
         AdminCommonModule,
+        SurveyComponent,
+        SurveyEditComponent,
         SurveyRoutingModule,
         FormsModule,
-    ],
-    exports: [
-    ],
-    providers: [
     ]
 })
 

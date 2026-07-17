@@ -1,25 +1,30 @@
 /* eslint-disable */
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {Router, ActivatedRoute} from '@angular/router';
-import {Location} from '@angular/common';
-import {of} from 'rxjs';
-import {NgbNav} from '@ng-bootstrap/ng-bootstrap';
-import {EventService} from '@eg/core/event.service';
-import {ToastService} from '@eg/share/toast/toast.service';
-import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
+import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import {PromptDialogComponent} from '@eg/share/dialog/prompt.component';
-import {IdlService, IdlObject} from '@eg/core/idl.service';
-import {PcrudService} from '@eg/core/pcrud.service';
+import {IdlObject} from '@eg/core/idl.service';
 import {StringComponent} from '@eg/share/string/string.component';
-import {ReporterService, SRTemplate} from '../share/reporter.service';
-import {Tree, TreeNode} from '@eg/share/tree/tree';
+import {ReporterService} from '../share/reporter.service';
+import { StaffCommonModule } from '@eg/staff/common.module';
+import { TreeComponent } from '@eg/share/tree/tree.component';
+import { ReportTemplatesComponent } from './my-templates.component';
+import { FullReporterOutputsComponent } from './my-outputs.component';
+import { ReportReportsComponent } from "./my-reports.component";
 
 @Component({
     templateUrl: './reporter.component.html',
     styleUrls: ['./reporter.component.css'],
+    imports: [
+    ReportTemplatesComponent,
+    FullReporterOutputsComponent,
+    StaffCommonModule,
+    TreeComponent,
+    ReportReportsComponent
+]
 })
 
 export class FullReporterComponent implements OnInit {
+    RSvc = inject(ReporterService);
+
 
     @ViewChild('newF', { static: true} ) newFolderString: StringComponent;
 	@ViewChild('promptNewFolder', { static: true }) newFolderDialog: PromptDialogComponent;
@@ -33,18 +38,6 @@ export class FullReporterComponent implements OnInit {
 	managableFolderType = false;
 	rerenderGridArea: Array<number> = [1];
 	rerenderSearchArea: Array<number> = [1];
-
-	constructor(
-        private route: ActivatedRoute,
-        private router: Router,
-        private location: Location,
-        private toast: ToastService,
-        private evt: EventService,
-        private idl: IdlService,
-        private pcrud: PcrudService,
-        public RSvc: ReporterService
-	) {
-	}
 
 	getMyFolders() {
 	    return this.RSvc.myFolderTrees;

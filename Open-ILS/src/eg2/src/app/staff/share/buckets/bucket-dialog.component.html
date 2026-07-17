@@ -4,24 +4,29 @@
 <ng-template #dialogContent>
   <div class="modal-header">
     <h4 class="modal-title">
-      <ng-container *ngIf="showExistingBuckets; else addNewBucket">
-        <span *ngIf="itemIds.length === 1" i18n>
+      @if (showExistingBuckets) {
+        @if (itemIds.length === 1) {
+          <span i18n>
           Add Record #{{itemIds[0]}} to Bucket
         </span>
-        <span *ngIf="itemIds.length > 1" i18n>
+        }
+        @if (itemIds.length > 1) {
+          <span i18n>
           Add {{itemIds.length}} Records to Bucket
         </span>
-        <span *ngIf="fromBibQueue" i18n>
+        }
+        @if (fromBibQueue) {
+          <span i18n>
           Add Records from Queue #{{fromBibQueue}} to Bucket
         </span>
-      </ng-container>
-
-      <ng-template #addNewBucket>
+        }
+      } @else {
         <span i18n>Add New Bucket</span>
-      </ng-template>
+      }
+
     </h4>
     <button type="button" class="btn-close btn-close-white"
-      i18n-aria-label aria-label="Close dialog" (click)="close()"></button>
+    i18n-aria-label aria-label="Close dialog" (click)="close()"></button>
   </div>
   <div class="modal-body">
     <ul ngbNav #bucketDialogTabs="ngbNav" class="nav-tabs" [activeId]="activeTabId" [keyboard]="true" [roles]="false" role="tablist">
@@ -62,8 +67,12 @@
             <div class="col-lg-4">
               <button type="button" class="btn btn-info" (click)="addToNew()"
                 [disabled]="!newBucketName">
-                <span *ngIf="showExistingBuckets" i18n>Add To New Bucket</span>
-                <span *ngIf="!showExistingBuckets" i18n>Create New Bucket</span>
+                @if (showExistingBuckets) {
+                  <span i18n>Add To New Bucket</span>
+                }
+                @if (!showExistingBuckets) {
+                  <span i18n>Create New Bucket</span>
+                }
               </button>
             </div>
           </div>

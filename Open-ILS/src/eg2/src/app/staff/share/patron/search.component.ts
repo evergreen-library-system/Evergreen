@@ -1,6 +1,5 @@
-import {Component, Input, Output, OnInit, AfterViewInit,
-    EventEmitter, ViewChild} from '@angular/core';
-import {ActivatedRoute, ParamMap} from '@angular/router';
+import { Component, Input, Output, OnInit, AfterViewInit, EventEmitter, ViewChild, inject } from '@angular/core';
+import {ActivatedRoute, ParamMap, RouterModule} from '@angular/router';
 import {Observable, of, from, map, concatMap} from 'rxjs';
 import {IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
@@ -14,6 +13,11 @@ import {BucketDialogComponent} from '@eg/staff/share/buckets/bucket-dialog.compo
 import {PatronMergeDialogComponent} from './merge-dialog.component';
 import {FormatService} from '@eg/core/format.service';
 import {LocaleService} from '@eg/core/locale.service';
+import { FormsModule } from '@angular/forms';
+import { ProfileSelectComponent } from './profile-select.component';
+import { OrgSelectComponent } from '@eg/share/org-select/org-select.component';
+import { NgClass } from '@angular/common';
+import { GridModule } from '@eg/share/grid/grid.module';
 
 const DEFAULT_SORT = [
     'family_name ASC',
@@ -51,10 +55,28 @@ export interface PatronSearch {
 @Component({
     selector: 'eg-patron-search',
     templateUrl: './search.component.html',
-    styleUrls: ['search.component.css']
+    styleUrls: ['search.component.css'],
+    imports: [
+        BucketDialogComponent,
+        FormsModule,
+        GridModule,
+        NgClass,
+        OrgSelectComponent,
+        PatronMergeDialogComponent,
+        ProfileSelectComponent,
+        RouterModule
+    ]
 })
 
 export class PatronSearchComponent implements OnInit, AfterViewInit {
+    private route = inject(ActivatedRoute);
+    private net = inject(NetService);
+    org = inject(OrgService);
+    private auth = inject(AuthService);
+    private store = inject(ServerStoreService);
+    private format = inject(FormatService);
+    locale = inject(LocaleService);
+
 
     @ViewChild('searchGrid') searchGrid: GridComponent;
     @ViewChild('addToBucket') addToBucket: BucketDialogComponent;
@@ -95,15 +117,7 @@ export class PatronSearchComponent implements OnInit, AfterViewInit {
     dataSource: GridDataSource;
     profileGroups: IdlObject[] = [];
 
-    constructor(
-        private route: ActivatedRoute,
-        private net: NetService,
-        public org: OrgService,
-        private auth: AuthService,
-        private store: ServerStoreService,
-        private format: FormatService,
-        public locale: LocaleService
-    ) {
+    constructor() {
         this.patronsActivated = new EventEmitter<any>();
         this.selectionChange = new EventEmitter<number[]>();
         this.searchFired = new EventEmitter<PatronSearch>();

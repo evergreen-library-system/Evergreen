@@ -3,8 +3,8 @@
 <eg-staff-banner bannerText="Print Template Administration" i18n-bannerText>
 </eg-staff-banner>
 
-<eg-fm-record-editor #editDialog idlClass="cpt" 
-    [preloadLinkedValues]="true" hiddenFields="template">
+<eg-fm-record-editor #editDialog idlClass="cpt"
+  [preloadLinkedValues]="true" hiddenFields="template">
 </eg-fm-record-editor>
 
 <eg-confirm-dialog #confirmDelete
@@ -35,21 +35,22 @@
       </eg-combobox>
     </div>
   </div>
-  <div class="col-lg-3" *ngIf="localeEntries.length > 0">
-    <div class="input-group">
-      <span class="input-group-text" i18n>Locale</span>
-      <eg-combobox [entries]="localeEntries"
-        [startId]="localeCode"
-        (onChange)="localeOnChange($event ? $event.id : null)">
-      </eg-combobox>
+  @if (localeEntries.length > 0) {
+    <div class="col-lg-3">
+      <div class="input-group">
+        <span class="input-group-text" i18n>Locale</span>
+        <eg-combobox [entries]="localeEntries"
+          [startId]="localeCode"
+          (onChange)="localeOnChange($event ? $event.id : null)">
+        </eg-combobox>
+      </div>
     </div>
-  </div>
+  }
 </div>
 
-<ng-container *ngIf="template">
+@if (template) {
   <ul ngbNav #tabs="ngbNav" [(activeId)]="selectedTab" [destroyOnHide]="false"
-        (navChange)="onNavChange($event)" [keyboard]="true" [roles]="false" role="tablist" class="nav-tabs">
-  
+    (navChange)="onNavChange($event)" [keyboard]="true" [roles]="false" role="tablist" class="nav-tabs">
     <li role="presentation" [ngbNavItem]="'template'">
       <a i18n ngbNavLink role="tab">Template</a>
       <ng-template ngbNavContent>
@@ -85,24 +86,28 @@
             <button type="button" class="btn btn-danger ms-2" (click)="deleteTemplate()" i18n>
               Delete Template
             </button>
-            <span *ngIf="invalidJson" class="badge badge-danger ms-2" i18n>
+            @if (invalidJson) {
+              <span class="badge badge-danger ms-2" i18n>
               Invalid Sample JSON!
             </span>
+            }
           </div>
         </div>
         <div class="row mt-2">
           <div class="col-lg-6">
             <h4 i18n>
               Template for "{{template.label()}} ({{getOwnerName(template.id())}})"
-              <span class="ps-2 text-warning" *ngIf="template.active() === 'f'">
+              @if (template.active() === 'f') {
+<span class="ps-2 text-warning">
                 (Inactive)
               </span>
+}
             </h4>
-           <textarea rows="{{templateRowCount()}}" class="form-control"
-             spellcheck="false"
-             [ngModel]="template.template()"
-             (ngModelChange)="template.template($event); template.ischanged(true)">
-           </textarea>
+            <textarea rows="{{templateRowCount()}}" class="form-control"
+              spellcheck="false"
+              [ngModel]="template.template()"
+              (ngModelChange)="template.template($event); template.ischanged(true)">
+            </textarea>
           </div>
           <div class="col-lg-6">
             <h4 i18n>Preview</h4>
@@ -119,12 +124,11 @@
     <li role="presentation" [ngbNavItem]="'data'">
       <a i18n ngbNavLink role="tab">Sample Data</a>
       <ng-template ngbNavContent>
-        <textarea rows="20" [(ngModel)]="sampleJson" 
+        <textarea rows="20" [(ngModel)]="sampleJson"
           spellcheck="false" class="form-control">
         </textarea>
       </ng-template>
     </li>
   </ul>
-  
   <div [ngbNavOutlet]="tabs" class="mt-2"></div>
-</ng-container>
+}

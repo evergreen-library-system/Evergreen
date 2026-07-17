@@ -1,4 +1,4 @@
-import {Component, OnInit, AfterViewInit} from '@angular/core';
+import { Component, OnInit, AfterViewInit, inject } from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {AuthService, AuthWsState} from '@eg/core/auth.service';
 import {StoreService} from '@eg/core/store.service';
@@ -7,14 +7,27 @@ import {OrgService} from '@eg/core/org.service';
 import {HatchService} from '@eg/core/hatch.service';
 import {ForceReloadService} from '@eg/share/util/force-reload.service';
 
+import { FormsModule } from '@angular/forms';
+import { CredentialInputComponent } from '@eg/share/util/credential-input.component';
+import { FocusOnViewInitDirective } from '@eg/share/util/focus-on-view-init.directive';
+
 const FOCUS_DELAY = 50;
 
 @Component({
     selector: 'eg-scko-banner',
-    templateUrl: 'banner.component.html'
+    templateUrl: 'banner.component.html',
+    imports: [CredentialInputComponent, FocusOnViewInitDirective, FormsModule]
 })
 
 export class SckoBannerComponent implements OnInit, AfterViewInit {
+    private route = inject(ActivatedRoute);
+    private store = inject(StoreService);
+    private auth = inject(AuthService);
+    private org = inject(OrgService);
+    private hatch = inject(HatchService);
+    scko = inject(SckoService);
+    private forceReload = inject(ForceReloadService);
+
 
     workstations: any[];
     workstationNotFound = false;
@@ -29,16 +42,6 @@ export class SckoBannerComponent implements OnInit, AfterViewInit {
     missingRequiredWorkstation = false;
 
     itemBarcode: string;
-
-    constructor(
-        private route: ActivatedRoute,
-        private store: StoreService,
-        private auth: AuthService,
-        private org: OrgService,
-        private hatch: HatchService,
-        public scko: SckoService,
-        private forceReload: ForceReloadService
-    ) {}
 
     ngOnInit() {
         this.staffUsername = '';

@@ -400,6 +400,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Overlay Match ID" name="internal_id" reporter:datatype="int"/>
 			<field reporter:label="Stat Cat Data" name="stat_cat_data" reporter:datatype="text"/>
 			<field reporter:label="Parts Data" name="parts_data" reporter:datatype="text"/>
+			<field reporter:label="Floating Group" name="floating" reporter:datatype="int"/>
+			<field reporter:label="Loan Duration" name="loan_duration" reporter:datatype="int"/>
+			<field reporter:label="Fine Level" name="fine_level" reporter:datatype="int"/>
+			<field reporter:label="Age Hold Protection" name="age_protect" reporter:datatype="int"/>
+			<field reporter:label="Mint Condition?" name="mint_condition" reporter:datatype="bool"/>
 		</fields>
 		<links>
 			<link field="import_error" reltype="has_a" key="code" map="" class="vie"/>
@@ -453,6 +458,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Overlay Match ID" name="internal_id" reporter:datatype="text"/>
 			<field reporter:label="Stat Cat Data" name="stat_cat_data" reporter:datatype="text"/>
 			<field reporter:label="Parts Data" name="parts_data" reporter:datatype="text"/>
+			<field reporter:label="Floating Group" name="floating" reporter:datatype="text"/>
+			<field reporter:label="Loan Duration" name="loan_duration" reporter:datatype="text"/>
+			<field reporter:label="Fine Level" name="fine_level" reporter:datatype="text"/>
+			<field reporter:label="Age Hold Protection" name="age_protect" reporter:datatype="text"/>
+			<field reporter:label="Mint Condition?" name="mint_condition" reporter:datatype="text"/>
 		</fields>
 		<links>
 			<link field="owner" reltype="has_a" key="id" map="" class="aou"/>
@@ -1035,7 +1045,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 
 	<class id="crad" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::record_attr_definition" oils_persist:tablename="config.record_attr_definition" reporter:label="SVF Record Attribute Defintion" oils_persist:field_safe="true">
 		<fields oils_persist:primary="name">
-			<field reporter:label="Name" name="name" reporter:datatype="id" reporter:selector="label" oils_obj:required="true"/>
+			<field reporter:label="Name" name="name" reporter:datatype="text" reporter:selector="label" oils_obj:required="true"/>
 			<field reporter:label="Label" name="label" reporter:datatype="text" oils_obj:required="true" oils_persist:i18n="true"/>
 			<field reporter:label="Description" name="description" reporter:datatype="text" oils_persist:i18n="true"/>
 			<field reporter:label="Multi-valued?" name="multi" reporter:datatype="bool"/>
@@ -2004,7 +2014,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 
 	<class id="cubt" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="container::user_bucket_type" oils_persist:tablename="container.user_bucket_type" reporter:label="User Bucket Type" oils_persist:field_safe="true">
 		<fields oils_persist:primary="code">
-			<field reporter:label="Code" name="code" reporter:selector="name" reporter:datatype="id" oils_obj:required="true"/>
+			<field reporter:label="Code" name="code" reporter:selector="name" reporter:datatype="text" oils_obj:required="true"/>
 			<field reporter:label="Label" name="label" reporter:datatype="text" oils_persist:i18n="true" oils_obj:required="true"/>
 		</fields>
 		<links/>
@@ -2039,10 +2049,15 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Hold Weights ID" name="id" reporter:datatype="id" reporter:selector="name"/>
 			<field reporter:label="Name" name="name" reporter:datatype="text" oils_obj:required="true"/>
 			<field reporter:label="User Home Library" name="user_home_ou" reporter:datatype="float" oils_obj:required="true"/>
+			<field reporter:label="User Home Library Group" name="user_home_lasso" reporter:datatype="float" oils_obj:required="true"/>
 			<field reporter:label="Request Library" name="request_ou" reporter:datatype="float" oils_obj:required="true"/>
+			<field reporter:label="Request Library Group" name="request_lasso" reporter:datatype="float" oils_obj:required="true"/>
 			<field reporter:label="Pickup Library" name="pickup_ou" reporter:datatype="float" oils_obj:required="true"/>
+			<field reporter:label="Pickup Library Group" name="pickup_lasso" reporter:datatype="float" oils_obj:required="true"/>
 			<field reporter:label="Owning Library" name="item_owning_ou" reporter:datatype="float" oils_obj:required="true"/>
+			<field reporter:label="Owning Library Group" name="item_owning_lasso" reporter:datatype="float" oils_obj:required="true"/>
 			<field reporter:label="Item Circ Library" name="item_circ_ou" reporter:datatype="float" oils_obj:required="true"/>
+			<field reporter:label="Item Circ Library Group" name="item_circ_lasso" reporter:datatype="float" oils_obj:required="true"/>
 			<field reporter:label="User Permission Group" name="usr_grp" reporter:datatype="float" oils_obj:required="true"/>
 			<field reporter:label="Requestor Permission Group" name="requestor_grp" reporter:datatype="float" oils_obj:required="true"/>
 			<field reporter:label="Circulation Modifier" name="circ_modifier" reporter:datatype="float" oils_obj:required="true"/>
@@ -2071,10 +2086,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Circ Weights ID" name="id" reporter:datatype="id" reporter:selector="name"/>
 			<field reporter:label="Name" name="name" reporter:datatype="text" oils_obj:required="true"/>
 			<field reporter:label="Renewal?" name="is_renewal" reporter:datatype="float" oils_obj:required="true"/>
-			<field reporter:label="Org Unit" name="org_unit" reporter:datatype="float" oils_obj:required="true"/>
+			<field reporter:label="Checkout Library" name="org_unit" reporter:datatype="float" oils_obj:required="true"/>
+			<field reporter:label="Checkout Library Group" name="org_lasso" reporter:datatype="float" oils_obj:required="true"/>
 			<field reporter:label="Item Circ Library" name="copy_circ_lib" reporter:datatype="float" oils_obj:required="true"/>
+			<field reporter:label="Item Circ Library Group" name="copy_circ_lasso" reporter:datatype="float" oils_obj:required="true"/>
 			<field reporter:label="Item Owning Library" name="copy_owning_lib" reporter:datatype="float" oils_obj:required="true"/>
+			<field reporter:label="Item Owning Library Group" name="copy_owning_lasso" reporter:datatype="float" oils_obj:required="true"/>
 			<field reporter:label="User Home Library" name="user_home_ou" reporter:datatype="float" oils_obj:required="true"/>
+			<field reporter:label="User Home Library Group" name="user_home_lasso" reporter:datatype="float" oils_obj:required="true"/>
 			<field reporter:label="Permission Group" name="grp" reporter:datatype="float" oils_obj:required="true"/>
 			<field reporter:label="Circulation Modifier" name="circ_modifier" reporter:datatype="float" oils_obj:required="true"/>
 			<field reporter:label="Shelving Location" name="copy_location" reporter:datatype="float" oils_obj:required="true"/>
@@ -2128,10 +2147,15 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Active?" name="active" reporter:datatype="bool"/>
 			<field reporter:label="Strict OU matches?" name="strict_ou_match" reporter:datatype="bool"/>
 			<field reporter:label="User Home Library" name="user_home_ou" reporter:datatype="org_unit"/>
+			<field reporter:label="User Home Library Group" name="user_home_lasso" reporter:datatype="link"/>
 			<field reporter:label="Request Library" name="request_ou" reporter:datatype="org_unit"/>
+			<field reporter:label="Request Library Group" name="request_lasso" reporter:datatype="link"/>
 			<field reporter:label="Pickup Library" name="pickup_ou" reporter:datatype="org_unit"/>
+			<field reporter:label="Pickup Library Group" name="pickup_lasso" reporter:datatype="link"/>
 			<field reporter:label="Owning Library" name="item_owning_ou" reporter:datatype="org_unit"/>
+			<field reporter:label="Owning Library Group" name="item_owning_lasso" reporter:datatype="link"/>
 			<field reporter:label="Item Circ Library" name="item_circ_ou" reporter:datatype="org_unit"/>
+			<field reporter:label="Item Circ Library Group" name="item_circ_lasso" reporter:datatype="link"/>
 			<field reporter:label="User Permission Group" name="usr_grp" reporter:datatype="link"/>
 			<field reporter:label="Requestor Permission Group" name="requestor_grp" reporter:datatype="link" oils_obj:required="true"/>
 			<field reporter:label="Circulation Modifier" name="circ_modifier" oils_persist:primitive="string" reporter:datatype="link"/>
@@ -2157,6 +2181,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="pickup_ou" reltype="has_a" key="id" map="" class="aou"/>
 			<link field="item_owning_ou" reltype="has_a" key="id" map="" class="aou"/>
 			<link field="item_circ_ou" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="user_home_lasso" reltype="has_a" key="id" map="" class="lasso"/>
+			<link field="request_lasso" reltype="has_a" key="id" map="" class="lasso"/>
+			<link field="pickup_lasso" reltype="has_a" key="id" map="" class="lasso"/>
+			<link field="item_owning_lasso" reltype="has_a" key="id" map="" class="lasso"/>
+			<link field="item_circ_lasso" reltype="has_a" key="id" map="" class="lasso"/>
 			<link field="usr_grp" reltype="has_a" key="id" map="" class="pgt"/>
 			<link field="requestor_grp" reltype="has_a" key="id" map="" class="pgt"/>
 			<link field="circ_modifier" reltype="has_a" key="code" map="" class="ccm"/>
@@ -2184,9 +2213,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Renewal?" name="is_renewal" reporter:datatype="bool"/>
 			<field reporter:label="Active?" name="active" reporter:datatype="bool" oils_obj:required="true"/>
 			<field reporter:label="Checkout Library" name="org_unit" reporter:datatype="org_unit" oils_obj:required="true"/>
+			<field reporter:label="Checkout Library Group" name="org_lasso" reporter:datatype="link"/>
 			<field reporter:label="Item Circ Library" name="copy_circ_lib" reporter:datatype="org_unit"/>
+			<field reporter:label="Item Circ Library Group" name="copy_circ_lasso" reporter:datatype="link"/>
 			<field reporter:label="Item Owning Library" name="copy_owning_lib" reporter:datatype="org_unit"/>
+			<field reporter:label="Item Owning Library Group" name="copy_owning_lasso" reporter:datatype="link"/>
 			<field reporter:label="User Home Library" name="user_home_ou" reporter:datatype="org_unit"/>
+			<field reporter:label="User Home Library Group" name="user_home_lasso" reporter:datatype="link"/>
 			<field reporter:label="Permission Group" name="grp" reporter:datatype="link" oils_obj:required="true"/>
 			<field reporter:label="Circulation Modifier" name="circ_modifier" oils_persist:primitive="string" reporter:datatype="link"/>
 			<field reporter:label="Shelving Location" name="copy_location" reporter:datatype="link"/>
@@ -2218,6 +2251,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="copy_circ_lib" reltype="has_a" key="id" map="" class="aou"/>
 			<link field="copy_owning_lib" reltype="has_a" key="id" map="" class="aou"/>
 			<link field="user_home_ou" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="org_lasso" reltype="has_a" key="id" map="" class="lasso"/>
+			<link field="copy_circ_lasso" reltype="has_a" key="id" map="" class="lasso"/>
+			<link field="copy_owning_lasso" reltype="has_a" key="id" map="" class="lasso"/>
+			<link field="user_home_lasso" reltype="has_a" key="id" map="" class="lasso"/>
 			<link field="grp" reltype="has_a" key="id" map="" class="pgt"/>
 			<link field="circ_modifier" reltype="has_a" key="code" map="" class="ccm"/>
 			<link field="copy_location" reltype="has_a" key="id" map="" class="acpl"/>
@@ -2903,7 +2940,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 
 	<class id="at" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="authority::thesaurus" oils_persist:tablename="authority.thesaurus" reporter:label="Authority Thesaurus" oils_persist:field_safe="true">
 		<fields oils_persist:primary="code">
-			<field reporter:label="Thesaurus Code" name="code" reporter:datatype="id" reporter:selector="name" oils_obj:required="true"/>
+			<field reporter:label="Thesaurus Code" name="code" reporter:datatype="text" reporter:selector="name" oils_obj:required="true"/>
 			<field reporter:label="Control Set" name="control_set" reporter:datatype="link" config_field="true"/>
 			<field reporter:label="Name" name="name" reporter:datatype="text" oils_persist:i18n="true" oils_obj:required="true"/>
 			<field reporter:label="Description" name="description" reporter:datatype="text" oils_persist:i18n="true"/>
@@ -3492,14 +3529,17 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 	
 	<class id="acnc" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="asset::call_number_class" oils_persist:tablename="asset.call_number_class" reporter:label="Call number classification scheme">
 		<fields oils_persist:primary="id" oils_persist:sequence="asset.call_number_class_id_seq">
-			<field reporter:label="Call number class ID" name="id" reporter:datatype="id"/>
-			<field reporter:label="Name" name="name" reporter:datatype="text" oils_obj:required="true"/>
+			<field reporter:label="Call number class ID" name="id" reporter:datatype="id" oils_obj:required="true"/>
+			<field reporter:label="Name" name="name" reporter:datatype="text" oils_persist:i18n="true" oils_obj:required="true"/>
 			<field reporter:label="Normalizer function" name="normalizer" reporter:datatype="text"/>
-			<field reporter:label="Call number fields" name="field" reporter:datatype="text"/>
+			<field reporter:label="Call number fields" name="field" reporter:datatype="text" oils_obj:required="true"/>
 		</fields>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
+				<create permission="ADMIN_CALL_NUMBER_CLASS" global_required="true"/>
 				<retrieve/>
+				<update permission="ADMIN_CALL_NUMBER_CLASS" global_required="true"/>
+				<delete permission="ADMIN_CALL_NUMBER_CLASS" global_required="true"/>
 			</actions>
 		</permacrud>
 	</class>
@@ -6742,15 +6782,15 @@ SELECT  usr,
 			<field reporter:label="Questions" name="questions" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Responses" name="responses" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Description" name="description" reporter:datatype="text" oils_obj:required="true"/>
-			<field reporter:label="Survey End Date/Time" name="end_date" reporter:datatype="timestamp"/>
+			<field reporter:label="Survey End Date/Time" name="end_date" reporter:datatype="timestamp" oils_obj:required="true"/>
 			<field reporter:label="Survey ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Name" name="name" reporter:datatype="text" oils_obj:required="true"/>
-			<field reporter:label="OPAC Survey?" name="opac" reporter:datatype="bool"/>
+			<field reporter:label="OPAC Survey?" name="opac" reporter:datatype="bool" oils_obj:required="true"/>
 			<field reporter:label="Owning Library" name="owner" reporter:datatype="org_unit" oils_obj:required="true"/>
-			<field reporter:label="Poll Style?" name="poll" reporter:datatype="bool"/>
-			<field reporter:label="Is Required?" name="required" reporter:datatype="bool"/>
-			<field reporter:label="Survey Start Date/Time" name="start_date" reporter:datatype="timestamp"/>
-			<field reporter:label="Display in User Summary" name="usr_summary" reporter:datatype="bool"/>
+			<field reporter:label="Poll Style?" name="poll" reporter:datatype="bool" oils_obj:required="true"/>
+			<field reporter:label="Is Required?" name="required" reporter:datatype="bool" oils_obj:required="true"/>
+			<field reporter:label="Survey Start Date/Time" name="start_date" reporter:datatype="timestamp" oils_obj:required="true"/>
+			<field reporter:label="Display in User Summary" name="usr_summary" reporter:datatype="bool" oils_obj:required="true"/>
 		</fields>
 		<links>
 			<link field="owner" reltype="has_a" key="id" map="" class="aou"/>
@@ -9364,6 +9404,7 @@ SELECT  usr,
 			<field name="name" reporter:datatype="text" oils_persist:i18n="true" oils_obj:required="true"/>
 			<field name="description" reporter:datatype="text" oils_persist:i18n="true"/>
 			<field name="rtl" reporter:datatype="bool"/>
+			<field name="staff_client" reporter:datatype="bool" reporter:label="Display in staff client?" />
 		</fields>
 		<links/>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
@@ -12610,7 +12651,7 @@ SELECT  usr,
 
 	<class id="cmpctm" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::marc21_physical_characteristic_type_map" oils_persist:tablename="config.marc21_physical_characteristic_type_map" reporter:label="MARC21 Physical Characteristic Type Map" oils_persist:field_safe="true">
 		<fields oils_persist:primary="ptype_key">
-			<field reporter:label="Type Key" name="ptype_key" reporter:datatype="id" oils_obj:required="true"/>
+			<field reporter:label="Type Key" name="ptype_key" reporter:datatype="text" oils_obj:required="true"/>
 			<field reporter:label="Label" name="label" reporter:datatype="text" oils_obj:required="true"/>
 		</fields>
 		<links/>
@@ -12977,7 +13018,7 @@ SELECT  usr,
 
 	<class id="cmrtm" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::marc21_rec_type_map" oils_persist:tablename="config.marc21_rec_type_map" reporter:label="MARC21 Record Type Map" oils_persist:field_safe="true">
 		<fields oils_persist:primary="code">
-			<field reporter:label="Code" name="code" reporter:datatype="id" oils_obj:required="true"/>
+			<field reporter:label="Code" name="code" reporter:datatype="text" oils_obj:required="true"/>
 			<field reporter:label="Type Value" name="type_val" reporter:datatype="text" oils_obj:required="true"/>
 			<field reporter:label="BLvl Value" name="blvl_val" reporter:datatype="text" oils_obj:required="true"/>
 		</fields>
@@ -14147,7 +14188,7 @@ SELECT  usr,
 	</class>
 	<class id="cctt" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::copy_tag_type" oils_persist:tablename="config.copy_tag_type" reporter:label="Item Tag Types" oils_persist:field_safe="true" oils_persist:cardinality="low">
 		<fields oils_persist:primary="code">
-			<field reporter:label="Code" name="code" reporter:selector="label" reporter:datatype="id" oils_obj:required="true"/>
+			<field reporter:label="Code" name="code" reporter:selector="label" reporter:datatype="text" oils_obj:required="true"/>
 			<field reporter:label="Tag Type" name="label" reporter:datatype="text" oils_obj:required="true"/>
 			<field reporter:label="Owner" name="owner" reporter:datatype="org_unit" oils_obj:required="true"/>
 		</fields>
@@ -14482,7 +14523,7 @@ SELECT  usr,
 	<!-- OpenAPI class defs -->
 	<class id="ojsd" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="openapi::json_schema_datatype" oils_persist:tablename="openapi.json_schema_datatype" reporter:label="OpenAPI JSON Schema Datatype">
 		<fields oils_persist:primary="name">
-			<field name="name" reporter:label="Name" reporter:datatype="id"/>
+			<field name="name" reporter:label="Name" reporter:datatype="text"/>
 			<field name="label" reporter:label="Label" reporter:datatype="text" oils_obj:required="true"/>
 			<field name="description" reporter:label="Description" reporter:datatype="text"/>
 		</fields>
@@ -14498,7 +14539,7 @@ SELECT  usr,
 
 	<class id="ojsf" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="openapi::json_schema_format" oils_persist:tablename="openapi.json_schema_format" reporter:label="OpenAPI JSON Schema Data Format">
 		<fields oils_persist:primary="name">
-			<field name="name" reporter:label="Name" reporter:datatype="id"/>
+			<field name="name" reporter:label="Name" reporter:datatype="text"/>
 			<field name="label" reporter:label="Label" reporter:datatype="text" oils_obj:required="true"/>
 			<field name="description" reporter:label="Description" reporter:datatype="text"/>
 		</fields>
@@ -14768,7 +14809,7 @@ SELECT  usr,
 
 	<class id="oes" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="openapi::endpoint_set" oils_persist:tablename="openapi.endpoint_set" reporter:label="OpenAPI Endpoint Set">
 		<fields oils_persist:primary="name">
-			<field name="name" reporter:label="Set Name" reporter:datatype="id"/>
+			<field name="name" reporter:label="Set Name" reporter:datatype="text"/>
 			<field name="description" reporter:label="Set Description" reporter:datatype="text" oils_obj:required="true"/>
 			<field name="active" reporter:label="Active" reporter:datatype="bool" oils_obj:required="true"/>
 			<field name="endpoint" reporter:label="Endpoints" reporter:datatype="link" oils_persist:virtual="true"/>

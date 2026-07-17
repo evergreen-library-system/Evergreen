@@ -123,16 +123,16 @@ sub load_myopac_prefs {
     $self->prepare_extended_user_info;
     my $user = $self->ctx->{user};
 
-    # PINES - check whether or not to provide account renewal link
+    # Check whether or not to provide account renewal link
     if ($user->billing_address and $user->billing_address->valid and $user->billing_address->valid eq 't') {
-        $self->ctx->{valid_billing_address} = 't';
+        $self->ctx->{valid_billing_address} = 1;
     } else {
-        $self->ctx->{valid_billing_address} = 'f';
+        $self->ctx->{valid_billing_address} = 0;
     }
     if ($user->mailing_address and $user->mailing_address->valid and $user->mailing_address->valid eq 't') {
-        $self->ctx->{valid_mailing_address} = 't';
+        $self->ctx->{valid_mailing_address} = 1;
     } else {
-        $self->ctx->{valid_mailing_address} = 'f';
+        $self->ctx->{valid_mailing_address} = 0;
     }
 
     $self->check_account_exp();
@@ -740,6 +740,16 @@ sub _load_lists_and_settings {
                 }
             ]
         );
+
+        # We need a separate bookbag object that contains the full list for use in the basket selection dropdowns
+        $self->ctx->{bookbags_complete} = $e->search_container_biblio_record_entry_bucket(
+            [
+                {owner => $self->ctx->{user}->id, btype => 'bookbag'}, {
+                    order_by => {cbreb => 'name'}
+                }
+            ]
+        );
+
         # We also want a total count of the user's bookbags.
         my $q = {
             'select' => { 'cbreb' => [ { 'column' => 'id', 'transform' => 'count', 'aggregate' => 'true', 'alias' => 'count' } ] },
@@ -820,9 +830,15 @@ sub _get_bookbag_sort_params {
     # In practice this means the "sort" parameter will be something like
     # "titlesort" or "authorsort.descending".
     my $sorter = $self->cgi->param($param_name) || "";
+    # while in theory the sorter could be any valid non-space
+    # UTF-8 character per the search grammer, possibly followed
+    # by a period and a modifier, we restrict it here to avoid security concerns
+    if ($sorter !~ /^([A-Za-z0-9_-]+?)\.*[A-Za-z0-9_-]*$/) {
+        $sorter = '';
+    }
     my $modifier;
     if ($sorter) {
-        $sorter =~ s/^(.*?)\.(.*)/$1/;
+        $sorter =~ s/^([A-Za-z0-9_-]+?)\.([A-Za-z0-9_-]*)$/$1/;
         $modifier = $2 || undef;
     }
 
@@ -1590,6 +1606,22 @@ sub load_place_hold {
         }
     }
 
+    # If expire date exists, ensure that it's in a usable format
+    if ($cgi->param('expire_time')) {
+        if ($cgi->param('expire_time') =~ m:^(\d{2})/(\d{2})/(\d{4})$:){
+            eval {
+                my $dt = DateTime::Format::ISO8601->parse_datetime("$3-$1-$2");
+                $ctx->{expire_time} = $dt->ymd;
+            };
+        } elsif ($cgi->param('expire_time') =~ m:^(\d{4})-(\d{2})-(\d{2})$:){
+            eval {
+                my $dt = DateTime::Format::ISO8601->parse_datetime("$1-$2-$3");
+                $ctx->{expire_time} = $dt->ymd;
+            };
+        } else {
+            $logger->warn("ignoring invalid expire_time when placing hold request");
+        }
+    }
 
     # If we have a default pickup location, grab it
     if ($$user_setting_map{'opac.default_pickup_location'}) {
@@ -1608,6 +1640,7 @@ sub load_place_hold {
         if ($ctx->{sms_carrier}) { $hdata->{sms_carrier} = $ctx->{sms_carrier}; }
         if ($ctx->{frozen}) { $hdata->{frozen} = 1; }
         if ($ctx->{thaw_date}) { $hdata->{thaw_date} = $ctx->{thaw_date}; }
+        if ($ctx->{expire_time}) { $hdata->{expire_time} = $ctx->{expire_time}; }
         return $hdata;
     };
 
@@ -2824,14 +2857,25 @@ sub load_myopac_main {
     # PINES - need to make sure we're retrieving current info
 # NEEDS WORK - NOT SURE WHY THIS LINE IS BREAKING ACCOUNTS THAT HAVE CHARGES
 #    $self->prepare_extended_user_info;
-    # PINES - check whether or not to provide account renewal link
-    if ($self->ctx->{user}->billing_address) {
-        $self->ctx->{valid_billing_address} = $self->editor->retrieve_actor_user_address($self->ctx->{user}->billing_address)->valid;
+
+    # Check whether or not to provide account renewal link, fetching
+    # patron record from database to be sure that we have the most recent
+    # data
+    my $user = $self->editor->retrieve_actor_user([$self->ctx->{user}->id,
+        {
+            flesh => 1,
+            flesh_fields => {
+                au => ['billing_address', 'mailing_address']
+            }
+        }
+    ]);
+    if ($user->billing_address and $user->billing_address->valid and $user->billing_address->valid eq 't') {
+        $self->ctx->{valid_billing_address} = 1;
     } else {
         $self->ctx->{valid_billing_address} = 0;
     }
-    if ($self->ctx->{user}->mailing_address) {
-        $self->ctx->{valid_mailing_address} = $self->editor->retrieve_actor_user_address($self->ctx->{user}->mailing_address)->valid;
+    if ($user->mailing_address and $user->mailing_address->valid and $user->mailing_address->valid eq 't') {
+        $self->ctx->{valid_mailing_address} = 1;
     } else {
         $self->ctx->{valid_mailing_address} = 0;
     }
@@ -3841,6 +3885,9 @@ sub check_account_exp {
     #check for various standing penalties that would block an online renewal
     $self->has_penalties();
 
+    my $home_ou = $ctx->{user}->home_ou;
+    $home_ou = ref($home_ou) ? $home_ou->id : $home_ou; # this is not consistently fleshed
+
     #check for other problems that would block an online renewal
     if ($ctx->{user}->active ne 't') { #user is no longer active
         $ctx->{hasproblem} = 1;
@@ -3848,16 +3895,31 @@ sub check_account_exp {
         $ctx->{hasproblem} = 1;
     } elsif ($ctx->{user}->barred eq 't') { #user is barred
         $ctx->{hasproblem} = 1;
-    } elsif ($ctx->{valid_billing_address} ne 't') { #user has invalid billing address
-        $ctx->{hasproblem} = 1;
-    } elsif ($ctx->{valid_mailing_address} ne 't') { #user has invalid mailing address
-        $ctx->{hasproblem} = 1;
     } else {
-        $ctx->{hasproblem} = 0;
+        # check whether the patron has enough current, valid addresses to
+        # offer e-renewal
+        my $num_addresses_to_check = $self->ctx->{get_org_setting}->(
+            $home_ou, 'vendor.quipu.erenew.num_addresses_required'
+        ) // 2;
+        if ($num_addresses_to_check >= 2) {
+            if ($ctx->{valid_billing_address} &&
+                $ctx->{valid_mailing_address}) {
+                $ctx->{hasproblem} = 0;
+            } else {
+                $ctx->{hasproblem} = 1;
+            }
+        } elsif ($num_addresses_to_check == 1) {
+            if ($ctx->{valid_billing_address} ||
+                $ctx->{valid_mailing_address}) {
+                $ctx->{hasproblem} = 0;
+            } else {
+                $ctx->{hasproblem} = 1;
+            }
+        } else {
+            $ctx->{hasproblem} = 0;
+        }
     }
 
-    my $home_ou = $ctx->{user}->home_ou;
-    $home_ou = ref($home_ou) ? $home_ou->id : $home_ou; # this is not consistently fleshed
     my $erenewal_offer_window = $self->ctx->{get_org_setting}->(
         $home_ou, "opac.ecard_renewal_offer_interval"
     ) || 29;

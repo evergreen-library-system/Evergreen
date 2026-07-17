@@ -10,9 +10,14 @@ import { PermService } from '@eg/core/perm.service';
 import { ToastService } from '@eg/share/toast/toast.service';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { GridModule } from '@eg/share/grid/grid.module';
 import { PrintService } from '@eg/share/print/print.service';
 import { GridDataSource } from '@eg/share/grid/grid';
+import { LocaleService } from '@eg/core/locale.service';
+import { FmRecordEditorComponent } from '@eg/share/fm-editor/fm-editor.component';
+import { GridModule } from '@eg/share/grid/grid.module';
+import { OrgFamilySelectComponent } from '@eg/share/org-family-select/org-family-select.component';
+import { StringComponent } from '@eg/share/string/string.component';
+import { TranslateComponent } from '@eg/share/translate/translate.component';
 
 describe('AdminPageComponent', () => {
     let component: AdminPageComponent;
@@ -35,15 +40,15 @@ describe('AdminPageComponent', () => {
                 {provide: PcrudService, useValue: {}},
                 {provide: PermService, useValue: {}},
                 {provide: ToastService, useValue: {}},
-                {provide: PrintService, useValue: {}}
-            ],
-            schemas: [CUSTOM_ELEMENTS_SCHEMA],
-            declarations: [
-                AdminPageComponent,
+                {provide: PrintService, useValue: {}},
+                {provide: LocaleService, useValue: {}}
             ],
             imports: [
-                GridModule
+                AdminPageComponent,
             ]
+        }).overrideComponent(AdminPageComponent, {
+            add: {schemas: [CUSTOM_ELEMENTS_SCHEMA]},
+            remove: {imports: [FmRecordEditorComponent, OrgFamilySelectComponent, StringComponent, TranslateComponent]}
         });
         fixture = TestBed.createComponent(AdminPageComponent);
         component = fixture.componentInstance;

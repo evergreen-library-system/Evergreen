@@ -4,13 +4,18 @@ import {MarcRecord} from './marcrecord';
 import {MarcEditContext} from './editor-context';
 import {Subject, takeUntil} from 'rxjs';
 
+import { EditableContentComponent } from './editable-content.component';
+
 /**
  * MARC Fixed Field Editing Component
  */
 
 @Component({
     selector: 'eg-fixed-field',
-    templateUrl: './fixed-field.component.html'
+    templateUrl: './fixed-field.component.html',
+    imports: [
+        EditableContentComponent
+    ]
 })
 
 export class FixedFieldComponent implements OnInit, OnDestroy {

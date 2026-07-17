@@ -1,15 +1,27 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {Router, ActivatedRoute} from '@angular/router';
+import { Component, OnInit, inject } from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
 import {GridDataSource} from '@eg/share/grid/grid';
 import {Pager} from '@eg/share/util/pager';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {IdlObject, IdlService } from '@eg/core/idl.service';
+import { StaffCommonModule } from '@eg/staff/common.module';
+import { AdminPageComponent } from '@eg/staff/share/admin-page/admin-page.component';
+import { FmRecordEditorComponent } from '@eg/share/fm-editor/fm-editor.component';
 
 @Component({
-    templateUrl: './edit-floating-group.component.html'
+    templateUrl: './edit-floating-group.component.html',
+    imports: [
+        AdminPageComponent,
+        FmRecordEditorComponent,
+        StaffCommonModule
+    ]
 })
 
 export class EditFloatingGroupComponent implements OnInit {
+    private route = inject(ActivatedRoute);
+    private pcrud = inject(PcrudService);
+    private idl = inject(IdlService);
+
 
     dataSource: GridDataSource;
 
@@ -18,13 +30,6 @@ export class EditFloatingGroupComponent implements OnInit {
 
     // This is the ID of the floating group being edited currently
     currentId: number;
-
-    constructor(
-        private route: ActivatedRoute,
-        private pcrud: PcrudService,
-        private idl: IdlService,
-    ) {
-    }
 
     ngOnInit() {
         this.currentId = parseInt(this.route.snapshot.paramMap.get('id'), 10);
