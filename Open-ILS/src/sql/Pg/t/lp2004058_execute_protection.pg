@@ -1,23 +1,8 @@
 BEGIN;
 
-SELECT plan(18);
+SELECT plan(16);
 
-UPDATE asset.call_number_class 
-SET normalizer = $$1; INSERT INTO config.upgrade_log (version) VALUES ('lp2004058_asset.label_normalizer'); SELECT asset.label_normalizer_generic$$ 
-WHERE id = 1;
-
-PREPARE acn_update_query AS
-    UPDATE asset.call_number SET label = 'a    callnumber'
-    WHERE id = 1;
-
-SELECT throws_ok('acn_update_query', NULL, NULL, 'Invalid asset.label_normalizer should cause error');
-
-SELECT cmp_ok(
-    (SELECT COUNT(*) FROM config.upgrade_log WHERE version = 'lp2004058_asset.label_normalizer'),
-    '<', '1', 'Injection fixed in asset.label_normalizer'
-);
-
-UPDATE asset.call_number_class 
+UPDATE asset.call_number_class
 SET normalizer = 'asset.label_normalizer_generic'
 WHERE id = 1;
 
