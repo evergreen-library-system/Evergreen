@@ -6,7 +6,7 @@ on:
       - 'Makefile.am'
       - 'configure.ac'
       - 'Open-ILS/src/c-apps/**'
-      - 'Open-ILS/src/extras/install'
+      - 'Open-ILS/src/extras/install/**'
       - 'Open-ILS/src/Makefile.am'
       - 'Open-ILS/src/perlmods/**'
   pull_request:
@@ -15,7 +15,7 @@ on:
       - 'Makefile.am'
       - 'configure.ac'
       - 'Open-ILS/src/c-apps/**'
-      - 'Open-ILS/src/extras/install'
+      - 'Open-ILS/src/extras/install/**'
       - 'Open-ILS/src/Makefile.am'
       - 'Open-ILS/src/perlmods/**'
   workflow_dispatch:
@@ -23,9 +23,12 @@ on:
 jobs:
   make-check:
     name: Make Check
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
+    container:
+      image: ubuntu:24.04
     steps:
-      - run: sudo apt-get update -y
+      - run: apt-get update -y
+      - run: apt-get install -y sudo git make lsb-release
       - name: Clone OpenSRF repository
         run: git clone --branch main git://git.evergreen-ils.org/OpenSRF.git
       - name: "OpenSRF: install dependencies"
