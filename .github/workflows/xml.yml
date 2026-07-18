@@ -3,19 +3,24 @@ on:
   push:
     paths:
       - '.github/workflows/**'
+      - 'Open-ILS/src/extras/install/**'
       - 'Open-ILS/examples/**'
   pull_request:
     paths:
       - '.github/workflows/**'
+      - 'Open-ILS/src/extras/install/**'
       - 'Open-ILS/examples/**'
   workflow_dispatch:
 
 jobs:
   make-test:
     name: Make test examples
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
+    container:
+      image: ubuntu:24.04
     steps:
-      - run: sudo apt-get update -y
+      - run: apt-get update -y
+      - run: apt-get install -y sudo git make lsb-release
       - name: Clone OpenSRF repository
         run: git clone --branch main git://git.evergreen-ils.org/OpenSRF.git
       - name: "OpenSRF: install dependencies"
