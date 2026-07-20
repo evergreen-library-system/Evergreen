@@ -4151,11 +4151,13 @@ __PACKAGE__->register_method (
     method      => 'update_events',
     api_name    => 'open-ils.actor.user.event.cancel.batch',
     stream      => 1,
+    max_bundle_count => 1,
 );
 __PACKAGE__->register_method (
     method      => 'update_events',
     api_name    => 'open-ils.actor.user.event.reset.batch',
     stream      => 1,
+    max_bundle_count => 1,
 );
 
 sub update_events {
@@ -4174,16 +4176,25 @@ sub update_events {
             }
         ]) or return $e->die_event;
 
-        my $user_id;
-        if($event->event_def->hook->core_type eq 'circ') {
-            $user_id = $e->retrieve_action_circulation($event->target)->usr;
-        } elsif($event->event_def->hook->core_type eq 'ahr') {
-            $user_id = $e->retrieve_action_hold_request($event->target)->usr;
-        } else {
-            return 0;
+        my $user_id = $event->context_user;
+
+        unless ($user_id) {
+            # XXX Leaving this block in place as a backup for very
+            # old, very inactive, heavily upgraded instances.
+            if($event->event_def->hook->core_type eq 'circ') {
+                $user_id = $e->retrieve_action_circulation($event->target)->usr;
+            } elsif($event->event_def->hook->core_type eq 'ahr') {
+                $user_id = $e->retrieve_action_hold_request($event->target)->usr;
+            } else {
+                return 0; # XXX This looks wrong, should be an event or just `next`.
+            }
         }
 
         my $user = $e->retrieve_actor_user($user_id);
+        if (!$user) {
+            $e->die_event;
+            return OpenILS::Event->new( 'ACTOR_USER_NOT_FOUND' );
+        }
         return $e->die_event unless $e->allowed('UPDATE_USER', $user->home_ou);
 
         if($self->api_name =~ /cancel/) {
