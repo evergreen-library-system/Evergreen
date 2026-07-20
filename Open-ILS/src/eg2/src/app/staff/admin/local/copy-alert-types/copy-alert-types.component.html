@@ -33,8 +33,13 @@
   }
 </ng-template>
 
+<ng-template #nextStatusCell let-row="row">
+  {{ displayNextStatus(row) }}
+</ng-template>
+
 <eg-admin-page #adminPage
   idlClass="ccat"
+  [templateFields]="[{name: 'next_status', template: nextStatusCell, preserveAutoPosition: true}]"
   [defaultNewRecord]="defaultNewRecord"
   [fieldOptions]="{
     state: {customValues: alertTypeStateEntries},

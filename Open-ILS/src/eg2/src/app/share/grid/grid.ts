@@ -51,6 +51,10 @@ export class GridColumn {
     // True if the column was automatically generated.
     isAuto: boolean;
 
+    // If column is auto generated and replaces an existing column,
+    // preserve the position.
+    preserveAutoPosition: boolean;
+
     // for filters
     filterValue: string;
     filterOperator: string;
@@ -131,6 +135,7 @@ export class GridColumn {
         col.timezoneContextOrg = this.timezoneContextOrg;
         col.idlClass = this.idlClass;
         col.isAuto = this.isAuto;
+        col.preserveAutoPosition = this.preserveAutoPosition;
 
         return col;
     }
@@ -275,6 +280,12 @@ export class GridColumnSet {
             if (testCol.name === col.name) { // match found
                 if (testCol.isAuto) {
                     // new column takes precedence, remove the existing column.
+                    if (col.preserveAutoPosition) {
+                        // preserve position and return early.
+                        this.columns.splice(idx, 1, col);
+                        return true;
+                    }
+                    // not preserving position, remove column
                     this.columns.splice(idx, 1);
                     break;
                 } else {

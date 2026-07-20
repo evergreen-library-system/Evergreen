@@ -134,7 +134,8 @@
     </eg-grid-column>
   }
   @for (tf of templateFields; track tf) {
-    <eg-grid-column name="{{tf.name}}" [cellTemplate]="tf.template">
+    <eg-grid-column name="{{tf.name}}" [cellTemplate]="tf.template"
+      [preserveAutoPosition]="!!tf.preserveAutoPosition">
     </eg-grid-column>
   }
 </eg-grid>
