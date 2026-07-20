@@ -939,6 +939,20 @@ sub mk_env {
             $self->collect_user_copy_alerts;
             $self->filter_user_copy_alerts;
 
+            # "Magic" statuses should be handled by circ workflows
+            # and should not be set arbitrarily.
+            my %magic = map { $_ => 1 } (
+                OILS_COPY_STATUS_CHECKED_OUT,
+                OILS_COPY_STATUS_LOST,
+                OILS_COPY_STATUS_IN_TRANSIT,
+                OILS_COPY_STATUS_ON_HOLDS_SHELF,
+                OILS_COPY_STATUS_LONG_OVERDUE,
+                OILS_COPY_STATUS_CANCELED_TRANSIT
+            );
+            $self->next_copy_status([
+                grep { !$magic{$_} } @{$self->next_copy_status}
+            ]);
+
         } else {
             # We can't renew if there is no copy
             return $self->bail_on_events(OpenILS::Event->new('ASSET_COPY_NOT_FOUND'))

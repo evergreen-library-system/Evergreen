@@ -718,8 +718,9 @@ export class AdminPageComponent implements OnInit {
 }
 
 export interface TemplateField {
-    cellTemplate: TemplateRef<any>;
+    template: TemplateRef<any>;
     name: string;
+    preserveAutoPosition?: boolean;
 }
 
 export interface TemplateAction {

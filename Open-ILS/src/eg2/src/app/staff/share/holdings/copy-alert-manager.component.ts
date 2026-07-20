@@ -38,6 +38,7 @@ export class CopyAlertManagerDialogComponent extends DialogComponent {
     alerts: IdlObject[];
     nextStatuses: IdlObject[];
     nextStatus: number;
+    magicStatuses: number[] = [];
     newAlertsAdded = false;
 
     @ViewChild('copyAlertsDialog') private copyAlertsDialog: CopyAlertsDialogComponent;
@@ -47,7 +48,10 @@ export class CopyAlertManagerDialogComponent extends DialogComponent {
         this.nextStatus = null;
         this.newAlertsAdded = false;
 
-        let promise = Promise.resolve(null);
+        let promise = this.holdings.getMagicCopyStatuses().then(
+            magicStatuses => { this.magicStatuses = magicStatuses; }
+        );
+
         this.alerts.forEach(copyAlert =>
             promise = promise.then(_ => this.ingestAlert(copyAlert)));
 
@@ -89,7 +93,11 @@ export class CopyAlertManagerDialogComponent extends DialogComponent {
                 .then(statMap => {
                     nextStatuses.forEach(statId => {
                         const wanted = statMap[statId];
-                        if (wanted) { this.nextStatuses.push(wanted); }
+
+                        // Ensure "magic" statuses don't appear as options.
+                        if (wanted && !this.magicStatuses.includes(statId)) {
+                            this.nextStatuses.push(wanted);
+                        }
                     });
 
                     if (this.nextStatuses.length > 0) {
