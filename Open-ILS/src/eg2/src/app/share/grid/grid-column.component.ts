@@ -64,6 +64,9 @@ export class GridColumnComponent implements OnInit {
     // IDL class of the object which contains this field.
     @Input() idlClass: string;
 
+    // True: auto-column takes position of replaced column.
+    @Input() preserveAutoPosition = false;
+
     ngOnInit() {
 
         if (!this.grid) {
@@ -97,6 +100,7 @@ export class GridColumnComponent implements OnInit {
         col.dateOnlyIntervalField = this.dateOnlyIntervalField;
         col.isAuto = false;
         col.allowFilterILike = this.allowFilterILike;
+        col.preserveAutoPosition = this.preserveAutoPosition;
 
         this.grid.context.columnSet.add(col);
 

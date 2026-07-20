@@ -753,6 +753,15 @@ function($uibModal , $interpolate , egCore) {
                         });
                     };
 
+                    $scope.magicStatuses = [
+                        1,  // Checked out
+                        3,  // Lost
+                        6,  // In transit
+                        8,  // On holds shelf
+                        16, // Long overdue
+                        18  // Canceled Transit
+                    ];
+
                     $scope.mode = args.mode || 'checkin';
 
                     var next_statuses = [];
@@ -781,11 +790,16 @@ function($uibModal , $interpolate , egCore) {
                         });
                         if ($scope.mode == 'checkin' && next_statuses.length > 0) {
                             $scope.get_copy_statuses().then(function() {
+                                var magic = $scope.magicStatuses;
                                 angular.forEach(next_statuses, function(st) {
-                                    if (egCore.env.ccs.map[st])
+                                    // Ensure "magic" statuses don't appear as options.
+                                    if (egCore.env.ccs.map[st] && magic.indexOf(st) === -1)
                                     	$scope.next_statuses.push(egCore.env.ccs.map[st]);
                                 });
-                                $scope.params.the_next_status = $scope.next_statuses[0].id();
+                                $scope.params.the_next_status =
+                                    $scope.next_statuses.length
+                                        ? $scope.next_statuses[0].id()
+                                        : null;
                             });
                         }
                     });
