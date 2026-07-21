@@ -274,14 +274,14 @@
       [cellTemplate]="titleTmpl"></eg-grid-column>
       <eg-grid-column i18n-label label="Publication Year" path='pubdate' [hidden]="true"></eg-grid-column>
       <ng-template #barcodeTmpl let-hold="row" let-col="col">
-        <a href="/eg/staff/cat/item/{{hold.cp_id}}/summary" target="_blank">
-          @if (col.name === 'current_item' && hold.current_copy) {
-            {{hold.cp_barcode}}
+        @if (hold.cp_barcode) {
+          @if (col.name === 'current_item' && hold.current_copy
+            || col.name === 'requested_item' && isCopyHold(hold)) {
+            <a href="/eg/staff/cat/item/{{hold.cp_id}}/summary" target="_blank">
+              {{ hold.cp_barcode }}
+            </a>
           }
-          @if (col.name === 'requested_item' && isCopyHold(hold)) {
-            {{hold.cp_barcode}}
-          }
-        </a>
+        }
       </ng-template>
       <eg-grid-column i18n-label label="Current Item" name='current_item'
         [cellTemplate]="barcodeTmpl" [sortable]="false" [multiSortable]="false">
