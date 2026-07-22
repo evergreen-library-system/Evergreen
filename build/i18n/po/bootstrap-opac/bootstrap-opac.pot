@@ -197,7 +197,7 @@ msgstr ""
 msgid "(examples: %1 for phrases that begin with the term %2. %3 for phrases that end in %4.)"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/charges.tt2:124
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/charges.tt2:127
 msgid "(fines accruing)"
 msgstr ""
 
@@ -909,7 +909,7 @@ msgstr ""
 msgid "Bibliography, etc. Note: "
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/charges.tt2:199
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/charges.tt2:202
 msgid "Billing For"
 msgstr ""
 
@@ -918,11 +918,11 @@ msgid "Billing Information"
 msgstr ""
 
 #. (c)
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/charges.tt2:187
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/charges.tt2:190
 msgid "Billing Number %1"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/charges.tt2:174 ../../Open-ILS/src/templates-bootstrap/opac/myopac/charges.tt2:56 ../../Open-ILS/src/templates-bootstrap/opac/myopac/charges.tt2:87
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/charges.tt2:177 ../../Open-ILS/src/templates-bootstrap/opac/myopac/charges.tt2:56 ../../Open-ILS/src/templates-bootstrap/opac/myopac/charges.tt2:87
 msgid "Billing Type"
 msgstr ""
 
@@ -1200,7 +1200,7 @@ msgstr ""
 msgid "Check times"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/charges.tt2:156 ../../Open-ILS/src/templates-bootstrap/opac/myopac/charges.tt2:157 ../../Open-ILS/src/templates-bootstrap/opac/myopac/charges.tt2:170 ../../Open-ILS/src/templates-bootstrap/opac/myopac/circ_history.tt2:48 ../../Open-ILS/src/templates-bootstrap/opac/myopac/circs.tt2:35 ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds.tt2:71 ../../Open-ILS/src/templates-bootstrap/opac/myopac/lists.tt2:259 ../../Open-ILS/src/templates-bootstrap/opac/myopac/lists.tt2:266 ../../Open-ILS/src/templates-bootstrap/opac/myopac/messages/list.tt2:78 ../../Open-ILS/src/templates-bootstrap/opac/myopac/messages/list.tt2:79
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/charges.tt2:159 ../../Open-ILS/src/templates-bootstrap/opac/myopac/charges.tt2:160 ../../Open-ILS/src/templates-bootstrap/opac/myopac/charges.tt2:173 ../../Open-ILS/src/templates-bootstrap/opac/myopac/circ_history.tt2:48 ../../Open-ILS/src/templates-bootstrap/opac/myopac/circs.tt2:35 ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds.tt2:71 ../../Open-ILS/src/templates-bootstrap/opac/myopac/lists.tt2:259 ../../Open-ILS/src/templates-bootstrap/opac/myopac/lists.tt2:266 ../../Open-ILS/src/templates-bootstrap/opac/myopac/messages/list.tt2:78 ../../Open-ILS/src/templates-bootstrap/opac/myopac/messages/list.tt2:79
 msgid "Check/Uncheck All"
 msgstr ""
 
@@ -1658,7 +1658,7 @@ msgstr ""
 msgid "Data manager"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/charges.tt2:176 ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds_curbside.tt2:72 ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds_curbside.tt2:92 ../../Open-ILS/src/templates-bootstrap/opac/myopac/messages/list.tt2:101 ../../Open-ILS/src/templates-bootstrap/opac/myopac/messages/list.tt2:89 ../../Open-ILS/src/templates-bootstrap/opac/myopac/messages/single_message.tt2:27 ../../Open-ILS/src/templates-bootstrap/opac/parts/library/hours.tt2:186
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/charges.tt2:179 ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds_curbside.tt2:72 ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds_curbside.tt2:92 ../../Open-ILS/src/templates-bootstrap/opac/myopac/messages/list.tt2:101 ../../Open-ILS/src/templates-bootstrap/opac/myopac/messages/list.tt2:89 ../../Open-ILS/src/templates-bootstrap/opac/myopac/messages/single_message.tt2:27 ../../Open-ILS/src/templates-bootstrap/opac/parts/library/hours.tt2:186
 msgid "Date"
 msgstr ""
 
@@ -2762,7 +2762,7 @@ msgstr ""
 msgid "Items from this shelving location do not circulate"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/charges.tt2:134
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/charges.tt2:137
 msgid "Items may have been renewed."
 msgstr ""
 
@@ -3443,7 +3443,7 @@ msgstr ""
 msgid "Not holdable"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/charges.tt2:175 ../../Open-ILS/src/templates-bootstrap/opac/myopac/charges.tt2:205
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/charges.tt2:178 ../../Open-ILS/src/templates-bootstrap/opac/myopac/charges.tt2:208
 msgid "Note"
 msgstr ""
 
@@ -3455,7 +3455,7 @@ msgstr ""
 msgid "Note: The password must be at least 7 characters in length, contain at least one letter (a-z/A-Z), and contain at least one number."
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/charges.tt2:230
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/charges.tt2:233
 msgid ""
 "Note: There are negative bills on your account that must be resolved\n"
 "            before you are able to make a payment. Please contact your library for assistance."
@@ -3589,7 +3589,7 @@ msgstr ""
 msgid "Other"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/charges.tt2:147 ../../Open-ILS/src/templates-bootstrap/opac/myopac/charges.tt2:162
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/charges.tt2:150 ../../Open-ILS/src/templates-bootstrap/opac/myopac/charges.tt2:165
 msgid "Other Fines and Fees"
 msgstr ""
 
@@ -3609,7 +3609,7 @@ msgstr ""
 msgid "Override all hold-blocking conditions possible?"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/charges.tt2:173 ../../Open-ILS/src/templates-bootstrap/opac/myopac/charges.tt2:55 ../../Open-ILS/src/templates-bootstrap/opac/myopac/charges.tt2:82
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/charges.tt2:176 ../../Open-ILS/src/templates-bootstrap/opac/myopac/charges.tt2:55 ../../Open-ILS/src/templates-bootstrap/opac/myopac/charges.tt2:82
 msgid "Owed"
 msgstr ""
 
@@ -3711,7 +3711,7 @@ msgstr ""
 msgid "Pay Charges"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/charges.tt2:226 ../../Open-ILS/src/templates-bootstrap/opac/myopac/charges.tt2:246
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/charges.tt2:229 ../../Open-ILS/src/templates-bootstrap/opac/myopac/charges.tt2:249
 msgid "Pay Selected Charges"
 msgstr ""
 
@@ -3719,16 +3719,16 @@ msgstr ""
 msgid "Pay Selected Circulation Charges"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/charges.tt2:145
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/charges.tt2:148
 msgid "Pay Selected Other Fines and Fees"
 msgstr ""
 
 #. (money(f.xact.balance_owed))
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/charges.tt2:188
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/charges.tt2:191
 msgid "Pay [_0] bill"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/charges.tt2:225
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/charges.tt2:228
 msgid "Pay selected charges"
 msgstr ""
 
@@ -5837,7 +5837,7 @@ msgstr ""
 msgid "You have entered an invalid date, or an improperly formatted date.  Please enter Date of Birth in YYYY-MM-DD or YYYY/MM/DD format and try again."
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/charges.tt2:222
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/charges.tt2:225
 msgid "You have no current fines."
 msgstr ""
 
