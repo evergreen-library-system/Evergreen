@@ -236,11 +236,11 @@ msgstr ""
 msgid "%1, %2 %3"
 msgstr ""
 
-#. ("{{hold.usr().family_name()}}", "{{hold.usr().first_given_name()}}", "{{hold.usr().second_given_name()}}", "{{hold.usr().card().barcode()}}")
-#. ("{{hold.requestor().family_name()}}", "{{hold.requestor().first_given_name()}}", "{{hold.requestor().second_given_name()}}", "{{hold.requestor().card().barcode()}}")
+#. ("{{extra.user_obj.family_name}}", "{{extra.user_obj.first_given_name}}", "{{extra.user_obj.second_given_name}}", "{{extra.user_obj.home_ou.shortname}}")
 #. ("{{circ.usr().family_name()}}", "{{circ.usr().first_given_name()}}", "{{circ.usr().second_given_name()}}", "{{circ.usr().card().barcode()}}")
 #. ("{{prev_circ_usr.family_name()}}", "{{prev_circ_usr.first_given_name()}}", "{{prev_circ_usr.second_given_name()}}", "{{prev_circ_usr.card().barcode()}}")
-#. ("{{extra.user_obj.family_name}}", "{{extra.user_obj.first_given_name}}", "{{extra.user_obj.second_given_name}}", "{{extra.user_obj.home_ou.shortname}}")
+#. ("{{hold.usr().family_name()}}", "{{hold.usr().first_given_name()}}", "{{hold.usr().second_given_name()}}", "{{hold.usr().card().barcode()}}")
+#. ("{{hold.requestor().family_name()}}", "{{hold.requestor().first_given_name()}}", "{{hold.requestor().second_given_name()}}", "{{hold.requestor().card().barcode()}}")
 #. ("{{user.family_name()}}", "{{user.first_given_name()}}", "{{user.second_given_name()}}", "{{user.card().barcode()}}")
 #: ../../Open-ILS/src/templates/staff/acq/requests/t_edit.tt2:27 ../../Open-ILS/src/templates/staff/cat/item/t_circ_list_pane.tt2:27 ../../Open-ILS/src/templates/staff/cat/item/t_circs_pane.tt2:118 ../../Open-ILS/src/templates/staff/cat/item/t_circs_pane.tt2:18 ../../Open-ILS/src/templates/staff/cat/item/t_holds_pane.tt2:17 ../../Open-ILS/src/templates/staff/cat/item/t_holds_pane.tt2:30 ../../Open-ILS/src/templates/staff/circ/patron/t_move_to_group_dialog.tt2:16
 msgid "%1, %2 %3 : %4"
@@ -1339,8 +1339,8 @@ msgid "Barcode: %1 Checkin date: %2"
 msgstr ""
 
 #. ("{{checkout.copy.barcode}}", "{{checkout.circ.due_date | egDueDate:$root.egDateAndTimeFormat:checkout.circ.circ_lib:checkout.circ.duration}}")
-#. ("{{renewal.copy.barcode}}", "{{renewal.circ.due_date | egDueDate:$root.egDateAndTimeFormat:renewal.circ.circ_lib:renewal.circ.duration}}")
 #. ("{{checkout.barcode}}", "{{checkout.due_date | date:\"short\"}}")
+#. ("{{renewal.copy.barcode}}", "{{renewal.circ.due_date | egDueDate:$root.egDateAndTimeFormat:renewal.circ.circ_lib:renewal.circ.duration}}")
 #: ../../Open-ILS/src/templates/staff/share/print_templates/t_checkout.tt2:47 ../../Open-ILS/src/templates/staff/share/print_templates/t_items_out.tt2:43 ../../Open-ILS/src/templates/staff/share/print_templates/t_offline_renew.tt2:16 ../../Open-ILS/src/templates/staff/share/print_templates/t_renew.tt2:27
 msgid "Barcode: %1 Due: %2"
 msgstr ""
@@ -2707,10 +2707,6 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:172 ../../Open-ILS/src/templates/staff/circ/holds/t_shelf_list.tt2:157 ../../Open-ILS/src/templates/staff/circ/patron/t_holds_list.tt2:154
 msgid "Copy Deleted"
-msgstr ""
-
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_request_items.tt2:32
-msgid "Copy Hold"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:156 ../../Open-ILS/src/templates/staff/circ/holds/t_shelf_list.tt2:139 ../../Open-ILS/src/templates/staff/circ/patron/t_holds_list.tt2:136
@@ -5539,6 +5535,10 @@ msgstr ""
 msgid "Item Details"
 msgstr ""
 
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_request_items.tt2:32
+msgid "Item Hold"
+msgstr ""
+
 #: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:62 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:48
 msgid "Item Holds"
 msgstr ""
@@ -8052,7 +8052,7 @@ msgstr ""
 msgid "Pickup Library Phone"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/t_holds_list.tt2:10
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:52 ../../Open-ILS/src/templates/staff/cat/catalog/t_request_items.tt2:5 ../../Open-ILS/src/templates/staff/cat/item/index.tt2:106 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:31 ../../Open-ILS/src/templates/staff/circ/patron/t_holds_list.tt2:10
 msgid "Place Hold"
 msgstr ""
 
@@ -9035,10 +9035,6 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/acq/requests/t_cancel.tt2:13 ../../Open-ILS/src/templates/staff/acq/requests/t_clear.tt2:13 ../../Open-ILS/src/templates/staff/acq/requests/t_set_no_hold.tt2:13 ../../Open-ILS/src/templates/staff/acq/requests/t_set_yes_hold.tt2:13
 msgid "Request IDs"
-msgstr ""
-
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:52 ../../Open-ILS/src/templates/staff/cat/catalog/t_request_items.tt2:5 ../../Open-ILS/src/templates/staff/cat/item/index.tt2:106 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:31
-msgid "Request Items"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/circ/holds/t_pull_list.tt2:147
@@ -10403,8 +10399,8 @@ msgstr ""
 msgid "TCN"
 msgstr ""
 
-#. ("{{overlay_target_tcn}}")
 #. ("{{local_overlay_target_tcn}}")
+#. ("{{overlay_target_tcn}}")
 #: ../../Open-ILS/src/templates/staff/cat/z3950/t_list.tt2:78 ../../Open-ILS/src/templates/staff/cat/z3950/t_overlay.tt2:21
 msgid "TCN %1"
 msgstr ""
