@@ -3,9 +3,83 @@
 :numbered:
 :toclevels: 3
 
+== Evergreen 3.16.9 ==
+
+This release contains bug fixes and documentation fixes improving on Evergreen 3.16.8.
+
+
+=== Acquisitions ===
+
+* EDI message send and receive via SFTP now honors the port specification in the hostname, if supplied.  Example: sftp://host.domain.tld:2222. (https://bugs.launchpad.net/evergreen/+bug/2154387[Bug 2154387])
+* Fixes an issue where SFTP login failures would cause the acquisitions EDI fetcher to get "stuck" and stop retrieving files. (https://bugs.launchpad.net/evergreen/+bug/2060702[Bug 2060702])
+* Add a new flag to edi_order_pusher.pl to provide the earliest PO activation date that should be processed. (https://bugs.launchpad.net/evergreen/+bug/1911786[Bug 1911786])
+
+
+=== Cataloging ===
+
+* Fix error that occured when trying to edit or view more information about the "Available" status in the Item Status admin screen. (https://bugs.launchpad.net/evergreen/+bug/2151838[Bug 2151838])
+* Fixes Carousels interface for two or more staff members administering Carousels from personal buckets. (https://bugs.launchpad.net/evergreen/+bug/2146852[Bug 2146852])
+
+=== Circulation ===
+
+* Increases retrieval speed in Items Out by suppressing cursors in certain queries (https://bugs.launchpad.net/evergreen/+bug/2106679[Bug 2106679])
+* Fixes issues in Edit Due Date modals (https://bugs.launchpad.net/evergreen/+bug/2149841[Bug 2149841])
+* Angular self-check now respects the email checkout receipts by default setting. (https://bugs.launchpad.net/evergreen/+bug/2134541[Bug 2134541])
+
+=== Documentation ===
+
+* Updates to how_to_contribute_docs.adoc 
+* Updates documentation description and note for Auto-Override Permitted Hold Blocks (Patrons). (https://bugs.launchpad.net/evergreen/+bug/1658173[Bug 1658173])
+* Adds mention of 'Hide the Clear These Holds button' to basic_holds.adoc
+* Adds Staff Catalog Visible to describing_your_organization.adoc
+* Adds 'Hide the Clear These Holds button' to librarysettings.adoc
+* Adds staff.search global flags to table in global_flags.adoc
+* Updates info on Other Settings tab in my_account.adoc
+* Updates to using_the_public_access_catalog.adoc
+* Updates docs for part hold menu, hold group functionality
+* Adds Angular grid info to staff_client-column_filters.adoc including update for print/download menu options disabling when there are no grid results
+* Updates to staff_portal_page.adoc
+* Updates image & tag in circing_uncataloged_materials.adoc
+* Updates kids_opac.adoc, including updated screenshots
+
+=== Public Catalog ===
+
+* Provides default KPAC topic image if none specified. (https://bugs.launchpad.net/evergreen/+bug/2154503[Bug 2154503])
+* Hides "fines accruing" in OPAC when fines are no longer accruing. (https://bugs.launchpad.net/evergreen/+bug/2147229[Bug 2147229])
+
+
+=== Staff Interface ===
+
+* Fixes Staff SSO redirect to 404. (https://bugs.launchpad.net/evergreen/+bug/2141953[Bug 2141953])
+
+=== Acknowledgements ===
+
+We would like to thank the following individuals who contributed code, testing, documentation, and patches to the 3.16.9 point release of Evergreen:
+
+* Andrea Buntz Neiman
+* Bill Erickson
+* Blake Graham-Henderson
+* Chris Sharp
+* Christine Burns
+* Dan Briem
+* Elizabeth Davis
+* Galen Charlton
+* Gina Monti
+* Ian Skelskey
+* Jane Sandberg
+* Jason Stephenson
+* Jennifer Davis
+* Ken Cox
+* Martha Driscoll
+* Michele Morgan
+* Mike Rylander
+* Susan Morrison
+* Terran McCanna
+* Tiffany Little
+
 == Evergreen 3.16.8 == 
 
-This release contains bug fixes and documentation fixes improving on Evergreen 3.17.1.
+This release contains bug fixes and documentation fixes improving on Evergreen 3.16.7.
 
 === Upgrade Notes ===
 
