@@ -3,6 +3,118 @@
 :numbered:
 :toclevels: 3
 
+== Evergreen 3.17.3 == 
+
+This release contains bug fixes and documentation fixes improving on Evergreen 3.17.2.
+
+=== Upgrade Notes ===
+
+The following items require running a database upgrade script:
+
+* Update documentation and YAOUS group for circ.holds.calculated_age_proximity. (https://bugs.launchpad.net/evergreen/+bug/2146576[Bug 2146576])
+
+=== Acquisitions ===
+
+* EDI message send and receive via SFTP now honors the port specification in the hostname, if supplied.  Example: sftp://host.domain.tld:2222. (https://bugs.launchpad.net/evergreen/+bug/2154387[Bug 2154387])
+* Fixes an issue where SFTP login failures would cause the acquisitions EDI fetcher to get "stuck" and stop retrieving files. (https://bugs.launchpad.net/evergreen/+bug/2060702[Bug 2060702])
+* Add a new flag to edi_order_pusher.pl to provide the earliest PO activation date that should be processed. (https://bugs.launchpad.net/evergreen/+bug/1911786[Bug 1911786])
+
+=== Administration ===
+
+* Enable/disable the Course Reserves - Reopen Selected button appropriately. (https://bugs.launchpad.net/evergreen/+bug/2144600[Bug 2144600])
+* Fixes CircIsOpen validator to check for circulation while A/T is running (https://bugs.launchpad.net/evergreen/+bug/2160540[Bug 2160540])
+* Angular self-check now respects the email checkout receipts by default setting. (https://bugs.launchpad.net/evergreen/+bug/2134541[Bug 2134541])
+* Update documentation and YAOUS group for circ.holds.calculated_age_proximity. (https://bugs.launchpad.net/evergreen/+bug/2146576[Bug 2146576])
+
+=== Cataloging ===
+
+* Included newly created copies in Holdings Editor filter. (https://bugs.launchpad.net/evergreen/+bug/2152257[Bug 2152257])
+* Fix error that occured when trying to edit or view more information about the "Available" status in the Item Status admin screen. (https://bugs.launchpad.net/evergreen/+bug/2151838[Bug 2151838])
+* Show confirmation toast when adding to record bucket from search (https://bugs.launchpad.net/evergreen/+bug/2145192[Bug 2145192])
+* Fixes issue with Item Alerts dropdown (https://bugs.launchpad.net/evergreen/+bug/2092956[Bug 2092956])
+* Makes the naming of Holdings Template Editor consistent (https://bugs.launchpad.net/evergreen/+bug/2110923[Bug 2110923])
+* Fix glitch in record buckets favoriting feature (https://bugs.launchpad.net/evergreen/+bug/2115505[Bug 2115505])
+* Fixes Carousels interface for two or more staff members administering Carousels from personal buckets. (https://bugs.launchpad.net/evergreen/+bug/2146852[Bug 2146852])
+
+=== Circulation ===
+
+* Restore the Photo URL and Patron Preferred Language fields in the Angular patron registration and edit interface, and display the patron photo and preferred language in the patron summary. (https://bugs.launchpad.net/evergreen/+bug/2088319[Bug 2088319])
+* Increases retrieval speed in Items Out by suppressing cursors in certain queries (https://bugs.launchpad.net/evergreen/+bug/2106679[Bug 2106679])
+* Fixes issues in Edit Due Date modals (https://bugs.launchpad.net/evergreen/+bug/2149841[Bug 2149841])
+* Fixes issue with Angular Self Check idle timer (https://bugs.launchpad.net/evergreen/+bug/2150808[Bug 2150808])
+
+=== Developer ===
+
+* Make automated Angular tests more reliable. (https://bugs.launchpad.net/evergreen/+bug/2156670[Bug 2156670])
+* Resolves an issue installing prerequisites from the Comprehensive Perl Archive Network. (https://bugs.launchpad.net/evergreen/+bug/2158478[Bug 2158478])
+* Fixes npm audit test in angularjs (https://bugs.launchpad.net/evergreen/+bug/1992529[Bug 1992529])
+
+=== Documentation ===
+
+* Updates documentation description and note for Auto-Override Permitted Hold Blocks (Patrons). (https://bugs.launchpad.net/evergreen/+bug/1658173[Bug 1658173])
+* Adds mention of 'Hide the Clear These Holds button' to basic_holds.adoc
+* Adds Staff Catalog Visible to describing_your_organization.adoc
+* Adds 'Hide the Clear These Holds button' to librarysettings.adoc
+* Adds staff.search global flags to table in global_flags.adoc
+* Updates info on Other Settings tab in my_account.adoc
+* Updates to using_the_public_access_catalog.adoc
+* Updates docs for part hold menu, hold group functionality
+* Adds Angular grid info to staff_client-column_filters.adoc including update for print/download menu options disabling when there are no grid results
+* Updates to staff_portal_page.adoc
+* Updates image & tag in circing_uncataloged_materials.adoc
+* Updates kids_opac.adoc, including updated screenshots
+
+=== Public Catalog ===
+
+* Provides default topic image if none specified. (https://bugs.launchpad.net/evergreen/+bug/2154503[Bug 2154503])
+* Removes quotation marks from titles in OPAC course details page. (https://bugs.launchpad.net/evergreen/+bug/1909015[Bug 1909015])
+* Hides "fines accruing" in OPAC when fines are no longer accruing. (https://bugs.launchpad.net/evergreen/+bug/2147229[Bug 2147229])
+
+=== Staff Interface ===
+
+* Don't use a cached version of a print template if a newer once is available. (https://bugs.launchpad.net/evergreen/+bug/1958910[Bug 1958910])
+* Fixes Staff SSO redirect to 404. (https://bugs.launchpad.net/evergreen/+bug/2141953[Bug 2141953])
+* Changes the Angular date/time picker to no longer automatically open its dropdown whenever the widget gets focus. (https://bugs.launchpad.net/evergreen/+bug/2150659[Bug 2150659])
+* Fixes Angular keyboard shortcuts (https://bugs.launchpad.net/evergreen/+bug/2158946[Bug 2158946])
+* Makes top navigational bar menu icons less intense. (https://bugs.launchpad.net/evergreen/+bug/1999408[Bug 1999408])
+* Changes "Request Items" to "Place Item Holds" throughout the staff catalog for consistency with the OPAC interfaces. (https://bugs.launchpad.net/evergreen/+bug/1839883[Bug 1839883])
+
+=== Acknowledgements ===
+
+We would like to thank the following individuals who contributed code, testing, documentation, and patches to the 3.17.3 point release of Evergreen:
+
+* Andrea Buntz Neiman
+* Bill Erickson
+* Blake Graham-Henderson
+* Brian Kennedy
+* Carol Witt
+* Chris Amorosi
+* Chris Sharp
+* Christine Burns
+* Dan Briem
+* Elizabeth Davis
+* Eva Cerniňáková
+* Galen Charlton
+* Gina Monti
+* Hannah Margolis
+* Ian Skelskey
+* Jane Sandberg
+* Jason Stephenson
+* Jennifer Davis
+* Josh Stompro
+* Ken Cox
+* Llewellyn Marshall
+* Martha Driscoll
+* Mary Llewellyn
+* Michele Morgan
+* Mike Rylander
+* Stephanie Leary
+* Steven Mayo
+* Susan Morrison
+* Tara Kunesh
+* Terran McCanna
+* Tiffany Little
+
 == Evergreen 3.17.2 == 
 
 This release contains bug fixes and documentation fixes improving on Evergreen 3.17.1.
