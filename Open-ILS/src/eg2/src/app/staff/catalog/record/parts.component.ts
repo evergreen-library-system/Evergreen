@@ -1,15 +1,16 @@
-import { Component, OnInit, Input, ViewChild, inject } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, inject, output } from '@angular/core';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {Pager} from '@eg/share/util/pager';
-import {OrgService} from '@eg/core/org.service';
 import {AuthService} from '@eg/core/auth.service';
 import {PermService} from '@eg/core/perm.service';
 import {GridDataSource} from '@eg/share/grid/grid';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
 import {PartMergeDialogComponent} from './part-merge-dialog.component';
-import { StaffCommonModule } from '@eg/staff/common.module';
+import { lastValueFrom, switchMap, tap } from 'rxjs';
+import { GridModule } from '@eg/share/grid/grid.module';
+import { NetService } from '@eg/core/net.service';
 
 @Component({
     selector: 'eg-catalog-record-parts',
@@ -17,16 +18,17 @@ import { StaffCommonModule } from '@eg/staff/common.module';
     imports: [
         FmRecordEditorComponent,
         PartMergeDialogComponent,
-        StaffCommonModule
+        GridModule
     ]
 })
 export class PartsComponent implements OnInit {
+    partsCountUpdated = output<number>();
+
     private idl = inject(IdlService);
-    private org = inject(OrgService);
     private pcrud = inject(PcrudService);
     private auth = inject(AuthService);
     private perm = inject(PermService);
-
+    private net = inject(NetService);
 
     recId: number;
     gridDataSource: GridDataSource;
@@ -103,20 +105,19 @@ export class PartsComponent implements OnInit {
             search.push({record: this.recId});
 
             return this.pcrud.search('bmp',
-                search,searchOps);
+                search,searchOps).pipe(tap({complete: () => this.emitPartsCount()}));
         };
 
-        this.partsGrid.onRowActivate.subscribe(
-            (part: IdlObject) => {
+        this.partsGrid.onRowActivate.pipe(
+            switchMap((part: IdlObject) => {
                 part.editor(this.auth.user().id());
                 part.edit_date('now');
                 this.editDialog.mode = 'update';
                 this.editDialog.record = part;
-                this.editDialog.open()
-                    // eslint-disable-next-line rxjs-x/no-nested-subscribe
-                    .subscribe(ok => this.partsGrid.reload());
-            }
-        );
+                return this.editDialog.open();
+            }))
+            .subscribe(ok => this.partsGrid.reload());
+
 
         this.createNew = () => {
 
@@ -130,17 +131,15 @@ export class PartsComponent implements OnInit {
             this.editDialog.open().subscribe(ok => this.partsGrid.reload());
         };
 
-        this.deleteSelected = (parts: IdlObject[]) => {
+        this.deleteSelected = async (parts: IdlObject[]) => {
             parts.forEach(part => {
                 part.editor(this.auth.user().id());
                 part.edit_date('now');
             });
 
-            this.pcrud.update(parts).toPromise().then(_ => {
-                this.pcrud.remove(parts).toPromise().then(__ => {
-                    this.partsGrid.reload();
-                });
-            });
+            await lastValueFrom(this.pcrud.update(parts));
+            await lastValueFrom(this.pcrud.remove(parts));
+            this.partsGrid.reload();
         };
 
         this.mergeSelected = (parts: IdlObject[]) => {
@@ -150,5 +149,10 @@ export class PartsComponent implements OnInit {
         };
 
     }
+
+    private emitPartsCount() {
+        this.net.request('open-ils.search', 'open-ils.search.biblio.parts_count', this.recId)
+            .subscribe(partsCount => this.partsCountUpdated.emit(+partsCount));
+    };
 }
 

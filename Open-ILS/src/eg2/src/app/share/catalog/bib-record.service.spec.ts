@@ -1,4 +1,4 @@
-import { TestBed, waitForAsync } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { NetService } from '@eg/core/net.service';
 import { of } from 'rxjs';
 import { BibRecordService } from './bib-record.service';
@@ -65,13 +65,14 @@ mockNetService.request.and.returnValue(of({
         },
     },
     'id': 248,
-    'hold_count': '0'
+    'hold_count': '0',
+    'monograph_part_count': '8'
 }));
 mockPermService.hasWorkPermHere.and.returnValue(Promise.resolve({PLACE_UNFILLABLE_HOLD: true}));
 let service: BibRecordService;
 
 describe('BibRecordService', () => {
-    beforeEach(() => {
+    beforeEach(async () => {
         TestBed.configureTestingModule({providers: [
             {provide: NetService, useValue: mockNetService},
             {provide: OrgService, useValue: null},
@@ -79,21 +80,31 @@ describe('BibRecordService', () => {
             BibRecordService
         ]});
         service = TestBed.inject(BibRecordService);
+        await Promise.resolve();
     });
     describe('getBibSummary()', () => {
-        it('gets the holdCount from the net service response', waitForAsync(() => {
+        it('gets the holdCount from the net service response', (done) => {
             service.getBibSummary(248, 1, true)
                 .subscribe((summary) => {
                     expect(summary.holdCount).toEqual(0);
+                    done();
                 });
-        }));
-        it('gets the recordNoteCount from the net service response', waitForAsync(() => {
+        });
+        it('gets the recordNoteCount from the net service response', (done) => {
             service.getBibSummary(248, 1, true)
                 .subscribe((summary) => {
                     expect(summary.recordNoteCount).toEqual(0);
+                    done();
                 });
-        }));
-        it('can accept a library group id', waitForAsync(() => {
+        });
+        it('gets the monographPartCount from the net service response', (done) => {
+            service.getBibSummary(248, 1, true)
+                .subscribe((summary) => {
+                    expect(summary.monographPartCount).toEqual(8);
+                    done();
+                });
+        });
+        it('can accept a library group id', (done) => {
             service.getBibSummary(248, 1, true, 15)
                 .subscribe(() => {
                     expect(mockNetService.request).toHaveBeenCalledWith(
@@ -103,7 +114,8 @@ describe('BibRecordService', () => {
                         [248], // bib record ids
                         {library_group: 15}
                     );
+                    done();
                 });
-        }));
+        });
     });
 });

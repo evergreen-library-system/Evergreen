@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RecordComponent } from './record.component';
 import { ActivatedRoute, Router, convertToParamMap } from '@angular/router';
 import { AuthService } from '@eg/core/auth.service';
@@ -22,6 +22,7 @@ describe('RecordComponent', () => {
     mockBibIdlObject.tcn_value.and.returnValue('ocn12345');
     const summary = new BibRecordSummary(mockBibIdlObject, 123);
     summary.recordNoteCount = 8;
+    summary.monographPartCount = 15;
     summary.displayHighlights = {fake: 'data'};
     summary.display = {title: 'My book'};
     const mockBibService = jasmine.createSpyObj<BibRecordService>(['getBibSummary']);
@@ -32,7 +33,7 @@ describe('RecordComponent', () => {
     }};
     const mockStoreService = jasmine.createSpyObj<StoreService>(['getLocalItem', 'setLocalItem']);
 
-    beforeEach(waitForAsync(() => {
+    beforeEach(async () => {
         TestBed.configureTestingModule({
             providers: [
                 { provide: Router, useValue: null},
@@ -47,14 +48,19 @@ describe('RecordComponent', () => {
             ]}).overrideComponent(RecordComponent, {set: {
             schemas: [CUSTOM_ELEMENTS_SCHEMA],
             imports: [ CommonModule, NgbNavModule, TitleComponent]
-        }}).compileComponents();
+        }});
         fixture = TestBed.createComponent(RecordComponent);
         fixture.detectChanges();
-    }));
+        await Promise.resolve();
+    });
 
     it('displays the number of record notes in the tab', () => {
         fixture.detectChanges();
         expect(fixture.nativeElement.innerText).toMatch(/Record Notes\s+\(8\)/);
     });
 
+    it('displays the number of record notes in the tab', () => {
+        fixture.detectChanges();
+        expect(fixture.nativeElement.innerText).toMatch(/Monograph Parts\s+\(15\)/);
+    });
 });

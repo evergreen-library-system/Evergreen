@@ -909,6 +909,12 @@ sub runmethod {
 
     $self->data($obj); # cache the data for convenience
 
+    if( $action eq 'count' ) {
+        # No special handling for count method output, just return
+        # whichever integer we happened to get
+        return $obj;
+    }
+
     return ($obj) ? $obj : 1;
 }
 
@@ -943,7 +949,7 @@ sub init {
         my $obj  = __fm2meth($object, '_');
         my $type = __fm2meth($object, '.');
         my $hint = $object->json_hint;
-        foreach my $command (qw/ update retrieve search create delete batch_retrieve retrieve_all /) {
+        foreach my $command (qw/ update retrieve search count create delete batch_retrieve retrieve_all /) {
             eval "sub ${command}_$obj {return shift()->runmethod('$command', '$type', '$hint', \@_);}\n";
         }
         # TODO: performance test against concatenating a big string of all the subs and eval'ing only ONCE.

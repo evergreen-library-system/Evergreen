@@ -45,6 +45,7 @@ export class BibRecordSummary {
     holdingsSummary: HoldingsSummary[];
     prefOuHoldingsSummary: HoldingsSummary[];
     holdCount: number;
+    monographPartCount: number;
     recordNoteCount: number;
     bibCallNumber: string;
     firstCallNumber: string;
@@ -136,6 +137,7 @@ export class BibRecordService {
                 summary.attributes = bibSummary.attributes;
                 summary.holdCount = Number(bibSummary.hold_count);
                 summary.recordNoteCount = Number(bibSummary.record_note_count);
+                summary.monographPartCount = Number(bibSummary.monograph_part_count);
                 summary.holdingsSummary = bibSummary.copy_counts;
                 summary.copies = bibSummary.copies;
                 summary.firstCallNumber = bibSummary.first_call_number;

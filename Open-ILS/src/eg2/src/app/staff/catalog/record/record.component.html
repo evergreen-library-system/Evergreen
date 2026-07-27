@@ -126,9 +126,16 @@
           </ng-template>
         </li>
         <li role="presentation" [ngbNavItem]="'monoparts'" [destroyOnHide]="true">
-          <h2><a i18n ngbNavLink role="tab">Monograph Parts</a></h2>
+          <h2>@if (summary?.monographPartCount) {
+              <a ngbNavLink role="tab">
+                <span i18n>Monograph Parts</span>&nbsp;
+                <span class="badge text-bg-primary fw-bold">({{summary.monographPartCount}})</span>
+              </a>
+            } @else {
+              <a i18n ngbNavLink role="tab">Monograph Parts</a>
+            }</h2>
           <ng-template ngbNavContent>
-            <eg-catalog-record-parts [recordId]="recordId">
+            <eg-catalog-record-parts [recordId]="recordId" (partsCountUpdated)="summary.monographPartCount = $event">
             </eg-catalog-record-parts>
           </ng-template>
         </li>

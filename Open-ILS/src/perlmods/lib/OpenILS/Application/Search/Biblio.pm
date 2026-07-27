@@ -2980,7 +2980,30 @@ sub rec_hold_parts {
     return $e->json_query($query);
 }
 
+__PACKAGE__->register_method(
+    method    => 'rec_parts_count',
+    api_name  => 'open-ils.search.biblio.parts_count',
+    signature => {
+        desc => q/
+            For a given record, returns a count of its monograph parts.
+       /,
+       params => [
+            {desc => q/Record id/,
+                type => 'int'}
+       ],
+       return => {
+        desc => q/Unsigned integer if valid params are provided, Event otherwise/
+       }
 
+    }
+);
+
+sub rec_parts_count {
+    my( $self, $conn, $record_id ) = @_;
+    return OpenILS::Event->new('BAD_PARAMS') unless defined($record_id);
+
+    return new_editor->count_biblio_monograph_part({ record => $record_id, deleted => 'f' });
+}
 
 
 __PACKAGE__->register_method(
@@ -3606,6 +3629,11 @@ sub get_one_metarecord_summary {
     my $record_note_count = scalar(@{ $notes });
     $response->{record_note_count} = $record_note_count;
 
+    # Also get the sum of monograph parts
+    $response->{monograph_part_count} = $e->count_biblio_monograph_part(
+        { record => \@record_ids, deleted => 'f' }
+    );
+
     my @other_bibs = map {$_->source} grep {$_->source != $bre_id} @$maps;
 
     # Augment the record attributes with those of all of the records
@@ -3653,6 +3681,8 @@ sub get_one_record_summary {
     my $notes = $e->search_biblio_record_note({ record => $rec_id });
     my $record_note_count = scalar(@{ $notes });
 
+    my $part_count = $e->count_biblio_monograph_part({ record => $rec_id, deleted => 'f' });
+
     # clear bulk
     $bre->clear_marc;
     $bre->clear_mattrs;
@@ -3664,7 +3694,8 @@ sub get_one_record_summary {
         display => $display,
         attributes => $attributes,
         urls => get_one_rec_urls($self, $e, $org_id, $rec_id),
-        record_note_count => $record_note_count
+        record_note_count => $record_note_count,
+        monograph_part_count => $part_count,
     };
 }
 
