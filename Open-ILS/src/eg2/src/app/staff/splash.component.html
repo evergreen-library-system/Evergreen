@@ -11,10 +11,10 @@
     </div>
   </div>
 
-  <div class="row" id="splash-nav">
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" id="splash-nav">
     @for (header of portalHeaders; track header; let i = $index) {
-      <div class="col-lg-4">
-        <div class="card">
+      <div class="col">
+        <div class="card h-100">
           @if (header) {
             <div class="card-header">
               <h2 class="panel-title text-center" i18n>{{header.label()}}</h2>
@@ -24,11 +24,11 @@
             <div class="list-group">
               @for (entry of portalEntries[i]; track entry) {
                 @if (entry.entry_type() === 'menuitem') {
-                  <div class="list-group-item border-0 p-2">
-                    <a href="{{entry.target_url()}}" target="{{entry.url_newtab() === 't' ? '_blank' : null}}" i18n>
-                  <img src="{{entry.image_url()}}" alt="" role="presentation"/>
-                  {{entry.label()}}
-                </a>
+                  <div class="list-group-item border-0 p-1">
+                    <a class="splash-link" href="{{entry.target_url()}}" target="{{entry.url_newtab() === 't' ? '_blank' : '_top'}}" [attr.rel]="entry.url_newtab() === 't' ? 'noopener noreferrer' : null" i18n>
+                      <img class="splash-icon" src="{{entry.image_url()}}" alt="" role="presentation" loading="lazy" decoding="async"/>
+                      <span class="splash-link-text">{{entry.label()}}</span>
+                    </a>
                   </div>
                 }
                 @if (entry.entry_type() === 'catalogsearch') {
@@ -51,22 +51,22 @@
                   </div>
                 }
                 @if (entry.entry_type() === 'link') {
-                  <div class="list-group-item border-0 p-2">
-                    <a target="{{entry.url_newtab() === 't' ? '_blank' : '_top'}}" href="{{entry.target_url()}}" i18n>
-                  <img src="{{entry.image_url()}}" alt="" role="presentation"/>
-                  {{entry.label()}}
-                </a>
+                  <div class="list-group-item border-0 p-1">
+                    <a class="splash-link" target="{{entry.url_newtab() === 't' ? '_blank' : '_top'}}" [attr.rel]="entry.url_newtab() === 't' ? 'noopener noreferrer' : null" href="{{entry.target_url()}}" i18n>
+                      <img class="splash-icon" src="{{entry.image_url()}}" alt="" role="presentation" loading="lazy" decoding="async"/>
+                      <span class="splash-link-text">{{entry.label()}}</span>
+                    </a>
                   </div>
                 }
                 @if (entry.entry_type() === 'text') {
-                  <div class="list-group-item border-0 p-2">
+                  <div class="list-group-item border-0 p-1">
                     @if (entry.label()) {
                       <h3 class="text-center" i18n>{{entry.label()}}</h3>
                     }
                     <div class="row">
                       @if (entry.image_url()) {
-                        <div class="col-2">
-                          <img src="{{entry.image_url()}}" alt="" role="presentation"/>
+                        <div class="col-3 col-sm-2">
+                          <img class="img-fluid" src="{{entry.image_url()}}" alt="" role="presentation" loading="lazy" decoding="async"/>
                         </div>
                       }
                       <div class="col" [innerHtml]="entry.entry_text()"></div>
