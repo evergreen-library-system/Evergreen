@@ -18,6 +18,59 @@ check station, a staff member must initialize the interface by logging in.
 
 image::self_check/self-check-admin-login.png[Self Check Admin Login]
 
+=== Angular Self-Checkout ===
+There is also a newer Angular Self-Checkout interface (EG 3.14+) that can be accessed at
+`https://[hostname]/eg2/staff/selfcheck`
+
+The Angular self-check uses the new server side print templates.
+
+**New Print Templates**
+
+New self-check print templates are available under 
+Administration => Server Administration => Print Templates
+
+* Self-Checkout Checkouts
+* Self-Checkout Fines
+* Self-Checkout Holds
+* Self-Checkout Items Out
+
+=== Permissions needed for self check staff account ===
+Here are the permissions that the self check staff user needs to have.
+
+[cols="1,1"]
+|===
+|COPY_CHECKOUT
+|Allow a user to check out a copy
+
+|RENEW_CIRC
+|Allow a user to renew items
+
+|STAFF_LOGIN
+|Allow a user to log in to the staff client
+
+|VIEW_CIRCULATIONS
+|Allow a user to see what another user has checked out
+
+|VIEW_HOLD
+|Allow a user to view another user's holds
+
+|VIEW_PERMIT_CHECKOUT
+|Allow a user to determine whether another user can check out an item
+
+|VIEW_USER
+|Allow a user to view another user's Patron Record
+
+|VIEW_USER_FINES_SUMMARY
+|Allow a user to view bill details
+
+|VIEW_USER_TRANSACTIONS
+|Allow a user to see another user's grocery or circulation transactions in the Bills Interface
+|=== 
+
+Override permissions for events that should be automatically bypassed are also needed.  If the 
+*Selfcheck override events list* feature is used.  Add *COPY_ALERT_MESSAGE.override* to 
+bypass the *COPY_ALERT_MESSAGE* event for example.
+
 === Setting library hours of operation ===
 When the self check prints a receipt, the default template includes the
 library's hours of operation in the receipt. If the library has no configured
@@ -40,6 +93,13 @@ Several library settings control the behavior of the self check:
   or barcode, without having to enter their password, to access their account.
   This setting requires patrons to enter their password for additional
   security.
+* *Selfcheck override events list*: List of checkout/renewal events that the 
+selfcheck interface should automatically override instead instead of alerting 
+and stopping the transaction.  Examples: 
+** *COPY_ALERT_MESSAGE*, to allow checkout of an item with an alert message.
+** *COPY_NOT_AVAILABLE*, to allow checkout if the item has a status that isn't considered available. 
+** *COPY_NEEDED_FOR_HOLD*, to allow checkout if a copy is on the pull list.
+** *Override Permissions*: The self check user will need the .override permission for each event type.
 * *Workstation Required*: If set, the URL must either include a
   `?ws=[workstation]` parameter, where _[workstation]_ is the name of a
   registered Evergreen workstation, or the staff member must register a new
