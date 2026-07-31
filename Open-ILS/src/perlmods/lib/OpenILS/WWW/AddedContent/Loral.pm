@@ -163,7 +163,7 @@ sub send_html {
 
 sub send_json {
     my ($self, $content) = @_;
-    return {content_type => "text/plan",
+    return {content_type => "application/json",
             content => OpenSRF::Utils::JSON->perl2JSON($content)};
 }
 
