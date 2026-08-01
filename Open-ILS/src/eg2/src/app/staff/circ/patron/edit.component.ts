@@ -203,7 +203,7 @@ export class EditComponent implements OnInit {
     inetLevels: ComboboxEntry[];
     statCats: StatCat[] = [];
     grpList: IdlObject[];
-    editProfiles: IdlObject[] = [];
+    editProfiles: number[] = [];
     userStatCats: {[statId: number]: ComboboxEntry} = {};
     userSettings: {[name: string]: any} = {};
     userSettingTypes: {[name: string]: IdlObject} = {};
@@ -321,8 +321,9 @@ export class EditComponent implements OnInit {
         return this.perms.hasWorkPermAt(appPerms, true).then(orgs => {
             appPerms.forEach(p => {
                 if (orgs[p].length === 0) { failedPerms.push(p); }
-                traverseTree(this.grpList[0], false);
             });
+            const treeRoot = profiles.find(grp => !grp.parent());
+            traverseTree(treeRoot, false);
         });
     }
 
