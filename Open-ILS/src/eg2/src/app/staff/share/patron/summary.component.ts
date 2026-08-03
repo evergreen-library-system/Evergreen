@@ -61,7 +61,7 @@ export class PatronSummaryComponent implements OnInit {
 
             this.showDobDefault = this.showDob = !hide;
             this.showFullName = showFullName;
-        })
+        });
     }
 
     p(): IdlObject { // patron shorthand

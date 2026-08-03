@@ -187,9 +187,10 @@ export class MockGenerators {
     }
 
     static serverStoreService(valueFromStore: any) {
-        const store = jasmine.createSpyObj<ServerStoreService>(['getItem']);
-        store.getItem.and.resolveTo(valueFromStore);
-        return store;
+        return {
+            getItem: () => Promise.resolve(valueFromStore),
+            getItemBatch: (keys: string[]) => Promise.resolve(Object.fromEntries(keys.map(key => [key, valueFromStore])))
+        } as Partial<ServerStoreService>;
     }
 
     static serialsService() {
