@@ -216,13 +216,13 @@ if [ "$PREV_BRANCH" != "PACKAGE" ]; then
     echo "Applying to README:"
 
     if [ "$PREV_BRANCH" != "TAG" ]; then
-        if [ "$(grep "$RELEASE_PREAMBLE_HEAD" $GIT_ABS/README )" ]; then
+        if [ "$(grep "$RELEASE_PREAMBLE_HEAD" $GIT_ABS/README.adoc )" ]; then
             echo "Updating old download links"
-            sed -i -e "s|\(previews/\)\?Evergreen-ILS-.*\.tar\.gz|${PREVIEW_TEXT}Evergreen-ILS-$VERSION.tar.gz|" $GIT_ABS/README
-            sed -i -e "s| Evergreen-ILS-.*\.tar\.gz| Evergreen-ILS-$VERSION.tar.gz|" $GIT_ABS/README
+            sed -i -e "s|\(previews/\)\?Evergreen-ILS-.*\.tar\.gz|${PREVIEW_TEXT}Evergreen-ILS-$VERSION.tar.gz|" $GIT_ABS/README.adoc
+            sed -i -e "s| Evergreen-ILS-.*\.tar\.gz| Evergreen-ILS-$VERSION.tar.gz|" $GIT_ABS/README.adoc
         else
             echo "Adding Download Preamble"
-            perl -pi -e "s|^|$RELEASE_PREAMBLE\n\n| if /$RELEASE_PREAMBLE_BEFORE/" $GIT_ABS/README
+            perl -pi -e "s|^|$RELEASE_PREAMBLE\n\n| if /$RELEASE_PREAMBLE_BEFORE/" $GIT_ABS/README.adoc
         fi
     fi
 
