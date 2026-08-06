@@ -2477,6 +2477,13 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
 
     }
 
+    function openPatron(id) {
+        $window.location.href = 'https://'
+            + $window.location.hostname
+            + egCore.env.basePath
+            + 'circ/patron/' + id + '/checkout';
+    }
+
     $scope.edit_passthru.save = function(save_args) {
         if (!save_args) save_args = {};
 
@@ -2580,8 +2587,17 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
                         });
                     }
 
-                    $window.close();
+                    if (updated_user && save_args.open) {
+                        // if set to open after save, redirect to patron
+                        openPatron(updated_user.id());
+                    } else {
+                        // new tab from pending patrons, so just close
+                        $window.close();
+                    }
                 });
+            } else if (updated_user && save_args.open) {
+                // if set to open after saving, redirect to patron
+                openPatron(updated_user.id());
             } else {
                 // reload the current page
                 $window.location.href = location.href;

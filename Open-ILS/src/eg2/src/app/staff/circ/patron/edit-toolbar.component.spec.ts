@@ -47,4 +47,28 @@ describe('EditToolbarComponent', () => {
             .map((button: HTMLButtonElement) => button.textContent);
         expect(enabledButtons).toContain('Required Fields', 'All Fields');
     });
+    it('shows Save & Open button when registering new users', async () => {
+        await TestBed.compileComponents();
+        fixture = TestBed.createComponent(EditToolbarComponent);
+        fixture.detectChanges();
+        const saveBtn = Array.from(
+            fixture.nativeElement.querySelectorAll('button')
+        ).find((btn: HTMLButtonElement) =>
+            (btn.textContent ?? '').trim() === 'Save & Open'
+        );
+        expect(saveBtn).toBeTruthy();
+    });
+    it('hides Save & Open button when editing users', async () => {
+        await TestBed.compileComponents();
+        fixture = TestBed.createComponent(EditToolbarComponent);
+        component = fixture.componentInstance;
+        component.patronId = 1;
+        fixture.detectChanges();
+        const saveBtn = Array.from(
+            fixture.nativeElement.querySelectorAll('button')
+        ).find((btn: HTMLButtonElement) =>
+            (btn.textContent ?? '').trim() === 'Save & Open'
+        );
+        expect(saveBtn).toBeFalsy();
+    });
 });

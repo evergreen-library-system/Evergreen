@@ -46,6 +46,7 @@ export class EditToolbarComponent implements OnInit {
     disableSaveStateChanged: EventEmitter<boolean> = new EventEmitter<boolean>();
 
     saveClicked: EventEmitter<void> = new EventEmitter<void>();
+    saveOpenClicked: EventEmitter<void> = new EventEmitter<void>();
     saveCloneClicked: EventEmitter<void> = new EventEmitter<void>();
     printClicked: EventEmitter<void> = new EventEmitter<void>();
 

@@ -112,6 +112,8 @@ interface StatCat {
     entries: ComboboxEntry[];
 }
 
+type AfterSaveAction = 'clone' | 'open';
+
 @Component({
     templateUrl: 'edit.component.html',
     selector: 'eg-patron-edit',
@@ -157,7 +159,8 @@ export class EditComponent implements OnInit {
             // patron tab is open.  Wait until we know it's defined.
             if (tb) {
                 tb.saveClicked.subscribe(_ => this.save());
-                tb.saveCloneClicked.subscribe(_ => this.save(true));
+                tb.saveCloneClicked.subscribe(_ => this.save('clone'));
+                tb.saveOpenClicked.subscribe(_ => this.save('open'));
                 tb.printClicked.subscribe(_ => this.printPatron());
             }
         }
@@ -1517,8 +1520,7 @@ export class EditComponent implements OnInit {
         return this.patron.addresses().filter(a => !a.isdeleted());
     }
 
-    save(clone?: boolean): Promise<any> {
-
+    save(action?: AfterSaveAction): Promise<any> {
         this.changesPending = false;
         this.loading = true;
         this.showForm = false;
@@ -1527,7 +1529,7 @@ export class EditComponent implements OnInit {
             .then(_ => this.saveUserSettings())
             .then(_ => this.updateHoldPrefs())
             .then(_ => this.removeStagedUser())
-            .then(_ => this.postSaveRedirect(clone))
+            .then(_ => this.postSaveRedirect(action))
             .catch(err => {
                 // The save failed or was canceled -- e.g. the user
                 // dismissed the permission override dialog.  Restore the
@@ -1542,7 +1544,7 @@ export class EditComponent implements OnInit {
             });
     }
 
-    postSaveRedirect(clone: boolean) {
+    postSaveRedirect(action?: AfterSaveAction): void {
 
         this.worklog.record({
             user: this.modifiedPatron.family_name(),
@@ -1554,17 +1556,28 @@ export class EditComponent implements OnInit {
             this.broadcaster.broadcast('eg.pending_usr.update',
                 {usr: this.idl.toHash(this.modifiedPatron)});
 
-            // Typically, this window is opened as a new tab from the
-            // pending users interface. Once we're done, just close the
-            // window.
-            window.close();
-            return;
+            if (action === 'open') {
+                // If set to open after save, redirect to patron.
+                this.router.navigate(['/staff/circ/patron',
+                    this.modifiedPatron.id(), 'checkout'
+                ]);
+
+            } else {
+                // New tab from pending patrons, so just close.
+                window.close();
+            }
         }
 
-        if (clone) {
+        if (action === 'clone') {
             this.context.summary = null;
             this.router.navigate(
                 ['/staff/circ/patron/register/clone', this.modifiedPatron.id()]);
+
+        } else if (action === 'open') {
+            // If set to open after save, redirect to patron.
+            this.router.navigate(['/staff/circ/patron',
+                this.modifiedPatron.id(), 'checkout'
+            ]);
 
         } else {
             // Full refresh to force reload of modified patron data.
