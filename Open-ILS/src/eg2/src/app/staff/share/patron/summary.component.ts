@@ -5,14 +5,13 @@ import {PrintService} from '@eg/share/print/print.service';
 import {PatronService, PatronSummary} from './patron.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 
 @Component({
     templateUrl: 'summary.component.html',
     styleUrls: ['summary.component.css'],
     selector: 'eg-patron-summary',
-    imports: [
-        CommonModule
-    ]
+    imports: [CommonModule, RouterModule]
 })
 export class PatronSummaryComponent implements OnInit {
     private org = inject(OrgService);
