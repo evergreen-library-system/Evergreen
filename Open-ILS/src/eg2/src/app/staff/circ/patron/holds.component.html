@@ -15,7 +15,8 @@
         [showPlaceHoldButton]="true"
         [hidePickupLibFilter]="true"
         [defaultSort]="[{name:'request_time',dir:'asc'}]"
-        [patronId]="context.summary.patron.id()"></eg-holds-grid>
+        [patronId]="context.summary.patron.id()"
+        [showRecordSummary]="true"></eg-holds-grid>
     </ng-template>
   </li>
 
@@ -31,7 +32,8 @@
         [hidePickupLibFilter]="true"
         [showRecentlyCanceled]="true"
         [defaultSort]="[{name:'cancel_time',dir:'desc'}]"
-        [patronId]="context.summary.patron.id()"></eg-holds-grid>
+        [patronId]="context.summary.patron.id()"
+        [showRecordSummary]="true"></eg-holds-grid>
     </ng-template>
   </li>
 </ul>

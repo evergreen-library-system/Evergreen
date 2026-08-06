@@ -44,7 +44,9 @@
 
   <ng-container *ngIf="mode === 'detail'">
     <eg-hold-detail [wideHold]="detailHold" (onShowList)="mode='list'" 
-      [showRecordSummary]="showRecordSummary"></eg-hold-detail>
+      [showRecordSummary]="showRecordSummary"
+      [patronFocused]="patronFocused">
+    </eg-hold-detail>
   </ng-container>
 
   <ng-container *ngIf="mode === 'list' && initComplete()">
