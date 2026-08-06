@@ -104,19 +104,27 @@
     <div class="well-value">{{hold.cancel_note}}</div>
   </div>
   <div class="well-row">
-    <div class="well-label" i18n>Patron Name</div>
-    <div class="well-value">
-      <a href="/eg/staff/circ/patron/{{hold.usr_id}}/checkout">
-        {{hold.usr_display_name}}
-      </a>
-    </div>
-    <!-- force consistent width -->
-    <div class="well-label" i18n>Patron Barcode</div>
-    <div class="well-value">
-      <a href="/eg/staff/circ/patron/{{hold.usr_id}}/checkout">
-        {{hold.ucard_barcode}}
-      </a>
-    </div>
+    @if (patronFocused) {
+      <div class="well-label" i18n>Canceling Staff</div>
+      <div class="well-value">{{hold.canceled_by_usrname}}</div>
+      <!-- force consistent width -->
+      <div class="well-label" i18n>Canceling Workstation</div>
+      <div class="well-value">{{hold.canceling_ws_name}}</div>
+    } @else {
+      <div class="well-label" i18n>Patron Name</div>
+      <div class="well-value">
+        <a href="/eg/staff/circ/patron/{{hold.usr_id}}/checkout">
+          {{hold.usr_display_name}}
+        </a>
+      </div>
+      <!-- force consistent width -->
+      <div class="well-label" i18n>Patron Barcode</div>
+      <div class="well-value">
+        <a href="/eg/staff/circ/patron/{{hold.usr_id}}/checkout">
+          {{hold.ucard_barcode}}
+        </a>
+      </div>
+    }
     <div class="well-label" i18n>Hopeless Date</div>
     <div class="well-value">{{hold.hopeless_date | formatValue:'timestamp'}}</div>
   </div>
