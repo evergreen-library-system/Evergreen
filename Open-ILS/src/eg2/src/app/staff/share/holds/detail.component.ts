@@ -62,6 +62,11 @@ export class HoldDetailComponent implements OnInit {
     // Display bib record summary along the top of the detail page.
     @Input() showRecordSummary = false;
 
+
+    // Some fields do or don't make sense when displaying holds
+    // for a specific patron vs. e.g. a specific title.
+    @Input() patronFocused = false;
+
     initDone: boolean;
     // eslint-disable-next-line @angular-eslint/no-output-on-prefix
     @Output() onShowList: EventEmitter<any>;
