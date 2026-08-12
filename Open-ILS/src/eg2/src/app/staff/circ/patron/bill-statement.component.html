@@ -198,7 +198,7 @@
                   </div>
                 </div>
                 <div class="col-lg-2" [ngClass]="{'text-danger': line.type !== 'billing'}">
-                  @if (line.type !== 'billing') {
+                  @if (line.type !== 'billing' && line.amount >= 0) {
                     <span>-</span>
                     }{{line.amount | currency}}
                   </div>

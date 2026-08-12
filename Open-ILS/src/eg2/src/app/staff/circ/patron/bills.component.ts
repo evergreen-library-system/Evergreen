@@ -11,6 +11,7 @@ import {PatronService} from '@eg/staff/share/patron/patron.service';
 import {PatronContextService} from './patron.service';
 import {GridDataSource, GridColumn, GridCellTextGenerator, GridRowFlairEntry} from '@eg/share/grid/grid';
 import {GridComponent} from '@eg/share/grid/grid.component';
+import {GridToolbarButtonComponent} from '@eg/share/grid/grid-toolbar-button.component';
 import {Pager} from '@eg/share/util/pager';
 import {PrintService} from '@eg/share/print/print.service';
 import {PromptDialogComponent} from '@eg/share/dialog/prompt.component';
@@ -103,6 +104,8 @@ export class BillsComponent implements OnInit, AfterViewInit {
     @ViewChild('adjustToZeroDialog') private adjustToZeroDialog: ConfirmDialogComponent;
     @ViewChild('creditCardDialog') private creditCardDialog: CreditCardDialogComponent;
     @ViewChild('billingDialog') private billingDialog: AddBillingDialogComponent;
+    @ViewChild('selectAllBillsBtn') private selectAllBillsBtn: GridToolbarButtonComponent;
+    @ViewChild('selectAllRefundsBtn') private selectAllRefundsBtn: GridToolbarButtonComponent;
 
     ngOnInit() {
 
@@ -171,6 +174,7 @@ export class BillsComponent implements OnInit, AfterViewInit {
                     tap({complete: () => {
                         this.applyFullBillSet(pager);
                         this.selectAllBillsOnLoad();
+                        this.updateToggleLabels();
                         this.focusDefaultControlOnLoad();
                     }}));
         };
@@ -231,7 +235,10 @@ export class BillsComponent implements OnInit, AfterViewInit {
             .subscribe(_ => {
                 this.refunding = false;
                 this.updatePendingColumn();
+                this.updateToggleLabels();
             });
+
+        this.updateToggleLabels();
     }
 
     focusPayAmount() {
@@ -252,6 +259,11 @@ export class BillsComponent implements OnInit, AfterViewInit {
     // Grid actions that act on a single transaction pass this to
     // [disableOnRows] so the menu entry greys out for any other count.
     notExactlyOneRow = (rows: any[]): boolean => rows.length !== 1;
+
+    // A mix of refundable and non-refundable rows would otherwise trigger
+    // a REFUND_EXCEEDS_BALANCE error on the positive-balance transaction.
+    notAllRefundable = (rows: any[]): boolean =>
+        rows.length === 0 || rows.some(row => Number(row.balance_owed) >= 0);
 
     selectedCount(): number {
         if (!this.billGrid) { return 0; } // page loading
@@ -583,11 +595,35 @@ export class BillsComponent implements OnInit, AfterViewInit {
         });
     }
 
+    // Excludes refund-eligible (negative balance) bills, which staff
+    // select separately via Select All Refunds.
     selectAllBills() {
-        this.billGrid.context.rowSelector.clear();
-        this.gridDataSource.data.forEach(row => {
-            this.billGrid.context.toggleSelectOneRow(row.id);
-        });
+        this.selectMatchingBills(row => Number(row.balance_owed) > 0);
+    }
+
+    // Only clears non-refund bills, so a Select All Refunds selection
+    // made alongside it is left untouched.
+    deselectAllBills() {
+        this.deselectMatchingBills(row => Number(row.balance_owed) > 0);
+    }
+
+    toggleAllBills() {
+        if (this.allBillsSelected()) {
+            this.deselectAllBills();
+        } else {
+            this.selectAllBills();
+        }
+    }
+
+    // Drives the Select All Bills / Deselect All Bills toolbar toggle.
+    allBillsSelected(): boolean {
+        if (!this.billGrid) { return false; } // page loading
+
+        const ids = this.gridDataSource.data
+            .filter(row => Number(row.balance_owed) > 0)
+            .map(row => row.id);
+
+        return ids.length > 0 && this.billGrid.context.rowSelector.contains(ids);
     }
 
     // Called once the grid has fetched every bill.  Rows are stored
@@ -646,18 +682,75 @@ export class BillsComponent implements OnInit, AfterViewInit {
     }
 
     selectRefunds() {
+        this.selectMatchingBills(row => Number(row.balance_owed) < 0);
+    }
+
+    // Only clears refund-eligible bills, so a Select All Bills selection
+    // made alongside it is left untouched.
+    deselectAllRefunds() {
+        this.deselectMatchingBills(row => Number(row.balance_owed) < 0);
+    }
+
+    toggleAllRefunds() {
+        if (this.allRefundsSelected()) {
+            this.deselectAllRefunds();
+        } else {
+            this.selectRefunds();
+        }
+    }
+
+    // Drives the Select All Refunds / Deselect All Refunds toolbar toggle.
+    allRefundsSelected(): boolean {
+        if (!this.billGrid) { return false; } // page loading
+
+        const ids = this.gridDataSource.data
+            .filter(row => Number(row.balance_owed) < 0)
+            .map(row => row.id);
+
+        return ids.length > 0 && this.billGrid.context.rowSelector.contains(ids);
+    }
+
+    // The toolbar button component only copies its [label] input into the
+    // displayed button once, at init, so the Select/Deselect All toggle
+    // labels are refreshed by writing directly to that button object.
+    updateToggleLabels() {
+        if (this.selectAllBillsBtn) {
+            this.selectAllBillsBtn.button.label = this.allBillsSelected() ?
+                $localize`Deselect All Bills` : $localize`Select All Bills`;
+        }
+        if (this.selectAllRefundsBtn) {
+            this.selectAllRefundsBtn.button.label = this.allRefundsSelected() ?
+                $localize`Deselect All Refunds` : $localize`Select All Refunds`;
+        }
+    }
+
+    // Shared by Select All Bills and Select All Refunds: clears the
+    // selection, selects every fetched row matching the predicate, then
+    // pages to the first match so the result is visible.
+    selectMatchingBills(matches: (row: any) => boolean) {
         this.billGrid.context.rowSelector.clear();
 
         let firstPosition = -1;
 
         this.gridDataSource.data.forEach((row, position) => {
-            if (row.balance_owed < 0) {
+            if (matches(row)) {
                 if (firstPosition < 0) { firstPosition = position; }
                 this.billGrid.context.toggleSelectOneRow(row.id);
             }
         });
 
         this.showSelectionPage(firstPosition);
+    }
+
+    // Shared by Deselect All Bills and Deselect All Refunds: removes only
+    // the rows matching the predicate, leaving the rest of the selection
+    // (e.g. the other category) intact.
+    deselectMatchingBills(matches: (row: any) => boolean) {
+        const ids = this.gridDataSource.data
+            .filter(matches)
+            .map(row => row.id);
+
+        this.billGrid.context.rowSelector.deselect(ids);
     }
 
     // Paging here is display only, so an action can select rows that sit on
@@ -784,18 +877,18 @@ export class BillsComponent implements OnInit, AfterViewInit {
         return false;
     }
 
-    // This is functionally equivalent to selecting a neg. transaction
-    // then clicking Apply Payment -- this just adds a speed bump (ditto
-    // the XUL client).
+    // Refunds are just negative payments, so this issues the refund
+    // directly via applyPayment() instead of requiring a separate click
+    // on Apply Payment with an amount that would otherwise be ignored.
     refund(rows: any[]) {
         if (rows.length === 0) { return; }
-        const xactIds = rows.map(r => r.id);
 
         this.refundDialog.open().subscribe(confirmed => {
             if (!confirmed) { return; }
-            this.refunding = true; // clearen in applyPayment()
-            this.paymentAmount = null;
+            this.refunding = true; // cleared in applyPayment()
+            this.paymentAmount = 0;
             this.updatePendingColumn();
+            this.applyPayment();
         });
     }
 

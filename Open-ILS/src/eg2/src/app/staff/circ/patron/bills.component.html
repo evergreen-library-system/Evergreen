@@ -41,10 +41,7 @@
   </p>
   <p class="mb-1" i18n>Before you continue:</p>
   <ul class="mb-0 ps-4">
-    <li i18n>
-      The amount is placed in the Payment Pending column as a negative value.
-      You must still select <strong>Apply Payment</strong>.
-    </li>
+    <li i18n>Confirming this immediately issues the refund as a payment.</li>
     <li i18n>Certain types of payments may not be refunded.</li>
     <li i18n>
       The refund may be applied to checked transactions that follow the
@@ -205,12 +202,13 @@
     routerLink="/staff/circ/patron/{{patronId}}/bills/history/transactions">
   </eg-grid-toolbar-button>
 
-  <eg-grid-toolbar-button i18n-label label="Select All Bills"
-  (onClick)="selectAllBills()"></eg-grid-toolbar-button>
+  <eg-grid-toolbar-button #selectAllBillsBtn label="Select All Bills"
+  [disabled]="!gridDataSource.data.length"
+  (onClick)="toggleAllBills()"></eg-grid-toolbar-button>
 
-  <eg-grid-toolbar-button i18n-label label="Select All Refunds"
+  <eg-grid-toolbar-button #selectAllRefundsBtn label="Select All Refunds"
   [disabled]="refundsAvailable() === 0"
-  (onClick)="selectRefunds()"></eg-grid-toolbar-button>
+  (onClick)="toggleAllRefunds()"></eg-grid-toolbar-button>
 
   <!-- ACTIONS FOR SELECTED -->
 
@@ -236,7 +234,8 @@
     [disableOnRows]="notExactlyOneRow">
   </eg-grid-toolbar-action>
 
-  <eg-grid-toolbar-action i18n-label label="Refund" (onClick)="refund($event)">
+  <eg-grid-toolbar-action i18n-label label="Refund" (onClick)="refund($event)"
+    [disableOnRows]="notAllRefundable">
   </eg-grid-toolbar-action>
 
   <!-- COLUMNS -->
