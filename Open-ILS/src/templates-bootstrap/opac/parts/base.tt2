@@ -65,7 +65,9 @@
         [% content %]
         </div>
 
-        [% INCLUDE 'opac/parts/footer.tt2' %]
+        [% IF !CGI.param('nofooter') %]
+            [% INCLUDE 'opac/parts/footer.tt2' %]
+        [% END %]
 
         [% IF ctx.page != "login" ;%]
         [% INCLUDE 'opac/parts/login/login_modal.tt2' %]

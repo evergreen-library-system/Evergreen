@@ -194,6 +194,22 @@ WARNING: If a carousel is deleted, its mappings are deleted.
 
 image::carousels/carousel8.png[Carousel mapping editor screen]
 
+== Loading Carousels on Their Own Page ==
+
+If you wish to embed a carousel in another web site, you can do so using an iframe and the '/eg/opac/carousel' URL path with specified parameters.
+
+Parameters:
+
+* carousel_loc - (required) the id of the org unit that the carousel(s) is associated with
+* carousel_id - (optional) the id of a specific carousel at the specified location, if none is specified, all carousels for that location will display
+* nofooter=nofooter - (recommended) hides the page footer
+
+Example:
+
+----
+<iframe src="https://<mydomain>/eg/opac/carousel?carousel_loc=3&carousel_id=4&nofooter=nofooter"
+title="Carousel" width="100%" height="300" frameborder="0" scrolling="no"></iframe>
+----
 
 == CAROUSELS - OTHER ADMINISTRATIVE FEATURES ==
 

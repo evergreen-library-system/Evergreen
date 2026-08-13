@@ -467,7 +467,9 @@ sub load_common {
     };
 
     $ctx->{carousel_loc} = $self->get_carousel_loc;
+    $ctx->{carousel_id} = $self->get_carousel_id;
     $ctx->{physical_loc} = $self->get_physical_loc;
+
     my $geo_sort = $e->retrieve_config_global_flag('opac.use_geolocation');
     $geo_sort = ($geo_sort && $U->is_true($geo_sort->enabled));
     my $geo_org = $ctx->{physical_loc} || $self->cgi->param('loc') || $ctx->{aou_tree}->()->id;
@@ -645,6 +647,12 @@ sub get_physical_loc {
 sub get_carousel_loc {
     my $self = shift;
     return $self->cgi->param('carousel_loc') || $ENV{carousel_loc};
+}
+
+sub get_carousel_id {
+    my $self = shift;
+    my $carousel_id = $self->cgi->param('carousel_id');
+    return (defined $carousel_id && $carousel_id =~ /^[0-9]+$/) ? $carousel_id : 0;
 }
 
 sub load_staff_sso_logout {
