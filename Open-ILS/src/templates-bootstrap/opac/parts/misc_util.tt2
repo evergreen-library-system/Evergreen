@@ -884,7 +884,7 @@
 
 <div class="carousels">
 [% FOREACH carousel IN carousels;
-   IF carousel.bibs.size > 0;
+   IF carousel.bibs.size > 0 AND (ctx.carousel_id == 0 OR ctx.carousel_id == carousel.id);
 %]
 <div class="carousel">
 <h2 class="carousel-title">[% carousel.name %]</h2>
@@ -901,7 +901,7 @@
             </div>
             <div class="titleText">
             <span class="carousel-entry-title">
-           <a href="[% mkurl(ctx.opac_root  _ '/record/' _ bib.id) %]"> 
+           <a href="[% mkurl(ctx.opac_root  _ '/record/' _ bib.id) %]" target="_top">
             [% bib.title | html %]
            </a> 
 
