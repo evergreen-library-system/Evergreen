@@ -1,5 +1,6 @@
-import { Component, OnInit, output } from '@angular/core';
+import { Component, inject, Input, OnInit, output } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { StoreService } from '@eg/core/store.service';
 import { Maybe, None, Some } from '@eg/share/maybe';
 
 export interface FastAddItem {
@@ -15,7 +16,12 @@ export interface FastAddItem {
     imports: [ReactiveFormsModule]
 })
 export class FastAddSelectorComponent implements OnInit {
+    private store = inject(StoreService)
+
     public fastAddItemChange = output<Maybe<FastAddItem>>();
+
+    @Input() public checkedOnInit: boolean = false
+    @Input() public saveShowFieldChanges: boolean = false;
 
     protected form = new FormGroup({
         fastAddItem: new FormControl(false),
@@ -23,7 +29,7 @@ export class FastAddSelectorComponent implements OnInit {
         barcode: new FormControl('')
     });
 
-    protected get showFields(): boolean {
+    public get showFields(): boolean {
         return this.fastAddItem;
     }
 
@@ -45,12 +51,20 @@ export class FastAddSelectorComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        if (this.checkedOnInit) {
+            this.form.setValue({fastAddItem: this.checkedOnInit, callNumber: this.callNumber, barcode: this.barcode});
+        }
+
         this.form.valueChanges.subscribe(() => {
             if(this.isValid()) {
                 this.fastAddItemChange.emit(new Some<FastAddItem>({label: this.callNumber, barcode: this.barcode, fast_add: true}));
             } else {
                 this.fastAddItemChange.emit(new None<FastAddItem>());
             }
+            if (this.saveShowFieldChanges) {
+                this.store.setLocalItem('eg.cat.fast_add_item', this.showFields);
+            }
+            
         });
     }
 }

@@ -1,16 +1,38 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { StoreService } from '@eg/core/store.service';
 import { ServerStoreService } from '@eg/core/server-store.service';
 import { NetService } from '@eg/core/net.service';
 import { lastValueFrom } from 'rxjs';
 import { MarcRecord } from '@eg/staff/share/marc-edit/marcrecord';
-import { MarcEditorComponent } from '@eg/staff/share/marc-edit/editor.component';
+import { MarcEditorComponent, MarcSavedEvent } from '@eg/staff/share/marc-edit/editor.component';
+import { StaffBannerComponent } from '../share/staff-banner.component';
+import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+import { FastAddSelectorComponent } from '../share/marc-edit/fast-add-selector.component';
+import { HoldingsService } from '../share/holdings/holdings.service';
+import { AuthService } from '@eg/core/auth.service';
 
 @Component({
     selector: 'eg-create-marc',
-    templateUrl: './create-marc.component.html'
+    templateUrl: './create-marc.component.html',
+    standalone: true,
+    imports: [
+        StaffBannerComponent, 
+        FormsModule, 
+        MarcEditorComponent,
+        FastAddSelectorComponent
+    ]
 })
-export class CreateMarcComponent {
+export class CreateMarcComponent implements OnInit{
+    private net = inject(NetService);
+    private serverStore = inject(ServerStoreService);
+    private localStore = inject(StoreService);
+    private router = inject(Router);
+    private holdings = inject(HoldingsService);
+    private auth = inject(AuthService);
+
+    protected recordSource: string = ''
+    protected fastAddChecked: boolean = true;
     have_template = false;
     template_list = [];
     template_name = '';
@@ -19,22 +41,24 @@ export class CreateMarcComponent {
     marc_template = '';
     record: MarcRecord;
     marc_xml: string;
+    
+    @ViewChild('fastAdd') fastAdd!: FastAddSelectorComponent;
 
-    constructor(
-    private net: NetService,
-    private serverStore: ServerStoreService,
-    private localStore: StoreService
+    constructor( 
     ) {
         this.getDefaultTemplateName();
         this.getTemplateTypes();
     }
 
+    ngOnInit(): void {
+        this.recordSource = this.localStore.getLocalItem('eg.cat.last_record_source');
+        this.fastAddChecked = Boolean(this.localStore.getLocalItem('eg.cat.fast_add_item') ?? true);
+    }
+
     getDefaultTemplateName() {
         this.serverStore.getItem('cat.default_bib_marc_template').then(template => {
-            this.default_template_name = template;
-            // console.debug('Default template received:', this.default_template_name);
-        }).then(() => {
-            this.getLastBibTemplate();
+            this.default_template_name = template || '';
+            this.template_name = this.default_template_name;
         });
     }
 
@@ -45,14 +69,6 @@ export class CreateMarcComponent {
         )).then(types => {
             this.template_list = types.sort();
         });
-    }
-
-    getLastBibTemplate() {
-        this.template_name = this.localStore.getLocalItem('eg.cat.last_bib_marc_template');
-        if (!this.template_name) {
-            this.template_name = this.default_template_name;
-            this.localStore.setLocalItem('eg.cat.last_bib_marc_template', this.template_name);
-        }
     }
 
     loadTemplate() {
@@ -83,13 +99,13 @@ export class CreateMarcComponent {
 
                 if (this.marc_template) {
                     this.have_template = true;
-                    this.localStore.setLocalItem('eg.cat.last_bib_marc_template', this.template_name);
                 }
             });
         }
     }
 
     setDefaultTemplate() {
+        this.default_template_name = this.template_name;
         if (this.template_name) {
             this.serverStore.setItem('cat.default_bib_marc_template', this.template_name);
         } else {
@@ -99,6 +115,22 @@ export class CreateMarcComponent {
 
     trackByTemplateName(index, template) {
         return template;
+    }
+
+    onRecordSaved(event: MarcSavedEvent) {
+        // The editor ain't gonna do it because the item ain't valid. But we're doing it here because the box is ticked at all.
+        if (this.fastAdd.showFields && !event.fastItem && event.recordId) {
+            this.holdings.spawnAddHoldingsUi(event.recordId, undefined, [{owner: this.auth.user().ws_ou()}]);
+        }
+        // And we don't need to add a version with a defined fastItem, because the marc-edit-component is doing that for us.
+
+        if (event.recordId) {
+            this.router.navigate(['staff', 'catalog', 'record', event.recordId, 'marc_edit'], {relativeTo: null});
+        }
+    }
+
+    onRecordSourceChanged(id: number) {
+        this.localStore.setLocalItem("eg.cat.last_record_source", id);
     }
 
 }
