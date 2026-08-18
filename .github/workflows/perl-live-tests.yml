@@ -24,9 +24,13 @@ jobs:
   live:
     name: Run Live tests
     runs-on: ubuntu-24.04
+    timeout-minutes: 40
     container:
       image: ubuntu:24.04
+      options: --hostname testing.blabla.com
     steps:
+      - name: Get hostname for troubleshooting purposes
+        run: hostname
       - run: apt-get update -y
       - run: apt-get install -y sudo git make lsb-release
       - name: Install a syslog implementation
@@ -129,7 +133,7 @@ jobs:
       - name: "Evergreen: Starting evergreen"
         run: sudo service redis-server restart && sudo service memcached restart && sudo -u opensrf sh -c 'PATH=$PATH:/openils/bin osrf_control --localhost --restart-all'
       - name: "Evergreen: Wait for the settings drones to be ready"
-        run: until perl -MOpenILS::Utils::TestUtils -MOpenSRF::Utils::Config -e 'OpenILS::Utils::TestUtils->new->bootstrap;my $session=OpenSRF::AppSession->create("opensrf.settings");$session->connect || exit 1; $session->request("opensrf.settings.host_config.get", OpenSRF::Utils::Config->current->env->hostname) || exit 1;'; do sleep 1; done;
+        run: until perl -MOpenSRF::System -MOpenSRF::Utils::Config -e 'OpenSRF::System->bootstrap_client(config_file=>"/openils/conf/opensrf_core.xml");my $session=OpenSRF::AppSession->create("opensrf.settings");$session->connect || exit 1; $session->request("opensrf.settings.host_config.get", OpenSRF::Utils::Config->current->env->hostname) || exit 1;'; do sleep 1; done;
       - name: "Evergeen: Run autogen"
         run: sudo -u opensrf sh -c 'export PATH=$PATH:/openils/bin && autogen.sh'
       - name: "Evergreen: Restart httpd"
