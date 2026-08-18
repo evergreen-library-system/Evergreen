@@ -129,7 +129,7 @@ jobs:
       - name: "Evergreen: Starting evergreen"
         run: sudo service redis-server restart && sudo service memcached restart && sudo -u opensrf sh -c 'PATH=$PATH:/openils/bin osrf_control --localhost --restart-all'
       - name: "Evergreen: Wait for the settings drones to be ready"
-        run: sudo -u opensrf sh -c 'while [ $(ps aux | grep -v grep | grep "Drone" | grep "opensrf.settings" | wc -l) -lt 5 ]; do sleep 1; done; sleep 1;'
+        run: until perl -MOpenILS::Utils::TestUtils -MOpenSRF::Utils::Config -e 'OpenILS::Utils::TestUtils->new->bootstrap;my $session=OpenSRF::AppSession->create("opensrf.settings");$session->connect || exit 1; $session->request("opensrf.settings.host_config.get", OpenSRF::Utils::Config->current->env->hostname) || exit 1;'; do sleep 1; done;
       - name: "Evergeen: Run autogen"
         run: sudo -u opensrf sh -c 'export PATH=$PATH:/openils/bin && autogen.sh'
       - name: "Evergreen: Restart httpd"
