@@ -3,6 +3,44 @@
 :numbered:
 :toclevels: 3
 
+== Evergreen 3.16.10 ==
+
+This is a security release that fixes several vulnerabilities, including ones that allow
+the remote execution of arbitrary SQL statements in the Evergreen database as well as
+cross-site scripting vulnerabilities.
+
+We strongly recommend *immediate* installation of this security release.
+
+The security bug fixed in this release is:
+
+* https://bugs.launchpad.net/evergreen/+bug/2150054[Bug 2150054] - patching an XSS vulnerability
+
+This release also includes normal bugfixes.
+
+=== Cataloging ===
+
+* Restores descending sort order to Holdings Editor parts drop down. (https://bugs.launchpad.net/evergreen/+bug/2037674[Bug 2037674])
+
+=== Circulation ===
+
+* Check every profile for edit permissions so the Angular patron editor save button isn't disabled incorrectly. (https://bugs.launchpad.net/evergreen/+bug/2081327[Bug 2081327])
+* Fixes linking from Angular Holds View grid. (https://bugs.launchpad.net/evergreen/+bug/2161465[Bug2161465])
+
+=== Acknowledgements === 
+
+We would like to thank the following individuals who contributed code, testing, documentation, and patches to the 3.16.9 point release of Evergreen:
+
+* Andrea Buntz Neiman
+* Dan Briem
+* Galen Charlton
+* Jane Sandberg
+* Jason Stephenson
+* John Amundson
+* Michele Morgan
+* Mike Rylander
+* Tara Kunesh
+
+
 == Evergreen 3.16.9 ==
 
 This release contains bug fixes and documentation fixes improving on Evergreen 3.16.8.
@@ -226,7 +264,7 @@ In addition, if you have customized any of the following templates, please compa
 
 
 
-=== Acknowledgments ===
+=== Acknowledgements ===
 
 The Evergreen Project would like to thank the following individuals
 who contributed code, testing, and other assistance with this security
@@ -292,7 +330,7 @@ service, and the `open-ils.fielder` service. This release *only* includes
 the security fixes; it does not include any other bugfixes or features
 that were merged since the previous release.
 
-=== Acknowledgments ===
+=== Acknowledgements ===
 
 The Evergreen Project would like to thank the following individuals
 who contributed code, testing, and other assistance with this security
@@ -1064,7 +1102,7 @@ The KPAC utilizes its own CSS files:
 :leveloffset: 0
 
 
-== Acknowledgments ==
+== Acknowledgements ==
 The Evergreen project would like to acknowledge the following
 organizations that commissioned developments in this release of
 Evergreen:
