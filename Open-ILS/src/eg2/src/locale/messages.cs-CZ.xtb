@@ -3500,8 +3500,8 @@ limitů se nezdařila</translation>
   <translation id="1503465338699241830">Autor sestupně</translation>
   <translation id="1317029026263270896">Vydavatel vzestupně</translation>
   <translation id="7477063894012122335">Vydavatel sestupně</translation>
-  <translation id="5955465238745298912">Identifikátor objednávky vzestupně</translation>
-  <translation id="539555914181564454">Identifikátor objednávky sestupně</translation>
+  <translation id="5955465238745298912">Identifikátor pro objednávku vzestupně</translation>
+  <translation id="539555914181564454">Identifikátor pro objednávku sestupně</translation>
   <translation id="2725119307155678605">Žádné jednotky k zobrazení </translation>
   <translation id="4430636868964614569">Připraveno pro vybírajícího</translation>
   <translation id="4118779386889491422">Připraveno k objednávce</translation>
@@ -3514,7 +3514,7 @@ limitů se nezdařila</translation>
   <translation id="1328039203436656119">Volba více identifikátorů</translation>
   <translation id="775325490705495086"> (<ph name="INTERPOLATION"/>) </translation>
   <translation id="6960569690626231275">Typ identifikátoru objednávky</translation>
-  <translation id="1314117635670795390">Identifikátor objednávky...</translation>
+  <translation id="1314117635670795390">Identifikátor pro objednávku...</translation>
   <translation id="5929404258020420633">Cena...</translation>
   <translation id="5180891747994187024">Označit jako nepřijaté</translation>
   <translation id="426975799106982572">Změnit čárové kódy</translation>
@@ -4713,12 +4713,12 @@ Zadat rezervaci <ph name="START_SMALL_TEXT"/> (<ph name="INTERPOLATION"/>, <ph n
   <translation id="7484933471629373593"><ph name="START_ITALIC_TEXT"/>Výše vydaných prostředků je <ph name="INTERPOLATION"/><ph name="CLOSE_ITALIC_TEXT"/></translation>
   <translation id="1443355911740108749">Tím se zbavíte všech paušálních poplatků a označíte fakturu jako přijatou.</translation>
   <translation id="2931725436377261061"> Toto ID je již použito pro jinou fakturu.</translation>
-  <translation id="6878219772635859285">Přehled dat uložen</translation>
+  <translation id="6878219772635859285">Souhrn uložených dat</translation>
   <translation id="9070227639072963072">chyba při výpočtu celkové částky</translation>
   <translation id="3853674757626333327">Vázané prostředky celkem:</translation>
   <translation id="5451927277747710052">Zaplaceno celkem:</translation>
   <translation id="6401348639424952396">Zůstatek dluhu:</translation>
-  <translation id="2296904684164883189">Přehled fondu</translation>
+  <translation id="2296904684164883189">Souhrn informací o finančním fondu</translation>
   <translation id="7828688976004781183">Zpracovávám...</translation>
   <translation id="7688211330262480183">Při načtení nebo vytvoření faktury nastala chyba</translation>
   <translation id="7253141785398874510"> Na této pracovní stanici nemáte oprávnění zobrazit faktury. </translation>
@@ -7550,4 +7550,11 @@ Některé typy plateb
   <translation id="6904473856708969430">{VAR_PLURAL, plural, =1 {1 Item} other {<ph name="INTERPOLATION"/> Items}}</translation>
   <translation id="6973991913153980347">Edit Due Date For <ph name="ICU"/></translation>
   <translation id="8316347037673324106">Enter Due Date:</translation>
+  <translation id="4133322545394997620">Holdings Templates Editor</translation>
+  <translation id="2854341817854571948">Show Items</translation>
+  <translation id="1342045516681715978">Renew <ph name="ICU"/> With Specific Due Date</translation>
+  <translation id="2568710285992986135">{VAR_PLURAL, plural, =1 {1 Item} other {<ph name="INTERPOLATION"/> Items}}</translation>
+  <translation id="2344300405179753632">Edit Due Date For <ph name="ICU"/></translation>
+  <translation id="5444410713799568595">Patron photo</translation>
+  <translation id="1960506143494740367">Preferred Language</translation>
 </translationbundle>
