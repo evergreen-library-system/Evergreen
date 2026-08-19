@@ -2653,49 +2653,49 @@ Delete Provider</msg>
   <msg id="6482805382733964102" desc="Show/hide catalog advanced search filters"><source>src/app/staff/catalog/search-form.component.html:178,193</source><ph name="START_TAG_NG_CONTAINER"/> <ph name="ICU"/> <ph name="CLOSE_TAG_NG_CONTAINER"/><ph name="START_TAG_NG_CONTAINER_1"/> <ph name="ICU_1"/> <ph name="CLOSE_TAG_NG_CONTAINER"/></msg>
   <msg id="2405627598181202120"><source>src/app/staff/catalog/search-form.component.html:179,184</source>{VAR_PLURAL, plural, =0 {Hide filters } =1 {Hide 1 active filter } other {Hide <ph name="INTERPOLATION"/> active filters }}</msg>
   <msg id="4458986706369525724"><source>src/app/staff/catalog/search-form.component.html:187,192</source>{VAR_PLURAL, plural, =0 {Show more filters } =1 {Show 1 active filter } other {Show <ph name="INTERPOLATION"/> active filters }}</msg>
-  <msg id="4278041738815302529"><source>src/app/staff/catalog/search-form.component.html:199</source>Item Type</msg>
-  <msg id="8169449220694982439"><source>src/app/staff/catalog/search-form.component.html:202</source>All Item Types</msg>
-  <msg id="6907807228975360219"><source>src/app/staff/catalog/search-form.component.html:209</source>Form</msg>
-  <msg id="4842640262162637956"><source>src/app/staff/catalog/search-form.component.html:212</source>All Item Forms</msg>
-  <msg id="2826581353496868063"><source>src/app/staff/catalog/search-form.component.html:219</source>Language</msg>
-  <msg id="6993909835054714449"><source>src/app/staff/catalog/search-form.component.html:222</source>All Languages</msg>
-  <msg id="7760596385783446373"><source>src/app/staff/catalog/search-form.component.html:229</source>Audience</msg>
-  <msg id="7205590655845335646"><source>src/app/staff/catalog/search-form.component.html:232</source>All Audiences</msg>
-  <msg id="4393967855965858443"><source>src/app/staff/catalog/search-form.component.html:241</source>Video Format</msg>
-  <msg id="4315136048474243677"><source>src/app/staff/catalog/search-form.component.html:244</source>All Video Formats</msg>
-  <msg id="8584396602403496197"><source>src/app/staff/catalog/search-form.component.html:251</source>Bibliographic Level</msg>
-  <msg id="6802112529604770771"><source>src/app/staff/catalog/search-form.component.html:254</source>All Bib Levels</msg>
-  <msg id="1323008653435885610"><source>src/app/staff/catalog/search-form.component.html:261</source>Literary Form</msg>
-  <msg id="1706257715386386167"><source>src/app/staff/catalog/search-form.component.html:264</source>All Literary Forms</msg>
-  <msg id="7101915224114661423"><source>src/app/staff/catalog/search-form.component.html:275,278</source> <ph name="INTERPOLATION"/> (<ph name="INTERPOLATION_1"/>) </msg>
-  <msg id="8021113684733014055"><source>src/app/staff/catalog/search-form.component.html:283</source>Clear the Library Group or Shelving Location Group selection to choose individual Shelving Locations</msg>
-  <msg id="27494424370894008"><source>src/app/staff/catalog/search-form.component.html:287</source>Publication Year</msg>
-  <msg id="4942331693527539064"><source>src/app/staff/catalog/search-form.component.html:289</source>compare publication dates using...</msg>
-  <msg id="9147046130713106935"><source>src/app/staff/catalog/search-form.component.html:291</source>Is</msg>
-  <msg id="1218334388194408974"><source>src/app/staff/catalog/search-form.component.html:292</source>Before</msg>
-  <msg id="6371576811194810854"><source>src/app/staff/catalog/search-form.component.html:293</source>After</msg>
-  <msg id="1788144081998564888"><source>src/app/staff/catalog/search-form.component.html:298</source>Year, or beginning of year range</msg>
-  <msg id="8114146008755159884"><source>src/app/staff/catalog/search-form.component.html:303</source>End of year range</msg>
-  <msg id="7171276766661761441"><source>src/app/staff/catalog/search-form.component.html:311</source>Numeric Search</msg>
-  <msg id="8048107774628227659"><source>src/app/staff/catalog/search-form.component.html:315</source>Query Type</msg>
-  <msg id="5729347704943251933"><source>src/app/staff/catalog/search-form.component.html:323</source>LCCN</msg>
-  <msg id="6143330778178833170"><source>src/app/staff/catalog/search-form.component.html:324</source>TCN</msg>
-  <msg id="865668397856791272"><source>src/app/staff/catalog/search-form.component.html:325</source>Item Barcode</msg>
-  <msg id="8865123935207425518"><source>src/app/staff/catalog/search-form.component.html:336</source>Numeric Query...</msg>
-  <msg id="95301782947665561"><source>src/app/staff/catalog/search-form.component.html:342</source>MARC Search</msg>
-  <msg id="787163983066183218"><source>src/app/staff/catalog/search-form.component.html:397</source>Browse</msg>
-  <msg id="6871968110130773266"><source>src/app/staff/catalog/search-form.component.html:400</source>Browse for</msg>
-  <msg id="8755099053691815611"><source>src/app/staff/catalog/search-form.component.html:410</source> starting with </msg>
-  <msg id="4031118666027324953"><source>src/app/staff/catalog/search-form.component.html:416</source>Browse for...</msg>
-  <msg id="8655712393339193505"><source>src/app/staff/catalog/search-form.component.html:425,428</source> Browse Call Numbers starting with </msg>
-  <msg id="6030204061808901083"><source>src/app/staff/catalog/search-form.component.html:433</source>Browse Call Numbers...</msg>
-  <msg id="2802875410834862878"><source>src/app/staff/catalog/search-form.component.html:446</source>Search in Library</msg>
-  <msg id="4359570952749455284"><source>src/app/staff/catalog/search-form.component.html:454,457</source> Library Group <ph name="INTERPOLATION"/> </msg>
-  <msg id="531372723217962784"><source>src/app/staff/catalog/search-form.component.html:462</source>No Group Restriction</msg>
-  <msg id="7145703130854996777"><source>src/app/staff/catalog/search-form.component.html:471</source>Clear the individual Shelving Location selections in the advanced search filters to search by Library Group or Shelving Location Group</msg>
-  <msg id="6159894181793056461"><source>src/app/staff/catalog/search-form.component.html:480,483</source> Search </msg>
-  <msg id="3466654961496504426"><source>src/app/staff/catalog/search-form.component.html:486,489</source> Reset </msg>
-  <msg id="5120743112006725492"><source>src/app/staff/catalog/search-form.component.html:508</source>Did you mean:</msg>
+  <msg id="7171276766661761441"><source>src/app/staff/catalog/search-form.component.html:200</source>Numeric Search</msg>
+  <msg id="8048107774628227659"><source>src/app/staff/catalog/search-form.component.html:204</source>Query Type</msg>
+  <msg id="5729347704943251933"><source>src/app/staff/catalog/search-form.component.html:212</source>LCCN</msg>
+  <msg id="6143330778178833170"><source>src/app/staff/catalog/search-form.component.html:213</source>TCN</msg>
+  <msg id="865668397856791272"><source>src/app/staff/catalog/search-form.component.html:214</source>Item Barcode</msg>
+  <msg id="8865123935207425518"><source>src/app/staff/catalog/search-form.component.html:225</source>Numeric Query...</msg>
+  <msg id="95301782947665561"><source>src/app/staff/catalog/search-form.component.html:231</source>MARC Search</msg>
+  <msg id="787163983066183218"><source>src/app/staff/catalog/search-form.component.html:286</source>Browse</msg>
+  <msg id="6871968110130773266"><source>src/app/staff/catalog/search-form.component.html:289</source>Browse for</msg>
+  <msg id="8755099053691815611"><source>src/app/staff/catalog/search-form.component.html:299</source> starting with </msg>
+  <msg id="4031118666027324953"><source>src/app/staff/catalog/search-form.component.html:305</source>Browse for...</msg>
+  <msg id="8655712393339193505"><source>src/app/staff/catalog/search-form.component.html:314,317</source> Browse Call Numbers starting with </msg>
+  <msg id="6030204061808901083"><source>src/app/staff/catalog/search-form.component.html:322</source>Browse Call Numbers...</msg>
+  <msg id="2802875410834862878"><source>src/app/staff/catalog/search-form.component.html:335</source>Search in Library</msg>
+  <msg id="4359570952749455284"><source>src/app/staff/catalog/search-form.component.html:343,346</source> Library Group <ph name="INTERPOLATION"/> </msg>
+  <msg id="531372723217962784"><source>src/app/staff/catalog/search-form.component.html:351</source>No Group Restriction</msg>
+  <msg id="7145703130854996777"><source>src/app/staff/catalog/search-form.component.html:360</source>Clear the individual Shelving Location selections in the advanced search filters to search by Library Group or Shelving Location Group</msg>
+  <msg id="6159894181793056461"><source>src/app/staff/catalog/search-form.component.html:369,372</source> Search </msg>
+  <msg id="3466654961496504426"><source>src/app/staff/catalog/search-form.component.html:375,378</source> Reset </msg>
+  <msg id="3556428434026296622"><source>src/app/staff/catalog/search-form.component.html:401,404</source> <ph name="INTERPOLATION"/> (<ph name="INTERPOLATION_1"/>) </msg>
+  <msg id="8021113684733014055"><source>src/app/staff/catalog/search-form.component.html:406</source>Clear the Library Group or Shelving Location Group selection to choose individual Shelving Locations</msg>
+  <msg id="4278041738815302529"><source>src/app/staff/catalog/search-form.component.html:410</source>Item Type</msg>
+  <msg id="8169449220694982439"><source>src/app/staff/catalog/search-form.component.html:413</source>All Item Types</msg>
+  <msg id="6907807228975360219"><source>src/app/staff/catalog/search-form.component.html:422</source>Form</msg>
+  <msg id="4842640262162637956"><source>src/app/staff/catalog/search-form.component.html:425</source>All Item Forms</msg>
+  <msg id="2826581353496868063"><source>src/app/staff/catalog/search-form.component.html:432</source>Language</msg>
+  <msg id="6993909835054714449"><source>src/app/staff/catalog/search-form.component.html:435</source>All Languages</msg>
+  <msg id="7760596385783446373"><source>src/app/staff/catalog/search-form.component.html:442</source>Audience</msg>
+  <msg id="7205590655845335646"><source>src/app/staff/catalog/search-form.component.html:445</source>All Audiences</msg>
+  <msg id="4393967855965858443"><source>src/app/staff/catalog/search-form.component.html:454</source>Video Format</msg>
+  <msg id="4315136048474243677"><source>src/app/staff/catalog/search-form.component.html:457</source>All Video Formats</msg>
+  <msg id="8584396602403496197"><source>src/app/staff/catalog/search-form.component.html:464</source>Bibliographic Level</msg>
+  <msg id="6802112529604770771"><source>src/app/staff/catalog/search-form.component.html:467</source>All Bib Levels</msg>
+  <msg id="1323008653435885610"><source>src/app/staff/catalog/search-form.component.html:474</source>Literary Form</msg>
+  <msg id="1706257715386386167"><source>src/app/staff/catalog/search-form.component.html:477</source>All Literary Forms</msg>
+  <msg id="27494424370894008"><source>src/app/staff/catalog/search-form.component.html:485</source>Publication Year</msg>
+  <msg id="4942331693527539064"><source>src/app/staff/catalog/search-form.component.html:487</source>compare publication dates using...</msg>
+  <msg id="9147046130713106935"><source>src/app/staff/catalog/search-form.component.html:489</source>Is</msg>
+  <msg id="1218334388194408974"><source>src/app/staff/catalog/search-form.component.html:490</source>Before</msg>
+  <msg id="6371576811194810854"><source>src/app/staff/catalog/search-form.component.html:491</source>After</msg>
+  <msg id="1788144081998564888"><source>src/app/staff/catalog/search-form.component.html:496</source>Year, or beginning of year range</msg>
+  <msg id="8114146008755159884"><source>src/app/staff/catalog/search-form.component.html:501</source>End of year range</msg>
+  <msg id="5120743112006725492"><source>src/app/staff/catalog/search-form.component.html:511</source>Did you mean:</msg>
   <msg id="3350073712470262570"><source>src/app/staff/catalog/search-templates.component.html:3</source>Delete saved search template &apos;<ph name="INTERPOLATION"/>&apos;?</msg>
   <msg id="4229975594546660291"><source>src/app/staff/catalog/search-templates.component.html:8</source>Confirm Delete All</msg>
   <msg id="2589672350783676854"><source>src/app/staff/catalog/search-templates.component.html:9</source>Delete all saved templates?</msg>
