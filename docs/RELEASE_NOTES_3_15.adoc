@@ -3,6 +3,28 @@
 :numbered:
 :toclevels: 3
 
+== Evergreen 3.15.14 == 
+
+This is a security release that fixes several vulnerabilities, including ones that allow
+the remote execution of arbitrary SQL statements in the Evergreen database as well as
+cross-site scripting vulnerabilities.
+
+We strongly recommend *immediate* installation of this security release.
+
+The security bug fixed in this release is:
+
+* https://bugs.launchpad.net/evergreen/+bug/2150054[Bug 2150054] - patching an XSS vulnerability
+
+The other bug fixed in this release is https://bugs.launchpad.net/evergreen/+bug/2153879[Bug 2150054] - Patron Search Not Sorting as Expected
+
+=== Acknowledgements ===
+
+The Evergreen Project would like to thank the following individuals who contributed code, testing, and other assistance with this security release:
+
+* Galen Charlton
+* Jason Stephenson
+* Mike Rylander
+
 == Evergreen 3.15.13 ==
 
 This is a security release that fixes several vulnerabilities, including ones that allow
@@ -86,7 +108,7 @@ In addition, if you have customized any of the following templates, please compa
 * Fixes erroneous number on my list count. (https://bugs.launchpad.net/evergreen/+bug/2138265[Bug 2138265])
 
 
-=== Acknowledgments ===
+=== Acknowledgements ===
 
 The Evergreen Project would like to thank the following individuals who contributed code, testing, and other assistance with this security release:
 
