@@ -3,6 +3,63 @@
 :numbered:
 :toclevels: 3
 
+== Evergreen 3.17.4 == 
+
+This is a security release that fixes several vulnerabilities, including ones that allow
+the remote execution of arbitrary SQL statements in the Evergreen database as well as
+cross-site scripting vulnerabilities.
+
+We strongly recommend *immediate* installation of this security release.
+
+The security bug fixed in this release is:
+
+* https://bugs.launchpad.net/evergreen/+bug/2150054[Bug 2150054] - patching an XSS vulnerability
+
+This release also includes normal bugfixes.
+
+=== Cataloging ===
+
+* Restores descending sort order to Holdings Editor parts drop down. (https://bugs.launchpad.net/evergreen/+bug/2037674[Bug 2037674])
+
+=== Circulation ===
+
+* Check every profile for edit permissions so the Angular patron editor save button isn't disabled incorrectly. (https://bugs.launchpad.net/evergreen/+bug/2081327[Bug 2081327])
+* Fixes linking from Angular Holds View grid. (https://bugs.launchpad.net/evergreen/+bug/2161465[Bug2161465])
+* Fixes new search button in Angular patron interface. (https://bugs.launchpad.net/evergreen/+bug/2161145[Bug 2161145])
+* Orders Angular self check checkouts in reverse chronological order so the patron sees the most recent checkout at the top of the list. (https://bugs.launchpad.net/evergreen/+bug/2148370[Bug 2148370])
+
+=== Course Reserves ===
+
+* Adds a confirmation dialog box allowing user to continue/cancel course deletion. (https://bugs.launchpad.net/evergreen/+bug/1972925[Bug 1972925])
+
+=== Public Catalog ===
+
+* Limits OPAC StackMap loading to pages with holdings tables to reduce unnecessary DOM polling overhead. (https://bugs.launchpad.net/evergreen/+bug/2162846[Bug 2162846])
+
+
+=== Acknowledgements ===
+
+We would like to thank the following individuals who contributed code, testing, documentation, and patches to this security release of Evergreen:
+
+* Andrea Buntz Neiman
+* Blake Graham-Henderson
+* Dan Briem
+* Eva Cerniňáková
+* Galen Charlton
+* Hannah Margolis
+* Ian Skelskey
+* Jane Sandberg
+* Jason Stephenson
+* John Amundson
+* Michele Morgan
+* Mike Rylander
+* Steven Mayo
+* Tara Kunesh
+
+
+
+
+
 == Evergreen 3.17.3 == 
 
 This release contains bug fixes and documentation fixes improving on Evergreen 3.17.2.
