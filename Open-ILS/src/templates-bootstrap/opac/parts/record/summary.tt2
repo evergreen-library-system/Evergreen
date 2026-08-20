@@ -72,6 +72,7 @@ ctx.metalinks.push('
                 -%]
                 [%- INCLUDE "opac/parts/record/authors.tt2" %]
                 [%- INCLUDE "opac/parts/record/contents-summaryonly.tt2" %]
+                [%- INCLUDE "opac/parts/record/series.tt2" %]
                 </div>
                 <div>
                     <button id="btnMore" data-toggle="collapse" data-target="#demo"
@@ -258,7 +259,6 @@ ctx.metalinks.push('
                         [%- INCLUDE "opac/parts/record/accessibility.tt2" %]
                         [%- INCLUDE "opac/parts/record/contents.tt2" %]
                         [%- INCLUDE "opac/parts/record/subjects.tt2" %]
-                        [%- INCLUDE "opac/parts/record/series.tt2" %]
 
                     </div>
 
