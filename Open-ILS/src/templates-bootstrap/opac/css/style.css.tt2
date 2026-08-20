@@ -2901,10 +2901,10 @@ a.opac-button-header:hover, #dash_wrapper a.opac-button:hover {
     margin-top: 1em;
 }
 
-h2.rdetail_record_details, #rdetail_copy_counts h2, h2.rdetail_contents,
-h2.rdetail_related_subjects, h2.rdetail_related_series,
-h2.rdetail_other_formats, h2.rdetail_uris {
-    font-size: [% css_fonts.size_biggest %];
+h3.rdetail_record_details, #rdetail_copy_counts h3, h3.rdetail_contents,
+h3.rdetail_related_subjects, h3.rdetail_related_series,
+h3.rdetail_other_formats, h3.rdetail_uris {
+    font-size: [% css_fonts.size_base %];
     font-weight: bold;
 }
 /*
