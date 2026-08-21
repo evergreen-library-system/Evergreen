@@ -4482,26 +4482,27 @@ label[for*=expert_]
     color: [% css_colors.alert_danger_link %];
 }
 
-.language_form a {
-    background:none;
-    border:none;
-    margin:0;
-    padding:0;
-    color:[% css_colors.footer_link %];
-}
-.language_form a[aria-current="page"] {
-    color:[% css_colors.footer_link_disabled %];
-    font-weight: bold;
-}
-.language_form ul {
-    list-style:none;
-}
 .language_form #lang_select_header {
     color:[% css_colors.footer_link %];
+    margin: 0;
 }
-.language_form{
-    float: right;
-padding: 15px;
+
+.language_form {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: flex-end;
+    padding: 15px;
+}
+
+.language_form .form-control {
+    max-width: 100%;
+    width: auto;
+}
+
+.language_form .btn {
+    border-color: currentColor;
 }
 
 .course-material-title-column {

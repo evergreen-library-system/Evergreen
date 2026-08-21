@@ -168,6 +168,19 @@ button.kpac-button::-moz-focus-inner, input.kpac-button::-moz-focus-inner {
     display: block;
 }
 
+.footer_wrapper .language_form .btn {
+    background-color: [% kpac_colors.footer_button %];
+    border-color: [% kpac_colors.footer_button %];
+    color: [% kpac_colors.footer_button_text %];
+}
+
+.footer_wrapper .language_form .btn:hover,
+.footer_wrapper .language_form .btn:focus {
+    background-color: [% kpac_colors.footer_hover %];
+    border-color: [% kpac_colors.footer_hover %];
+    color: [% kpac_colors.footer_button_text %];
+}
+
 .bottom_nav {}
 
 /* SEARCH BOX */
