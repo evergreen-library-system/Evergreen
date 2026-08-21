@@ -467,7 +467,6 @@ my @AUTOLOAD_FIELDS = qw/
     opac_renewal
     phone_renewal
     desk_renewal
-    sip_renewal
     auto_renewal
     retarget
     matrix_test_result
@@ -548,8 +547,7 @@ sub new {
 
     # if this is a renewal, default to desk_renewal
     $self->desk_renewal(1) unless
-        $self->opac_renewal or $self->phone_renewal or $self->sip_renewal
-        or $self->auto_renewal;
+        $self->opac_renewal or $self->phone_renewal or $self->auto_renewal;
 
     $self->capture('') unless $self->capture;
 
