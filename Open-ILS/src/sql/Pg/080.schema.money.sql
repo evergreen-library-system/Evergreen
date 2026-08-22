@@ -94,8 +94,20 @@ CREATE OR REPLACE VIEW money.payment_view AS
 	  	JOIN pg_class c ON (p.tableoid = c.oid)
         LEFT JOIN config.global_flag f ON ( f.name = p.tableoid::regclass||'.is_refundable');
 
-CREATE OR REPLACE RULE money_payment_view_update AS ON UPDATE TO money.payment_view DO INSTEAD 
-    UPDATE money.payment SET xact = NEW.xact, payment_ts = NEW.payment_ts, voided = NEW.voided, amount = NEW.amount, note = NEW.note WHERE id = NEW.id;
+CREATE OR REPLACE FUNCTION money.payment_view_update()
+RETURNS trigger AS $$
+BEGIN
+    UPDATE money.payment
+    SET xact = NEW.xact, payment_ts = NEW.payment_ts,
+        voided = NEW.voided, amount = NEW.amount, note = NEW.note
+    WHERE id = OLD.id;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER money_payment_view_update_tgr
+INSTEAD OF UPDATE ON money.payment_view
+FOR EACH ROW EXECUTE FUNCTION money.payment_view_update();
 
 CREATE OR REPLACE VIEW money.transaction_billing_type_summary AS
 	SELECT	xact,
