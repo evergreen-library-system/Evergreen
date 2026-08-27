@@ -6,11 +6,11 @@
     <select id="select-marc-template" class="form-select w-auto" [(ngModel)]="template_name">
       <option value="" i18n>No Template Selected</option>
       @for (template of template_list; track trackByTemplateName) {
-        <option 
+        <option
           [selected]="template_name === template" [value]="template">{{template}}
         </option>
       }
-      
+
     </select>
     <button type="button" class="btn btn-primary" (click)="loadTemplate()" [disabled]="!template_name" i18n>Load</button>
     <button type="button" class="btn btn-normal" (click)="setDefaultTemplate()" [disabled]="template_name === default_template_name" i18n>Set Workstation Default</button>
@@ -18,10 +18,10 @@
 </div>
 @if (have_template) {
   <div class="row col-md-12 mt-3">
-    <eg-marc-editor 
-      [recordXml]="marc_template" 
-      [recordId]="new_bib_id" 
-      [recordSource]="recordSource" 
+    <eg-marc-editor
+      [recordXml]="marc_template"
+      [recordId]="new_bib_id"
+      [recordSource]="recordSource"
       (recordSaved)="onRecordSaved($event)"
       (recordSourceChanged)="onRecordSourceChanged($event)"
     >
@@ -29,8 +29,5 @@
       <eg-fast-add-selector #fastAdd [checkedOnInit]="fastAddChecked" [saveShowFieldChanges]="true"></eg-fast-add-selector>
     </eg-marc-editor>
   </div>
-
-  
-  
 }
 

@@ -375,7 +375,7 @@ export class MarcEditContext {
         // regenerate 008, changing the date to now() and preserving everything else
         const field = this.record.newField({
             tag : '008', data : this.record.generate008()});
-        
+
         // delete all of the 008s
         [].concat(this.record.field('008', true)).forEach(f => {
             this.trackStructuralUndo(f, false);

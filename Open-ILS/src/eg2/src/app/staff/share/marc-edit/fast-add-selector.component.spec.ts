@@ -1,10 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import {FastAddItem, FastAddSelectorComponent} from './fast-add-selector.component';
 import { Maybe, None, Some } from '@eg/share/maybe';
+import { StoreService } from '@eg/core/store.service';
 
 describe('FastAddSelectorComponent', () => {
     let fixture: ComponentFixture<FastAddSelectorComponent>;
+
     beforeEach(() => {
+        TestBed.configureTestingModule({providers: [{provide: StoreService, useValue: {}}]})
         fixture = TestBed.createComponent(FastAddSelectorComponent);
         fixture.detectChanges();
     });

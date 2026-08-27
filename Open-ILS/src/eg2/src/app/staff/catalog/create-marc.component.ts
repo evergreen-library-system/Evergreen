@@ -17,8 +17,8 @@ import { AuthService } from '@eg/core/auth.service';
     templateUrl: './create-marc.component.html',
     standalone: true,
     imports: [
-        StaffBannerComponent, 
-        FormsModule, 
+        StaffBannerComponent,
+        FormsModule,
         MarcEditorComponent,
         FastAddSelectorComponent
     ]
@@ -31,8 +31,8 @@ export class CreateMarcComponent implements OnInit{
     private holdings = inject(HoldingsService);
     private auth = inject(AuthService);
 
-    protected recordSource: string = ''
-    protected fastAddChecked: boolean = true;
+    protected recordSource = '';
+    protected fastAddChecked = true;
     have_template = false;
     template_list = [];
     template_name = '';
@@ -41,10 +41,10 @@ export class CreateMarcComponent implements OnInit{
     marc_template = '';
     record: MarcRecord;
     marc_xml: string;
-    
+
     @ViewChild('fastAdd') fastAdd!: FastAddSelectorComponent;
 
-    constructor( 
+    constructor(
     ) {
         this.getDefaultTemplateName();
         this.getTemplateTypes();
@@ -85,12 +85,12 @@ export class CreateMarcComponent implements OnInit{
                 // regenerate 008, changing the date to now() and preserving everything else
                 const field = this.record.newField({
                     tag : '008', data : this.record.generate008()});
-                
+
                 // delete all of the old 008s that were in the template
                 [].concat(this.record.field('008', true)).forEach(f => {
                     this.record.deleteFields(f);
                 });
-                
+
                 // insert the newly generated 008 into the new record
                 this.record.insertOrderedFields(field);
 
@@ -130,7 +130,7 @@ export class CreateMarcComponent implements OnInit{
     }
 
     onRecordSourceChanged(id: number) {
-        this.localStore.setLocalItem("eg.cat.last_record_source", id);
+        this.localStore.setLocalItem('eg.cat.last_record_source', id);
     }
 
 }

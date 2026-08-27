@@ -40,7 +40,7 @@ right if there's no fast-add-selector -->
           placeholder="Select a Source..."
           i18n-placeholder>
         </eg-combobox>
-      </div> 
+      </div>
     }
 
     <button type="button" class="btn btn-success me-1" (click)="saveRecord()"
@@ -52,9 +52,9 @@ right if there's no fast-add-selector -->
                 [disabled]="inPlaceMode" (click)="deleteRecord()" i18n>Delete Record</button>
         }
         @if (record.deleted) {
-          <button type="button" class="btn btn-info" 
+          <button type="button" class="btn btn-info"
                 [disabled]="inPlaceMode" (click)="undeleteRecord()" i18n>Undelete Record</button>
-        } 
+        }
     }
   </div>
 
@@ -81,7 +81,7 @@ right if there's no fast-add-selector -->
         <ng-template ngbNavContent>
           @if (context && context.record) {
             <eg-marc-rich-editor [context]="context"></eg-marc-rich-editor>
-          } 
+          }
         </ng-template>
       </li>
       <li role="presentation" ngbNavItem="flat">

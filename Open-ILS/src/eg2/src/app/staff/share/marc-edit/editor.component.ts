@@ -124,7 +124,7 @@ export class MarcEditorComponent implements OnInit, AfterContentInit {
 
     @ContentChild(FastAddSelectorComponent) fastAddSelector: FastAddSelectorComponent;
     initCalled = false;
-    
+
     private fastAddIntent: Maybe<FastAddItem> = new None();
 
     constructor() {

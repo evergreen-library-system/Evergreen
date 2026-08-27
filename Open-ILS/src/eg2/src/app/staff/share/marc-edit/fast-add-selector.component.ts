@@ -16,12 +16,12 @@ export interface FastAddItem {
     imports: [ReactiveFormsModule]
 })
 export class FastAddSelectorComponent implements OnInit {
-    private store = inject(StoreService)
+    private store = inject(StoreService);
 
     public fastAddItemChange = output<Maybe<FastAddItem>>();
 
-    @Input() public checkedOnInit: boolean = false
-    @Input() public saveShowFieldChanges: boolean = false;
+    @Input() public checkedOnInit = false;
+    @Input() public saveShowFieldChanges = false;
 
     protected form = new FormGroup({
         fastAddItem: new FormControl(false),
@@ -64,7 +64,6 @@ export class FastAddSelectorComponent implements OnInit {
             if (this.saveShowFieldChanges) {
                 this.store.setLocalItem('eg.cat.fast_add_item', this.showFields);
             }
-            
         });
     }
 }
