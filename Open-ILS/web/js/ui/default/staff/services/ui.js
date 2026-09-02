@@ -1527,7 +1527,7 @@ https://stackoverflow.com/questions/24764802/angular-js-automatically-focus-inpu
             if ('useOpacLabel' in attrs)
                 scope.useOpacLabel = true;
             if ('maxDepth' in attrs) // I feel like I'm doing this wrong :)
-                scope.maxDepth = parseInt(attrs.maxdepth);
+                scope.maxDepth = parseInt(attrs.maxDepth) || 10;
         }
     }
 })
