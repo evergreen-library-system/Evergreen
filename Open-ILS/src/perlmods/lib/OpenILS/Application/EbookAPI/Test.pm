@@ -19,7 +19,7 @@
 # ====================================================================== 
 # OpenSRF requests are handled by the main OpenILS::Application::EbookAPI module,
 # which determines which "handler" submodule to use based on the params of the
-# OpenSRF request.  Each vendor API (OneClickdigital, OverDrive, etc.) has its
+# OpenSRF request.  Each vendor API (OverDrive, etc.) has its
 # own separate handler class, since they all work a little differently.
 #
 # An instance of the handler class represents an EbookAPI session -- that is, we
@@ -44,13 +44,13 @@
 #   - do_patron_auth: get a patron-specific bearer token, or just the patron ID
 #   - get_title_info: get basic title details (title, author, optional cover image)
 #   - do_holdings_lookup: how many total/available "copies" are there for this
-#     title? (n/a for OneClickdigital)
+#     title?
 #   - do_availability_lookup: does this title have available "copies"? y/n
 #   - checkout
 #   - renew
 #   - checkin
 #   - place_hold
-#   - suspend_hold (n/a for OneClickdigital)
+#   - suspend_hold
 #   - cancel_hold
 #   - get_patron_checkouts: returns an array of hashrefs representing checkouts;
 #     each checkout hashref has the following keys:

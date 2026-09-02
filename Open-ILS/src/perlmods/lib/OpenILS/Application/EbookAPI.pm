@@ -16,11 +16,11 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-# ====================================================================== 
-# We define a handler class for each vendor API (OneClickdigital, OverDrive, etc.).
+# ======================================================================
+# We define a handler class for each vendor API (OverDrive, etc.).
 # See EbookAPI/Test.pm for a reference implementation with required methods,
 # arguments, and return values.
-# ====================================================================== 
+# ======================================================================
 
 package OpenILS::Application::EbookAPI;
 
@@ -49,7 +49,6 @@ my $default_request_timeout;
 # map EbookAPI vendor codes to corresponding packages
 our %vendor_handlers = (
     'ebook_test' => 'OpenILS::Application::EbookAPI::Test',
-    'oneclickdigital' => 'OpenILS::Application::EbookAPI::OneClickdigital',
     'overdrive' => 'OpenILS::Application::EbookAPI::OverDrive'
 );
 
@@ -170,7 +169,7 @@ __PACKAGE__->register_method(
             },
             {
                 name => 'vendor',
-                desc => 'The ebook vendor (e.g. "oneclickdigital")',
+                desc => 'The ebook vendor (e.g. "overdrive")',
                 type => 'string'
             },
             {
@@ -244,7 +243,7 @@ __PACKAGE__->register_method(
         params => [
             {
                 name => 'vendor',
-                desc => 'The ebook vendor (e.g. "oneclickdigital")',
+                desc => 'The ebook vendor (e.g. "overdrive")',
                 type => 'string'
             },
             {
@@ -481,7 +480,7 @@ __PACKAGE__->register_method(
 # patron and a title identifier (checkout, checkin, renewal, etc).
 #
 # Params:
-# - title_id: ISBN (OneClickdigital), title identifier (OverDrive)
+# - title_id: title identifier (OverDrive)
 # - barcode: patron barcode
 #
 sub do_xact {

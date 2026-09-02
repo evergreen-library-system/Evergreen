@@ -3,8 +3,8 @@
 #
 # We require the following info:
 # - rec_id: internal ID for this record (rec.id in search results, ctx.bre_id in record summary)
-# - ebook_id: external ID for title (ISBN for OneClickdigital, unique identifier for OverDrive)
-# - vendor (oneclickdigital, overdrive)
+# - ebook_id: external ID for title (unique identifier for OverDrive)
+# - vendor (overdrive)
 
 IF args.ebook;
 

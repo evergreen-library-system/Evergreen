@@ -30,9 +30,6 @@ var vendor_list = [];
 [% IF ebook_api.ebook_test.enabled == 'true' %]
 vendor_list.push('ebook_test');
 [% END %]
-[% IF ebook_api.oneclickdigital.enabled == 'true' %]
-vendor_list.push('oneclickdigital');
-[% END %]
 [% IF ebook_api.overdrive.enabled == 'true' %]
 vendor_list.push('overdrive');
 [% END %]
