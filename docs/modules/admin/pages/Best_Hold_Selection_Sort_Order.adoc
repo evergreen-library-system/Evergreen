@@ -47,7 +47,7 @@ _Holds Go Home_ and _Holds Always Go Home_ allow libraries to determine how long
 .Preconfigured Weights for Best-Hold Selection Sort Orders
 [options="header,footer"]
 |=======================
-|ID|Name|Capture Lib to Pickup Lib Proximity|Circ Lib to Request Lib Proximity|Owning Lib to Patron Home Lib Proximity|Adjusted Circ Lib to Pickup Lib Proximity|Adjusted Capture Location to Pickup Lib Proximity|Hold Priority|Hold Cut-in-line State|Hold Selection Depth|Copy Has Circulated From Home Lately|Hold Request Time|Copy Has Been Home At All Lately
+|ID|Name|Item Capture Lib to Hold Pickup Lib Proximity|Item Owning Lib to Hold Pickup Lib Proximity|Owning Lib to Patron Home Lib Proximity|Adjusted Circ Lib to Pickup Lib Proximity|Adjusted Capture Location to Pickup Lib Proximity|Hold Priority|Hold Cut-in-line State|Hold Selection Depth|Copy Has Circulated From Home Lately|Hold Request Time|Copy Has Been Home At All Lately
 |1|Traditional|2| | |3|1|4|5|6| |7| 
 |2|Traditional with Holds-always-go-home|3|1| |4|2|5|6|7| |8| 
 |3|Traditional with Holds-go-home|3| | |4|2|5|6|7|1|8| 
@@ -61,8 +61,8 @@ _Holds Go Home_ and _Holds Always Go Home_ allow libraries to determine how long
 
 * *Adjusted Capture Location to Pickup Lib Proximity* - The adjusted org unit proximity between the capture library and pickup library.
 * *Adjusted Circ Lib to Pickup Lib Proximity* - The adjusted org unit proximity between the circulation library and pickup library.
-* *Capture Lib to Pickup Lib Proximity* - The default org unit proximity between the capture library and pickup library.
-* *Circ Lib to Request Lib Proximity* - The default org unit proximity between the circulating library and request library.
+* *Item Capture Lib to Hold Pickup Lib Proximity* - The default org unit proximity between the capture library and pickup library.
+* *Item Owning Lib to Hold Pickup Lib Proximity* - The default org unit proximity between the circulating library and request library.
 * *Copy Has Been Home At All Lately* - Tests whether the item has been at its owning library during the time frame set in the Library Settings Editor called “Max foreign-circulation time.”  It looks for * completed transits to the owning library within the time frame specified.
 * *Copy Has Circulated From Home Lately* - Tests whether the item has circulated at its owning library during the time frame set in the Library Settings Editor called “Max foreign-circulation time.” 
 * *Hold Cut-in-line State* - Looks for holds that have been manually set to the top of the holds queue.
