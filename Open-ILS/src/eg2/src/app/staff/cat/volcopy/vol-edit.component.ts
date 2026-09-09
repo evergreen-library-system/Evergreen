@@ -406,15 +406,18 @@ export class VolEditComponent implements OnInit {
                 skip_dupes: true
             }
         ).pipe(tap(barcodes => {
-
+            let barcodeChanged = false;
             copyList.forEach(copy => {
-                if (copy.barcode() !== barcodes[0]) {
-                    copy.barcode(barcodes[0]);
+                const old = copy.barcode();
+                const newBarcode = barcodes.shift();
+                if (old !== newBarcode) {
+                    copy.barcode(newBarcode);
                     copy.ischanged(true);
+                    barcodeChanged = true;
+                    this.barcodeChange.emit({ old, new: newBarcode });
                 }
-                barcodes.shift();
             });
-
+            if (barcodeChanged) { this.emitSaveChange(); }
         })).toPromise();
     }
 
