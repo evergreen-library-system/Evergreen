@@ -7,7 +7,7 @@ describe('FastAddSelectorComponent', () => {
     let fixture: ComponentFixture<FastAddSelectorComponent>;
 
     beforeEach(() => {
-        TestBed.configureTestingModule({providers: [{provide: StoreService, useValue: {}}]})
+        TestBed.configureTestingModule({providers: [{provide: StoreService, useValue: {}}]});
         fixture = TestBed.createComponent(FastAddSelectorComponent);
         fixture.detectChanges();
     });

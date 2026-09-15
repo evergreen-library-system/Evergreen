@@ -1,6 +1,5 @@
 @let showAlerts = alerts();
-@if (showAlerts.holdsReady == 0 &&
-     !showAlerts.accountExpired &&
+@if (showAlerts.holdsReady === 0 && !showAlerts.accountExpired &&
      !showAlerts.accountExpiresSoon &&
      !showAlerts.patronBarred &&
      !showAlerts.patronInactive &&
