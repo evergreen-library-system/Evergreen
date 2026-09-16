@@ -1221,7 +1221,7 @@ msgid "Backdate Already Checked-In Circulations"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:20
-msgid "Backdate Post-Checkin"
+msgid "Backdate Post-Check In"
 msgstr ""
 
 #. ("{{checkinArgs.backdate | date:$root.egDateFormat}}")
@@ -1335,7 +1335,7 @@ msgstr ""
 
 #. ("{{checkin.barcode}}", "{{checkin.backdate | date:\"short\"}}")
 #: ../../Open-ILS/src/templates/staff/share/print_templates/t_offline_checkin.tt2:17
-msgid "Barcode: %1 Checkin date: %2"
+msgid "Barcode: %1 Check In date: %2"
 msgstr ""
 
 #. ("{{checkout.barcode}}", "{{checkout.due_date | date:\"short\"}}")
@@ -2097,11 +2097,19 @@ msgstr ""
 msgid "Check All Refunds"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/base_js.tt2:123 ../../Open-ILS/src/templates/staff/circ/checkin/index.tt2:2 ../../Open-ILS/src/templates/staff/circ/patron/t_items_out.tt2:75 ../../Open-ILS/src/templates/staff/navbar.tt2:106 ../../Open-ILS/src/templates/staff/navbar.tt2:108 ../../Open-ILS/src/templates/staff/navbar.tt2:303 ../../Open-ILS/src/templates/staff/navbar.tt2:97 ../../Open-ILS/src/templates/staff/navbar.tt2:99
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_templates.tt2:20 ../../Open-ILS/src/templates/staff/base_js.tt2:123 ../../Open-ILS/src/templates/staff/circ/checkin/index.tt2:2 ../../Open-ILS/src/templates/staff/circ/patron/t_items_out.tt2:75 ../../Open-ILS/src/templates/staff/navbar.tt2:106 ../../Open-ILS/src/templates/staff/navbar.tt2:108 ../../Open-ILS/src/templates/staff/navbar.tt2:303 ../../Open-ILS/src/templates/staff/navbar.tt2:97 ../../Open-ILS/src/templates/staff/navbar.tt2:99 ../../Open-ILS/src/templates/staff/offline-interface.tt2:524 ../../Open-ILS/src/templates/staff/offline-interface.tt2:562
 msgid "Check In"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/cat/item/index.tt2:109 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:37 ../../Open-ILS/src/templates/staff/t_splash.tt2:26
+#: ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:105 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:80 ../../Open-ILS/src/templates/staff/offline-interface.tt2:105 ../../Open-ILS/src/templates/staff/offline-interface.tt2:209
+msgid "Check In Date"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/offline-interface.tt2:534
+msgid "Check In Date:"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/cat/item/index.tt2:109 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:37 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin.tt2:4 ../../Open-ILS/src/templates/staff/t_splash.tt2:26
 msgid "Check In Items"
 msgstr ""
 
@@ -2111,6 +2119,26 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/cat/item/t_circ_list_pane.tt2:82
 msgid "Check In Library"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin.tt2:164
+msgid "Check In Modifiers"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:106
+msgid "Check In Scan Date"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/cat/item/t_circs_pane.tt2:187 ../../Open-ILS/src/templates/staff/cat/item/t_circs_pane.tt2:84 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:180
+msgid "Check In Scan Time"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:106 ../../Open-ILS/src/templates/staff/cat/item/t_circ_list_pane.tt2:52 ../../Open-ILS/src/templates/staff/cat/item/t_circs_pane.tt2:180 ../../Open-ILS/src/templates/staff/cat/item/t_circs_pane.tt2:78 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:163 ../../Open-ILS/src/templates/staff/circ/holds/t_shelf_list.tt2:82 ../../Open-ILS/src/templates/staff/circ/patron/t_holds_list.tt2:81
+msgid "Check In Time"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/cat/item/t_circs_pane.tt2:194 ../../Open-ILS/src/templates/staff/cat/item/t_circs_pane.tt2:90 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:107 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:197 ../../Open-ILS/src/templates/staff/circ/patron/t_items_out.tt2:91
+msgid "Check In Workstation"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/circ/patron/t_bill_history_payments.tt2:84 ../../Open-ILS/src/templates/staff/circ/patron/t_bills.tt2:64 ../../Open-ILS/src/templates/staff/circ/patron/t_xact_details_details.tt2:61
@@ -2171,42 +2199,6 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/circ/patron/t_xact_details.tt2:22
 msgid "Checked Out"
-msgstr ""
-
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_templates.tt2:20 ../../Open-ILS/src/templates/staff/offline-interface.tt2:524 ../../Open-ILS/src/templates/staff/offline-interface.tt2:562
-msgid "Checkin"
-msgstr ""
-
-#: ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:105 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:80 ../../Open-ILS/src/templates/staff/offline-interface.tt2:105 ../../Open-ILS/src/templates/staff/offline-interface.tt2:209
-msgid "Checkin Date"
-msgstr ""
-
-#: ../../Open-ILS/src/templates/staff/offline-interface.tt2:534
-msgid "Checkin Date:"
-msgstr ""
-
-#: ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin.tt2:4
-msgid "Checkin Items"
-msgstr ""
-
-#: ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin.tt2:164
-msgid "Checkin Modifiers"
-msgstr ""
-
-#: ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:106
-msgid "Checkin Scan Date"
-msgstr ""
-
-#: ../../Open-ILS/src/templates/staff/cat/item/t_circs_pane.tt2:187 ../../Open-ILS/src/templates/staff/cat/item/t_circs_pane.tt2:84 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:180
-msgid "Checkin Scan Time"
-msgstr ""
-
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:106 ../../Open-ILS/src/templates/staff/cat/item/t_circ_list_pane.tt2:52 ../../Open-ILS/src/templates/staff/cat/item/t_circs_pane.tt2:180 ../../Open-ILS/src/templates/staff/cat/item/t_circs_pane.tt2:78 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:163 ../../Open-ILS/src/templates/staff/circ/holds/t_shelf_list.tt2:82 ../../Open-ILS/src/templates/staff/circ/patron/t_holds_list.tt2:81
-msgid "Checkin Time"
-msgstr ""
-
-#: ../../Open-ILS/src/templates/staff/cat/item/t_circs_pane.tt2:194 ../../Open-ILS/src/templates/staff/cat/item/t_circs_pane.tt2:90 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:107 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:197 ../../Open-ILS/src/templates/staff/circ/patron/t_items_out.tt2:91
-msgid "Checkin Workstation"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_templates.tt2:21 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:81 ../../Open-ILS/src/templates/staff/offline-interface.tt2:248 ../../Open-ILS/src/templates/staff/offline-interface.tt2:342
@@ -2726,7 +2718,7 @@ msgid "Copy Location Can Circulate"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:204 ../../Open-ILS/src/templates/staff/circ/holds/t_shelf_list.tt2:189 ../../Open-ILS/src/templates/staff/circ/patron/t_holds_list.tt2:186
-msgid "Copy Location Checkin Alert"
+msgid "Copy Location Check In Alert"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:199 ../../Open-ILS/src/templates/staff/circ/holds/t_shelf_list.tt2:184 ../../Open-ILS/src/templates/staff/circ/patron/t_holds_list.tt2:181
@@ -3958,7 +3950,7 @@ msgid "Editor"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/offline-interface.tt2:575
-msgid "Effective Checkin date"
+msgid "Effective Check In Date"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin.tt2:98
@@ -7084,11 +7076,11 @@ msgid "Normal"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/circ/share/t_circ_exists_dialog.tt2:34
-msgid "Normal Checkin then Checkout"
+msgid "Normal Check In then Checkout"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/circ/share/circ_strings.tt2:51
-msgid "Normal checkin"
+msgid "Normal check in"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/circ/share/circ_strings.tt2:61
@@ -7301,7 +7293,7 @@ msgid "Offline"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_templates.tt2:39
-msgid "Offline Checkin"
+msgid "Offline Check In"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_templates.tt2:37
