@@ -3,6 +3,56 @@
 :numbered:
 :toclevels: 3
 
+
+== Evergreen 3.16.11 ==
+
+This release contains bug fixes and documentation fixes improving on Evergreen 3.16.10.
+
+=== Upgrade Notes ===
+
+The following items require running a database upgrade script:
+
+* Fixes hint_opt_in_check JOIN logic for event_output columns (https://bugs.launchpad.net/evergreen/+bug/2144042[Bug 2144042])
+
+=== Administration ===
+
+* Fixes hint_opt_in_check JOIN logic for event_output columns (https://bugs.launchpad.net/evergreen/+bug/2144042[Bug 2144042])
+
+=== Public Catalog ===
+
+* Fixes a stray gap below the footer on public catalog search results pages. (https://bugs.launchpad.net/evergreen/+bug/2164784[Bug 2164784])
+* Updates instances of "checkin" and "check-in" to "check In" for patrons, staff and documentation. (https://bugs.launchpad.net/evergreen/+bug/1853064[Bug 1853064])
+* opensrf.xml -> open-ils.search block now has the missing cache_timeout setting for reference. Default has always been 300 seconds. (https://bugs.launchpad.net/evergreen/+bug/2165411[Bug 2165411])
+
+
+=== Staff Interface ===
+
+* Restores "Share Depth" dropdown menu in AngularJS interfaces. (https://bugs.launchpad.net/evergreen/+bug/2114860[Bug 2114860])
+
+
+=== Acknowledgements ===
+
+We would like to thank the following individuals who contributed code, testing, documentation, and patches to the 3.16.11 point release of Evergreen:
+
+* Chris Sharp
+* Hannah Darcy
+* Hannah Margolis
+* Ian Skelskey
+* Jane Sandberg
+* Jason Stephenson
+* Michele Morgan
+* Steven Mayo
+* Terran McCanna
+
+Release Team:
+
+* Andrea Buntz Neiman
+* Blake Graham-Henderson
+* Gina Monti
+* Martha Driscoll
+
+
+
 == Evergreen 3.16.10 ==
 
 This is a security release that fixes several vulnerabilities, including ones that allow
