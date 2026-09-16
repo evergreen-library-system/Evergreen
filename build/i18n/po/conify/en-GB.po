@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2025-03-25 15:21+0000\n"
-"PO-Revision-Date: 2024-10-11 21:06+0000\n"
+"PO-Revision-Date: 2026-07-13 20:37+0000\n"
 "Last-Translator: Andi Chandler <Unknown>\n"
 "Language-Team: English (United Kingdom) <en_GB@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2025-03-26 05:26+0000\n"
-"X-Generator: Launchpad (build d61bb8eb9830eb975fb0e8573deec46f2e0bb15b)\n"
+"X-Launchpad-Export-Date: 2026-07-14 10:29+0000\n"
+"X-Generator: Launchpad (build 7cbed6e13f6cda8233e876935bcf16273b753df1)\n"
 
 #. (i18n_vac)
 #: ../../Open-ILS/src/templates/conify/global/acq/edi_account.tt2:54
@@ -168,7 +168,7 @@ msgstr "Authority Fields"
 
 #: ../../Open-ILS/src/templates/conify/global/cat/authority/control_set_authority_field.tt2:28
 msgid "Axes"
-msgstr ""
+msgstr "Axes"
 
 #: ../../Open-ILS/src/templates/conify/global/acq/provider.tt2:157
 msgid "Barcode"
@@ -306,7 +306,7 @@ msgstr "Circ Modifier"
 
 #: ../../Open-ILS/src/templates/conify/global/config/circ_limit_group.tt2:2 ../../Open-ILS/src/templates/conify/global/config/circ_limit_group.tt2:4
 msgid "Circulation Limit Group"
-msgstr ""
+msgstr "Circulation Limit Group"
 
 #: ../../Open-ILS/src/templates/conify/global/config/circ_limit_set.tt2:1 ../../Open-ILS/src/templates/conify/global/config/circ_limit_set.tt2:5
 msgid "Circulation Limit Set"
@@ -458,7 +458,7 @@ msgstr "Credentials for "
 
 #: ../../Open-ILS/src/templates/conify/global/config/org_unit_setting_type.tt2:10 ../../Open-ILS/src/templates/conify/global/config/usr_setting_type.tt2:10
 msgid "Currency"
-msgstr ""
+msgstr "Currency"
 
 #: ../../Open-ILS/src/templates/conify/global/actor/org_unit_custom_tree.tt2:44
 msgid "Custom Unit Tree: "
@@ -490,15 +490,15 @@ msgstr "Delete Selected"
 
 #: ../../Open-ILS/src/templates/conify/global/vandelay/match_set_tree.tt2:131
 msgid "Delete Selected Metrics"
-msgstr ""
+msgstr "Delete Selected Metrics"
 
 #: ../../Open-ILS/src/templates/conify/global/vandelay/match_set_tree.tt2:108
 msgid "Delete Selected Node"
-msgstr ""
+msgstr "Delete Selected Node"
 
 #: ../../Open-ILS/src/templates/conify/global/config/composite_attr_entry_definition.tt2:32
 msgid "Delete Tree"
-msgstr ""
+msgstr "Delete Tree"
 
 #: ../../Open-ILS/src/templates/conify/global/config/hard_due_date_values.tt2:70
 msgid "Deleted Selected"
@@ -518,19 +518,19 @@ msgstr "Display in User Summary?"
 
 #: ../../Open-ILS/src/templates/conify/global/acq/distribution_formula.tt2:2 ../../Open-ILS/src/templates/conify/global/acq/distribution_formula.tt2:7
 msgid "Distribution Formulas"
-msgstr ""
+msgstr "Distribution Formulas"
 
 #: ../../Open-ILS/src/templates/conify/global/acq/edi_account.tt2:11 ../../Open-ILS/src/templates/conify/global/acq/edi_account.tt2:2
 msgid "EDI Accounts"
-msgstr ""
+msgstr "EDI Accounts"
 
 #: ../../Open-ILS/src/templates/conify/global/asset/copy_location_group.tt2:128 ../../Open-ILS/src/templates/conify/global/config/best_hold_order.tt2:96
 msgid "Edit"
-msgstr ""
+msgstr "Edit"
 
 #: ../../Open-ILS/src/templates/conify/global/config/best_hold_order.tt2:29
 msgid "Edit Existing"
-msgstr ""
+msgstr "Edit Existing"
 
 #: ../../Open-ILS/src/templates/conify/global/action/survey.tt2:22 ../../Open-ILS/src/templates/conify/global/action/survey.tt2:52
 msgid "End Date"
