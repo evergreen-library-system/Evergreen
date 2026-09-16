@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1526', :eg_version);
 
 -- Fix broken JOIN in the 'ateo' case of evergreen.hint_opt_in_check.
 -- The original code joined action_trigger.event_output eo ON (eo.event = e.id),
