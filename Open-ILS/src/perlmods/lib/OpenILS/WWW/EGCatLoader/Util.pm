@@ -1,6 +1,7 @@
 package OpenILS::WWW::EGCatLoader;
 use strict; use warnings;
 use Apache2::Const -compile => qw(OK DECLINED FORBIDDEN HTTP_INTERNAL_SERVER_ERROR REDIRECT HTTP_BAD_REQUEST);
+use DateTime;
 use File::Spec;
 use Time::HiRes qw/time sleep/;
 use List::MoreUtils qw(uniq);
@@ -8,6 +9,7 @@ use HTML::TreeBuilder;
 use HTML::Element;
 use HTML::Defang;
 use OpenSRF::Utils::Cache;
+use OpenSRF::Utils::JSON;
 use OpenSRF::Utils::Logger qw/$logger/;
 use OpenILS::Utils::CStoreEditor qw/:funcs/;
 use OpenILS::Utils::Fieldmapper;
@@ -315,6 +317,130 @@ sub init_ro_object_cache {
                 unless exists $cache{org_settings}{$locale}{$org_id}{$setting};
 
         return $cache{org_settings}{$locale}{$org_id}{$setting};
+    };
+
+    # Shared cache-or-fetch skeleton. Caches a falsy $fetch result too,
+    # so "no hours configured" etc. doesn't re-hit the DB every request.
+    my $cache_or_fetch = sub {
+        my ($cache_key, $fetch) = @_;
+
+        my $blob = $memcache->get_cache($cache_key);
+        return OpenSRF::Utils::JSON->JSON2perl($blob) if defined $blob;
+
+        my $value = $fetch->();
+        $memcache->put_cache($cache_key,
+            OpenSRF::Utils::JSON->perl2JSON($value ? $value : ''), 360);
+
+        return $value;
+    };
+
+    # Retrieve and cache a library's hours of operation.
+    $locale_subs->{get_org_hours} = sub {
+        my $org_id = shift;
+        return undef unless defined $org_id;
+
+        my $hours = $cache_or_fetch->("TPAC_aouhoo_cache_$org_id", sub {
+            my $e = new_editor();
+            my $h = $e->retrieve_actor_org_unit_hours_of_operation($org_id);
+            undef $e;
+            return $h;
+        });
+
+        return $hours ? $hours : undef;
+    };
+
+    # Retrieve and cache a library's mailing address.
+    $locale_subs->{get_org_address} = sub {
+        my $org_id = shift;
+        return undef unless defined $org_id;
+
+        my $org = $locale_subs->{get_aou}->($org_id);
+        return undef unless $org && $org->mailing_address;
+
+        my $address = $cache_or_fetch->("TPAC_aou_address_cache_$org_id", sub {
+            my $e = new_editor();
+            my $a = $e->retrieve_actor_org_address($org->mailing_address);
+            undef $e;
+            return $a;
+        });
+
+        return $address ? $address : undef;
+    };
+
+    # Retrieve and cache a library's upcoming closed dates.
+    $locale_subs->{get_org_closed_dates} = sub {
+        my $org_id = shift;
+        return [] unless defined $org_id;
+
+        my $dates = $cache_or_fetch->("TPAC_aoucd_cache_$org_id", sub {
+            my $e = new_editor();
+            my $today = DateTime->now(time_zone => 'local')->strftime('%F');
+
+            my $d = $e->search_actor_org_unit_closed_date([
+                { close_end => { '>=' => $today }, org_unit => $org_id },
+                { order_by => { aoucd => 'close_start' }, limit => 10 }
+            ]);
+            undef $e;
+            return $d;
+        });
+
+        return $dates || [];
+    };
+
+    # One entry per day (dow_0 = Monday) from an already-fetched hours
+    # object, so callers that already have one (e.g. ctx.hours) skip a
+    # second cache lookup. Locale-independent: raw values, no l()/format.
+    $locale_subs->{hours_by_day} = sub {
+        my $hours = shift;
+        return [] unless $hours;
+
+        return [ map {
+            my $dow = $_;
+            my ($open_m, $close_m, $note_m) =
+                ("dow_${dow}_open", "dow_${dow}_close", "dow_${dow}_note");
+            my ($open, $close) = ($hours->$open_m, $hours->$close_m);
+
+            +{
+                dow    => $dow,
+                closed => ($open eq $close ? 1 : 0),
+                open   => $open,
+                close  => $close,
+                note   => $hours->$note_m
+            };
+        } (0..6) ];
+    };
+
+    # Same as hours_by_day, but collapsed into runs of consecutive days
+    # that share identical hours (e.g. Monday-Friday)
+    $locale_subs->{hours_grouped} = sub {
+        my $hours = shift;
+        my $by_day = $locale_subs->{hours_by_day}->($hours);
+        return [] unless @$by_day;
+
+        my @groups;
+        for my $day (@$by_day) {
+            my $last = $groups[-1];
+            if ($last
+                && $last->{closed} == $day->{closed}
+                && $last->{open}   eq $day->{open}
+                && $last->{close}  eq $day->{close}
+                && (defined $last->{note} ? $last->{note} : '') eq
+                   (defined $day->{note}  ? $day->{note}  : '')
+            ) {
+                $last->{end} = $day->{dow};
+            } else {
+                push @groups, {
+                    start  => $day->{dow},
+                    end    => $day->{dow},
+                    closed => $day->{closed},
+                    open   => $day->{open},
+                    close  => $day->{close},
+                    note   => $day->{note}
+                };
+            }
+        }
+
+        return \@groups;
     };
 
     $locale_subs->{get_i18n_string} = sub {

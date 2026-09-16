@@ -1,0 +1,11 @@
+[%# schema_day_names must stay untranslated — schema.org requires the
+    literal English day name. %]
+[%- day_names = [
+        l('Monday'), l('Tuesday'), l('Wednesday'), l('Thursday'),
+        l('Friday'), l('Saturday'), l('Sunday')
+    ];
+    schema_day_names = [
+        'Monday', 'Tuesday', 'Wednesday', 'Thursday',
+        'Friday', 'Saturday', 'Sunday'
+    ];
+-%]

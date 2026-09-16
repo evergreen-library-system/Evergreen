@@ -1,0 +1,30 @@
+<div class="[% footer_col %] mb-4 mb-lg-0">
+    <h2 class="footer-heading">[% footer_library.name | html %]</h2>
+    <address class="footer-contact mb-0">
+        [% IF footer_address %]
+        <div class="footer-contact-item">
+            <span class="footer-label"><i class="fas fa-location-dot" aria-hidden="true"></i>[% l('Address') %]</span>
+            <!-- display: block on wide layouts, inline (one line) below 767px -->
+            <div class="footer-address-lines"><span class="footer-address-part">[% footer_address.street1 | html %]</span>[% IF footer_address.street2 %]<span class="footer-address-sep">, </span><span class="footer-address-part">[% footer_address.street2 | html %]</span>[% END %]<span class="footer-address-sep">, </span><span class="footer-address-part">[% footer_address.city | html %], [% footer_address.state | html %] [% footer_address.post_code | html %]</span></div>
+        </div>
+        [% END %]
+        [% IF footer_library.phone %]
+        <div class="footer-contact-item">
+            <span class="footer-label"><i class="fas fa-phone" aria-hidden="true"></i>[% l('Phone') %]</span>
+            <a href="tel:[% footer_library.phone | html %]">[% footer_library.phone | html %]</a>
+        </div>
+        [% END %]
+        [% IF footer_library.email %]
+        <div class="footer-contact-item">
+            <span class="footer-label"><i class="fas fa-envelope" aria-hidden="true"></i>[% l('Email') %]</span>
+            <a href="mailto:[% footer_library.email | html %]">[% footer_library.email | html %]</a>
+        </div>
+        [% END %]
+        [% IF footer_lib_url %]
+        <div class="footer-contact-item">
+            <span class="footer-label"><i class="fas fa-globe" aria-hidden="true"></i>[% l('Website') %]</span>
+            <a href="[% footer_lib_url | html %]" target="_blank" rel="noopener noreferrer">[% footer_lib_url | html %]</a>
+        </div>
+        [% END %]
+    </address>
+</div>

@@ -1,0 +1,118 @@
+[%# Shared footer data: which library, its hours rows, its closures. %]
+[%- PROCESS 'opac/parts/library/day_names.tt2';
+
+    footer_org_id = ctx.physical_loc || ctx.search_ou;
+    IF !footer_org_id && ctx.user;
+        # home_ou may or may not be fleshed, so try .id then fall back.
+        footer_org_id = ctx.user.home_ou.id || ctx.user.home_ou;
+    END;
+    footer_org_id = footer_org_id || ctx.aou_tree.id;
+
+    footer_library = ctx.get_aou(footer_org_id);
+    footer_address = ctx.get_org_address(footer_org_id);
+    footer_lib_url = ctx.get_org_setting(footer_org_id, 'lib.info_url');
+
+    # Grouping lives in Util.pm so library/hours.tt2 shares it.
+    hour_groups = ctx.hours_grouped(ctx.get_org_hours(footer_org_id));
+
+    # Beyond the cap, closures are a link away on the library info page.
+    closed_dates = ctx.get_org_closed_dates(footer_org_id);
+    closures_to_show = 3;
+
+    today = date.format(format = '%Y-%m-%d ');
+
+    # Evergreen stores dow_0 = Monday; strftime %w is 0 = Sunday.
+    today_dow = (date.format(date.now, '%w') + 6) % 7;
+    today_hours = '';
+
+    # Formatted once here, for both the "Today" summary and the day list.
+    hour_rows = [];
+    FOR group IN hour_groups;
+        is_today = (today_dow >= group.start && today_dow <= group.end);
+
+        IF group.closed;
+            hours_txt = l('Closed');
+        ELSE;
+            open_txt  = date.format(today _ group.open, format = '%l:%M %p');
+            close_txt = date.format(today _ group.close, format = '%l:%M %p');
+            hours_txt = l('[_1] - [_2]', open_txt.trim, close_txt.trim);
+        END;
+        IF group.note;
+            hours_txt = l('[_1] ([_2])', hours_txt, group.note);
+        END;
+
+        IF group.start == group.end;
+            dt_label = day_names.${group.start};
+        ELSE;
+            dt_label = l('[_1] - [_2]', day_names.${group.start}, day_names.${group.end});
+        END;
+
+        IF is_today; today_hours = hours_txt; END;
+
+        hour_rows.push({ dt => dt_label, dd => hours_txt, is_today => is_today });
+    END;
+
+    # One pass: rows for the list, plus today's override of the schedule.
+    # %Y%m%d compares as integers -- TT2 >= and <= are numeric, not string.
+    today_num = date.format(date.now, '%Y%m%d');
+    closure_rows = [];
+    closures_more = 0;
+    today_closed = 0;
+
+    FOR cdate IN closed_dates;
+        closure_start_date = date.format(ctx.parse_datetime(cdate.close_start), DATE_FORMAT);
+        closure_end_date   = date.format(ctx.parse_datetime(cdate.close_end), DATE_FORMAT);
+        closure_part_day   = (cdate.full_day == 'f');
+
+        IF closure_part_day;
+            closure_start_time = date.format(ctx.parse_datetime(cdate.close_start), format = '%l:%M %p').trim;
+            closure_end_time   = date.format(ctx.parse_datetime(cdate.close_end), format = '%l:%M %p').trim;
+        END;
+
+        IF closure_rows.size >= closures_to_show;
+            closures_more = closures_more + 1;
+        ELSE;
+            IF closure_part_day;
+                closure_when = closure_start_date _ ', ' _ closure_start_time _ ' - ';
+                IF closure_end_date != closure_start_date;
+                    closure_when = closure_when _ closure_end_date _ ', ';
+                END;
+                closure_when = closure_when _ closure_end_time;
+            ELSIF cdate.multi_day == 't' && closure_end_date != closure_start_date;
+                closure_when = closure_start_date _ ' - ' _ closure_end_date;
+            ELSE;
+                closure_when = closure_start_date;
+            END;
+            closure_rows.push({ when => closure_when, reason => cdate.reason });
+        END;
+
+        NEXT IF today_closed;
+        closure_start_num = date.format(ctx.parse_datetime(cdate.close_start), '%Y%m%d');
+        closure_end_num   = date.format(ctx.parse_datetime(cdate.close_end), '%Y%m%d');
+        NEXT UNLESS today_num >= closure_start_num && today_num <= closure_end_num;
+
+        IF closure_part_day;
+            closure_note = cdate.reason
+                ? l('[_1] - [_2] for [_3]', closure_start_time, closure_end_time, cdate.reason)
+                : l('[_1] - [_2]', closure_start_time, closure_end_time);
+            today_hours = l('[_1] ([_2])', today_hours, closure_note);
+        ELSE;
+            today_hours = cdate.reason ? l('[_1] ([_2])', l('Closed'), cdate.reason) : l('Closed');
+            today_closed = 1;
+        END;
+    END;
+
+    # footer.tt2 gates on these too, so render and width cannot drift.
+    # 1/0 to be summable; the leading 1 is Quick Links, always shown.
+    footer_show_contact = footer_library ? 1 : 0;
+    footer_show_hours   = (hour_groups.size || closure_rows.size) ? 1 : 0;
+    footer_col_count    = 1 + footer_show_contact + footer_show_hours;
+
+    IF footer_col_count == 3;
+        footer_col = 'col-12 col-md-6 col-lg-4';
+    ELSIF footer_col_count == 2;
+        footer_col = 'col-12 col-md-6';
+    ELSE;
+        footer_col = 'col-12';
+    END;
+-%]
