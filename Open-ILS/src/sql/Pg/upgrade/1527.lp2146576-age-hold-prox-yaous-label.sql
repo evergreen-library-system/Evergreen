@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('1525', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1527', :eg_version);
 
 UPDATE config.org_unit_setting_type
 SET grp='holds'
