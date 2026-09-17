@@ -86,7 +86,6 @@ econst OILS_SETTING_ORG_BOUNCED_EMAIL => 'org.bounced_emails';
 econst OILS_SETTING_CHARGE_LOST_ON_ZERO => 'circ.charge_lost_on_zero';
 econst OILS_SETTING_VOID_OVERDUE_ON_LOST => 'circ.void_overdue_on_lost';
 econst OILS_SETTING_HOLD_SOFT_STALL => 'circ.hold_stalling.soft';
-econst OILS_SETTING_HOLD_HARD_STALL => 'circ.hold_stalling.hard';
 econst OILS_SETTING_HOLD_SOFT_BOUNDARY => 'circ.hold_boundary.soft';
 econst OILS_SETTING_HOLD_HARD_BOUNDARY => 'circ.hold_boundary.hard';
 econst OILS_SETTING_HOLD_EXPIRE => 'circ.hold_expire_interval';

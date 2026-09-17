@@ -379,7 +379,6 @@ xref:#_settings_overview[Return to Settings Overview]
 |FIFO|Force holds to a more strict First-In, First-Out capture. This setting is deprecated in favor of using the setting "Best-hold selection sort order."|True/False|This setting is deprecated in favor of using the setting "Best-hold selection sort order."
 |Hard boundary|Limit holds to copies within this "organizational depth" boundary value 
   relative to the org_unit named in the context location in the library settings editor.|Number|0 = everyone shares, higher numbers are more limiting.
-|Hard stalling interval||Duration|
 |Has local copy alert|If there is an available item at the requesting library that could fulfill a hold during hold placement time, alert the patron.|True/False|
 |Has local copy block|If there is an available item at the requesting library that could fulfill a hold during hold placement time, do not allow the hold to be placed.|True/False|
 |Hold reset reason entry deletion interval|Hold reset reason entries will be removed if older than this interval. Default 1 year if no value provided.|Duration|

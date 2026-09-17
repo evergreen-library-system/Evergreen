@@ -3818,15 +3818,6 @@ INSERT into config.org_unit_setting_type
         'coust','description'),
   'interval', null)
 
-,( 'circ.hold_stalling_hard', 'holds',
-    oils_i18n_gettext('circ.hold_stalling_hard',
-        'Hard stalling interval',
-        'coust', 'label'),
-    oils_i18n_gettext('circ.hold_stalling_hard',
-        'Holds: Hard stalling interval',
-        'coust', 'description'),
-    'interval', null)
-
 ,( 'circ.holds.age_protect.active_date', 'holds',
     oils_i18n_gettext('circ.holds.age_protect.active_date',
         'Use Active Date for Age Protection',
