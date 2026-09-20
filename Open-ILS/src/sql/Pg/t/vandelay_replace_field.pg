@@ -1,0 +1,19 @@
+BEGIN;
+
+SELECT plan(1);
+
+CREATE TEMPORARY TABLE replaced AS SELECT vandelay.replace_field(
+        '<record><datafield tag="650" ind1=" " ind2="0"><subfield code="a">Self-acceptance</subfield><subfield code="x">temporary</subfield><subfield code="x">temporary</subfield></datafield></record>',
+        '<record><datafield tag="650" ind1=" " ind2="0"><subfield code="a">Self-acceptance</subfield><subfield code="x">Religious aspects</subfield><subfield code="x">Christianity</subfield></datafield></record>',
+        '650ax'
+        )::xml result;
+
+SELECT is(
+  xpath('//marc:datafield[@tag="650"]/marc:subfield[@code="x"]/text()', result, ARRAY[ARRAY['marc', 'http://www.loc.gov/MARC21/slim']])::text[],
+  ARRAY['Religious aspects', 'Christianity'],
+  'it applies both instances of a repeatable subfield'
+) FROM replaced;
+
+SELECT * FROM finish();
+
+ROLLBACK;
