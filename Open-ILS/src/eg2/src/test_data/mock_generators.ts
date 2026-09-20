@@ -10,6 +10,7 @@ import { CatalogSearchContext } from '@eg/share/catalog/search-context';
 import { ItemLocationService } from '@eg/share/item-location-select/item-location.service';
 import { BatchLineitemStruct, FleshCacheParams, LineitemService } from '@eg/staff/acq/lineitem/lineitem.service';
 import { StaffCatalogService } from '@eg/staff/catalog/catalog.service';
+import { SckoService } from '@eg/staff/scko/scko.service';
 import { SerialsService } from '@eg/staff/serials/serials.service';
 import { HoldsService } from '@eg/staff/share/holds/holds.service';
 import { PatronService } from '@eg/staff/share/patron/patron.service';
@@ -184,6 +185,17 @@ export class MockGenerators {
         const store = jasmine.createSpyObj<StoreService>(['getLocalItem', 'setLocalItem', 'getLoginSessionItem']);
         store.getLocalItem.and.returnValue(valueFromStore);
         return store;
+    }
+
+    static selfCheckService(values: Partial<SckoService>) {
+        const service =  {
+            printed: [],
+            getCircAuthor: () => 'My Author',
+            getCircTitle: () => 'My Title',
+            printReceipt: () => service.printed.push('Receipt'),
+            ...values
+        };
+        return service as any as SckoService;
     }
 
     static serverStoreService(valueFromStore: any) {

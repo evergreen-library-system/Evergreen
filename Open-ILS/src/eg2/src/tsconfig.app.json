@@ -11,6 +11,7 @@
     "test.ts",
     "**/*.spec.ts",
     "test_data/mock_generators.ts",
+    "test_data/mock-pipes.ts",
     "environments/environment.prod.ts"
   ]
 }

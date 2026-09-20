@@ -1,25 +1,20 @@
 import { Component, OnInit, inject } from '@angular/core';
-import {Router, ActivatedRoute} from '@angular/router';
-import {empty, switchMap, tap} from 'rxjs';
-import {AuthService} from '@eg/core/auth.service';
+import {Router} from '@angular/router';
+import {EMPTY, switchMap, tap} from 'rxjs';
 import {PcrudService} from '@eg/core/pcrud.service';
-import {NetService} from '@eg/core/net.service';
 import {IdlObject} from '@eg/core/idl.service';
 import {SckoService} from './scko.service';
 import {PrintService} from '@eg/share/print/print.service';
-import { CommonModule } from '@angular/common';
+import { CurrencyPipe } from '@angular/common';
 
 
 @Component({
     templateUrl: 'fines.component.html',
-    imports: [CommonModule]
+    imports: [CurrencyPipe]
 })
 
 export class SckoFinesComponent implements OnInit {
     private router = inject(Router);
-    private route = inject(ActivatedRoute);
-    private net = inject(NetService);
-    private auth = inject(AuthService);
     private pcrud = inject(PcrudService);
     private printer = inject(PrintService);
     scko = inject(SckoService);
@@ -43,7 +38,7 @@ export class SckoFinesComponent implements OnInit {
             }, {}, {atomic: true}
         ).pipe(switchMap(sums => {
 
-            if (sums.length === 0) { return empty(); }
+            if (sums.length === 0) { return EMPTY; }
 
             return this.pcrud.search('mbt', {id: sums.map(s => s.id())},
                 {   order_by: {mbt: 'xact_start'},
@@ -58,7 +53,7 @@ export class SckoFinesComponent implements OnInit {
                     select: {bre : ['id']}
                 }
             ).pipe(tap(xact => this.xacts.push(xact)));
-        })).toPromise();
+        }));
     }
 
     displayValue(xact: IdlObject, field: string): string {

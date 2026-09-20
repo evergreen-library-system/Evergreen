@@ -1,7 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
-import {Router, ActivatedRoute} from '@angular/router';
+import {Router} from '@angular/router';
 import {AuthService} from '@eg/core/auth.service';
-import {PcrudService} from '@eg/core/pcrud.service';
 import {NetService} from '@eg/core/net.service';
 import {IdlObject} from '@eg/core/idl.service';
 import {SckoService} from './scko.service';
@@ -15,10 +14,8 @@ import {PrintService} from '@eg/share/print/print.service';
 
 export class SckoHoldsComponent implements OnInit {
     private router = inject(Router);
-    private route = inject(ActivatedRoute);
     private net = inject(NetService);
     private auth = inject(AuthService);
-    private pcrud = inject(PcrudService);
     private printer = inject(PrintService);
     scko = inject(SckoService);
 
