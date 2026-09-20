@@ -1,8 +1,8 @@
 BEGIN;
 
--- SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1528', :eg_version);
 
-CREATE OR REPLACE FUNCTION vandelay.replace_field 
+CREATE OR REPLACE FUNCTION vandelay.replace_field
     (target_xml TEXT, source_xml TEXT, field TEXT) RETURNS TEXT AS $_$
 
     use strict;
@@ -22,7 +22,7 @@ CREATE OR REPLACE FUNCTION vandelay.replace_field
 
     return $target_xml unless $target_r && $source_r;
 
-    # Extract the field_spec components into MARC tags, subfields, 
+    # Extract the field_spec components into MARC tags, subfields,
     # and regex matches.  Copied wholesale from vandelay.strip_field()
 
     my @field_list = split(',', $field_spec);
@@ -56,7 +56,7 @@ CREATE OR REPLACE FUNCTION vandelay.replace_field
     sub generate_replacement_subfields {
         my ($source_field, $target_field, @controlled_subfields) = @_;
 
-        # Performing a wholesale field replacment.  
+        # Performing a wholesale field replacment.
         # Use the entire source field as-is.
         return map {$_->[0], $_->[1]} $source_field->subfields
             unless @controlled_subfields;
@@ -67,7 +67,7 @@ CREATE OR REPLACE FUNCTION vandelay.replace_field
         # 1. Keep uncontrolled subfields as is.
         # 2. Replace values for controlled subfields when a
         #    replacement value exists on the source record.
-        # 3. Delete values for controlled subfields when no 
+        # 3. Delete values for controlled subfields when no
         #    replacement value exists on the source record.
 
         my %sf_index_map;
@@ -94,14 +94,14 @@ CREATE OR REPLACE FUNCTION vandelay.replace_field
         # any values that exist only in the source field.  Insert these
         # subfields in the same relative position they exist in the
         # source field.
-                
+ 
         my @seen_subfields;
         for my $source_sf ($source_field->subfields) {
             my $subfield = $source_sf->[0];
             my $source_val = $source_sf->[1];
             push(@seen_subfields, $subfield);
 
-            # target field already contains this subfield, 
+            # target field already contains this subfield,
             # so it would have been addressed above.
             next if $target_field->subfield($subfield);
 
@@ -149,7 +149,7 @@ CREATE OR REPLACE FUNCTION vandelay.replace_field
 
         for my $target_field (@target_fields) { # This will not run when the above "if" does.
 
-            # field spec contains a regex for this field.  Confirm field on 
+            # field spec contains a regex for this field.  Confirm field on
             # target record matches the specified regex before replacing.
             if (exists($fields{$f}{match})) {
                 my @match_list;
@@ -202,7 +202,7 @@ CREATE OR REPLACE FUNCTION vandelay.replace_field
             my @new_subfields = generate_replacement_subfields(
                 $source_field, $target_field, @controlled_subfields);
 
-            # Build the replacement field from scratch.  
+            # Build the replacement field from scratch.
             my $replacement_field = MARC::Field->new(
                 $target_field->tag,
                 $target_field->indicator(1),
