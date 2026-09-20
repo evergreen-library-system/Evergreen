@@ -1,12 +1,11 @@
 import { Component, OnInit, inject } from '@angular/core';
 import {Router} from '@angular/router';
-import {of, from, switchMap, tap} from 'rxjs';
+import {of, from, switchMap, tap, lastValueFrom} from 'rxjs';
 import {AuthService} from '@eg/core/auth.service';
 import {NetService} from '@eg/core/net.service';
 import {IdlObject} from '@eg/core/idl.service';
 import {SckoService, ActionContext} from './scko.service';
 import {PrintService} from '@eg/share/print/print.service';
-
 import { DueDatePipe } from '@eg/core/format.service';
 import { FormsModule } from '@angular/forms';
 
@@ -35,17 +34,17 @@ export class SckoItemsComponent implements OnInit {
 
         this.scko.resetPatronTimeout();
 
-        this.net.request(
+        lastValueFrom(this.net.request(
             'open-ils.actor',
             'open-ils.actor.user.checked_out.authoritative',
-            this.auth.token(), this.scko.patronSummary.id).toPromise()
+            this.auth.token(), this.scko.patronSummary.id))
 
             .then(data => {
                 const ids = data.out.concat(data.overdue).concat(data.long_overdue);
                 return this.scko.getFleshedCircs(ids).pipe(tap(circ => {
                     this.circs.push(circ);
                     this.selected[circ.id()] = true;
-                })).toPromise();
+                }));
             });
     }
 
@@ -88,7 +87,7 @@ export class SckoItemsComponent implements OnInit {
 
         const contexts: ActionContext[] = [];
 
-        from(renewList).pipe(switchMap(circ => {
+        lastValueFrom(from(renewList).pipe(switchMap(circ => {
             return of(
                 this.scko.renew(circ.target_copy().barcode())
                     .then(ctx => {
@@ -108,7 +107,7 @@ export class SckoItemsComponent implements OnInit {
                         this.circs = circs;
                     })
             );
-        })).toPromise().then(_ => {
+        }))).then(_ => {
 
             // Create one ActionContext to represent the batch for
             // notification purposes.  Avoid popups and audio on batch
