@@ -1,0 +1,117 @@
+= Requesting items =
+:toc:
+
+Hold policies determine how library materials can be requested. This is based on data such as the requesting user, item formats, and associated org units. 
+
+Individual elements of hold policies are configured using specific interfaces, and should be configured prior to setting up hold policies. 
+
+== Data elements that affect your hold policies ==
+
+There are many data elements which must be considered when setting up your hold policies. You might use any of the following when creating hold policies.
+
+=== Item and record data ===
+
+Several fields set via the holdings editor will affect the holdability of an item.
+
+* _Owning Library_ - The library that owns the call number for the item.
+* _Item Circ Library_ - The library that owns the item. 
+* _Circulation modifier_ - Circulation modifiers are fields which can be used to control hold policies on specific groups of items. They can be added to items during the cataloging process. New circulation modifiers can be created in the staff client by navigating to Administration -> Server Administration -> Circulation Modifiers.
+* _MARC Type_ - The MARC Type field in a bib record.
+* _MARC Form_ - The MARC Form field in a bib record.
+* _MARC Bib Level_ - The MARC Bib level field in a bib record.
+* _Videorecording format_ - The MARC Videorecording format field in a bib record.
+* _Reference?_ - The Reference? flag in the holdings editor.
+* _Item Age <_ - A date value for items that are less than a certain age. Examples: 7 days, 3 mons, 1 year
+
+=== User data ===
+
+There are several fields which affect the holdability based on the home library or permission group for whom the hold is placed.
+
+* _User Home Library_ - The home library of the user account.
+* _User Permission Group_ - The permission group of the user account.
+* _Stop Blocked User?_ - Blocks users with standing penalties.
+
+=== Hold result fields ===
+
+These data elements describe what happens after a user attempts to place a hold request.
+
+* _Holdable?_ - Whether the current policy allows a hold or not when the criteria are met. Either Yes or No.
+* _Item Age Hold Protection Rule_ - Currently unused field. However, age hold protection can have its own effects on holdability. xref:admin:age_hold_protection.adoc[Learn more about age hold protection].
+* _Max Holds_ - The maximum number of holds allowed.
+* _Max Includes Frozen_ - Whether the max holds limit includes frozen or suspended holds in its total.
+* _Request Library_ - The library which requests the item.
+* _Pickup Library_ - The library designated for item pickup.
+* _Strict OU Matches?_ - Whether org units named in the hold result fields are strictly matched.
+* _Transit Range_ - How far the hold can transit. Used in combination with Strict OU matches.
+* _Range is from Owning Lib?_ - If the transit range is from the owning library. Used in combination with Transit range.
+* _Requestor Permission Group_ - The permission group of the user that places the request. This field is required.
+
+== Creating hold policies ==
+
+Once you have identified your data elements that will drive hold policies, you are ready to begin creating your hold policies. 
+
+If you are managing a small number of rules, you can create and manage hold policies in the staff client via Administration -> Local Administration -> Hold Policies. This page is called the *Hold Matrix Matchpoint*.
+
+However, if you are managing a large number of policies, it is easier to create and locate rules directly in the database by updating *config.hold_matrix_matchpoint*.
+
+The *config.hold_matrix_matchpoint* table configures hold policies. The hold policies will attempt to match the item, record, and user data for a hold. Once a policy matches, it will perform the behavior specified in the result fields.
+
+=== Best practices for creating policies ===
+
+* Standardize as many hold policies as you can. 
+* Create standard consortia policies to function as default rules.
+* Identify which elements are the most important to your hold policies. More permissive lending allows for using fewer and less specific rules. Consortia with greater restrictions may have specific and detailed policies for each hold scenario.
+* Keep policies as simple as you can, but no simpler. For example, if you never have a use case for a hold policy that is specific to user home library, avoid filling in this field. 
+
+Note: Unlike circulation policies, there is no inheritance in hold policies. This means you must identify each relevant data point for a specific policy’s behavior, because very broad policies may not apply.
+
+*Example 1*
+
+|==============================================
+|Requestor Permission Group|Owning Library|Circulation Modifier|User Home Library|Holdable?|Max Holds|Max includes Frozen|Pickup Library
+|Users||||Yes|||
+|Users|CONS|DVD||No|||
+|Users|BR1|DVD||Yes|||
+|==============================================
+
+In this setup, the Users permission group can place holds on items. In row 2, we see that items owned by the consortium with the circulation modifier DVD are not holdable. In the next row, we see that items with the circulation modifier DVD are holdable if owned by BR1.
+
+*Example 2*
+
+|==============================================
+|Requestor Permission Group|Owning Library|Circulation Modifier|User Home Library|Holdable?|Max Holds|Max includes Frozen|Pickup Library
+|Users||||Yes|||
+|Users|CONS|DVD||No|||
+|Users|BR1|DVD||Yes|||
+|Patrons|BR2|DVD|BR2|Yes|||BR2
+|==============================================
+
+Now, Patrons at with a home library of BR2 can request DVDs, but only if they’re also owned by BR2 and the Patrons pick them up at BR2. Accounts with other requestor permission groups will not be able to place holds.
+
+*Example 3*
+
+|==============================================
+|Requestor Permission Group|Owning Library|Circulation Modifier|User Home Library|Holdable?|Max Holds|Max includes Frozen|Pickup Library
+|Users||||Yes|100|Yes|
+|Users|CONS|DVD||No|||
+|Users|BR1|DVD||Yes|100|Yes|
+|Patrons|BR2|DVD|BR2|Yes|100|Yes|BR2
+|==============================================
+
+In this example, the consortium agreed to limit the number of total requests for all permission groups. Now, the hold policies will work like Example 2, with the added limit that the requestor must have fewer than 100 holds (active or frozen) in order to request items. 
+
+== Settings relevant to hold policies ==
+
+The following settings, available via Administration -> Local Administration -> Library Settings Editor, can also affect hold policies.
+
+* _Hard Boundary_ - Limits holds within an organizational depth. Creates a hard limit on where items can transit.
+* _Soft Boundary_ - Holds will not be filled by items outside this boundary when there are holdable items within the boundary.
+* _Soft Stalling Interval_ - For a set amount of time, holds will not be opportunistically captured at non-pickup branches.
+* _Pickup library soft stalling interval_ - When set for the pickup library, this specifies an interval during which opportunistic hold capture will only occur for items where both these factors are true: 1) the request time age is smaller than the interval (i.e. the request was placed within the interval); and 2) the scan library is equivalent to the pickup library. This setting takes precedence over "Soft stalling interval".
+* _Pickup library hard stalling interval_ - When set for the pickup library, this specifies an interval during which items with a calculated proximity greater than 0 from the pickup library cannot be directly targeted if there are locally available copies. This setting is meant to be used in conjunction with the setting "Pickup library soft stalling interval" and its value should be equal or less than the value in Pickup library soft stalling interval.
+* _Skip for hold targeting_ - When true, do not target any items at this organizational unit for holds.
+
+Certain global flags may affect hold policies as well. Global Flags are found in Administration -> Server Administration -> Global Flags.
+
+* _circ.holds.empty_issuance_ok_ - Affects serials. Allows holds on predicted but not-yet received items. Defaults to Yes.
+* _circ.holds.usr_not_requestor_ - When testing hold matrix matchpoints, use the profile group of the receiving user instead of that of the requestor (affects staff placed holds). Defaults to Yes.
