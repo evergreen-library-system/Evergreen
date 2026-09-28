@@ -13005,7 +13005,7 @@ INSERT INTO config.global_flag  (name, label, enabled)
         FALSE
     ),(
         'history.hold.retention_age_canceled_1',
-        oils_i18n_gettext('history.hold.retention_age_canceled_1', 'Historical Hold Retention Age - Canceled (Untarged expiration)', 'cgf', 'label'),
+        oils_i18n_gettext('history.hold.retention_age_canceled_1', 'Historical Hold Retention Age - Canceled (Untargeted expiration)', 'cgf', 'label'),
         FALSE
     ),(
         'history.hold.retention_age_canceled_2',
