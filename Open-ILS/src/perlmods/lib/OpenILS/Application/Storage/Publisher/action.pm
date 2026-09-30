@@ -225,6 +225,7 @@ sub complete_reshelving {
             SELECT cp.id 
             FROM  $cp cp
             WHERE cp.status = 7
+                AND NOT deleted
                 AND cp.status_changed_time < NOW() - CAST( COALESCE( BTRIM( (SELECT value FROM actor.org_unit_ancestor_setting('circ.reshelving_complete.interval', cp.circ_lib)),'"' ), ? )  AS INTERVAL)
           )
           AND status = 7
