@@ -12,12 +12,11 @@
             <li><button
                 (click)="expand()"
                 type="button"
-                class="btn btn-sm btn-expandy">
-                <span class="expandy-text" i18n>Read more</span>
+                class="btn btn-sm">
+                <span class="expandy-text btn-expandy" i18n>See all</span>
                 <span class="material-icons mat-icon-in-button" aria-hidden="true">expand_more</span>
             </button></li>
-        }   
-
+        }
     } @else {
         @for(entry of entries; track $index) {
             <li>
@@ -31,8 +30,8 @@
             <li><button
                 (click)="collapse()"
                 type="button"
-                class="btn btn-sm btn-expandy">
-                <span class="expandy-text" i18n>Read less</span>
+                class="btn btn-sm">
+                <span class="expandy-text btn-expandy" i18n>See fewer</span>
                 <span class="material-icons mat-icon-in-button" aria-hidden="true">expand_less</span>
             </button></li>
         }
