@@ -149,6 +149,9 @@ export class CatalogIdentContext {
     }
 
     equals(ctx: CatalogIdentContext): boolean {
+        // Unsearchable ident state isn't saved in recent searches,
+        // so if both are unsearchable, consider them equal.
+        if (!this.isSearchable() && !ctx.isSearchable()) { return true; }
         return ctx.value === this.value && ctx.queryType === this.queryType;
     }
 }

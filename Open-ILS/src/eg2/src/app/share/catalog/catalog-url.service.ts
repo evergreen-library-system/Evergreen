@@ -241,8 +241,11 @@ export class CatalogUrlService {
 
             // Boolean scalars that might be false
             ['available', 'groupByMetarecord'].forEach(field => {
-                if (params.has(field)){
-                    ts[field] = JSON.parse(params.get(field));
+                const value = String(params.get(field));
+                if (value === 'true') {
+                    ts[field] = true;
+                } else if (value === 'false') {
+                    ts[field] = false;
                 }
             });
 
