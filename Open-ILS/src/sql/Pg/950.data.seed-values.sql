@@ -4783,6 +4783,14 @@ INSERT into config.org_unit_setting_type
         'Enable access to the eCard request renewal form in the OPAC',
         'coust', 'description'),
     'bool', null)
+,( 'opac.ecard_renewal_bypass_checks', 'opac',
+    oils_i18n_gettext('opac.ecard_renewal_bypass_checks',
+        'Bypass checks of eCard renewals',
+        'coust', 'label'),
+    oils_i18n_gettext('opac.ecard_renewal_bypass_checks',
+        'Allow bypassing certain checks for online card renewals; this is meant for cases where the an external system such as a discovery layer is hosting the renewal form and is assuming responsiblity for validating that the patron has requested it',
+        'coust', 'description'),
+    'bool', null)
 ,( 'opac.ecard_renewal_offer_interval', 'opac',
     oils_i18n_gettext('opac.ecard_renewal_offer_interval',
         'Number of days before account expiration in which to offer an e-renewal.',
