@@ -49,6 +49,7 @@ use Types::Serialiser;
 use Mojolicious::Lite;
 use OpenSRF::System;
 use OpenSRF::AppSession;
+use OpenSRF::Transport::PeerHandle;
 use OpenSRF::Utils::SettingsClient;
 use OpenSRF::EX qw(:try);
 use OpenILS::Utils::Fieldmapper;
@@ -151,6 +152,21 @@ plugin ForwardedFor => { levels => $rev_proxy_levels };
 
 #-------------------------------------------------
 # Almost ready to go...
+
+# we need to disconnect from opensrf in the manager process...
+app->hook(before_server_start => sub {
+    $logger->info("Disconnecting Manager process from OpenSRF network at OpenAPI server startup");
+    OpenSRF::Transport::PeerHandle->retrieve->disconnect }
+);
+
+# and reconnect once in each worker
+my $reconnected = 0;
+app->hook(before_dispatch => sub {
+    if (!$reconnected) {
+        $reconnected++;
+        OpenSRF::System->bootstrap_client(client_name => 'EG-OpenAPI-Worker')
+    }
+});
 
 app->hook(after_dispatch => sub { log_authenticated_dispatch_event(@_) });
 app->hook(after_dispatch => sub { $_[0]->res->headers->remove('Server') });
