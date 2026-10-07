@@ -1,0 +1,402 @@
+= Evergreen 3.18 Release Notes =
+:toc:
+:numbered:
+:toclevels: 3
+
+== Upgrade notes ==
+
+== New Features ==
+
+:leveloffset: +2
+
+
+= Cataloging =
+
+
+== New Added Content Provider ==
+
+Loral for Libraries is available as a new Added Content
+Provider. Loral can provide the following enhancements for your
+catalog:
+
+ * Book Covers
+ * Author Biographies
+ * Summaries
+ * Reviews
+
+=== Activating Loral for Libraries ===
+
+Loral for Libraries is a subscription service.
+
+To activate the Loral for Libraries added content provider, first
+comment out the default OpenLibrary module in
+_/openils/conf/opensrf.xml_ by adding _<!--_ and _-->_ to the
+beginning and end of the line, respectively:
+
+----
+<!-- <module>OpenILS::WWW::AddedContent::OpenLibrary</module> -->
+----
+
+Uncomment the _<module>_ and _<base_url>_ elements for Loral by
+removing the _<!--_ and _-->_ from the lines:
+
+----
+<module>OpenILS::WWW::AddedContent::Loral</module>
+<base_url>https://api.loralforlibraries.com</base_url>
+----
+
+Replace _MY_USER_ID_ and _MY_PASSWORD_ in the _<userid>_ and
+_<password>_ child elements of the _<Loral>_ element with your Loral
+ID and password:
+
+----
+<Loral>
+    <userid>MY_USER_ID</userid>
+    <password>MY_PASSWORD</password>
+</Loral>
+----
+
+Finally, you will need to restart Evergreen and Apache for the module
+to be activated in your catalog.
+
+=== Acknowledgments ===
+
+Development of the Loral for Libraries added content provider module
+was sponsored by North of Boston Library Exchange (NOBLE), Inc.
+
+
+
+= Circulation =
+
+
+== Patron Bills Interface Improvements ==
+
+The Angular staff client Patron Bills interface has several display and
+workflow improvements.
+
+=== Patron Bills ===
+
+ * The grid once again includes pagination and a rows-per-page selector.
+ * The _Add Billing_ toolbar button is now labeled _Bill Patron_ to clarify
+   that it creates a new billing transaction.
+ * _Select All Bills_ and _Select All Refunds_ select matching bills across
+   all pages and display the page containing the first selected bill.
+ * Actions that operate on a single transaction, such as _Full Details_ and
+   _Add Billing_, are disabled unless exactly one bill is selected.
+ * Voiding billings for a large selection requires fewer server requests.
+ * Submitting an empty payment amount no longer causes an interface error.
+ * Flagged bill rows retain their visual status indicators when selected.
+ * The Billing Location column now displays the circulation library for
+   circulation bills.
+
+=== Bill History ===
+
+The Transactions tab restores the Last Billing Type, Last Billing Note,
+Last Billing Time, Last Payment Type, and Last Payment Note columns.
+
+The Payments tab restores the Last Billing Note, Total Owed, Total Paid,
+and credit card Approval Code columns.
+
+=== Bill Statements ===
+
+Bill statements now distinguish billings, payments, adjustments, and voids.
+Charges and payments are displayed with separate totals, and amounts that
+reduce the balance are visually distinguished from charges.
+
+The Owning Library in the Item Summary is now linked to the corresponding
+library information page.
+
+
+= Integrations =
+
+
+== New RESTful API Endpoints ==
+
+Endpoints have been added to Evergreen's OpenAPI implementation to
+assist with search.
+
+=== New Bibs Endpoint ===
+
+The `bibsByISBN` endpoint allows retrieval of bibliographic records
+via ISBN or other standard identifier using a `HTTP GET` request:
+
+    GET https://<host>/openapi3/v0/bibs/by_isbn/<isbn>
+
+The above returns different things depending on the content type
+specified in the `Accept` header of the request:
+
+[width="50%",cols="1,2",options="header"]
+|====
+|Content Type |Format
+|application/json |Evergreen "bre" object
+|application/xml |MARC of the record in MARCXML
+|application/octet-stream |MARC of the record as binary USMARC
+|====
+
+=== Coded Value Maps Endpoints ===
+
+Coded Value Map entries (useful for the Multiclass Search Endpoint,
+see below) can be retrieved by database ID or all entries for a given
+`ctype` can be retrieved at once:
+
+    GET https://<host>/openapi3/v0/coded_value_map/<id>
+    GET https://<host>/openapi3/v0/coded_value_maps/by_ctype/<ctype>
+
+The former returns the single `ccvm` object and the latter returns a
+list of `ccvm` objects.  The objects and list are formatted as JSON.
+
+=== Mutliclass Search Endpoint ===
+
+Evergreen's multiclass search capabilities, as used by the OPAC and
+Staff Client Catalogs, can be accessed with the new
+`search/multiclass` endpoint:
+
+    GET https://<host>/openapi3/v0/search/multiclass?...
+
+The new URL expects CGI query parameters that map to the underlying
+`open-ils.search.biblio.multiclass` and
+`open-ils.search.biblio.multiclass.query`x OpenSRF API routines.
+Specifics of the CGI parameters accepted by the OpenAPI implementation
+are documented in the table below:
+
+[width="50%",options="header"]
+|====
+|Parameter |Value type |Repeatable |Default Value
+|author |string |yes |none
+|identifier |string |yes |none
+|isbn |string |yes |none
+|issn |string |yes |none
+|keyword |string |yes |none
+|series |string |yes |none
+|subject |string |yes |none
+|title |string |yes |none
+|query |string |no |none
+|org_unit |integer |no |none
+|depth |integer |no |none
+|limit |integer |no |10
+|offset |integer |no |0
+|sort |string |no |none
+|sort_dir |string |no |ASC
+|tag_circulated_records |boolean |no |false
+|docache |boolean |no |true
+|====
+
+All of the parameters are optional, except that at least one of the
+parameters from `author` through `query` MUST be provided.  The
+`Default Value` column indicates the value used if the parameter is
+not supplied.
+
+Use of the `query` parameter triggers the use of
+`open-ils.search.biblio.multiclass.query`.  It is expected to be
+formatted just like the query string passed to that function.
+
+The `sort` takes one of the options from the following list as the key:
+
+  * author
+  * title
+  * pubdate
+  * edit_date
+  * create_date
+  * rel
+  * poprel
+
+See `perldoc OpenILS::Search::Biblio` for documentation of
+`open-ils.search.biblio.multiclass` and
+`open-ils.search.biblio.multiclass.query`.
+
+
+= Miscellaneous =
+
+
+
+:leveloffset: 0
+
+
+* Fix crash that can occur when Quipu eRENEW attempts to update certain patron records. (https://bugs.launchpad.net/evergreen/+bug/2143938[Bug 2143938])
+* Fixes issue where recall holds on a items with a monograph part fail to be targeted (https://bugs.launchpad.net/evergreen/+bug/2130052[Bug 2130052])
+* Fixes issue where force holds on a items with a monograph part fail to be targeted (https://bugs.launchpad.net/evergreen/+bug/1838069[Bug 1838069])
+* Fixes F-type targeting issue that alternates between targeting and not targeting an item. (https://bugs.launchpad.net/evergreen/+bug/2131948[Bug 2131948])
+* Prevent simplistic scraper bots from wasting resources. (https://bugs.launchpad.net/evergreen/+bug/2113979[Bug 2113979])
+* Fixes bug where the age hold protect value was not included in CSV exports from the Item Table. (https://bugs.launchpad.net/evergreen/+bug/2146564[Bug 2146564])
+* Fix erroneous number on my list count. (https://bugs.launchpad.net/evergreen/+bug/2138265[Bug 2138265])
+* Fixes a security issue with certain database query generation methods (https://bugs.launchpad.net/evergreen/+bug/2147196[Bug 2147196])
+* Fixes a typo in the output of the /openils/bin/api_ctl program. (https://bugs.launchpad.net/evergreen/+bug/2147136[Bug 2147136])
+* Adds missing 'cancel if not filled by' alert dialog in staff client. (https://bugs.launchpad.net/evergreen/+bug/2147225[Bug 2147225])
+* Removes references to the "tundra" CSS class in the TPAC/BOOPAC (https://bugs.launchpad.net/evergreen/+bug/2056771[Bug 2056771])
+* [dev] Fixes POD syntax errors reported by xt/author/pod.t (https://bugs.launchpad.net/evergreen/+bug/2081069[Bug 2081069])
+* Adds the password visibility toggle to the OPAC update password form. (https://bugs.launchpad.net/evergreen/+bug/2040004[Bug 2040004])
+* Fixes issue where when a staff member places a hold for a patron via the Traditional (embedded) Catalog, the "No configured email address" warning would show up inappropriately. (https://bugs.launchpad.net/evergreen/+bug/2148326[Bug 2148326])
+* Fixes issue where some invoices charge twice when caluculating warning and stop percentages. (https://bugs.launchpad.net/evergreen/+bug/2088125[Bug 2088125])
+* Upgrades Angular from Angular 18 to Angular 21 and Node from 22.11.0 to 24.14.0. (https://bugs.launchpad.net/evergreen/+bug/2119574[Bug 2119574])
+* Restores automatic focus on the barcode input after patron logout in the Angular self-check. (https://bugs.launchpad.net/evergreen/+bug/2127936[Bug 2127936])
+* Prevents duplicate patron self-registration submissions by double click. (https://bugs.launchpad.net/evergreen/+bug/1913626[Bug 1913626])
+* Add patron search link to experimental angular checkout screen. (https://bugs.launchpad.net/evergreen/+bug/2150150[Bug 2150150])
+* Fix Angular string export for translators. (https://bugs.launchpad.net/evergreen/+bug/2150276[Bug 2150276])
+* Removes extraneous email-templates: reporter-success, reporter-fail (https://bugs.launchpad.net/evergreen/+bug/1761891[Bug 1761891])
+* Add a missing permission (ADMIN_OPENAPI) to allow administration of the OpenAPI settings. (https://bugs.launchpad.net/evergreen/+bug/2148133[Bug 2148133])
+* Correct datatype of text fields that serve as primary keys (https://bugs.launchpad.net/evergreen/+bug/2078287[Bug 2078287])
+* Remove unused library setting circ.holds.target_holds_by_org_unit_weight (https://bugs.launchpad.net/evergreen/+bug/1885140[Bug 1885140])
+* [dev] Add author tests to verify that DB update scripts assert their DB revision number correctly (https://bugs.launchpad.net/evergreen/+bug/2083949[Bug 2083949])
+* Test Password in the Angular Circulation patron page now fills in the username and barcode. (https://bugs.launchpad.net/evergreen/+bug/2152653[Bug 2152653])
+* Updates landmarks, headings, and ARIA labels for OPAC course browse (https://bugs.launchpad.net/evergreen/+bug/2115686[Bug 2115686])
+* Removes heading before search has been performed. Adds heading when browsing by instructor. (https://bugs.launchpad.net/evergreen/+bug/2115686[Bug 2115686])
+* Refresh Penalties added to the Angular patron sidebar. (https://bugs.launchpad.net/evergreen/+bug/2139307[Bug 2139307])
+* Adds legal name to the Angular patron summary. (https://bugs.launchpad.net/evergreen/+bug/2146400[Bug 2146400])
+* Applies the default internet access level setting value in the Angular patron registration. (https://bugs.launchpad.net/evergreen/+bug/2146591[Bug 2146591])
+* Fixes issue with how the legacy reporter displays a template documentation URL when creating a report, thereby avoiding a security issue. (https://bugs.launchpad.net/evergreen/+bug/2152789[Bug 2152789])
+* Improves the validation of bookbag sorting parameters in the public catalog to avoid security issues. (https://bugs.launchpad.net/evergreen/+bug/2152788[Bug 2152788])
+* Adds better sanitization of URLs used to navigate back to the original record after using the call number feature in the public catalog (https://bugs.launchpad.net/evergreen/+bug/2152787[Bug 2152787])
+* Make it very explicit that URI notes/use restrictions (typically from the MARC 856 field) are being HTML-escaped for public catalog display (https://bugs.launchpad.net/evergreen/+bug/2152786[Bug 2152786])
+* Filter carousel name (and override name) for display in the public catalog to avoid XSS. (https://bugs.launchpad.net/evergreen/+bug/2152785[Bug 2152785])
+* Adds HTML-escaping of bookbag names and descriptions in KPAC and public catalog to avoid security issue. (https://bugs.launchpad.net/evergreen/+bug/2152784[Bug 2152784])
+* Avoids LDAP login logic errors and attacks. (https://bugs.launchpad.net/evergreen/+bug/2152783[Bug 2152783])
+* Default to localhost-only connections for the PBX mediator. (https://bugs.launchpad.net/evergreen/+bug/2152782[Bug 2152782])
+* Avoid injection opportunity in patron searches. (https://bugs.launchpad.net/evergreen/+bug/2152781[Bug 2152781])
+* Fixes potential injection opportunity. (https://bugs.launchpad.net/evergreen/+bug/2152780[Bug 2152780])
+* Fixes an issue where RESTful API rendered responses may not be rendered correctly and quiets an uninitialized value warning. (https://bugs.launchpad.net/evergreen/+bug/2153806[Bug 2153806])
+* Fix a data type mismatch error when logging out of the RESTful API using application/json Accept header. (https://bugs.launchpad.net/evergreen/+bug/2153793[Bug 2153793])
+* Fixes bug that caused patron search results to always be sorted primarily by penalties. (https://bugs.launchpad.net/evergreen/+bug/2152781[Bug 2152781])
+* Ports the pending patron interface to Angular. (https://bugs.launchpad.net/evergreen/+bug/2146953[Bug 2146953])
+* Angular circulation: make patron summary and sidebar sticky. (https://bugs.launchpad.net/evergreen/+bug/2140606[Bug 2140606])
+* EDI message send and receive via SFTP now honors the port specification in the hostname, if supplied.  Example: sftp://host.domain.tld:2222. (https://bugs.launchpad.net/evergreen/+bug/2154387[Bug 2154387])
+* Restore the Photo URL and Patron Preferred Language fields in the Angular patron registration and edit interface, and display the patron photo and preferred language in the patron summary. (https://bugs.launchpad.net/evergreen/+bug/2088319[Bug 2088319])
+* Make automated Angular tests more reliable. (https://bugs.launchpad.net/evergreen/+bug/2156670[Bug 2156670])
+* Don't use a cached version of a print template if a newer once is available. (https://bugs.launchpad.net/evergreen/+bug/1958910[Bug 1958910])
+* Fixes Staff SSO redirect to 404. (https://bugs.launchpad.net/evergreen/+bug/2141953[Bug 2141953])
+* Resolves an issue installing prerequisites from the Comprehensive Perl Archive Network. (https://bugs.launchpad.net/evergreen/+bug/2158478[Bug 2158478])
+* Fixes an issue where SFTP login failures would cause the acquisitions EDI fetcher to get "stuck" and stop retrieving files. (https://bugs.launchpad.net/evergreen/+bug/2060702[Bug 2060702])
+* Provides default topic image if none specified. (https://bugs.launchpad.net/evergreen/+bug/2154503[Bug 2154503])
+* Enable/disable the Course Reserves - Reopen Selected button appropriately. (https://bugs.launchpad.net/evergreen/+bug/214460[Bug 214460])
+* Changes the Angular date/time picker to no longer automatically open its dropdown whenever the widget gets focus. (https://bugs.launchpad.net/evergreen/+bug/2150659[Bug 2150659])
+* Makes top navigational bar menu icons less intense. (https://bugs.launchpad.net/evergreen/+bug/1999408[Bug 1999408])
+* Included newly created copies in Holdings Editor filter. (https://bugs.launchpad.net/evergreen/+bug/2152257[Bug 2152257])
+* Fix error that occured when trying to edit or view more information about the "Available" status in the Item Status admin screen. (https://bugs.launchpad.net/evergreen/+bug/2151838[Bug 2151838])
+* Show confirmation toast when adding to record bucket from search (https://bugs.launchpad.net/evergreen/+bug/2145192[Bug 2145192])
+* Angular self-check now respects the email checkout receipts by default setting. (https://bugs.launchpad.net/evergreen/+bug/2134541[Bug 2134541])
+* Creates an admin interface for Call Number Classifications (https://bugs.launchpad.net/evergreen/+bug/787162[Bug 787162])
+* Updates documentation description and note for Auto-Override Permitted Hold Blocks (Patrons). (https://bugs.launchpad.net/evergreen/+bug/1658173[Bug 1658173])
+* Adds mention of 'Hide the Clear These Holds button' to basic_holds.adoc
+* Adds Staff Catalog Visible to describing_your_organization.adoc
+* Adds 'Hide the Clear These Holds button' to librarysettings.adoc
+* Adds staff.search global flags to table in global_flags.adoc
+* Updates info on Other Settings tab in my_account.adoc
+* Updates to using_the_public_access_catalog.adoc
+* Updates docs for part hold menu, hold group functionality
+* Adds Angular grid info to staff_client-column_filters.adoc including update for print/download menu options disabling when there are no grid results
+* Updates to staff_portal_page.adoc
+* Updates image & tag in circing_uncataloged_materials.adoc
+* Updates kids_opac.adoc, including updated screenshots
+* Removes quotation marks from titles in course details page. (https://bugs.launchpad.net/evergreen/+bug/1909015[Bug 1909015])
+* Update documentation and YAOUS group for circ.holds.calculated_age_proximity. (https://bugs.launchpad.net/evergreen/+bug/2146576[Bug 2146576])
+* Changes "Request Items" to "Place Hold" in Item Status. (https://bugs.launchpad.net/evergreen/+bug/1839883[Bug 1839883])
+* Add a new flag to edi_order_pusher.pl to provide the earliest PO activation date that should be processed. (https://bugs.launchpad.net/evergreen/+bug/1911786[Bug 1911786])
+* Fix glitch in record buckets favoriting feature (https://bugs.launchpad.net/evergreen/+bug/2115505[Bug 2115505])
+* Fixes Carousels interface for two or more staff members administering Carousels from personal buckets. (https://bugs.launchpad.net/evergreen/+bug/2146852[Bug 2146852])
+* Hides "fines accruing" in OPAC when fines are no longer accruing. (https://bugs.launchpad.net/evergreen/+bug/2147229[Bug 2147229])
+* Staff client patron summary displays full library name when workstation preference for full name is selected. (https://bugs.launchpad.net/evergreen/+bug/2131268[Bug 2131268])
+* Staff client patron summary displays full library name when workstation preference for full name is selected. (https://bugs.launchpad.net/evergreen/+bug/2131268[Bug 2131268])
+* Adds a confirmation dialog box allowing user to continue/cancel deletion. (https://bugs.launchpad.net/evergreen/+bug/1972925[Bug 1972925])
+* Run automated perl live tests regularly. (https://bugs.launchpad.net/evergreen/+bug/2141836[Bug 2141836])
+* Check every profile for edit permissions so the Angular patron editor save button isn't disabled incorrectly. (https://bugs.launchpad.net/evergreen/+bug/2081327[Bug 2081327])
+* Refreshes the Angular staff splash page with a more compact, tile-based layout that improves scanability and touch friendliness while preserving existing link behavior. (https://bugs.launchpad.net/evergreen/+bug/2162156[Bug 2162156])
+* Restores descending sort order to Holdings Editor parts drop down. (https://bugs.launchpad.net/evergreen/+bug/2037674[Bug 2037674])
+* Fix new search button in Angular patron interface. (https://bugs.launchpad.net/evergreen/+bug/2161145[Bug 2161145])
+* Limit OPAC StackMap loading to pages with holdings tables to reduce unnecessary DOM polling overhead. (https://bugs.launchpad.net/evergreen/+bug/2162846[Bug 2162846])
+* Fix a stray gap below the footer on public catalog search results pages. (https://bugs.launchpad.net/evergreen/+bug/2164784[Bug 2164784])
+* Fixes hint_opt_in_check JOIN logic for event_output columns (https://bugs.launchpad.net/evergreen/+bug/2144042[Bug 2144042])
+* Adds Angular version of Create New MARC Record page (https://bugs.launchpad.net/evergreen/+bug/2093133[Bug 2093133])
+* Updates instances of "checkin" and "check-in" to "check In" for patrons, staff and documentation. (https://bugs.launchpad.net/evergreen/+bug/1853064[Bug 1853064])
+* Restore the missing Patron Alerts Stop page in Angular circulation. (https://bugs.launchpad.net/evergreen/+bug/2149847[Bug 2149847])
+* opensrf.xml -> open-ils.search block now has the missing cache_timeout setting for reference. Default has always been 300 seconds. (https://bugs.launchpad.net/evergreen/+bug/2165411[Bug 2165411])
+* Fix case sensitivity filters on the holdings template grid. (https://bugs.launchpad.net/evergreen/+bug/2165427[Bug 2165427])
+* Consistent styling of grid actions when right-clicking on the grid vs. opening the Actions menu. (https://bugs.launchpad.net/evergreen/+bug/2157992[Bug 2157992])
+* Adds a badge displayingn the Monograph Parts count to the Bibliographic Record Summary. (https://bugs.launchpad.net/evergreen/+bug/2137263[Bug 2137263])
+* The public catalog language picker is now a drop-down list, so the footer no longer grows with each language a site offers. (https://bugs.launchpad.net/evergreen/+bug/2138520[Bug 2138520])
+* Add a Notes column to holds grids. (https://bugs.launchpad.net/evergreen/+bug/2156819[Bug 2156819])
+* Restore "Share Depth" dropdown menu in AngularJS interfaces. (https://bugs.launchpad.net/evergreen/+bug/2114860[Bug 2114860])
+* Refactor angular admin screens to use newer Angular features (https://bugs.launchpad.net/evergreen/+bug/2152797[Bug 2152797])
+* Add the ability to add notes while placing a hold in the staff catalog. (https://bugs.launchpad.net/evergreen/+bug/1774237[Bug 1774237])
+* Correct typo on Retrieve Authority Record by ID screen. (https://bugs.launchpad.net/evergreen/+bug/2167372[Bug 2167372])
+* Display circulation modifier in the In-House Use grid. (https://bugs.launchpad.net/evergreen/+bug/2162373[Bug 2162373])
+* Skips printing a receipt when patrons log out of the Angular selfcheck without checking out items. (https://bugs.launchpad.net/evergreen/+bug/2127102[Bug 2127102])
+* Fix authority propagation bug related to repeated subfield codes with different values. (https://bugs.launchpad.net/evergreen/+bug/2147195[Bug 2147195])
+* Add Save & Open button when registering new patrons. (https://bugs.launchpad.net/evergreen/+bug/1895205[Bug 1895205])
+* Fix adding holdings with autogenerated barcodes. (https://bugs.launchpad.net/evergreen/+bug/2163798[Bug 2163798])
+* Fixes spelling of "version". (https://bugs.launchpad.net/evergreen/+bug/2131933[Bug 2131933])
+* Improves KPAC topic tile search location scoping. (https://bugs.launchpad.net/evergreen/+bug/2154502[Bug 2154502])
+* The Angular patron bills interface now honors the Disable Patron Credit and Uncheck Bills and Unfocus Payment Box library settings, focusing the correct control each time the Bills tab is activated. (https://bugs.launchpad.net/evergreen/+bug/2089063[Bug 2089063])
+* Removes unused 'Hard stalling interval' library setting. (https://bugs.launchpad.net/evergreen/+bug/1916297[Bug 1916297])
+* Directly manage OpenSRF connections used by the OpenAPI infrastructure. (https://bugs.launchpad.net/evergreen/+bug/2169755[Bug 2169755])
+
+== Acknowledgments ==
+The Evergreen project would like to acknowledge the following
+organizations that commissioned developments in this release of
+Evergreen:
+
+* C/W MARS
+* Kenton County Public Library
+* NOBLE
+* PaILS
+
+
+We would also like to thank the following individuals who contributed
+code, translations, documentations patches and tests to this release of
+Evergreen:
+
+* Andrea Buntz Neiman
+* Bill Erickson
+* Brian Kennedy
+* Carol Witt
+* Chris Amorosi
+* Chris Sharp
+* Christine Burns
+* Dan Briem
+* Elizabeth Davis
+* Eva Cerniňáková
+* Galen Charlton
+* Garry Collum
+* Gina Monti
+* Hannah Darcy
+* Hannah Margolis
+* Ian Skelskey
+* JC Landry
+* Jane Sandberg
+* Jason Boyer
+* Jason Stephenson
+* Jeff Davis
+* Jennifer Davis
+* Jennifer Pringle
+* John Amundson
+* Josh Stompro
+* Kathy Lussier
+* Katie Greenleaf Martin
+* Ken Cox
+* Llewellyn Marshall
+* Mary Llewellyn
+* Michele Morgan
+* Mike Rylander
+* Millissa Macomber
+* Stephanie Leary
+* Steven Mayo
+* Susan Morrison
+* Tara Kunesh
+* Terran McCanna
+* Tiffany Little
+
+We also thank the following organizations whose employees contributed
+patches:
+
+* BC Libraries Cooperative
+* Bibliomation
+* C/W MARS
+* Equinox Online Initiave
+* KCLS
+* Kenton County Public Library
+* NOBLE
+* PaILS
+* PINES
+
+We regret any omissions.  If a contributor has been inadvertently
+missed, please open a bug at http://bugs.launchpad.net/evergreen/
+with a correction.
+
