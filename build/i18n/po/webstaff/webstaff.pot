@@ -137,8 +137,8 @@ msgstr ""
 msgid "%1 %2 %3&#13;&#10;%4 %5&#13;&#10;%6, %7 %8"
 msgstr ""
 
-#. ("{{patron().pref_prefix() || patron().prefix()}}", "{{patron().pref_family_name() || patron().family_name()}}", "{{patron().pref_first_given_name() || patron().first_given_name()}}", "{{patron().pref_second_given_name() || patron().second_given_name()}}", "{{patron().pref_suffix() || patron().suffix()}}")
 #. ("{{patron().prefix()}}", "{{patron().family_name()}}", "{{patron().first_given_name()}}", "{{patron().second_given_name()}}", "{{patron().suffix()}}")
+#. ("{{patron().pref_prefix() || patron().prefix()}}", "{{patron().pref_family_name() || patron().family_name()}}", "{{patron().pref_first_given_name() || patron().first_given_name()}}", "{{patron().pref_second_given_name() || patron().second_given_name()}}", "{{patron().pref_suffix() || patron().suffix()}}")
 #: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:118 ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:184
 msgid "%1 %2, %3 %4 %5"
 msgstr ""
@@ -230,8 +230,8 @@ msgstr ""
 msgid "%1, %2"
 msgstr ""
 
-#. ("{{lname}}", "{{fname}}", "{{mname}}")
 #. ("{{patron().pref_family_name() || patron().family_name()}}", "{{patron().pref_first_given_name() || patron().first_given_name()}}", "{{patron().pref_second_given_name() || patron().second_given_name()}}")
+#. ("{{lname}}", "{{fname}}", "{{mname}}")
 #: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:80 ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:50
 msgid "%1, %2 %3"
 msgstr ""
@@ -1346,9 +1346,9 @@ msgstr ""
 msgid "Barcode: %1 Check In date: %2"
 msgstr ""
 
-#. ("{{checkout.barcode}}", "{{checkout.due_date | date:\"short\"}}")
-#. ("{{checkout.copy.barcode}}", "{{checkout.circ.due_date | egDueDate:$root.egDateAndTimeFormat:checkout.circ.circ_lib:checkout.circ.duration}}")
 #. ("{{renewal.copy.barcode}}", "{{renewal.circ.due_date | egDueDate:$root.egDateAndTimeFormat:renewal.circ.circ_lib:renewal.circ.duration}}")
+#. ("{{checkout.copy.barcode}}", "{{checkout.circ.due_date | egDueDate:$root.egDateAndTimeFormat:checkout.circ.circ_lib:checkout.circ.duration}}")
+#. ("{{checkout.barcode}}", "{{checkout.due_date | date:\"short\"}}")
 #: ../../Open-ILS/src/templates/staff/share/print_templates/t_checkout.tt2:47 ../../Open-ILS/src/templates/staff/share/print_templates/t_items_out.tt2:43 ../../Open-ILS/src/templates/staff/share/print_templates/t_offline_renew.tt2:16 ../../Open-ILS/src/templates/staff/share/print_templates/t_renew.tt2:27
 msgid "Barcode: %1 Due: %2"
 msgstr ""
@@ -2290,7 +2290,7 @@ msgstr ""
 msgid "Circ Library"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/admin/serials/t_template_list.tt2:43 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:191 ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:176 ../../Open-ILS/src/templates/staff/circ/holds/t_pull_list.tt2:168
+#: ../../Open-ILS/src/templates/staff/admin/serials/t_template_list.tt2:43 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:191 ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:176 ../../Open-ILS/src/templates/staff/circ/holds/t_pull_list.tt2:168 ../../Open-ILS/src/templates/staff/circ/in_house_use/index.tt2:103
 msgid "Circ Modifier"
 msgstr ""
 
@@ -3937,11 +3937,11 @@ msgstr ""
 msgid "Edited on %1 by %2"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/reg_actions.tt2:44
+#: ../../Open-ILS/src/templates/staff/circ/patron/reg_actions.tt2:49
 msgid "Editing users in this group is disallowed"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/reg_actions.tt2:41
+#: ../../Open-ILS/src/templates/staff/circ/patron/reg_actions.tt2:46
 msgid "Editing your own account is disallowed"
 msgstr ""
 
@@ -8305,7 +8305,7 @@ msgstr ""
 msgid "Print Letter"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/circ/in_house_use/index.tt2:109
+#: ../../Open-ILS/src/templates/staff/circ/in_house_use/index.tt2:110
 msgid "Print List"
 msgstr ""
 
@@ -9337,12 +9337,16 @@ msgstr ""
 msgid "Save"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/reg_actions.tt2:37
+#: ../../Open-ILS/src/templates/staff/circ/patron/reg_actions.tt2:42
 msgid "Save & Clone"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:128 ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:165 ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:60
 msgid "Save & Exit"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/circ/patron/reg_actions.tt2:37
+msgid "Save & Open"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/share/t_autogrid.tt2:183
