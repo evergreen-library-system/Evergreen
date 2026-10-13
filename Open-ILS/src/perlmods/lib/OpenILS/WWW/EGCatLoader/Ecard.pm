@@ -117,7 +117,7 @@ sub _set_ecard_context {
     $ctx->{ecard}->{renew_enabled} = $U->is_true($U->ou_ancestor_setting_value(
         $ctx_org, 'opac.ecard_renewal_enabled'
     ));
-    $ctx->{ecard}->{byass_renew_checks} = $U->is_true($U->ou_ancestor_setting_value(
+    $ctx->{ecard}->{bypass_renew_checks} = $U->is_true($U->ou_ancestor_setting_value(
         $ctx_org, 'opac.ecard_renewal_bypass_checks'
     ));
     $ctx->{ecard}->{quipu_id} = $U->ou_ancestor_setting_value(
