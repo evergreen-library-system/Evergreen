@@ -10,7 +10,7 @@ import {StoreService} from './store.service';
 declare var js2JSON: (jsThing: any) => string;
 declare var OpenSRF: any; // creating sessions
 
-interface PcrudReqOps {
+export interface PcrudReqOps {
     authoritative?: boolean;
     anonymous?: boolean;
     idlist?: boolean;

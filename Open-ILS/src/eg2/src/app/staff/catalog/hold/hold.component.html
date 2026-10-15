@@ -276,32 +276,7 @@
 
 <div class="row pt-3 ms-1 me-1 d-flex">
   <div class="">
-    <span class="fw-bold" i18n>Placing
-      @if (holdType === 'M') {
-METARECORD
-}
-      @if (holdType === 'T') {
-TITLE
-}
-      @if (holdType === 'V') {
-CALL NUMBER
-}
-      @if (holdType === 'F') {
-FORCE ITEM
-}
-      @if (holdType === 'C') {
-ITEM
-}
-      @if (holdType === 'R') {
-RECALL
-}
-      @if (holdType === 'I') {
-ISSUANCE
-}
-      @if (holdType === 'P') {
-PARTS
-}
-      hold on record(s)
+    <span class="fw-bold" i18n>Placing {{holdType | holdTypeName | uppercase}} hold on record(s)
     </span>
   </div>
   <div class="flex-1"> </div>

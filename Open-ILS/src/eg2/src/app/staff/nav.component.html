@@ -329,6 +329,16 @@
                 <span class="material-icons" aria-hidden="true">view_list</span>
                 <span i18n>Holds Pull List</span>
               </a>
+              <a class="dropdown-item" ngbDropdownItem
+                routerLinkActive="active"
+                ariaCurrentWhenActive="page" routerLink="/staff/circ/holds/hold-groups"
+                (click)="isMenuCollapsed = true"
+                (keydown.space)="isMenuCollapsed = true"
+                (keydown.enter)="isMenuCollapsed = true"
+              >
+                <span class="material-icons" aria-hidden="true">list</span>
+                <span i18n>Hold Groups</span>
+              </a>
               <a class="dropdown-item" ngbDropdownItem routerLinkActive="active"
                 ariaCurrentWhenActive="page" routerLink="/staff/circ/renew"
                 (click)="isMenuCollapsed = true"
