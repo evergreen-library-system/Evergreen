@@ -177,7 +177,7 @@ export class BillsComponent implements OnInit, AfterViewInit {
 
         this.settingsReady =
             this.pcrud.retrieve('mowbus', this.patronId).toPromise()
-        // Summary will be null for users with no billing history.
+            // Summary will be null for users with no billing history.
                 .then(summary => this.summary = summary || this.idl.create('mowbus'))
                 .then(_ => this.loadSettings());
     }
