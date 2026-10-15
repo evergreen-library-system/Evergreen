@@ -43,6 +43,7 @@ export class MockGridComponent {
     @Input() dataSource: any;
     @Input() sortable: boolean;
 
+    // eslint-disable-next-line @angular-eslint/no-output-on-prefix
     @Output() onRowActivate = new EventEmitter<any>();
 
     context = {
