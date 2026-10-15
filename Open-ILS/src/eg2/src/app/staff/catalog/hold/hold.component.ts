@@ -30,6 +30,8 @@ import { DateSelectComponent } from '@eg/share/date-select/date-select.component
 import { FormsModule } from '@angular/forms';
 import {HoldNoteDialogComponent} from '@eg/staff/share/holds/note-dialog.component';
 import { SnippetPipe } from '../../../share/pipes/snippet_pipe';
+import { HoldTypeNamePipe } from '@eg/staff/share/holds/hold-type-name.pipe';
+
 
 export class HoldRequestStats {
     private successes = 0;
@@ -127,7 +129,8 @@ class HoldContext {
         RouterModule,
         WorkLogStringsComponent,
         HoldNoteDialogComponent,
-        SnippetPipe
+        SnippetPipe,
+        HoldTypeNamePipe
     ]
 })
 export class HoldComponent implements OnInit, OnDestroy {

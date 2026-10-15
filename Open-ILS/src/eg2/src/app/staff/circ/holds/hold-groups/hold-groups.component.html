@@ -1,0 +1,32 @@
+<ul ngbNav #holdGroupTabs="ngbNav" class="nav-tabs" [(activeId)]="activeTab">
+  <li role="presentation" (click)="tabChange('list')" [ngbNavItem]="'list'">
+    <a ngbNavLink role="tab" i18n>Hold Groups</a>
+    <ng-template ngbNavContent>
+      <eg-hold-group-list
+        (tabAndBucketChange)="tabAndBucketChange($event)"
+      ></eg-hold-group-list>
+    </ng-template>
+  </li>
+  <li role="presentation" [ngbNavItem]="'users'" [disabled]="!hg.userBucket()">
+    <button ngbNavLink role="tab" type="button" (click)="tabChange('users')" i18n>Users{{
+      hg.userBucket() ? ' (' + hg.userBucket()?.items().length + ')' : ''
+      }}
+    </button>
+    <ng-template ngbNavContent>
+      <eg-hold-group-users></eg-hold-group-users>
+    </ng-template>
+  </li>
+  <li role="presentation" [ngbNavItem]="'events'" [disabled]="!hg.userBucket()">
+    <button type="button" ngbNavLink role="tab" (click)="tabChange('events')" i18n>
+      Hold Events
+      @if (hg.userBucket() && eventCount() >= 0) {
+        ({{eventCount()}})
+      }
+    </button>
+    <ng-template ngbNavContent>
+      <eg-hold-group-events></eg-hold-group-events>
+    </ng-template>
+  </li>
+</ul>
+
+<div [ngbNavOutlet]="holdGroupTabs" class="p-0"></div>

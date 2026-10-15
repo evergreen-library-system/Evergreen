@@ -7687,14 +7687,14 @@ SELECT  usr,
 	<class id="cub" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="container::user_bucket" oils_persist:tablename="container.user_bucket" reporter:label="User Bucket">
 		<fields oils_persist:primary="id" oils_persist:sequence="container.user_bucket_id_seq">
 			<field name="items" oils_persist:virtual="true" reporter:datatype="link"/>
-			<field name="btype" reporter:datatype="text"/>
-			<field name="id" reporter:datatype="id"/>
-			<field name="name" reporter:datatype="text" oils_obj:required="true"/>
-			<field name="description" reporter:datatype="text"/>
-			<field name="owner" reporter:datatype="link" oils_obj:required="true"/>
-			<field name="pub" reporter:datatype="bool"/>
-			<field name="create_time" reporter:datatype="timestamp"/>
-			<field name="owning_lib" reporter:datatype="org_unit"/>
+			<field name="btype" reporter:label="Container Type" reporter:datatype="text"/>
+			<field name="id" reporter:label= "id" reporter:datatype="id"/>
+			<field name="name" reporter:label="Name" reporter:datatype="text" oils_obj:required="true"/>
+			<field name="description" reporter:label="Description" reporter:datatype="text"/>
+			<field name="owner" reporter:label="Owner" reporter:datatype="link" oils_obj:required="true"/>
+			<field name="pub" reporter:label="Patron Visible" reporter:datatype="bool"/>
+			<field name="create_time" reporter:label="Create Time" reporter:datatype="timestamp"/>
+			<field name="owning_lib" reporter:label="Owning Library" reporter:datatype="org_unit"/>
 		</fields>
 		<links>
 			<link field="owning_lib" reltype="has_a" key="id" map="" class="aou"/>
@@ -8001,13 +8001,13 @@ SELECT  usr,
 	</class>
 	<class id="abhe" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="action::batch_hold_event" oils_persist:tablename="action.batch_hold_event" reporter:label="Hold Group Event">
 		<fields oils_persist:primary="id" oils_persist:sequence="action.batch_hold_event_id_seq">
-			<field name="id" reporter:datatype="id"/>
-			<field name="staff" reporter:datatype="link" oils_obj:required="true"/>
-			<field name="bucket" reporter:datatype="link" oils_obj:required="true"/>
-			<field name="target" reporter:datatype="int" oils_obj:required="true"/>
-			<field name="hold_type" reporter:datatype="text"/>
-			<field name="run_date" reporter:datatype="timestamp"/>
-			<field name="cancelled" reporter:datatype="timestamp"/>
+			<field name="id" reporter:label="ID" reporter:datatype="id"/>
+			<field name="staff" reporter:label="Staff" reporter:datatype="link" oils_obj:required="true"/>
+			<field name="bucket" reporter:label="Bucket" reporter:datatype="link" oils_obj:required="true"/>
+			<field name="target" reporter:label="Title" reporter:datatype="int" oils_obj:required="true"/>
+			<field name="hold_type" reporter:label="Hold Type" reporter:datatype="text"/>
+			<field name="run_date" reporter:label="Create Date" reporter:datatype="timestamp"/>
+			<field name="cancelled" reporter:label="Hold Cancel Time" reporter:datatype="timestamp"/>
 			<field name="mappings" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
 		<links>

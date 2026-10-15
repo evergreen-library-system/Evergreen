@@ -291,7 +291,8 @@
         [cellTemplate]="barcodeTmpl" [sortable]="false" [multiSortable]="false">
       </eg-grid-column>
       <eg-grid-column i18n-label label="Pickup Library" path='pl_shortname'></eg-grid-column>
-      <eg-grid-column i18n-label label="Hold Type" path='hold_type'></eg-grid-column>
+      <eg-grid-column i18n-label label="Hold Type" path='hold_type' [cellTemplate]="holdTypeTmpl"></eg-grid-column>
+      <ng-template #holdTypeTmpl let-hold="row">{{hold.hold_type | holdTypeName}}</ng-template>
       <eg-grid-column i18n-label label="Potential Items" path='potentials' datatype="int">
       </eg-grid-column>
       <eg-grid-column i18n-label label="Request Date" path='request_time'

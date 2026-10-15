@@ -6,7 +6,9 @@
   </div>
   <div class="modal-body">
     @if (!dialogBodyTemplate) {
-      <p>{{dialogBody}}</p>
+      <ng-content>
+        <p>{{dialogBody}}</p>
+      </ng-content>
     }
     @if (dialogBodyTemplate) {
       <ng-container *ngTemplateOutlet="dialogBodyTemplate"></ng-container>
