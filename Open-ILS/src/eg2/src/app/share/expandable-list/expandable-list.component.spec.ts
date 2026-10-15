@@ -6,27 +6,27 @@ describe('ExpandableListComponent', () => {
     let component: ExpandableListComponent;
     let fixture: ComponentFixture<ExpandableListComponent>;
 
-    beforeEach(async () => {
-        await TestBed.configureTestingModule({
+    beforeEach(() => {
+        TestBed.configureTestingModule({
             imports: [ ExpandableListComponent ],
             providers: [provideRouter([])]
-        })
-            .compileComponents();
+        });
 
         fixture = TestBed.createComponent(ExpandableListComponent);
         component = fixture.componentInstance;
-        component.entries = [
+        fixture.componentRef.setInput('entries', [
             {text: 'Espeon'},
             {text: 'Flareon'},
             {text: 'Glaceon'},
             {text: 'Leafeon'},
             {text: 'Umbreon'}
-        ];
-        component.entryLimit = 3;
+        ]);
+        fixture.componentRef.setInput('entryLimit', 3);
         fixture.detectChanges();
     });
 
     it('begins as collapsed', () => {
+        console.log(fixture.nativeElement);
         const listItems = fixture.nativeElement.querySelectorAll('li');
         expect(listItems.length).toEqual(4); // three entries plus a "More" button
         expect(listItems[0].textContent).toEqual('Espeon');
@@ -34,7 +34,7 @@ describe('ExpandableListComponent', () => {
         expect(listItems[2].textContent).toEqual('Glaceon');
 
         expect(listItems[3].querySelector('button')).toBeTruthy();
-        expect(listItems[3].textContent).toContain('Read more');
+        expect(listItems[3].textContent).toContain('See all');
     });
 
     it('can be expanded', () => {
@@ -50,7 +50,7 @@ describe('ExpandableListComponent', () => {
         expect(listItems[4].textContent).toEqual('Umbreon');
 
         expect(listItems[5].querySelector('button')).toBeTruthy();
-        expect(listItems[5].textContent).toContain('Read less');
+        expect(listItems[5].textContent).toContain('See fewer');
     });
 
     it('sets focus on the content half a second after click', fakeAsync(() => {
@@ -62,7 +62,7 @@ describe('ExpandableListComponent', () => {
     }));
 
     it('shows all entries -- no buttons -- if entry limit is null', () => {
-        component.entryLimit = null;
+        fixture.componentRef.setInput('entryLimit', null);
         fixture.detectChanges();
 
         const listItems = fixture.nativeElement.querySelectorAll('li');
@@ -77,13 +77,13 @@ describe('ExpandableListComponent', () => {
     });
 
     it('can accept a character limit', () => {
-        component.entries = [
+        fixture.componentRef.setInput('entries', [
             {text: 'Elphaba Thropp'},
             {text: 'Fiyero Tigelaar'},
             {text: 'Glinda Upland'},
             {text: 'Nessarose Thropp'},
-        ];
-        component.characterLimit = 10;
+        ]);
+        fixture.componentRef.setInput('characterLimit', 10);
         fixture.detectChanges();
 
         expect(fixture.nativeElement.innerText).toContain('Elphaba…');
@@ -94,7 +94,7 @@ describe('ExpandableListComponent', () => {
         expect(fixture.nativeElement.innerText).not.toContain('Tigelaar');
         expect(fixture.nativeElement.innerText).not.toContain('Upland');
 
-        component.characterLimit = 50;
+        fixture.componentRef.setInput('characterLimit', 50);
         fixture.detectChanges();
 
         expect(fixture.nativeElement.innerText).toContain('Elphaba Thropp');
@@ -102,7 +102,7 @@ describe('ExpandableListComponent', () => {
         expect(fixture.nativeElement.innerText).toContain('Glinda Upland');
         expect(fixture.nativeElement.innerText).not.toContain('…');
 
-        component.characterLimit = null;
+        fixture.componentRef.setInput('characterLimit', null);
         fixture.detectChanges();
 
         expect(fixture.nativeElement.innerText).toContain('Elphaba Thropp');
@@ -111,25 +111,25 @@ describe('ExpandableListComponent', () => {
         expect(fixture.nativeElement.innerText).not.toContain('…');
     });
     it('does not show expand button if entry limit is the same as the number of items', () => {
-        component.entryLimit = 1;
-        component.entries = [
+        fixture.componentRef.setInput('entryLimit', 1);
+        fixture.componentRef.setInput('entries', [
             {text: '317 pages'},
-        ];
+        ]);
         fixture.detectChanges();
 
         expect(fixture.nativeElement.querySelector('button')).toBeFalsy();
     });
     it('displays links when routerLink and queryParams are set and displayLink is true', () => {
-        component.entries = [
+        fixture.componentRef.setInput('entries', [
             {text: 'Garbonzo', routerLink: '/eg2/staff/garbonzo', queryParams: {}, displayLink: true},
-        ];
+        ]);
         fixture.detectChanges();
         expect(fixture.nativeElement.querySelector('a')).toBeTruthy();
     });
     it('does not display links when displayLink is false', () => {
-        component.entries = [
+        fixture.componentRef.setInput('entries', [
             {text: 'Garbonzo', routerLink: '/eg2/staff/garbonzo', displayLink: false},
-        ];
+        ]);
         fixture.detectChanges();
         expect(fixture.nativeElement.querySelector('a')).toBeFalsy();
     });

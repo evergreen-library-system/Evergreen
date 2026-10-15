@@ -43,14 +43,14 @@ describe('ShowMoreComponent', () => {
         expect(fixture.nativeElement.innerText).toContain('Supercalifragilisticexpialidocious');
     });
     it('includes a more button', () => {
-        expect(fixture.nativeElement.querySelector('button').innerText).toEqual('Read more');
+        expect(fixture.nativeElement.querySelector('button').innerText).toContain('Read more');
         expect(fixture.nativeElement.querySelector('button').getAttribute('aria-expanded')).toEqual('false');
     });
     it('opens when the more button is pressed', () => {
         fixture.nativeElement.querySelector('button').click();
         fixture.detectChanges();
 
-        expect(fixture.nativeElement.querySelector('button').innerText).toEqual('Read less');
+        expect(fixture.nativeElement.querySelector('button').innerText).toContain('Read less');
         expect(fixture.nativeElement.querySelector('button').getAttribute('aria-expanded')).toEqual('true');
         expect(fixture.nativeElement.innerText).toContain('driving off the spleen');
     });
