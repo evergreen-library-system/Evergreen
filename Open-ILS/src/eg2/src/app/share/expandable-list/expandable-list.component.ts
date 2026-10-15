@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { Component, computed, ElementRef, input, signal, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ShowMoreComponent } from '../show-more/show-more.component';
 import { Params } from '@angular/router';
@@ -20,32 +20,30 @@ const HALF_SECOND = 500;
     styleUrls: ['./expandable-list.component.css']
 })
 export class ExpandableListComponent {
-    @Input() entries: ExpandableListEntry[];
-    @Input() characterLimit: number;
-    @Input() entryLimit: number;
-    @Input() inline: boolean;
-    @ViewChild('list') list!: ElementRef;
+    protected characterLimit = input<number>();
+    protected entries = input<ExpandableListEntry[]>();
+    protected entryLimit = input<number>();
+    protected inline = input<boolean>();
 
-    collapsed = true;
+    @ViewChild('list') protected list!: ElementRef;
 
-    get truncatedEntries(): ExpandableListEntry[] {
-        if (this.shouldTruncate) {
-            return this.entries?.slice(0, this.entryLimit) || [];
+    protected collapsed = signal(true);
+
+    protected shouldTruncate = computed(() => this.entryLimit() && this.entryLimit() < this.entries().length);
+    protected truncatedEntries = computed(() => {
+        if (this.shouldTruncate()) {
+            return this.entries()?.slice(0, this.entryLimit()) || [];
         }
-        return this.entries;
-    }
-
-    get shouldTruncate(): boolean {
-        return this.entryLimit && this.entryLimit < this.entries.length;
-    }
+        return this.entries();
+    });
 
     expand(): void {
-        this.collapsed = false;
+        this.collapsed.set(false);
         this.focusList();
     }
 
     collapse(): void {
-        this.collapsed = true;
+        this.collapsed.set(true);
         this.focusList();
     }
 

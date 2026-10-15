@@ -1,4 +1,3 @@
-<li>
 @if (shouldTruncate() && collapsed()) {
     @if (displayLink() && routerLink() && queryParams()) {
       <a #collapsedText [routerLink]="routerLink()" [queryParams]="queryParams()">{{ text() | snippet:characterLimit() }}</a>
@@ -26,4 +25,3 @@
         type="button"><span class="expandy-text btn-expandy">Read less</span><span class="material-icons mat-icon-in-button" aria-hidden="true">expand_less</span></button></div>
     }
 }
-</li>
