@@ -55,7 +55,7 @@ describe('BillsComponent', () => {
             ]
         }).overrideComponent(BillsComponent, {
             add: {
-                imports: [CurrencyPipe], 
+                imports: [CurrencyPipe],
                 schemas: [CUSTOM_ELEMENTS_SCHEMA] },
             remove: { imports: [StaffCommonModule, AddBillingDialogComponent, CreditCardDialogComponent] }
         }).compileComponents();
