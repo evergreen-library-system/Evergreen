@@ -1,6 +1,6 @@
 BEGIN;
 
--- SELECT evergreen.upgrade_deps_block_check('xxxx', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1532', :eg_version);
 
 DO $$ BEGIN
 CREATE TYPE config.ui_record_display_entry_type AS ENUM ('search_result', 'staff_view');
