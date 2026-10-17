@@ -1,7 +1,7 @@
 = Standing Penalties =
 :toc:
 
-Evergreen includes twenty-one stock penalties, and adminstrators can create other penalty types if needed. Each penalty can be configured to block zero, one, or several circulation actions.
+Evergreen includes twenty-one stock penalties, and administrators can create other penalty types if needed. Each penalty can be configured to block zero, one, or several circulation actions.
 
 Penalties can be viewed and edited by navigating to *Administration -> Local Administration -> Standing Penalties.
 
@@ -53,7 +53,7 @@ For information on how to manually apply penalties to a patron account, see the 
 
 The following circulation actions can be blocked by penalties:
 
-* *CIRC* - Users cannot check out items, except items which may fill a hold. Items which can fill a hold are subjec to the FULFILL action, which is listed below and can be blocked separately.
+* *CIRC* - Users cannot check out items, except items which may fill a hold. Items which can fill a hold are subject to the FULFILL action, which is listed below and can be blocked separately.
 * *HOLD* - Users cannot place holds on items.
 * *RENEW* - Users cannot renew items.
 * *CAPTURE* - This penalty prevents a user's holds from being captured. If the _HOLD_ penalty has not been applied to a user's account, then the patron can place a hold, but the targeted item will not appear on a pull list and will not be
@@ -150,5 +150,5 @@ To set up a custom penalty, take the following steps:
 . Create a new Standing Penalty Type as instructed above.
 . Navigate to *Administration -> Local Administration -> Group Penalty Thresholds* and establish a threshold, organizational unit, and group for your penalty.
 .. See the documentation on xref:local_admin:group_penalty_thresholds.adoc[Group Penalty Thresholds] for more information.
-. Navigate to *Administration -> Local Administration -> Library Settings, and location the Library Setting for the sytem penalty you want to replace with your custom penalty.
+. Navigate to *Administration -> Local Administration -> Library Settings, and location the Library Setting for the system penalty you want to replace with your custom penalty.
 . Select the name of your custom penalty from the dropdown, and select the organizational unit to which the custom penalty should apply.

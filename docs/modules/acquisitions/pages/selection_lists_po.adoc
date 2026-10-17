@@ -438,7 +438,7 @@ You can print your worksheet by selecting *Print Worksheet*. Select *Return* to 
 
 If you select the hyperlinked title of a line item, you will open an interface that shows you the bibliographic details of the line item. This is presented as a tabbed interface:
 
-image::selection_lists_po/acq_line_item_bib_info.png[Line Item Bibliographic Infomation]
+image::selection_lists_po/acq_line_item_bib_info.png[Line Item Bibliographic Information]
 
 * _Attributes_ shows a read-only summary of the MARC information using labels
 * _MARC View_ shows a read-only summary of the MARC information displaying MARC fields and subfields in a flat text display
@@ -607,7 +607,7 @@ image::selection_lists_po/acq_delete_selection_list.png[Action: Delete Selected]
 +
 . You will be presented with a confirmation dialog listing your chosen selection list(s).
 +
-image::selection_lists_po/acq_delete_selection_list_modal.png[Delte Selection List Modal]
+image::selection_lists_po/acq_delete_selection_list_modal.png[Delete Selection List Modal]
 +
 . Select *Delete* to complete the deletion process. Select *Cancel* to exit without deleting.
 
@@ -1083,7 +1083,7 @@ If you wish to make edits to the record before importing, select _Edit then Impo
 .. In the _Add to Purchase Order_ modal, select _Continue_.
 .. You will get a confirmation that the purchase order was updated, and you will have the option to _Go to Purchase Order_ to open the purchase order in a new browser tab, or close the modal and go _Back to results_.
 
-NOTE: Certain charachters, like $ (dollar sign), that appear in a MARC record can cause import errors in this interface. Remove the $ charachter(s) from your MARC record and reattempt the import.
+NOTE: Certain characters, like $ (dollar sign), that appear in a MARC record can cause import errors in this interface. Remove the $ character(s) from your MARC record and reattempt the import.
 
 Additional documentation can be seen elsewhere:
 
