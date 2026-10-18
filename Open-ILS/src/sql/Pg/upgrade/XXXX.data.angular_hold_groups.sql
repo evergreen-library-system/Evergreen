@@ -10,5 +10,6 @@ VALUES (
         'Grid Config: eg.grid.cat.bucket.batch_hold.event_holds',
         'cwst', 'label'
     )
-)
+);
+
 COMMIT;
