@@ -1,19 +1,27 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { HoldGroupUsersComponent } from './hold-group-users.component';
-import { GridDataSource } from '@eg/share/grid/grid';
-import { Pager } from '@eg/share/util/pager';
-import {of} from 'rxjs';
+import { HoldGroupsService } from '../hold-groups.service';
+import { MockGenerators } from 'test_data/mock_generators';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { MockComboboxComponent, MockGridComponent } from 'test_data/mock-components';
+import { FormsModule } from '@angular/forms';
 
 describe('HoldGroupUsersComponent', () => {
     let component: HoldGroupUsersComponent;
     let fixture: ComponentFixture<HoldGroupUsersComponent>;
 
-    beforeEach(async () => {
-        await TestBed.configureTestingModule({
-            imports: [HoldGroupUsersComponent]
-        })
-            .compileComponents();
+    beforeEach(() => {
+        TestBed.configureTestingModule({
+            imports: [HoldGroupUsersComponent],
+            providers: MockGenerators.providers([
+                {provide: HoldGroupsService, useValue: MockGenerators.holdGroupsService()}
+            ])
+        });
+
+        TestBed.overrideComponent(HoldGroupUsersComponent, {set: {
+            imports: [MockGridComponent, FormsModule, MockComboboxComponent],
+            schemas: [NO_ERRORS_SCHEMA]
+        }});
 
         fixture = TestBed.createComponent(HoldGroupUsersComponent);
         component = fixture.componentInstance;
@@ -24,16 +32,7 @@ describe('HoldGroupUsersComponent', () => {
         expect(component).toBeTruthy();
     });
 
-    fit('should disable the actions if no rows are selected', () => {
-        expect(component.grid).toBeTruthy();
-
-        const dataSource = new GridDataSource();
-        dataSource.getRows = (pager: Pager, sort) => {
-            return of([]);
-        };
-        component.grid.dataSource = dataSource;
-        component.grid.context.initData();
-
-
+    it('should disable the actions if no rows are selected', () => {
+        expect(component.hasNoSelectedUsers()).toBeTrue();
     });
 });

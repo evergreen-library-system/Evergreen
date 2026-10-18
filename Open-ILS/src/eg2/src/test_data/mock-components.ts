@@ -3,15 +3,20 @@
 // but you don't want to have to re-implement all of
 // the child's logic in your test
 
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, forwardRef, Input, Output } from '@angular/core';
+import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { ComboboxEntry } from '@eg/share/combobox/combobox.component';
 
 @Component({
     selector: 'eg-combobox',
-    template: ''
+    template: '',
+    providers: [{provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => MockComboboxComponent), multi: true}]
 })
 export class MockComboboxComponent {
     @Input() entries: ComboboxEntry[];
+    writeValue() {}
+    registerOnChange() {}
+    registerOnTouched() {}
 }
 
 @Component({
@@ -47,6 +52,7 @@ export class MockGridComponent {
     @Output() onRowActivate = new EventEmitter<any>();
 
     context = {
+        getSelectedRows: () => [],
         rowSelector: {
             selected: () => []
         }

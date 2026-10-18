@@ -26734,6 +26734,13 @@ VALUES (
         'Grid Config: cat.vandelay.queue.bib.record_matches',
         'cwst', 'label'
     )
+), (
+    'eg.grid.cat.bucket.batch_hold.event_holds', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.cat.bucket.batch_hold.event_holds',
+        'Grid Config: eg.grid.cat.bucket.batch_hold.event_holds',
+        'cwst', 'label'
+    )
 );
 
 INSERT INTO config.settings_group (name, label) VALUES
