@@ -2064,7 +2064,7 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
      'Allow updates to call number classification names, normalizers, and fields.', 'ppl', 'description')),
  ( 696, 'ADMIN_RECORD_DISPLAY', oils_i18n_gettext(696,
      'Allow modifying the display of catalog records in certain interfaces', 'ppl', 'description')),
- ( 694, 'PURGE_USER', oils_i18n_gettext(694,
+ ( 697, 'PURGE_USER', oils_i18n_gettext(697,
      'Allow a user to delete (purge) another user', 'ppl', 'description'))
 ;
 

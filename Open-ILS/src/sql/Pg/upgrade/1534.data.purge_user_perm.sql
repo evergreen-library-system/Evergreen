@@ -1,9 +1,9 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('xxxx', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1534', :eg_version);
 
 INSERT INTO permission.perm_list (id, code, description) VALUES
-(694, 'PURGE_USER', oils_i18n_gettext(694,
+(697, 'PURGE_USER', oils_i18n_gettext(697,
     'Allow a user to delete (purge) another user', 'ppl', 'description'));
 
 -- Grant the PURGE_USER permission to any group that has DELETE_USER.
