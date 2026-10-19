@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('xxxx', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1535', :eg_version);
 
 DROP RULE IF EXISTS money_payment_view_update ON money.payment_view;
 
