@@ -1,4 +1,4 @@
-
+BEGIN;
 INSERT INTO config.ui_record_display_entry
     (type, content_type, page_col, col_pos, field, display_as_link)
     SELECT 'staff_view'::config.ui_record_display_entry_type, 'field'::config.ui_record_display_entry_content_type, 1, 1, id, TRUE FROM config.metabib_field WHERE field_class = 'title' AND name = 'proper' UNION
@@ -34,3 +34,4 @@ INSERT INTO config.ui_record_display_entry
     SELECT 'search_result'::config.ui_record_display_entry_type, 'field'::config.ui_record_display_entry_content_type, 1, 6, id, FALSE FROM config.metabib_field WHERE field_class = 'identifier' AND name = 'isbn' UNION
     SELECT 'search_result'::config.ui_record_display_entry_type, 'field'::config.ui_record_display_entry_content_type, 1, 7, id, FALSE FROM config.metabib_field WHERE field_class = 'identifier' AND name = 'upc' UNION
     SELECT 'search_result'::config.ui_record_display_entry_type, 'field'::config.ui_record_display_entry_content_type, 1, 8, id, FALSE FROM config.metabib_field WHERE field_class = 'identifier' AND name = 'issn';
+COMMIT;
