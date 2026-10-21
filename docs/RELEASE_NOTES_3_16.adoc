@@ -3,6 +3,76 @@
 :numbered:
 :toclevels: 3
 
+== Evergreen 3.16.12 ==
+
+This release contains bug fixes and documentation fixes improving on Evergreen 3.16.11.
+
+=== Upgrade Notes ===
+
+The following items require running a database upgrade script:
+
+* Fixes authority propagation bug related to repeated subfield codes with different values. (https://bugs.launchpad.net/evergreen/+bug/2147195[Bug 2147195])
+
+=== Administration ===
+
+* Directly manage OpenSRF connections used by the OpenAPI infrastructure. (https://bugs.launchpad.net/evergreen/+bug/2169755[Bug 2169755])
+* Removes deleted items from reshelver's consideration (https://bugs.launchpad.net/evergreen/+bug/2169044[Bug 2169044])
+
+=== Cataloging ===
+
+* Fixes authority propagation bug related to repeated subfield codes with different values. (https://bugs.launchpad.net/evergreen/+bug/2147195[Bug 2147195])
+* Fixes actions to add call numbers and items from Item Status. (https://bugs.launchpad.net/evergreen/+bug/2001702[Bug 2001702])
+
+=== Circulation ===
+
+* Adds record summary and missing cancel hold details to the Angular patron interface. (https://bugs.launchpad.net/evergreen/+bug/2153961[Bug 2153961])
+
+=== Documentation ===
+
+* Updates self-check setup docs with permissions, override events feature, and Angular Self check url.
+
+
+=== Public Catalog ===
+
+* Improves KPAC topic tile search location scoping. (https://bugs.launchpad.net/evergreen/+bug/2154502[Bug 2154502])
+
+
+
+=== Staff Interface ===
+
+* Save recent catalog searches without requiring a refresh. (https://bugs.launchpad.net/evergreen/+bug/2168851[Bug 2168851])
+
+
+=== Acknowledgements ===
+
+We would like to thank the following individuals who contributed code, testing, documentation, and patches to the 3.16.12 point release of Evergreen:
+
+* Blake Graham-Henderson
+* Carol Witt
+* Chris Sharp
+* Dan Briem
+* Debbie Luchenbill
+* Garry Collum
+* JC Landry
+* Jane Sandberg
+* Jason Stephenson
+* Josh Stompro
+* Michele Morgan
+* Mike Rylander
+* Terran McCanna
+
+Release Team:
+
+* Andrea Buntz Neiman
+* Blake Graham-Henderson
+* Gina Monti
+* Martha Driscoll
+* Michele Morgan
+
+The following organizations sponsored development in this release:
+
+* Kenton Count Public Library
+
 
 == Evergreen 3.16.11 ==
 
