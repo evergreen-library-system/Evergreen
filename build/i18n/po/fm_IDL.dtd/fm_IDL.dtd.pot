@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2026-07-22 14:04:24-0400\n"
+"POT-Creation-Date: 2026-10-21 15:41:43-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -3094,11 +3094,11 @@ msgid "Best-Hold Sort Order"
 msgstr ""
 
 #: field.cbho.pprox.label:3300
-msgid "Capture Lib to Pickup Lib Proximity"
+msgid "Item Capture Lib to Hold Pickup Lib Proximity"
 msgstr ""
 
 #: field.cbho.hprox.label:3301
-msgid "Circ Lib to Request Lib Proximity"
+msgid "Item Owning Lib to Hold Pickup Lib Proximity"
 msgstr ""
 
 #: field.cbho.owning_lib_to_home_lib_prox.label:3302
