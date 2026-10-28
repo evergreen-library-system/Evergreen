@@ -1,4 +1,4 @@
-= Evergreen 3.18 Release Notes =
+= Evergreen 3.18-rc Release Notes =
 :toc:
 :numbered:
 :toclevels: 3
@@ -8,6 +8,42 @@
 == New Features ==
 
 :leveloffset: +2
+
+= Administration =
+
+== Customizable record display in the staff catalog ==
+
+This version of Evergreen allows administrators to customize the layout, data, and display for the staff catalog
+search results and the staff view tab of a record.
+
+To use a field in either of these displays, there are two prerequisites:
+
+* The field needs to be configured as a display field in Administration ->
+  Server Administration -> MARC Search/Facet Fields.
+* The field needs to be configured in the config.display_field_map database
+  table.
+
+=== Customizing a view ===
+
+Customizing a view requires the _ADMIN_RECORD_DISPLAY_ permission globally.  To customize a view:
+
+. Before customizing a view, choose a record from your database that you would like to test your customizations on.  Identify its database ID, you will need this later.
+. Go to Administration -> Server Administration
+. Select MARC Record Display
+. Choose the interface you'd like to customize
+. Reorder, add, remove, and edit the interface to meet the needs of your Evergreen installation
+. Scroll down to the Preview section
+. Enter the record database ID you identified earlier.
+. Press the Preview button.
+. Make any adjustments needed, and check your preview again.  Continue this process until you are satisfied with your customizations.
+
+=== Translating field labels ===
+
+Translating field labels in both interfaces -- which before could be achieved through
+the community POEditor or otherwise editing the .xmb file -- is now possible through
+the Administration -> Server Administration -> MARC Search/Facet Fields interface.  To
+modify or add a translation, edit the field in question, and press the "Translate" button
+next to the Label input.
 
 
 = Cataloging =
@@ -106,6 +142,22 @@ reduce the balance are visually distinguished from charges.
 The Owning Library in the Item Summary is now linked to the corresponding
 library information page.
 
+== PURGE_USER Permission ==
+
+A new permission, `PURGE_USER`, is added to give finer control over
+who can purge users, i.e. delete and overwrite the patron information,
+versus delete users, i.e. set the user's `deleted` field to a true
+value.  The new permission allows deleting and overwriting the user's
+information.  The current `DELETE_USER` permission allows setting of
+the deleted field when a user is deleted.
+
+The previous permission schema used `DELETE_USER` for both.
+
+=== Upgrade Notes ===
+
+The database upgrade adds the `PURGE_USER` permission to any permission
+group that currently has the `DELETE_USER` permission.  If you wish to avoid
+this, modify the upgrade script.
 
 = Integrations =
 
@@ -203,6 +255,29 @@ The `sort` takes one of the options from the following list as the key:
 See `perldoc OpenILS::Search::Biblio` for documentation of
 `open-ils.search.biblio.multiclass` and
 `open-ils.search.biblio.multiclass.query`.
+
+= OPAC =
+
+== Carousel Access via Iframe ==
+
+The earlier method of embedding carousels in iframes for use on other web sites which broke
+in Evergreen 3.16 has been restructured and improved so that a specific carousel may be
+selected for display rather than showing all carousels associated with the selected location.
+
+If you wish to embed a carousel in another web site, you can do so using an iframe and the
+'/eg/opac/carousel' URL path with specified parameters:
+
+* carousel_loc - (required) the id of the org unit that the carousel(s) is associated with 
+* carousel_id - (optional) the id of a specific carousel at the carousel_loc, if none
+is specified, all carousels for that location will display
+* nofooter=nofooter - (recommended) hides the page footer
+
+Example:
+
+----
+<iframe src="https://<mydomain>/eg/opac/carousel?carousel_loc=3&carousel_id=4&nofooter=nofooter"
+title="Carousel" width="100%" height="300" frameborder="0" scrolling="no"></iframe>
+----
 
 
 = Miscellaneous =
@@ -327,6 +402,30 @@ See `perldoc OpenILS::Search::Biblio` for documentation of
 * The Angular patron bills interface now honors the Disable Patron Credit and Uncheck Bills and Unfocus Payment Box library settings, focusing the correct control each time the Bills tab is activated. (https://bugs.launchpad.net/evergreen/+bug/2089063[Bug 2089063])
 * Removes unused 'Hard stalling interval' library setting. (https://bugs.launchpad.net/evergreen/+bug/1916297[Bug 1916297])
 * Directly manage OpenSRF connections used by the OpenAPI infrastructure. (https://bugs.launchpad.net/evergreen/+bug/2169755[Bug 2169755])
+* Fixes broken series links in OPAC. (https://bugs.launchpad.net/evergreen/+bug/1750025[Bug 1750025])
+* Add Action Trigger JSON examples to the Documentation (https://bugs.launchpad.net/evergreen/+bug/1844807[Bug 1844807])
+* Add a new library setting, `opac.ecard_renewal_bypass_checks` / Bypass checks of eCard renewals that allows the Quipu eRENEW form to be embedded in outside the Evergreen OPAC and remain able to post renewals. (https://bugs.launchpad.net/evergreen/+bug/2146568[Bug 2146568])
+* Improvements to the Circulation Modifier Administration form. (https://bugs.launchpad.net/evergreen/+bug/1860466[Bug 1860466])
+* Updates label to read "View Holdings For:" as requested by DIG. (https://bugs.launchpad.net/evergreen/+bug/2130840[Bug 2130840])
+* Patron status badges retain their semantic colors in the staff client dark theme. (https://bugs.launchpad.net/evergreen/+bug/2166425[Bug 2166425])
+* Save recent catalog searches without requiring a refresh. (https://bugs.launchpad.net/evergreen/+bug/2168851[Bug 2168851])
+* Prevents magical statuses from being used in Item Alerts. (https://bugs.launchpad.net/evergreen/+bug/2161007[Bug 2161007])
+* Fix actions to add call numbers and items from Item Status. (https://bugs.launchpad.net/evergreen/+bug/2001702[Bug 2001702])
+* Display cancel clause correctly for canceled hold details in the experimental Angular circulation intrerface. (https://bugs.launchpad.net/evergreen/+bug/2153959[Bug 2153959])
+* Fix default cancel cause reason behavior in Angular circulation. (https://bugs.launchpad.net/evergreen/+bug/2153955[Bug 2153955])
+* Hold Groups ported to Angular. (https://bugs.launchpad.net/evergreen/+bug/2128783[Bug 2128783])
+* Add record summary and missing cancel hold details to the Angular patron interface. (https://bugs.launchpad.net/evergreen/+bug/2153961[Bug 2153961])
+* Confirming a bill refund now issues it immediately rather than requiring staff to also click Apply Payment. The Select All Bills and Select All Refunds toolbar buttons toggle to Deselect All when everything in that category is already selected. Refund is disabled when the selection mixes refundable and non-refundable bills. Fixes a doubled minus sign on refund lines in the Billing Statement. (https://bugs.launchpad.net/evergreen/+bug/1810429[Bug 1810429])
+* Fixes typo in serials receiving interface. (https://bugs.launchpad.net/evergreen/+bug/2121535[Bug 2121535])
+* The OPAC footer now shows the current library's contact information, hours, upcoming closures, and quick links on every page. (https://bugs.launchpad.net/evergreen/+bug/2167618[Bug 2167618])
+* Fixes copy order bug in spine label printing. (https://bugs.launchpad.net/evergreen/+bug/1845556[Bug 1845556])
+* Makes the Calculate grouping subtotals, Excel Output, (https://bugs.launchpad.net/evergreen/+bug/2086231[Bug 2086231])
+* Updates 2 labels. 1) pprox label "Capture Lib to Pickup Lib Proximity" has been changed to "Item Capture Lib to Hold Pickup Lib Proximity" 2) hprox label "Circ Lib to Request Lib Proximity" has been changed to "Item Owning Lib to Hold Pickup Lib Proximity". (https://bugs.launchpad.net/evergreen/+bug/1261531[Bug 1261531])
+* Allow payment notes to be edited in the bill history payment details grid. (https://bugs.launchpad.net/evergreen/+bug/2162951[Bug 2162951])
+* Fixes a potential login failure for users whose barcode does not match their username when logging in with the barcode. (https://bugs.launchpad.net/evergreen/+bug/2171184[Bug 2171184])
+* Removes deleted items from reshelver's consideration (https://bugs.launchpad.net/evergreen/+bug/2169044[Bug 2169044])
+* New permission for specifically deleting an inactive card (https://bugs.launchpad.net/evergreen/+bug/2142036[Bug 2142036])
+* Fix handling of PO Names with forward slashes in EDI message line item segments. (https://bugs.launchpad.net/evergreen/+bug/2159641[Bug 2159641])
 
 == Acknowledgments ==
 The Evergreen project would like to acknowledge the following
@@ -344,13 +443,17 @@ code, translations, documentations patches and tests to this release of
 Evergreen:
 
 * Andrea Buntz Neiman
+* Andrew Tonn
 * Bill Erickson
+* Blake Graham-Henderson
 * Brian Kennedy
 * Carol Witt
 * Chris Amorosi
 * Chris Sharp
 * Christine Burns
+* Christine Morgan
 * Dan Briem
+* Debbie Luchenbill
 * Elizabeth Davis
 * Eva Cerniňáková
 * Galen Charlton
@@ -359,13 +462,17 @@ Evergreen:
 * Hannah Darcy
 * Hannah Margolis
 * Ian Skelskey
+* IanSkelskey
 * JC Landry
 * Jane Sandberg
 * Jason Boyer
 * Jason Stephenson
 * Jeff Davis
+* Jeff Godin
+* Jeffrey Luu
 * Jennifer Davis
 * Jennifer Pringle
+* Jessica Woolford
 * John Amundson
 * Josh Stompro
 * Kathy Lussier
@@ -376,6 +483,8 @@ Evergreen:
 * Michele Morgan
 * Mike Rylander
 * Millissa Macomber
+* Ranelle Irwin
+* Sarah Cruz
 * Stephanie Leary
 * Steven Mayo
 * Susan Morrison
@@ -392,6 +501,7 @@ patches:
 * Equinox Online Initiave
 * KCLS
 * Kenton County Public Library
+* MOBIUS
 * NOBLE
 * PaILS
 * PINES
