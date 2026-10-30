@@ -22,6 +22,9 @@ use MIME::Base64;
 
 my $AC = 'OpenILS::WWW::AddedContent';
 
+# Copied from OpenLibrary Added Content module:
+my $blank_img = 'http://localhost/opac/images/blank.png';
+
 sub new {
     my( $class, $args ) = @_;
     $class = ref $class || $class;
@@ -123,7 +126,21 @@ sub fetch_cover {
     my $url = sprintf("%s/Enrichment/Cover?isn=%s\&size=%s", $self->base_url,
                       $key, $size);
     my @headers = $self->authorization;
-    return $AC->get_url($url, \@headers);
+    my $response;
+    local $@;
+    eval {
+        $response = $AC->get_url($url, \@headers);
+        # Loral can send a HTTP 200 with an empty body when they have
+        # no cover image.
+        unless ($response->content) {
+            $response = $AC->get_url($blank_img);
+        }
+    };
+    # If we get an error retrieving a cover image.
+    if ($@) {
+        $response = $AC->get_url($blank_img);
+    }
+    return $response;
 }
 
 sub fetch_content {
