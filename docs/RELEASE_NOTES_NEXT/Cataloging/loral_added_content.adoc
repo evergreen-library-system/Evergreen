@@ -44,6 +44,15 @@ ID and password:
 Finally, you will need to restart Evergreen and Apache for the module
 to be activated in your catalog.
 
+NOTES:
+
+1.  If you have Apache set to redirect HTTP to HTTPS for all URLs, you
+will either need to disable this or add an exception to skip it for
+the /opac/images directory.
+
+2. If you are using Anubis, you will need to bypass Anubis for HTTP
+connections to the /opac/images location.
+
 === Acknowledgments ===
 
 Development of the Loral for Libraries added content provider module
