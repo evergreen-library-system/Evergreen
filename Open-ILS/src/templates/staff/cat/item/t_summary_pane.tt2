@@ -220,9 +220,16 @@
       <button class="btn btn-default" ng-click="addCopyAlerts(copy.id())" >[% l('Add') %]</button>
       <button class="btn btn-default" ng-disabled="!copy_alert_count" ng-click="manageCopyAlerts(copy.id())" >[% l('Manage') %]</button>
     </div>
+    <div class="flex-cell">[% l('Item Notes') %]</div>
+    <div class="flex-cell">
+      <button class="btn btn-default"
+        ng-click="manageCopyNotes(copy.id())">[% l('Add') %]
+      </button>
+      <button class="btn btn-default" ng-disabled="!copy_note_count"
+        ng-click="manageCopyNotes(copy.id())" >[% l('Manage') %]
+      </button>
+    </div>
     <!-- hack to adjust positioning -->
-    <div class="flex-cell"></div>
-    <div class="flex-cell"></div>
     <div class="flex-cell"></div>
     <div class="flex-cell"></div>
     <div class="flex-cell"></div>

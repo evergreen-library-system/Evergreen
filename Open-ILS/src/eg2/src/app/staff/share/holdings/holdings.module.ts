@@ -20,6 +20,7 @@ import {CopyAlertManagerDialogComponent} from './copy-alert-manager.component';
 import {CopyAlertsPageComponent} from './copy-alerts-page.component';
 import {CopyNotesEditComponent} from './copy-notes-edit/copy-notes-edit.component';
 import { FmRecordEditorModule } from '@eg/share/fm-editor/fm-editor.module';
+import { CopyNotesPageComponent } from './copy-notes-page.component';
 
 @NgModule({
     imports: [
@@ -29,6 +30,7 @@ import { FmRecordEditorModule } from '@eg/share/fm-editor/fm-editor.module';
         CopyAlertManagerDialogComponent,
         CopyAlertsDialogComponent,
         CopyAlertsPageComponent,
+        CopyNotesPageComponent,
         CopyNotesDialogComponent,
         CopyNotesEditComponent,
         CopyTagsDialogComponent,
@@ -60,7 +62,8 @@ import { FmRecordEditorModule } from '@eg/share/fm-editor/fm-editor.module';
         TransferHoldingsComponent,
         BatchItemAttrComponent,
         CopyAlertManagerDialogComponent,
-        CopyAlertsPageComponent
+        CopyAlertsPageComponent,
+        CopyNotesPageComponent
     ],
     providers: [
         HoldingsService

@@ -3203,6 +3203,49 @@ sub mk_copy_query {
         }
     };
 
+    if ($is_staff) {
+        # Include if the copy has notes for staff client grids.
+        # Instead of aggregating in the top-level select, use a
+        # join filter to avoid forcing other cols into GROUP BY.
+        $query->{select}->{acpn} = [
+            {
+                transform => 'num_nonnulls',
+                column => 'id',
+                alias => 'has_notes'
+            }
+        ];
+        push @{$query->{from}->{acp}}, {
+            acpn => {
+                type => 'left',
+                field => 'owning_copy',
+                fkey => 'id',
+                filter => {
+                    id => {
+                        in => {
+                            select => {
+                                acpn => [
+                                    {
+                                        transform => 'min',
+                                        column => 'id',
+                                        aggregate => 1
+                                    }
+                                ]
+                            },
+                            from => 'acpn',
+                            where => {
+                                owning_copy => {
+                                    '=' => {
+                                        '+acp' => 'id'
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        };
+    }
+
     # Unsure if we want these in the shared function, leaving here for now
     unshift(@{$query->{order_by}},
         { class => "aou", field => 'id',
