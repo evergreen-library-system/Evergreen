@@ -77,6 +77,8 @@
     label="[% l('Replace Barcodes') %]"></eg-grid-action>
   <eg-grid-action handler="selectedHoldingsCopyAlertsEdit" group="[% l('Edit') %]"
     label="[% l('Manage Item Alerts') %]"></eg-grid-action>
+  <eg-grid-action handler="selectedHoldingsCopyNotesEdit" group="[% l('Edit') %]"
+    label="[% l('Manage Item Notes') %]"></eg-grid-action>
 
   <eg-grid-action handler="changeItemOwningLib" group="[% l('Transfer') %]"
     label="[% l('Items to Previously Marked Library') %]"></eg-grid-action>
@@ -171,6 +173,15 @@
   <eg-grid-field label="[% l('Alerts') %]" path="copy_alert_count" handlers="gridCellHandlers" visible compiled>
     {{item['copy_alert_count']}}
     <button ng-disabled="item['copy_alert_count'] <= 0" class="btn btn-sm btn-default" ng-click="col.handlers.copyAlertsEdit(item['id'])">[% l('Manage') %]</button>
+  </eg-grid-field>
+  <eg-grid-field label="[% l('Notes') %]" path="notes_count"
+    handlers="gridCellHandlers" hidden compiled>
+    {{item['notes_count']}}
+    <button class="btn btn-sm btn-default"
+      ng-disabled="item['notes_count'] <= 0"
+      ng-click="col.handlers.copyNotesEdit(item['id'])">
+      [% l('Manage') %]
+    </button>
   </eg-grid-field>
   <eg-grid-field label="[% l('Inventory Date') %]"        path="latest_inventory.inventory_date" datatype="timestamp"></eg-grid-field>
   <eg-grid-field label="[% l('Inventory Workstation') %]" path="latest_inventory.inventory_workstation.name"></eg-grid-field>

@@ -1685,6 +1685,12 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
         window.open(`/eg2/staff/cat/item/alerts?copyIds=${copyIds}`, '_blank');
     }
 
+    service.manage_copy_notes = function(item_ids) {
+        // Instead of opening modal, open new tab with Angular route
+        const copyIds = item_ids.join(',');
+        window.open(`/eg2/staff/cat/item/notes?copyIds=${copyIds}`, '_blank');
+    }
+
     // alert when copy location alert_message is set.
     // This does not affect processing, it only produces a click-through
     service.handle_checkin_loc_alert = function(evt, params, options) {
