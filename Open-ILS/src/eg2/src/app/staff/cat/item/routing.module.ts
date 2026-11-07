@@ -2,6 +2,7 @@ import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {MarkItemMissingPiecesComponent} from './missing-pieces.component';
 import {CopyAlertsPageComponent} from '@eg/staff/share/holdings/copy-alerts-page.component';
+import {CopyNotesPageComponent} from '@eg/staff/share/holdings/copy-notes-page.component';
 
 const routes: Routes = [{
     path: 'missing_pieces',
@@ -9,6 +10,9 @@ const routes: Routes = [{
 }, {
     path: 'missing_pieces/:id',
     component: MarkItemMissingPiecesComponent
+}, {
+    path: 'notes',
+    component: CopyNotesPageComponent
 }, {
     path: 'alerts',
     component: CopyAlertsPageComponent

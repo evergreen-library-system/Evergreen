@@ -718,11 +718,22 @@ function($scope , $q , $window , $location , $timeout , egCore , egNet , egGridD
         });
     }
 
+    $scope.selectedHoldingsCopyNotesEdit = function(items) {
+        var copy_ids = [];
+        angular.forEach(items, function(item) {
+            if (item.id) copy_ids.push(item.id);
+        });
+        egCirc.manage_copy_notes(copy_ids);
+    }
+
     $scope.gridCellHandlers = {};
     $scope.gridCellHandlers.copyAlertsEdit = function(id) {
         egCirc.manage_copy_alerts([id]).then(function() {
             // update grid items?
         });
+    };
+    $scope.gridCellHandlers.copyNotesEdit = function(id) {
+        egCirc.manage_copy_notes([id]);
     };
 
     $scope.showBibHolds = function () {
@@ -860,6 +871,7 @@ function($scope , $q , egGridDataProvider , $location , $routeParams , $timeout 
         $scope.copy_alert_count = itemSvc.copy.copy_alerts().filter(function(aca) {
             return !aca.ack_time();
         }).length;
+        $scope.copy_note_count = itemSvc.copy.notes().length;
         $scope.recordId = itemSvc.copy.call_number().record().id();
         $scope.args.recordId = $scope.recordId;
         $scope.args.cnId = itemSvc.copy.call_number().id();
@@ -888,6 +900,7 @@ function($scope , $q , egGridDataProvider , $location , $routeParams , $timeout 
             $scope.copy_alert_count = itemSvc.copy.copy_alerts().filter(function(aca) {
                 return !aca.ack_time();
             }).length;
+            $scope.copy_note_count = itemSvc.copy.notes().length;
             $scope.recordId = itemSvc.copy.call_number().record().id();
             $scope.args.recordId = $scope.recordId;
             $scope.args.cnId = itemSvc.copy.call_number().id();
@@ -926,6 +939,7 @@ function($scope , $q , egGridDataProvider , $location , $routeParams , $timeout 
                 return !aca.ack_time();
             }).length;
 console.debug($scope.copy_alert_count);
+            $scope.copy_note_count = copy.notes().length;
             $scope.recordId = copy.call_number().record().id();
             $scope.args.recordId = $scope.recordId;
             $scope.args.cnId = itemSvc.copy.call_number().id();
@@ -1360,6 +1374,13 @@ console.debug($scope.copy_alert_count);
     }
     $scope.manageCopyAlerts = function(copy_id) {
         egCirc.manage_copy_alerts([copy_id]).then(function() {
+            // force a refresh
+            loadCopy($scope.copy.barcode()).then(loadTabData);
+        });
+    }
+
+    $scope.manageCopyNotes = function(copy_id) {
+        egCirc.manage_copy_notes([copy_id]).then(function() {
             // force a refresh
             loadCopy($scope.copy.barcode()).then(loadTabData);
         });
