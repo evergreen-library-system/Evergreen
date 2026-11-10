@@ -1,4 +1,4 @@
-= Requesting items =
+= Hold policies =
 :toc:
 
 Hold policies determine how library materials can be requested. This is based on data such as the requesting user, item formats, and associated org units. 
