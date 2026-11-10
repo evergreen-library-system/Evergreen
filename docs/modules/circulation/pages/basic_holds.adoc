@@ -208,6 +208,17 @@ is selected. Enter the message, then click _OK_.
 +
 image::basic_holds/holds-managing-15.JPG[holds-managing-15]
 
+As of 3.18, hold notes can also be added from the Place Hold screen:
+
+. After clicking *Place Hold*, an *Add Note* button will appear next to the "Hold Succeeded" message.
++
+image::basic_holds/place_hold_add_note.png[""]
++
+. Click *Add Note* and fill out the required fields.
++
+image::basic_holds/place_hold_create_note.png[Add Hold Note form]
+
+A Hold Note column is available to display in hold interface grids.
 
 === Displaying Queue Position ===
 
