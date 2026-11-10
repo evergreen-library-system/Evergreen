@@ -25,6 +25,7 @@
 *** xref:admin:autorenewals.adoc[Autorenewals in Evergreen]
 *** xref:admin_initial_setup:hard_due_dates.adoc[Hard due dates]
 *** xref:admin:circing_uncataloged_materials.adoc[Circulating Uncataloged Materials]
+*** xref:admin:hold_policies.adoc[Hold Policies]
 ** xref:admin:apache_rewrite_tricks.adoc[Apache Rewrite Tricks]
 ** xref:admin:apache_access_handler.adoc[Apache Access Handler Perl Module]
 ** xref:admin_initial_setup:authentication_proxy.adoc[Authentication Proxy]
