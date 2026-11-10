@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1537', :eg_version);
 
 -- OneClickdigital (later RBdigital) was discontinued in 2019; the client
 -- integration and its library settings have been removed.
