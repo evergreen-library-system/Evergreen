@@ -1,6 +1,5 @@
-import { Component, Input, ViewChild, OnInit, AfterViewInit, inject } from '@angular/core';
+import { Component, Input, OnInit, AfterViewInit, viewChild } from '@angular/core';
 import {GridDataSource, GridCellTextGenerator} from '@eg/share/grid/grid';
-import {GridComponent} from '@eg/share/grid/grid.component';
 import {AdminPageComponent} from '@eg/staff/share/admin-page/admin-page.component';
 import {Pager} from '@eg/share/util/pager';
 import {IdlObject} from '@eg/core/idl.service';
@@ -31,13 +30,14 @@ export class FundingSourcesComponent extends AdminPageComponent implements OnIni
 
     @Input() startId: number;
 
-    @ViewChild('grid', { static: true }) grid: GridComponent;
-    @ViewChild('fundingSourceTransactionsDialog', { static: false })
-        fundingSourceTransactionsDialog: FundingSourceTransactionsDialogComponent;
-    @ViewChild('applyCreditDialog', { static: true }) applyCreditDialog: FmRecordEditorComponent;
-    @ViewChild('allocateToFundDialog', { static: true }) allocateToFundDialog: FmRecordEditorComponent;
-    @ViewChild('alertDialog', {static: false}) private alertDialog: AlertDialogComponent;
-    @ViewChild('confirmDel', { static: true }) confirmDel: ConfirmDialogComponent;
+    protected fundingSourceTransactionsDialog = viewChild.required<FundingSourceTransactionsDialogComponent>(
+        'fundingSourceTransactionsDialog'
+    );
+    protected applyCreditDialog = viewChild.required<FmRecordEditorComponent>('applyCreditDialog');
+    protected allocateToFundDialog = viewChild.required<FmRecordEditorComponent>('allocateToFundDialog');
+    protected confirmDel = viewChild.required<ConfirmDialogComponent>('confirmDel');
+
+    private alertDialog = viewChild.required<AlertDialogComponent>('alertDialog');
 
     cellTextGenerator: GridCellTextGenerator;
     notOneSelectedRow: (rows: IdlObject[]) => boolean;
@@ -150,12 +150,12 @@ export class FundingSourcesComponent extends AdminPageComponent implements OnIni
                 }, error: (err: unknown) => {}, complete: () => {
                     if (can) {
                         // eslint-disable-next-line rxjs-x/no-nested-subscribe
-                        this.confirmDel.open().subscribe(confirmed => {
+                        this.confirmDel().open().subscribe(confirmed => {
                             if (!confirmed) { return; }
                             super.deleteSelected([ rows[0] ]);
                         });
                     } else {
-                        this.alertDialog.open();
+                        this.alertDialog().open();
                     }
                 } }
             );
@@ -164,10 +164,10 @@ export class FundingSourcesComponent extends AdminPageComponent implements OnIni
 
     openTransactionsDialog(rows: IdlObject[], tab: string) {
         if (rows.length !== 1) { return; }
-        this.fundingSourceTransactionsDialog.fundingSourceId = rows[0].id();
-        this.fundingSourceTransactionsDialog.activeTab = tab;
-        this.fundingSourceTransactionsDialog.open({size: 'xl'}).subscribe(
-            { next: res => {}, error: (err: unknown) => {}, complete: () => this.grid.reload() }
+        this.fundingSourceTransactionsDialog().fundingSourceId = rows[0].id();
+        this.fundingSourceTransactionsDialog().activeTab = tab;
+        this.fundingSourceTransactionsDialog().open({size: 'xl'}).subscribe(
+            { next: res => {}, error: (err: unknown) => {}, complete: () => this.grid().reload() }
         );
     }
 
@@ -176,17 +176,17 @@ export class FundingSourcesComponent extends AdminPageComponent implements OnIni
         const fundingSourceId = rows[0].id();
         const credit = this.idl.create('acqfscred');
         credit.funding_source(fundingSourceId);
-        this.applyCreditDialog.defaultNewRecord = credit;
-        this.applyCreditDialog.mode = 'create';
-        this.applyCreditDialog.hiddenFieldsList = ['id', 'funding_source'];
-        this.applyCreditDialog.fieldOrder = 'amount,note,effective_date,deadline_date';
-        this.applyCreditDialog.open().subscribe(
+        this.applyCreditDialog().defaultNewRecord = credit;
+        this.applyCreditDialog().mode = 'create';
+        this.applyCreditDialog().hiddenFieldsList = ['id', 'funding_source'];
+        this.applyCreditDialog().fieldOrder = 'amount,note,effective_date,deadline_date';
+        this.applyCreditDialog().open().subscribe(
             { next: result => {
-                this.successString.current()
+                this.successString().current()
                     .then(str => this.toast.success(str));
-                this.grid.reload();
+                this.grid().reload();
             }, error: (error: unknown) => {
-                this.updateFailedString.current()
+                this.updateFailedString().current()
                     .then(str => this.toast.danger(str));
             } }
         );
@@ -198,18 +198,18 @@ export class FundingSourcesComponent extends AdminPageComponent implements OnIni
         const allocation = this.idl.create('acqfa');
         allocation.funding_source(fundingSourceId);
         allocation.allocator(this.auth.user().id());
-        this.allocateToFundDialog.defaultNewRecord = allocation;
-        this.allocateToFundDialog.mode = 'create';
+        this.allocateToFundDialog().defaultNewRecord = allocation;
+        this.allocateToFundDialog().mode = 'create';
 
-        this.allocateToFundDialog.hiddenFieldsList = ['id', 'funding_source', 'allocator', 'create_time'];
-        this.allocateToFundDialog.fieldOrder = 'fund,amount,note';
-        this.allocateToFundDialog.open().subscribe(
+        this.allocateToFundDialog().hiddenFieldsList = ['id', 'funding_source', 'allocator', 'create_time'];
+        this.allocateToFundDialog().fieldOrder = 'fund,amount,note';
+        this.allocateToFundDialog().open().subscribe(
             { next: result => {
-                this.successString.current()
+                this.successString().current()
                     .then(str => this.toast.success(str));
-                this.grid.reload();
+                this.grid().reload();
             }, error: (error: unknown) => {
-                this.updateFailedString.current()
+                this.updateFailedString().current()
                     .then(str => this.toast.danger(str));
             } }
         );

@@ -503,6 +503,10 @@ function($scope,  $q , $location , $filter , egCore , egNet , egUser , egAlertDi
 
     egCore.hatch.getItem('eg.circ.patron.summary.collapse')
     .then(function(val) {$scope.collapsePatronSummary = Boolean(val)});
+
+    egCore.hatch.getItem('eg.orgselect.show_combined_names')
+    .then(function(val) {$scope.fullLibraryName = Boolean(val)});
+
 }])
 
 .controller('PatronBarcodeSearchCtrl',

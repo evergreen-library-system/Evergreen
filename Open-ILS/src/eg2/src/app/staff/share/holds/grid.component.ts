@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild, inject } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild, inject, WritableSignal, signal } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import {Observable, Observer, of, from, concatMap} from 'rxjs';
 import {IdlObject} from '@eg/core/idl.service';
@@ -31,6 +31,8 @@ import { GridModule } from '@eg/share/grid/grid.module';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { HoldDetailComponent } from './detail.component';
+import { ManageHoldNotesComponent } from './manage-hold-notes.component';
+import { HoldTypeNamePipe } from './hold-type-name.pipe';
 
 /** Holds grid with access to detail page and other actions */
 
@@ -54,7 +56,9 @@ import { HoldDetailComponent } from './detail.component';
         MarkMissingDialogComponent,
         OrgSelectComponent,
         ProgressDialogComponent,
-        RouterModule
+        RouterModule,
+        ManageHoldNotesComponent,
+        HoldTypeNamePipe
     ]
 })
 export class HoldsGridComponent implements OnInit {
@@ -116,6 +120,9 @@ export class HoldsGridComponent implements OnInit {
     // displaying holds for a specific patron vs. e.g. a specific title.
     @Input() patronFocused = false;
 
+    // A list of ids of specific holds (ahr) to show, ignoring most other filters
+    @Input() onlyTheseHolds: number[];
+
     mode: 'list' | 'detail' | 'manage' = 'list';
     initDone = false;
     holdsCount: number;
@@ -147,6 +154,7 @@ export class HoldsGridComponent implements OnInit {
     private cancelDialog: HoldCancelDialogComponent;
     @ViewChild('manageDialog', { static: true })
     private manageDialog: HoldManageDialogComponent;
+    @ViewChild('manageNotesDialog') private manageNotesDialog: ManageHoldNotesComponent;
     @ViewChild('uncancelDialog') private uncancelDialog: ConfirmDialogComponent;
     @ViewChild('copyLocationsDialog')
     private copyLocationsDialog: HoldCopyLocationsDialogComponent;
@@ -218,6 +226,8 @@ export class HoldsGridComponent implements OnInit {
 
     // Notify the caller the place hold button was clicked.
     @Output() placeHoldRequested: EventEmitter<void> = new EventEmitter<void>();
+
+    selectedHoldId: WritableSignal<number> = signal(null);
 
     constructor() {
         this.gridDataSource = new GridDataSource();
@@ -409,7 +419,7 @@ export class HoldsGridComponent implements OnInit {
 
     applyFilters(): any {
 
-        const filters: any = {};
+        let filters: any = {is_staff_request: 'true'};
 
         if (this.copyLocationIds.length) {
             filters['acpl.id'] = this.copyLocationIds;
@@ -475,13 +485,21 @@ export class HoldsGridComponent implements OnInit {
             filters.usr_id = this.patronId;
         }
 
+        // Override all the things if we only want holds with specific ids
+        if (this.onlyTheseHolds) {
+            filters = {
+                'h.id': this.onlyTheseHolds,
+                is_staff_request: 'true'
+            };
+        }
+
         return filters;
     }
 
     fetchHolds(pager: Pager, sort: any[]): Observable<any> {
 
         // We need at least one filter.
-        if (!this.recordId && !this.pickupLib && !this.patronId && !this.pullListOrg) {
+        if (!this.recordId && !this.pickupLib && !this.patronId && !this.pullListOrg && !this.onlyTheseHolds) {
             return of([]);
         }
 
@@ -501,7 +519,7 @@ export class HoldsGridComponent implements OnInit {
         const options: any = {};
         if (this.showRecentlyCanceled) {
             options.recently_canceled = true;
-        } else {
+        } else if (!this.onlyTheseHolds) {
             filters.cancel_time = null;
         }
 
@@ -664,6 +682,11 @@ export class HoldsGridComponent implements OnInit {
                 }
             );
         }
+    }
+
+    showManageNotesDialog(holdId: number) {
+        this.selectedHoldId.set(holdId);
+        this.manageNotesDialog.open({size: 'lg'}).subscribe(() => this.holdsGrid.reload());
     }
 
     showTransferDialog(rows: any[]) {

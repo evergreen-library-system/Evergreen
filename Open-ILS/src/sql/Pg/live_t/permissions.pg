@@ -1,0 +1,14 @@
+BEGIN;
+
+SELECT plan(1);
+
+SELECT is(
+    (SELECT COUNT(*) FROM permission.perm_list WHERE code = 'ADMIN_OPENAPI'),
+    1::BIGINT,
+   'ADMIN_OPENAPI permission exists'
+);
+
+SELECT * FROM finish();
+ROLLBACK;
+
+

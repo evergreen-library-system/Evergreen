@@ -96,7 +96,7 @@
                 </td>
                 <td>
                   <a href="[% mkurl(ctx.opac_root _ '/record/' _ material.record.id) %]">
-                    [% material.record.wide_display_entry.title %]
+                    [% material.record.wide_display_entry.title.replace('^"|"$', '') %]
                   </a>
                 </td>
                 <td>

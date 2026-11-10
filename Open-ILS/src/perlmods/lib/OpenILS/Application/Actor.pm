@@ -1089,11 +1089,12 @@ sub _delete_card {
     
     my $patron = $e->retrieve_actor_user($card_obj->usr);
     return $e->die_event unless $patron;
-    
-    # Require both permissions for deleting barcodes
+
     return OpenILS::Event->new('PERM_FAILURE')
-        unless $e->allowed('UPDATE_PATRON_ACTIVE_CARD', $patron->home_ou)
-        && $e->allowed('UPDATE_PATRON_PRIMARY_CARD', $patron->home_ou);
+        unless $e->allowed(
+            'DELETE_INACTIVE_NONPRIMARY_PATRON_CARD',
+            $patron->home_ou
+        );
     
     # Cannot delete active barcodes - safety and data integrity check
     if ($card_obj->active eq 't') {
@@ -4194,11 +4195,13 @@ __PACKAGE__->register_method (
     method      => 'update_events',
     api_name    => 'open-ils.actor.user.event.cancel.batch',
     stream      => 1,
+    max_bundle_count => 1,
 );
 __PACKAGE__->register_method (
     method      => 'update_events',
     api_name    => 'open-ils.actor.user.event.reset.batch',
     stream      => 1,
+    max_bundle_count => 1,
 );
 
 sub update_events {
@@ -4217,16 +4220,25 @@ sub update_events {
             }
         ]) or return $e->die_event;
 
-        my $user_id;
-        if($event->event_def->hook->core_type eq 'circ') {
-            $user_id = $e->retrieve_action_circulation($event->target)->usr;
-        } elsif($event->event_def->hook->core_type eq 'ahr') {
-            $user_id = $e->retrieve_action_hold_request($event->target)->usr;
-        } else {
-            return 0;
+        my $user_id = $event->context_user;
+
+        unless ($user_id) {
+            # XXX Leaving this block in place as a backup for very
+            # old, very inactive, heavily upgraded instances.
+            if($event->event_def->hook->core_type eq 'circ') {
+                $user_id = $e->retrieve_action_circulation($event->target)->usr;
+            } elsif($event->event_def->hook->core_type eq 'ahr') {
+                $user_id = $e->retrieve_action_hold_request($event->target)->usr;
+            } else {
+                return 0; # XXX This looks wrong, should be an event or just `next`.
+            }
         }
 
         my $user = $e->retrieve_actor_user($user_id);
+        if (!$user) {
+            $e->die_event;
+            return OpenILS::Event->new( 'ACTOR_USER_NOT_FOUND' );
+        }
         return $e->die_event unless $e->allowed('UPDATE_USER', $user->home_ou);
 
         if($self->api_name =~ /cancel/) {
@@ -4289,7 +4301,7 @@ sub really_delete_user {
     }
     # No deleting yourself - UI is supposed to stop you first, though.
     return $e->die_event unless $e->requestor->id != $user->id;
-    return $e->die_event unless $e->allowed('DELETE_USER', $user->home_ou);
+    return $e->die_event unless $e->allowed('PURGE_USER', $user->home_ou);
     # Check if you are allowed to mess with this patron permission group at all
     my $evt = group_perm_failed($e, $e->requestor, $user);
     return $e->die_event($evt) if $evt;

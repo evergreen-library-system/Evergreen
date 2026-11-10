@@ -318,6 +318,9 @@ export class VolCopyTemplateGridComponent implements OnInit, OnDestroy {
                     String(value).toLowerCase() !== String(filterValue).toLowerCase();
             case 'like':
                 if (!filterValue) {return false;}
+                return new RegExp(filterValue.replace(/%/g, '.*')).test(String(value));
+            case 'ilike':
+                if (!filterValue) {return false;}
                 return new RegExp(filterValue.replace(/%/g, '.*'), 'i').test(String(value));
             case '>':
                 return Number(value) > Number(filterValue);

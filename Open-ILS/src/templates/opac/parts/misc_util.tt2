@@ -591,20 +591,6 @@
                         END;
                     END;
 
-                    IF ebook_api.oneclickdigital.enabled == 'true';
-                        # A record might conceivably have multiple OneClickdigital URIs,
-                        # but we use (the same) ISBN as the ebook ID in each case.
-                        IF !args.oneclickdigital_id;
-                            FOR base_uri IN ebook_api.oneclickdigital.base_uris;
-                                IF res.href.match(base_uri);
-                                    # found a OneClickdigital URI, let's grab our ID and move on
-                                    args.oneclickdigital_id = clean_isbn;
-                                    LAST;
-                                END;
-                            END;
-                        END;
-                    END;
-
                     IF ebook_api.overdrive.enabled == 'true';
                         # Ideally we already have an OverDrive record ID from MARC 037 (see above).
                         # But for older records, it will be embedded in the URI in MARC 856.
@@ -794,9 +780,6 @@
         IF args.ebook_test_id;
             args.ebook.ebook_id = args.ebook_test_id;
             args.ebook.vendor = 'ebook_test';
-        ELSIF args.oneclickdigital_id;
-            args.ebook.ebook_id = args.oneclickdigital_id;
-            args.ebook.vendor = 'oneclickdigital';
         ELSIF args.overdrive_id;
             args.ebook.ebook_id = args.overdrive_id;
             args.ebook.vendor = 'overdrive';

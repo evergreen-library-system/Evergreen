@@ -18,6 +18,7 @@ import { MockGenerators } from 'test_data/mock_generators';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { OrgSelectComponent } from '@eg/share/org-select/org-select.component';
 import { MockOrgSelectComponent } from 'test_data/mock-components';
+import { ToastService } from '@eg/share/toast/toast.service';
 
 describe('HoldComponent', () => {
     let component: HoldComponent;
@@ -49,7 +50,8 @@ describe('HoldComponent', () => {
                 { provide: HoldsService, useValue: MockGenerators.holdsService() },
                 { provide: PatronService, useValue: MockGenerators.patronService() },
                 { provide: WorkLogService, useValue: jasmine.createSpyObj<WorkLogService>(['record']) },
-                { provide: StoreService, useValue: {} }
+                { provide: StoreService, useValue: {} },
+                { provide: ToastService, useValue: {} }
             ],
             schemas: [NO_ERRORS_SCHEMA]
         }).overrideComponent(HoldComponent, {
@@ -139,7 +141,7 @@ describe('HoldComponent', () => {
                         success: false,
                         clone: function (target: number): any {},
                         stats: new HoldRequestStats()
-                    }
+                    } as any
                 ];
                 component.pickupLib = 789;
                 component.user = MockGenerators.idlObject({id: 456, family_name: 'Name'});
@@ -246,7 +248,7 @@ describe('HoldComponent', () => {
                         success: false,
                         clone: function (target: number): any {},
                         stats: new HoldRequestStats()
-                    }
+                    } as any
                 ];
                 component.pickupLib = 789;
                 component.user = MockGenerators.idlObject({id: 456, family_name: 'Name'});
@@ -313,7 +315,7 @@ describe('HoldComponent', () => {
                     success: false,
                     clone: function (target: number): any {},
                     stats: new HoldRequestStats()
-                }
+                } as any
             ];
             component.pickupLib = 789;
             component.user = MockGenerators.idlObject({id: 456, family_name: 'Name'});

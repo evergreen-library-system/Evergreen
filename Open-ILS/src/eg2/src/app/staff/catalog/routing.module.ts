@@ -9,6 +9,7 @@ import {BrowseComponent} from './browse.component';
 import {CnBrowseComponent} from './cnbrowse.component';
 import {CanDeactivateGuard} from '@eg/share/util/can-deactivate.guard';
 import {PreferencesComponent} from './prefs.component';
+import {CreateMarcComponent} from './create-marc.component';
 
 const routes: Routes = [{
     path: '',
@@ -36,6 +37,9 @@ const routes: Routes = [{
     path: 'cnbrowse',
     component: CnBrowseComponent,
     resolve: {catResolver : CatalogResolver}
+}, {
+    path: 'create-marc',
+    component: CreateMarcComponent
 }, {
     path: 'prefs',
     component: PreferencesComponent,

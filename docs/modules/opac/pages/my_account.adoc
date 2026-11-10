@@ -137,7 +137,7 @@ _Barcode_, and _Call Number_
 
 [NOTE]
 ==========
-To protect patron privacy, the Check Out History will be completely blank unless the patron has previously opted in under the _Account Preferences_ tab, in the _Search and History Preferences_
+To protect patron privacy, the Check Out History will be completely blank unless the patron has previously opted in under the _Account Preferences_ tab, in the _Other Settings_
 area.
 ==========
 
@@ -151,12 +151,16 @@ manage items currently being requested. In *Holds* -> *Items on Hold*, the
 content shown can be sorted by clicking on the following column headers:
 _Title_, _Author_, and _Format_ (based on format name represented by the icon).
 
+If you would like for only the holds that are available, or ready for pickup, to appear in the table, click the checkbox next to _Show only items available_ and click _Refresh holds list_.
+
 Actions include: 
 
 * Suspend - set a period of time during which the hold will not become active, 
 such as during a vacation 
 * Activate - manually remove the suspension 
 * Cancel - remove the hold request 
+
+Each of these actions can be performed for individual items by selecting the button(s) in the _Edit_ column of the hold row, or, they can be completed in a batch by selecting one or more holds and selecting the button options under the _Items on Hold_ page title.
 
 Edit options include: 
 
@@ -169,14 +173,15 @@ hold at the specified date
 
 To edit items on hold: 
 
-. Login to _My Account_, click the _Holds_ tab.
-. Select the hold to modify. 
-. Click _Edit_ for selected holds. 
+. Login to _My Account_, click the _Holds_ tab. 
+. Click the _Edit_ button located in the _Edit_column of the hold row.
 . Select the change to make and follow the instructions.
+
+
 
 [NOTE]
 ==========
-To protect patron privacy, the Holds History will be completely blank unless the patron has previously opted in under the _Account Preferences_ tab, in the _Search and History Preferences_
+To protect patron privacy, the Holds History will be completely blank unless the patron has previously opted in under the _Account Preferences_ tab, in the _Other Settings_
 area.
 ==========
 
@@ -212,7 +217,7 @@ way as other holds (e.g., suspended, cancelled, etc.).
 indexterm:[my account, account preferences]
 
 From here you can manage display preferences including your *Personal Information*, 
-*Notification*, *Search and History*, and *Lists*. 
+*Notification*, *Other Settings*, and *Lists*. 
 Additional static information, such as your _Account Expiration Date_, can be 
 found under *Personal Information*.
 
@@ -243,17 +248,19 @@ For example:
 ** _Email checkout receipts by default?_
 
 
-* Search and History Preferences
-
-** _Search hits per page_
+* Other Settings
 
 ** _Preferred search location_
 
+** _Search hits per page_
+
+** _Highlight search terms?_
+
 ** _Preferred pickup location_
 
-** _Keep history of checked out items?_
-
 ** _Keep history of holds?_
+
+** _Keep history of checked out items?_
 
 ** _Skip warning when adding to temporary book list?_
 
@@ -276,7 +283,7 @@ indexterm:[privacy waiver]
 
 
 If your library has enabled it, you can authorize other people to use
-your account. In the _Search and History_ tab
+your account. In the _Other Settings_ tab
 under _Preferences_, find the section labeled _"Allow others to use
 my account"_. Enter the name and indicate that the
 specified person is allowed to place holds, pickup holds, view

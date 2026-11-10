@@ -1,0 +1,36 @@
+== Patron Bills Interface Improvements ==
+
+The Angular staff client Patron Bills interface has several display and
+workflow improvements.
+
+=== Patron Bills ===
+
+ * The grid once again includes pagination and a rows-per-page selector.
+ * The _Add Billing_ toolbar button is now labeled _Bill Patron_ to clarify
+   that it creates a new billing transaction.
+ * _Select All Bills_ and _Select All Refunds_ select matching bills across
+   all pages and display the page containing the first selected bill.
+ * Actions that operate on a single transaction, such as _Full Details_ and
+   _Add Billing_, are disabled unless exactly one bill is selected.
+ * Voiding billings for a large selection requires fewer server requests.
+ * Submitting an empty payment amount no longer causes an interface error.
+ * Flagged bill rows retain their visual status indicators when selected.
+ * The Billing Location column now displays the circulation library for
+   circulation bills.
+
+=== Bill History ===
+
+The Transactions tab restores the Last Billing Type, Last Billing Note,
+Last Billing Time, Last Payment Type, and Last Payment Note columns.
+
+The Payments tab restores the Last Billing Note, Total Owed, Total Paid,
+and credit card Approval Code columns.
+
+=== Bill Statements ===
+
+Bill statements now distinguish billings, payments, adjustments, and voids.
+Charges and payments are displayed with separate totals, and amounts that
+reduce the balance are visually distinguished from charges.
+
+The Owning Library in the Item Summary is now linked to the corresponding
+library information page.

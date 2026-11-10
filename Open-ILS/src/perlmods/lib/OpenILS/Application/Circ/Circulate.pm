@@ -467,7 +467,6 @@ my @AUTOLOAD_FIELDS = qw/
     opac_renewal
     phone_renewal
     desk_renewal
-    sip_renewal
     auto_renewal
     retarget
     matrix_test_result
@@ -548,8 +547,7 @@ sub new {
 
     # if this is a renewal, default to desk_renewal
     $self->desk_renewal(1) unless
-        $self->opac_renewal or $self->phone_renewal or $self->sip_renewal
-        or $self->auto_renewal;
+        $self->opac_renewal or $self->phone_renewal or $self->auto_renewal;
 
     $self->capture('') unless $self->capture;
 
@@ -938,6 +936,20 @@ sub mk_env {
             $self->add_overrides_from_system_copy_alerts;
             $self->collect_user_copy_alerts;
             $self->filter_user_copy_alerts;
+
+            # "Magic" statuses should be handled by circ workflows
+            # and should not be set arbitrarily.
+            my %magic = map { $_ => 1 } (
+                OILS_COPY_STATUS_CHECKED_OUT,
+                OILS_COPY_STATUS_LOST,
+                OILS_COPY_STATUS_IN_TRANSIT,
+                OILS_COPY_STATUS_ON_HOLDS_SHELF,
+                OILS_COPY_STATUS_LONG_OVERDUE,
+                OILS_COPY_STATUS_CANCELED_TRANSIT
+            );
+            $self->next_copy_status([
+                grep { !$magic{$_} } @{$self->next_copy_status}
+            ]);
 
         } else {
             # We can't renew if there is no copy
@@ -2760,7 +2772,7 @@ sub checkin_retarget {
             'open-ils.circ.hold_reset_reason_entry.create', $self->editor->authtoken, $_->{id},OILS_HOLD_BETTER_HOLD);
             my $tresult = $U->simplereq(
                 'open-ils.hold-targeter',
-                'open-ils.hold-targeter.target', 
+                'open-ils.hold-targeter.target.atomic',
                 {hold => $_->{id}, find_copy => $self->copy->id}
             );
             if(ref $tresult eq "ARRAY" and scalar @$tresult) {

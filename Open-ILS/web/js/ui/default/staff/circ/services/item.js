@@ -773,8 +773,10 @@ function(egCore , egOrg , egCirc , $uibModal , $q , $timeout , $window , ngToast
                         angular.forEach(items, function(item) {
                             if (i == item.id) {
                                 // owning_lib may be fleshed.
-                                var owner = item['call_number.owning_lib.id']
-                                    || item['call_number.owning_lib'];
+                                var owner = item['call_number.owning_lib'];
+                                if (owner && typeof owner.id === 'function') {
+                                    owner = owner.id();
+                                }
                                 raw.push({owner : owner});
                             }
                         });
@@ -795,8 +797,7 @@ function(egCore , egOrg , egCirc , $uibModal , $q , $timeout , $window , ngToast
                 }
             ).then(function(key) {
                 if (key) {
-                    var tab = (hide_vols === true) ? 'attrs' : 'holdings';
-                    var url = '/eg2/staff/cat/volcopy/' + tab + '/session/ ' + key;
+                    var url = '/eg2/staff/cat/volcopy/holdings/session/ ' + key;
                     $timeout(function() { $window.open(url, '_blank') });
                 } else {
                     alert('Could not create anonymous cache key!');

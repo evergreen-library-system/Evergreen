@@ -19,6 +19,25 @@ sub fetch_one_bib {
     return $bre;
 }
 
+sub retrieve_bib {
+    my ($c, $isbn) = @_;
+    my $bre = $U->simplereq(
+        'open-ils.supercat',
+        'open-ils.supercat.isbn.object.retrieve',
+        $isbn
+    );
+    if ($bre && @{$bre}) {
+        $bre = $bre->[0];
+    } else {
+        $c->res->code(404);
+        return {error=>"No record matching identifier $isbn"};
+    }
+    my $resp_type = $c->stash('eg_req_resolved_content_format') || 'json';
+    return $bre->marc if ($resp_type eq 'xml');
+    return MARC::Record->new_from_xml( $bre->marc, 'UTF-8', 'USMARC' )->as_usmarc if ($resp_type eq 'binary');
+    return $bre;
+}
+
 sub update_bre_parts {
     my ($c, $ses, $bibid, $parts) = @_;
     $parts ||= {};

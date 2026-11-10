@@ -34,7 +34,7 @@ If you run into problems with Floating, here is a checklist of things to check o
 1. Floating Group has been created.
 2. Locations included in the group have been defined as Floating Group Members.
 3. Item has been marked as a member of the Floating Group in the Holdings Editor.
-4. Item has no holds and is ready to be re-shelved.  Floating only happens for a check-in where an item would 
+4. Item has no holds and is ready to be re-shelved.  Floating only happens for a check in where an item would
    be going back to be re-shelved.
 5. Item has no current in transit records.  If an item is already in-transit, then that transit would be followed first. 
 
@@ -42,7 +42,7 @@ If you run into problems with Floating, here is a checklist of things to check o
 
 Each floating group comes with a name and a manual flag, plus zero or more group members. The name is used solely for selection and display purposes.
 
-The manual flag dictates whether or not the "Manual Floating Active" checkin modifier needs to be active for an item to float. This allows for greater control over when items float. It also prevents automated checkins via SIP2 from triggering floats.
+The manual flag dictates whether or not the "Manual Floating Active" check in modifier needs to be active for an item to float. This allows for greater control over when items float. It also prevents automated check ins via SIP2 from triggering floats.
 
 === Floating Group Members ===
 
@@ -54,7 +54,7 @@ The organizational unit and all descendants are included, unless max depth is se
 
 === Stop Depth ===
 
-The stop depth is the highest point from the current item circ library to the checkin library for the item that will be traversed. If the item has to go higher than the stop depth on the tree the member rule in question is ignored.
+The stop depth is the highest point from the current item circ library to the check in library for the item that will be traversed. If the item has to go higher than the stop depth on the tree the member rule in question is ignored.
 
 === Max Depth ===
 

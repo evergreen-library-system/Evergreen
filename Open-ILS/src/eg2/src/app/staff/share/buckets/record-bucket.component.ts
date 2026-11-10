@@ -220,7 +220,7 @@ export class RecordBucketComponent implements OnInit, OnDestroy {
                 bucketIdQuery: async (pager, sort, justCount) => {
                     const translatedSort = this.pcrud.translateFlatSortComplex('cbreb', sort);
                     console.debug('translatedSort', translatedSort);
-                    this.favoriteIds = this.bucketService.getFavoriteRecordBucketIds();
+                    this.updateFavoritesList();
                     let result: BucketQueryResult;
                     if (this.favoriteIds.length) {
                         const response  = await lastValueFrom(
@@ -874,6 +874,7 @@ export class RecordBucketComponent implements OnInit, OnDestroy {
             }
         }
 
+        this.updateFavoritesList();
         setTimeout(() => {
             this.grid.reload();
             this.updateCounts();
@@ -903,11 +904,16 @@ export class RecordBucketComponent implements OnInit, OnDestroy {
             }
         }
 
+        this.updateFavoritesList();
         setTimeout(() => {
             this.grid.reload();
             this.updateCounts();
         }, 1000);
     };
+
+    updateFavoritesList() {
+        this.favoriteIds = this.bucketService.getFavoriteRecordBucketIds();
+    }
 
     ngOnDestroy() {
         this.destroy$.next();

@@ -48,7 +48,7 @@ s.MARK_NEVER_CHECKED_OUT =
   '[% l("Mark Never Checked Out: [_1]", "{{barcodes.toString()}}") %]';
 s.ON_DEMAND_COPY_ALERT = {
     'CHECKIN': {
-        'NORMAL' : '[% l("Normal checkin") %]',
+        'NORMAL' : '[% l("Normal check in") %]',
         'LOST' : '[% l("Item was marked lost") %]',
         'LOST_AND_PAID' : '[% l("Item was marked lost and paid for") %]',
         'MISSING' : '[% l("Item was marked missing") %]',

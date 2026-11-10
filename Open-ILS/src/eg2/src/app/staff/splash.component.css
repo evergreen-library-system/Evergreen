@@ -3,16 +3,23 @@
   --splash-card-header-bg: #dff0d8;
   --splash-card-header-border: #d6e9c6;
   --bs-card-bg: var(--bs-body-bg);
+
+  --splash-card-radius: 0.75rem;
+  --splash-card-shadow: 0 0.25rem 1rem rgba(0, 0, 0, 0.06);
+  --splash-link-radius: 0.6rem;
+  --splash-icon-size: 32px;
 }
 [data-bs-theme="dark"] :host {
   --splash-card-header: var(--bs-gray-400);
   --splash-card-header-bg: var(--bs-body-bg-alt);
   --splash-card-header-border: var(--bs-body-bg-highlight);
+  --splash-card-shadow: 0 0.25rem 1rem rgba(0, 0, 0, 0.25);
 }
 
 .eg-logo { 
-  max-width: 400px; 
-  margin: 30px 0; 
+  width: min(400px, 92vw);
+  height: auto;
+  margin: clamp(16px, 4vw, 30px) 0;
 }
 
 [data-bs-theme="dark"] :host img.eg-logo {
@@ -23,18 +30,81 @@
   background-color: var(--bs-card-bg);
   border-color: var(--splash-card-header-border);
   margin-block-end: 2rem;
+  border-radius: var(--splash-card-radius);
+  box-shadow: var(--splash-card-shadow);
+  overflow: hidden;
 }
 
-.card-body, .card-body .list-group-item {
+.card-body {
   background-color: var(--bs-card-bg);
+  padding: 0.75rem;
 }
 
 .card-header {
   background-color: var(--splash-card-header-bg);
   border-color: var(--splash-card-header-border);
+  padding: 0.75rem 1rem;
 }
 
 .card-header h2 {
   color: var(--splash-card-header);
-  margin: 0 0 0.1rem;
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+/* List layout */
+#splash-nav .list-group {
+  --bs-list-group-bg: transparent;
+}
+
+#splash-nav .list-group-item {
+  background-color: transparent;
+  padding: 0.25rem;
+}
+
+/* Portal links */
+.splash-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.6rem 0.75rem;
+  border-radius: var(--splash-link-radius);
+  text-decoration: none;
+  color: var(--primary);
+  border: 1px solid transparent;
+  min-width: 0;
+  transition: background-color 120ms ease, border-color 120ms ease, transform 60ms ease;
+}
+
+.splash-link:hover {
+  background-color: var(--bs-body-bg-highlight, rgba(var(--bs-primary-rgb), 0.06));
+  border-color: var(--bs-border-color);
+  color: var(--primary-hover);
+}
+
+.splash-link:active {
+  transform: translateY(1px);
+}
+
+.splash-icon {
+  width: var(--splash-icon-size);
+  height: var(--splash-icon-size);
+  object-fit: contain;
+  flex: 0 0 auto;
+}
+
+.splash-link-text {
+  display: block;
+  flex: 1 1 auto;
+  min-width: 0;
+  line-height: 1.25;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+/* Keep the catalog search from overflowing in narrow columns */
+#splash-nav .input-group .form-control {
+  min-width: 0;
 }

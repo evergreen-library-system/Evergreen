@@ -1,5 +1,5 @@
 @if (!isHoldCapture) {
-  <eg-staff-banner i18n-bannerText bannerText="Checkin Items">
+  <eg-staff-banner i18n-bannerText bannerText="Check In Items">
   </eg-staff-banner>
 }
 
@@ -209,7 +209,7 @@ text="Item CONC40000598 has never circulated."></eg-string>
       </eg-grid-toolbar-action>
 
       <eg-grid-toolbar-action
-        i18n-group group="Circulation" i18n-label label="Backdate Post-Checkin"
+        i18n-group group="Circulation" i18n-label label="Backdate Post-Check In"
         (onClick)="backdatePostCheckin($event)">
       </eg-grid-toolbar-action>
 
@@ -274,7 +274,7 @@ text="Item CONC40000598 has never circulated."></eg-string>
       <eg-grid-column path="circ.id" label="Bill #" i18n-label [hidden]="true">
       </eg-grid-column>
 
-      <eg-grid-column path="circ.checkin_time" label="Checkin Date" i18n-label
+      <eg-grid-column path="circ.checkin_time" label="Check In Date" i18n-label
       datatype="timestamp" [datePlusTime]="true" [hidden]="true"></eg-grid-column>
 
       <eg-grid-column name="routeTo" label="Route To" i18n-label>
@@ -340,7 +340,7 @@ text="Item CONC40000598 has never circulated."></eg-string>
     <div>
       <div ngbDropdown>
         <button class="btn btn-outline-dark" type="button"
-        ngbDropdownToggle i18n>Checkin Modifiers</button>
+        ngbDropdownToggle i18n>Check In Modifiers</button>
         <div ngbDropdownMenu>
           <button type="button" ngbDropdownItem (click)="toggleMod('no_precat_alert')">
             @if (modifiers.no_precat_alert) {

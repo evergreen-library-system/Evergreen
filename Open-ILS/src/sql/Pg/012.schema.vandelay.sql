@@ -1372,12 +1372,15 @@ CREATE OR REPLACE FUNCTION vandelay.replace_field
         # 3. Delete values for controlled subfields when no 
         #    replacement value exists on the source record.
 
+        my %sf_index_map;
         for my $target_sf ($target_field->subfields) {
             my $subfield = $target_sf->[0];
             my $target_val = $target_sf->[1];
 
             if (grep {$_ eq $subfield} @controlled_subfields) {
-                if (my $source_val = $source_field->subfield($subfield)) {
+                $sf_index_map{$subfield} //= -1; # create the slot if not defined
+                $sf_index_map{$subfield}++;      # increment (even to 0) on each pass through the target list
+                if (my $source_val = ($source_field->subfield($subfield))[$sf_index_map{$subfield}]) {
                     # We have a replacement value
                     push(@new_subfields, $subfield, $source_val);
                 } else {

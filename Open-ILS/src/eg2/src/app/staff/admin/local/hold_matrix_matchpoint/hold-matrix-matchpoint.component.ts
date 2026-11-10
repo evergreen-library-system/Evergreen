@@ -31,7 +31,6 @@ import { FormsModule } from '@angular/forms';
           FmRecordEditorComponent,
           FormsModule,
           GridModule,
-          HoldMatrixMatchpointComponent,
           HoldMatrixMatchpointDialogComponent,
           OrgFamilySelectComponent,
           TitleComponent,

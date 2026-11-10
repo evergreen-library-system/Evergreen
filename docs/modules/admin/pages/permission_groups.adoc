@@ -269,4 +269,4 @@ A staff member has Local Administrator as their main permission group and Acquis
 * Local Administrator: Depth=1 (System), Grantable = true
 * Acquisitions: Depth=0 (Consortium), Grantable = false
 
-*Outcome*: Because the Aquisitions permission is assigned at 0 depth, this permission overrides the other. The staff member will be able to delete items owned by any library in the consortium, but they will not be able to grant this permission to other staff members.
+*Outcome*: Because the Acquisitions permission is assigned at 0 depth, this permission overrides the other. The staff member will be able to delete items owned by any library in the consortium, but they will not be able to grant this permission to other staff members.

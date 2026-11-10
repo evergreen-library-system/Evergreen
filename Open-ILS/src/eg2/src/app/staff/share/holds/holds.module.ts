@@ -41,7 +41,8 @@ import {WorkLogModule} from '@eg/staff/share/worklog/worklog.module';
         HoldTransferViaBibsDialogComponent,
         HoldCancelDialogComponent,
         HoldManageDialogComponent,
-        HoldCopyLocationsDialogComponent
+        HoldCopyLocationsDialogComponent,
+        HoldNoteDialogComponent
     ],
     providers: [
         HoldsService

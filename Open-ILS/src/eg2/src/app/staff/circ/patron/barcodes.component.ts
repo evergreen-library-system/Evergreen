@@ -7,7 +7,11 @@ import {NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 import {PermService} from '@eg/core/perm.service';
 import { StaffCommonModule } from '@eg/staff/common.module';
 
-const PERMS = ['UPDATE_PATRON_ACTIVE_CARD', 'UPDATE_PATRON_PRIMARY_CARD'];
+const PERMS = [
+    'UPDATE_PATRON_ACTIVE_CARD',
+    'UPDATE_PATRON_PRIMARY_CARD',
+    'DELETE_INACTIVE_NONPRIMARY_PATRON_CARD'
+];
 
 /* Add/Remove Secondary Groups */
 
@@ -113,8 +117,16 @@ export class PatronBarcodesDialogComponent extends DialogComponent {
             : $localize`Barcode must be deactivated and saved before deletion`;
     }
 
+    deleteCardDisabled(card: IdlObject): boolean {
+        return !this.myPerms.DELETE_INACTIVE_NONPRIMARY_PATRON_CARD
+            || card.id() === this.primaryCard
+            || card.isdeleted()
+            || card.active() === 't'
+            || this.hasUnsavedActiveChanges(card);
+    }
+
     deleteCard(card: IdlObject) {
-        if (!(this.myPerms.UPDATE_PATRON_ACTIVE_CARD && this.myPerms.UPDATE_PATRON_PRIMARY_CARD)) {
+        if (!this.myPerms.DELETE_INACTIVE_NONPRIMARY_PATRON_CARD) {
             this.toast.danger($localize`Permission denied for deleting barcodes`);
             return;
         }

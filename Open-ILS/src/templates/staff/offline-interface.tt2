@@ -102,7 +102,7 @@
                         <th>[% l('Non-cataloged Type') %]</th>
                         <th>[% l('Checkout Date') %]</th>
                         <th>[% l('Due Date') %]</th>
-                        <th>[% l('Checkin Date') %]</th>
+                        <th>[% l('Check In Date') %]</th>
                         <th>[% l('First Name') %]</th>
                         <th>[% l('Last Name') %]</th>
                       </tr>
@@ -206,7 +206,7 @@
                         <th>[% l('Non-cataloged Type') %]</th>
                         <th>[% l('Checkout Date') %]</th>
                         <th>[% l('Due Date') %]</th>
-                        <th>[% l('Checkin Date') %]</th>
+                        <th>[% l('Check In Date') %]</th>
                         <th></th>
                       </tr>
                     </thead>
@@ -521,7 +521,7 @@
         </div>
 
       </uib-tab>
-      <uib-tab index="'checkin'" heading="[% l('Checkin') %]">
+      <uib-tab index="'checkin'" heading="[% l('Check In') %]">
 
         <div class="row">
 
@@ -531,7 +531,7 @@
             <div class="row">
               <div class="col-md-1"></div>
               <div class="col-md-5">
-                [% l('Checkin Date:') %]
+                [% l('Check In Date:') %]
               </div>
               <div class="col-md-6">
                 <eg-date-input ng-model="checkin.backdate"></eg-date-input>
@@ -559,7 +559,7 @@
               <div class="col-md-6">
                 <input id="do_print_ci" type="checkbox" ng-model="do_print" ng-click="changePrint()"></input>
                 <label for="do_print_ci">[% l('Print receipt') %]</label>
-                <button class="btn btn-primary pull-right" ng-disabled="notEnough('checkin')" ng-click="add('checkin','ci_barcode')">[% l('Checkin') %]</button>
+                <button class="btn btn-primary pull-right" ng-disabled="notEnough('checkin')" ng-click="add('checkin','ci_barcode')">[% l('Check In') %]</button>
                     
               </div>
             </div>
@@ -572,7 +572,7 @@
               <thead>
                 <tr>
                   <th>[% l('Item barcode') %]</th>
-                  <th>[% l('Effective Checkin date') %]</th>
+                  <th>[% l('Effective Check In Date') %]</th>
                 </tr>
               </thead>
               <tbody>

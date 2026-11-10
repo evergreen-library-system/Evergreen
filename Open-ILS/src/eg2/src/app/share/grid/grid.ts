@@ -51,6 +51,10 @@ export class GridColumn {
     // True if the column was automatically generated.
     isAuto: boolean;
 
+    // If column is auto generated and replaces an existing column,
+    // preserve the position.
+    preserveAutoPosition: boolean;
+
     // for filters
     filterValue: string;
     filterOperator: string;
@@ -131,6 +135,7 @@ export class GridColumn {
         col.timezoneContextOrg = this.timezoneContextOrg;
         col.idlClass = this.idlClass;
         col.isAuto = this.isAuto;
+        col.preserveAutoPosition = this.preserveAutoPosition;
 
         return col;
     }
@@ -171,11 +176,6 @@ export class GridColumnSet {
         }
 
         if (col.isIndex) { this.indexColumn = col; }
-
-        // track which fields are visible on page load.
-        if (col.visible) {
-            this.stockVisible.push(col.name);
-        }
 
         this.applyColumnSortability(col);
         this.applyColumnFilterability(col);
@@ -275,6 +275,12 @@ export class GridColumnSet {
             if (testCol.name === col.name) { // match found
                 if (testCol.isAuto) {
                     // new column takes precedence, remove the existing column.
+                    if (col.preserveAutoPosition) {
+                        // preserve position and return early.
+                        this.columns.splice(idx, 1, col);
+                        return true;
+                    }
+                    // not preserving position, remove column
                     this.columns.splice(idx, 1);
                     break;
                 } else {
@@ -536,30 +542,44 @@ export class GridColumnSet {
 
     applyColumnSettings(conf: GridColumnPersistConf[]) {
 
-        if (!conf || conf.length === 0) {
-            // No configuration is available, but we have a list of
-            // fields to show or hide by default
+        // Part 1: We need to know what's visible by default. (for resetting columns)
+        // So whether or not we have a configuration, we determine what does and what doesn't show in stock
+        if (this.defaultVisibleFields) {
+            this.columns.forEach(col => {
+                if (this.defaultVisibleFields.includes(col.name)) {
+                    col.visible = true;
+                } else {
+                    col.visible = false;
+                }
+            });
 
-            if (this.defaultVisibleFields) {
-                this.columns.forEach(col => {
-                    if (this.defaultVisibleFields.includes(col.name)) {
-                        col.visible = true;
-                    } else {
-                        col.visible = false;
-                    }
-                });
+        } else if (this.defaultHiddenFields) {
+            this.defaultHiddenFields.forEach(name => {
+                const col = this.getColByName(name);
+                if (col) {
+                    col.visible = false;
+                }
+            });
+        } else {
+            // Visible true, nothing to do,
+            // 'cept write a poem, from me to you :)
+        }
 
-            } else if (this.defaultHiddenFields) {
-                this.defaultHiddenFields.forEach(name => {
-                    const col = this.getColByName(name);
-                    if (col) {
-                        col.visible = false;
-                    }
-                });
+        // And the point of doing this first, instead of in an if statment: to set up our stock visible columns
+        // Even if we undo the visible settings for our columns later, we have these to remember them by.
+        this.stockVisible = [];
+        this.columns.forEach(col => {
+            if (col.visible) {
+                this.stockVisible.push(col.name);
             }
+        });
 
+        // Part 2: If we have no configuration, we're done.
+        if (!conf || conf.length === 0) {
             return;
         }
+        // Otherwise, we overwrite all the work we just did, and set each column up based on
+        // the configuration that we've been given
 
         const newCols = [];
 

@@ -1,0 +1,12 @@
+<div class="footer-closures[% ' footer-closures-divider' IF hour_groups.size %]">
+    <p class="footer-label mb-1">[% l('Upcoming Closures') %]</p>
+    <ul class="footer-closures-list list-unstyled mb-0">
+        [%# Separate spans so the narrow layout can justify them apart. %]
+        [% FOR row IN closure_rows %]
+        <li><span class="footer-closure-when">[% row.when | html %]</span>[% IF row.reason %]<span class="footer-closure-sep">: </span><span class="footer-closure-reason">[% row.reason | html %]</span>[% END %]</li>
+        [% END %]
+        [% IF closures_more %]
+        <li class="footer-closures-more"><a href="[% mkurl(ctx.opac_root _ '/library/' _ footer_library.shortname) %]">[% l('+[_1] more', closures_more) %]</a></li>
+        [% END %]
+    </ul>
+</div>

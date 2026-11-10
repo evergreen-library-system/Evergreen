@@ -552,7 +552,7 @@ BEGIN
             RETURN evergreen.direct_opt_in_check((SELECT target_usr FROM actor.stat_cat_entry_usr_map WHERE id = pkey_val LIMIT 1), staff_id, permlist);
         WHEN 'ateo' THEN
             RETURN evergreen.direct_opt_in_check(
-                (SELECT e.context_user FROM action_trigger.event e JOIN action_trigger.event_output eo ON (eo.event = e.id) WHERE eo.id = pkey_val LIMIT 1),
+                (SELECT e.context_user FROM action_trigger.event e JOIN action_trigger.event_output eo ON (eo.id = e.template_output OR eo.id = e.error_output OR eo.id = e.async_output) WHERE eo.id = pkey_val LIMIT 1),
                 staff_id,
                 permlist
             );

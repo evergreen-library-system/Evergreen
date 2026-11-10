@@ -23,7 +23,8 @@ text="Failed To Cancel Hold" i18n-text></eg-string>
       </div>
       <div class="col-lg-8">
         <eg-combobox domId='cancel-reasons' [entries]="cancelReasons"
-          [startId]="5" (onChange)="cancelReason = $event ? $event.id : null">
+          [startId]="5" [startIdFiresOnChange]="true"
+          (onChange)="cancelReason = $event ? $event.id : null">
         </eg-combobox>
       </div>
     </div>

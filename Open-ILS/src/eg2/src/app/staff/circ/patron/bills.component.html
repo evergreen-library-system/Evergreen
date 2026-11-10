@@ -2,6 +2,10 @@
   i18n-dialogBody dialogBody="Please Annotate This Payment">
 </eg-prompt-dialog>
 
+<eg-alert-dialog #noPayAmountDialog
+  i18n-dialogBody dialogBody="Please enter an amount in Payment Received.">
+</eg-alert-dialog>
+
 <eg-alert-dialog #maxPayDialog
   i18n-dialogBody dialogBody="Payments over 100,000 are denied by policy.">
 </eg-alert-dialog>
@@ -16,29 +20,36 @@
 
 <eg-confirm-dialog #voidBillsDialog
   i18n-dialogBody i18n-dialogTitle dialogTitle="Void Billings"
-  dialogBody="Are you sure you would like to void {{voidAmount | currency}} 
-    in bills for the selected transactions?">
+  dialogBody="Are you sure you would like to void {{voidAmount | currency}}
+    in bills across {{selectedCount()}} selected transaction(s)?">
 </eg-confirm-dialog>
 
 @if (billGrid) {
   <eg-confirm-dialog #adjustToZeroDialog
     i18n-dialogBody i18n-dialogTitle dialogTitle="Adjust To Zero"
-  dialogBody="Are you sure you would like to adjust to zero the balance 
-    on transactions {{billGrid.context.rowSelector.selected().join(',')}}?">
+  dialogBody="Are you sure you would like to adjust to zero the balance
+    on {{selectedCount()}} selected transaction(s), totaling
+    {{owedSelected() | currency}}?">
   </eg-confirm-dialog>
 }
 
-@if (billGrid) {
-  <eg-confirm-dialog #refundDialog
-    i18n-dialogBody i18n-dialogTitle dialogTitle="Adjust To Zero"
-  dialogBody="Are you sure you would like to refund excess payment on 
-    transaction(s) {{billGrid.context.rowSelector.selected().join(',')}}? 
-    This action will simply put the amount in the Payment Pending column as 
-    a negative value.  You must still select Apply Payment!  Certain types of 
-    payments may not be refunded.  The refund may be applied to checked 
-    transactions that follow the refunded transaction.">
-  </eg-confirm-dialog>
-}
+<ng-template #refundDialogBody>
+  <p i18n>
+    Refund excess payment on <strong>{{selectedCount()}}</strong> selected
+    transaction(s), totaling
+    <strong>{{refundableSelected() | currency}}</strong>?
+  </p>
+  <p class="mb-1" i18n>Before you continue:</p>
+  <ul class="mb-0 ps-4">
+    <li i18n>Confirming this immediately issues the refund as a payment.</li>
+    <li i18n>Certain types of payments may not be refunded.</li>
+  </ul>
+</ng-template>
+
+<eg-confirm-dialog #refundDialog
+  i18n-dialogTitle dialogTitle="Refund"
+  [dialogBodyTemplate]="refundDialogBody">
+</eg-confirm-dialog>
 
 
 <eg-credit-card-dialog [patron]="patron()" #creditCardDialog>
@@ -80,8 +91,10 @@
       <span class="money">{{refundsAvailable() | currency}}</span>
     </li>
     <li>
+      @if (!disablePatronCredit) {
       <span i18n>Credit Available:</span>
       <span class="money">{{patron().credit_forward_balance() | currency}}</span>
+      }
     </li>
     <li>
       <span i18n>Session Voided:</span>
@@ -114,7 +127,9 @@
       <option value="check_payment" i18n>Check</option>
       <option value="credit_card_payment" i18n>Credit Card</option>
       <option value="debit_card_payment" i18n>Debit Card</option>
-      <option value="credit_payment" i18n>Patron Credit</option>
+      @if (!disablePatronCredit) {
+        <option value="credit_payment" i18n>Patron Credit</option>
+      }
       <option value="work_payment" i18n>Work</option>
       <option value="forgive_payment" i18n>Forgive</option>
       <option value="goods_payment" i18n>Goods</option>
@@ -164,7 +179,7 @@
 </ng-template>
 
 <eg-grid #billGrid idlClass="mbt" [dataSource]="gridDataSource"
-  persistKey="circ.patron.bills" [sortable]="true" [disablePaging]="true"
+  persistKey="circ.patron.bills" [sortable]="true" [pageSize]="25"
   (onRowActivate)="showStatement($event)"
   [cellClassCallback]="cellClassCallback"
   [reloadOnColumnChange]="true"
@@ -176,20 +191,26 @@
   i18n-flairColumnHeader="Patron billing table icon column header"
   [cellTextGenerator]="cellTextGenerator">
 
-  <eg-grid-toolbar-button i18n-label label="Add Billing"
+  <eg-grid-toolbar-button i18n-label label="Bill Patron"
   (onClick)="addBilling()"></eg-grid-toolbar-button>
 
   <eg-grid-toolbar-button i18n-label label="History"
     routerLink="/staff/circ/patron/{{patronId}}/bills/history/transactions">
   </eg-grid-toolbar-button>
 
-  <eg-grid-toolbar-button i18n-label label="Select All Refunds"
-  (onClick)="selectRefunds()"></eg-grid-toolbar-button>
+  <eg-grid-toolbar-button #selectAllBillsBtn label="Select All Bills"
+  [disabled]="!gridDataSource.data.length"
+  (onClick)="toggleAllBills()"></eg-grid-toolbar-button>
+
+  <eg-grid-toolbar-button #selectAllRefundsBtn label="Select All Refunds"
+  [disabled]="refundsAvailable() === 0"
+  (onClick)="toggleAllRefunds()"></eg-grid-toolbar-button>
 
   <!-- ACTIONS FOR SELECTED -->
 
   <eg-grid-toolbar-action
-    i18n-label label="Full Details" (onClick)="showStatement($event[0])">
+    i18n-label label="Full Details" (onClick)="showStatement($event[0])"
+    [disableOnRows]="notExactlyOneRow">
   </eg-grid-toolbar-action>
 
   <eg-grid-toolbar-action
@@ -205,10 +226,12 @@
   </eg-grid-toolbar-action>
 
   <eg-grid-toolbar-action
-    i18n-label label="Add Billing" (onClick)="addBillingForXact($event)">
+    i18n-label label="Add Billing" (onClick)="addBillingForXact($event)"
+    [disableOnRows]="notExactlyOneRow">
   </eg-grid-toolbar-action>
 
-  <eg-grid-toolbar-action i18n-label label="Refund" (onClick)="refund($event)">
+  <eg-grid-toolbar-action i18n-label label="Refund" (onClick)="refund($event)"
+    [disableOnRows]="notAllRefundable">
   </eg-grid-toolbar-action>
 
   <!-- COLUMNS -->
@@ -252,7 +275,8 @@
   <eg-grid-column name="last_billing_note" path="summary.last_billing_note"
   [required]="true" label="Last Billing Note" i18n-label></eg-grid-column>
 
-  <eg-grid-column name="paymentPending" datatype="money"
+  <!-- computed after fetch, so there is no IDL path for the server to sort on -->
+  <eg-grid-column name="paymentPending" datatype="money" [sortable]="false"
   label="Payment Pending" i18n-label></eg-grid-column>
 
   <!-- -->
@@ -273,7 +297,8 @@
     [hidden]="true" [required]="true" [datePlusTime]="true" label="Last Payment Time" i18n-label>
   </eg-grid-column>
 
-  <eg-grid-column name="billingLocation"
+  <!-- coalesced from two paths after fetch, so the server cannot sort on it -->
+  <eg-grid-column name="billingLocation" [sortable]="false"
   [hidden]="true" label="Billing Location" i18n-label></eg-grid-column>
 
   <eg-grid-column path="circulation.target_copy.call_number.prefix.label"
@@ -285,7 +310,7 @@
     path="circulation.target_copy.call_number.owning_lib.shortname">
   </eg-grid-column>
 
-  <eg-grid-column i18n-label label="Checkout/Renewal Library" [hidden]="true"
+  <eg-grid-column i18n-label label="Checkout/Renewal Library" [required]="true" [hidden]="true"
     path="circulation.circ_lib.shortname">
   </eg-grid-column>
 
@@ -313,26 +338,24 @@
     [required]="true" i18n-label path="grocery.billing_location.shortname">
   </eg-grid-column>
 
-  <eg-grid-column [hidden]="true" label="Circulation Billing Location"
-    [required]="true" i18n-label path="circulation.circ_lib.shortname">
-  </eg-grid-column>
-
   <eg-grid-column path="usr" [hidden]="true"></eg-grid-column>
   <eg-grid-column path="unrecovered" [hidden]="true"></eg-grid-column>
 
 </eg-grid>
 
 <div class="row mt-2">
-  <div class="col-lg-12 d-flex">
-    <div class="d-flex flex-column ms-auto align-items-center justify-content-end">
-      <div class="form-check form-check-inline">
-        <input class="form-check-input" type="checkbox" id="patron-credit-cbox"
-          [(ngModel)]="convertChangeToCredit"/>
-        <label class="form-label form-check-label" for="patron-credit-cbox" i18n>
-        Convert Change To Patron Credit
-      </label>
+  <div class="col-lg-12 d-flex justify-content-end">
+    @if (!disablePatronCredit) {
+      <div class="d-flex flex-column align-items-center justify-content-end">
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="checkbox" id="patron-credit-cbox"
+            [(ngModel)]="convertChangeToCredit"/>
+          <label class="form-label form-check-label" for="patron-credit-cbox" i18n>
+          Convert Change To Patron Credit
+        </label>
+        </div>
       </div>
-    </div>
+    }
     <div class="d-flex flex-column justify-content-end">
       <div class="form-check form-check-inline ms-2">
         <input class="form-check-input" type="checkbox" id="receipt-on-payment-cbox"

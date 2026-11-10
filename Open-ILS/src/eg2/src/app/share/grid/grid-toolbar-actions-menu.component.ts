@@ -13,7 +13,13 @@ import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
         ClipboardDialogComponent,
         NgbDropdownModule,
         NgClass
-    ]
+    ],
+    styles: `
+    .dropdown-item.disabled {
+        color: var(--bs-tertiary-color);
+        background-color: var(--bs-body-bg);
+    }
+    `
 })
 
 export class GridToolbarActionsMenuComponent {

@@ -1,0 +1,30 @@
+@for (entry of column; track entry) {
+    @switch (entry.content_type) {
+        @case ('field') {
+        @if (entry.value) {
+            @let inputs = {label: label, value: value};
+            <ng-template *ngComponentOutlet="layoutComponent; inputs: inputs"></ng-template>
+            <ng-template #label>{{ entry.label }}</ng-template>
+            <ng-template #value><eg-field-display [field]="entry" [inline]="inline"></eg-field-display></ng-template>
+        }
+        }
+        @case ('formats_and_editions') {
+        @let inputs = {label: label, value: value};
+        <ng-template *ngComponentOutlet="layoutComponent; inputs: inputs"></ng-template>
+        <ng-template #label i18n>Formats and Editions</ng-template>
+        <ng-template #value><eg-formats-and-editions-display #value [summary]="summary"/></ng-template>
+        }
+        @case ('hold_counts') {
+        @let inputs = {label: label, value: value};
+        <ng-template *ngComponentOutlet="layoutComponent; inputs: inputs"></ng-template>
+        <ng-template #label i18n>Hold counts</ng-template>
+        <ng-template #value><eg-hold-count-display [summary]="summary"/></ng-template>
+        }
+        @case ('item_counts') {
+        @let inputs = {label: label, value: value};
+        <ng-template *ngComponentOutlet="layoutComponent; inputs: inputs"></ng-template>
+        <ng-template #label i18n>Item counts</ng-template>
+        <ng-template #value><eg-item-count-display [summary]="summary"/></ng-template>
+        }
+    }
+}

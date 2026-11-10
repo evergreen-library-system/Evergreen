@@ -1,4 +1,4 @@
-import { Component, ViewChild, OnInit, inject } from '@angular/core';
+import { Component, OnInit, viewChild } from '@angular/core';
 import {AdminPageComponent} from '@eg/staff/share/admin-page/admin-page.component';
 import {IdlObject} from '@eg/core/idl.service';
 import {GridCellTextGenerator} from '@eg/share/grid/grid';
@@ -31,12 +31,12 @@ export class AdminStaffPortalPageComponent extends AdminPageComponent implements
     createNew: () => void;
     cellTextGenerator: GridCellTextGenerator;
 
-    @ViewChild('refreshString', { static: true }) refreshString: StringComponent;
-    @ViewChild('refreshErrString', { static: true }) refreshErrString: StringComponent;
-    @ViewChild('cloneSuccessString', { static: true }) cloneSuccessString: StringComponent;
-    @ViewChild('cloneFailedString', { static: true }) cloneFailedString: StringComponent;
-    @ViewChild('cloneDialog', { static: true}) cloneDialog: ClonePortalEntriesDialogComponent;
-    @ViewChild('delConfirm', { static: true }) delConfirm: ConfirmDialogComponent;
+    protected refreshString = viewChild.required<StringComponent>('refreshString');
+    protected refreshErrString = viewChild.required<StringComponent>('refreshErrString');
+    protected cloneSuccessString = viewChild.required<StringComponent>('cloneSuccessString');
+    protected cloneFailedString = viewChild.required<StringComponent>('cloneFailedString');
+    protected cloneDialog = viewChild.required<ClonePortalEntriesDialogComponent>('cloneDialog');
+    protected delConfirm = viewChild.required<ConfirmDialogComponent>('delConfirm');
 
     ngOnInit() {
         super.ngOnInit();
@@ -46,7 +46,7 @@ export class AdminStaffPortalPageComponent extends AdminPageComponent implements
     }
 
     cloneEntries() {
-        this.cloneDialog.open().subscribe(
+        this.cloneDialog().open().subscribe(
             result => {
                 this._handleClone(result.source_library, result.target_library, result.overwrite_target);
             }
@@ -54,7 +54,7 @@ export class AdminStaffPortalPageComponent extends AdminPageComponent implements
     }
 
     deleteSelected(idlThings: IdlObject[]) {
-        this.delConfirm.open().subscribe(confirmed => {
+        this.delConfirm().open().subscribe(confirmed => {
             if (!confirmed) { return; }
             super.doDelete(idlThings);
         });
@@ -81,14 +81,14 @@ export class AdminStaffPortalPageComponent extends AdminPageComponent implements
         ).add(() => {
             this.pcrud.autoApply(updates).subscribe(
                 { next: val => {}, error: (err: unknown) => {
-                    this.cloneFailedString.current()
+                    this.cloneFailedString().current()
                         .then(str => this.toast.danger(str));
                 }, complete: () => {
-                    this.cloneSuccessString.current()
+                    this.cloneSuccessString().current()
                         .then(str => this.toast.success(str));
                     this.searchOrgs = {primaryOrgId: tgt}; // change the org filter to the
                     // the one we just cloned into
-                    this.grid.reload();
+                    this.grid().reload();
                 } }
             );
         });

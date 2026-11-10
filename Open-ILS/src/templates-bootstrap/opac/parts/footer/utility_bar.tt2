@@ -1,0 +1,18 @@
+[%# Legal comes first so DOM/tab order matches the visual order. %]
+<div class="footer-bottom">
+    <div id="copyright_text" class="footer-legal">
+        <p class="mb-1">[% l('Copyright &copy; 2006-[_1] Georgia Public Library Service, and others', date.format(date.now, '%Y')) %]</p>
+        <p id="footer_logo" class="mb-0">
+            [% l('Powered by') %]
+            <a href="http://evergreen-ils.org">
+                <img id="footer_logo_image" src="[% ctx.media_prefix %]/images/evergreen-logo-white.svg[% ctx.cache_key %]"
+                    alt="[% l('Evergreen') %]" class="eg-logo" role="img"
+                />
+            </a>
+        </p>
+    </div>
+
+    <div class="footer-locale">
+        [%- INCLUDE 'opac/parts/pref_locale_picker.tt2' %]
+    </div>
+</div>

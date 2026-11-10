@@ -48,8 +48,6 @@ openurl.baseurl = 'http://sfx.example.com/instance';
 ebook_api.enabled = 'false';
 ebook_api.ebook_test.enabled = 'false';
 ebook_api.ebook_test.base_uris = [ 'http://example.com/ebookapi/t/' ];
-ebook_api.oneclickdigital.enabled = 'false';
-ebook_api.oneclickdigital.base_uris = [ 'http://example.oneclickdigital.com/Products/ProductDetail.aspx' ];
 ebook_api.overdrive.enabled = 'false';
 ebook_api.overdrive.base_uris = [ 'http://elm.lib.overdrive.com/' ];
 

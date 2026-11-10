@@ -9,6 +9,7 @@
 <eg-hold-retarget-dialog #retargetDialog></eg-hold-retarget-dialog>
 <eg-hold-cancel-dialog #cancelDialog></eg-hold-cancel-dialog>
 <eg-hold-manage-dialog #manageDialog></eg-hold-manage-dialog>
+<eg-manage-hold-notes #manageNotesDialog [holdId]="selectedHoldId()"></eg-manage-hold-notes>
 <eg-confirm-dialog #uncancelDialog
   i18n-dialogTitle i18n-dialogBody
   i18n-dialogTitle="Un-Cancel Holds"
@@ -64,7 +65,9 @@
 
   @if (mode === 'detail') {
     <eg-hold-detail [wideHold]="detailHold" (onShowList)="mode='list'"
-    [showRecordSummary]="showRecordSummary"></eg-hold-detail>
+      [showRecordSummary]="showRecordSummary"
+      [patronFocused]="patronFocused">
+    </eg-hold-detail>
   }
 
   @if (mode === 'list' && initComplete()) {
@@ -274,14 +277,14 @@
       [cellTemplate]="titleTmpl"></eg-grid-column>
       <eg-grid-column i18n-label label="Publication Year" path='pubdate' [hidden]="true"></eg-grid-column>
       <ng-template #barcodeTmpl let-hold="row" let-col="col">
-        <a href="/eg/staff/cat/item/{{hold.cp_id}}/summary" target="_blank">
-          @if (col.name === 'current_item' && hold.current_copy) {
-            {{hold.cp_barcode}}
+        @if (hold.cp_barcode) {
+          @if (col.name === 'current_item' && hold.current_copy
+            || col.name === 'requested_item' && isCopyHold(hold)) {
+            <a href="/eg/staff/cat/item/{{hold.cp_id}}/summary" target="_blank">
+              {{ hold.cp_barcode }}
+            </a>
           }
-          @if (col.name === 'requested_item' && isCopyHold(hold)) {
-            {{hold.cp_barcode}}
-          }
-        </a>
+        }
       </ng-template>
       <eg-grid-column i18n-label label="Current Item" name='current_item'
         [cellTemplate]="barcodeTmpl" [sortable]="false" [multiSortable]="false">
@@ -290,7 +293,8 @@
         [cellTemplate]="barcodeTmpl" [sortable]="false" [multiSortable]="false">
       </eg-grid-column>
       <eg-grid-column i18n-label label="Pickup Library" path='pl_shortname'></eg-grid-column>
-      <eg-grid-column i18n-label label="Hold Type" path='hold_type'></eg-grid-column>
+      <eg-grid-column i18n-label label="Hold Type" path='hold_type' [cellTemplate]="holdTypeTmpl"></eg-grid-column>
+      <ng-template #holdTypeTmpl let-hold="row">{{hold.hold_type | holdTypeName}}</ng-template>
       <eg-grid-column i18n-label label="Potential Items" path='potentials' datatype="int">
       </eg-grid-column>
       <eg-grid-column i18n-label label="Request Date" path='request_time'
@@ -325,7 +329,7 @@
       <eg-grid-column path='ancp_label' i18n-label label="CN Prefix" [hidden]="true"></eg-grid-column>
       <eg-grid-column path='ancs_label' i18n-label label="CN Suffix" [hidden]="true"></eg-grid-column>
       <eg-grid-column i18n-label label="Fulfillment Date/Time" path='fulfillment_time' datatype="timestamp" [datePlusTime]="true" [hidden]="true"></eg-grid-column>
-      <eg-grid-column i18n-label label="Checkin Time" path='checkin_time' datatype="timestamp" [datePlusTime]="true" [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Check In Time" path='checkin_time' datatype="timestamp" [datePlusTime]="true" [hidden]="true"></eg-grid-column>
       <eg-grid-column i18n-label label="Return Time" path='return_time' datatype="timestamp" [datePlusTime]="true" [hidden]="true"></eg-grid-column>
       <eg-grid-column i18n-label label="Last Targeting Date/Time" path='prev_check_time' datatype="timestamp" [datePlusTime]="true" [hidden]="true"></eg-grid-column>
       <eg-grid-column i18n-label label="Expire Time" path='expire_time' datatype="timestamp" [datePlusTime]="true" [hidden]="true"></eg-grid-column>
@@ -371,6 +375,18 @@
       <eg-grid-column i18n-label label="Transit Hold" path='tr_hold' [hidden]="true"></eg-grid-column>
       <eg-grid-column i18n-label label="Transit Cancel Time" path='tr_cancel_time' datatype="timestamp" [datePlusTime]="true" [hidden]="true"></eg-grid-column>
       <eg-grid-column i18n-label label="Hold Note Count" path='note_count' [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Hold Notes" path="note_first" [cellTemplate]="notesTmpl"></eg-grid-column>
+      <ng-template #notesTmpl let-hold="row">
+        @if (hold.note_count === 1) {
+          <a tabindex="0" role="button" class="link-primary" (click)="showManageNotesDialog(hold.id)">
+            {{hold.note_first}}
+          </a>
+        } @else if (hold.note_count > 1) {
+          <button type="button" i18n (click)="showManageNotesDialog(hold.id)" class="btn btn-sm btn-secondary">Manage ({{hold.note_count}})</button>
+        } @else {
+          <button type="button" i18n (click)="showManageNotesDialog(hold.id)" class="btn btn-sm btn-secondary">Manage</button>
+        }
+      </ng-template>
       <eg-grid-column i18n-label label="User Display Name" path='usr_display_name' [hidden]="true"></eg-grid-column>
       <eg-grid-column i18n-label label="Requestor Username" path='rusr_usrname' [hidden]="true"></eg-grid-column>
       <eg-grid-column i18n-label label="Item ID" path='cp_id' [hidden]="true"></eg-grid-column>
@@ -418,7 +434,7 @@
       <eg-grid-column i18n-label label="Shelving Location Can Circulate" path='acpl_circulate' datatype="bool" [hidden]="true"></eg-grid-column>
       <eg-grid-column i18n-label label="Shelving Location Prefix" path='acpl_label_prefix' [hidden]="true"></eg-grid-column>
       <eg-grid-column i18n-label label="Shelving Location Suffix" path='acpl_label_suffix' [hidden]="true"></eg-grid-column>
-      <eg-grid-column i18n-label label="Shelving Location Checkin Alert" path='acpl_checkin_alert' datatype="bool" [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Shelving Location Check In Alert" path='acpl_checkin_alert' datatype="bool" [hidden]="true"></eg-grid-column>
       <eg-grid-column i18n-label label="Shelving Location Is Deleted" path='acpl_deleted' datatype="bool" [hidden]="true"></eg-grid-column>
       <eg-grid-column i18n-label label="Shelving Location URL" path='acpl_url' [hidden]="true"></eg-grid-column>
       <eg-grid-column i18n-label label="Shelving Location Order" path='copy_location_order_position' [hidden]="true"></eg-grid-column>

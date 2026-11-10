@@ -13,6 +13,13 @@
 <eg-string #duplicateSuccessString i18n-text text="Duplication of {{tableName}} succeeded"></eg-string>
 <eg-string #flairTooltip i18n-text text="Limited Editing"></eg-string>
 
+<eg-confirm-dialog #confirmDelete i18n-title title="Confirm Delete"
+  i18n-dialogTitle dialogTitle="Delete course(s)?"
+  i18n-dialogBody
+  dialogBody="Are you sure you want to delete the selected course(s)?"
+  i18n-confirmString confirmString="Delete">
+</eg-confirm-dialog>
+
 <ul ngbNav #courseListNav="ngbNav" class="nav-tabs" [keyboard]="true" [roles]="false" role="tablist">
   <li role="presentation" ngbNavItem>
     <a role="tab" ngbNavLink i18n>Course list</a>
@@ -39,7 +46,7 @@
           </eg-grid-toolbar-button>
           <eg-grid-toolbar-action label="Edit Selected" i18n-label (onClick)="editSelected($event)">
           </eg-grid-toolbar-action>
-          <eg-grid-toolbar-action label="Delete Selected" i18n-label (onClick)="deleteSelected($event)">
+          <eg-grid-toolbar-action label="Delete Selected" i18n-label (onClick)="confirmDeleteSelected($event)">
           </eg-grid-toolbar-action>
           <eg-grid-toolbar-action label="Archive Selected" i18n-label (onClick)="archiveSelected($event)" [disableOnRows]="noCourseCanBeArchived">
           </eg-grid-toolbar-action>

@@ -92,7 +92,7 @@
             </div>
 
           <eg-org-selector ng-show="showExtras" label="[% l('Home Library') %]" org-aria="[% l('Home Library') %]"
-              selected="searchArgs.home_ou" sticky-setting="eg.circ.patron.search.ou">
+              selected="searchArgs.home_ou">
           </eg-org-selector>
 
           <input ng-show="showExtras" type="text" class="form-control" aria-label="[% l('Parent/Guardian') %]"

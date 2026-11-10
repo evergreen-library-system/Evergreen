@@ -1,0 +1,33 @@
+== Customizable record display in the staff catalog ==
+
+This version of Evergreen allows administrators to customize the layout, data, and display for the staff catalog
+search results and the staff view tab of a record.
+
+To use a field in either of these displays, there are two prerequisites:
+
+* The field needs to be configured as a display field in Administration ->
+  Server Administration -> MARC Search/Facet Fields.
+* The field needs to be configured in the config.display_field_map database
+  table.
+
+=== Customizing a view ===
+
+Customizing a view requires the _ADMIN_RECORD_DISPLAY_ permission globally.  To customize a view:
+
+. Before customizing a view, choose a record from your database that you would like to test your customizations on.  Identify its database ID, you will need this later.
+. Go to Administration -> Server Administration
+. Select MARC Record Display
+. Choose the interface you'd like to customize
+. Reorder, add, remove, and edit the interface to meet the needs of your Evergreen installation
+. Scroll down to the Preview section
+. Enter the record database ID you identified earlier.
+. Press the Preview button.
+. Make any adjustments needed, and check your preview again.  Continue this process until you are satisfied with your customizations.
+
+=== Translating field labels ===
+
+Translating field labels in both interfaces -- which before could be achieved through
+the community POEditor or otherwise editing the .xmb file -- is now possible through
+the Administration -> Server Administration -> MARC Search/Facet Fields interface.  To
+modify or add a translation, edit the field in question, and press the "Translate" button
+next to the Label input.

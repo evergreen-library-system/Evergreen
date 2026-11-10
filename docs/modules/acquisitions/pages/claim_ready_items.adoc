@@ -17,7 +17,7 @@ To see current items on the claims list, navigate to *Acquisitions -> Claim Read
 
 image::claim_ready_items/claim_ready_items.png[Claim ready items interface]
 
-At the top, you can select all items in the page or all items regardless of page. You can also select indivudual line items. You will only be able to claim non-received items.
+At the top, you can select all items in the page or all items regardless of page. You can also select individual line items. You will only be able to claim non-received items.
 
 Once you have selected your line items, click the _Claim Selected Lineitems_ button to claim all eligible line items along with their child items.
 

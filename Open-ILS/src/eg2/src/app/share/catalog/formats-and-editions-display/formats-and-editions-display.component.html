@@ -1,0 +1,35 @@
+@if (summary) {
+    <ul>
+        @if (summary.staffViewMetabibAttributes.icon_format) {
+
+            @for (_x of summary.staffViewMetabibAttributes.icon_format | keyvalue; track _x) {
+<li>
+                <a href="/eg2/staff/catalog/search?query=from_metarecord({{summary.staffViewMetabibId}}) icon_format({{_x.key}})">
+                    {{_x.value.label}}
+                </a>
+                    {{_x.value.count}}
+            </li>
+}
+        
+}
+        @if (summary.staffViewMetabibAttributes.item_lang) {
+
+            @for (_x of summary.staffViewMetabibAttributes.item_lang | keyvalue; track _x) {
+<li>
+                <a href="/eg2/staff/catalog/search?query=from_metarecord({{summary.staffViewMetabibId}}) item_lang({{_x.key}})">
+                    {{_x.value.label}}
+                </a>
+                    {{_x.value.count}}
+            </li>
+}
+        
+}
+        <li>
+            <a href="/eg2/staff/catalog/search?query=from_metarecord({{summary.staffViewMetabibId}})">
+                <span i18n>View all Formats and Editions</span>
+            </a>
+            <span> {{summary.staffViewMetabibRecords.length}}</span>
+        </li>
+    </ul>
+
+}

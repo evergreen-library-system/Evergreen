@@ -1,0 +1,21 @@
+<div class="[% footer_col %] mb-4 mb-lg-0">
+    <h2 class="footer-heading">[% l('Hours') %]</h2>
+
+    [% IF today_hours %]
+    <p class="footer-today">
+        <span class="footer-label">[% l('Today') %]</span>
+        <span class="footer-today-hours">[% today_hours | html %]</span>
+    </p>
+    [% END %]
+
+    [% IF hour_groups.size %]
+    <dl class="footer-hours mb-0">
+        [% FOR row IN hour_rows %]
+        <dt[% IF row.is_today %] class="is-today"[% END %]>[% row.dt %]</dt>
+        <dd[% IF row.is_today %] class="is-today"[% END %]>[% row.dd | html %]</dd>
+        [% END %]
+    </dl>
+    [% END %]
+
+    [% INCLUDE 'opac/parts/footer/closures.tt2' IF closure_rows.size %]
+</div>

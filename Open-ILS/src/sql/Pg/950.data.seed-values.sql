@@ -2060,8 +2060,14 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
      'Allow create hard due date values', 'ppl', 'description')),
  ( 693, 'DELETE_HARD_DUE_DATE_VALUE', oils_i18n_gettext(693,
      'Allow delete hard due date values', 'ppl', 'description')),
- ( 694, 'ADMIN_CALL_NUMBER_CLASS', oils_i18n_gettext(694,
-     'Allow updates to call number classification names, normalizers, and fields.', 'ppl', 'description'))
+ ( 695, 'ADMIN_CALL_NUMBER_CLASS', oils_i18n_gettext(695,
+     'Allow updates to call number classification names, normalizers, and fields.', 'ppl', 'description')),
+ ( 696, 'ADMIN_RECORD_DISPLAY', oils_i18n_gettext(696,
+     'Allow modifying the display of catalog records in certain interfaces', 'ppl', 'description')),
+ ( 697, 'PURGE_USER', oils_i18n_gettext(697,
+     'Allow a user to delete (purge) another user', 'ppl', 'description')),
+ ( 698, 'DELETE_INACTIVE_NONPRIMARY_PATRON_CARD', oils_i18n_gettext(698,
+     'Allow a user to delete a patron''s inactive, non-primary cards', 'ppl', 'description'))
 ;
 
 INSERT INTO permission.perm_list (id,code) VALUES
@@ -2618,7 +2624,8 @@ INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
 		pgt.name = 'Circulation Administrator' AND
 		aout.name = 'Branch' AND
 		perm.code IN (
-			'DELETE_USER');
+			'DELETE_USER',
+			'PURGE_USER');
 
 INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
 	SELECT
@@ -3818,15 +3825,6 @@ INSERT into config.org_unit_setting_type
         'coust','description'),
   'interval', null)
 
-,( 'circ.hold_stalling_hard', 'holds',
-    oils_i18n_gettext('circ.hold_stalling_hard',
-        'Hard stalling interval',
-        'coust', 'label'),
-    oils_i18n_gettext('circ.hold_stalling_hard',
-        'Holds: Hard stalling interval',
-        'coust', 'description'),
-    'interval', null)
-
 ,( 'circ.holds.age_protect.active_date', 'holds',
     oils_i18n_gettext('circ.holds.age_protect.active_date',
         'Use Active Date for Age Protection',
@@ -4783,6 +4781,14 @@ INSERT into config.org_unit_setting_type
         'coust', 'label'),
     oils_i18n_gettext('opac.ecard_renewal_enabled',
         'Enable access to the eCard request renewal form in the OPAC',
+        'coust', 'description'),
+    'bool', null)
+,( 'opac.ecard_renewal_bypass_checks', 'opac',
+    oils_i18n_gettext('opac.ecard_renewal_bypass_checks',
+        'Bypass checks of eCard renewals',
+        'coust', 'label'),
+    oils_i18n_gettext('opac.ecard_renewal_bypass_checks',
+        'Allow bypassing certain checks for online card renewals; this is meant for cases where the an external system such as a discovery layer is hosting the renewal form and is assuming responsiblity for validating that the patron has requested it',
         'coust', 'description'),
     'bool', null)
 ,( 'opac.ecard_renewal_offer_interval', 'opac',
@@ -18775,58 +18781,6 @@ VALUES (
     'bool'
 );
 
-INSERT INTO config.org_unit_setting_type
-    (name, label, description, grp, datatype) 
-VALUES (
-    'ebook_api.oneclickdigital.base_uri',
-    oils_i18n_gettext(
-        'ebook_api.oneclickdigital.base_uri',
-        'OneClickdigital Base URI',
-        'coust',
-        'label'
-    ),
-    oils_i18n_gettext(
-        'ebook_api.oneclickdigital.base_uri',
-        'Base URI for OneClickdigital API (defaults to https://api.oneclickdigital.com/v1). Using HTTPS here is strongly encouraged.',
-        'coust',
-        'description'
-    ),
-    'ebook_api',
-    'string'
-),(
-    'ebook_api.oneclickdigital.library_id',
-    oils_i18n_gettext(
-        'ebook_api.oneclickdigital.library_id',
-        'OneClickdigital Library ID',
-        'coust',
-        'label'
-    ),
-    oils_i18n_gettext(
-        'ebook_api.oneclickdigital.library_id',
-        'Identifier assigned to this library by OneClickdigital',
-        'coust',
-        'description'
-    ),
-    'ebook_api',
-    'string'
-),(
-    'ebook_api.oneclickdigital.basic_token',
-    oils_i18n_gettext(
-        'ebook_api.oneclickdigital.basic_token',
-        'OneClickdigital Basic Token',
-        'coust',
-        'label'
-    ),
-    oils_i18n_gettext(
-        'ebook_api.oneclickdigital.basic_token',
-        'Basic token for client authentication with OneClickdigital API (supplied by OneClickdigital)',
-        'coust',
-        'description'
-    ),
-    'ebook_api',
-    'string'
-);
-
 INSERT into config.org_unit_setting_type (
      name
     ,grp
@@ -21453,7 +21407,7 @@ INSERT INTO config.org_unit_setting_type
 
 INSERT into config.org_unit_setting_type
 ( name, grp, label, description, datatype, fm_class ) VALUES
-( 'circ.holds.calculated_age_proximity', 'circ',
+( 'circ.holds.calculated_age_proximity', 'holds',
     oils_i18n_gettext('circ.holds.calculated_age_proximity',
         'Use calculated proximity for age-protection check',
         'coust', 'label'),
@@ -25757,7 +25711,9 @@ INSERT INTO openapi.endpoint_set (name, description) VALUES
   ('collections', 'Methods for accessing and manipulating patron debt collections data'),
   ('bibs', 'Methods for accessing and manipulating bibliographic records and related data'),
   ('items', 'Methods for accessing and manipulating barcoded item records'),
-  ('courses', 'Methods for accessing and manipulating course reserve data')
+  ('courses', 'Methods for accessing and manipulating course reserve data'),
+  ('coded_value_maps', 'Methods for retrieving coded value maps'),
+  ('search', 'Methods for searching the catalog of bibliographic records')
 ON CONFLICT DO NOTHING;
 
 INSERT INTO openapi.endpoint_set_perm_set_map (endpoint_set, perm_set) VALUES
@@ -26541,6 +26497,131 @@ ON CONFLICT DO NOTHING;
 INSERT INTO openapi.endpoint_param (endpoint,name,in_part,schema_type,required) VALUES ('retrieveCourseUsers','id','path','integer',TRUE) ON CONFLICT DO NOTHING;
 INSERT INTO openapi.endpoint_response (endpoint,schema_type,array_items) VALUES ('retrieveCourseUsers','array','object') ON CONFLICT DO NOTHING;
 
+INSERT INTO openapi.endpoint
+(operation_id, path, http_method, summary, method_source, method_name,
+ method_params)
+VALUES (
+  'retrieveCodedValueMap',
+  '/coded_value_map/:id',
+  'get',
+  'Retrieve one coded value map by id',
+  'OpenILS::OpenAPI::Controller::ccvm',
+  'retrieve_ccvm',
+  'param.id'
+) ON CONFLICT DO NOTHING;
+
+INSERT INTO openapi.endpoint_param
+(endpoint, name, in_part, schema_type, required)
+VALUES
+('retrieveCodedValueMap', 'id', 'path', 'integer', TRUE)
+ON CONFLICT DO NOTHING;
+
+INSERT INTO openapi.endpoint_response (endpoint, fm_type)
+VALUES ('retrieveCodedValueMap', 'ccvm') ON CONFLICT DO NOTHING;
+
+INSERT INTO openapi.endpoint
+(operation_id, path, http_method, summary, method_source, method_name,
+ method_params)
+VALUES (
+  'codedValueMapsByCtype',
+  '/coded_value_maps/by_ctype/:ctype',
+  'get',
+  'Retrieve coded value maps by ctype',
+  'OpenILS::OpenAPI::Controller::ccvm',
+  'ccvm_by_ctype',
+  'param.ctype'
+) ON CONFLICT DO NOTHING;
+
+INSERT INTO openapi.endpoint_param
+(endpoint, name, in_part, schema_type, required)
+VALUES
+('codedValueMapsByCtype', 'ctype', 'path', 'string', TRUE)
+ON CONFLICT DO NOTHING;
+
+INSERT INTO openapi.endpoint_response (endpoint,schema_type,array_items)
+VALUES ('codedValueMapsByCtype','array','object') ON CONFLICT DO NOTHING;
+
+-- New search endpoint(s)
+INSERT INTO openapi.endpoint
+(operation_id, path, http_method, summary, method_source, method_name, method_params)
+VALUES (
+    'searchMulticlass',
+    '/search/multiclass',
+    'get',
+    'Search bibliographic records similar to the OPAC',
+    'OpenILS::OpenAPI::Controller::search',
+    'multiclass_search',
+    'eg_auth_token every_param.title every_param.author every_param.subject every_param.series every_param.keyword every_param.identifier every_param.isbn every_param.issn param.org_unit param.depth param.limit param.offset param.sort param.sort_dir param.tag_circulated_records param.query param.docache'
+) ON CONFLICT DO NOTHING;
+
+INSERT INTO openapi.endpoint_param
+(endpoint, name, required, in_part, schema_type, default_value)
+VALUES
+('searchMulticlass', 'title', FALSE, 'query', 'string', NULL),
+('searchMulticlass', 'author', FALSE, 'query', 'string', NULL),
+('searchMulticlass', 'subject', FALSE, 'query', 'string', NULL),
+('searchMulticlass', 'series', FALSE, 'query', 'string', NULL),
+('searchMulticlass', 'keyword', FALSE, 'query', 'string', NULL),
+('searchMulticlass', 'identifier', FALSE, 'query', 'string', NULL),
+('searchMulticlass', 'isbn', FALSE, 'query', 'string', NULL),
+('searchMulticlass', 'issn', FALSE, 'query', 'string', NULL),
+('searchMulticlass', 'query', FALSE, 'query', 'string', NULL),
+('searchMulticlass', 'sort', FALSE, 'query', 'string', NULL),
+('searchMulticlass', 'sort_dir', FALSE, 'query', 'string', 'ASC')
+ON CONFLICT DO NOTHING;
+
+INSERT INTO openapi.endpoint_param
+(endpoint, name, required, in_part, schema_type, default_value)
+VALUES
+('searchMulticlass', 'org_unit', FALSE, 'query', 'integer', NULL),
+('searchMulticlass', 'depth', FALSE, 'query', 'integer', NULL),
+('searchMulticlass', 'limit', FALSE, 'query', 'integer', '10'),
+('searchMulticlass', 'offset', FALSE, 'query', 'integer', '0')
+ON CONFLICT DO NOTHING;
+
+INSERT INTO openapi.endpoint_param
+(endpoint, name, required, in_part, schema_type, default_value)
+VALUES
+('searchMulticlass', 'tag_circulated_records', FALSE, 'query', 'boolean', 'false'),
+('searchMulticlass', 'docache', FALSE, 'query', 'boolean', 'true')
+ON CONFLICT DO NOTHING;
+
+INSERT INTO openapi.endpoint_response (endpoint, schema_type)
+VALUES ('searchMulticlass', 'object') ON CONFLICT DO NOTHING;
+
+-- New bibs endpoint to retrieve record by identifier
+
+INSERT INTO openapi.endpoint
+(operation_id, path, http_method, summary, method_source, method_name, method_params)
+VALUES (
+  'bibByISBN',
+  '/bibs/by_isbn/:isbn',
+  'get',
+  'Retrieve bib record by ISBN or other standard identifier',
+  'OpenILS::OpenAPI::Controller::bib',
+  'retrieve_bib',
+  'param.isbn'
+) ON CONFLICT DO NOTHING;
+
+INSERT INTO openapi.endpoint_param
+(endpoint, name, in_part, schema_type, required)
+VALUES
+('bibByISBN', 'isbn', 'path', 'string', TRUE)
+ON CONFLICT DO NOTHING;
+
+INSERT INTO openapi.endpoint_response
+(endpoint, content_type, fm_type)
+VALUES
+('bibByISBN', 'application/json', 'bre')
+ON CONFLICT DO NOTHING;
+
+INSERT INTO openapi.endpoint_response
+(endpoint, content_type)
+VALUES
+('bibByISBN', 'application/xml'),
+('bibByISBN', 'application/octet-stream')
+ON CONFLICT DO NOTHING;
+
 --------- put likely stock endpoints into sets --------
 INSERT INTO openapi.endpoint_set_endpoint_map (endpoint, endpoint_set)
   SELECT e.operation_id, s.name FROM openapi.endpoint e JOIN openapi.endpoint_set s ON (e.path LIKE '/'||RTRIM(s.name,'s')||'%')
@@ -26604,6 +26685,13 @@ VALUES (
     oils_i18n_gettext(
         'eg.grid.cat.vandelay.queue.bib.record_matches',
         'Grid Config: cat.vandelay.queue.bib.record_matches',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.cat.bucket.batch_hold.event_holds', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.cat.bucket.batch_hold.event_holds',
+        'Grid Config: eg.grid.cat.bucket.batch_hold.event_holds',
         'cwst', 'label'
     )
 );

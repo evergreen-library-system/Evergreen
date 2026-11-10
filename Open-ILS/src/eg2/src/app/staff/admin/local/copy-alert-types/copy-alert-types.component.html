@@ -9,7 +9,7 @@
     [required]="field.isRequired()" [ngModel]="record[field.name]()"
     (ngModelChange)="record['event']($event)">
     <option value="" [selected]="!record[field.name]()" i18n>Any Event</option>
-    <option value="CHECKIN" [selected]="record[field.name]() === 'CHECKIN'" i18n>Checkin</option>
+    <option value="CHECKIN" [selected]="record[field.name]() === 'CHECKIN'" i18n>Check In</option>
     <option value="CHECKOUT" [selected]="record[field.name]() === 'CHECKOUT'" i18n>Checkout</option>
   </select>
 </ng-template>
@@ -33,8 +33,13 @@
   }
 </ng-template>
 
+<ng-template #nextStatusCell let-row="row">
+  {{ displayNextStatus(row) }}
+</ng-template>
+
 <eg-admin-page #adminPage
   idlClass="ccat"
+  [templateFields]="[{name: 'next_status', template: nextStatusCell, preserveAutoPosition: true}]"
   [defaultNewRecord]="defaultNewRecord"
   [fieldOptions]="{
     state: {customValues: alertTypeStateEntries},

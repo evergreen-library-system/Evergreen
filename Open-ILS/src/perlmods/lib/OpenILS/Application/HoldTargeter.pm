@@ -37,6 +37,10 @@ hold => <id> OR [<id>, <id>, ...]
  (Re)target one or more specific holds.  Specified as a single hold ID
  or an array ref of hold IDs.
 
+find_copy => <copy id>
+  Return found_copy=1 in results summary if the passed copy id is found
+  in the list of targetable copies.
+
 retarget_interval => <interval string>
   Override the 'circ.holds.retarget_interval' global_flag value.
 

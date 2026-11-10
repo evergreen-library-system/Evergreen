@@ -1,66 +1,84 @@
-
-@if (alerts()) {
+@let showAlerts = alerts();
+@if (showAlerts.holdsReady === 0 && !showAlerts.accountExpired &&
+     !showAlerts.accountExpiresSoon &&
+     !showAlerts.patronBarred &&
+     !showAlerts.patronInactive &&
+     !showAlerts.retrievedWithInactive &&
+     !showAlerts.invalidAddress &&
+     !showAlerts.alertPenalties.length) {
+  <div class="alert alert-success mt-2" i18n>
+      No active alerts for this patron.
+  </div>
+    }
+@else {
+  <img class="mt-n4" src="/images/stop_sign.png" alt="" />
   <div>
     @if (alerts().holdsReady > 0) {
       <div class="alert alert-info" i18n>
-    Holds available: {{alerts().holdsReady}}
+    Holds available: {{showAlerts.holdsReady}}
   </div>
     }
-    @if (alerts().accountExpired) {
+    @if (showAlerts.accountExpired) {
       <div class="mt-2 alert alert-warning" i18n>
     Patron account is EXPIRED.
   </div>
     }
-    @if (alerts().accountExpiresSoon) {
+    @if (showAlerts.accountExpiresSoon) {
       <div class="mt-2 alert alert-warning" i18n>
     Patron account will expire soon.  Please renew.
   </div>
     }
-    @if (alerts().patronBarred) {
+    @if (showAlerts.patronBarred) {
       <div class="mt-2 alert alert-danger" i18n>
     Patron account is BARRED
   </div>
     }
-    @if (alerts().patronInactive) {
+    @if (showAlerts.patronInactive) {
       <div class="mt-2 alert alert-warning" i18n>
     Patron account is INACTIVE
   </div>
     }
-    @if (alerts().retrievedWithInactive) {
+    @if (showAlerts.retrievedWithInactive) {
       <div class="mt-2 alert alert-warning" i18n>
     Patron account retrieved with an INACTIVE card.
   </div>
     }
-    @if (alerts().invalidAddress) {
+    @if (showAlerts.invalidAddress) {
       <div class="mt-2 alert alert-warning" i18n>
     Patron account has invalid addresses.
   </div>
     }
     <!-- penalties -->
-    @if (alerts().alertPenalties.length) {
+    @if (showAlerts.alertPenalties.length) {
       <div class="row">
         <div class="col-lg-12">
           <div class="card">
-            <div class="card-header" i18n>Alerts</div>
+            <div  class="alert alert-warning" i18n>Alerts</div>
             <div class="card-body">
               <ul class="list-group list-group-flush">
-                @for (penalty of alerts().alertPenalties; track penalty) {
-                  <li class="list-group-item"
+                @for (penalty of showAlerts.alertPenalties; track penalty.key) {
+                  <div class="list-group-item"
                     >
                     <div class="row">
                       <div class="col-lg-2">
                         {{context.orgSn(penalty.org_unit())}}
                       </div>
                       <div class="col-lg-8"
-                        title="{{penalty.standing_penalty().name()}}">
-                        {{penalty.usr_message().title() || penalty.standing_penalty().label()}}
-                        <div>{{penalty.usr_message().message()}}</div><!-- force newline -->
+                        title="{{penalty.standing_penalty().label()}}">
+                        {{penalty.standing_penalty().label() || penalty.standing_penalty().name()}}
+			@if (penalty?.usr_message()?.message()) {
+                          <div>
+                            @if (penalty?.usr_message()?.title()) {
+                              {{penalty?.usr_message()?.title()}} - 
+                            }
+                            {{penalty?.usr_message()?.message()}}</div><!-- force newline -->
+			}
                       </div>
                       <div class="col-lg-2">
-                        {{penalty.set_date() | date:'short'}}
+                        {{penalty.set_date() | date:'shortDate'}}
                       </div>
                     </div>
-                  </li>
+                  </div>
                 }
               </ul>
             </div>
@@ -69,7 +87,7 @@
       </div>
     }
     <div class="mt-4 well-value" i18n>
-    Select a tab above (for example, Check Out) to clear this alert.
+    Select a navigation button to the left (for example, Check Out) to proceed.
   </div>
   </div>
 }

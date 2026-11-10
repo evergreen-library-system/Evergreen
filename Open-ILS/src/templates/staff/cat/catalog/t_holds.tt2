@@ -103,7 +103,7 @@
   <eg-grid-field label="[% l('Copy Status') %]" path="hold.cs_name" name='cs_name' hidden></eg-grid-field>
 
   <eg-grid-field label="[% l('Fulfillment Date/Time') %]" path='hold.fulfillment_time' datatype="timestamp" name='fulfillment_time' hidden></eg-grid-field>
-  <eg-grid-field label="[% l('Checkin Time') %]" path='hold.checkin_time' datatype="timestamp" name='checkin_time' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Check In Time') %]" path='hold.checkin_time' datatype="timestamp" name='checkin_time' hidden></eg-grid-field>
   <eg-grid-field label="[% l('Return Time') %]" path='hold.return_time' datatype="timestamp" name='return_time' hidden></eg-grid-field>
   <eg-grid-field label="[% l('Last Targeting Date/Time') %]" path='hold.prev_check_time' datatype="timestamp" name='prev_check_time' hidden></eg-grid-field>
   <eg-grid-field label="[% l('Expire Time') %]" path='hold.expire_time' datatype="timestamp" name='expire_time' hidden></eg-grid-field>
@@ -201,7 +201,7 @@
   <eg-grid-field label="[% l('Copy Location Can Circulate') %]" path='hold.acpl_circulate' datatype="bool" name='acpl_circulate' hidden></eg-grid-field>
   <eg-grid-field label="[% l('Copy Location Prefix') %]" path='hold.acpl_label_prefix' name='acpl_label_prefix' hidden></eg-grid-field>
   <eg-grid-field label="[% l('Copy Location Suffix') %]" path='hold.acpl_label_suffix' name='acpl_label_suffix' hidden></eg-grid-field>
-  <eg-grid-field label="[% l('Copy Location Checkin Alert') %]" path='hold.acpl_checkin_alert' datatype="bool" name='acpl_checkin_alert' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Copy Location Check In Alert') %]" path='hold.acpl_checkin_alert' datatype="bool" name='acpl_checkin_alert' hidden></eg-grid-field>
   <eg-grid-field label="[% l('Copy Location Is Deleted') %]" path='hold.acpl_deleted' datatype="bool" name='acpl_deleted' hidden></eg-grid-field>
   <eg-grid-field label="[% l('Copy Location URL') %]" path='hold.acpl_url' name='acpl_url' hidden></eg-grid-field>
   <eg-grid-field label="[% l('Copy Location Order') %]" path='hold.copy_location_order_position' name='copy_location_order_position' hidden></eg-grid-field>

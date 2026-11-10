@@ -1,0 +1,16 @@
+.btn-move:hover, 
+.btn-move:focus { 
+    cursor: ns-resize;
+}
+
+/* Some buttons have some hidden borders in their styles
+   on hover or focus, causing them to jiggle slightly as
+   users navigate the page.  No need for those empty borders,
+   let's remove them! */
+button {
+    border: 0;
+}
+
+button.btn-move {
+    text-decoration: none;
+}

@@ -470,7 +470,7 @@ domains, you can retrieve the settings from the backup version of the files.
 _Action Triggers_ provide hooks for the system to perform actions when a given
 event occurs; for example, to generate reminder or overdue notices, the
 `checkout.due` hook is processed and events are triggered for potential actions
-if there is no checkin time.
+if there is no check in time.
 
 To enable the default set of hooks, issue the following command as the
 *opensrf* Linux account:

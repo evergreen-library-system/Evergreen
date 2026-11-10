@@ -44,7 +44,7 @@ To check out items in Offline Circulation:
 . To print a receipt, check the box labelled *Print Receipt*.
 . Click *Save Transactions* in the upper-right of the screen to complete the checkout.
 
-Note that *Save Transactions* will save any unsaved transactions across the Offline tabs Checkout, Renew, In-House Use, and Checkin.
+Note that *Save Transactions* will save any unsaved transactions across the Offline tabs Checkout, Renew, In-House Use, and Check In.
 
 In the screenshot, the first two items in the right-hand list are regular checkout items.  The third item is a non-cataloged item.
 
@@ -52,7 +52,7 @@ image::offline/offline_checkout.png[Offline checkout]
 
 A value entered in the Due Date field will take precedence over an existing value in the Offset Dropdown; however, if you change the Offset after setting the Due Date field, the Due Date field will update to reflect the Offset value.
 
-Due Date and Offset values are sticky between the Checkout and Renew tabs, and also sticky between transactions.  Strict Barcode and Print Receipt are sticky among the Checkout, Renew, In-House Use, and Checkin tabs and are also sticky between transactions.
+Due Date and Offset values are sticky between the Checkout and Renew tabs, and also sticky between transactions.  Strict Barcode and Print Receipt are sticky among the Checkout, Renew, In-House Use, and Check In tabs and are also sticky between transactions.
 
 Pre-cataloged item checkout is not available in Offline Circulation.  Any pre-cataloged item checked out through Offline Circulation will result in an entry in the Exception List and will not successfully check out.  Pre-cataloged items which are checked in through offline will also result in an entry in the Exception List, but will successfully check in.
 
@@ -85,17 +85,17 @@ To record in-house use transactions in *Offline Circulation*:
 
 image::offline/offline_inhouse.png[Offline in house use]
 
-== Checkin ==
+== Check In ==
 
-To checkin items in Offline Circulation:
+To check in items in Offline Circulation:
  
-. Click the *Checkin* tab.
+. Click the *Check In* tab.
 . Ensure that the *Due Date* value is correct.  It will default to today's date.
-. For each item to be checked in, scan the item's barcode in the *Item Barcode* field. If you are typing the item barcode, click the *Checkin* button or hit the *Enter* key on your keyboard after each item barcode.
+. For each item to be checked in, scan the item's barcode in the *Item Barcode* field. If you are typing the item barcode, click the *Check In* button or hit the *Enter* key on your keyboard after each item barcode.
 . To print a receipt, check the box labelled *Print Receipt*.
-. Click *Save Transactions* in the upper-right of the screen when you are finished entering checkins.
+. Click *Save Transactions* in the upper-right of the screen when you are finished entering check ins.
 
-image::offline/offline_checkin.png[Offline checkin]
+image::offline/offline_checkin.png[Offline check in]
 
 Note that existing pre-cataloged items can be checked in through the Offline interface, but they will generate an entry in the Exceptions list when offline transactions are uploaded and processed.
 
@@ -190,7 +190,7 @@ These are a few notes about possible exceptions. It is not an all-inclusive list
 * Overdue books are not flagged as exceptions.
 * Checking out a reference book or another item set to not circulate does not cause an exception.
 * Checking out an item belonging to another library does not cause an exception.
-* An item that is targeted for a patron hold and captured via offline checkin will not cause an exception unless that item also goes to an In Transit status.
+* An item that is targeted for a patron hold and captured via offline check in will not cause an exception unless that item also goes to an In Transit status.
 * An item that is on hold for Patron A but checked out to Patron B will not cause an exception.  Patron A's hold will be reset and will retarget the next time the hold targeter is run.  In order to avoid this it is recommended to not check out holds to other patrons.
 * If you check out a book to a patron using a previous barcode for that patron, it will cause an exception and you will have to retrieve that patron while online and re-enter the item barcode in order to checkout the item.
 * The Offline Interface can recognize blocked, barred, and expired patrons if you have downloaded the Offline Block List in the browser you are using.  You will get an error message indicating the patron status from within the Standalone Interface at check-out time.  See the section on the xref:#offline_block_list[Offline Block List] for more information.

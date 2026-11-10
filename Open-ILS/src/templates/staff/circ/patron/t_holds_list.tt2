@@ -78,7 +78,7 @@
   <eg-grid-field label="[% l('Item Status') %]" path="hold.cs_name" hidden></eg-grid-field>
 
   <eg-grid-field label="[% l('Fulfillment Date/Time') %]" path='hold.fulfillment_time' datatype="timestamp" hidden></eg-grid-field>
-  <eg-grid-field label="[% l('Checkin Time') %]" path='hold.checkin_time' datatype="timestamp" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Check In Time') %]" path='hold.checkin_time' datatype="timestamp" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Return Time') %]" path='hold.return_time' datatype="timestamp" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Last Targeting Date/Time') %]" path='hold.prev_check_time' datatype="timestamp" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Expire Time') %]" path='hold.expire_time' datatype="timestamp" hidden></eg-grid-field>
@@ -128,6 +128,11 @@
   <eg-grid-field label="[% l('Transit Hold') %]" path='hold.tr_hold' hidden></eg-grid-field>
   <eg-grid-field label="[% l('Transit Cancel Time') %]" path='hold.tr_cancel_time' datatype="timestamp" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Hold Note Count') %]" path='hold.note_count' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Hold Notes') %]" path='hold.note_first' handlers="gridCellHandlers" compiled>
+    <a ng-show="item.hold.note_count == 1" href="#" ng-click="col.handlers.manage_notes(item.hold.id, col.handlers.refresh)">{{ item.hold.note_first }}</a>
+    <button ng-show="item.hold.note_count > 1" ng-click="col.handlers.manage_notes(item.hold.id, col.handlers.refresh)" class="btn btn-xs btn-default" type="button">[% l('Manage') %] ({{item.hold.note_count}})</button>
+    <button ng-show="!item.hold.note_count" ng-click="col.handlers.manage_notes(item.hold.id, col.handlers.refresh)" class="btn btn-xs btn-default" type="button">[% l('Manage') %]</button>
+  </eg-grid-field>
   <eg-grid-field label="[% l('User Display Name') %]" path='hold.usr_display_name' hidden></eg-grid-field>
   <eg-grid-field label="[% l('User Alias') %]" path='hold.usr_alias' hidden></eg-grid-field>
   <eg-grid-field label="[% l('User Alias or Display Name') %]" path='hold.usr_alias_or_display_name' hidden></eg-grid-field>
@@ -183,7 +188,7 @@
   <eg-grid-field label="[% l('Copy Location Can Circulate') %]" path='hold.acpl_circulate' datatype="bool" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Copy Location Prefix') %]" path='hold.acpl_label_prefix' hidden></eg-grid-field>
   <eg-grid-field label="[% l('Copy Location Suffix') %]" path='hold.acpl_label_suffix' hidden></eg-grid-field>
-  <eg-grid-field label="[% l('Copy Location Checkin Alert') %]" path='hold.acpl_checkin_alert' datatype="bool" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Copy Location Check In Alert') %]" path='hold.acpl_checkin_alert' datatype="bool" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Copy Location Is Deleted') %]" path='hold.acpl_deleted' datatype="bool" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Copy Location URL') %]" path='hold.acpl_url' hidden></eg-grid-field>
   <eg-grid-field label="[% l('Copy Location Order') %]" path='hold.copy_location_order_position' hidden></eg-grid-field>

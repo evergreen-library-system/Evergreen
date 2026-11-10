@@ -35,7 +35,7 @@ Catalog::
   The database of titles and objects 
 Cataloging::
   The process of adding materials to be circulated to the system.
-Check-in::
+Check In::
   The process of returning an item.
 Check-out::
   The process of loaning and item to a patron.

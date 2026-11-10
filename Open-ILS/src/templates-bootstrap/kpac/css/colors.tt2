@@ -25,7 +25,9 @@
         footer_background = "#288188", # dark turquoise
         footer_link = "#fff", # white
         footer_text = "#fff", # white
-        footer_hover = "#ffd574" # yellow
+        footer_hover = "#ffd574", # yellow
+        footer_button = "#fff", # white
+        footer_button_text = "#288188" # dark turquoise
 
         # BUTTONS
 

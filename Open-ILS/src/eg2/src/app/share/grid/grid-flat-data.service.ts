@@ -85,5 +85,20 @@ export class GridFlatDataService {
 
         return fields;
     }
+
+    addFiltersToQuery(gridContext: GridContext, baseQuery: any): any {
+        const query: any = baseQuery;
+
+        let query_filters: any[] = [];
+        Object.keys(gridContext.dataSource.filters).forEach(key => {
+            query_filters = query_filters.concat(gridContext.dataSource.filters[key]);
+        });
+
+        if (query_filters.length > 0) {
+            query['-and'] = query_filters;
+        }
+        return query;
+
+    }
 }
 

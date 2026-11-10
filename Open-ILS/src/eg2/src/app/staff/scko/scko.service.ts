@@ -103,6 +103,7 @@ export class SckoService {
         this.statusDisplayText = '';
         this.patronSummary = null;
         this.sessionCheckouts = [];
+        this.stopPatronTimer();
     }
 
     load(): Promise<any> {
@@ -234,17 +235,7 @@ export class SckoService {
 
     resetPatronTimeout() {
         console.debug('Resetting patron timeout=' + this.patronIdleTimeout);
-
-        if (this.patronTimeoutId) {
-            clearTimeout(this.patronTimeoutId);
-            this.patronTimeoutId = null;
-        }
-
-        if (this.logoutWarningTimerId) {
-            clearTimeout(this.logoutWarningTimerId);
-            this.logoutWarningTimerId = null;
-        }
-
+        this.stopPatronTimer();
         this.startPatronTimer();
     }
 
@@ -277,6 +268,17 @@ export class SckoService {
             },
             this.logoutWarningTimeout * 1000
         );
+    }
+
+    stopPatronTimer(): void {
+        if (this.patronTimeoutId) {
+            clearTimeout(this.patronTimeoutId);
+            this.patronTimeoutId = null;
+        }
+        if (this.logoutWarningTimerId) {
+            clearTimeout(this.logoutWarningTimerId);
+            this.logoutWarningTimerId = null;
+        }
     }
 
     sessionTotalCheckouts(): number {
@@ -426,7 +428,7 @@ export class SckoService {
             return this.getFleshedCirc(payload.circ.id()).then(
                 circ => {
                     ctx.newCirc = circ;
-                    this.sessionCheckouts.push({circ: circ, ctx: ctx});
+                    this.sessionCheckouts.unshift({circ: circ, ctx: ctx});
                     return ctx;
                 }
             );
@@ -635,9 +637,10 @@ export class SckoService {
     }
 
     emailReceipt(): Promise<any> {
-
         const circIds = this.sessionCheckouts
             .filter(c => Boolean(c.circ)).map(c => c.circ.id());
+
+        if (!circIds.length) { return Promise.resolve(); }
 
         return this.net.request(
             'open-ils.circ',
@@ -647,6 +650,9 @@ export class SckoService {
     }
 
     printReceipt(): Promise<any> {
+        if (!this.sessionCheckouts.length) {
+            return Promise.resolve();
+        }
 
         return new Promise((resolve, reject) => {
 

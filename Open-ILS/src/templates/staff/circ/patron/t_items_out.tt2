@@ -88,7 +88,7 @@
   </eg-grid-field>
   <eg-grid-field label="[% l('Due Date') %]" path='due_date' datefilter="egDueDate" dateonlyinterval="duration" datecontext="circ_lib" datatype="timestamp" required></eg-grid-field>
   <eg-grid-field label="[% l('Workstation') %]" path='workstation.name'></eg-grid-field>
-  <eg-grid-field label="[% l('Checkin Workstation') %]" path='checkin_workstation.name'></eg-grid-field>
+  <eg-grid-field label="[% l('Check In Workstation') %]" path='checkin_workstation.name'></eg-grid-field>
   <eg-grid-field label="[% l('Checkout / Renewal Library') %]" path='circ_lib.shortname'></eg-grid-field>
   <eg-grid-field label="[% l('Circulation Library') %]" path='target_copy.circ_lib.shortname' hidden></eg-grid-field>
   <eg-grid-field label="[% l('Age-based Hold Protection') %]" path='target_copy.age_protect.name' hidden></eg-grid-field>

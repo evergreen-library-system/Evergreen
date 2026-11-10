@@ -55,7 +55,8 @@
     </div>
     <div class="row">
       <div class="col-md-5">[% l('Home Library') %]</div>
-      <div class="col-md-7" title="{{patron().home_ou().name()}}">{{patron().home_ou().shortname()}}</div>
+      <div class="col-md-7" title="{{patron().home_ou().name()}}" ng-if="!fullLibraryName">{{patron().home_ou().shortname()}}</div>
+      <div class="col-md-7" title="{{patron().home_ou().name()}}" ng-if="fullLibraryName">{{patron().home_ou().name()}}</div>
     </div>
     <div class="row">
       <div class="col-md-5">[% l('Net Access') %]</div>

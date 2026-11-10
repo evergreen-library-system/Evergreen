@@ -16,6 +16,8 @@ import { StaffCommonModule } from '@eg/staff/common.module';
 import { AdminPageComponent } from '@eg/staff/share/admin-page/admin-page.component';
 import { TermListComponent } from './course-term-grid.component';
 import { noSuch } from '@eg/share/util/no-such';
+import { filter, tap } from 'rxjs';
+import { ConfirmDialogComponent } from '@eg/share/dialog/confirm.component';
 
 export function courseCanBeArchived (course: IdlObject) {
     return course.is_archived() === 'f';
@@ -65,6 +67,7 @@ export class CourseListComponent implements OnInit, AfterViewInit {
     @ViewChild('unarchiveSuccessString', { static: true }) unarchiveSuccessString: StringComponent;
     @ViewChild('duplicateFailedString', { static: true }) duplicateFailedString: StringComponent;
     @ViewChild('duplicateSuccessString', { static: true }) duplicateSuccessString: StringComponent;
+    @ViewChild('confirmDelete', { static: true }) confirmDeleteDialog!: ConfirmDialogComponent;
 
     @Input() sortField: string;
     @Input() idlClass = 'acmc';
@@ -248,6 +251,13 @@ export class CourseListComponent implements OnInit, AfterViewInit {
                 }, complete: () => this.grid.reload() }
             );
         });
+    }
+
+    confirmDeleteSelected(idlObject: IdlObject[]): void{
+        this.confirmDeleteDialog.open().pipe(
+            filter((confirmed: boolean) => !!confirmed),
+            tap(() => this.deleteSelected(idlObject))
+        ).subscribe(() => this.grid.reload());
     }
 }
 

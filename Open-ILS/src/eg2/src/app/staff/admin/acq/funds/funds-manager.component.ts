@@ -1,6 +1,5 @@
-import { Component, Input, ViewChild, OnInit, AfterViewInit, inject } from '@angular/core';
+import { Component, Input, OnInit, AfterViewInit, inject, viewChild } from '@angular/core';
 import {GridDataSource, GridCellTextGenerator} from '@eg/share/grid/grid';
-import {GridComponent} from '@eg/share/grid/grid.component';
 import {AdminPageComponent} from '@eg/staff/share/admin-page/admin-page.component';
 import {Pager} from '@eg/share/util/pager';
 import {IdlObject} from '@eg/core/idl.service';
@@ -33,9 +32,8 @@ export class FundsManagerComponent extends AdminPageComponent implements OnInit,
 
     @Input() startId: number;
 
-    @ViewChild('fundDetailsDialog', { static: false }) fundDetailsDialog: FundDetailsDialogComponent;
-    @ViewChild('fundRolloverDialog', { static: false }) fundRolloverDialog: FundRolloverDialogComponent;
-    @ViewChild('grid', { static: true }) grid: GridComponent;
+    protected fundDetailsDialog = viewChild.required<FundDetailsDialogComponent>('fundDetailsDialog');
+    protected fundRolloverDialog = viewChild.required<FundRolloverDialogComponent>('fundRolloverDialog');
 
     cellTextGenerator: GridCellTextGenerator;
     canRollover = false;
@@ -140,10 +138,12 @@ export class FundsManagerComponent extends AdminPageComponent implements OnInit,
 
     openFundDetailsDialog(rows: IdlObject[]) {
         if (rows.length > 0) {
-            this.fundDetailsDialog.fundId = rows[0].id();
-            this.fundDetailsDialog.open({size: 'xl'}).subscribe(
-                { next: result => this.grid.reload(), error: (error: unknown) => this.grid.reload(), complete: () => this.grid.reload() }
-            );
+            this.fundDetailsDialog().fundId = rows[0].id();
+            this.fundDetailsDialog().open({size: 'xl'}).subscribe({
+                next: result => this.grid().reload(),
+                error: (error: unknown) => this.grid().reload(),
+                complete: () => this.grid().reload()
+            });
         }
     }
 
@@ -152,9 +152,9 @@ export class FundsManagerComponent extends AdminPageComponent implements OnInit,
     }
 
     doRollover() {
-        this.fundRolloverDialog.contextOrgId = this.searchOrgs.primaryOrgId;
-        this.fundRolloverDialog.open({size: 'lg'}).subscribe(
-            { next: ok => {}, error: (err: unknown) => {}, complete: () => this.grid.reload() }
+        this.fundRolloverDialog().contextOrgId = this.searchOrgs.primaryOrgId;
+        this.fundRolloverDialog().open({size: 'lg'}).subscribe(
+            { next: ok => {}, error: (err: unknown) => {}, complete: () => this.grid().reload() }
         );
     }
 }

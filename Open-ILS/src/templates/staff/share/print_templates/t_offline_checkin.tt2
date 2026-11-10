@@ -14,7 +14,7 @@ Template for printing offline checkout receipts; fields available include:
   <hr/>
   <ol>
     <li ng-repeat="checkin in transactions">
-      <div>[% l('Barcode: [_1] Checkin date: [_2]', 
+      <div>[% l('Barcode: [_1] Check In date: [_2]',
         '{{checkin.barcode}}',
         '{{checkin.backdate | date:"short"}}') %]</div>
     </li>

@@ -20,6 +20,13 @@
       <button type="button" class="btn btn-outline-dark ms-2" [disabled]="disableSave"
         [ngClass]="{'border border-danger pointer-not-allowed': disableSave}"
       (click)="saveClicked.emit()" i18n>Save</button>
+      @if (!patronId) {
+        <button type="button" id="save-open-btn" class="btn btn-outline-dark ms-2"
+          [ngClass]="{'border border-danger pointer-not-allowed': disableSave}"
+          [disabled]="disableSave" (click)="saveOpenClicked.emit()"
+          i18n>Save &amp; Open
+        </button>
+      }
       <button type="button" class="btn btn-outline-dark ms-2" [disabled]="disableSave"
         [ngClass]="{'border border-danger pointer-not-allowed': disableSave}"
       (click)="saveCloneClicked.emit()" i18n>Save &amp; Clone</button>

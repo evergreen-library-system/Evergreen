@@ -39,6 +39,7 @@ export class CatalogResolver implements Resolve<Promise<any[]>> {
             'eg.search.pref_lib',
             'eg.search.adv_pane',
             'eg.search.sort_order',
+            'eg.search.default_staff_sort_order',
             'eg.search.available_only',
             'eg.search.group_formats',
             'eg.catalog.results.count',

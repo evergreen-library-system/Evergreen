@@ -168,7 +168,7 @@ a date range. Date filters may include tips about how the dates should be
 entered. For instance, in a date range, the earlier date should always be 
 entered in the first date box.
 
-image::reporter_basics/reports-filters-1.png["Screenshot of a checkin Scan date/time date filter. Operator of between, filter values selected for the first and last dat of 2023. Transform is date. Highlighted in the lower left is a hint, enter the earlier date in the first box."]
+image::reporter_basics/reports-filters-1.png["Screenshot of a check in Scan date/time date filter. Operator of between, filter values selected for the first and last dat of 2023. Transform is date. Highlighted in the lower left is a hint, enter the earlier date in the first box."]
 
 If you'd like to include all possible data for your library in a report that 
 specifies a time range, enter between "1900-01-01" and "today's date".
@@ -201,7 +201,7 @@ Use the _Relative time value_ checkbox under _Filter value_ to switch from a
 specific real date to a relative date. For a report filtering on month, you will
  be able to indicate how many months ago the report should look at. 
 
-image::reporter_basics/reports-filters-2.png[Screenshot of a checkin scan date/time. The relative time value box is selected. Instead of date fields with a calendar pickers there are fields for number of days ago.]
+image::reporter_basics/reports-filters-2.png[Screenshot of a check in scan date/time. The relative time value box is selected. Instead of date fields with a calendar pickers there are fields for number of days ago.]
 
 You can use a negative number in the filter value to indicate a future date, e.g., -3 months on the user privilege expiration date field to show users who will expire three months from the date of the report's run.
 

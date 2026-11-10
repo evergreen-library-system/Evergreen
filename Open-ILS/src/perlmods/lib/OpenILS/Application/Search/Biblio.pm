@@ -2980,7 +2980,30 @@ sub rec_hold_parts {
     return $e->json_query($query);
 }
 
+__PACKAGE__->register_method(
+    method    => 'rec_parts_count',
+    api_name  => 'open-ils.search.biblio.parts_count',
+    signature => {
+        desc => q/
+            For a given record, returns a count of its monograph parts.
+       /,
+       params => [
+            {desc => q/Record id/,
+                type => 'int'}
+       ],
+       return => {
+        desc => q/Unsigned integer if valid params are provided, Event otherwise/
+       }
 
+    }
+);
+
+sub rec_parts_count {
+    my( $self, $conn, $record_id ) = @_;
+    return OpenILS::Event->new('BAD_PARAMS') unless defined($record_id);
+
+    return new_editor->count_biblio_monograph_part({ record => $record_id, deleted => 'f' });
+}
 
 
 __PACKAGE__->register_method(
@@ -3353,13 +3376,14 @@ __PACKAGE__->register_method(
     signature => q/see open-ils.search.biblio.record.catalog_summary/
 );
 
-
 sub catalog_record_summary {
     my ($self, $client, $org_id, $record_ids, $options) = @_;
     my $e = new_editor();
     $options ||= {};
     my $pref_ou = $options->{pref_ou};
     my $library_group = $options->{library_group};
+    my $is_search_result = $options->{search_result};
+    my $is_staff_view = $options->{staff_view};
 
     my $is_meta = ($self->api_name =~ /metabib/);
     my $is_staff = ($self->api_name =~ /staff/);
@@ -3381,6 +3405,21 @@ sub catalog_record_summary {
         'open-ils.search.biblio.record.has_holdable_copy';
 
     $holdable_method = $self->method_lookup($holdable_method); # local method
+
+    my $search_result_display_entries = ();
+    my $staff_view_display_entries = ();
+    if ($is_search_result) {
+        $search_result_display_entries = $e->search_config_ui_record_display_entry([
+            {type => 'search_result'},
+            {flesh => 2, flesh_fields => {curde => ['field'], cmf => ['display_field_map']}, order_by => { curde => 'page_col ASC, col_pos ASC, id ASC'}}
+        ]);
+    }
+    if ($is_staff_view) {
+        $staff_view_display_entries = $e->search_config_ui_record_display_entry([
+            {type => 'staff_view'},
+            {flesh => 2, flesh_fields => {curde => ['field'], cmf => ['display_field_map']}, order_by => { curde => 'page_col ASC, col_pos ASC, id ASC'}}
+        ]);
+    }
 
     my %MR_summary_cache;
     for my $rec_id (@$record_ids) {
@@ -3480,6 +3519,48 @@ sub catalog_record_summary {
         }
 
         ($response->{has_holdable_copy}) = $holdable_method->run($rec_id);
+
+        if ($is_search_result) {
+            my @search_result_metadata = ();
+            for (@{$search_result_display_entries}) {
+                my %entry = (content_type => $_->content_type);
+                if ($_->content_type eq 'field') {
+                    # No need to add empty fields to the response
+                    next unless ($_->field && $response->{display}->{$_->field->display_field_map->name});
+
+                    $entry{label} = $_->field->label;
+                    $entry{value} = $response->{display}->{$_->field->display_field_map->name};
+                    $entry{character_limit} = $_->character_limit;
+                    $entry{value_limit} = $_->value_limit;
+                    $entry{display_as_link} = $_->display_as_link;
+                    $entry{query_field} = $_->field->field_class . "|" .$_->field->name;
+                }
+                push @search_result_metadata, \%entry;
+
+            }
+            $response->{search_result} = \@search_result_metadata;
+        }
+
+        if ($is_staff_view) {
+            my @staff_view_metadata = ((), (), ());
+            for (@{$staff_view_display_entries}) {
+                my %entry = (content_type => $_->content_type);
+                if ($_->content_type eq 'field') {
+                    # No need to add empty fields to the response
+                    next unless ($_->field && $response->{display}->{$_->field->display_field_map->name});
+
+                    # $_ is the display entry IDL object, it starts with 1 (while the @staff_view_metadata arrays start with an index of 0)
+                    $entry{label} = $_->field->label;
+                    $entry{value} = $response->{display}->{$_->field->display_field_map->name};
+                    $entry{character_limit} = $_->character_limit;
+                    $entry{value_limit} = $_->value_limit;
+                    $entry{display_as_link} = $_->display_as_link;
+                    $entry{query_field} = $_->field->field_class . "|" .$_->field->name;
+                }
+                push @{$staff_view_metadata[$_->page_col - 1]}, \%entry;
+            }
+            $response->{staff_view} = \@staff_view_metadata;
+        }
 
         $client->respond($response);
     }
@@ -3606,6 +3687,11 @@ sub get_one_metarecord_summary {
     my $record_note_count = scalar(@{ $notes });
     $response->{record_note_count} = $record_note_count;
 
+    # Also get the sum of monograph parts
+    $response->{monograph_part_count} = $e->count_biblio_monograph_part(
+        { record => \@record_ids, deleted => 'f' }
+    );
+
     my @other_bibs = map {$_->source} grep {$_->source != $bre_id} @$maps;
 
     # Augment the record attributes with those of all of the records
@@ -3653,6 +3739,8 @@ sub get_one_record_summary {
     my $notes = $e->search_biblio_record_note({ record => $rec_id });
     my $record_note_count = scalar(@{ $notes });
 
+    my $part_count = $e->count_biblio_monograph_part({ record => $rec_id, deleted => 'f' });
+
     # clear bulk
     $bre->clear_marc;
     $bre->clear_mattrs;
@@ -3664,7 +3752,8 @@ sub get_one_record_summary {
         display => $display,
         attributes => $attributes,
         urls => get_one_rec_urls($self, $e, $org_id, $rec_id),
-        record_note_count => $record_note_count
+        record_note_count => $record_note_count,
+        monograph_part_count => $part_count,
     };
 }
 

@@ -134,19 +134,20 @@
     </eg-grid-column>
   }
   @for (tf of templateFields; track tf) {
-    <eg-grid-column name="{{tf.name}}" [cellTemplate]="tf.template">
+    <eg-grid-column name="{{tf.name}}" [cellTemplate]="tf.template"
+      [preserveAutoPosition]="!!tf.preserveAutoPosition">
     </eg-grid-column>
   }
 </eg-grid>
 
-<eg-fm-record-editor #editDialog idlClass="{{idlEditClass || idlClass}}"
-  [recordLabel]="recordLabel"
-  [fieldOptions]="fieldOptions"
-  [fieldOrder]="fieldOrder"
-  [defaultNewRecord]="defaultNewRecord"
-  [preloadLinkedValues]="true"
-  [orgDefaultAllowed]="orgDefaultAllowed"
-  [readonlyFields]="readonlyFields">
-</eg-fm-record-editor>
-
-
+<ng-content select="eg-fm-record-editor">
+  <eg-fm-record-editor #editDialog idlClass="{{idlEditClass || idlClass}}"
+    [recordLabel]="recordLabel"
+    [fieldOptions]="fieldOptions"
+    [fieldOrder]="fieldOrder"
+    [defaultNewRecord]="defaultNewRecord"
+    [preloadLinkedValues]="true"
+    [orgDefaultAllowed]="orgDefaultAllowed"
+    [readonlyFields]="readonlyFields">
+  </eg-fm-record-editor>
+</ng-content>

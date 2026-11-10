@@ -17,7 +17,7 @@
   </eg-grid-action>
   <eg-grid-action 
     handler="showBackdateDialog"
-    label="[% l('Backdate Post-Checkin') %]">
+    label="[% l('Backdate Post-Check In') %]">
   </eg-grid-action>
   <eg-grid-action
     handler="showMarkDamaged"
@@ -77,7 +77,7 @@
   <eg-grid-field label="[% l('Bill #') %]"     
     path='circ.id'></eg-grid-field>
 
-  <eg-grid-field label="[% l('Checkin Date') %]"    
+  <eg-grid-field label="[% l('Check In Date') %]"
     path='circ.checkin_time' datatype="timestamp"></eg-grid-field>
 
   <eg-grid-field label="[% l('Family Name') %]"    

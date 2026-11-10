@@ -17,52 +17,48 @@
 <eg-string #successMsg i18n-text text="Record successfully updated"></eg-string>
 <eg-string #failMsg i18n-text text="Record failed to update"></eg-string>
 
-<div class="row gx-1 row-cols-auto p-3" id="marc-edit">
+<!-- Using a reverse flex direction here so that submit button and
+fast-add-selector are on opposite ends, but the save button is still on the
+right if there's no fast-add-selector -->
+<div class="d-flex flex-row-reverse justify-content-between p-3" id="marc-edit">
 
-  <ng-content select="eg-fast-add-selector"></ng-content>
+  <div class="d-inline-flex align-items-center">
+    <h3 class="me-2 mb-0 text-end">
+      <span class="col-form-label rounded p-2" i18n>
+        Record Type {{record ? record.recordType() : ''}}
+      </span>
+    </h3>
+      
+    @if (recordType === 'biblio') {
 
-  <div class="flex-1"></div>
+      <div class="me-2">
+        <eg-combobox #sourceSelector
+          idlClass="cbs"
+          [selectedId]="recordSource"
+          [asyncSupportsEmptyTermClick]="true"
+          (onChange)="updateRecordSource($event)"
+          placeholder="Select a Source..."
+          i18n-placeholder>
+        </eg-combobox>
+      </div>
+    }
 
-  <h3 class="me-2">
-    <span class="col-form-label rounded p-2" i18n>
-      Record Type {{record ? record.recordType() : ''}}
-    </span>
-  </h3>
-    
-  @if (recordType === 'biblio') {
-
-    <div class="me-2">
-      <eg-combobox #sourceSelector
-        idlClass="cbs"
-        [selectedId]="recordSource"
-        [asyncSupportsEmptyTermClick]="true"
-        (onChange)="updateRecordSource($event)"
-        placeholder="Select a Source..."
-        i18n-placeholder>
-      </eg-combobox>
-    </div>
-  
-}
-
-  <div class="pe-3 me-3 border-end">
-    <button type="button" class="btn btn-success" (click)="saveRecord()"
+    <button type="button" class="btn btn-success me-1" (click)="saveRecord()"
       [disabled]="record && (record.deleted || record.id === -1)" i18n>Save Changes</button>
+
+    @if (record && record.id) {
+        @if (!record.deleted && record.id !== -1) {
+          <button type="button" class="btn btn-destroy"
+                [disabled]="inPlaceMode" (click)="deleteRecord()" i18n>Delete Record</button>
+        }
+        @if (record.deleted) {
+          <button type="button" class="btn btn-info"
+                [disabled]="inPlaceMode" (click)="undeleteRecord()" i18n>Undelete Record</button>
+        }
+    }
   </div>
 
-  @if (record && record.id) {
-
-    <div>
-      @if (!record.deleted && record.id !== -1) {
-<button type="button" class="btn btn-destroy"
-        [disabled]="inPlaceMode" (click)="deleteRecord()" i18n>Delete Record</button>
-}
-      @if (record.deleted) {
-<button type="button" class="btn btn-info" 
-        [disabled]="inPlaceMode" (click)="undeleteRecord()" i18n>Undelete Record</button>
-}
-    </div>
-  
-}
+  <ng-content select="eg-fast-add-selector"></ng-content>
 </div>
 
 @if (dataSaving) {
@@ -84,10 +80,8 @@
         <a role="tab" ngbNavLink i18n>Enhanced MARC Editor</a>
         <ng-template ngbNavContent>
           @if (context && context.record) {
-
             <eg-marc-rich-editor [context]="context"></eg-marc-rich-editor>
-          
-}
+          }
         </ng-template>
       </li>
       <li role="presentation" ngbNavItem="flat">
@@ -97,7 +91,7 @@
 
             <eg-marc-flat-editor [context]="context"></eg-marc-flat-editor>
           
-}
+          }
         </ng-template>
       </li>
     </ul>
@@ -107,10 +101,9 @@
 }
 
 <div class="row p-2 m-2 text-end">
-  <div>
-    <button type="button" class="btn btn-success" (click)="saveRecord()"
+  <div class="col-12">
+    <button type="button" class="btn btn-success ms-auto" (click)="saveRecord()"
       [disabled]="record && (record.deleted || record.id === -1)" i18n>Save Changes</button>
   </div>
 </div>
-
 

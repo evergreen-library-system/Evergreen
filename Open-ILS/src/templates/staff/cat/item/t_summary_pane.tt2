@@ -160,7 +160,7 @@
     <div class="flex-cell">[% l('In-House Uses') %]</div>
     <div class="flex-cell well">{{copy._inHouseUseCount}}</div>
 
-    <div class="flex-cell">[% l('Checkin Time') %]</div>
+    <div class="flex-cell">[% l('Check In Time') %]</div>
     <div class="flex-cell well">
       {{circ.checkin_time() || 
         circ_summary.last_checkin_time() | date:egDateAndTimeFormat}}
@@ -177,7 +177,7 @@
     <div class="flex-cell">[% l('Remaining Renewals') %]</div>
     <div class="flex-cell well">{{circ.renewal_remaining()}}</div>
 
-    <div class="flex-cell">[% l('Checkin Scan Time') %]</div>
+    <div class="flex-cell">[% l('Check In Scan Time') %]</div>
     <div class="flex-cell well">
       {{circ.checkin_scan_time() || 
         circ_summary.last_checkin_scan_time() | date:egDateAndTimeFormat}}
@@ -194,7 +194,7 @@
     <div class="flex-cell">[% l('Age-based Hold Protection') %]</div>
     <div class="flex-cell well">{{copy.age_protect().name()}}</div>
 
-    <div class="flex-cell">[% l('Checkin Workstation') %]</div>
+    <div class="flex-cell">[% l('Check In Workstation') %]</div>
     <div class="flex-cell well">
       {{circ.checkin_workstation().name() || 
         circ_summary.last_checkin_workstation().name()}}

@@ -372,6 +372,9 @@ export class MarcEditContext {
     }
 
     insertReplace008() {
+        // regenerate 008, changing the date to now() and preserving everything else
+        const field = this.record.newField({
+            tag : '008', data : this.record.generate008()});
 
         // delete all of the 008s
         [].concat(this.record.field('008', true)).forEach(f => {
@@ -379,9 +382,7 @@ export class MarcEditContext {
             this.record.deleteFields(f);
         });
 
-        const field = this.record.newField({
-            tag : '008', data : this.record.generate008()});
-
+        // insert the newly generated 008 into the record
         this.record.insertOrderedFields(field);
 
         this.trackStructuralUndo(field, true);

@@ -528,3 +528,180 @@ For more information on how to invoke this functionality from the front end,
 please refer to
 xref:opac:using_the_public_access_catalog.adoc#_printing_and_emailing_records[the
 section on printing and emailing records in the OPAC documentation].
+
+== Custom JSON Filters ==
+
+When running the action_trigger_runner.pl, you can specify the *--custom-filters* option followed by a path to a JSON file.
+
+Related Evergreen Wiki pages:
+
+. link:https://wiki.evergreen-ils.org/doku.php?id=documentation:tutorials:json_query[Evergreen JSON query full tutorial]
+. link:https://wiki.evergreen-ils.org/doku.php?id=documentation:technical:jsongrammar[JSON Grammar]
+
+The best way to describe these is to simply provide examples. Use these examples. Salt to taste.
+
+=== Examples for checkout.due ===
+
+.Scoping only patrons in certain home branches
+[source,json]
+----
+
+{
+    "checkout.due" : {
+        "context_org" : "circ_lib",
+        "filter" : {
+            "checkin_time" : null,
+            "-or" : [
+                { "stop_fines" : ["MAXFINES"] },
+                { "stop_fines" : null }
+            ],
+            "usr" : {
+                "in": {
+                    "select" : {"au" : ["id"]},
+                    "from" : "au",
+                    "where" : {"home_ou" : [ 307,337,334,344,341,144,145,340,143,342,343,457,459 ]}
+                }
+            }
+        }
+    }
+}
+
+----
+
+.Including circulations with alternate stop_fines values
+[source,json]
+----
+
+{
+    "checkout.due" : {
+        "context_org" : "circ_lib",
+        "filter" : {
+            "checkin_time" : null,
+            "-or" : [
+                { "stop_fines" : ["MAXFINES", "LONGOVERDUE", "CLAIMSRETURNED"] },
+                { "stop_fines" : null }
+            ]
+        }
+    }
+}
+
+----
+
+.Including circulations with non-null auto_renewal_remaining value
+[source,json]
+----
+
+{
+    "checkout.due" : {
+        "context_org" : "circ_lib",
+        "filter" : {
+            "checkin_time" : null,
+            "-or" : [
+                { "stop_fines" : ["MAXFINES", "LONGOVERDUE", "CLAIMSRETURNED"] },
+                { "stop_fines" : null }
+            ],
+            "auto_renewal_remaining" : { "<>" : null }
+        }
+     }
+}
+
+----
+
+.Including circulations with certain durations from a certain circulation library
+[source,json]
+----
+
+{
+    "checkout.due" : {
+        "context_org" : "circ_lib",
+        "filter" : {
+            "checkin_time" : null,
+            "-or" : [
+                { "stop_fines" : ["MAXFINES", "LONGOVERDUE"] },
+                { "stop_fines" : null }
+            ],
+            "-and" : [ { "circ_lib" : 65 } ],
+            "-and" : [ { "duration" : [ "02:00:00", "1 day", "7 days" ] } ]
+        }
+     }
+}
+
+----
+
+.Specific shelving location and circulation modifier
+[source,json]
+----
+
+{
+    "checkout.due" : {
+        "context_org" : "circ_lib",
+        "filter" : {
+            "-and" : [
+                { "checkin_time" : null },
+                {"-or" : [
+                    { "stop_fines" : ["MAXFINES", "LONGOVERDUE", "CLAIMSRETURNED"] },
+                    { "stop_fines" : null }
+                ]},
+                { "copy_location" : [4013] },
+                { "-exists" : {
+                  "select" : {"acp" : ["id"]},
+                  "from"   : "acp",
+                  "where"  : {
+                      "circ_modifier" : ["LAPTOP"],
+                      "id" : { "=" : {"+circ" : "target_copy"} }
+                    }
+                  }
+                }
+            ]
+        }
+     }
+}
+
+----
+
+=== Examples for au.expired ===
+
+.Scoping only patrons without a certain ident_value
+[source,json]
+----
+
+{
+    "au.expired" : {
+        "context_org":"home_ou",
+        "filter"                :
+        {
+            "active" : "t",
+            "deleted" : "f",
+            "-and" : [
+                { "-or" : [
+                    { "ident_value" : null },
+                    { "ident_value" : { "!=" : "Student ID Project" } }
+                ] }
+            ]
+        }
+    }
+}
+
+----
+
+.Scoping only patrons in certain branches with certain permission groups (profile)
+[source,json]
+----
+
+{
+  "au.expired" : {
+      "context_org" : "home_ou",
+      "filter" : {
+        "-and" [
+          {"active" : "t"},
+          {"deleted" : "f"},
+          {"profile" : [ 29, 30] },
+          {"home_ou" : [ 3, 4] }
+        ]
+      }
+  }
+}
+
+----
+
+NOTE: The above example illustrates a wrinkle. When the filter contains the same column as the context_org, you need to nest it beneath an "-and" or "-or"

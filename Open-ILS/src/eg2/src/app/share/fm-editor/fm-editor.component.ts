@@ -642,7 +642,8 @@ export class FmRecordEditorComponent
     customTemplateFieldContext(fieldDef: any): CustomFieldContext {
         return Object.assign(
             {   record : this.record,
-                field: fieldDef // from this.fields
+                field: fieldDef, // from this.fields
+                idPrefix: this.idPrefix
             },  fieldDef.context || {}
         );
     }

@@ -15,6 +15,7 @@ import { FixedFieldsEditorComponent } from './fixed-fields-editor.component';
 import { ProgressInlineComponent } from '@eg/share/dialog/progress-inline.component';
 import { FormsModule } from '@angular/forms';
 import { AccessKeyDirective } from '@eg/share/accesskey/accesskey.directive';
+import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 /**
@@ -34,7 +35,8 @@ import { AccessKeyDirective } from '@eg/share/accesskey/accesskey.directive';
         FixedFieldsEditorComponent,
         FormsModule,
         PhysCharDialogComponent,
-        ProgressInlineComponent
+        ProgressInlineComponent,
+        NgbDropdownModule
     ], providers: [TagTableService]
 })
 

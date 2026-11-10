@@ -18,6 +18,8 @@
 use strict;
 use warnings;
 use Getopt::Long;
+use DateTime;
+use DateTime::Format::ISO8601;
 use OpenSRF::Utils::Logger q/$logger/;
 use OpenILS::Utils::Fieldmapper;
 use OpenILS::Application::Acq::EDI;
@@ -25,6 +27,7 @@ use OpenILS::Utils::EDIWriter;
 
 my $osrf_config = '/openils/conf/opensrf_core.xml';
 my $po_id;
+my $min_date = '2000-01-01';
 my $test_mode;
 my $verbose;
 my $help;
@@ -32,6 +35,7 @@ my $help;
 my $ops = GetOptions(
     'osrf-config=s' => \$osrf_config,
     'test-mode'     => \$test_mode,
+    'min-date=s'    => \$min_date,
     'po-id=i'       => \$po_id,
     'verbose'       => \$verbose,
     'help'          => \$help
@@ -62,6 +66,9 @@ sub help {
         --test-mode
             Prints EDI that would be sent to STDOUT.  No files are sent
             and no edi_message's are created.
+
+        --min-date <YYYY-MM-DD>
+            Only process PO's whose activation date occurred after this date
 
         --po-id <po-id-value>
             Process a specific PO instead of processing all available PO's
@@ -130,7 +137,7 @@ if ($po_id) {
         where => {
             '+acqpo' => {
                 state => 'on-order', # on-order only
-                order_date => {'!=' => undef} # activated
+                order_date => {'>' => $min_date} # activated after
             },
             '+acqpro' => {
                 active => 't', 

@@ -1,0 +1,22 @@
+<eg-title i18n-prefix prefix="Circulation Modifier Administration"></eg-title>
+<eg-staff-banner bannerText="Circulation Modifier Administration" i18n-bannerText></eg-staff-banner>
+<eg-admin-page persistKeyPfx="admin.server.config.circ_modifier"
+    [idlClass]="CIRC_MODIFIER_IDL_CLASS"
+    [dataSource]="dataSource"
+    [disableDelete]="true"
+    [disableOrgFilter]="true">
+    <eg-fm-record-editor #editDialog [idlClass]="CIRC_MODIFIER_IDL_CLASS"
+      [defaultNewRecord]="defaultNewRecord"
+      [fieldOptions]="{sip2_media_type:{customTemplate:{template:sipMediaTypeTemplate}}}"
+      fieldOrder="code,name,description,sip2_media_type,magnetic_media,avg_wait_time">
+    </eg-fm-record-editor>
+</eg-admin-page>
+
+<ng-template #sipMediaTypeTemplate let-field="field" let-record="record" let-idPrefix="idPrefix">
+  <eg-select [ngModel]="record[field.name]()"
+    (ngModelChange)="record[field.name]($event)"
+    domId="{{idPrefix}}-{{field.name}}"
+    name="sip-media-type"
+    [options]="sipModifiers">
+  </eg-select>
+</ng-template>

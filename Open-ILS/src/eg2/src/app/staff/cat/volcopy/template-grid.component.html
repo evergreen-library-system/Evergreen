@@ -129,14 +129,14 @@
     (onClick)="templateFile.click()">
   </eg-grid-toolbar-action>
 
-  <eg-grid-column name="templateName" [index]="true" i18n-label label="Template Name" name="templateName"></eg-grid-column>
-  <eg-grid-column name="age_protect" [hidden]="true" i18n-label label="Age Protect"></eg-grid-column>
-  <eg-grid-column name="label_class" [hidden]="true" i18n-label label="Call Number Classification"></eg-grid-column>
-  <eg-grid-column name="prefix" [hidden]="true" i18n-label label="Call Number Prefix"></eg-grid-column>
-  <eg-grid-column name="suffix" [hidden]="true" i18n-label label="Call Number Suffix"></eg-grid-column>
-  <eg-grid-column name="circ_as_type" [hidden]="true" i18n-label label="Circ As Type"></eg-grid-column>
-  <eg-grid-column name="circ_lib" [hidden]="false" i18n-label label="Circ Lib"></eg-grid-column>
-  <eg-grid-column name="circ_modifier" [hidden]="false" i18n-label label="Circ Modifier"></eg-grid-column>
+  <eg-grid-column name="templateName" [index]="true" i18n-label label="Template Name" name="templateName" [allowFilterILike]="true"></eg-grid-column>
+  <eg-grid-column name="age_protect" [hidden]="true" i18n-label label="Age Protect" [allowFilterILike]="true"></eg-grid-column>
+  <eg-grid-column name="label_class" [hidden]="true" i18n-label label="Call Number Classification" [allowFilterILike]="true"></eg-grid-column>
+  <eg-grid-column name="prefix" [hidden]="true" i18n-label label="Call Number Prefix" [allowFilterILike]="true"></eg-grid-column>
+  <eg-grid-column name="suffix" [hidden]="true" i18n-label label="Call Number Suffix" [allowFilterILike]="true"></eg-grid-column>
+  <eg-grid-column name="circ_as_type" [hidden]="true" i18n-label label="Circ As Type" [allowFilterILike]="true"></eg-grid-column>
+  <eg-grid-column name="circ_lib" [hidden]="false" i18n-label label="Circ Lib" [allowFilterILike]="true"></eg-grid-column>
+  <eg-grid-column name="circ_modifier" [hidden]="false" i18n-label label="Circ Modifier" [allowFilterILike]="true"></eg-grid-column>
   <eg-grid-column name="circulate" [hidden]="true" i18n-label label="Circulate"></eg-grid-column>
   <eg-grid-column name="copy_alerts" [hidden]="false" i18n-label label="Alerts"></eg-grid-column>
   <eg-grid-column name="notes" [hidden]="false" i18n-label label="Notes"></eg-grid-column>
@@ -146,17 +146,17 @@
   <eg-grid-column name="cost" [hidden]="true" i18n-label label="Cost"></eg-grid-column>
   <eg-grid-column name="deposit" [hidden]="true" i18n-label label="Deposit"></eg-grid-column>
   <eg-grid-column name="deposit_amount" [hidden]="true" i18n-label label="Deposit Amount"></eg-grid-column>
-  <eg-grid-column name="fine_level" [hidden]="true" i18n-label label="Fine Level"></eg-grid-column>
-  <eg-grid-column name="floating" [hidden]="true" i18n-label label="Floating"></eg-grid-column>
+  <eg-grid-column name="fine_level" [hidden]="true" i18n-label label="Fine Level" [allowFilterILike]="true"></eg-grid-column>
+  <eg-grid-column name="floating" [hidden]="true" i18n-label label="Floating" [allowFilterILike]="true"></eg-grid-column>
   <eg-grid-column name="holdable" [hidden]="true" i18n-label label="Holdable"></eg-grid-column>
-  <eg-grid-column name="loan_duration" [hidden]="true" i18n-label label="Loan Duration"></eg-grid-column>
+  <eg-grid-column name="loan_duration" [hidden]="true" i18n-label label="Loan Duration" [allowFilterILike]="true"></eg-grid-column>
   <eg-grid-column name="location" [hidden]="true" i18n-label label="Location"></eg-grid-column>
   <eg-grid-column name="mint_condition" [hidden]="true" i18n-label label="Mint Condition"></eg-grid-column>
   <eg-grid-column name="opac_visible" [hidden]="true" i18n-label label="OPAC Visible"></eg-grid-column>
-  <eg-grid-column name="owning_lib" [hidden]="false" i18n-label label="Owning Lib"></eg-grid-column>
+  <eg-grid-column name="owning_lib" [hidden]="false" i18n-label label="Owning Lib" [allowFilterILike]="true"></eg-grid-column>
   <eg-grid-column name="price" [hidden]="true" i18n-label label="Price"></eg-grid-column>
   <eg-grid-column name="ref" [hidden]="true" i18n-label label="Reference"></eg-grid-column>
   <eg-grid-column name="statcat_filter" [hidden]="true" i18n-label label="Stat Cat Filter"></eg-grid-column>
-  <eg-grid-column name="status" [hidden]="true" i18n-label label="Status"></eg-grid-column>
-  <eg-grid-column name="debug" [hidden]="true" i18n-label label="Debug JSON"></eg-grid-column>
+  <eg-grid-column name="status" [hidden]="true" i18n-label label="Status" [allowFilterILike]="true"></eg-grid-column>
+  <eg-grid-column name="debug" [hidden]="true" i18n-label label="Debug JSON" [allowFilterILike]="true"></eg-grid-column>
 </eg-grid>

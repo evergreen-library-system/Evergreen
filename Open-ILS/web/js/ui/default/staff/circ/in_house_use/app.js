@@ -102,7 +102,7 @@ function($scope , egCore , egGridDataProvider , egConfirmDialog,
                 {barcode : args.barcode, deleted : 'f'},
                 {   flesh : 3, 
                     flesh_fields : {
-                        acp : ['call_number','location','status'],
+                        acp : ['call_number','location','status','circ_modifier'],
                         acn : ['record', 'prefix', 'suffix'],
                         // We don't need to display a wide range of bib
                         // fields in this UI.  Fetch the flat display since

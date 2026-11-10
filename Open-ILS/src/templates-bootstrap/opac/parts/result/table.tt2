@@ -295,6 +295,7 @@
                                                     END;
                                                 END;
                                             %]
+                                            [% INCLUDE "opac/parts/stackmap.tt2" %]
                                             <table role="table" class='container-fluid table table-sm table-hover mt-4 miniTable holdingsTable'>
                                                 <caption class="visually-hidden">[% l('Record Holdings Details') %]</caption>
                                                 <thead role="rowgroup">

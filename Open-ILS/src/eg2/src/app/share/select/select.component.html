@@ -1,0 +1,7 @@
+<select #select [id]="domId()" [required]="required"
+    (blur)="onTouched()" (change)="onChange($event.target.value)"
+    class="form-select">
+    @for(item of options(); track item.value) {
+        <option value="{{item.value}}">{{item.label}}</option>
+    }
+</select>

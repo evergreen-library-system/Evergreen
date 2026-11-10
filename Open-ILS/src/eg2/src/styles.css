@@ -142,6 +142,19 @@ a:not(.alert-link):is(:hover, :focus, :focus-visible),
   color: var(--primary-hover);
 }
 
+.btn-expandy {
+  padding: 0;
+  border: 0;
+}
+
+.btn-expandy .material-icons {
+  text-decoration: none;
+}
+
+.btn-expandy {
+    text-decoration: underline;
+}
+
 .alert-link {
   text-decoration: underline;
 }

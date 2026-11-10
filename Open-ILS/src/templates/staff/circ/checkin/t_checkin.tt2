@@ -1,7 +1,7 @@
 <div class="container-fluid" style="text-align:center">
   <div class="alert alert-info alert-less-pad strong-text-2"
     ng-class="{'alert-warning': is_backdate()}">
-    <span ng-if="!is_capture">[% l('Checkin Items') %]</span>
+    <span ng-if="!is_capture">[% l('Check In Items') %]</span>
     <span ng-if="is_capture">[% l('Capture Holds') %]</span>
     <span ng-if="is_backdate()" class="btn btn-danger">[% l('Backdating Enabled') %]</span>
   </div>
@@ -161,7 +161,7 @@
   <div class="col-md-2">
     <div class="input-group-btn" uib-dropdown>
       <button type="button" class="btn btn-default" uib-dropdown-toggle>
-        [% l('Checkin Modifiers') %]
+        [% l('Check In Modifiers') %]
         <span class="caret"></span>
       </button>
       <ul class="pull-right" uib-dropdown-menu>

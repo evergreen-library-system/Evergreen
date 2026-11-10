@@ -1,11 +1,3 @@
-#marcEditor {
-  background-color: hsla(223, 25%, 91%, 1);
-}
-
-[data-bs-theme="dark"] :host #marcEditor {
-  background-color: var(--bs-body-bg-alt);
-}
-
 .nav-tabs li h2 {
   color: inherit;
   font-size: inherit;

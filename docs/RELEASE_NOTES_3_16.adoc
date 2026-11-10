@@ -3,9 +3,241 @@
 :numbered:
 :toclevels: 3
 
+== Evergreen 3.16.12 ==
+
+This release contains bug fixes and documentation fixes improving on Evergreen 3.16.11.
+
+=== Upgrade Notes ===
+
+The following items require running a database upgrade script:
+
+* Fixes authority propagation bug related to repeated subfield codes with different values. (https://bugs.launchpad.net/evergreen/+bug/2147195[Bug 2147195])
+
+=== Administration ===
+
+* Directly manage OpenSRF connections used by the OpenAPI infrastructure. (https://bugs.launchpad.net/evergreen/+bug/2169755[Bug 2169755])
+* Removes deleted items from reshelver's consideration (https://bugs.launchpad.net/evergreen/+bug/2169044[Bug 2169044])
+
+=== Cataloging ===
+
+* Fixes authority propagation bug related to repeated subfield codes with different values. (https://bugs.launchpad.net/evergreen/+bug/2147195[Bug 2147195])
+* Fixes actions to add call numbers and items from Item Status. (https://bugs.launchpad.net/evergreen/+bug/2001702[Bug 2001702])
+
+=== Circulation ===
+
+* Adds record summary and missing cancel hold details to the Angular patron interface. (https://bugs.launchpad.net/evergreen/+bug/2153961[Bug 2153961])
+
+=== Documentation ===
+
+* Updates self-check setup docs with permissions, override events feature, and Angular Self check url.
+
+
+=== Public Catalog ===
+
+* Improves KPAC topic tile search location scoping. (https://bugs.launchpad.net/evergreen/+bug/2154502[Bug 2154502])
+
+
+
+=== Staff Interface ===
+
+* Save recent catalog searches without requiring a refresh. (https://bugs.launchpad.net/evergreen/+bug/2168851[Bug 2168851])
+
+
+=== Acknowledgements ===
+
+We would like to thank the following individuals who contributed code, testing, documentation, and patches to the 3.16.12 point release of Evergreen:
+
+* Blake Graham-Henderson
+* Carol Witt
+* Chris Sharp
+* Dan Briem
+* Debbie Luchenbill
+* Garry Collum
+* JC Landry
+* Jane Sandberg
+* Jason Stephenson
+* Josh Stompro
+* Michele Morgan
+* Mike Rylander
+* Terran McCanna
+
+Release Team:
+
+* Andrea Buntz Neiman
+* Blake Graham-Henderson
+* Gina Monti
+* Martha Driscoll
+* Michele Morgan
+
+The following organizations sponsored development in this release:
+
+* Kenton Count Public Library
+
+
+== Evergreen 3.16.11 ==
+
+This release contains bug fixes and documentation fixes improving on Evergreen 3.16.10.
+
+=== Upgrade Notes ===
+
+The following items require running a database upgrade script:
+
+* Fixes hint_opt_in_check JOIN logic for event_output columns (https://bugs.launchpad.net/evergreen/+bug/2144042[Bug 2144042])
+
+=== Administration ===
+
+* Fixes hint_opt_in_check JOIN logic for event_output columns (https://bugs.launchpad.net/evergreen/+bug/2144042[Bug 2144042])
+
+=== Public Catalog ===
+
+* Fixes a stray gap below the footer on public catalog search results pages. (https://bugs.launchpad.net/evergreen/+bug/2164784[Bug 2164784])
+* Updates instances of "checkin" and "check-in" to "check In" for patrons, staff and documentation. (https://bugs.launchpad.net/evergreen/+bug/1853064[Bug 1853064])
+* opensrf.xml -> open-ils.search block now has the missing cache_timeout setting for reference. Default has always been 300 seconds. (https://bugs.launchpad.net/evergreen/+bug/2165411[Bug 2165411])
+
+
+=== Staff Interface ===
+
+* Restores "Share Depth" dropdown menu in AngularJS interfaces. (https://bugs.launchpad.net/evergreen/+bug/2114860[Bug 2114860])
+
+
+=== Acknowledgements ===
+
+We would like to thank the following individuals who contributed code, testing, documentation, and patches to the 3.16.11 point release of Evergreen:
+
+* Chris Sharp
+* Hannah Darcy
+* Hannah Margolis
+* Ian Skelskey
+* Jane Sandberg
+* Jason Stephenson
+* Michele Morgan
+* Steven Mayo
+* Terran McCanna
+
+Release Team:
+
+* Andrea Buntz Neiman
+* Blake Graham-Henderson
+* Gina Monti
+* Martha Driscoll
+
+
+
+== Evergreen 3.16.10 ==
+
+This is a security release that fixes several vulnerabilities, including ones that allow
+the remote execution of arbitrary SQL statements in the Evergreen database as well as
+cross-site scripting vulnerabilities.
+
+We strongly recommend *immediate* installation of this security release.
+
+The security bug fixed in this release is:
+
+* https://bugs.launchpad.net/evergreen/+bug/2150054[Bug 2150054] - patching an XSS vulnerability
+
+This release also includes normal bugfixes.
+
+=== Cataloging ===
+
+* Restores descending sort order to Holdings Editor parts drop down. (https://bugs.launchpad.net/evergreen/+bug/2037674[Bug 2037674])
+
+=== Circulation ===
+
+* Check every profile for edit permissions so the Angular patron editor save button isn't disabled incorrectly. (https://bugs.launchpad.net/evergreen/+bug/2081327[Bug 2081327])
+* Fixes linking from Angular Holds View grid. (https://bugs.launchpad.net/evergreen/+bug/2161465[Bug2161465])
+
+=== Acknowledgements === 
+
+We would like to thank the following individuals who contributed code, testing, documentation, and patches to the 3.16.9 point release of Evergreen:
+
+* Andrea Buntz Neiman
+* Dan Briem
+* Galen Charlton
+* Jane Sandberg
+* Jason Stephenson
+* John Amundson
+* Michele Morgan
+* Mike Rylander
+* Tara Kunesh
+
+
+== Evergreen 3.16.9 ==
+
+This release contains bug fixes and documentation fixes improving on Evergreen 3.16.8.
+
+
+=== Acquisitions ===
+
+* EDI message send and receive via SFTP now honors the port specification in the hostname, if supplied.  Example: sftp://host.domain.tld:2222. (https://bugs.launchpad.net/evergreen/+bug/2154387[Bug 2154387])
+* Fixes an issue where SFTP login failures would cause the acquisitions EDI fetcher to get "stuck" and stop retrieving files. (https://bugs.launchpad.net/evergreen/+bug/2060702[Bug 2060702])
+* Add a new flag to edi_order_pusher.pl to provide the earliest PO activation date that should be processed. (https://bugs.launchpad.net/evergreen/+bug/1911786[Bug 1911786])
+
+
+=== Cataloging ===
+
+* Fix error that occured when trying to edit or view more information about the "Available" status in the Item Status admin screen. (https://bugs.launchpad.net/evergreen/+bug/2151838[Bug 2151838])
+* Fixes Carousels interface for two or more staff members administering Carousels from personal buckets. (https://bugs.launchpad.net/evergreen/+bug/2146852[Bug 2146852])
+
+=== Circulation ===
+
+* Increases retrieval speed in Items Out by suppressing cursors in certain queries (https://bugs.launchpad.net/evergreen/+bug/2106679[Bug 2106679])
+* Fixes issues in Edit Due Date modals (https://bugs.launchpad.net/evergreen/+bug/2149841[Bug 2149841])
+* Angular self-check now respects the email checkout receipts by default setting. (https://bugs.launchpad.net/evergreen/+bug/2134541[Bug 2134541])
+
+=== Documentation ===
+
+* Updates to how_to_contribute_docs.adoc 
+* Updates documentation description and note for Auto-Override Permitted Hold Blocks (Patrons). (https://bugs.launchpad.net/evergreen/+bug/1658173[Bug 1658173])
+* Adds mention of 'Hide the Clear These Holds button' to basic_holds.adoc
+* Adds Staff Catalog Visible to describing_your_organization.adoc
+* Adds 'Hide the Clear These Holds button' to librarysettings.adoc
+* Adds staff.search global flags to table in global_flags.adoc
+* Updates info on Other Settings tab in my_account.adoc
+* Updates to using_the_public_access_catalog.adoc
+* Updates docs for part hold menu, hold group functionality
+* Adds Angular grid info to staff_client-column_filters.adoc including update for print/download menu options disabling when there are no grid results
+* Updates to staff_portal_page.adoc
+* Updates image & tag in circing_uncataloged_materials.adoc
+* Updates kids_opac.adoc, including updated screenshots
+
+=== Public Catalog ===
+
+* Provides default KPAC topic image if none specified. (https://bugs.launchpad.net/evergreen/+bug/2154503[Bug 2154503])
+* Hides "fines accruing" in OPAC when fines are no longer accruing. (https://bugs.launchpad.net/evergreen/+bug/2147229[Bug 2147229])
+
+
+=== Staff Interface ===
+
+* Fixes Staff SSO redirect to 404. (https://bugs.launchpad.net/evergreen/+bug/2141953[Bug 2141953])
+
+=== Acknowledgements ===
+
+We would like to thank the following individuals who contributed code, testing, documentation, and patches to the 3.16.9 point release of Evergreen:
+
+* Andrea Buntz Neiman
+* Bill Erickson
+* Blake Graham-Henderson
+* Chris Sharp
+* Christine Burns
+* Dan Briem
+* Elizabeth Davis
+* Galen Charlton
+* Gina Monti
+* Ian Skelskey
+* Jane Sandberg
+* Jason Stephenson
+* Jennifer Davis
+* Ken Cox
+* Martha Driscoll
+* Michele Morgan
+* Mike Rylander
+* Susan Morrison
+* Terran McCanna
+* Tiffany Little
+
 == Evergreen 3.16.8 == 
 
-This release contains bug fixes and documentation fixes improving on Evergreen 3.17.1.
+This release contains bug fixes and documentation fixes improving on Evergreen 3.16.7.
 
 === Upgrade Notes ===
 
@@ -152,7 +384,7 @@ In addition, if you have customized any of the following templates, please compa
 
 
 
-=== Acknowledgments ===
+=== Acknowledgements ===
 
 The Evergreen Project would like to thank the following individuals
 who contributed code, testing, and other assistance with this security
@@ -218,7 +450,7 @@ service, and the `open-ils.fielder` service. This release *only* includes
 the security fixes; it does not include any other bugfixes or features
 that were merged since the previous release.
 
-=== Acknowledgments ===
+=== Acknowledgements ===
 
 The Evergreen Project would like to thank the following individuals
 who contributed code, testing, and other assistance with this security
@@ -990,7 +1222,7 @@ The KPAC utilizes its own CSS files:
 :leveloffset: 0
 
 
-== Acknowledgments ==
+== Acknowledgements ==
 The Evergreen project would like to acknowledge the following
 organizations that commissioned developments in this release of
 Evergreen:

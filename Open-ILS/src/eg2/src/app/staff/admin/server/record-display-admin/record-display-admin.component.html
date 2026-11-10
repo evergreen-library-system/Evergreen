@@ -1,0 +1,72 @@
+<eg-staff-banner bannerText="MARC Record Display" i18n-bannerText="@@marcRecordDisplayAdminInterfaceName">
+</eg-staff-banner>
+
+<div class="form-group row">
+  <label for="interface-to-edit" class="col-sm-2 col-form-label fs-5" i18n>Interface to Edit</label>
+  <div class="col-sm-4">
+    <select id="interface-to-edit" name="interface-to-edit" [formControl]="interfaceToEdit" class="form-select mb-3">
+      <option i18n value="search_result">Search result</option>
+      <option i18n value="staff_view">Staff view</option>
+    </select>
+  </div>
+</div>
+
+@if (interfaceToEdit.value) {
+<div class="row">
+  <eg-record-display-admin-column
+    class="col-lg-4"
+    [data]="firstColumn"
+    [columnIndex]="1"
+    [hasPermissions]="hasPermissions"
+    [type]="interfaceToEdit.value"
+    (dataChange)="reloadData()">
+  </eg-record-display-admin-column>
+
+  @if (interfaceToEdit.value === 'staff_view') {
+<eg-record-display-admin-column
+   
+    class="col-lg-4"
+    [data]="secondColumn"
+    [columnIndex]="2"
+    [hasPermissions]="hasPermissions"
+    [type]="interfaceToEdit.value"
+    (dataChange)="reloadData()">
+  </eg-record-display-admin-column>
+}
+
+  @if (interfaceToEdit.value === 'staff_view') {
+<eg-record-display-admin-column
+   
+    class="col-lg-4"
+    [data]="thirdColumn"
+    [columnIndex]="3"
+    [hasPermissions]="hasPermissions"
+    [type]="interfaceToEdit.value"
+    (dataChange)="reloadData()">
+  </eg-record-display-admin-column>
+}
+</div>
+}
+@if (interfaceToEdit.value) {
+
+  <hr>
+  <h2 i18n>Preview</h2>
+  <form>
+    <div class="form-group">
+      @if(previewError()) { <p tabindex="-1" id="preview-error">{{previewError()}}</p> }
+      <label for="preview-id" i18n>Record ID to preview</label>
+      <div class="input-group">
+        <input id="preview-id" name="preview-id" [formControl]="previewId" type="number" class="form-control">
+        <button type="submit" class="btn btn-outline-primary" i18n (click)="loadSummary()">Preview</button>
+      </div>
+    </div>
+  </form>
+  @if (summary && entries && interfaceToEdit.value === 'staff_view') {
+<eg-staff-record-summary-view [summary]="summary"></eg-staff-record-summary-view>
+}
+  @if (summary && entries && interfaceToEdit.value === 'search_result') {
+<eg-metadata-column [column]="summary.searchResultDisplayEntries" [summary]="summary" view="search_result"></eg-metadata-column>
+}
+  
+
+}

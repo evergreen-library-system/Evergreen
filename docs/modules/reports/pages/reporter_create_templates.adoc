@@ -404,7 +404,7 @@ and *Report Layout* tabs section of the _Report Template Editor_.
 . As you did when selecting the display fields, select the top of the tree in 
 the _Source_ pane. A list of available fields will be displayed under _All Fields_.
 +
-image::reporter_create_templates/adding_filters.png[Screenshot shows All fields related to Circulation under the All Fields header. The checkbox for Checkin Scan Date/Time is selected and that field is displayed on the right.]
+image::reporter_create_templates/adding_filters.png[Screenshot shows All fields related to Circulation under the All Fields header. The checkbox for Check In Scan Date/Time is selected and that field is displayed on the right.]
 +
 .. The word in parentheses beside the field name indicates the 
 xref:reports:reporter_template_terminology.adoc#report_data_types[data type].
@@ -433,7 +433,7 @@ you would like to use. The transforms available in the list will vary depending
 . Next, select the *Operator*. See 
 xref:reports:reporter_template_terminology.adoc#report_operators[Report Operators].
 +
-image::reporter_create_templates/operator_and_transforms.png["Screenshot of a selected filter, Checkin Scan Date/Time. Highlighted below the field name are the Transform and Operator drop-down menus. The selected transform is Date, and the selected operator is Between."]
+image::reporter_create_templates/operator_and_transforms.png["Screenshot of a selected filter, Check In Scan Date/Time. Highlighted below the field name are the Transform and Operator drop-down menus. The selected transform is Date, and the selected operator is Between."]
 +
 . If desired, you can hardcode the value of the filter into the template. See 
 xref:reports:reporter_basics.adoc#hardcoded_filters[Hardcoded Filters] for more

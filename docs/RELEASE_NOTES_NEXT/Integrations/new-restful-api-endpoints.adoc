@@ -1,0 +1,93 @@
+== New RESTful API Endpoints ==
+
+Endpoints have been added to Evergreen's OpenAPI implementation to
+assist with search.
+
+=== New Bibs Endpoint ===
+
+The `bibsByISBN` endpoint allows retrieval of bibliographic records
+via ISBN or other standard identifier using a `HTTP GET` request:
+
+    GET https://<host>/openapi3/v0/bibs/by_isbn/<isbn>
+
+The above returns different things depending on the content type
+specified in the `Accept` header of the request:
+
+[width="50%",cols="1,2",options="header"]
+|====
+|Content Type |Format
+|application/json |Evergreen "bre" object
+|application/xml |MARC of the record in MARCXML
+|application/octet-stream |MARC of the record as binary USMARC
+|====
+
+=== Coded Value Maps Endpoints ===
+
+Coded Value Map entries (useful for the Multiclass Search Endpoint,
+see below) can be retrieved by database ID or all entries for a given
+`ctype` can be retrieved at once:
+
+    GET https://<host>/openapi3/v0/coded_value_map/<id>
+    GET https://<host>/openapi3/v0/coded_value_maps/by_ctype/<ctype>
+
+The former returns the single `ccvm` object and the latter returns a
+list of `ccvm` objects.  The objects and list are formatted as JSON.
+
+=== Mutliclass Search Endpoint ===
+
+Evergreen's multiclass search capabilities, as used by the OPAC and
+Staff Client Catalogs, can be accessed with the new
+`search/multiclass` endpoint:
+
+    GET https://<host>/openapi3/v0/search/multiclass?...
+
+The new URL expects CGI query parameters that map to the underlying
+`open-ils.search.biblio.multiclass` and
+`open-ils.search.biblio.multiclass.query`x OpenSRF API routines.
+Specifics of the CGI parameters accepted by the OpenAPI implementation
+are documented in the table below:
+
+[width="50%",options="header"]
+|====
+|Parameter |Value type |Repeatable |Default Value
+|author |string |yes |none
+|identifier |string |yes |none
+|isbn |string |yes |none
+|issn |string |yes |none
+|keyword |string |yes |none
+|series |string |yes |none
+|subject |string |yes |none
+|title |string |yes |none
+|query |string |no |none
+|org_unit |integer |no |none
+|depth |integer |no |none
+|limit |integer |no |10
+|offset |integer |no |0
+|sort |string |no |none
+|sort_dir |string |no |ASC
+|tag_circulated_records |boolean |no |false
+|docache |boolean |no |true
+|====
+
+All of the parameters are optional, except that at least one of the
+parameters from `author` through `query` MUST be provided.  The
+`Default Value` column indicates the value used if the parameter is
+not supplied.
+
+Use of the `query` parameter triggers the use of
+`open-ils.search.biblio.multiclass.query`.  It is expected to be
+formatted just like the query string passed to that function.
+
+The `sort` takes one of the options from the following list as the key:
+
+  * author
+  * title
+  * pubdate
+  * edit_date
+  * create_date
+  * rel
+  * poprel
+
+See `perldoc OpenILS::Search::Biblio` for documentation of
+`open-ils.search.biblio.multiclass` and
+`open-ils.search.biblio.multiclass.query`.

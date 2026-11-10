@@ -6,15 +6,15 @@
 Item Alert Types are created and managed in *Administration -> Local Administration -> Item Alert Types*. Item Alert Types define the action and behavior of an alert message type. The Alert Types included in a stock installation of Evergreen are:
 
 * Normal checkout
-* Normal checkin
+* Normal check in
 * Normal renewal
-* Checkin of missing copy
-* Checkin of lost-and-paid copy
-* Checkin of damaged copy
-* Checkin of claims-returned copy
-* Checkin of long overdue copy
-* Checkin of claims-never-checked-out copy
-* Checkin of lost copy
+* Check in of missing copy
+* Check in of lost-and-paid copy
+* Check in of damaged copy
+* Check in of claims-returned copy
+* Check in of long overdue copy
+* Check in of claims-never-checked-out copy
+* Check in of lost copy
 * Checkout of missing copy
 * Checkout of lost-and-paid copy
 * Checkout of damaged copy
@@ -23,10 +23,10 @@ Item Alert Types are created and managed in *Administration -> Local Administrat
 * Checkout of claims-never-checked-out copy
 * Checkout of lost copy
 * Normal checkout at circ lib
-* Normal checkin at circ lib
+* Normal check in at circ lib
 * Normal renewal at circ lib
 * Normal checkout at owning lib
-* Normal checkin at owning lib
+* Normal check in at owning lib
 * Normal renewal at owning lib
 
 To create a new Item Alert Type:
@@ -38,7 +38,7 @@ To create a new Item Alert Type:
 .. _State_: indicates the Copy Status of the item at the time of the event.
 .. _Event_: the action that takes place in the ILS to trigger the alert.
 .. _Scope Org Unit_: indicates which org unit(s) the alert type will apply to.
-.. _Next Status_: can be used with temporary Checkin Alerts only. If a nextstatus is configured, staff will be presented with a list of statuses to choose from when the item is checked in.
+.. _Next Status_: can be used with temporary Check In Alerts only. If a nextstatus is configured, staff will be presented with a list of statuses to choose from when the item is checked in.
 .. _Renewing?_: indicates if the alert should appear during a renewal.
 .. _Invert location?_: if set to yes, this setting will invert the following two settings.
 +

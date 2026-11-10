@@ -5,7 +5,7 @@ Background
 ----------
 
 In the Evergreen ILS, during opportunistic capture (which occurs at copy
-checkin time), the copy being checked in is evaluated by the system for its
+check in time), the copy being checked in is evaluated by the system for its
 fitness to fulfill outstanding holds.  When the copy might fulfill more than
 one hold, a set of 'determinants' are used to rank the possible holds that
 might be fulfilled, so that the best hold may be chosen.

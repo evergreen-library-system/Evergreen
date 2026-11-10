@@ -4,61 +4,117 @@
 
 BLOCK render_series;
     results = [];
-    IF attrs.hl_display_fields.series_title.size;
-    hl_field = attrs.hl_field;
-        FOREACH s IN attrs.hl_display_fields.series_title;
-            search_term = s.value.replace('[#"^$\+\-,\.:;&|\[\]()]', ' ').replace('\s+$', '');
 
-            url = mkurl(ctx.opac_root _ '/results',
-                { qtype=>'series', query=>search_term }, stop_parms.merge(expert_search_parms, general_search_parms, browse_search_parms, facet_search_parms)
-            );
-            filtered_hl_field = s.$hl_field;
-            series = '<a href="' _ url _ '">' _ filtered_hl_field _ '</a> ';
-            results.push(series);
-        END;
-    ELSE;
-        FOR tag IN series_tags;
-            FOR node IN ctx.marc_xml.findnodes('//*[@tag="' _ tag _ '"]');
-                all_terms = [];
-                graphics = [];
-                series = '';
-                FOR subfield IN node.childNodes;
-                    NEXT UNLESS subfield.nodeName == "subfield";
-                    code = subfield.getAttribute('code');
-                    IF code == '6';
-                       linked_fields = [subfield.textContent()];
-                       target_field = node.getAttribute('tag');
-                       get_linked_880s;
+    # Removed code block that was building links using MODS32 data
+    # because it was redundant to the links being built with MARCXML data
+
+    # Build related series link entries from MARCXML
+    FOR tag IN series_tags;
+        FOR node IN ctx.marc_xml.findnodes('//*[@tag="' _ tag _ '"]');
+            graphics = [];
+            a_search = '';
+            a_display = '';
+            t_search = '';
+            t_display = '';
+            display_only1 = '';
+            display_only2 = '';
+
+            FOR subfield IN node.childNodes;
+                NEXT UNLESS subfield.nodeName == "subfield";
+                code = subfield.getAttribute('code');
+                IF code == '6';
+                    linked_fields = [subfield.textContent()];
+                    target_field = node.getAttribute('tag');
+                    get_linked_880s;
+                END;
+
+                NEXT UNLESS code.match('[a-z]');
+
+                # accommodate entries (allowed with 490s but not 8xx) that have multiple $a subfields
+                # by ending current series display line and starting a fresh new line
+                IF code.match('a') AND a_search.length > 0;
+                    PROCESS create_series_line;
+                    a_search = '';
+                    a_display = '';
+                    t_search = '';
+                    t_display = '';
+                    display_only1 = '';
+                    display_only2 = '';
+                END;
+
+                # at this point, we actually have a starting term to use that still includes punctuation
+                single_term = subfield.textContent;
+                search_term = single_term.replace('[#"^$\+\-,\.:;&|\[\]()<>]', ' ');
+                display_term = single_term.replace('[;]') | trim | html;
+
+                IF code.match('a');
+                    a_search = search_term;
+                    a_display = display_term;
+                ELSIF code.match('[b-d]');
+                    a_search = a_search _ ' ' _ search_term;
+                    a_display = a_display _ ' ' _ display_term;
+                ELSIF code.match('[e,j,q,u]');
+                    IF display_only1;
+                        display_only1 = display_only1 _ ' ' _ display_term;
+                    ELSE;
+                        display_only1 = display_term;
                     END;
-                    NEXT UNLESS code.match('[a-z]');
-                    # at this point, we actually have a partial term to use.
-                    single_term = subfield.textContent | html;
-                    all_terms.push(subfield.textContent.replace('[#"^$\+\-,\.:;&|\[\]()]', ' '));
-                    total_term = all_terms.join(" ").replace('\s+$', '');
-
-                    url = mkurl(ctx.opac_root _ '/results',
-                        { qtype=>'series', query=>total_term }, stop_parms.merge(expert_search_parms, general_search_parms, browse_search_parms, facet_search_parms)
-                    );
-                    series = series _ '<a href="' _ url _ '">' _ single_term _ '</a> ';
+                ELSIF code.match('t');
+                    t_search = a_search _ ' ' _ search_term;
+                    t_display = display_term;
+                ELSE;
+                    IF display_only2;
+                        display_only2 = display_only2 _ ' ' _ display_term;
+                    ELSE;
+                        display_only2 = display_term;
+                    END;
                 END;
-                FOREACH link880 IN graphics;
-                    link = link880.value | html;
-                    series = series _ '<div class="graphic880"' _ link880.dir _ '>' _ link _ '</div>';
-                END;
-                results.push(series);
             END;
+
+            PROCESS create_series_line;
         END;
     END;
+
     FOR entry IN results;
     -%]
-    <li class='rdetail_series_value'>[% entry %]</li>
+        <li class='rdetail_series_value'>[% entry %]</li>
     [%- END;
 END;
 %]
 
+[% BLOCK create_series_line;
+
+    # create series row
+    IF a_search;
+        a_url = '<a href="' _ mkurl(ctx.opac_root _ '/results',
+            { qtype=>'series', query=>a_search }, stop_parms.merge(expert_search_parms, general_search_parms, browse_search_parms, facet_search_parms))
+                _ '">' _ a_display _ '</a>';
+    END;
+    IF t_search;
+        t_url = '<a href="' _ mkurl(ctx.opac_root _ '/results',
+            { qtype=>'series', query=>t_search }, stop_parms.merge(expert_search_parms, general_search_parms, browse_search_parms, facet_search_parms))
+                _ '">' _ t_display _ '</a>';
+    END;
+    IF display_only1;
+        display_only1 = ' ' _ display_only1 _ ' ';
+    END;
+    IF display_only2;
+        display_only2 = ' ' _ display_only2;
+    END;
+
+    series_display = a_url _ ' ' _ display_only1 _ t_url _ ' ' _ display_only2;
+
+    FOREACH link880 IN graphics;
+        link = link880.value | html;
+        series_display = series_display _ '<div class="graphic880"' _ link880.dir _ '>' _ link _ '</div>';
+    END;
+    results.push(series_display);
+
+END %]
+
 [%- series_anchors = PROCESS render_series;
     IF series_anchors.length > 0; %]
-<h2 class='rdetail_related_series'>[% l('Search for related items by series') %]</h2>
+<h3 class='rdetail_related_series'>[% l('Search for related items by series') %]</h3>
 <ul class="no-bullets">
     [% series_anchors %]
 </ul>

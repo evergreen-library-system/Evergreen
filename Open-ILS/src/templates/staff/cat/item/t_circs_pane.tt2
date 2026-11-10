@@ -75,19 +75,19 @@
     </div>
   </div>
   <div class="flex-row">
-    <div class="flex-cell">[% l('Checkin Time') %]</div>
+    <div class="flex-cell">[% l('Check In Time') %]</div>
     <div class="flex-cell well">
       {{prev_circ_summary.last_checkin_time() | date:egDateAndTimeFormat}}
     </div>
   </div>
   <div class="flex-row">
-    <div class="flex-cell">[% l('Checkin Scan Time') %]</div>
+    <div class="flex-cell">[% l('Check In Scan Time') %]</div>
     <div class="flex-cell well">
       {{prev_circ_summary.last_checkin_scan_time() | date:egDateAndTimeFormat}}
     </div>
   </div>
   <div class="flex-row">
-    <div class="flex-cell">[% l('Checkin Workstation') %]</div>
+    <div class="flex-cell">[% l('Check In Workstation') %]</div>
     <div class="flex-cell well">
       {{prev_circ_summary.last_checkin_workstation()}}
     </div>
@@ -177,21 +177,21 @@
   </div>
 
   <div class="flex-row">
-    <div class="flex-cell">[% l('Checkin Time') %]</div>
+    <div class="flex-cell">[% l('Check In Time') %]</div>
     <div class="flex-cell well">
       {{circ.checkin_time() | date:egDateAndTimeFormat}}
     </div>
   </div>
 
   <div class="flex-row">
-    <div class="flex-cell">[% l('Checkin Scan Time') %]</div>
+    <div class="flex-cell">[% l('Check In Scan Time') %]</div>
     <div class="flex-cell well">
       {{circ.checkin_scan_time() | date:egDateAndTimeFormat}}
     </div>
   </div>
 
   <div class="flex-row">
-    <div class="flex-cell">[% l('Checkin Workstation') %]</div>
+    <div class="flex-cell">[% l('Check In Workstation') %]</div>
     <div class="flex-cell well">
       {{circ.checkin_workstation().name()}}
     </div>

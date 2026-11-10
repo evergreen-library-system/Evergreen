@@ -65,6 +65,7 @@ FTS_CONFIG_FILE
 955.data.MADS21-xsl.sql
 
 960.data.marc21-tag-tables.sql
+963.data.config.ui.sql
 
 990.schema.unapi.sql
 

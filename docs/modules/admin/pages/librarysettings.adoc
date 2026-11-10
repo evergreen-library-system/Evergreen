@@ -123,7 +123,7 @@ xref:#_settings_overview[Return to Settings Overview]
 |======================
 |Setting|Description|Data type|Notes
 |Allow email notify|Permit email notification when a reservation is ready for pick-up.|True/false|
-|Elbow room|Elbow room specifies how far in the future you must make a reservation on an item if that item will have to transit to reach its pick-up location. It secondarily defines how soon a reservation on a given item must start before the check-in process will opportunistically capture it for the reservation shelf.|Duration|
+|Elbow room|Elbow room specifies how far in the future you must make a reservation on an item if that item will have to transit to reach its pick-up location. It secondarily defines how soon a reservation on a given item must start before the check in process will opportunistically capture it for the reservation shelf.|Duration|
 |Default Classification Scheme|Defines the default classification scheme for new call numbers: 1 = Generic; 2 = Dewey; 3 = LC|Number|It has effect on call number sorting.
 |Default copy status (fast add)|Default status when an item is created using the "Fast Item Add" interface.|Selection list|Default: In process
 |Default copy status (normal)|Default status when an item is created using the normal volume/copy creator interface.|Selection list|
@@ -152,13 +152,13 @@ xref:#_settings_overview[Return to Settings Overview]
 |Allow others to use patron account (privacy waiver)|Add a note to a user account indicating that specified people are allowed to place holds, pick up holds, check out items, or view borrowing history for that user account.|True/False|
 |Auto-extend grace periods|When enabled grace periods will auto-extend. By default this will be only when they are a full day or more and end on a closed date, though other options can alter this.|True/False|
 |Auto-extending grace periods extend for all closed dates|It works when the above setting "Auto-Extend Grace Periods" is set to TRUE. If enabled, when the grace period falls on a closed date(s), it will be extended past all closed dates that intersect, but within the hard-coded limits (your library's grace period).|True/False|
-|Auto-extending grace periods include trailing closed dates|It works when the above setting "Auto-Extend Grace Periods" is set to TRUE. If enabled, grace periods will include closed dates that directly follow the last day of the grace period. A backdated check-in with effective date on the closed dates will assume the item is returned after hours on the last day of the grace period.|True/False|Useful when libraries' book drop equipped with AMH.
+|Auto-extending grace periods include trailing closed dates|It works when the above setting "Auto-Extend Grace Periods" is set to TRUE. If enabled, grace periods will include closed dates that directly follow the last day of the grace period. A backdated check in with effective date on the closed dates will assume the item is returned after hours on the last day of the grace period.|True/False|Useful when libraries' book drop equipped with AMH.
 |Block hold request if hold recipient privileges have expired||True/False|
 |Cap max fine at item price|This prevents the system from charging more than the item price in overdue fines|True/False|
 |Charge fines on overdue circulations when closed|When set to True, fines will be charged during scheduled closings and normal weekly closed days.|True/False|
 |Checkout fills related hold|When a patron checks out an item and they have no holds that directly target the item, the system will attempt to find a hold for the patron that could be fulfilled by the checked out item and fulfills it. On the Staff Client you may notice that when a patron checks out an item under a title on which he/she has a hold, the hold will be treated as filled though the item has not been assigned to the patron's hold.|True/false|
 |Checkout fills related hold on valid copy only|When filling related holds on checkout only match on items that are valid for opportunistic capture for the hold. Without this set a Title or Volume hold could match when the item is not holdable. With this set only holdable items will match.|True/False|
-|Checkout auto renew age|When an item has been checked out for at least this amount of time, an attempt to check out the item to the patron that it is already checked out to will simply renew the circulation. If the checkout attempt is done within this time frame, Evergreen will prompt for choosing Renewing or Check-in then Checkout the item.|Duration|
+|Checkout auto renew age|When an item has been checked out for at least this amount of time, an attempt to check out the item to the patron that it is already checked out to will simply renew the circulation. If the checkout attempt is done within this time frame, Evergreen will prompt for choosing Renewing or Check In then Checkout the item.|Duration|
 |Custom PATRON_EXCEEDS_FINES penalty|Specifies a custom penalty to use in place of the stock penalty. Context org unit is the circulation library.|Selection List|Penalties can be defined in Local Administration -> Standing Penalties.
 |Custom PATRON_EXCEEDS_OVERDUE_COUNT penalty|Specifies a custom penalty to use in place of the stock penalty. Context organizational unit is the circulation library.|Selection List|Penalties can be defined in Local Administration -> Standing Penalties.
 |Custom PATRON_EXCEEDS_CHECKOUT_COUNT penalty|Specifies a custom penalty to use in place of the stock penalty. Context organizational unit is the circulation library.|Selection List|Penalties can be defined in Local Administration -> Standing Penalties.
@@ -175,14 +175,14 @@ xref:#_settings_overview[Return to Settings Overview]
 |Invalid patron address penalty|When set, if a patron address is set to invalid, a penalty is applied.|True/False|
 |Item status for missing pieces|This is the Item Status to use for items that have been marked or scanned as having Missing Pieces. In the absence of this setting, the Damaged status is used.|Selection list|
 |Load patron from Checkout|When scanning barcodes into Checkout auto-detect if a new patron barcode is scanned and auto-load the new patron.|True/False|
-|Long-Overdue Check-In Interval Uses Last Activity Date|Use the long-overdue last-activity date instead of the due_date to determine whether the item has been checked out too long to perform long-overdue check-in processing. If set, the system will first check the last payment time, followed by the last billing time, followed by the due date. See also "Long-Overdue Max Return Interval"|True/False|
-|Long-Overdue Items Usable on Checkin|Long-overdue items are usable on checkin instead of going "home" first|True/False|
-|Long-Overdue Max Return Interval|Long-overdue check-in processing (voiding fees, re-instating overdues, etc.) will not take place for items that have been overdue for (or have last activity older than) this amount of time|Duration|
-|Lost check-in generates new overdues|Enabling this setting causes retroactive creation of not-yet-existing overdue fines on lost item check-in, up to the point of check-in time (or max fines is reached). This is different than "restore overdue on lost", because it only creates new overdue fines. Use both settings together to get the full complement of overdue fines for a lost item|True/False|
-|Lost items usable on checkin|Lost items are usable on checkin instead of going 'home' first|True/false|
+|Long-Overdue Check In Interval Uses Last Activity Date|Use the long-overdue last-activity date instead of the due_date to determine whether the item has been checked out too long to perform long-overdue check in processing. If set, the system will first check the last payment time, followed by the last billing time, followed by the due date. See also "Long-Overdue Max Return Interval"|True/False|
+|Long-Overdue Items Usable on Check In|Long-overdue items are usable on check in instead of going "home" first|True/False|
+|Long-Overdue Max Return Interval|Long-overdue check in processing (voiding fees, re-instating overdues, etc.) will not take place for items that have been overdue for (or have last activity older than) this amount of time|Duration|
+|Lost check in generates new overdues|Enabling this setting causes retroactive creation of not-yet-existing overdue fines on lost item check in, up to the point of check in time (or max fines is reached). This is different than "restore overdue on lost", because it only creates new overdue fines. Use both settings together to get the full complement of overdue fines for a lost item|True/False|
+|Lost items usable on check in|Lost items are usable on check in instead of going 'home' first|True/false|
 |Max patron claims returned count|When this count is exceeded, a staff override is required to mark the item as claims returned.|Number|
 |Maximum visible age of User Trigger Events in Staff Interfaces|If this is unset, staff can view User Trigger Events regardless of age. When this is set to an interval, it represents the age of the oldest possible User Trigger Event that can be viewed.|Duration|
-|Minimum transit checkin interval|In-Transit items checked in this close to the transit start time will be prevented from checking in|Duration|
+|Minimum transit check in interval|In-Transit items checked in this close to the transit start time will be prevented from checking in|Duration|
 |Number of Retrievable Recent Patrons|Number of most recently accessed patrons that can be re-retrieved in the staff client. A value of 0 or less disables the feature. Defaults to 1.|Number|
 |Patron merge address delete|Delete address(es) of subordinate user(s) in a patron merge.|True/False|
 |Patron merge barcode delete|Delete barcode(s) of subordinate user(s) in a patron merge|True/False|
@@ -195,7 +195,7 @@ xref:#_settings_overview[Return to Settings Overview]
 |Specify search depth for the duplicate patron check in the patron editor|When using the patron registration page, the duplicate patron check will use the configured depth to scope the search for duplicate patrons.|Number|
 |Suppress hold transits group|To create a group of libraries to suppress Hold Transits among them. All libraries in the group should use the same unique value. Leave it empty if transits should not be suppressed.|Text|
 |Suppress non-hold transits group|To create a group of libraries to suppress Non-Hold Transits among them. All libraries in the group should use the same unique value. Leave it empty if Non-Hold Transits should not be suppressed.|Text|
-|Suppress popup-dialogs during check-in.|When set to True, no pop-up window for exceptions on check-in. But the accompanying sound will be played.|True/False|
+|Suppress popup-dialogs during check in.|When set to True, no pop-up window for exceptions on check in. But the accompanying sound will be played.|True/False|
 |Target copies for a hold even if copy's circ lib is closed|If this setting is true at a given organizational unit or one of its ancestors, the hold targeter will target items from this organizational unit even if the organizational unit is closed (according to the Organizational Unit's closed dates.).|True/False|Set the value to True if you want to target items for holds at closed circulating libraries. Set the value to False, or leave it unset, if you do not want to enable this feature.
 |Target copies for a hold even if copy's circ lib is closed IF the circ lib is the hold's pickup lib|If this setting is true at a given organizational unit or one of its ancestors, the hold targeter will target items from this organizational unit even if the organizational unit is closed (according to the Organizational Unit's closed dates) IF AND ONLY IF the item's circ lib is the same as the hold's pickup lib.|True/False| Set the value to True if you want to target items for holds at closed circulating libraries when the circulating library of the item and the pickup library of the hold are the same. Set the value to False, or leave it unset, if you do not want to enable this feature.
 |Truncate fines to max fine amount||True/False|Default:TRUE
@@ -379,7 +379,6 @@ xref:#_settings_overview[Return to Settings Overview]
 |FIFO|Force holds to a more strict First-In, First-Out capture. This setting is deprecated in favor of using the setting "Best-hold selection sort order."|True/False|This setting is deprecated in favor of using the setting "Best-hold selection sort order."
 |Hard boundary|Limit holds to copies within this "organizational depth" boundary value 
   relative to the org_unit named in the context location in the library settings editor.|Number|0 = everyone shares, higher numbers are more limiting.
-|Hard stalling interval||Duration|
 |Has local copy alert|If there is an available item at the requesting library that could fulfill a hold during hold placement time, alert the patron.|True/False|
 |Has local copy block|If there is an available item at the requesting library that could fulfill a hold during hold placement time, do not allow the hold to be placed.|True/False|
 |Hold reset reason entry deletion interval|Hold reset reason entries will be removed if older than this interval. Default 1 year if no value provided.|Duration|
@@ -396,6 +395,7 @@ xref:#_settings_overview[Return to Settings Overview]
 |Soft stalling interval|For this amount of time, holds will not be opportunistically captured at non-pickup branches.|Duration|
 For multiple branch libraries
 |Use Active Date for age protection|When calculating age protection rules use the Active date instead of the Creation Date.|True/False|Default TRUE
+|Use calculated proximity for age-protection check|When checking whether a copy is viable for a hold based on transit distance, use calculated proximity with adjustments rather than baseline Org Unit proximity.|True/False|Default FALSE
 |=====
 
 xref:#_settings_overview[Return to Settings Overview]
@@ -457,7 +457,7 @@ xref:#_settings_overview[Return to Settings Overview]
 [options="header"]
 |===================
 |Setting|Description|Data type|Notes
-|Skip offline checkin if newer item Status Changed Time.|Skip offline checkin transaction (raise exception when processing) if item Status Changed Time is newer than the recorded transaction time. WARNING: The Reshelving to Available status rollover will trigger this.|True/False|
+|Skip offline check in if newer item Status Changed Time.|Skip offline check in transaction (raise exception when processing) if item Status Changed Time is newer than the recorded transaction time. WARNING: The Reshelving to Available status rollover will trigger this.|True/False|
 |Skip offline checkout if newer item Status Changed Time.|Skip offline checkout transaction (raise exception when processing) if item Status Changed Time is newer than the recorded transaction time. WARNING: The Reshelving to Available status rollover will trigger this.|True/False|
 |Skip offline renewal if newer item Status Changed Time.|Skip offline renewal transaction (raise exception when processing) if item Status Changed Time is newer than the recorded transaction time. WARNING: The Reshelving to Available status rollover will trigger this.|True/False|
 |Disable automatic print attempt type list|Disable automatic print attempts from staff client interfaces for the receipt types in this list. Possible values: "Checkout", "Bill Pay", "Hold Slip", "Transit Slip", and "Hold/Transit Slip". This is different from the Auto-Print checkbox in the pertinent interfaces in that it disables automatic print attempts altogether, rather than encouraging silent printing by suppressing the print dialogue. The Auto-Print checkbox in these interfaces have no effect on the behavior for this setting. In the case of the Hold, Transit, and Hold/Transit slips, this also suppresses the alert dialogues that precede the print dialogue (the ones that offer Print and Do Not Print as options).|Text|

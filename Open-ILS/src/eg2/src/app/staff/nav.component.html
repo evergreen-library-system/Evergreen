@@ -329,6 +329,16 @@
                 <span class="material-icons" aria-hidden="true">view_list</span>
                 <span i18n>Holds Pull List</span>
               </a>
+              <a class="dropdown-item" ngbDropdownItem
+                routerLinkActive="active"
+                ariaCurrentWhenActive="page" routerLink="/staff/circ/holds/hold-groups"
+                (click)="isMenuCollapsed = true"
+                (keydown.space)="isMenuCollapsed = true"
+                (keydown.enter)="isMenuCollapsed = true"
+              >
+                <span class="material-icons" aria-hidden="true">list</span>
+                <span i18n>Hold Groups</span>
+              </a>
               <a class="dropdown-item" ngbDropdownItem routerLinkActive="active"
                 ariaCurrentWhenActive="page" routerLink="/staff/circ/renew"
                 (click)="isMenuCollapsed = true"
@@ -488,7 +498,9 @@
               <kbd i18n>Shift+F8</kbd>
             </button>
             <div class="dropdown-divider"></div>
-            <a href="/eg/staff/cat/catalog/new_bib" ngbDropdownItem class="dropdown-item"
+            <a routerLink="/staff/catalog/create-marc" 
+              routerLinkActive="active" ariaCurrentWhenActive="page" 
+              ngbDropdownItem class="dropdown-item"
               (click)="isMenuCollapsed = true"
               (keydown.space)="isMenuCollapsed = true"
               (keydown.enter)="isMenuCollapsed = true"

@@ -1,0 +1,27 @@
+<ng-template #dialogContent>
+  <div class="modal-header">
+    <h2 class="modal-title" i18n>
+        Hold Group Event #{{eventId}} Holds
+    </h2>
+    <button type="button" class="btn-close btn-close-white"
+    i18n-aria-label aria-label="Close dialog" (click)="close()"></button>
+  </div>
+  <div class="modal-body modal-alert" tabindex="-1" role="status">
+    
+    <eg-holds-grid
+        persistKey="cat.bucket.batch_hold.event_holds"
+        [hideHoldsCount]="true"
+        [hidePickupLibFilter]="true"
+        [onlyTheseHolds]="mappedIds"
+        [noLoadProgress]="true"
+
+    >
+        
+    </eg-holds-grid>
+    <ng-content></ng-content>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-normal"
+    (click)="close()" i18n>OK</button>
+  </div>
+</ng-template>

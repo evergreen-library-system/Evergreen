@@ -1,0 +1,19 @@
+li {
+    border: 0;
+    list-style: none;
+	padding: 0;
+}
+
+ul {
+    margin-bottom: 0.25rem;
+}
+
+.inline-list {
+  display: block;
+  list-style: none;
+  padding: 0;
+}
+
+.inline-list li {
+  display: block;
+}

@@ -1,0 +1,24 @@
+BEGIN;
+SELECT plan(8);
+
+SELECT has_table('config'::name, 'ui_record_display_entry'::name);
+
+SELECT col_is_null('config'::name, 'ui_record_display_entry'::name, 'field'::name);
+SELECT fk_ok('config', 'ui_record_display_entry', 'field',
+    'config', 'metabib_field', 'id');
+
+SELECT col_type_is('config'::name, 'ui_record_display_entry'::name, 'value_limit'::name, 'integer');
+SELECT col_type_is('config'::name, 'ui_record_display_entry'::name, 'character_limit'::name, 'integer');
+SELECT col_type_is('config'::name, 'ui_record_display_entry'::name, 'display_as_link'::name, 'boolean');
+
+PREPARE insert_field_without_specifying_whether_it_is_a_link AS INSERT INTO config.ui_record_display_entry (content_type, display_as_link, field, page_col, col_pos, type) SELECT 'field', NULL, id, 1, 1, 'search_result' FROM config.metabib_field LIMIT 1;
+SELECT throws_ilike('insert_field_without_specifying_whether_it_is_a_link',
+    '%must_specify_whether_field_entry_should_be_a_link%',
+    'field entry should specify whether or not it should display as a link');
+
+PREPARE insert_hold_count_with_incompatible_options AS INSERT INTO config.ui_record_display_entry (content_type, value_limit, field, page_col, col_pos, type) SELECT 'hold_counts', 4, id, 1, 1, 'search_result' FROM config.metabib_field LIMIT 1;
+SELECT throws_ilike('insert_hold_count_with_incompatible_options',
+    '%incompatible_options%',
+    'hold_counts type is not compatible with a value limit');
+
+ROLLBACK;

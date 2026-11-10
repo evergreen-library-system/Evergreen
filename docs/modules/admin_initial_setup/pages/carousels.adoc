@@ -21,7 +21,7 @@ The Carousel Types administrative interface is used to create, edit, or delete c
 There are five stock Carousel Types:
 
 * *Newly Cataloged Items* - titles appear automatically based on the active date and shelving location of the title’s copies.  Shelving locations are required to create this carousel.
-* *Recently Returned Items* - titles appear automatically based on the mostly recently circulated copy’s check-in scan date and time.  Shelving locations are required to create this carousel.
+* *Recently Returned Items* - titles appear automatically based on the mostly recently circulated copy’s check in scan date and time.  Shelving locations are required to create this carousel.
 * *Top Circulated Titles* - titles appear automatically based on the most circulated copies in the Item Libraries identified in the carousel definition; titles are chosen based on the number of action.circulation rows created during an interval specified in the carousel definition and includes both circulations and renewals.  Shelving locations are not required to create this carousel.
 * *Newest Items by Shelving Location* - titles appear automatically based on the active date of the title’s copies and organizes the carousel display by shelving location. Shelving locations are not required to create this carousel.
 * *Manual* - titles are added and managed manually by library staff.  Shelving locations are not required to create this carousel.
@@ -194,6 +194,22 @@ WARNING: If a carousel is deleted, its mappings are deleted.
 
 image::carousels/carousel8.png[Carousel mapping editor screen]
 
+== Loading Carousels on Their Own Page ==
+
+If you wish to embed a carousel in another web site, you can do so using an iframe and the '/eg/opac/carousel' URL path with specified parameters.
+
+Parameters:
+
+* carousel_loc - (required) the id of the org unit that the carousel(s) is associated with
+* carousel_id - (optional) the id of a specific carousel at the specified location, if none is specified, all carousels for that location will display
+* nofooter=nofooter - (recommended) hides the page footer
+
+Example:
+
+----
+<iframe src="https://<mydomain>/eg/opac/carousel?carousel_loc=3&carousel_id=4&nofooter=nofooter"
+title="Carousel" width="100%" height="300" frameborder="0" scrolling="no"></iframe>
+----
 
 == CAROUSELS - OTHER ADMINISTRATIVE FEATURES ==
 

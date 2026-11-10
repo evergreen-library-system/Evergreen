@@ -31,6 +31,11 @@
       ng-disabled="edit_passthru.hide_save_actions()"
       ng-click="edit_passthru.save()">[% l('Save') %]</button>
   </span>
+  <span ng-if="!patron_id" class="pad-all-min">
+    <button type="button" class="btn btn-default"
+      ng-disabled="edit_passthru.hide_save_actions()"
+      ng-click="edit_passthru.save({open:true})">[% l('Save & Open') %]</button>
+  </span>
   <span ng-if="!offline" class="pad-all-min">
     <button type="button" class="btn btn-default"
       ng-disabled="edit_passthru.hide_save_actions()"

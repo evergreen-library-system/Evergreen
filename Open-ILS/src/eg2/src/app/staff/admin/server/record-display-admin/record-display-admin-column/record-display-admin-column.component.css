@@ -1,0 +1,16 @@
+.admin-column {
+    margin: 1rem;
+}
+
+eg-record-display-admin-column {
+    padding: 1rem;
+}
+
+tr.entry:hover { 
+    cursor: ns-resize; 
+}
+
+tr.drag-target {
+    border-top: 2px solid var(--bs-primary);
+    background-color: rgba(var(--bs-blue-rgb), 0.15);
+}

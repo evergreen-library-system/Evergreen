@@ -15,7 +15,7 @@
     0.25rem 1rem 1rem rgba(0,0,100,0.1);
   padding: 1rem;
 }
-[bs-data-theme="dark"] .patron-summary-container {
+[data-bs-theme="dark"] :host .patron-summary-container {
   background-color: var(--bs-body-bg-alt);
   box-shadow: 
     0.25rem 1px  1rem rgba(0,0,0,0.8), 
@@ -74,8 +74,8 @@
   background: var(--bs-red-100);
   color: var(--bs-red-800);
 }
-[bs-data-theme="dark"] .alert-danger,
-[bs-data-theme="dark"] .alert-danger .material-icons {
+[data-bs-theme="dark"] :host .alert-danger,
+[data-bs-theme="dark"] :host .alert-danger .material-icons {
   background: var(--bs-red-900);
   color: var(--bs-red-200);
 }
@@ -104,7 +104,7 @@ dl .alert {
   margin: 0 0 1rem;
   padding: 0.25rem;
 }
-[bs-data-theme="dark"] .alert-penalties {
+[data-bs-theme="dark"] :host .alert-penalties {
   background: var(--bs-gray-800);
   color: var(--bs-gray-200);
 }
@@ -130,7 +130,7 @@ dl .alert {
   background: var(--bs-cyan-100);
   color: var(--bs-cyan-900);;
 }
-[bs-data-theme="dark"] .PATRON_HAS_NOTES { 
+[data-bs-theme="dark"] :host .PATRON_HAS_NOTES { 
   background: var(--bs-cyan-100);
   color: var(--bs-cyan-900);;
 }
@@ -144,11 +144,11 @@ dl .alert {
   background: var(--bs-purple-100);
   color: var(--bs-purple-800); 
 }
-[bs-data-theme="dark"] .PATRON_EXCEEDS_LOST_COUNT,
-[bs-data-theme="dark"] .PATRON_EXCEEDS_CHECKOUT_COUNT,
-[bs-data-theme="dark"] .PATRON_EXCEEDS_OVERDUE_COUNT,
-[bs-data-theme="dark"] .PATRON_EXCEEDS_LONGOVERDUE_COUNT,
-[bs-data-theme="dark"] .PATRON_EXCEEDS_FINES  { 
+[data-bs-theme="dark"] :host .PATRON_EXCEEDS_LOST_COUNT,
+[data-bs-theme="dark"] :host .PATRON_EXCEEDS_CHECKOUT_COUNT,
+[data-bs-theme="dark"] :host .PATRON_EXCEEDS_OVERDUE_COUNT,
+[data-bs-theme="dark"] :host .PATRON_EXCEEDS_LONGOVERDUE_COUNT,
+[data-bs-theme="dark"] :host .PATRON_EXCEEDS_FINES  { 
   background: var(--bs-purple-800);
   color: var(--bs-purple-100); 
 }
@@ -158,7 +158,7 @@ dl .alert {
   background: var(--success-text-light);
   color: var(--success-text-dark);
 }
-[bs-data-theme="dark"] .NO_PENALTIES {
+[data-bs-theme="dark"] :host .NO_PENALTIES {
   background: var(--success-text-light);
   color: var(--success-text-dark);
 }
@@ -167,7 +167,7 @@ dl .alert {
 .ONE_PENALTY,
 .PATRON_HAS_BILLS,
 .PATRON_HAS_OVERDUES,
-.INVALID_PATRON_ADDRESS
+.INVALID_PATRON_ADDRESS,
 .INVALID_PATRON_EMAIL_ADDRESS,
 .INVALID_PATRON_DAY_PHONE,
 .INVALID_PATRON_EVENING_PHONE,
@@ -175,14 +175,14 @@ dl .alert {
   background: var(--bs-yellow-100);
   color: var(--bs-orange-800);
 }
-[bs-data-theme="dark"] .ONE_PENALTY,
-[bs-data-theme="dark"] .PATRON_HAS_BILLS,
-[bs-data-theme="dark"] .PATRON_HAS_OVERDUES,
-[bs-data-theme="dark"] .INVALID_PATRON_ADDRESS
-[bs-data-theme="dark"] .INVALID_PATRON_EMAIL_ADDRESS,
-[bs-data-theme="dark"] .INVALID_PATRON_DAY_PHONE,
-[bs-data-theme="dark"] .INVALID_PATRON_EVENING_PHONE,
-[bs-data-theme="dark"] .INVALID_PATRON_OTHER_PHONE {
+[data-bs-theme="dark"] :host .ONE_PENALTY,
+[data-bs-theme="dark"] :host .PATRON_HAS_BILLS,
+[data-bs-theme="dark"] :host .PATRON_HAS_OVERDUES,
+[data-bs-theme="dark"] :host .INVALID_PATRON_ADDRESS,
+[data-bs-theme="dark"] :host .INVALID_PATRON_EMAIL_ADDRESS,
+[data-bs-theme="dark"] :host .INVALID_PATRON_DAY_PHONE,
+[data-bs-theme="dark"] :host .INVALID_PATRON_EVENING_PHONE,
+[data-bs-theme="dark"] :host .INVALID_PATRON_OTHER_PHONE {
   background: var(--bs-yellow-800);
   color: var(--bs-yellow-100);
 }
@@ -194,11 +194,11 @@ dl .alert {
   background: var(--bs-orange-100);
   color: var(--bs-orange-800);
 }
-[bs-data-theme="dark"] .MULTIPLE_PENALTIES,
-[bs-data-theme="dark"] .PATRON_HAS_LOST,
-[bs-data-theme="dark"] .PATRON_IN_COLLECTIONS { 
-  background: var(--bs-yellow-800);
-  color: var(--bs-yellow-100);
+[data-bs-theme="dark"] :host .MULTIPLE_PENALTIES,
+[data-bs-theme="dark"] :host .PATRON_HAS_LOST,
+[data-bs-theme="dark"] :host .PATRON_IN_COLLECTIONS { 
+  background: var(--bs-orange-800);
+  color: var(--bs-orange-100);
 }
 
 /* --badge-secondary */
@@ -207,8 +207,8 @@ dl .alert {
   background: var(--bs-gray-300);
   color: var(--bs-gray-900);
 }
-[bs-data-theme="dark"] .PATRON_INACTIVE,
-[bs-data-theme="dark"] .PATRON_EXPIRED  { 
+[data-bs-theme="dark"] :host .PATRON_INACTIVE,
+[data-bs-theme="dark"] :host .PATRON_EXPIRED  { 
   background: var(--bs-gray-900);
   color: var(--bs-gray-300);
 }
@@ -220,9 +220,9 @@ dl .alert {
   background: var(--bs-red-100);
   color: var(--bs-red-800);
 }
-[bs-data-theme="dark"] .PATRON_BARRED,
-[bs-data-theme="dark"] .PATRON_HAS_ALERT,
-[bs-data-theme="dark"] .PATRON_HAS_STAFF_ALERT  { 
+[data-bs-theme="dark"] :host .PATRON_BARRED,
+[data-bs-theme="dark"] :host .PATRON_HAS_ALERT,
+[data-bs-theme="dark"] :host .PATRON_HAS_STAFF_ALERT  { 
   background: var(--bs-red-800);
   color: var(--bs-red-100);
 }
@@ -235,7 +235,7 @@ dl .alert {
   background: var(--bs-blue-100);
   color: var(--bs-blue-800);
 }
-[bs-data-theme="dark"] .PATRON_JUVENILE  { 
+[data-bs-theme="dark"] :host .PATRON_JUVENILE  { 
   background: var(--bs-blue-800);
   color: var(--bs-blue-100);
 }

@@ -54,7 +54,7 @@ describe('CatalogService', () => {
                 'open-ils.search.biblio.record.catalog_summary',
                 300, // org id
                 [248], // bib record ids
-                {library_group: 18, pref_ou: 300}
+                {library_group: 18, pref_ou: 300, search_result: 1}
             );
         });
     });

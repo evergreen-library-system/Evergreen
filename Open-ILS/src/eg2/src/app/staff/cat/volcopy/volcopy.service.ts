@@ -523,7 +523,7 @@ export class VolCopyService implements OnDestroy {
                         if (finalBibParts[bibId]) {
                             finalBibParts[bibId] = finalBibParts[bibId]
                                 .sort((p1, p2) =>
-                                    p1.label_sortkey() < p2.label_sortkey() ? -1 : 1);
+                                    p1.label_sortkey() < p2.label_sortkey() ? 1 : -1); // Descending sort order
                         }
                     });
                     this.bibParts = finalBibParts;

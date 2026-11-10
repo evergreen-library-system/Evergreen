@@ -32,28 +32,34 @@
     <div class="col-sm-3">
       @if (advancedMode) {
         <div class="form-check">
-          <input [disabled]="disabled" class="form-check-input" type="checkbox" id="srDoRollup" name="srDoRollup" [(ngModel)]="templ.doRollup">
+          <input [disabled]="disabled" class="form-check-input" type="checkbox" id="srDoRollup" name="srDoRollup" [(ngModel)]="templ.doRollup" 
+            (ngModelChange)="saveSticky('eg.reports.doRollup', $event)">
           <label class="form-label form-check-label" for="srDoRollup" i18n>Calculate grouping subtotals</label>
         </div>
       }
       <div class="form-check">
-        <input [disabled]="disabled" class="form-check-input" type="checkbox" id="srExcelOutput" name="srExcelOutput" [(ngModel)]="templ.excelOutput">
+        <input [disabled]="disabled" class="form-check-input" type="checkbox" id="srExcelOutput" name="srExcelOutput" [(ngModel)]="templ.excelOutput" 
+          (ngModelChange)="saveSticky('eg.reports.excelOutput', $event)">
         <label class="form-label form-check-label" for="srExcelOutput" i18n>Excel Output</label>
       </div>
       <div class="form-check">
-        <input [disabled]="disabled" class="form-check-input" type="checkbox" id="srCsvOutput" name="srCsvOutput" [(ngModel)]="templ.csvOutput">
+        <input [disabled]="disabled" class="form-check-input" type="checkbox" id="srCsvOutput" name="srCsvOutput" [(ngModel)]="templ.csvOutput"
+          (ngModelChange)="saveSticky('eg.reports.csvOutput', $event)">
         <label class="form-label form-check-label" for="srCsvOutput" i18n>CSV Output</label>
       </div>
       <div class="form-check">
-        <input [disabled]="disabled" class="form-check-input" type="checkbox" id="srHtmlOutput" name="srHtmlOutput" [(ngModel)]="templ.htmlOutput">
+        <input [disabled]="disabled" class="form-check-input" type="checkbox" id="srHtmlOutput" name="srHtmlOutput" [(ngModel)]="templ.htmlOutput"
+          (ngModelChange)="saveSticky('eg.reports.htmlOutput', $event)">
         <label class="form-label form-check-label" for="srHtmlOutput" i18n>HTML Output</label>
       </div>
       <div class="form-check">
-        <input [disabled]="disabled" class="form-check-input" type="checkbox" id="srBarCharts" name="srBarCharts" [(ngModel)]="templ.barCharts">
+        <input [disabled]="disabled" class="form-check-input" type="checkbox" id="srBarCharts" name="srBarCharts" [(ngModel)]="templ.barCharts"
+          (ngModelChange)="saveSticky('eg.reports.barCharts', $event)">
         <label class="form-label form-check-label" for="srBarCharts" i18n>Bar Chart</label>
       </div>
       <div class="form-check">
-        <input [disabled]="disabled" class="form-check-input" type="checkbox" id="srLineCharts" name="srLineCharts" [(ngModel)]="templ.lineCharts">
+        <input [disabled]="disabled" class="form-check-input" type="checkbox" id="srLineCharts" name="srLineCharts" [(ngModel)]="templ.lineCharts"
+          (ngModelChange)="saveSticky('eg.reports.lineCharts', $event)">
         <label class="form-label form-check-label" for="srLineCharts" i18n>Line Chart</label>
       </div>
       <div class="form"> <!-- do we want to just say *ngIf="bibIdFields().length" here? -->

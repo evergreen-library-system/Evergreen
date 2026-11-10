@@ -1,0 +1,37 @@
+<div class="admin-column">
+  @if(columnIndex){<h2 i18n>Column {{columnIndex}}</h2>}
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col" i18n>Row</th>
+        <th scope="col" i18n>Entry type</th>
+        <th scope="col" i18n>Has limits?</th>
+        <th scope="col" i18n>Link?</th>
+        @if (hasPermissions) {
+<th scope="col" class="float-end" i18n>Actions</th>
+}
+      </tr>
+    </thead>
+    <tbody>
+      @for (entry of data; track $index) {
+        <tr eg-record-display-entry
+          class="entry"
+          [data]="entry"
+          [hasPermissions]="hasPermissions"
+          [draggable]="hasPermissions.toString()"
+          (dragstart)="registerDraggedEntry(entry)"
+          (dragenter)="registerDropTarget(entry)"
+          (dragover)="$event.preventDefault()"
+          (drop)="handleDrop()"
+          (dataChange)="dataChange.emit(null)"
+          (dataMove)="moveEntry($event)"
+          [ngClass]="{'drag-target': draggingInsideEntry(entry)}"
+          [rowIndex]="$index"
+          [columnIndex]="columnIndex">
+        </tr>
+      }
+    </tbody>
+  </table>
+  <button i18n (click)="newEntry.open()" type="button" class="btn btn-sm btn-primary">New entry</button>
+  <eg-record-display-entry-edit mode="create" [type]="type" [columnIndex]="columnIndex" [maxRow]="maxRow" (formSubmit)="dataChange.emit(null)" #newEntry></eg-record-display-entry-edit>
+</div>

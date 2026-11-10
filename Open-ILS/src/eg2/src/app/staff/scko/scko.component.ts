@@ -1,6 +1,5 @@
 import { Component, OnInit, AfterViewInit, ViewChild, ViewEncapsulation, inject } from '@angular/core';
-import {Router, ActivatedRoute, RouterModule} from '@angular/router';
-import {AuthService} from '@eg/core/auth.service';
+import {RouterModule} from '@angular/router';
 import {NetService} from '@eg/core/net.service';
 import {SckoService} from './scko.service';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
@@ -32,10 +31,7 @@ import { SckoSummaryComponent } from './summary.component';
 })
 
 export class SckoComponent implements OnInit, AfterViewInit {
-    private router = inject(Router);
-    private route = inject(ActivatedRoute);
     private net = inject(NetService);
-    private auth = inject(AuthService);
     scko = inject(SckoService);
 
 

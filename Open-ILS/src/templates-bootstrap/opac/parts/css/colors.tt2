@@ -12,6 +12,8 @@
         facets_text = "#fff",
         footer_link = "#fff",
         footer_link_disabled = "#fff",
+        footer_muted = "rgba(255, 255, 255, 0.72)", #Footer secondary text (headings, labels, non-today hours)
+        footer_rule = "rgba(255, 255, 255, 0.18)", #Footer dividing lines and link underlines
 
         nav_separation = "#007a54",
         header_primary = "#007a54", #Primary Header Color

@@ -34,7 +34,7 @@ image::circulating_items_web_client/due_date_display_web_client.png[Display show
 image::circulating_items_web_client/precat_web_client.png[Pre-cataloged item checkout screen with fields for item information.]
  
 [TIP]
-On check-in, Evergreen will prompt staff to re-route the item to cataloging.
+On check in, Evergreen will prompt staff to re-route the item to cataloging.
 
 [NOTE]
 This screen does not respond to the enter key or carriage return provided
@@ -57,7 +57,7 @@ image::circulating_items_web_client/specify_due_date1_web_client.png[Specific Du
 
 === Strict Barcode ===
 
-The 'Strict Barcode' checkbox can appear next to barcode inputs on the checkout, checkin, renewal, and offline circulation pages.
+The 'Strict Barcode' checkbox can appear next to barcode inputs on the checkout, check in, renewal, and offline circulation pages.
 
 If checked, it will examine the barcode value to see if it contains only digits and meets the "Mod10" checkdigit algorithm. This checkdigit algorithm is often used by library barcodes that use the "Codabar" symbology.
 
@@ -118,7 +118,7 @@ Email checkout receipts will be sent out through a Notifications/Action Trigger 
 
 == Check In ==
 
-=== Regular check in ===
+=== Regular Check In ===
 
 1) To check in an item click *Check In Items* from the Circulation and Patrons toolbar, or select *Circulation* -> *Check In*.
 
@@ -128,11 +128,11 @@ image::circulating_items_web_client/check_in_menu_web_client.png[Check In Items 
 
 image::circulating_items_web_client/checkin_barcode_web_client.png[Item barcode entry screen with a submit button.]
  
-3) If there is an overdue fine associated with the checkin, an alert will appear at the top of the screen with a fine tally for the current checkin session. To immediately handle fine payment, click the alert to jump to the patron's bill record.
+3) If there is an overdue fine associated with the check in, an alert will appear at the top of the screen with a fine tally for the current check in session. To immediately handle fine payment, click the alert to jump to the patron's bill record.
 
-image::circulating_items_web_client/overdue_checkin_web_client.png[Overdue check-in alert with a fine tally.]
+image::circulating_items_web_client/overdue_checkin_web_client.png[Overdue check in alert with a fine tally.]
 
-4) If the checkin is an item that can fill a hold, a pop-up box will appear with patron contact information or routing information for the hold.
+4) If the check in is an item that can fill a hold, a pop-up box will appear with patron contact information or routing information for the hold.
 
 5) Print out the hold or transit slip and place the item on the hold shelf or route it to the proper library.
 
@@ -140,11 +140,11 @@ image::circulating_items_web_client/overdue_checkin_web_client.png[Overdue check
 
 image::circulating_items_web_client/Check_In-Cancel_Transit.png[Actions Menu - Cancel Transit]
 
-=== Backdated check in ===
+=== Backdated Check In ===
 
 This is useful for clearing a book drop.
 
-1) To change effective check-in date, select *Circulation* -> *Check In Items*. In *Effective Date* field enter the date in yyyy-mm-dd format.
+1) To change effective check in date, select *Circulation* -> *Check In Items*. In *Effective Date* field enter the date in yyyy-mm-dd format.
 
 image::circulating_items_web_client/backdate_checkin_web_client.png[Effective Date field for backdated check-ins.]
 
@@ -152,25 +152,25 @@ image::circulating_items_web_client/backdate_checkin_web_client.png[Effective Da
 
 image::circulating_items_web_client/backdate_red_web_client.png[Effective date displayed in red bar above the barcode field.]
 
-3) Move the cursor to the *Barcode* field. Scan the items. When finishing backdated check-in, change the *Effective Date* back to today's date.
+3) Move the cursor to the *Barcode* field. Scan the items. When finishing backdated check in, change the *Effective Date* back to today's date.
 
-=== Backdate Post-Checkin ===
+=== Backdate Post-Check In ===
 
-After an item has been checked in, you may use the Backdate Post-Checkin function to backdate the check-in date.
+After an item has been checked in, you may use the Backdate Post-Check In function to backdate the check in date.
 
-1) Select the item on the Check In screen, click *Actions* -> *Backdate Post-Checkin*.
+1) Select the item on the Check In screen, click *Actions* -> *Backdate Post-Check In*.
 
-image::circulating_items_web_client/backdate_post_checkin_web_client.png[Backdate Post-Checkin action in the Actions menu.]
+image::circulating_items_web_client/backdate_post_checkin_web_client.png[Backdate Post-Check In action in the Actions menu.]
 
-2) In *Effective Date* field enter the date in yyyy-mm-dd format. The check-in date will be adjusted according to the new effective check-in date.
+2) In *Effective Date* field enter the date in yyyy-mm-dd format. The check in date will be adjusted according to the new effective check in date.
 
-image::circulating_items_web_client/backdate_post_date_web_client.png[Effective Date field for backdating post-checkin.]
+image::circulating_items_web_client/backdate_post_date_web_client.png[Effective Date field for backdating post-check in.]
 
 [#checkin_modifiers]
-.Checkin Modifiers
+.Check In Modifiers
 [TIP]
 ===================================================
-At the right bottom corner there is a *Checkin Modifiers* pop-up list. The options are:
+At the right bottom corner there is a *Check In Modifiers* pop-up list. The options are:
 
 - *Ignore Pre-cat Items*: No prompt when checking in a pre-cat item. Item will be routed to Cataloguing with Cataloguing status.
 
@@ -186,24 +186,24 @@ At the right bottom corner there is a *Checkin Modifiers* pop-up list. The optio
 
 - *Retarget All Statuses*: Similar to Retarget Local Holds, this modifier will attempt to find a local hold to retarget, regardless of the status of the item being checked in. This modifier must be used in conjunction with the Retarget Local Holds modifier.
 
-- *Capture Local Holds as Transits*: With this checkin modifier, any local holds will be given an in transit status instead of on holds shelf. The intent is to stop the system from sending holds notifications before the item is ready to be placed on the holds shelf and item will have a status of in-transit until checked in again. If you wish to simply delay notification and allow time for staff to process item to holds shelf, you may wish to use the Hold Shelf Status Delay setting in Library Settings Editor instead. See Local Administration section for more information.
+- *Capture Local Holds as Transits*: With this check in modifier, any local holds will be given an in transit status instead of on holds shelf. The intent is to stop the system from sending holds notifications before the item is ready to be placed on the holds shelf and item will have a status of in-transit until checked in again. If you wish to simply delay notification and allow time for staff to process item to holds shelf, you may wish to use the Hold Shelf Status Delay setting in Library Settings Editor instead. See Local Administration section for more information.
 
 - *Manual Floating Active*: Floating Groups must be configured for this modifier to function. The manual flag in Floating Groups dictates whether or not the "Manual Floating Active" checkin modifier needs to be active for an item to float. This allows for greater control over when items float. 
 
-- *Update Inventory*: When this checkin modifier is selected, scanned barcodes will have the current date/time added as the inventory date while the item is checked in. 
+- *Update Inventory*: When this check in modifier is selected, scanned barcodes will have the current date/time added as the inventory date while the item is checked in.
 
 These options may be selected simultaneously. The selected option is displayed in the header area.
 
-image::circulating_items_web_client/checkinmodifiers-with-inventory2.png[Web client check-in modifiers]
+image::circulating_items_web_client/checkinmodifiers-with-inventory2.png[Web client check in modifiers]
 ===================================================
 
-=== Item Alerts at Checkin
+=== Item Alerts at Check In
 
-Item Alerts will appear if an action required to trigger the alert occurs. For example, a Normal Checkin Alert will appear when the item is checked in.
+Item Alerts will appear if an action required to trigger the alert occurs. For example, a Normal Check In Alert will appear when the item is checked in.
 
-If Next Status options have been configured for the Checkin Alert, staff will see a drop down menu that allows then to select the next Status for the item. The example below is for an item that had been marked missing, and shows the option to send the item to Cataloging if needed.
+If Next Status options have been configured for the Check In Alert, staff will see a drop down menu that allows then to select the next Status for the item. The example below is for an item that had been marked missing, and shows the option to send the item to Cataloging if needed.
 
-image::circulating_items_web_client/checkin_alert_next_status.png[Item checkin alert for a previously missing item showing the next statuses available]
+image::circulating_items_web_client/checkin_alert_next_status.png[Item Check In Alert for a previously missing item showing the next statuses available]
 
 For more information, see the xref:cataloging:item_tags_cataloging.adoc#item_alerts[item alerts documentation].
 
@@ -858,7 +858,7 @@ image::circulating_items_web_client/mark_missing_damaged_web_client.png[Mark ite
 [NOTE]
 Depending on the library's policy, when marking an item damaged, bills (cost and/or processing fee) may be inserted into the last borrower's account. 
 
-3) Following the above procedure, you can check in and renew items by using the *Check in Items* and *Renew Items* on the dropdown menu.
+3) Following the above procedure, you can check in and renew items by using the *Check In Items* and *Renew Items* on the dropdown menu.
 
 === Item alerts ===
 
@@ -888,7 +888,7 @@ image::circulating_items_web_client/long_overdue1.png[Patron Account-Long Overdu
 
 If an item that has been marked long overdue is checked in, an alert will appear on the screen informing the staff member that the item was long overdue. Once checked in, the item will go into the status of “In process”. Optionally, the item price and long overdue processing fee can be voided and overdue fines can be reinstated on the patron’s account. If the item is checked in at a library other than its home library, a library setting controls whether the item can immediately fill a hold or circulate, or if it needs to be sent to its home library for processing.
  
-image::circulating_items_web_client/long_overdue2.png[Long Overdue Checkin]
+image::circulating_items_web_client/long_overdue2.png[Long Overdue Check In]
  
 *Notification/Action Triggers*
 
@@ -908,16 +908,16 @@ LOST reactors for action triggers also react to Long Overdues. This means that L
 
 The following Library Settings enable you to set preferences related to long overdue items:
 
-* *Circulation: Long-Overdue Check-In Interval Uses Last Activity Date* —Use the
+* *Circulation: Long-Overdue Check In Interval Uses Last Activity Date* —Use the
  long-overdue last-activity date instead of the due_date to determine whether
- the item has been checked out too long to perform long-overdue check-in
+ the item has been checked out too long to perform long-overdue check in
  processing. If set, the system will first check the last payment time,
  followed by the last billing time, followed by the due date. See also the
  "Long-Overdue Max Return Interval" setting.
 
-* *Circulation: Long-Overdue Items Usable on Checkin* —Long-overdue items are usable on checkin instead of going "home" first
+* *Circulation: Long-Overdue Items Usable on Check In* —Long-overdue items are usable on check in instead of going "home" first
 
-* *Circulation: Long-Overdue Max Return Interval* —Long-overdue check-in processing (voiding fees, re-instating overdues, etc.) will not take place for items that have been overdue for (or have last activity older than) this amount of time 
+* *Circulation: Long-Overdue Max Return Interval* —Long-overdue check in processing (voiding fees, re-instating overdues, etc.) will not take place for items that have been overdue for (or have last activity older than) this amount of time
 
 * *Circulation: Restore Overdues on Long-Overdue Item Return*
 
@@ -943,7 +943,7 @@ The following permissions are related to this feature:
 
 * COPY_STATUS_LONG_OVERDUE.override
 
-** Allows the user to check-in long-overdue items thus removing the long-overdue status on the item
+** Allows the user to check in long-overdue items thus removing the long-overdue status on the item
 
 
 

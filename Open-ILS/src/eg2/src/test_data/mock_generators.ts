@@ -1,4 +1,7 @@
+import { Provider, signal, ValueProvider } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '@eg/core/auth.service';
+import { FormatService } from '@eg/core/format.service';
 import { IdlObject, IdlService } from '@eg/core/idl.service';
 import { LocaleService } from '@eg/core/locale.service';
 import { NetService } from '@eg/core/net.service';
@@ -7,9 +10,14 @@ import { PermService } from '@eg/core/perm.service';
 import { ServerStoreService } from '@eg/core/server-store.service';
 import { StoreService } from '@eg/core/store.service';
 import { CatalogSearchContext } from '@eg/share/catalog/search-context';
+import { GridFlatDataService } from '@eg/share/grid/grid-flat-data.service';
 import { ItemLocationService } from '@eg/share/item-location-select/item-location.service';
+import { PrintService } from '@eg/share/print/print.service';
+import { ToastService } from '@eg/share/toast/toast.service';
 import { BatchLineitemStruct, FleshCacheParams, LineitemService } from '@eg/staff/acq/lineitem/lineitem.service';
 import { StaffCatalogService } from '@eg/staff/catalog/catalog.service';
+import { HoldGroupsService } from '@eg/staff/circ/holds/hold-groups/hold-groups.service';
+import { SckoService } from '@eg/staff/scko/scko.service';
 import { SerialsService } from '@eg/staff/serials/serials.service';
 import { HoldsService } from '@eg/staff/share/holds/holds.service';
 import { PatronService } from '@eg/staff/share/patron/patron.service';
@@ -40,11 +48,15 @@ export class MockGenerators {
     }
 
     static authService() {
-        const user = MockGenerators.idlObject({ws_ou: 10});
+        const user = MockGenerators.idlObject({id: 123, ws_ou: 10});
         const auth = jasmine.createSpyObj<AuthService>(['user', 'token']);
         auth.user.and.returnValue(user);
         auth.token.and.returnValue('MY_AUTH_TOKEN');
         return auth;
+    }
+
+    static holdGroupsService(): Partial<HoldGroupsService> {
+        return {userBucket: signal<IdlObject>(null), userBucketId: signal<number>(null)};
     }
 
     static holdsService() {
@@ -166,8 +178,9 @@ export class MockGenerators {
     }
 
     static permService(permissions_result: {}) {
-        const perm = jasmine.createSpyObj<PermService>(['hasWorkPermHere']);
+        const perm = jasmine.createSpyObj<PermService>(['hasWorkPermHere', 'hasWorkPermAt']);
         perm.hasWorkPermHere.and.resolveTo(permissions_result);
+        perm.hasWorkPermAt.and.resolveTo(permissions_result);
         return perm;
     }
 
@@ -186,10 +199,22 @@ export class MockGenerators {
         return store;
     }
 
+    static selfCheckService(values: Partial<SckoService>) {
+        const service =  {
+            printed: [],
+            getCircAuthor: () => 'My Author',
+            getCircTitle: () => 'My Title',
+            printReceipt: () => service.printed.push('Receipt'),
+            ...values
+        };
+        return service as any as SckoService;
+    }
+
     static serverStoreService(valueFromStore: any) {
-        const store = jasmine.createSpyObj<ServerStoreService>(['getItem']);
-        store.getItem.and.resolveTo(valueFromStore);
-        return store;
+        return {
+            getItem: () => Promise.resolve(valueFromStore),
+            getItemBatch: (keys: string[]) => Promise.resolve(Object.fromEntries(keys.map(key => [key, valueFromStore])))
+        } as Partial<ServerStoreService>;
     }
 
     static serialsService() {
@@ -221,6 +246,26 @@ export class MockGenerators {
             list: () => of([]),
             settings: () => Promise.resolve(null),
         };
+    }
+
+    /**
+     * Create a basic array of providers
+     */
+    static providers(overrides: ValueProvider[] = []): ValueProvider[] {
+        const defaults = [
+            {provide: ActivatedRoute, useValue: {}},
+            {provide: AuthService, useValue: this.authService()},
+            {provide: FormatService, useValue: {}},
+            {provide: GridFlatDataService, useValue: {}},
+            {provide: IdlService, useValue: this.idlService({})},
+            {provide: LocaleService, useValue: this.localeService({})},
+            {provide: PcrudService, useValue: this.pcrudService({})},
+            {provide: PrintService, useValue: {}},
+            {provide: ToastService, useValue: {}}
+        ];
+        const shouldOverride = token => overrides.map(override => override.provide).includes(token);
+        return defaults.filter(({provide}) => !shouldOverride(provide) )
+            .concat(overrides);
     }
 }
 

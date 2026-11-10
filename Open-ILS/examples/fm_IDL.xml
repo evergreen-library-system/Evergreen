@@ -1872,7 +1872,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Name" name="name" reporter:datatype="text" oils_persist:i18n="true" oils_obj:required="true"/>
 			<field reporter:label="Description" name="description" reporter:datatype="text" oils_persist:i18n="true" oils_obj:required="true"/>
 			<field reporter:label="SIP2 Media Type" name="sip2_media_type" reporter:datatype="text" oils_persist:i18n="true" oils_obj:required="true"/>
-			<field reporter:label="Magnetic Media" name="magnetic_media" reporter:datatype="bool"/>
+			<field reporter:label="Magnetic Media" name="magnetic_media" reporter:datatype="bool" oils_obj:required="true"/>
 			<field reporter:label="Average Wait Time" name="avg_wait_time" reporter:datatype="interval"/>
 		</fields>
 		<links/>
@@ -3297,8 +3297,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		<fields oils_persist:primary="id" oils_persist:sequence="config.best_hold_order_id_seq">
 			<field reporter:label="ID" name="id" reporter:datatype="id" reporter:selector="name"/>
 			<field reporter:label="Name" name="name" reporter:datatype="text"/>
-			<field reporter:label="Capture Lib to Pickup Lib Proximity" name="pprox" reporter:datatype="int"/>
-			<field reporter:label="Circ Lib to Request Lib Proximity" name="hprox" reporter:datatype="int"/>
+			<field reporter:label="Item Capture Lib to Hold Pickup Lib Proximity" name="pprox" reporter:datatype="int"/>
+			<field reporter:label="Item Owning Lib to Hold Pickup Lib Proximity" name="hprox" reporter:datatype="int"/>
 			<field reporter:label="Owning Lib to Patron Home Lib Proximity" name="owning_lib_to_home_lib_prox" reporter:datatype="int"/>
 			<field reporter:label="Adjusted Circ Lib to Pickup Lib Proximity" name="aprox" reporter:datatype="int"/>
 			<field reporter:label="Adjusted Capture Location to Pickup Lib Proximity" name="approx" reporter:datatype="int"/>
@@ -5800,21 +5800,25 @@ SELECT  usr,
 			<field reporter:label="Created On" name="create_time" reporter:datatype="timestamp"/>
 			<field reporter:label="Owning Library" name="owning_lib" reporter:datatype="org_unit"/>
 			<field name="share_maps" reporter:datatype="link" oils_persist:virtual="true"/>
+			<field name="carousels" reporter:datatype="link" oils_persist:virtual="true"/>
 		</fields>
 		<links>
 			<link field="owning_lib" reltype="has_a" key="id" map="" class="aou"/>
 			<link field="owner" reltype="has_a" key="id" map="" class="au"/>
 			<link field="items" reltype="has_many" key="bucket" map="" class="cbrebi"/>
 			<link field="share_maps" reltype="has_many" key="bucket" map="" class="cbrebs"/>
+			<link field="carousels" reltype="has_many" key="bucket" map="" class="cc"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
 				<create permission="CREATE_BIB_BUCKET ADMIN_BIB_BUCKET" context_field="owning_lib" owning_user="owner"/>
 				<retrieve permission="CREATE_BIB_BUCKET ADMIN_BIB_BUCKET VIEW_CONTAINER" context_field="owning_lib" owning_user="owner" permit_field="pub" permit_field_value="t">
 					<context link="share_maps" field="share_org"/>
+					<context link="carousels" field="owner"/>
 				</retrieve>
 				<update permission="CREATE_BIB_BUCKET ADMIN_BIB_BUCKET UPDATE_CONTAINER" context_field="owning_lib" owning_user="owner">
 					<context link="share_maps" field="share_org"/>
+					<context link="carousels" field="owner"/>
 				</update>
 				<delete permission="CREATE_BIB_BUCKET ADMIN_BIB_BUCKET" context_field="owning_lib" owning_user="owner"/>
 			</actions>
@@ -7683,14 +7687,14 @@ SELECT  usr,
 	<class id="cub" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="container::user_bucket" oils_persist:tablename="container.user_bucket" reporter:label="User Bucket">
 		<fields oils_persist:primary="id" oils_persist:sequence="container.user_bucket_id_seq">
 			<field name="items" oils_persist:virtual="true" reporter:datatype="link"/>
-			<field name="btype" reporter:datatype="text"/>
-			<field name="id" reporter:datatype="id"/>
-			<field name="name" reporter:datatype="text" oils_obj:required="true"/>
-			<field name="description" reporter:datatype="text"/>
-			<field name="owner" reporter:datatype="link" oils_obj:required="true"/>
-			<field name="pub" reporter:datatype="bool"/>
-			<field name="create_time" reporter:datatype="timestamp"/>
-			<field name="owning_lib" reporter:datatype="org_unit"/>
+			<field name="btype" reporter:label="Container Type" reporter:datatype="text"/>
+			<field name="id" reporter:label= "id" reporter:datatype="id"/>
+			<field name="name" reporter:label="Name" reporter:datatype="text" oils_obj:required="true"/>
+			<field name="description" reporter:label="Description" reporter:datatype="text"/>
+			<field name="owner" reporter:label="Owner" reporter:datatype="link" oils_obj:required="true"/>
+			<field name="pub" reporter:label="Patron Visible" reporter:datatype="bool"/>
+			<field name="create_time" reporter:label="Create Time" reporter:datatype="timestamp"/>
+			<field name="owning_lib" reporter:label="Owning Library" reporter:datatype="org_unit"/>
 		</fields>
 		<links>
 			<link field="owning_lib" reltype="has_a" key="id" map="" class="aou"/>
@@ -7997,13 +8001,13 @@ SELECT  usr,
 	</class>
 	<class id="abhe" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="action::batch_hold_event" oils_persist:tablename="action.batch_hold_event" reporter:label="Hold Group Event">
 		<fields oils_persist:primary="id" oils_persist:sequence="action.batch_hold_event_id_seq">
-			<field name="id" reporter:datatype="id"/>
-			<field name="staff" reporter:datatype="link" oils_obj:required="true"/>
-			<field name="bucket" reporter:datatype="link" oils_obj:required="true"/>
-			<field name="target" reporter:datatype="int" oils_obj:required="true"/>
-			<field name="hold_type" reporter:datatype="text"/>
-			<field name="run_date" reporter:datatype="timestamp"/>
-			<field name="cancelled" reporter:datatype="timestamp"/>
+			<field name="id" reporter:label="ID" reporter:datatype="id"/>
+			<field name="staff" reporter:label="Staff" reporter:datatype="link" oils_obj:required="true"/>
+			<field name="bucket" reporter:label="Bucket" reporter:datatype="link" oils_obj:required="true"/>
+			<field name="target" reporter:label="Title" reporter:datatype="int" oils_obj:required="true"/>
+			<field name="hold_type" reporter:label="Hold Type" reporter:datatype="text"/>
+			<field name="run_date" reporter:label="Create Date" reporter:datatype="timestamp"/>
+			<field name="cancelled" reporter:label="Hold Cancel Time" reporter:datatype="timestamp"/>
 			<field name="mappings" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
 		<links>
@@ -9093,18 +9097,22 @@ SELECT  usr,
 				<create permission="CREATE_BIB_BUCKET ADMIN_BIB_BUCKET CREATE_CONTAINER_ITEM UPDATE_CONTAINER">
 					<context delegate="bucket" field="owning_lib" owning_user="owner"/>
 					<context delegate="bucket" jump="share_maps" field="share_org"/>
+					<context delegate="bucket" jump="carousels" field="owner"/>
 				</create>
 				<retrieve permission="CREATE_BIB_BUCKET ADMIN_BIB_BUCKET VIEW_CONTAINER UPDATE_CONTAINER">
 					<context delegate="bucket" field="owning_lib" owning_user="owner"/>
 					<context delegate="bucket" jump="share_maps" field="share_org"/>
+					<context delegate="bucket" jump="carousels" field="owner"/>
 				</retrieve>
 				<update permission="CREATE_BIB_BUCKET ADMIN_BIB_BUCKET UPDATE_CONTAINER">
 					<context delegate="bucket" field="owning_lib" owning_user="owner"/>
 					<context delegate="bucket" jump="share_maps" field="share_org"/>
+					<context delegate="bucket" jump="carousels" field="owner"/>
 				</update>
 				<delete permission="CREATE_BIB_BUCKET ADMIN_BIB_BUCKET DELETE_CONTAINER_ITEM UPDATE_CONTAINER">
 					<context delegate="bucket" field="owning_lib" owning_user="owner"/>
 					<context delegate="bucket" jump="share_maps" field="share_org"/>
+					<context delegate="bucket" jump="carousels" field="owner"/>
 				</delete>
 			</actions>
 		</permacrud>
@@ -14477,6 +14485,31 @@ SELECT  usr,
 				<retrieve permission="VIEW_GEOLOCATION_SERVICES" global_required="true"/>
 				<update permission="ADMIN_GEOLOCATION_SERVICES" global_required="true"/>
 				<delete permission="ADMIN_GEOLOCATION_SERVICES" global_required="true"/>
+			</actions>
+		</permacrud>
+	</class>
+
+	<class id="curde" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::ui_record_display_entry" oils_persist:tablename="config.ui_record_display_entry" reporter:label="MARC Record Display Entry" oils_persist:cardinality="low">
+		<fields oils_persist:primary="id" oils_persist:sequence="config.ui_record_display_entry_id_seq">
+			<field name="id" reporter:label="ID" reporter:datatype="id"/>
+			<field name="type" reporter:label="Entry Type" reporter:datatype="text" oils_obj:required="true"/>
+			<field name="content_type" reporter:label="Entry Content Type" reporter:datatype="text" oils_obj:required="true"/>
+			<field name="page_col" reporter:label="Page Column" reporter:datatype="int"/>
+			<field name="col_pos" reporter:label="Column Position" reporter:datatype="int" oils_obj:required="true"/>
+			<field name="field" reporter:label="Field" reporter:datatype="link"/>
+			<field name="value_limit" reporter:label="Value Limit" reporter:datatype="int"/>
+			<field name="character_limit" reporter:label="Character Limit" reporter:datatype="int"/>
+			<field name="display_as_link" reporter:label="Display as Link?" reporter:datatype="bool"/>
+		</fields>
+		<links>
+			<link field="field" reltype="has_a" key="id" map="" class="cmf"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="ADMIN_RECORD_DISPLAY" global_required="true" />
+				<retrieve />
+				<update permission="ADMIN_RECORD_DISPLAY" global_required="true" />
+				<delete permission="ADMIN_RECORD_DISPLAY" global_required="true" />
 			</actions>
 		</permacrud>
 	</class>

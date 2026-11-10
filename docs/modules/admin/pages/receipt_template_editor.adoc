@@ -29,7 +29,7 @@ This is a complete list of the receipts currently in use in Evergreen.
 *Bills, Historic*:: Listing of bills that have had payments made on them. This
    used on the Bill History Transaction screen.
 *Bills, Payment*:: Patron payment receipt
-*Checkin*:: List of items that have been entered in to the check-in screen.
+*Check In*:: List of items that have been entered in to the check in screen.
 *Checkout*:: List of items currently checked out by a patron during the transaction.
 *Hold Transit Slip*:: This is printed when a hold goes in-transit to another library.
 *Hold Shelf Slip*:: This prints when a hold is fulfilled.
@@ -225,7 +225,7 @@ once you import the receipts on the new machine.
 As you can only save a template on to the computer you are working on you will
 need to export the template if you have more than one computer that prints out
 receipts (i.e., more than one computer on the circulation desk, or another
-computer in the workroom that you use to checkin items or capture holds with).  
+computer in the workroom that you use to check in items or capture holds with).
 
 Please be aware that when you export, you are exporting all templates to one file.
 

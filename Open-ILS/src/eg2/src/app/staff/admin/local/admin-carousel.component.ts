@@ -1,4 +1,4 @@
-import { Component, ViewChild, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, viewChild } from '@angular/core';
 import {AdminPageComponent} from '@eg/staff/share/admin-page/admin-page.component';
 import {IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
@@ -34,9 +34,9 @@ export class AdminCarouselComponent extends AdminPageComponent implements OnInit
     deleteSelected: (idlThings: IdlObject[]) => void;
     cellTextGenerator: GridCellTextGenerator;
 
-    @ViewChild('refreshString', { static: true }) refreshString: StringComponent;
-    @ViewChild('refreshErrString', { static: true }) refreshErrString: StringComponent;
-    @ViewChild('delConfirm', { static: true }) delConfirm: ConfirmDialogComponent;
+    protected refreshString = viewChild.required<StringComponent>('refreshString');
+    protected refreshErrString = viewChild.required<StringComponent>('refreshErrString');
+    protected delConfirm = viewChild.required<ConfirmDialogComponent>('delConfirm');
 
     ngOnInit() {
         super.ngOnInit();
@@ -52,7 +52,7 @@ export class AdminCarouselComponent extends AdminPageComponent implements OnInit
         };
 
         this.deleteSelected = (idlThings: IdlObject[]) => {
-            this.delConfirm.open().subscribe(confirmed => {
+            this.delConfirm().open().subscribe(confirmed => {
                 if (!confirmed) { return; }
                 super.doDelete(idlThings);
             });
@@ -66,9 +66,9 @@ export class AdminCarouselComponent extends AdminPageComponent implements OnInit
                         'open-ils.actor.carousel.refresh',
                         this.auth.token(), cc.id()
                     ).toPromise(); // fire and forget, as this could take a couple minutes
-                    this.refreshString.current({ name: cc.name() }).then(str => this.toast.success(str));
+                    this.refreshString().current({ name: cc.name() }).then(str => this.toast.success(str));
                 } else {
-                    this.refreshErrString.current({ name: cc.name() }).then(str => this.toast.warning(str));
+                    this.refreshErrString().current({ name: cc.name() }).then(str => this.toast.warning(str));
                 }
             });
         };
@@ -133,11 +133,11 @@ export class AdminCarouselComponent extends AdminPageComponent implements OnInit
                                     this.pcrud.update(rec).subscribe(
                                         { next: ok2 => console.debug('updated'),
                                             error: (err: unknown) => console.error(err),
-                                            complete: () => { this.grid.reload(); } }
+                                            complete: () => { this.grid().reload(); } }
                                     );
                                 },
                                 error: (err: unknown) => console.error(err),
-                                complete: () => { this.grid.reload(); } }
+                                complete: () => { this.grid().reload(); } }
                             );
                         }
                     );

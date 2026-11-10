@@ -1,4 +1,4 @@
-= Monograph Parts =
+= Record Notes =
 :toc:
 
 Bibliographic record notes can be edited from the

@@ -5,7 +5,7 @@
 
 indexterm:[acquisitions,invoices]
 
-You can create invoices for purchase orders, individual line items, and blanket purchases. You can also link existing invoices to purchase orders. Additionaly, you can add specific line items to an invoice from the purchase order or acquisitions search results screen. You can also search for relevant line items from within the invoices interface. You can also add all line items from an entire purchase order to an invoice or you can create a blanket invoice for items that are not  attached to a purchase order.
+You can create invoices for purchase orders, individual line items, and blanket purchases. You can also link existing invoices to purchase orders. Additionally, you can add specific line items to an invoice from the purchase order or acquisitions search results screen. You can also search for relevant line items from within the invoices interface. You can also add all line items from an entire purchase order to an invoice or you can create a blanket invoice for items that are not  attached to a purchase order.
 
 You can invoice items before you receive the items if desired. You can also reopen closed invoices, and you can print invoices.
 
@@ -56,7 +56,7 @@ If you wish to detach an existing line item from an invoice, select the _Detach_
 image::invoices/invoice_detach.png[Detach a line item from an invoice]
 
 The line item styling will update to show a dashed black border. If you wish to reattach the item, click 
-_Reattach_. The detatched status will not be saved until you select the _Save_ button at the top or bottom of the invoice.
+_Reattach_. The detached status will not be saved until you select the _Save_ button at the top or bottom of the invoice.
 
 image::invoices/invoice_reattach.png[Reattach a line item to an invoice]
 

@@ -1,0 +1,29 @@
+<div #groupInfo>
+@if (!hg.userBucket()) {
+    <strong i18n>No Hold Group Selected</strong>
+} @else {
+    <strong i18n>Hold Group #{{hg.userBucket().id()}}: {{hg.userBucket().name()}}</strong>
+    @if (hg.userBucket()?.description()?.length > 0) {<span i18n> / {{hg.userBucket().description()}}</span>}
+    <br/>
+    <span i18n>
+        {hg.userBucket().items().length, plural,
+            =0 {No users}
+            =1 {1 user}
+            other{{{hg.userBucket().items().length}} users}
+        }
+    </span>
+    @if (hg.userBucket().create_time()) {
+        <span i18n>
+            / Created {{hg.userBucket().create_time() | date}}
+        </span>
+    }
+    @if (hg.userBucket().owner()) {
+        <span i18n>
+            / {{hg.userBucket().owner().family_name() || hg.userBucket().owner().usrname()}} 
+        </span>
+    }
+    <span i18n>
+        &#64; {{hg.userBucket().owning_lib().shortname()}}
+    </span>
+}
+</div>

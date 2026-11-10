@@ -28,7 +28,7 @@
     disabled="need_at_least_one_selected"
     label="[% l('Create Carousel from Selected Items') %]"></eg-grid-action>
   <eg-grid-action handler="requestItems"
-    label="[% l('Request Items') %]"></eg-grid-action>
+    label="[% l('Place Hold') %]"></eg-grid-action>
   <eg-grid-action handler="attach_to_peer_bib"
     label="[% l('Link as Conjoined to Previously Marked Bib Record') %]"></eg-grid-action>
   <eg-grid-action handler="selectedHoldingsCopyDelete"
@@ -102,9 +102,9 @@
   <eg-grid-field label="[% l('Author') %]"               path="call_number.record.simple_record.author"  hidden>
     {{item['call_number.record.simple_record.author'] || item['dummy_author']}}
   </eg-grid-field>
-  <eg-grid-field label="[% l('Checkin Date') %]"         path="_circ_summary.last_checkin_time" datatype="timestamp" hidden></eg-grid-field>
-  <eg-grid-field label="[% l('Checkin Scan Date') %]"    path="_circ_summary.last_checkin_scan_time" datatype="timestamp" hidden></eg-grid-field>
-  <eg-grid-field label="[% l('Checkin Workstation') %]"  path="_circ_summary.last_checkin_workstation" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Check In Date') %]"         path="_circ_summary.last_checkin_time" datatype="timestamp" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Check In Scan Date') %]"    path="_circ_summary.last_checkin_scan_time" datatype="timestamp" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Check In Workstation') %]"  path="_circ_summary.last_checkin_workstation" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Checkout Date') %]"  path="_circ_summary.start_time" datatype="timestamp" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Checkout Workstation') %]"  path="_circ_summary.checkout_workstation" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Checkout/Renewal Library') %]"  path="_circ_lib.shortname" hidden></eg-grid-field>

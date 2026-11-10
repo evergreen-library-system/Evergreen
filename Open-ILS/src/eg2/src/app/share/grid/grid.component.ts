@@ -186,6 +186,7 @@ export class GridComponent implements OnInit, AfterViewInit, OnDestroy {
     @Output() rowSelectionChange: EventEmitter<string[]>;
 
     @ViewChild('toolbar', { static: true }) toolbar: GridToolbarComponent;
+    @ViewChild('egGridStickyHeader') private gridHeader: GridHeaderComponent;
 
     constructor() {
         this.context =
@@ -289,6 +290,10 @@ export class GridComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     reloadWithoutPagerReset() {
         this.context.reloadWithoutPagerReset();
+    }
+
+    focusSelectAll() {
+        this.gridHeader?.focusSelectAll();
     }
 
     // Not using @HostListener because it only works globally.

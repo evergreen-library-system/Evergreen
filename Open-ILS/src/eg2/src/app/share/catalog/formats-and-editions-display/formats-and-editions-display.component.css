@@ -1,0 +1,10 @@
+.bib-details ul {
+    margin-bottom: 0;
+    padding-left: 0;
+}
+
+.bib-details li {
+    border: 0;
+    list-style: none;
+    padding: .25rem .25rem 0 0;
+}

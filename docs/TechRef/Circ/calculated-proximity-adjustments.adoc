@@ -4,7 +4,7 @@ Calculated Proximity Adjustments
 Summary
 -------
 
-Today in Evergreen, the way in which organizational hierarchy can be taken into account during hold targeting and capture is through the evaluation of Org Unit Proximity.  This is defined as the number of graph edges between Org Units, and for holds, specifically the distance between the capturing library and the pickup library. This value is used to rank sets of potential copies for holds based on their apparent nearness or proximity to the pickup lib at targeting time and to the checkin lib at op-capture time (in certain configurations).
+Today in Evergreen, the way in which organizational hierarchy can be taken into account during hold targeting and capture is through the evaluation of Org Unit Proximity.  This is defined as the number of graph edges between Org Units, and for holds, specifically the distance between the capturing library and the pickup library. This value is used to rank sets of potential copies for holds based on their apparent nearness or proximity to the pickup lib at targeting time and to the check in lib at op-capture time (in certain configurations).
 
 Evergreen needs a mechanism by which the proximity between libraries can be adjusted for the purpose of effecting hold capture.  This will support several use cases, including, but not limited to:
 

@@ -17,7 +17,6 @@ import { RecordActionsComponent } from './actions.component';
 import { RecordPaginationComponent } from './pagination.component';
 import { BibSummaryComponent } from '@eg/staff/share/bib-summary/bib-summary.component';
 import { CopiesComponent } from './copies.component';
-import { BibStaffViewComponent } from '@eg/staff/share/bib-staff-view/bib-staff-view.component';
 import { StaffCommonModule } from '@eg/staff/common.module';
 import { NotesComponent } from './notes.component';
 import { HoldsGridComponent } from '@eg/staff/share/holds/grid.component';
@@ -25,13 +24,15 @@ import { PartsComponent } from './parts.component';
 import { ConjoinedComponent } from './conjoined.component';
 import { CnBrowseResultsComponent } from '../cnbrowse/results.component';
 import { FastAddSelectorComponent } from '@eg/staff/share/marc-edit/fast-add-selector.component';
+import { BibFieldService } from '@eg/share/catalog/bib-field.service';
+import { firstValueFrom, toArray } from 'rxjs';
+import { StaffRecordSummaryViewComponent } from '@eg/share/catalog/staff-record-summary-view/staff-record-summary-view.component';
 
 @Component({
     selector: 'eg-catalog-record',
     templateUrl: 'record.component.html',
     styleUrls: ['./record.component.css'],
     imports: [
-        BibStaffViewComponent,
         BibSummaryComponent,
         CnBrowseResultsComponent,
         ConjoinedComponent,
@@ -45,7 +46,8 @@ import { FastAddSelectorComponent } from '@eg/staff/share/marc-edit/fast-add-sel
         PartsComponent,
         RecordActionsComponent,
         RecordPaginationComponent,
-        StaffCommonModule
+        StaffCommonModule,
+        StaffRecordSummaryViewComponent
     ]
 })
 export class RecordComponent implements OnInit, OnDestroy {
@@ -65,6 +67,7 @@ export class RecordComponent implements OnInit, OnDestroy {
     added_content_sources: string[] = [];
     summary: BibRecordSummary;
     searchContext: CatalogSearchContext;
+    displayFields: IdlObject[]; // cdfm objects
     @ViewChild('recordTabs', { static: true }) recordTabs: NgbNav;
     @ViewChild('marcEditor', {static: false}) marcEditor: MarcEditorComponent;
     @ViewChild('addedContent', { static: true }) addedContent: AddedContentComponent;
@@ -76,6 +79,8 @@ export class RecordComponent implements OnInit, OnDestroy {
 
     @ViewChild('pendingChangesDialog', {static: false})
         pendingChangesDialog: ConfirmDialogComponent;
+
+    bibField = inject(BibFieldService);
 
     ngOnInit() {
         this.searchContext = this.staffCat.searchContext;
@@ -186,10 +191,10 @@ export class RecordComponent implements OnInit, OnDestroy {
         }
 
         this.summary = null;
-        this.bib.getBibSummary(
+        firstValueFrom(this.bib.getBibSummary(
             this.recordId,
             this.searchContext.searchOrg.id(),
-            this.searchContext.isStaff).toPromise()
+            this.searchContext.isStaff, {staff_view: true}))
             .then(summary => {
                 this.summary =
                 this.staffCat.currentDetailRecordSummary = summary;

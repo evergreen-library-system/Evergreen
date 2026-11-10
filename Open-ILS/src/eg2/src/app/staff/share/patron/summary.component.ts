@@ -5,14 +5,13 @@ import {PrintService} from '@eg/share/print/print.service';
 import {PatronService, PatronSummary} from './patron.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 
 @Component({
     templateUrl: 'summary.component.html',
     styleUrls: ['summary.component.css'],
     selector: 'eg-patron-summary',
-    imports: [
-        CommonModule
-    ]
+    imports: [CommonModule, RouterModule]
 })
 export class PatronSummaryComponent implements OnInit {
     private org = inject(OrgService);
@@ -36,6 +35,7 @@ export class PatronSummaryComponent implements OnInit {
     showDobDefault = false;
     showDob = false;
     penalties = 0;
+    showFullName = false;
 
     showSummaryPane = true;
 
@@ -51,8 +51,15 @@ export class PatronSummaryComponent implements OnInit {
     @Output() showPaneChange = new EventEmitter<boolean>();
 
     ngOnInit() {
-        this.serverStore.getItem('circ.obscure_dob').then(hide => {
+        this.serverStore.getItemBatch([
+            'circ.obscure_dob',
+            'eg.orgselect.show_combined_names'
+        ]).then(settings => {
+            const hide = settings['circ.obscure_dob'];
+            const showFullName = settings['eg.orgselect.show_combined_names'];
+
             this.showDobDefault = this.showDob = !hide;
+            this.showFullName = showFullName;
         });
     }
 
@@ -134,7 +141,11 @@ export class PatronSummaryComponent implements OnInit {
 
     orgSn(orgId: number): string {
         const org = this.org.get(orgId);
-        return org ? org.shortname() : '';
+        if (this.showFullName) {
+            return org ? org.name() : '';
+        } else {
+            return org ? org.shortname() : '';
+        }
     }
 
     patronStatusCodes(): string[] {

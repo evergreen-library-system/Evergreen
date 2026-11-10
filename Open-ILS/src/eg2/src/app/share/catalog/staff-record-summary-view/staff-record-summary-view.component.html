@@ -1,0 +1,7 @@
+<div class="row">
+  @for (column of summary?.staffViewDisplayEntries; track $index) {
+    <div class="col-md-4">
+      <eg-metadata-column [column]="column" [summary]="summary"></eg-metadata-column>
+    </div>
+  }
+</div>

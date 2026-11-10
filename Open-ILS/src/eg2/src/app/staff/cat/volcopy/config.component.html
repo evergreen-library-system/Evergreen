@@ -222,7 +222,8 @@
               domId="default-item-alert-type"
               idlClass="ccat"
               [selectedId]="volcopy.defaults.values.item_alert_type"
-              (onChange)="volcopy.defaults.values.item_alert_type = $event ? $event.id : null">
+              (onChange)="volcopy.defaults.values.item_alert_type = $event ? $event.id : null"
+              [asyncSupportsEmptyTermClick]="true">
             </eg-combobox>
             <label class="form-label ms-2" for="default-item-alert-type" i18n>
               Default Item Alert Type

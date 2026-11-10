@@ -150,8 +150,8 @@ renewed, the existing circulation record is closed and another circulation recor
 Important date/time fields in this table include:
  
 * Checkout Date/Time - the time when an item is checked out
-* Checkin Date/Time - the effective date when the item is treated as checked in
-* Checkin Scan Date/Time - the time when the check-in action is taken
+* Check In Date/Time - the effective date when the item is treated as checked in
+* Check In Scan Date/Time - the time when the check in action is taken
 * Due Date/Time - For all daily loans the due time is 23:59:59 of the day in the
  local time zone. Hourly loans have a specific time with time zone information.
 * Fine Stops Date/Time - the date when the Maximum Fine limit has been reached,

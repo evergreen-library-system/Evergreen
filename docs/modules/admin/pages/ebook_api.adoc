@@ -1,15 +1,14 @@
 = Ebook API integration =
 :toc:
 
-Evergreen supports integration with third-party APIs provided by OverDrive and
-OneClickdigital.
+Evergreen supports integration with third-party APIs provided by OverDrive.
 
 When ebook API integration is enabled, the following features are supported:
 
- * Bibliographic records from these vendors that appear in your
+ * Bibliographic records from this vendor that appear in your
 public catalog will include vendor holdings and availability information.
- * Patrons can check out and place holds on OverDrive and OneClickdigital ebook
-titles from within the public catalog. 
+ * Patrons can check out and place holds on OverDrive ebook
+titles from within the public catalog.
  * When a user is logged in, the public catalog dashboard and My Account
 interface will include information about that user's checkouts and holds for
 supported vendors.
@@ -101,29 +100,6 @@ in `config.tt2`:
     037 field for OverDrive record identifiers; if your system includes
     older-style OverDrive records with the record identifier embedded in
     the 856 URL, you need to specify URL patterns with this setting.
-
-== OneClickdigital API integration ==
-Before enabling OneClickdigital API integration, you will need to
-request API access from OneClickdigital.  OneClickdigital will provide
-the values to be used for the following library settings:
-
-  * *OneClickdigital Library ID*: The identifier assigned to your
-    library by OneClickdigital.
-  * *OneClickdigital Basic Token*: Your client authentication token,
-    supplied by OneClickdigital when you request access to their API.
-
-For more information, consult the
-http://developer.oneclickdigital.us/[OneClickdigital API documentation].
-
-To enable OneClickdigital API integration, adjust the following public catalog
-settings in `config.tt2`:
-
-  * `ebook_api.enabled`: set to "true".
-  * `ebook_api.oneclickdigital.enabled`: set to "true".
-  * `ebook_api.oneclickdigital.base_uris`: list of regular expressions
-    matching OneClickdigital URLs found in the 859$9 field of your MARC
-    records.  Evergreen uses the patterns specified here to extract
-    record identifiers for OneClickdigital titles.
 
 == Additional configuration ==
 Evergreen communicates with third-party vendor APIs using the new

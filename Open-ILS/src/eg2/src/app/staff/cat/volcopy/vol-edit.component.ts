@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, Input, Renderer2, Output, EventEmitter, ViewChildren, QueryList, inject } from '@angular/core';
-import {tap} from 'rxjs';
+import {lastValueFrom, tap} from 'rxjs';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
 import {AuthService} from '@eg/core/auth.service';
@@ -382,7 +382,7 @@ export class VolEditComponent implements OnInit {
         const copies = this.context.copyList()
             .filter((copy, idx) => {
             // During autogen we do not replace the first item,
-            // so it's status is not relevant.
+            // so its status is not relevant.
                 return idx === 0 || this.barcodeCanChange(copy);
             });
 
@@ -399,23 +399,26 @@ export class VolEditComponent implements OnInit {
 
         const count = copyList.length;
 
-        return this.net.request('open-ils.cat',
+        return lastValueFrom(this.net.request('open-ils.cat',
             'open-ils.cat.item.barcode.autogen',
             this.auth.token(), seedBarcode, count, {
                 checkdigit: this.volcopy.defaults.values.use_checkdigit,
                 skip_dupes: true
             }
         ).pipe(tap(barcodes => {
-
+            let barcodeChanged = false;
             copyList.forEach(copy => {
-                if (copy.barcode() !== barcodes[0]) {
-                    copy.barcode(barcodes[0]);
+                const old = copy.barcode();
+                const newBarcode = barcodes.shift();
+                if (old !== newBarcode) {
+                    copy.barcode(newBarcode);
                     copy.ischanged(true);
+                    barcodeChanged = true;
+                    this.barcodeChange.emit({ old, new: newBarcode });
                 }
-                barcodes.shift();
             });
-
-        })).toPromise();
+            if (barcodeChanged) { this.emitSaveChange(); }
+        })));
     }
 
     barcodeChanged(copy: IdlObject, barcode: string) {

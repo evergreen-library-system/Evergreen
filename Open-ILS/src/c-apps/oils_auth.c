@@ -388,7 +388,7 @@ static int oilsAuthIdentIsBarcode(const char* identifier, int org_id) {
     pcre2_match_data *match_data = pcre2_match_data_create_from_pattern(compiled, NULL);
 
     int match_ret = pcre2_match(compiled, (PCRE2_SPTR) identifier,
-                                (PCRE2_SIZE) sizeof(identifier), 0, 0,
+                                (PCRE2_SIZE) strlen(identifier), 0, 0,
                                 match_data, NULL);
 
     free((void *)bc_regex);

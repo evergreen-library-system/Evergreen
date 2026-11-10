@@ -31,7 +31,7 @@
           </div>
           <div class="col-md-8">
             <input ng-if="!sameUser" type="submit" class="btn btn-primary" 
-                value="[% l('Normal Checkin then Checkout') %]"/>
+                value="[% l('Normal Check In then Checkout') %]"/>
             <input ng-if="sameUser" type="submit" class="btn btn-primary" 
                 value="[% l('Renew') %]"/>
             <button class="btn btn-normal" 

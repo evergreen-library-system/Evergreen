@@ -113,6 +113,7 @@ export class MarcEditorComponent implements OnInit, AfterContentInit {
     // in th database.  When inPlaceMode is false, this is emitted after
     // the record is successfully saved.
     @Output() recordSaved: EventEmitter<MarcSavedEvent>;
+    @Output() recordSourceChanged: EventEmitter<number> = new EventEmitter();
 
     @ViewChild('sourceSelector', {static: false}) sourceSelector: ComboboxComponent;
     @ViewChild('confirmDelete', {static: false}) confirmDelete: ConfirmDialogComponent;
@@ -122,8 +123,8 @@ export class MarcEditorComponent implements OnInit, AfterContentInit {
     @ViewChild('failMsg', {static: false}) failMsg: StringComponent;
 
     @ContentChild(FastAddSelectorComponent) fastAddSelector: FastAddSelectorComponent;
-
     initCalled = false;
+
     private fastAddIntent: Maybe<FastAddItem> = new None();
 
     constructor() {
@@ -293,6 +294,7 @@ export class MarcEditorComponent implements OnInit, AfterContentInit {
 
     updateRecordSource(entry) {
         this.recordSource = entry.id;
+        this.recordSourceChanged.emit(entry.id);
     }
 
     fromXml(xml: string) {

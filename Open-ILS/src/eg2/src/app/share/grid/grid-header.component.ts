@@ -1,5 +1,5 @@
 /* eslint-disable no-magic-numbers, @angular-eslint/component-selector */
-import {Component, Input, OnInit, AfterViewInit, QueryList, ViewChildren,
+import {Component, ElementRef, Input, OnInit, AfterViewInit, QueryList, ViewChild, ViewChildren,
     inject, NgZone, OnDestroy, Renderer2, DOCUMENT} from '@angular/core';
 import { NgClass } from '@angular/common';
 import {GridContext, GridColumn} from './grid';
@@ -35,6 +35,7 @@ export class GridHeaderComponent implements OnInit, OnDestroy, AfterViewInit {
 
     @ViewChildren(GridFilterControlComponent) filterControls: QueryList<GridFilterControlComponent>;
     @ViewChildren('colResizeButton') colResizeControls: QueryList<any>;
+    @ViewChild('selectAllCheckbox') private selectAllCheckbox: ElementRef<HTMLInputElement>;
 
     ngOnInit() {
         this.context.selectRowsInPageEmitter.subscribe(
@@ -282,6 +283,10 @@ export class GridHeaderComponent implements OnInit, OnDestroy, AfterViewInit {
         const rows = this.context.dataSource.getPageOfRows(this.context.pager);
         const indexes = rows.map(r => this.context.getRowIndex(r));
         return this.context.rowSelector.contains(indexes);
+    }
+
+    focusSelectAll() {
+        this.selectAllCheckbox?.nativeElement.focus();
     }
 }
 

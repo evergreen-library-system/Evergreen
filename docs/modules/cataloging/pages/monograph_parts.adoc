@@ -17,6 +17,9 @@ The _Require Monographic Part when Present_ Library Setting enables organization
 * Require a patron to select a monograph part when placing a hold if any part exists on the bibliographic record.
 * Require catalogers to use parts on all items when any item at the library has parts.
 
+If there are parts on a record, the Monograph Parts
+tab will show a count of the record's parts.
+
 == Add a Monograph Part to an Existing Record ==
 
 To add a monograph part to an existing record in the catalog: 

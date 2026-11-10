@@ -34,6 +34,7 @@ import { TestPatronPasswordComponent } from './test-password.component';
 import { BillStatementComponent } from './bill-statement.component';
 import { BillingHistoryComponent } from './billing-history.component';
 import {ToastService} from '@eg/share/toast/toast.service';
+import { PatronAlertsComponent } from './alerts.component';
 
 @Component({
     templateUrl: 'patron.component.html',
@@ -48,6 +49,7 @@ import {ToastService} from '@eg/share/toast/toast.service';
         HoldsComponent,
         ItemsComponent,
         EditToolbarComponent,
+        PatronAlertsComponent,
         PatronGroupComponent,
         PatronMessagesComponent,
         PatronPermsComponent,
@@ -99,6 +101,8 @@ export class PatronComponent implements OnInit, OnDestroy {
     @ViewChild('editorToolbar') private editorToolbar: EditToolbarComponent;
 
     @ViewChild('patronEditor') private patronEditor: EditComponent;
+
+    @ViewChild('patronBills') private patronBills: BillsComponent;
 
     @ViewChild('pendingChangesDialog')
     private pendingChangesDialog: ConfirmDialogComponent;
@@ -231,6 +235,15 @@ export class PatronComponent implements OnInit, OnDestroy {
         evt.preventDefault();
     }
 
+    // ngbNav re-renders the Bills tab's content on every activation (it's
+    // inside an ngbNavContent template), so the grid's initial-load focus
+    // logic doesn't re-run on its own when switching back to this tab.
+    patronTabShown(tab: string) {
+        if (tab !== 'bills') { return; }
+
+        setTimeout(() => this.patronBills?.focusDefaultControlOnTabActivation());
+    }
+
     routeToTab(tab?: string, newWindow?: boolean) {
         if (tab === 'purge') {return;}
 
@@ -303,6 +316,7 @@ export class PatronComponent implements OnInit, OnDestroy {
 
     routeToAlertsPane() {
         if (this.patronTab !== 'search' &&
+            this.patronTab !== 'alerts' &&
             this.context.summary &&
             this.context.summary.alerts.hasAlerts() &&
             !this.context.patronAlertsShown()) {

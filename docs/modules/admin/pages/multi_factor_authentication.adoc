@@ -65,7 +65,7 @@ For security reasons, this data does not prepopulate from existing staff profile
 
 The email and SMS codes are time-based, so one code is valid for a given configurable time window for a specific user. The _Resend_ option will resend the same code if there was an unrecoverable error somewhere in an email system.
 
-Users should be aware that some carriers have been limiting email-to-SMS messages, which will affect the speed at which an SMS message will arrive and therefor might make it a less-desirable secondary factor.
+Users should be aware that some carriers have been limiting email-to-SMS messages, which will affect the speed at which an SMS message will arrive and therefore might make it a less-desirable secondary factor.
 
 image::multi_factor_authentication/TOTP_email_login.png[Using TOTP via email]
 

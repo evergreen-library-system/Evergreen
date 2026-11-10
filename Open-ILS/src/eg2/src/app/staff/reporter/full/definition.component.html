@@ -187,6 +187,8 @@
               [advancedMode]="true"
               [templ]="templ"
               [disabled]="isView"
+              [isEdit]="isEdit"
+              [isClone]="isClone"
             ></eg-reporter-output-options>
             @if ((isEdit && !readyToSave()) || (!isView && !readyToSchedule())) {
               <div class="row mt-3">

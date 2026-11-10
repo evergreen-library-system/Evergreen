@@ -2,7 +2,7 @@
 :toc:
 
 (((Copy Locations)))
-(((Checkin Alert)))
+(((Check In Alert)))
 (((Shelving Locations Editor)))
 ((("Label Prefix","Shelving Location")))
 ((("Label Suffix","Shelving Location")))
@@ -31,7 +31,7 @@ image::shelving_location/shelving_location_new.png[New shelving location]
 +
 image::shelving_location/shelving_location_holdverify.png[Hold Capture Verification]
 +
-.. _Checkin Alert_, choose whether you would like a routing alert to appear when an item in this location is checked in. This is intended for special locations, such as 'Display', that may require special handling, or that temporarily contain items that are not normally in that location.
+.. _Check In Alert_, choose whether you would like a routing alert to appear when an item in this location is checked in. This is intended for special locations, such as 'Display', that may require special handling, or that temporarily contain items that are not normally in that location.
 +
 image::shelving_location/shelving_location_alert.png[Check in Alert message]
 +

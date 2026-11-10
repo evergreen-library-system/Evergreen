@@ -6,6 +6,7 @@ import moment from 'moment-timezone';
 import { AuthService } from '@eg/core/auth.service';
 import { StaffCommonModule } from '@eg/staff/common.module';
 import { TreeComponent } from '@eg/share/tree/tree.component';
+import { StoreService } from '@eg/core/store.service';
 
 @Component({
     selector: 'eg-reporter-output-options',
@@ -15,6 +16,7 @@ import { TreeComponent } from '@eg/share/tree/tree.component';
 
 export class ReporterOutputOptionsComponent implements OnInit {
     private auth = inject(AuthService);
+    private store = inject(StoreService);
     RSvc = inject(ReporterService);
 
 
@@ -24,9 +26,20 @@ export class ReporterOutputOptionsComponent implements OnInit {
     @Input() readyToSchedule: () => boolean;
     @Input() saveTemplate: (args: any) => void;
     @Input() closeForm: (args: any) => void;
+    @Input() isClone: boolean = false;
+    @Input() isEdit: boolean = false;
 
     report_tree: Tree;
     output_tree: Tree;
+
+    stickyFields: string[] = [
+        'doRollup',
+        'excelOutput',
+        'csvOutput',
+        'htmlOutput',
+        'barCharts',
+        'lineCharts'
+    ];
 
     constructor() {
         this.report_tree = this.RSvc.myFolderTrees.reports.clone({expanded:!this.RSvc.reportFolder});
@@ -37,6 +50,15 @@ export class ReporterOutputOptionsComponent implements OnInit {
         console.debug("User: ", this.auth.user());
         if (!this.templ.email) {
             this.templ.email = this.auth.user().email();
+        }
+
+        // Don't use stickiness if we're copying from a clone or editing an existing thing - we don't want to change something by accident.
+        if (!this.isEdit && !this.isClone) {
+            this.stickyFields.forEach(field => {
+                if (field in this.templ) {
+                    this.templ[field] = this.store.getLocalItem('eg.reports.' + field) ?? this.templ[field];
+                }
+            });
         }
     }
 
@@ -71,6 +93,10 @@ export class ReporterOutputOptionsComponent implements OnInit {
             const nextQ = now.add(15 - (now.minutes() % 15), 'minutes');
             this.templ.runTime = nextQ;
         }
+    }
+
+    saveSticky(key: string, value: any) {
+        this.store.setLocalItem(key, value);
     }
 
 }

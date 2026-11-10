@@ -40,6 +40,10 @@ import { SortOrderSelectComponent } from './sort-order-select/sort-order-select.
 import { CatalogOrgSelectComponent } from './catalog-org-select/catalog-org-select.component';
 import { FastAddSelectorComponent } from '../share/marc-edit/fast-add-selector.component';
 import { MakeBookableDialogComponent } from '../share/booking/make-bookable-dialog.component';
+import { CreateMarcComponent } from './create-marc.component';
+import { StaffRecordSummaryViewComponent } from '@eg/share/catalog/staff-record-summary-view/staff-record-summary-view.component';
+import { ResultsMetadataLayoutComponent } from './result/results-metadata-layout.component';
+import { MetadataColumnComponent } from '../../share/catalog/metadata-column.component';
 
 @NgModule({
     imports: [
@@ -70,6 +74,7 @@ import { MakeBookableDialogComponent } from '../share/booking/make-bookable-dial
         CnBrowseResultsComponent,
         BrowsePagerComponent,
         SortOrderSelectComponent,
+        CreateMarcComponent,
         StaffCommonModule,
         FastAddSelectorComponent,
         FmRecordEditorModule,
@@ -82,7 +87,10 @@ import { MakeBookableDialogComponent } from '../share/booking/make-bookable-dial
         BarcodesModule,
         WorkLogModule,
         VolCopyModule,
-        CatalogOrgSelectComponent
+        CatalogOrgSelectComponent,
+        StaffRecordSummaryViewComponent,
+        ResultsMetadataLayoutComponent,
+        MetadataColumnComponent
     ],
     providers: [
         StaffCatalogService
