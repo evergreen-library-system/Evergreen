@@ -63,13 +63,13 @@ explore templates shared by other accounts, you can use the reporter search func
 +
 image::reporter_cloning_shared_templates/template_search.png[Screenshot of the Browse and Search tabs above the My Folders area.]
 +
-. Enter a search term in the field *Search Templates for String*.
-. Scope you search to _Name_, _Description_, or _All Fields_.
+. Enter a search term in the field *Search templates for keyword/text*.
+. Scope the *Search in field* menu to _Name_, _Description_, or _All Fields_.
 . Limit your search to a particular folder using the carets beside the folder
  tree to locate your targeted folder, or leave the search at the _All Folders_
  level. 
 +
-image::reporter_cloning_shared_templates/search_results.png["Screenshot of a template search. In the left pane the search term Undeleted has been entered. The search is of all fields and through all available folders. In the right pane is a typical grid view with several search results. The line for the first result, named Undeleted Items is selected. The Owner field indicates it was created by admin."]
+image::reporter_cloning_shared_templates/search_results_update.png["Screenshot of a template search. In the left pane the search term Undeleted has been entered. The search is of all fields and through all available folders. In the right pane is a typical grid view with several search results. The line for the first result, named Undeleted Items is selected. The Owner field indicates it was created by admin."]
 + 
 . Select your desired template and right click or use your *Actions* menu to 
 select *Clone Template*. 
