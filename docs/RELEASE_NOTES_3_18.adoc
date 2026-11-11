@@ -460,9 +460,7 @@ Evergreen:
 * Garry Collum
 * Gina Monti
 * Hannah Darcy
-* Hannah Margolis
 * Ian Skelskey
-* IanSkelskey
 * JC Landry
 * Jane Sandberg
 * Jason Boyer
