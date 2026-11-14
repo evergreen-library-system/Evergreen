@@ -160,7 +160,9 @@ export class SckoService {
                     // Go to the base checkout page by default.
                     this.router.navigate(['/staff/selfcheck']);
                 }
-            }).catch(_ => {}); // console errors
+            }).catch(_ => {
+                console.error('Error loading org settings:', _);
+            }); // console errors
     }
 
     getFleshedCircs(circIds: number[]): Observable<IdlObject> {

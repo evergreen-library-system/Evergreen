@@ -47,6 +47,9 @@ export class EditOuSettingDialogComponent extends DialogComponent {
     }
 
     update() {
+        if(this.inputType() === 'array') {
+            this.entryValue = this.entryValue.split(',').map(v => v.trim());
+        }
         this.close({setting: {[this.entry.name]: this.entryValue}, context: this.entryContext});
     }
 }
