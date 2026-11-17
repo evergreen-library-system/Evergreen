@@ -35,7 +35,7 @@ export class PatronSurveyResponsesComponent implements OnInit {
 
         const myOrgs = this.org.fullPath(this.auth.user().ws_ou(), true);
 
-        this.pcrud.search('asvr', {usr: 113}, {
+        this.pcrud.search('asvr', {usr: this.patronId}, {
             flesh: 1,
             flesh_fields: {asvr: ['survey', 'question', 'answer']}
         }).subscribe(
