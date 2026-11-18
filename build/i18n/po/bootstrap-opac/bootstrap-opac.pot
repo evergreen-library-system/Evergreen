@@ -2483,7 +2483,7 @@ msgstr ""
 msgid "Hide items in list"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/js.tt2:233
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/js.tt2:202
 msgid "Hide password"
 msgstr ""
 
@@ -5003,7 +5003,7 @@ msgstr ""
 msgid "Show only items available for pickup"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/update_password.tt2:27 ../../Open-ILS/src/templates-bootstrap/opac/myopac/update_password.tt2:36 ../../Open-ILS/src/templates-bootstrap/opac/myopac/update_password.tt2:45 ../../Open-ILS/src/templates-bootstrap/opac/parts/js.tt2:238 ../../Open-ILS/src/templates-bootstrap/opac/parts/login/login_fields.tt2:17
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/update_password.tt2:27 ../../Open-ILS/src/templates-bootstrap/opac/myopac/update_password.tt2:36 ../../Open-ILS/src/templates-bootstrap/opac/myopac/update_password.tt2:45 ../../Open-ILS/src/templates-bootstrap/opac/parts/js.tt2:207 ../../Open-ILS/src/templates-bootstrap/opac/parts/login/login_fields.tt2:17
 msgid "Show password"
 msgstr ""
 
