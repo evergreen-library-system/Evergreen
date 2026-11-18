@@ -1,4 +1,4 @@
-= Evergreen 3.18-rc Release Notes =
+= Evergreen 3.18.0 Release Notes =
 :toc:
 :numbered:
 :toclevels: 3
@@ -426,6 +426,14 @@ title="Carousel" width="100%" height="300" frameborder="0" scrolling="no"></ifra
 * Removes deleted items from reshelver's consideration (https://bugs.launchpad.net/evergreen/+bug/2169044[Bug 2169044])
 * New permission for specifically deleting an inactive card (https://bugs.launchpad.net/evergreen/+bug/2142036[Bug 2142036])
 * Fix handling of PO Names with forward slashes in EDI message line item segments. (https://bugs.launchpad.net/evergreen/+bug/2159641[Bug 2159641])
+* Remove code for unimplemented SIP renewal flag. (https://bugs.launchpad.net/evergreen/+bug/1516728[Bug 1516728])
+* Use modern context-user information for batch event reset/cancel. (https://bugs.launchpad.net/evergreen/+bug/2161325[Bug 2161325])
+* Reduce log noise produced by open-ils.circ (https://bugs.launchpad.net/evergreen/+bug/2153171[Bug 2153171])
+* Fixes a patron search home library setting error that was preventing patron searches and triggering redundant setting updates. (https://bugs.launchpad.net/evergreen/+bug/2121177[Bug 2121177])
+* Fixes an issue where the library settings for Clear These Holds button were not always being implemented consistently. (https://bugs.launchpad.net/evergreen/+bug/2153681[Bug 2153681])
+* Czech, French, Spanish translations for OPAC datepicker (https://bugs.launchpad.net/evergreen/+bug/2114944[Bug 2114944])
+* Adds new documentation for hold policies.
+* Adds the time to the existing fields in the session grid and attempts grid. (https://bugs.launchpad.net/evergreen/+bug/2043430[Bug 2043430])
 
 == Acknowledgments ==
 The Evergreen project would like to acknowledge the following
