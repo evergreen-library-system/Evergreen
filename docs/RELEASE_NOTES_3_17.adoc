@@ -3,6 +3,65 @@
 :numbered:
 :toclevels: 3
 
+== Evergreen 3.17.7 ==
+
+This release contains bug fixes and documentation fixes improving on Evergreen 3.17.6.
+
+
+=== Administration ===
+
+* Use modern context-user information for batch event reset/cancel. (https://bugs.launchpad.net/evergreen/+bug/2161325[Bug 2161325])
+* Reduce log noise produced by open-ils.circ (https://bugs.launchpad.net/evergreen/+bug/2153171[Bug 2153171])
+* Fixes a patron search home library setting error that was preventing patron searches and triggering redundant setting updates. (https://bugs.launchpad.net/evergreen/+bug/2121177[Bug 2121177])
+* Fixes an issue where the library settings for Clear These Holds button were not always being implemented consistently. (https://bugs.launchpad.net/evergreen/+bug/2153681[Bug 2153681])
+* Adds the time to the existing fields in the session grid and attempts grid of Link Checker. (https://bugs.launchpad.net/evergreen/+bug/2043430[Bug 2043430])
+
+=== Circulation ===
+
+* Fixes timeout on Retarget Local Holds. (https://bugs.launchpad.net/evergreen/+bug/2086508[Bug 2086508])
+
+=== Documentation ===
+
+* Adds new documentation for hold policies.
+* Fixes to update item_status.adoc to reflect LP1839883
+* Updates to In-House Use in circulating_items_web_client.adoc
+* Hold Note Updates for LPs 2156819 and 1774237
+
+
+=== Public Catalog ===
+
+* Czech, French, Spanish translations for OPAC datepicker (https://bugs.launchpad.net/evergreen/+bug/2114944[Bug 2114944])
+
+
+=== Acknowledgements ===
+
+We would like to thank the following individuals who contributed code, testing, documentation, and patches to the 3.17.7 point release of Evergreen:
+
+* Andrea Buntz Neiman
+* Blake Graham-Henderson
+* Christine Burns
+* Dan Briem
+* Hannah Darcy
+* Hannah Margolis
+* Jane Sandberg
+* Jason Stephenson
+* Jeff Davis
+* Josh Stompro
+* Michele Morgan
+* Mike Rylander
+* Ranelle Irwin
+* Stephanie Leary
+* Susan Morrison
+* Tiffany Little
+
+Release Team:
+
+* Andrea Buntz Neiman
+* Blake Graham-Henderson
+* Gina Monti
+* Michele Morgan
+
+
 == Evergreen 3.17.6 ==
 
 This release contains bug fixes and documentation fixes improving on Evergreen 3.17.5.
