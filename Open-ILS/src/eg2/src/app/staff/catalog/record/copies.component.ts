@@ -10,11 +10,12 @@ import {BroadcastService} from '@eg/share/util/broadcast.service';
 import {CourseService} from '@eg/staff/share/course.service';
 import {PermService} from '@eg/core/perm.service';
 import { StaffCommonModule } from '@eg/staff/common.module';
+import {CopyNotesDialogComponent} from '@eg/staff/share/holdings/copy-notes-dialog.component';
 
 @Component({
     selector: 'eg-catalog-copies',
     templateUrl: 'copies.component.html',
-    imports: [StaffCommonModule]
+    imports: [StaffCommonModule, CopyNotesDialogComponent]
 })
 export class CopiesComponent implements OnInit {
     private course = inject(CourseService);
@@ -33,6 +34,7 @@ export class CopiesComponent implements OnInit {
     gridDataSource: GridDataSource;
     copyContext: any; // grid context
     @ViewChild('copyGrid', { static: true }) copyGrid: GridComponent;
+    @ViewChild('copyNotesDialog') copyNotesDialog: CopyNotesDialogComponent;
 
     @Input() set recordId(id: number) {
         this.recId = id;
@@ -98,6 +100,17 @@ export class CopiesComponent implements OnInit {
                 this.copyGrid.reload();
             }
         });
+    }
+
+    openItemNotes(copyId: number) {
+        this.copyNotesDialog.copyIds = [copyId];
+        this.copyNotesDialog.copies = [];
+        this.copyNotesDialog.notes = [];
+        this.copyNotesDialog.clearPending();
+        this.copyNotesDialog.newNote = null;
+        this.copyNotesDialog.open({size: 'lg'}).subscribe(
+            () => this.copyGrid.reload()
+        );
     }
 
     orgName(orgId: number): string {
