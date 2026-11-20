@@ -9,8 +9,10 @@
       <a routerLink="/staff/cat/volcopy/holdings/callnumber/{{copy.call_number}}"
       target="_blank" i18n attr.aria-describedby="copy-callnumber-label-{{copy.call_number_label}}">Edit</a>
       @if (copy.has_notes) {
-        | <a target="_blank" routerLink="/staff/cat/item/notes"
-          [queryParams]="{copyIds: copy.id, recordId: recId}" i18n>Notes</a>
+        | <button type="button" class="btn btn-link"
+          (click)="openItemNotes(copy.id)"
+          attr.aria-describedby="copy-callnumber-label-{{copy.call_number_label}}"
+          i18n>Notes</button>
       }
     }
   </div>
@@ -116,3 +118,4 @@
   </eg-grid>
 </div>
 
+<eg-copy-notes-dialog #copyNotesDialog></eg-copy-notes-dialog>
