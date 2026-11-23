@@ -223,10 +223,7 @@
     <div class="flex-cell">[% l('Item Notes') %]</div>
     <div class="flex-cell">
       <button class="btn btn-default"
-        ng-click="manageCopyNotes(copy.id())">[% l('Add') %]
-      </button>
-      <button class="btn btn-default" ng-disabled="!copy_note_count"
-        ng-click="manageCopyNotes(copy.id())" >[% l('Manage') %]
+        ng-click="manageCopyNotes(copy.id())">[% l('Manage') %]
       </button>
     </div>
     <!-- hack to adjust positioning -->

@@ -178,7 +178,6 @@
     handlers="gridCellHandlers" hidden compiled>
     {{item['notes_count']}}
     <button class="btn btn-sm btn-default"
-      ng-disabled="item['notes_count'] <= 0"
       ng-click="col.handlers.copyNotesEdit(item['id'])">
       [% l('Manage') %]
     </button>
