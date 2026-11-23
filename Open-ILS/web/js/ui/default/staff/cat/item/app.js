@@ -871,7 +871,6 @@ function($scope , $q , egGridDataProvider , $location , $routeParams , $timeout 
         $scope.copy_alert_count = itemSvc.copy.copy_alerts().filter(function(aca) {
             return !aca.ack_time();
         }).length;
-        $scope.copy_note_count = itemSvc.copy.notes().length;
         $scope.recordId = itemSvc.copy.call_number().record().id();
         $scope.args.recordId = $scope.recordId;
         $scope.args.cnId = itemSvc.copy.call_number().id();
@@ -900,7 +899,6 @@ function($scope , $q , egGridDataProvider , $location , $routeParams , $timeout 
             $scope.copy_alert_count = itemSvc.copy.copy_alerts().filter(function(aca) {
                 return !aca.ack_time();
             }).length;
-            $scope.copy_note_count = itemSvc.copy.notes().length;
             $scope.recordId = itemSvc.copy.call_number().record().id();
             $scope.args.recordId = $scope.recordId;
             $scope.args.cnId = itemSvc.copy.call_number().id();
@@ -939,7 +937,6 @@ function($scope , $q , egGridDataProvider , $location , $routeParams , $timeout 
                 return !aca.ack_time();
             }).length;
 console.debug($scope.copy_alert_count);
-            $scope.copy_note_count = copy.notes().length;
             $scope.recordId = copy.call_number().record().id();
             $scope.args.recordId = $scope.recordId;
             $scope.args.cnId = itemSvc.copy.call_number().id();
