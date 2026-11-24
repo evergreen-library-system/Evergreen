@@ -145,7 +145,7 @@ export class VolCopyComponent implements OnInit {
         try {
             return id_or_obj.label();
         } catch(E) {
-            const search: any = {deleted: 'f'};
+            const search: any = {deleted: 'f'};
             return this.volcopy.commonData.acn_prefix[id_or_obj]?.label() || '';
         }
     }
@@ -154,7 +154,7 @@ export class VolCopyComponent implements OnInit {
         try {
             return id_or_obj.label();
         } catch(E) {
-            const search: any = {deleted: 'f'};
+            const search: any = {deleted: 'f'};
             return this.volcopy.commonData.acn_suffix[id_or_obj]?.label() || '';
         }
     }
