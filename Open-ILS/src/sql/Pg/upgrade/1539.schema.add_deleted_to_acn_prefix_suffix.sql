@@ -1,6 +1,6 @@
 BEGIN;
 
---SELECT evergreen.upgrade_deps_block_check('xxxx', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1539', :eg_version);
 
 ALTER TABLE asset.call_number_suffix ADD COLUMN IF NOT EXISTS deleted BOOLEAN DEFAULT FALSE;
 ALTER TABLE asset.call_number_prefix ADD COLUMN IF NOT EXISTS deleted BOOLEAN DEFAULT FALSE;
